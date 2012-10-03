@@ -88,6 +88,30 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function typeaheadAction()
+    {
+        if (!($academicYear = $this->_getAcademicYear()))
+            return;
+
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+
+        $result = array();
+        foreach($studies as $study) {
+            $item = (object) array();
+            $item->id = $study->getId();
+            $item->value = 'Phase ' . $study->getPhase() . '&mdash;' . $study->getFullTitle();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     private function _getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {

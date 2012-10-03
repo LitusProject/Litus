@@ -1,0 +1,113 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/department/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width mapping_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The mapping was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width mapping_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the mapping.</p>
+        </div>
+    </div>
+
+    {% include 'syllabus/admin/department/partials/years.twig' %}
+
+    <div id="controller_action">
+        <h1>Department</h1>
+        <p>Name: <b>{{ department.getName() }}</b></p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br style="clear:both">
+
+        <table class="full_width" style="margin-top: 5px;">
+            <tr>
+                <th>Name</th>
+                <th width="90px">Actions</th>
+            </tr>
+            {% for mapping in studies %}
+                <tr class="item item-{{ mapping.getId() }}">
+                    <td>{{ mapping.getStudy().getFullTitle() }}&mdash;Phase {{ mapping.getStudy().getPhase() }}</td>
+                    <td>
+                        <a href="#" data-id="{{ mapping.getId() }}" data-study="{{ mapping.getStudy().getFullTitle() }}" class="delete">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="modal hide fade" id="removeMapping">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Study
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following study: <b class="studyName"></b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#studySearch').typeaheadRemote(
+                {
+                    source: '{{ url('admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#studyId').val($(this).data('value').id);
+                } else {
+                    $('#studyId').val('');
+                }
+            });
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeMapping = $('#removeMapping');
+            removeMapping.find('.studyName').html($(this).data('study'));
+            var id = $this.data('id');
+            removeMapping.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_department', {"action": "deleteStudy"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.mapping_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeMapping.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeMapping.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.mapping_removed_error').removeClass('hide');
+            $('#removeMapping').modal('hide');
+        }
+    </script>
+{% endblock %}
