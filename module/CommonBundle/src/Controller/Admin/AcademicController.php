@@ -92,6 +92,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     );
                 }
 
+                if ('' != $formData['barcode']) {
+                    $this->getEntityManager()->persist(
+                        new Barcode(
+                            $registration->getAcademic(), $formData['barcode']
+                        )
+                    );
+                }
+
                 $academic->addUniversityStatus(
                     new UniversityStatus(
                         $academic,
@@ -184,6 +192,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             )
                         );
                     }
+                }
+
+                if ('' != $formData['barcode'] && $academic->getBarcode()) {
+                    $this->getEntityManager()->persist(
+                        new Barcode(
+                            $registration->getAcademic(), $formData['barcode']
+                        )
+                    );
                 }
 
                 if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {

@@ -67,7 +67,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $form = new BarcodeForm($registration->getAcademic(), $this->getEntityManager());
+        $form = new BarcodeForm(
+            $this->getEntityManager(), $registration->getAcademic()
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
