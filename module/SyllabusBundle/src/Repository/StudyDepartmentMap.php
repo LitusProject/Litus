@@ -4,7 +4,8 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
-    SyllabusBundle\Entity\Department as DepartmentEntity;
+    SyllabusBundle\Entity\Department as DepartmentEntity,
+    SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
  * StudyDepartmentMap
@@ -31,5 +32,29 @@ class StudyDepartmentMap extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    public function findOneByStudyDepartmentAndAcademicYear(StudyEntity $study, DepartmentEntity $department, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\StudyDepartmentMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.department', ':department'),
+                    $query->expr()->eq('m.academicYear', ':academicYear'),
+                    $query->expr()->eq('m.study', ':study')
+                )
+            )
+            ->setParameter('department', $department)
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('study', $study)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
     }
 }

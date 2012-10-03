@@ -35,7 +35,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             'CommonBundle\Entity\Users\People\Academic',
             $this->getParam('page'),
             array(
-                'canLogin' => true
+                'canLogin' => 'true'
             ),
             array(
                 'username' => 'ASC'
@@ -166,7 +166,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
                     ->setPhoneNumber($formData['phone_number'])
-                    ->setUniversityIdentification($formData['university_identification'])
+                    ->setUniversityIdentification(
+                        ('' == $formData['university_identification'] ? null : $formData['university_identification'])
+                    )
                     ->setRoles($roles);
 
                 if ('' != $formData['organization_status']) {

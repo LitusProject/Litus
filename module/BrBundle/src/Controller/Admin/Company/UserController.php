@@ -38,8 +38,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             'BrBundle\Entity\Users\People\Corporate',
             $this->getParam('page'),
             array(
-                'canLogin' => true,
-                'company' => $company->getId()
+                'canLogin' => 'true',
+                'company'  => $company->getId()
             ),
             array(
                 'username' => 'ASC'

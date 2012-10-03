@@ -208,7 +208,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function volunteerAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
             return new ViewModel(

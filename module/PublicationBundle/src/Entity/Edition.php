@@ -52,7 +52,7 @@ class Edition
      * @var CommonBundle\Entity\General\AcademicYear
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @ORM\JoinColumn(name="year", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      */
     private $academicYear;
 
