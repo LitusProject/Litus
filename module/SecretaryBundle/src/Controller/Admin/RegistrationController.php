@@ -147,18 +147,20 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $result = array();
         foreach($registrations as $registration) {
-            $item = (object) array();
-            $item->id = $registration->getId();
-            $item->universityIdentification = (
-                null !== $registration->getAcademic()->getUniversityIdentification()
-                    ? $registration->getAcademic()->getUniversityIdentification()
-                    : ''
-            );
-            $item->name = $registration->getAcademic()->getFullName();
-            $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
-            $item->payed = $registration->hasPayed();
-            $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
-            $result[] = $item;
+            if ($registration->getAcademic()->canLogin()) {
+                $item = (object) array();
+                $item->id = $registration->getId();
+                $item->universityIdentification = (
+                    null !== $registration->getAcademic()->getUniversityIdentification()
+                        ? $registration->getAcademic()->getUniversityIdentification()
+                        : ''
+                );
+                $item->name = $registration->getAcademic()->getFullName();
+                $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
+                $item->payed = $registration->hasPayed();
+                $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
+                $result[] = $item;
+            }
         }
 
         return new ViewModel(
