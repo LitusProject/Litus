@@ -23,7 +23,7 @@ use CommonBundle\Entity\General\AcademicYear,
  * This is the entity for a publication
  *
  * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Editions\PdfEdition")
- * @ORM\Table(name="publications.pdfeditions")
+ * @ORM\Table(name="publications.editions_pdf")
  */
 class Pdf extends \PublicationBundle\Entity\Edition
 {

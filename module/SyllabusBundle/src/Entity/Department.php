@@ -15,6 +15,7 @@
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -74,11 +75,23 @@ class Department
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \SyllabusBundle\Entity\Department
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return integer
      */
     public function getNbStudents(AcademicYear $academicYear)
     {
-        return 0;
+        return $this->_entityManager
+            ->getRepository('SyllabusBundle\Entity\Department')
+            ->findNbStudentsByDepartmentAndAcademicYear($this, $academicYear);
     }
 }

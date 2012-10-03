@@ -11,4 +11,20 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
+
+    {% if hasAccess('admin_department', 'studies') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Manage Studies</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the studies of this department!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_department', {'action': 'studies', 'id': department.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Manage Studies</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
 {% endblock %}
