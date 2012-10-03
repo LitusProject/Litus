@@ -223,35 +223,37 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function initAuthentication()
     {
-        if (
-            $this->hasAccess()->resourceAction(
-                $this->getParam('controller'), $this->getParam('action')
-            )
-        ) {
-            if ($this->getAuthentication()->isAuthenticated()) {
-                if (
-                    $this->getAuthenticationHandler()['controller'] == $this->getParam('controller')
-                        && $this->getAuthenticationHandler()['action'] == $this->getParam('action')
-                ) {
-                    $this->redirect()->toRoute(
-                        $this->getAuthenticationHandler()['redirect_route']
-                    );
-                }
-            }
-        } else {
-            if (!$this->getAuthentication()->isAuthenticated()) {
-                if (
-                    $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
-                        && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
-                ) {
-                    $this->redirect()->toRoute(
-                        $this->getAuthenticationHandler()['auth_route']
-                    );
+        if (null !== $this->getAuthenticationHandler())
+            if (
+                $this->hasAccess()->resourceAction(
+                    $this->getParam('controller'), $this->getParam('action')
+                )
+            ) {
+                if ($this->getAuthentication()->isAuthenticated()) {
+                    if (
+                        $this->getAuthenticationHandler()['controller'] == $this->getParam('controller')
+                            && $this->getAuthenticationHandler()['action'] == $this->getParam('action')
+                    ) {
+                        $this->redirect()->toRoute(
+                            $this->getAuthenticationHandler()['redirect_route']
+                        );
+                    }
                 }
             } else {
-                throw new Exception\HasNoAccessException(
-                    'You do not have sufficient permissions to access this resource'
-                );
+                if (!$this->getAuthentication()->isAuthenticated()) {
+                    if (
+                        $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
+                            && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
+                    ) {
+                        $this->redirect()->toRoute(
+                            $this->getAuthenticationHandler()['auth_route']
+                        );
+                    }
+                } else {
+                    throw new Exception\HasNoAccessException(
+                        'You do not have sufficient permissions to access this resource'
+                    );
+                }
             }
         }
     }
@@ -322,6 +324,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         throw new \RuntimeException(
             'Do not extend \CommonBundle\Component\Controller\ActionController directly'
         );
+
+        return null;
     }
 
     /**

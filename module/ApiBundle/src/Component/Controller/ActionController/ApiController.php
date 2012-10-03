@@ -73,6 +73,6 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
      */
     public function getAuthenticationHandler()
     {
-        return array();
+        return null;
     }
 }
