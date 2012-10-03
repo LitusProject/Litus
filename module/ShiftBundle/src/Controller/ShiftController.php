@@ -188,7 +188,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $shift->addResponsible(
             $this->getEntityManager(),
-            $this->getCurrentAcademicYear(),
             new Responsible(
                 $person,
                 $this->getCurrentAcademicYear()
@@ -266,7 +265,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $shift->addVolunteer(
             $this->getEntityManager(),
-            $this->getCurrentAcademicYear(),
             new Volunteer(
                 $person
             )
