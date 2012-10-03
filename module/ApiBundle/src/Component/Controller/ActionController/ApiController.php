@@ -32,9 +32,9 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         if ('development' != getenv('APPLICATION_ENV')) {
             if (!$this->getRequest()->isPost()) {
@@ -65,6 +65,12 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
         return $result;
     }
 
+    /**
+     * We need to be able to specify all required authentication information,
+     * which depends on the part of the site that is currently being used.
+     *
+     * @return array
+     */
     public function getAuthenticationHandler()
     {
         return array();
