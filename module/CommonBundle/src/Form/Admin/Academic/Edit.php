@@ -17,11 +17,13 @@ namespace CommonBundle\Form\Admin\Academic;
 use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\Barcode as BarcodeValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\Person,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
+    SecretaryBundle\Component\Validator\Barcode as BarcodeValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -34,14 +36,21 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
 class Edit extends \CommonBundle\Form\Admin\Person\Edit
 {
     /**
+     * @var \CommonBundle\Entity\Users\Person The person we're going to modify
+     */
+    private $_person = null;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Person $person, $name = null)
     {
         parent::__construct($entityManager, $person, $name);
+
+        $this->_person = $person;
 
         $collection = new Collection('organization');
         $collection->setLabel('Organization');
@@ -58,6 +67,11 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     OrganizationStatus::$possibleStatuses
                 )
             );
+        $collection->add($field);
+
+        $field = new Text('barcode');
+        $field->setLabel('Barcode')
+            ->setAttribute('class', 'disableEnter');
         $collection->add($field);
 
         $collection = new Collection('university');
@@ -82,6 +96,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $this->setData(
             array(
                 'organization_status' => $person->getOrganizationStatus($academicYear) ? $person->getOrganizationStatus($academicYear)->getStatus() : null,
+                'barcode' => $person->getBarcode() ? $person->getBarcode()->getBarcode() : '',
                 'university_identification' => $person->getUniversityIdentification(),
                 'university_status' => $person->getUniversityStatus($academicYear) ? $person->getUniversityStatus($academicYear)->getStatus() : null,
             )
@@ -93,6 +108,28 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         if ($this->_inputFilter == null) {
             $inputFilter = parent::getInputFilter();
             $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'barcode',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'barcode',
+                                'options' => array(
+                                    'adapter'     => 'Ean12',
+                                    'useChecksum' => false,
+                                ),
+                            ),
+                            new BarcodeValidator($this->_entityManager, $this->_person),
+                        ),
+                    )
+                )
+            );
 
             $inputFilter->add(
                 $factory->createInput(
