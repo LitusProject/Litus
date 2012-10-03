@@ -223,7 +223,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function initAuthentication()
     {
-        if (null !== $this->getAuthenticationHandler())
+        if (null !== $this->getAuthenticationHandler()) {
             if (
                 $this->hasAccess()->resourceAction(
                     $this->getParam('controller'), $this->getParam('action')
