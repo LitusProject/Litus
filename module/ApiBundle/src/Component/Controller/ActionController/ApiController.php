@@ -64,4 +64,9 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
 
         return $result;
     }
+
+    public function getAuthenticationHandler()
+    {
+        return array();
+    }
 }
