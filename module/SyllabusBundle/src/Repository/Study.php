@@ -4,6 +4,7 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
@@ -14,7 +15,6 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Study extends EntityRepository
 {
-
     public function findAll()
     {
         $query = $this->_em->createQueryBuilder();
@@ -136,5 +136,29 @@ class Study extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    public function findAllByTitleAndAcademicYearTypeAhead($title, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
+            ->where(
+                $query->expr()->eq('m.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+
+        $result = array();
+
+        $title = strtolower($title);
+
+        foreach($resultSet as $mapping) {
+            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), $title) !== false)
+                $result[] = $mapping->getStudy();
+        }
+
+        return $result;
     }
 }

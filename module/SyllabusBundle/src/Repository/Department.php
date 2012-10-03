@@ -4,6 +4,7 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
+    SyllabusBundle\Entity\Department as DepartmentEntity,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
@@ -23,5 +24,34 @@ class Department extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    public function findNbStudentsByDepartmentAndAcademicYear(DepartmentEntity $department, AcademicYear $academicYear)
+    {
+        $studies = $this->_em
+            ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
+            ->findAllByDepartmentAndAcademicYear($department, $academicYear);
+
+        $ids = array(0);
+        foreach($studies as $study)
+            $ids[] = $study->getStudy()->getId();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select($query->expr()->count('e'))
+            ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('e.study', $ids),
+                    $query->expr()->eq('e.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getScalarResult();
+
+        if (isset($resultSet[0][1]))
+            return $resultSet[0][1];
+
+        return 0;
     }
 }
