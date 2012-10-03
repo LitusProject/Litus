@@ -35,7 +35,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             'CommonBundle\Entity\Users\People\Academic',
             $this->getParam('page'),
             array(
-                'canLogin' => true
+                'canLogin' => 'true'
             ),
             array(
                 'username' => 'ASC'
