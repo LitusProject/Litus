@@ -194,12 +194,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
 
-                if ('' != $formData['barcode'] && $academic->getBarcode()) {
-                    $this->getEntityManager()->persist(
-                        new Barcode(
-                            $registration->getAcademic(), $formData['barcode']
-                        )
-                    );
+                if ('' != $formData['barcode']) {
+                    if (isset($academic->getBarcode())) {
+                        if ($academic->getBarcode()->getBarcode() != $formData['barcode']) {
+                            $this->getEntityManager()->remove($academic->getBarcode()->getBarcode());
+                            $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
+                        }
+                    } else {
+                        $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
+                    }
                 }
 
                 if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
