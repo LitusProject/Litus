@@ -67,14 +67,24 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $form = new BarcodeForm($registration->getAcademic(), $this->getEntityManager());
+        $form = new BarcodeForm(
+            $this->getEntityManager(), $registration->getAcademic()
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $this->getEntityManager()->persist(new Barcode($registration->getAcademic(), $formData['barcode']));
+                if (isset($registration->getAcademic()->getBarcode())) {
+                    if ($registration->getAcademic()->getBarcode()->getBarcode() != $formData['barcode']) {
+                        $this->getEntityManager()->remove($registration->getAcademic()->getBarcode()->getBarcode());
+                        $this->getEntityManager()->persist(new Barcode($registration->getAcademic(), $formData['barcode']));
+                    }
+                } else {
+                    $this->getEntityManager()->persist(new Barcode($registration->getAcademic(), $formData['barcode']));
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(

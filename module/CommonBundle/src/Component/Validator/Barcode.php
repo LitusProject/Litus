@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SecretaryBundle\Component\Validator;
+namespace CommonBundle\Component\Validator;
 
 use CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityManager;
@@ -47,7 +47,7 @@ class Barcode extends \Zend\Validator\AbstractValidator
      * @param \CommonBundle\Entity\Users\Person $person
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, Person $person, $opts = null)
+    public function __construct(EntityManager $entityManager, Person $person = null, $opts = null)
     {
         parent::__construct($opts);
 
@@ -72,6 +72,9 @@ class Barcode extends \Zend\Validator\AbstractValidator
             $this->error(self::NOT_VALID);
             return false;
         }
+
+        if (null === $this->_person)
+            return true;
 
         $barcode = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Users\Barcode')

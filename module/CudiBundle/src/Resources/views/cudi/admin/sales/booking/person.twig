@@ -23,6 +23,7 @@
     	            <th width="120px">Date</th>
     	            <th width="120px">Expires On</th>
     	            <th width="80px">Status</th>
+                    <th width="55px">Price</th>
     	            <th width="70px">Actions</th>
     	        </tr>
 
@@ -33,6 +34,7 @@
     	                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
     	                <td>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</td>
     	                <td class="status">{{ booking.getStatus()|capitalize }}</td>
+                        <td>&euro; {{ (booking.getArticle().getSellPrice() * booking.getNumber()/100)|number_format(2) }}</td>
     	                <td class="actions">
     	                    {% if hasAccess('admin_sales_booking', 'edit') %}
     	                        <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
