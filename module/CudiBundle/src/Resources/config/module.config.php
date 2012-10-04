@@ -148,7 +148,7 @@ return array(
             'admin_sales_booking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/page/:page][:type[/:field/:string]]][/]',
+                    'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/page/:page][/:type[/:field/:string]]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
