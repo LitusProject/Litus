@@ -53,6 +53,14 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('SyllabusBundle\Entity\Study')
                         ->findOneById($studyId);
 
+                    $children = $study->getAllChildren();
+
+                    foreach ($children as $child) {
+                        $enrollments = array_merge($enrollments, $this->getEntityManager()
+                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                            ->findAllByStudyAndAcademicYear($child, $currentYear));
+                    }
+
                     $enrollments = array_merge($enrollments, $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                         ->findAllByStudyAndAcademicYear($study, $currentYear));

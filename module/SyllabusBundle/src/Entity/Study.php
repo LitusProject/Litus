@@ -154,4 +154,20 @@ class Study
     {
         return $this->children;
     }
+
+    public function getAllChildren()
+    {
+        if ($this->getChildren())
+            $directChildren = $this->getChildren()->toArray();
+        else
+            $directChildren = array();
+
+        $result = array();
+        foreach ($directChildren as $child) {
+            $result = array_merge($result, $child->getAllChildren());
+        }
+
+        $result = array_merge($result, $directChildren);
+        return $result;
+    }
 }
