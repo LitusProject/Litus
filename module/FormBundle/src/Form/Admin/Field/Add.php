@@ -139,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $factory->createInput(
                     array(
                         'name'     => 'order',
-                        'required' => false,
+                        'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),

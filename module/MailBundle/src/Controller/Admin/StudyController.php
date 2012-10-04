@@ -66,15 +66,25 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_mail_name');
 
+                $body = $formData['message'];
+
+                if ($formData['test']) {
+                    $body = $body . '\n\n==\n\n This mail would have been sent to:\n';
+                    foreach($enrollments as $enrollment)
+                        $body = $body . $enrollment->getAcademic()->getEmail() . '\n';
+                }
+
                 $mail = new Message();
-                $mail->setBody($formData['message'])
+                $mail->setBody($body)
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 
                 $mail->addTo($mailAddress, $mailName);
 
-                foreach($enrollments as $enrollment)
-                    $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+                if (!$formData['test']) {
+                    foreach($enrollments as $enrollment)
+                        $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+                }
 
                 if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);

@@ -14,7 +14,8 @@
 
 namespace MailBundle\Form\Admin\Study;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
     Zend\InputFilter\InputFilter,
@@ -37,7 +38,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $studyNames = array();
         foreach($studies as $study) {
-            $studyNames[$study->getId()] = $study->getFullTitle();
+            $studyNames[$study->getId()] = $study->getFullTitle() . ' - Phase ' . $study->getPhase();
         }
 
         $field = new Select('studies');
@@ -45,6 +46,10 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('multiple', true)
             ->setAttribute('options', $studyNames)
             ->setRequired();
+        $this->add($field);
+
+        $field = new Checkbox('test');
+        $field->setLabel('Test mail');
         $this->add($field);
 
         $field = new Text('subject');
