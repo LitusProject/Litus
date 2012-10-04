@@ -92,6 +92,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     );
                 }
 
+                if ('' != $formData['barcode']) {
+                    $this->getEntityManager()->persist(
+                        new Barcode(
+                            $registration->getAcademic(), $formData['barcode']
+                        )
+                    );
+                }
+
                 $academic->addUniversityStatus(
                     new UniversityStatus(
                         $academic,
@@ -183,6 +191,17 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                                 $this->getCurrentAcademicYear()
                             )
                         );
+                    }
+                }
+
+                if ('' != $formData['barcode']) {
+                    if (isset($academic->getBarcode())) {
+                        if ($academic->getBarcode()->getBarcode() != $formData['barcode']) {
+                            $this->getEntityManager()->remove($academic->getBarcode()->getBarcode());
+                            $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
+                        }
+                    } else {
+                        $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
                     }
                 }
 
@@ -304,14 +323,18 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         $result = array();
         foreach($academics as $academic) {
-            $item = (object) array();
-            $item->id = $academic->getId();
-            $item->username = $academic->getUsername();
-            $item->universityIdentification = $academic->getUniversityIdentification();
-            $item->fullName = $academic->getFullName();
-            $item->email = $academic->getEmail();
+            if ($academic->canLogin()) {
+                $item = (object) array();
+                $item->id = $academic->getId();
+                $item->username = $academic->getUsername();
+                $item->universityIdentification = (
+                    null !== $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : ''
+                );
+                $item->fullName = $academic->getFullName();
+                $item->email = $academic->getEmail();
 
-            $result[] = $item;
+                $result[] = $item;
+            }
         }
 
         return new ViewModel(

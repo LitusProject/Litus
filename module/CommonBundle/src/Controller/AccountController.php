@@ -130,14 +130,16 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
+
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
-                    ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $formData['university_email'])
+                    ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $universityEmail)
                     ->setPhoneNumber($formData['phone_number'])
                     ->setSex($formData['sex'])
                     ->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
                     ->setPersonalEmail($formData['personal_email'])
-                    ->setUniversityEmail($formData['university_email']);
+                    ->setUniversityEmail($universityEmail);
 
                 if ($formData['primary_address_address_city'] != 'other') {
                     $primaryCity = $this->getEntityManager()

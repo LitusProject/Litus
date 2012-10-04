@@ -110,7 +110,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->findOneByName('student')
                     );
 
-                    $universityEmail = $formData['university_email'] . '@student.kuleuven.be';
+                    $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
                     $academic = new Academic(
                         $this->getParam('identification'),
@@ -367,7 +367,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
             $form->setData($formData);
 
-            $universityEmail = $formData['university_email'] . '@student.kuleuven.be';
+            $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
             if ($form->isValid()) {
                 $academic->setFirstName($formData['first_name'])

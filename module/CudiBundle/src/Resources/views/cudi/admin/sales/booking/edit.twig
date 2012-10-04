@@ -28,6 +28,7 @@
         <p>Date: <b>{{ booking.getBookDate().format('d/m/Y H:i') }}</b></p>
         <p>Expires: <b>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</b></p>
         <p>Status: <b>{{ booking.getStatus()|capitalize }}</b></p>
+        <p>Price: <b>&euro; {{ (booking.getArticle().getSellPrice() * booking.getNumber()/100)|number_format(2) }}</b></p>
 
         <h1>Other bookings of {{ booking.getPerson().getFullName() }}</h1>
         <table class="manage">
@@ -36,6 +37,7 @@
                 <th width="30px">&nbsp;</th>
                 <th width="100px">Date</th>
                 <th width="55px">Status</th>
+                <th width="55px">Price</th>
                 <th width="70px">Actions</th>
             </tr>
 
@@ -45,6 +47,7 @@
                     <td>&times;{{ booking.getNumber() }}</td>
                     <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
                     <td class="status">{{ booking.getStatus()|capitalize }}</td>
+                        <td>&euro; {{ (booking.getArticle().getSellPrice() * booking.getNumber()/100)|number_format(2) }}</td>
                     <td class="actions">
                         {% if hasAccess('admin_sales_booking', 'edit') %}
                             <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
