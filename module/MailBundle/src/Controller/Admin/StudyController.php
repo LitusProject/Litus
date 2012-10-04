@@ -72,6 +72,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     $body = $body . '\n\n==\n\n This mail would have been sent to:\n';
                     foreach($enrollments as $enrollment)
                         $body = $body . $enrollment->getAcademic()->getEmail() . '\n';
+
+                    $mailAddress = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_administrator_mail');
+
+                    $mailName = 'IT Administrator';
                 }
 
                 $mail = new Message();
