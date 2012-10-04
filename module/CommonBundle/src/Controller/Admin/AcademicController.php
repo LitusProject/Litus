@@ -197,7 +197,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 if ('' != $formData['barcode']) {
                     if (null !== $academic->getBarcode()) {
                         if ($academic->getBarcode()->getBarcode() != $formData['barcode']) {
-                            $this->getEntityManager()->remove($academic->getBarcode()->getBarcode());
+                            $this->getEntityManager()->remove($academic->getBarcode());
                             $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
                         }
                     } else {
