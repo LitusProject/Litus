@@ -132,24 +132,7 @@ class Booking extends EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
-            ->innerJoin('b.person', 'p', Join::WITH,
-                $query->expr()->orX(
-                    $query->expr()->like(
-                        $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
-                            $query->expr()->lower('p.lastName')
-                        ),
-                        ':name'
-                    ),
-                    $query->expr()->like(
-                        $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
-                            $query->expr()->lower('p.firstName')
-                        ),
-                        ':name'
-                    )
-                )
-            )
+            ->innerJoin('b.person', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -171,7 +154,23 @@ class Booking extends EntityRepository
                         )
                     ),
                     $query->expr()->gt('b.bookDate', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate'),
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
+                            ),
+                            ':name'
+                        )
+                    )
                 )
             )
             ->setParameter('name', '%'.strtolower($person).'%')
@@ -194,9 +193,7 @@ class Booking extends EntityRepository
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->innerJoin('b.article', 'a')
-            ->innerJoin('a.mainArticle', 'm', Join::WITH,
-                $query->expr()->like($query->expr()->lower('m.title'), ':article')
-            )
+            ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -218,7 +215,8 @@ class Booking extends EntityRepository
                         )
                     ),
                     $query->expr()->gt('b.bookDate', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate'),
+                    $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
             ->setParameter('article', '%'.strtolower($article).'%')
