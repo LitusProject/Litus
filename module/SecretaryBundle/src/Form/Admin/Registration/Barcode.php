@@ -15,7 +15,7 @@
 namespace SecretaryBundle\Form\Admin\Registration;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\Barcode as BarcodeValidator,
+    CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
     CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
