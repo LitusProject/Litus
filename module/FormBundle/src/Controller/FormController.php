@@ -45,6 +45,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             !$formSpecification->isActive())
         {
             $message = 'This form is currently closed.';
+
+            return new ViewModel(
+                array(
+                    'message'       => $message,
+                    'specification' => $formSpecification,
+                )
+            );
         }
 
         $entriesCount = count($this->getEntityManager()
@@ -53,19 +60,41 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
             $message = 'This form has reached the maximum number of submissions.';
+
+            return new ViewModel(
+                array(
+                    'message'       => $message,
+                    'specification' => $formSpecification,
+                )
+            );
         }
 
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null) {
             $message = 'Please log in to view this form.';
+
+            return new ViewModel(
+                array(
+                    'message'       => $message,
+                    'specification' => $formSpecification,
+                )
+            );
         } else {
             $entriesCount = count($this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Nodes\Entry')
                 ->findAllByFormAndPerson($formSpecification, $person));
 
-            if (!$formSpecification->isMultiple() && $entriesCount > 0)
+            if (!$formSpecification->isMultiple() && $entriesCount > 0) {
                 $message = 'You can\'t fill this form more than once.';
+
+                return new ViewModel(
+                    array(
+                        'message'       => $message,
+                        'specification' => $formSpecification,
+                    )
+                );
+            }
         }
 
         if ($message) {
