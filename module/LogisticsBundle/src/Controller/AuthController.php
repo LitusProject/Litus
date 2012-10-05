@@ -64,21 +64,47 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
 
     public function loginAction()
     {
-        $isAuthenticated = $this->getAuthentication()->isAuthenticated();
+        $form = new LoginForm();
 
-        if ($isAuthenticated) {
-            $this->redirect()->toRoute('logistics_index');
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            return new ViewModel();
+            if ($form->isValid()) {
+                $this->getAuthentication()->forget();
+
+                $this->getAuthentication()->authenticate(
+                    $formData['username'], $formData['password'], $formData['remember_me']
+                );
+
+                if ($this->getAuthentication()->isAuthenticated()) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'You have been successfully logged in!'
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'ERROR',
+                            'You could not be logged in!'
+                        )
+                    );
+                }
+            }
         }
 
-        return new ViewModel(
+        $this->redirect()->toRoute(
+            'logistics_index',
             array(
-                'isAuthenticated' => $isAuthenticated,
-                'form' => new LoginForm(),
-                'shibbolethUrl' => $this->_getShibbolethUrl()
+                'language' => $this->getLanguage()->getAbbrev(),
             )
         );
+
+        return new ViewModel();
     }
 
     public function logoutAction()

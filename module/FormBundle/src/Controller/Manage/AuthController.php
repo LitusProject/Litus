@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Controller;
+namespace FormBundle\Controller\Manage;
 
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
@@ -27,58 +27,49 @@ use CommonBundle\Component\Authentication\Authentication,
  */
 class AuthController extends \FormBundle\Component\Controller\FormController
 {
-    public function authenticateAction()
+    public function loginAction()
     {
-        $this->initAjax();
+        $form = new LoginForm();
 
-        $authResult = array(
-            'result' => false,
-            'reason' => 'NOT_POST'
-        );
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-        if ($this->getRequest()->isPost()) {
-            parse_str(
-                $this->getRequest()->getPost()->get('formData'), $formData
-            );
+            if ($form->isValid()) {
+                $this->getAuthentication()->forget();
 
-            $this->getAuthentication()->authenticate(
-                $formData['username'], $formData['password'], $formData['remember_me']
-            );
-
-            if ($this->getAuthentication()->isAuthenticated()) {
-                $authResult = array(
-                    'result' => true,
-                    'reason' => ''
+                $this->getAuthentication()->authenticate(
+                    $formData['username'], $formData['password'], $formData['remember_me']
                 );
-            } else {
-                $authResult['reason'] = 'USERNAME_PASSWORD';
+
+                if ($this->getAuthentication()->isAuthenticated()) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'You have been successfully logged in!'
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'ERROR',
+                            'You could not be logged in!'
+                        )
+                    );
+                }
             }
         }
 
-        return new ViewModel(
+        $this->redirect()->toRoute(
+            'form_manage',
             array(
-                'authResult' => $authResult,
+                'language' => $this->getLanguage()->getAbbrev(),
             )
         );
-    }
 
-    public function loginAction()
-    {
-        $isAuthenticated = $this->getAuthentication()->isAuthenticated();
-
-        if ($isAuthenticated) {
-            $this->redirect()->toRoute('form_manage');
-
-            return new ViewModel();
-        }
-
-        return new ViewModel(
-            array(
-                'isAuthenticated' => $isAuthenticated,
-                'form' => new LoginForm(),
-                'shibbolethUrl' => $this->_getShibbolethUrl()
-            )
-        );
+        return new ViewModel();
     }
 
     public function logoutAction()
