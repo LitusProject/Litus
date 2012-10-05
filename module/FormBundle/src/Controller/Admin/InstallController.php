@@ -47,7 +47,25 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'index', 'view', 'edit', 'delete',
                     ),
                     'form_manage_auth' => array(
-                        'login', 'logout',
+                        'login', 'logout', 'shibboleth',
+                    ),
+                ),
+            )
+        );
+
+        $this->installRoles(
+            array(
+                'guest' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'form_manage' => array(
+                            'index'
+                        ),
+                        'form_manage_auth' => array(
+                            'login', 'logout', 'shibboleth',
+                        ),
                     ),
                 ),
             )
