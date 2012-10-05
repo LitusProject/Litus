@@ -78,6 +78,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
 
-        return $shibbolethUrl . '?source=logistics';
+        return $shibbolethUrl . '?source=form';
     }
 }
