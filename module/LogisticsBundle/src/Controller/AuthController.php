@@ -25,70 +25,125 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class AuthController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
-    public function loginAction()
+    public function authenticateAction()
     {
-        $form = new LoginForm();
+        $this->initAjax();
 
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+        $authResult = array(
+            'result' => false,
+            'reason' => 'NOT_POST'
+        );
 
-            if ($form->isValid()) {
-                $this->getAuthentication()->forget();
+        if ($this->getRequest()->isPost()) {
+            parse_str(
+                $this->getRequest()->getPost()->get('formData'), $formData
+            );
 
-                $this->getAuthentication()->authenticate(
-                    $formData['username'], $formData['password'], $formData['remember_me']
+            $this->getAuthentication()->authenticate(
+                $formData['username'], $formData['password'], $formData['remember_me']
+            );
+
+            if ($this->getAuthentication()->isAuthenticated()) {
+                $authResult = array(
+                    'result' => true,
+                    'reason' => ''
                 );
-
-                if ($this->getAuthentication()->isAuthenticated()) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'You are successfully logged in!'
-                        )
-                    );
-                } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'ERROR',
-                            'You cannot be logged in!'
-                        )
-                    );
-                }
+            } else {
+                $authResult['reason'] = 'USERNAME_PASSWORD';
             }
         }
 
-        $this->redirect()->toRoute(
-            'logistics_index',
+        return new ViewModel(
             array(
-                'language' => $this->getLanguage()->getAbbrev(),
+                'authResult' => $authResult,
             )
         );
+    }
 
-        return new ViewModel();
+    public function loginAction()
+    {
+        $isAuthenticated = $this->getAuthentication()->isAuthenticated();
+
+        if ($isAuthenticated) {
+            $this->redirect()->toRoute('logistics_index');
+
+            return new ViewModel();
+        }
+
+        return new ViewModel(
+            array(
+                'isAuthenticated' => $isAuthenticated,
+                'form' => new LoginForm(),
+                'shibbolethUrl' => $this->_getShibbolethUrl()
+            )
+        );
     }
 
     public function logoutAction()
     {
-        $this->getAuthentication()->forget();
+        $session = $this->getAuthentication()->forget();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'You are successfully logged out!'
-            )
-        );
+        if (null !== $session && $session->isShibboleth()) {
+            $shibbolethLogoutUrl = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_logout_url');
 
-        $this->redirect()->toRoute(
-            'logistics_index',
-            array(
-                'language' => $this->getLanguage()->getAbbrev(),
-            )
-        );
+            $this->redirect()->toUrl($shibbolethLogoutUrl);
+        } else {
+            $this->redirect()->toRoute(
+                'logistics_auth'
+            );
+        }
 
         return new ViewModel();
+    }
+
+    public function shibbolethAction()
+    {
+        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+            $authentication = new Authentication(
+                new ShibbolethAdapter(
+                    $this->getEntityManager(),
+                    'CommonBundle\Entity\Users\People\Academic',
+                    'universityIdentification'
+                ),
+                $this->getServiceLocator()->get('authentication_doctrineservice')
+            );
+
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->findLastByUniversityIdentification($this->getParam('identification'));
+
+            if (null !== $code) {
+                if ($code->validate($this->getParam('hash'))) {
+                    $this->getEntityManager()->remove($code);
+                    $this->getEntityManager()->flush();
+
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true, true
+                    );
+
+                    if ($authentication->isAuthenticated()) {
+                        $this->redirect()->toRoute(
+                            'logistics_index'
+                        );
+                    }
+                }
+            }
+        }
+
+        return new ViewModel();
+    }
+
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+
+        return $shibbolethUrl . '?source=logistics';
     }
 }
