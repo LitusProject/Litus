@@ -40,4 +40,6 @@ return array(
     'General' => 'Algemeen',
 
     'The textbooks have been booked!' => 'De boeken zijn gereserveerd!',
+
+    'New bookings have been assigned to you, and you can go and collect them.' => 'Er zij nieuwe reservaties aan je toegewezen, die je mag komen afhalen.'
 );
