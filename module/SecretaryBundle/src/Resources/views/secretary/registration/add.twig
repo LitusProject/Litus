@@ -73,7 +73,7 @@
 
             $('#register').click(function (e) {
                 e.preventDefault();
-                console.log($('form#register_form'));
+
                 if (!$('#become_member').is(':checked')) {
                     $('#modalMemberWarning').modal();
                     $('#modalMemberWarning .confirm').one('click', function () {
