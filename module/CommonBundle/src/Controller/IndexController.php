@@ -35,6 +35,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
                 ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
 
+            foreach ($bookings as $key => $booking) {
+                if ('assigned' != $booking->getStatus())
+                    unset($bookings[$key]);
+            }
+
             if (0 == count($bookings))
                 $bookings = null;
         }
