@@ -41,6 +41,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
         $result->unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
+        $result->shibbolethUrl = $this->_getShibbolethUrl();
 
         $e->setResult($result);
         return $result;
@@ -61,5 +62,22 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
             'auth_route'     => 'logistics_index',
             'redirect_route' => 'logistics_index'
         );
+    }
+
+    /**
+     * Create the full Shibboleth URL.
+     *
+     * @return string
+     */
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+
+        return $shibbolethUrl . '?source=logistics';
     }
 }
