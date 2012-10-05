@@ -17,7 +17,7 @@ namespace CommonBundle\Form\Admin\Academic;
 use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\Barcode as BarcodeValidator,
+    CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\Person,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,

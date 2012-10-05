@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Validator;
+namespace CommonBundle\Component\Validator\Person;
 
 use CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityManager;
