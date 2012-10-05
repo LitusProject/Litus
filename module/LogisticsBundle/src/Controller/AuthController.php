@@ -27,41 +27,6 @@ use CommonBundle\Component\Authentication\Authentication,
  */
 class AuthController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
-    public function authenticateAction()
-    {
-        $this->initAjax();
-
-        $authResult = array(
-            'result' => false,
-            'reason' => 'NOT_POST'
-        );
-
-        if ($this->getRequest()->isPost()) {
-            parse_str(
-                $this->getRequest()->getPost()->get('formData'), $formData
-            );
-
-            $this->getAuthentication()->authenticate(
-                $formData['username'], $formData['password'], $formData['remember_me']
-            );
-
-            if ($this->getAuthentication()->isAuthenticated()) {
-                $authResult = array(
-                    'result' => true,
-                    'reason' => ''
-                );
-            } else {
-                $authResult['reason'] = 'USERNAME_PASSWORD';
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'authResult' => $authResult,
-            )
-        );
-    }
-
     public function loginAction()
     {
         $form = new LoginForm();
