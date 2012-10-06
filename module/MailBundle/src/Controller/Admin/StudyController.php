@@ -78,14 +78,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findAllByStudyAndAcademicYear($study, $currentYear));
                     }
 
-                    $mailAddress = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('system_mail_address');
-
-                    $mailName = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('system_mail_name');
-
                     $body = $formData['message'];
 
                     $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
@@ -97,12 +89,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                         foreach($bccs as $bcc)
                             $body = $body . $bcc . '\n';
-
-                        $mailAddress = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('system_administrator_mail');
-
-                        $mailName = 'IT Administrator';
                     }
 
                     $part = new Part($body);
@@ -125,10 +111,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $mail = new Message();
                     $mail->setBody($message)
-                        ->setFrom($mailAddress, $mailName)
+                        ->setFrom($formData['from'])
                         ->setSubject($formData['subject']);
 
-                    $mail->addTo($mailAddress, $mailName);
+                    $mail->addTo($formData['from']);
 
                     if (!$formData['test']) {
                         foreach($enrollments as $enrollment)
