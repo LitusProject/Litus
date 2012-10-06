@@ -43,7 +43,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
                 );
             }
 
-            if ('' != $this->getRequest()->post()->get('key', '')) {
+            if ('' != $this->getRequest()->getPost('key', '')) {
                 throw new NoKeyException(
                     'No API key was provided with the request'
                 );
