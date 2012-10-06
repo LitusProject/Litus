@@ -118,6 +118,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     foreach ($upload->getFileInfo() as $file) {
                         $part = new Part(fopen($file['tmp_name'], 'r'));
                         $part->type = $file['type'];
+                        $part->encoding = Mime::ENCODING_BASE64;
                         $message->addPart($part);
                     }
 
