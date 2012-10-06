@@ -56,7 +56,6 @@ class Printer {
             return;
 
         $data = 'PRINT ' . $printers[$printer] . ' ' . $type . ' ' . $data;
-        $now = new \DateTime();
 
         $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
         socket_connect(

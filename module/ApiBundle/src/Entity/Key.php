@@ -128,7 +128,7 @@ class Key
      * @param string $ip The remote IP
      * @return boolean
      */
-    public function vaidate($ip)
+    public function validate($ip)
     {
         $now = new DateTime();
         if ($this->expirationTime < $now) {
