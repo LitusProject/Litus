@@ -61,6 +61,12 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('HTML Mail');
         $this->add($field);
 
+        $field = new Text('from');
+        $field->setLabel('From')
+            ->setAttribute('style', 'width: 400px;')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Text('bcc');
         $field->setLabel('Additional BCC')
             ->setAttribute('style', 'width: 400px;');
@@ -125,6 +131,23 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     array(
                         'name'     => 'studies',
                         'required' => true,
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'from',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'emailAddress',
+                            )
+                        ),
                     )
                 )
             );
