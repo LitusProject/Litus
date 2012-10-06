@@ -52,6 +52,10 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Test mail');
         $this->add($field);
 
+        $field = new Checkbox('html');
+        $field->setLabel('HTML Mail');
+        $this->add($field);
+
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttribute('style', 'width: 400px;')
