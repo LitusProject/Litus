@@ -95,7 +95,7 @@
                 );
                 $(value.events).each(function () {
                     day.append(
-                        $('<p>').append(
+                        $('<p>', {'class': 'calendarItem'}).append(
                             $('<i>', {'class': 'icon-time'}), ' ',
                             $('<a>', {'href': this.url, 'rel': 'popover', 'data-original-title': this.title, 'data-content': this.content}).append(
                                 this.startDate, '&mdash;', this.title

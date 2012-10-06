@@ -5,6 +5,7 @@ namespace CudiBundle\Repository\Sales;
 use CommonBundle\Entity\Users\Person,
     Exception,
     CudiBundle\Component\Mail\Booking as BookingMail,
+    CudiBundle\Entity\Log,
     CudiBundle\Entity\Sales\Article as ArticleEntity,
     CudiBundle\Entity\Sales\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
@@ -132,24 +133,7 @@ class Booking extends EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
-            ->innerJoin('b.person', 'p', Join::WITH,
-                $query->expr()->orX(
-                    $query->expr()->like(
-                        $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
-                            $query->expr()->lower('p.lastName')
-                        ),
-                        ':name'
-                    ),
-                    $query->expr()->like(
-                        $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
-                            $query->expr()->lower('p.firstName')
-                        ),
-                        ':name'
-                    )
-                )
-            )
+            ->innerJoin('b.person', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -171,7 +155,23 @@ class Booking extends EntityRepository
                         )
                     ),
                     $query->expr()->gt('b.bookDate', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate'),
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
+                            ),
+                            ':name'
+                        )
+                    )
                 )
             )
             ->setParameter('name', '%'.strtolower($person).'%')
@@ -194,9 +194,7 @@ class Booking extends EntityRepository
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->innerJoin('b.article', 'a')
-            ->innerJoin('a.mainArticle', 'm', Join::WITH,
-                $query->expr()->like($query->expr()->lower('m.title'), ':article')
-            )
+            ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -218,7 +216,8 @@ class Booking extends EntityRepository
                         )
                     ),
                     $query->expr()->gt('b.bookDate', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate'),
+                    $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
             ->setParameter('article', '%'.strtolower($article).'%')
@@ -564,7 +563,7 @@ class Booking extends EntityRepository
             return $resultSet[0];
     }
 
-    public function assignAll(TransportInterface $mailTransport)
+    public function assignAll(Person $person, TransportInterface $mailTransport)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -577,11 +576,13 @@ class Booking extends EntityRepository
             ->findAllBookedArticles();
 
         $counter = 0;
+        $idsAssigned = array();
 
         $persons = array();
 
         foreach($articles as $article) {
             $available = $article->getStockValue() - $period->getNbAssigned($article);
+
             if ($available <= 0)
                 continue;
 
@@ -590,6 +591,9 @@ class Booking extends EntityRepository
                 ->findAllBookedByArticleAndPeriod($article, $period);
 
             foreach($bookings as $booking) {
+                if ($available <= 0)
+                    break;
+
                 $counter++;
 
                 if ($available < $booking->getNumber()) {
@@ -606,6 +610,8 @@ class Booking extends EntityRepository
                 }
 
                 $booking->setStatus('assigned', $this->getEntityManager());
+                $idsAssigned[] = $booking->getId();
+                $available -= $booking->getNumber();
 
                 if (!isset($persons[$booking->getPerson()->getId()]))
                     $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
@@ -613,6 +619,10 @@ class Booking extends EntityRepository
                 $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
             }
         }
+
+        if ($counter > 0)
+            $this->getEntityManager()->persist(new Log($person, 'booking_assignments', serialize($idsAssigned)));
+
         $this->getEntityManager()->flush();
 
         foreach($persons as $person)
@@ -639,5 +649,25 @@ class Booking extends EntityRepository
         foreach($bookings as $booking) {
                $booking->setStatus('expired', $this->getEntityManager());
         }
+    }
+
+    public function findLastAssignedByArticle(ArticleEntity $article)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.article', ':article'),
+                    $query->expr()->eq('b.status', ':status')
+                )
+            )
+            ->setParameter('status', 'assigned')
+            ->setParameter('article', $article->getId())
+            ->orderBy('b.assignmentDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+            
+        return $resultSet;
     }
 }

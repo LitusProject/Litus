@@ -15,6 +15,7 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\Users\Barcode,
     CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
@@ -35,7 +36,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             'CommonBundle\Entity\Users\People\Academic',
             $this->getParam('page'),
             array(
-                'canLogin' => true
+                'canLogin' => 'true'
             ),
             array(
                 'username' => 'ASC'
@@ -88,6 +89,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             $academic,
                             $formData['organization_status'],
                             $this->getCurrentAcademicYear()
+                        )
+                    );
+                }
+
+                if ('' != $formData['barcode']) {
+                    $this->getEntityManager()->persist(
+                        new Barcode(
+                            $registration->getAcademic(), $formData['barcode']
                         )
                     );
                 }
@@ -166,7 +175,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
                     ->setPhoneNumber($formData['phone_number'])
-                    ->setUniversityIdentification($formData['university_identification'])
+                    ->setUniversityIdentification(
+                        ('' == $formData['university_identification'] ? null : $formData['university_identification'])
+                    )
                     ->setRoles($roles);
 
                 if ('' != $formData['organization_status']) {
@@ -181,6 +192,17 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                                 $this->getCurrentAcademicYear()
                             )
                         );
+                    }
+                }
+
+                if ('' != $formData['barcode']) {
+                    if (null !== $academic->getBarcode()) {
+                        if ($academic->getBarcode()->getBarcode() != $formData['barcode']) {
+                            $this->getEntityManager()->remove($academic->getBarcode());
+                            $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
+                        }
+                    } else {
+                        $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
                     }
                 }
 
@@ -302,14 +324,18 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         $result = array();
         foreach($academics as $academic) {
-            $item = (object) array();
-            $item->id = $academic->getId();
-            $item->username = $academic->getUsername();
-            $item->universityIdentification = $academic->getUniversityIdentification();
-            $item->fullName = $academic->getFullName();
-            $item->email = $academic->getEmail();
+            if ($academic->canLogin()) {
+                $item = (object) array();
+                $item->id = $academic->getId();
+                $item->username = $academic->getUsername();
+                $item->universityIdentification = (
+                    null !== $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : ''
+                );
+                $item->fullName = $academic->getFullName();
+                $item->email = $academic->getEmail();
 
-            $result[] = $item;
+                $result[] = $item;
+            }
         }
 
         return new ViewModel(

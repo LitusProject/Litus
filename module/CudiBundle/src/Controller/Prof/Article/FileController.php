@@ -199,7 +199,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function progressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost('upload_id');
 
         return new ViewModel(
             array(

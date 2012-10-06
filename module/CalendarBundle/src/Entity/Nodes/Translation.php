@@ -155,7 +155,7 @@ class Translation
     public function getSummary($length = 100)
     {
         $parser = new Markdown_Parser();
-        $summary = trim(trim($parser->transform($this->content), '<p>'), '</p>');
+        $summary = $parser->transform($this->content);
         return \CommonBundle\Component\Util\String::truncate($summary, $length, '...', true);
     }
 }

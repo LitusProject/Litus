@@ -14,7 +14,9 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Authentication\Authentication,
+    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -45,7 +47,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                         new FlashMessage(
                             FlashMessage::SUCCESS,
                             'SUCCESS',
-                            'You are successfully logged in!'
+                            'You have been successfully logged in!'
                         )
                     );
                 } else {
@@ -53,7 +55,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                         new FlashMessage(
                             FlashMessage::ERROR,
                             'ERROR',
-                            'You cannot be logged in!'
+                            'You could not be logged in!'
                         )
                     );
                 }
@@ -72,23 +74,69 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
 
     public function logoutAction()
     {
-        $this->getAuthentication()->forget();
+        $session = $this->getAuthentication()->forget();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'You are successfully logged out!'
-            )
-        );
+        if (null !== $session && $session->isShibboleth()) {
+            $shibbolethLogoutUrl = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_logout_url');
 
-        $this->redirect()->toRoute(
-            'logistics_index',
-            array(
-                'language' => $this->getLanguage()->getAbbrev(),
-            )
-        );
+            $this->redirect()->toUrl($shibbolethLogoutUrl);
+        } else {
+            $this->redirect()->toRoute(
+                'logistics_auth'
+            );
+        }
 
         return new ViewModel();
+    }
+
+    public function shibbolethAction()
+    {
+        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+            $authentication = new Authentication(
+                new ShibbolethAdapter(
+                    $this->getEntityManager(),
+                    'CommonBundle\Entity\Users\People\Academic',
+                    'universityIdentification'
+                ),
+                $this->getServiceLocator()->get('authentication_doctrineservice')
+            );
+
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->findLastByUniversityIdentification($this->getParam('identification'));
+
+            if (null !== $code) {
+                if ($code->validate($this->getParam('hash'))) {
+                    $this->getEntityManager()->remove($code);
+                    $this->getEntityManager()->flush();
+
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true, true
+                    );
+
+                    if ($authentication->isAuthenticated()) {
+                        $this->redirect()->toRoute(
+                            'logistics_index'
+                        );
+                    }
+                }
+            }
+        }
+
+        return new ViewModel();
+    }
+
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+
+        return $shibbolethUrl . '?source=logistics';
     }
 }

@@ -41,6 +41,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $result->unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
+        $result->shibbolethUrl = $this->_getShibbolethUrl();
 
         $e->setResult($result);
         return $result;
@@ -61,5 +62,22 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             'auth_route'     => 'form_manage',
             'redirect_route' => 'form_manage'
         );
+    }
+
+    /**
+     * Create the full Shibboleth URL.
+     *
+     * @return string
+     */
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+
+        return $shibbolethUrl . '?source=form';
     }
 }

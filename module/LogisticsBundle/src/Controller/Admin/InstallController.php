@@ -40,6 +40,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'logistics_index' => array(
                         'fetch', 'index'
                     ),
+                    'logistics_auth' => array(
+                        'login', 'logout', 'shibboleth',
+                    ),
                 )
             )
         );
@@ -53,6 +56,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'actions' => array(
                         'logistics_index' => array(
                             'fetch', 'index'
+                        ),
+                        'logistics_auth' => array(
+                            'login', 'logout', 'shibboleth',
                         ),
                     ),
                 ),

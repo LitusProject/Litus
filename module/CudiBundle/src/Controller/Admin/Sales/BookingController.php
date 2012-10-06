@@ -373,7 +373,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $number = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Booking')
-            ->assignAll($this->getMailTransport());
+            ->assignAll($this->getAuthentication()->getPersonObject(), $this->getMailTransport());
 
         if (0 == $number)
             $message = 'No booking could be assigned!';
@@ -498,6 +498,45 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return $return;
     }
 
+    public function assignmentsAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Log')
+                ->findByType('booking_assignments'),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+            )
+        );
+    }
+
+    public function undoAction()
+    {
+        if (!($log = $this->_getLog()))
+            return new ViewModel();
+
+        $ids = unserialize($log->getText());
+        foreach($ids as $id) {
+            $booking = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findOneById($id);
+            $booking->setStatus('booked', $this->getEntityManager());
+        }
+
+        $this->getEntityManager()->remove($log);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
     private function _getPeriod()
     {
         if (null === $this->getParam('period')) {
@@ -551,11 +590,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $article = $this->getEntityManager()
+        $booking = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findOneById($this->getParam('id'));
 
-        if (null === $article) {
+        if (null === $booking) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -574,7 +613,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $article;
+        return $booking;
     }
 
     private function _getPerson()
@@ -639,5 +678,52 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         return $article;
+    }
+
+    private function _getLog()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the log!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_sales_booking',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $log = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Log')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $log) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No log with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_sales_booking',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $log;
     }
 }

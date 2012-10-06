@@ -76,13 +76,13 @@ return array(
 			    ),
 			),
             'logistics_auth' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/logistics/auth[/:action][/]',
+                    'route' => '[/:language]/logistics/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                     'constraints' => array(
-                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'session'  => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'identification' => '[mrsu][0-9]{7}',
+                        'hash'           => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'logistics_auth',
