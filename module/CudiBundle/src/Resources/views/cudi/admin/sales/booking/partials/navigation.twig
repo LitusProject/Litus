@@ -3,6 +3,9 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('admin_sales_booking', 'assignments') %}
+                <li><a {% if 'assignments' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "assignments"}) }}">Assignments</a></li>
+            {% endif %}
             {% if hasAccess('admin_sales_booking', 'assignAll') %}
                 <li><a href="#" class="assignAll">Assign All</a></li>
             {% endif %}

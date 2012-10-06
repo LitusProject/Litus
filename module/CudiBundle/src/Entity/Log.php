@@ -49,7 +49,14 @@ class Log
     private $person;
 
     /**
-     * @var string The vat number of the supplier
+     * @var string The type of the log
+     *
+     * @ORM\Column(type="string")
+     */
+    private $type;
+
+    /**
+     * @var string The text of the log
      *
      * @ORM\Column(type="text")
      */
@@ -57,11 +64,13 @@ class Log
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
+     * @param string $type
      * @param string $text
      */
-    public function __construct(Person $person, $text)
+    public function __construct(Person $person, $type, $text)
     {
         $this->person = $person;
+        $this->type = $type;
         $this->text = $text;
         $this->timestamp = new DateTime();
     }
@@ -87,7 +96,15 @@ class Log
      */
     public function getPerson()
     {
-        return $this->phoneNumber;
+        return $this->person;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -96,5 +113,13 @@ class Log
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getSizeOfArray()
+    {
+        return count(unserialize($this->text));
     }
 }
