@@ -200,6 +200,17 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
                     $article->setStockValue($formData['number']);
 
+                    $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
+                    while($nbToMuchAssigned > 0) {
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findLastAssignedByArticle($article);
+                        if ($booking) {
+                            $booking->setStatus('booked', $this->getEntityManager());
+                            $nbToMuchAssigned -= $booking->getNumber();
+                        }
+                    }
+
                     $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->addMessage(
