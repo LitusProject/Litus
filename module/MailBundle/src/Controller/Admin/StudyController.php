@@ -79,10 +79,15 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $body = $formData['message'];
 
+                $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
+
                 if ($formData['test']) {
                     $body = $body . '\n\n==\n\n This mail would have been sent to:\n';
                     foreach($enrollments as $enrollment)
                         $body = $body . $enrollment->getAcademic()->getEmail() . '\n';
+
+                    foreach($bccs as $bcc)
+                        $body = $body . $bcc . '\n';
 
                     $mailAddress = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
@@ -109,6 +114,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 if (!$formData['test']) {
                     foreach($enrollments as $enrollment)
                         $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+
+                    foreach($bccs as $bcc)
+                        $mail->addBcc($bcc);
                 }
 
                 if ('development' != getenv('APPLICATION_ENV'))

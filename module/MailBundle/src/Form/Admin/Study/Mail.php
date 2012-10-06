@@ -18,6 +18,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
+    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -54,6 +55,11 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Checkbox('html');
         $field->setLabel('HTML Mail');
+        $this->add($field);
+
+        $field = new Text('bcc');
+        $field->setLabel('Additional BCC')
+            ->setAttribute('style', 'width: 400px;');
         $this->add($field);
 
         $field = new Text('subject');
@@ -109,6 +115,21 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     array(
                         'name'     => 'studies',
                         'required' => true,
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'bcc',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new MultiMailValidator()
+                        ),
                     )
                 )
             );
