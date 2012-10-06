@@ -410,6 +410,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
 
         if (null !== $registration && !$registration->hasPayed() && $metaData->becomeMember()) {
+            $collected = 0;
+            if (isset($this->_collectedItems[$queueItem->getId()])) {
+                foreach($this->_collectedItems[$queueItem->getId()] as $id => $booking) {
+                    if ($id == 'membership')
+                        $collected = $booking;
+                }
+            }
+
             $results[] = (object) array(
                 'id' => 'membership',
                 'price' => $this->_entityManager
@@ -423,6 +431,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     ->getConfigValue('union_name'),
                 'number' => 1,
                 'status' => 'assigned',
+                'collected' => $collected,
                 'discounts' => array(),
             );
         }

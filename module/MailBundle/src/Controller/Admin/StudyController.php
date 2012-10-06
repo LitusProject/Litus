@@ -53,6 +53,14 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('SyllabusBundle\Entity\Study')
                         ->findOneById($studyId);
 
+                    $children = $study->getAllChildren();
+
+                    foreach ($children as $child) {
+                        $enrollments = array_merge($enrollments, $this->getEntityManager()
+                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                            ->findAllByStudyAndAcademicYear($child, $currentYear));
+                    }
+
                     $enrollments = array_merge($enrollments, $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                         ->findAllByStudyAndAcademicYear($study, $currentYear));
@@ -66,15 +74,31 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_mail_name');
 
+                $body = $formData['message'];
+
+                if ($formData['test']) {
+                    $body = $body . '\n\n==\n\n This mail would have been sent to:\n';
+                    foreach($enrollments as $enrollment)
+                        $body = $body . $enrollment->getAcademic()->getEmail() . '\n';
+
+                    $mailAddress = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_administrator_mail');
+
+                    $mailName = 'IT Administrator';
+                }
+
                 $mail = new Message();
-                $mail->setBody($formData['message'])
+                $mail->setBody($body)
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 
                 $mail->addTo($mailAddress, $mailName);
 
-                foreach($enrollments as $enrollment)
-                    $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+                if (!$formData['test']) {
+                    foreach($enrollments as $enrollment)
+                        $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+                }
 
                 if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);

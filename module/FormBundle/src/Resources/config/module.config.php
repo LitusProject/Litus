@@ -105,11 +105,11 @@ return array(
             'form_manage_auth' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/form/manage/auth[/:action][/]',
+                    'route' => '[/:language]/form/manage/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                     'constraints' => array(
-                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'session'  => '[0-9]*',
-                        'language' => '[a-z]{2}',
+                        'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'identification' => '[mrsu][0-9]{7}',
+                        'hash'           => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'form_manage_auth',

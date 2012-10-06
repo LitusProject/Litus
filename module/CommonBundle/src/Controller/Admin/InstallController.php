@@ -111,6 +111,8 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                             'prof'     => 'https://dev.vtk.be/cudi/prof/auth/shibboleth/',
                             'site'     => 'https://dev.vtk.be/auth/shibboleth/',
                             'register' => 'https://dev.vtk.be/secretary/registration/',
+                            'form'     => 'https://dev.vtk.be/form/manage/auth/shibboleth',
+                            'logistics'=> 'https://dev.vtk.be/logistics/auth/shibboleth',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',

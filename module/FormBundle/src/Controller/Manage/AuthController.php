@@ -14,7 +14,9 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Authentication\Authentication,
+    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -34,6 +36,8 @@ class AuthController extends \FormBundle\Component\Controller\FormController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $this->getAuthentication()->forget();
+
                 $this->getAuthentication()->authenticate(
                     $formData['username'], $formData['password'], $formData['remember_me']
                 );
@@ -70,23 +74,69 @@ class AuthController extends \FormBundle\Component\Controller\FormController
 
     public function logoutAction()
     {
-        $this->getAuthentication()->forget();
+        $session = $this->getAuthentication()->forget();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'You have been successfully logged out!'
-            )
-        );
+        if (null !== $session && $session->isShibboleth()) {
+            $shibbolethLogoutUrl = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_logout_url');
 
-        $this->redirect()->toRoute(
-            'form_manage',
-            array(
-                'language' => $this->getLanguage()->getAbbrev(),
-            )
-        );
+            $this->redirect()->toUrl($shibbolethLogoutUrl);
+        } else {
+            $this->redirect()->toRoute(
+                'form_manage_auth'
+            );
+        }
 
         return new ViewModel();
+    }
+
+    public function shibbolethAction()
+    {
+        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+            $authentication = new Authentication(
+                new ShibbolethAdapter(
+                    $this->getEntityManager(),
+                    'CommonBundle\Entity\Users\People\Academic',
+                    'universityIdentification'
+                ),
+                $this->getServiceLocator()->get('authentication_doctrineservice')
+            );
+
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->findLastByUniversityIdentification($this->getParam('identification'));
+
+            if (null !== $code) {
+                if ($code->validate($this->getParam('hash'))) {
+                    $this->getEntityManager()->remove($code);
+                    $this->getEntityManager()->flush();
+
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true, true
+                    );
+
+                    if ($authentication->isAuthenticated()) {
+                        $this->redirect()->toRoute(
+                            'form_manage'
+                        );
+                    }
+                }
+            }
+        }
+
+        return new ViewModel();
+    }
+
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+
+        return $shibbolethUrl . '?source=form';
     }
 }

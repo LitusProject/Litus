@@ -32,9 +32,9 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         if ('development' != getenv('APPLICATION_ENV')) {
             if (!$this->getRequest()->isPost()) {
@@ -43,7 +43,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
                 );
             }
 
-            if ('' != $this->getRequest()->post()->get('key', '')) {
+            if ('' == $this->getRequest()->getPost('key', '')) {
                 throw new NoKeyException(
                     'No API key was provided with the request'
                 );
@@ -51,7 +51,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
 
             $key = $this->getEntityManager()
                 ->getRepository('ApiBundle\Entity\Key')
-                ->findOneActiveByCode($this->getRequest()->post()->get('key'));
+                ->findOneActiveByCode($this->getRequest()->getPost('key'));
 
             if (!$key->validate($_SERVER['REMOTE_ADDR'])) {
                 throw new InvalidKeyException(
@@ -63,5 +63,16 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
         $e->setResult($result);
 
         return $result;
+    }
+
+    /**
+     * We need to be able to specify all required authentication information,
+     * which depends on the part of the site that is currently being used.
+     *
+     * @return array
+     */
+    public function getAuthenticationHandler()
+    {
+        return null;
     }
 }

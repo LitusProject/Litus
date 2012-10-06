@@ -18,6 +18,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
@@ -61,6 +62,11 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
             );
         $collection->add($field);
 
+        $field = new Text('barcode');
+        $field->setLabel('Barcode')
+            ->setAttribute('class', 'disableEnter');
+        $collection->add($field);
+
         $collection = new Collection('university');
         $collection->setLabel('University');
         $this->add($collection);
@@ -86,6 +92,28 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         if ($this->_inputFilter == null) {
             $inputFilter = parent::getInputFilter();
             $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'barcode',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'barcode',
+                                'options' => array(
+                                    'adapter'     => 'Ean12',
+                                    'useChecksum' => false,
+                                ),
+                            ),
+                            new BarcodeValidator($this->_entityManager),
+                        ),
+                    )
+                )
+            );
 
             $inputFilter->add(
                 $factory->createInput(
