@@ -23,7 +23,7 @@ return array(
 
     'Article' => 'Article',
     'Authors' => 'Authors',
-    'Price / piece' => 'Price / piece',
+    'Price / Piece' => 'Price / Piece',
     'Expiration Date' => 'Expiration Date',
     'Status' => 'Status',
     'Actions' => 'Actions',
