@@ -51,12 +51,21 @@ class Volunteer
     private $person;
 
     /**
+     * @var boolean Whether or not this volunteer has been payed already
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $payed;
+
+    /**
      * @param string $name
      */
     public function __construct(Person $person)
     {
         $this->signupTime = new DateTime();
         $this->person = $person;
+
+        $this->payed = false;
     }
 
     /**
@@ -81,5 +90,23 @@ class Volunteer
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPayed()
+    {
+        return $this->payed;
+    }
+
+    /**
+     * @param boolean $payed
+     * @return \ShiftBundle\Entity\Shifts\Responsible
+     */
+    public function setPayed($payed)
+    {
+        $this->payed = $payed;
+        return $this;
     }
 }

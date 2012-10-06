@@ -23,7 +23,7 @@ return array(
 
     'Article' => 'Article',
     'Authors' => 'Authors',
-    'Price / piece' => 'Price / piece',
+    'Price / Piece' => 'Price / Piece',
     'Expiration Date' => 'Expiration Date',
     'Status' => 'Status',
     'Actions' => 'Actions',
@@ -40,4 +40,6 @@ return array(
     'General' => 'General',
 
     'The textbooks have been booked!' => 'The textbooks have been booked!',
+
+    'New bookings have been assigned to you, and you can go and collect them.' => 'New bookings have been assigned to you, and you can go and collect them.',
 );
