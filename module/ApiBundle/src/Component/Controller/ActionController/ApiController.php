@@ -43,7 +43,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
                 );
             }
 
-            if ('' != $this->getRequest()->post()->get('key', '')) {
+            if ('' == $this->getRequest()->getPost('key', '')) {
                 throw new NoKeyException(
                     'No API key was provided with the request'
                 );
@@ -51,7 +51,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
 
             $key = $this->getEntityManager()
                 ->getRepository('ApiBundle\Entity\Key')
-                ->findOneActiveByCode($this->getRequest()->post()->get('key'));
+                ->findOneActiveByCode($this->getRequest()->getPost('key'));
 
             if (!$key->validate($_SERVER['REMOTE_ADDR'])) {
                 throw new InvalidKeyException(

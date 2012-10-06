@@ -1,6 +1,19 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
+	{% if bookings is not null %}
+		<div class="alert alert-success">
+			<p>
+				<b>{{ translate('New bookings have been assigned to you, and you can go and collect them.') }}</b>
+			</p>
+
+			<ul>
+		        {% for booking in bookings %}
+		        	<li>{{ booking.getArticle().getMainArticle().getTitle() }}</li>
+		        {% endfor %}
+		    </ul>
+	    </div>
+	{% endif %}
 
 	{% for notification in notifications %}
 		<div class="alert alert-info notification">

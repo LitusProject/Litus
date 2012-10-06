@@ -29,6 +29,21 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('NotificationBundle\Entity\Nodes\Notification')
             ->findAllActive();
 
+        $bookings = null;
+        if (null !== $this->getAuthentication()->getPersonObject()) {
+            $bookings = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
+
+            foreach ($bookings as $key => $booking) {
+                if ('assigned' != $booking->getStatus())
+                    unset($bookings[$key]);
+            }
+
+            if (0 == count($bookings))
+                $bookings = null;
+        }
+
         $newsItems = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Nodes\News')
             ->findAll(5);
@@ -51,9 +66,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'notifications' => $notifications,
+                'bookings' => $bookings,
                 'newsItems' => $newsItems,
                 'calendarItems' => $calendarItems,
-                'notifications' => $notifications,
             )
         );
     }
