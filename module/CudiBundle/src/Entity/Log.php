@@ -43,7 +43,7 @@ class Log
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the log
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
