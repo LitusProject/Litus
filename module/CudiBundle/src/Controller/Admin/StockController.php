@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Stock;
+namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
@@ -106,6 +106,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
             $item->supplier = $article->getSupplier()->getName();
+            $item->nbAssigned = $period->getNbAssigned($article);
+            $item->nbNotAssigned = $period->getNbBooked($article);
             $item->nbInStock = $article->getStockValue();
             $item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
             $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
@@ -197,6 +199,18 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($delta);
 
                     $article->setStockValue($formData['number']);
+
+                    $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
+                    $bookings = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->findLastAssignedByArticle($article);
+
+                    foreach($bookings as $booking) {
+                        if ($nbToMuchAssigned <= 0)
+                            break;
+                        $booking->setStatus('booked', $this->getEntityManager());
+                        $nbToMuchAssigned -= $booking->getNumber();
+                    }
 
                     $this->getEntityManager()->flush();
 

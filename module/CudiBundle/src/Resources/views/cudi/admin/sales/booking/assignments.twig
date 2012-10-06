@@ -1,0 +1,102 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width assignment_undone_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The assignment was successfully undone!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width assignment_undone_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to undo the assignment.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Person</th>
+                <th width="200px">Date</th>
+                <th width="100px">Number</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for log in paginator %}
+                <tr class="item item-{{ log.getId() }}">
+                    <td>{{ log.getPerson().getFullName() }}</td>
+                    <td>{{ log.getTimestamp().format('d/m/Y H:i') }}</td>
+                    <td>{{ log.getSizeOfArray() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('admin_sales_booking', 'undo') %}
+                            <a href="#" class="delete" data-id="{{ log.getId() }}" data-date="{{ log.getTimestamp().format('d/m/Y H:i') }}">Undo</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal hide fade" id="undoAssignment">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Undo Assigment
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to undo the assignment of <b class="date"></b>!<br />
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#controller_nav .assignAll').click(openAssignAllModal);
+            $('.item .delete').click(openRemoveModal);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var undoAssignment = $('#undoAssignment');
+            undoAssignment.find('.date').html($(this).data('date'));
+            var id = $this.data('id');
+            undoAssignment.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_sales_booking', {"action": "undo"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.assignment_undone_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        undoAssignment.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            undoAssignment.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.assignment_undone_error').removeClass('hide');
+            $('#undoAssignment').modal('hide');
+        }
+    </script>
+{% endblock %}
