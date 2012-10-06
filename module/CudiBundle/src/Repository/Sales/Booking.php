@@ -580,6 +580,7 @@ class Booking extends EntityRepository
 
         foreach($articles as $article) {
             $available = $article->getStockValue() - $period->getNbAssigned($article);
+
             if ($available <= 0)
                 continue;
 
@@ -588,6 +589,9 @@ class Booking extends EntityRepository
                 ->findAllBookedByArticleAndPeriod($article, $period);
 
             foreach($bookings as $booking) {
+                if ($available <= 0)
+                    break;
+
                 $counter++;
 
                 if ($available < $booking->getNumber()) {
@@ -604,6 +608,7 @@ class Booking extends EntityRepository
                 }
 
                 $booking->setStatus('assigned', $this->getEntityManager());
+                $available -= $booking->getNumber();
 
                 if (!isset($persons[$booking->getPerson()->getId()]))
                     $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
@@ -637,5 +642,27 @@ class Booking extends EntityRepository
         foreach($bookings as $booking) {
                $booking->setStatus('expired', $this->getEntityManager());
         }
+    }
+
+    public function findLastAssignedByArticle(ArticleEntity $article)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.article', ':article'),
+                    $query->expr()->eq('b.status', ':status')
+                )
+            )
+            ->setParameter('status', 'assigned')
+            ->setParameter('article', $article->getId())
+            ->orderBy('b.assignmentDate', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
     }
 }
