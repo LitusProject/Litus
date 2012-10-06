@@ -665,11 +665,9 @@ class Booking extends EntityRepository
             ->setParameter('status', 'assigned')
             ->setParameter('article', $article->getId())
             ->orderBy('b.assignmentDate', 'DESC')
-            ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
+            
+        return $resultSet;
     }
 }
