@@ -5,6 +5,7 @@ namespace CudiBundle\Repository\Sales;
 use CommonBundle\Entity\Users\Person,
     Exception,
     CudiBundle\Component\Mail\Booking as BookingMail,
+    CudiBundle\Entity\Log,
     CudiBundle\Entity\Sales\Article as ArticleEntity,
     CudiBundle\Entity\Sales\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
@@ -562,7 +563,7 @@ class Booking extends EntityRepository
             return $resultSet[0];
     }
 
-    public function assignAll(TransportInterface $mailTransport)
+    public function assignAll(Person $person, TransportInterface $mailTransport)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -575,6 +576,7 @@ class Booking extends EntityRepository
             ->findAllBookedArticles();
 
         $counter = 0;
+        $idsAssigned = array();
 
         $persons = array();
 
@@ -608,6 +610,7 @@ class Booking extends EntityRepository
                 }
 
                 $booking->setStatus('assigned', $this->getEntityManager());
+                $idsAssigned[] = $booking->getId();
                 $available -= $booking->getNumber();
 
                 if (!isset($persons[$booking->getPerson()->getId()]))
@@ -616,6 +619,10 @@ class Booking extends EntityRepository
                 $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
             }
         }
+
+        if ($counter > 0)
+            $this->getEntityManager()->persist(new Log($person, 'booking_assignments', serialize($idsAssigned)));
+
         $this->getEntityManager()->flush();
 
         foreach($persons as $person)
