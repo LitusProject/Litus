@@ -80,17 +80,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $body = $formData['message'];
 
-                    $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
-
-                    if ($formData['test']) {
-                        $body = $body . '\n\n==\n\n This mail would have been sent to:\n';
-                        foreach($enrollments as $enrollment)
-                            $body = $body . $enrollment->getAcademic()->getEmail() . '\n';
-
-                        foreach($bccs as $bcc)
-                            $body = $body . $bcc . '\n';
-                    }
-
                     $part = new Part($body);
                     if ($formData['html'])
                         $part->type = Mime::TYPE_HTML;
@@ -98,6 +87,21 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $part->type = Mime::TYPE_TEXT;
                     $message = new MimeMessage();
                     $message->addPart($part);
+
+                    $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
+
+                    if ($formData['test']) {
+                        $body = '<br/>This email would have been sent to:<br/>';
+                        foreach($enrollments as $enrollment)
+                            $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
+
+                        foreach($bccs as $bcc)
+                            $body = $body . $bcc . '<br/>';
+
+                        $part = new Part($body);
+                        $part->type = Mime::TYPE_HTML;
+                        $message->addPart($part);
+                    }
 
                     $upload->receive();
 
