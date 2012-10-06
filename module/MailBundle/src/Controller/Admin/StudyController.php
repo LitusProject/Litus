@@ -16,11 +16,14 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Form\Admin\Study\Mail as MailForm,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Mail\Message,
     Zend\Mime\Part,
     Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Validator\File\Size as SizeValidator,
     Zend\View\Model\ViewModel;
+
 
 /**
  * StudyController
@@ -46,98 +49,121 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
             if ($form->isValid()) {
 
-                $enrollments = array();
+                $upload = new FileUpload();
 
-                $studyIds = $formData['studies'];
+                $upload->addValidator(new SizeValidator(array('max' => '50MB')));
 
-                foreach ($studyIds as $studyId) {
+                if ($upload->isValid()) {
 
-                    $study = $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Study')
-                        ->findOneById($studyId);
+                    $enrollments = array();
 
-                    $children = $study->getAllChildren();
+                    $studyIds = $formData['studies'];
 
-                    foreach ($children as $child) {
+                    foreach ($studyIds as $studyId) {
+
+                        $study = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Study')
+                            ->findOneById($studyId);
+
+                        $children = $study->getAllChildren();
+
+                        foreach ($children as $child) {
+                            $enrollments = array_merge($enrollments, $this->getEntityManager()
+                                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                ->findAllByStudyAndAcademicYear($child, $currentYear));
+                        }
+
                         $enrollments = array_merge($enrollments, $this->getEntityManager()
                             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                            ->findAllByStudyAndAcademicYear($child, $currentYear));
+                            ->findAllByStudyAndAcademicYear($study, $currentYear));
                     }
-
-                    $enrollments = array_merge($enrollments, $this->getEntityManager()
-                        ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                        ->findAllByStudyAndAcademicYear($study, $currentYear));
-                }
-
-                $mailAddress = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('system_mail_address');
-
-                $mailName = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('system_mail_name');
-
-                $body = $formData['message'];
-
-                $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
-
-                if ($formData['test']) {
-                    $body = $body . '\n\n==\n\n This mail would have been sent to:\n';
-                    foreach($enrollments as $enrollment)
-                        $body = $body . $enrollment->getAcademic()->getEmail() . '\n';
-
-                    foreach($bccs as $bcc)
-                        $body = $body . $bcc . '\n';
 
                     $mailAddress = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('system_administrator_mail');
+                        ->getConfigValue('system_mail_address');
 
-                    $mailName = 'IT Administrator';
+                    $mailName = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_mail_name');
+
+                    $body = $formData['message'];
+
+                    $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
+
+                    if ($formData['test']) {
+                        $body = $body . '\n\n==\n\n This mail would have been sent to:\n';
+                        foreach($enrollments as $enrollment)
+                            $body = $body . $enrollment->getAcademic()->getEmail() . '\n';
+
+                        foreach($bccs as $bcc)
+                            $body = $body . $bcc . '\n';
+
+                        $mailAddress = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('system_administrator_mail');
+
+                        $mailName = 'IT Administrator';
+                    }
+
+                    $part = new Part($body);
+                    if ($formData['html'])
+                        $part->type = Mime::TYPE_HTML;
+                    else
+                        $part->type = Mime::TYPE_TEXT;
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    $upload->receive();
+
+                    foreach ($upload->getFileInfo() as $file) {
+                        $part = new Part(fopen($file['tmp_name'], 'r'));
+                        $part->type = $file['type'];
+                        $message->addPart($part);
+                    }
+
+                    $mail = new Message();
+                    $mail->setBody($message)
+                        ->setFrom($mailAddress, $mailName)
+                        ->setSubject($formData['subject']);
+
+                    $mail->addTo($mailAddress, $mailName);
+
+                    if (!$formData['test']) {
+                        foreach($enrollments as $enrollment)
+                            $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+
+                        foreach($bccs as $bcc)
+                            $mail->addBcc($bcc);
+                    }
+
+                    if ('development' != getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'The mail was successfully sent!'
+                        )
+                    );
+
+                    $this->redirect()->toRoute(
+                        'admin_mail_study',
+                        array(
+                            'action' => 'send'
+                        )
+                    );
+
+                    return new ViewModel();
+                } else {
+                    $dataError = $upload->getMessages();
+                    $error = array();
+
+                    foreach($dataError as $key=>$row)
+                        $error[] = $row;
+
+                    $form->setMessages(array('file'=>$error ));
                 }
-
-                $part = new Part($body);
-                if ($formData['html'])
-                    $part->type = Mime::TYPE_HTML;
-                else
-                    $part->type = Mime::TYPE_TEXT;
-                $message = new MimeMessage();
-                $message->addPart($part);
-
-                $mail = new Message();
-                $mail->setBody($message)
-                    ->setFrom($mailAddress, $mailName)
-                    ->setSubject($formData['subject']);
-
-                $mail->addTo($mailAddress, $mailName);
-
-                if (!$formData['test']) {
-                    foreach($enrollments as $enrollment)
-                        $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
-
-                    foreach($bccs as $bcc)
-                        $mail->addBcc($bcc);
-                }
-
-                if ('development' != getenv('APPLICATION_ENV'))
-                    $this->getMailTransport()->send($mail);
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The mail was successfully sent!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'admin_mail_study',
-                    array(
-                        'action' => 'send'
-                    )
-                );
-
-                return new ViewModel();
             }
         }
 

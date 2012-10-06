@@ -15,6 +15,7 @@
 namespace MailBundle\Form\Admin\Study;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
@@ -36,6 +37,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($studies, $name = null)
     {
         parent::__construct($name);
+
+        $this->setAttribute('id', 'uploadFile');
+        $this->setAttribute('enctype', 'multipart/form-data');
 
         $studyNames = array();
         foreach($studies as $study) {
@@ -71,6 +75,12 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field = new Textarea('message');
         $field->setLabel('Message')
             ->setAttribute('style', 'width: 500px;height: 200px;')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new File('file[]'); // Must be file[] to allow multiple upload using zend file transfer
+        $field->setLabel('File')
+            ->setAttribute('multiple', 'multiple')
             ->setRequired();
         $this->add($field);
 
