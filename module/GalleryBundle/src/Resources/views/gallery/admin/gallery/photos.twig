@@ -1,79 +1,92 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('Gallery') }}</h1>
-    </div>
-
     {% include 'gallery/admin/gallery/partials/navigation.twig' %}
 
-    <h2>{{ album.getTitle(language) }}</h2>
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div class="pull-right">
-        <a href="{{ url('admin_gallery', {"action": "addPhotos", "id": album.getId()}) }}" class="btn btn-success">{{ translate('Add Photos') }}</a>
-    </div>
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th>{{ translate('Id') }}</th>
-            <th>{{ translate('Image') }}</th>
-            <th width="30px">{{ translate('Censored') }}</th>
-            <th width="180px">{{ translate('Actions') }}</th>
-        </tr>
-        {% for photo in paginator %}
-            <tr class="item">
-                <td>{{ photo.getId() }}</td>
-                <td>{{ photo.getFilePath() }}</td>
-                <td class="center-text">{% if photo.isCensored() %}&times;{% endif %}</td>
-                <td class="actions">
-                    {% if hasAccess('admin_gallery', 'viewPhoto') %}
-                        <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="btn btn-info view">{{ translate('View') }}</a>
-                    {% endif %}
+    <div id="controller_action">
+        <h1>{{ album.getTitle(language) }}</h1>
 
-                    {% if not photo.isCensored() %}
-                        {% if hasAccess('admin_gallery', 'censorPhoto') %}
-                            <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="btn btn-danger">{{ translate('Censor') }}</a>
-                        {% endif %}
-                    {% else %}
-                        {% if hasAccess('admin_gallery', 'unCensorPhoto') %}
-                            <a href="{{ url('admin_gallery', {"action": "unCensorPhoto", "id": photo.getId()}) }}" class="btn btn-danger">{{ translate('Uncensor') }}</a>
-                        {% endif %}
-                    {% endif %}
-                </td>
+        <table class="manage">
+            <tr>
+                <th>Id</th>
+                <th>Image</th>
+                <th width="80px">Censored</th>
+                <th width="90px">Actions</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for photo in paginator %}
+                <tr class="item">
+                    <td>{{ photo.getId() }}</td>
+                    <td>{{ photo.getFilePath() }}</td>
+                    <td>{% if photo.isCensored() %}Yes{% else %}No{% endif %}</td>
+                    <td class="actions">
+                        {% if hasAccess('admin_gallery', 'viewPhoto') %}
+                            <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="view">{{ translate('View') }}</a>
+                        {% endif %}
 
-	{% include 'admin/partials/paginationControl.twig' %}
-    
-    <div id="showPhoto" class="modal fade">
-    	<div class="modal-header">
-    		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translate('Show Photo') }}</h3>
-    	</div>
-    	<div class="modal-body">
-    	</div>
-    	<div class="modal-footer">
-    		<button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
-    	</div>
+                        {% if not photo.isCensored() %}
+                            {% if hasAccess('admin_gallery', 'censorPhoto') %}
+                                <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="delete">{{ translate('Censor') }}</a>
+                            {% endif %}
+                        {% else %}
+                            {% if hasAccess('admin_gallery', 'unCensorPhoto') %}
+                                <a href="{{ url('admin_gallery', {"action": "unCensorPhoto", "id": photo.getId()}) }}" class="add">{{ translate('Uncensor') }}</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    	{% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    {% if hasAccess('admin_gallery', 'addPhotos') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Add Photo's</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add photo's to this album!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_gallery', {"action": "addPhotos", "id": album.getId()}) }}">&rarr; Add Photo's</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
+    <div class="modal hide fade" id="showPhoto">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Show Photo
+        </div>
+        <div class="modal-body">
+            <div class="photo"></div>
+            <div class="footer">
+                <input type="button" data-dismiss="modal" value="Close">
+            </div>
+        </div>
     </div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .view').click(openViewModal);
 		});
-		
+
 		function openViewModal(e) {
 			var $this = $(this);
 
 			e.preventDefault();
 			var showPhoto = $('#showPhoto');
-			showPhoto.find('.modal-body').html('');
+			showPhoto.find('.photo').html('');
 			var photo = $('<img>', {src: $this.data('url')}).load(function () {
 			    $(this).height(300);
 			});
-			showPhoto.find('.modal-body').html(photo).css('text-align', 'center');
+			showPhoto.find('.photo').html(photo).css('text-align', 'center');
 			showPhoto.modal();
 		}
 	</script>

@@ -15,9 +15,11 @@
 namespace MailBundle\Form\Admin\Study;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
+    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -36,6 +38,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($name);
 
+        $this->setAttribute('id', 'uploadFile');
+        $this->setAttribute('enctype', 'multipart/form-data');
+
         $studyNames = array();
         foreach($studies as $study) {
             $studyNames[$study->getId()] = $study->getFullTitle() . ' - Phase ' . $study->getPhase();
@@ -52,6 +57,21 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Test mail');
         $this->add($field);
 
+        $field = new Checkbox('html');
+        $field->setLabel('HTML Mail');
+        $this->add($field);
+
+        $field = new Text('from');
+        $field->setLabel('From')
+            ->setAttribute('style', 'width: 400px;')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text('bcc');
+        $field->setLabel('Additional BCC')
+            ->setAttribute('style', 'width: 400px;');
+        $this->add($field);
+
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttribute('style', 'width: 400px;')
@@ -61,6 +81,12 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field = new Textarea('message');
         $field->setLabel('Message')
             ->setAttribute('style', 'width: 500px;height: 200px;')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new File('file[]'); // Must be file[] to allow multiple upload using zend file transfer
+        $field->setLabel('File')
+            ->setAttribute('multiple', 'multiple')
             ->setRequired();
         $this->add($field);
 
@@ -105,6 +131,38 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     array(
                         'name'     => 'studies',
                         'required' => true,
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'from',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'emailAddress',
+                            )
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'bcc',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new MultiMailValidator()
+                        ),
                     )
                 )
             );

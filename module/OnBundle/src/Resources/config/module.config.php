@@ -47,7 +47,7 @@ return array(
                 'options' => array(
                     'route' => '/on[/:name][/]',
                     'constraints' => array(
-                        'name'  => '[a-zA-Z0-9]*',
+                        'name'  => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'on_redirect',
