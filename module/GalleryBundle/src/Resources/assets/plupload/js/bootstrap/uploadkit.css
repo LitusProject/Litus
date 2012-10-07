@@ -9,6 +9,7 @@ input.uk-input, form input.uk-input {
   padding: 1em;
   position: relative;
   text-align: center;
+  width: 750px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -25,13 +26,16 @@ input.uk-input, form input.uk-input {
   margin-right: 0.25em;
 }
 
-.uk-container > .btn-primary {
-  color: #fff;
-}
-
 .uk-container > table, .uk-info {
   margin-bottom: 0.5em;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.uk-container > table td,
+.uk-container > table th {
+  background: none !important;
+  padding: 0;
+  text-indent: 0;
 }
 
 .uk-container > table a.close {
@@ -50,7 +54,7 @@ input.uk-input, form input.uk-input {
   display: block;
   max-height: 400px;
   overflow: auto;
-  width: 100%;
+  width: 700px;
 }
 
 .uk-container > table thead tr {
@@ -67,7 +71,7 @@ input.uk-input, form input.uk-input {
 }
 
 .uk-title-column {
-    width: 600px;
+    width: 500px;
 }
 
 .uk-size-column, .uk-progress-column {

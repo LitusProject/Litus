@@ -9,6 +9,22 @@
         <h1>{{ album.getTitle(language) }}</h1>
         <input type="file" id="uploader" class="uk-input" data-uploadUrl="{{ url("admin_gallery", {"action": "upload", "id": album.getId()}) }}" name="file" multiple>
     </div>
+
+    {% if hasAccess('admin_gallery', 'photos') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Manage Photo's</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage photo's of album!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_gallery', {"action": "photos", "id": album.getId()}) }}">&rarr; Manage Photo's</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}
@@ -31,7 +47,7 @@
                 uploadLabel: 'Upload',
                 removeLabel: 'Remove',
                 filters : [{title : "Image files", extensions : "jpeg,jpg,gif,png"}],
-                maxFileSize: '4mb',
+                maxFileSize: '5mb',
             });
         });
     </script>
