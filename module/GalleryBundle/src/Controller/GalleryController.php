@@ -11,7 +11,7 @@ use CommonBundle\Component\Util\AcademicYear,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class GalleryController extends \CommonBundle\Component\Controller\ActionController\CommonController
+class GalleryController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     public function overviewAction()
     {

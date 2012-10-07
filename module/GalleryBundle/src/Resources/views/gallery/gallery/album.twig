@@ -1,10 +1,10 @@
-{% extends 'common/layout.twig' %}
+{% extends 'site/base.twig' %}
 
 {% block content %}
     <h1>{{ translate('Gallery') }}</h1>
-    
+
     <h2>{{ album.getTitle(language) }}</h2>
-    
+
     <div id="images">
         {% for photo in album.getPhotos() %}
             {% if not photo.isCensored() %}

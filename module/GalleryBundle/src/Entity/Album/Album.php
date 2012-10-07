@@ -160,13 +160,11 @@ class Album
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     *
      * @return string
      */
-    public function getName(Language $language)
+    public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
