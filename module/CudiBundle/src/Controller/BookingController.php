@@ -144,9 +144,14 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
 
+                $comments = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Comments\Comment')
+                    ->findAllExternalByArticle($article);
+
                 if ($article !== null) {
                     $articles[] = array(
-                        'article' => $article,
+                        'article' => $article->getMainArticle(),
+                        'comments' => $comments,
                         'mandatory' => $subjectMap->isMandatory(),
                         'booked' => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
                         'sold' => isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0,
@@ -170,10 +175,15 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
 
+            $comments = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Comments\Comment')
+                ->findAllExternalByArticle($commonArticle->getMainArticle());
+
             // Only add bookable articles
             if ($commonArticle->isBookable()) {
                 $articles[] = array(
                     'article' => $commonArticle,
+                    'comments' => $comments,
                     'mandatory' => false,
                     'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
                     'sold' => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
