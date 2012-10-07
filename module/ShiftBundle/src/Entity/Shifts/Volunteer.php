@@ -53,7 +53,7 @@ class Volunteer
     /**
      * @var boolean Whether or not this volunteer has been payed already
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $payed;
 
