@@ -1,13 +1,13 @@
-{% extends 'common/layout.twig' %}
+{% extends 'site/base.twig' %}
 
 {% block content %}
     <h1>{{ translate('Gallery') }}</h1>
-    
+
     <h2>{{ translate('Academic Year') }} {{ academicYear }}</h2>
     {% for album in albums %}
         <div class="album">
             <div class="title">{{ album.getTitle(language) }}</div>
-            <a href="{{ url(language.getAbbrev ~ '_fun_gallery_album', {"id": album.getName(language)}) }}">
+            <a href="{{ url('gallery', {"id": album.getName()}) }}">
                 <img src="{{ filePath }}/{{ album.getId() }}{{ album.getPhoto().getThumbPath() }}" alt="{{ album.getTitle(language) }}" />
             </a>
         </div>

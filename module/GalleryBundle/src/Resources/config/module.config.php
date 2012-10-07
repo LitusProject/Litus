@@ -30,7 +30,7 @@ return array(
                     ),
                 ),
             ),
-            'common_gallery' => array(
+            'gallery' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/gallery[/:action[/:id]][/]',
@@ -40,7 +40,7 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'common_gallery',
+                        'controller' => 'gallery',
                         'action'     => 'overview',
                     ),
                 ),
@@ -57,7 +57,7 @@ return array(
             'gallery_install'  => 'GalleryBundle\Controller\Admin\InstallController',
             'admin_gallery'    => 'GalleryBundle\Controller\Admin\GalleryController',
 
-            'common_gallery'   => 'GalleryBundle\Controller\GalleryController',
+            'gallery'   => 'GalleryBundle\Controller\GalleryController',
         ),
     ),
     'doctrine' => array(
