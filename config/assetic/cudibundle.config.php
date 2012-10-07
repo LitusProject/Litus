@@ -268,6 +268,8 @@ return array(
             '@bootstrap_responsive_css',
             '@site_css',
             '@bootstrap_js_dropdown',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
             '@bootstrap_js_modal',
             '@bootstrap_js_transition',
             '@bootstrap_js_carousel',

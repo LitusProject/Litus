@@ -29,6 +29,9 @@ return array(
     'Actions' => 'Acties',
     'Mandatory' => 'Verplicht',
     'Booked' => 'Gereserveerd',
+    'Remarks' => 'Opmerkingen',
+    'remark' => 'opmerking',
+    'remarks' => 'opmerkingen',
 
     'Book Textbooks' => 'Cursussen Reserveren',
     'Book' => 'Reserveer',

@@ -29,6 +29,9 @@ return array(
     'Actions' => 'Actions',
     'Mandatory' => 'Mandatory',
     'Booked' => 'Booked',
+    'Remarks' => 'Remarks',
+    'remark' => 'remark',
+    'remarks' => 'remarks',
 
     'Book Textbooks' => 'Book Textbooks',
     'Book' => 'Book',
