@@ -69,7 +69,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function albumAction()
     {
-        if (!($album = $this->_getTranslationByName()))
+        if (!($album = $this->_getAlbumByName()))
             return new ViewModel();
 
         $filePath = $this->getEntityManager()
@@ -78,29 +78,29 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'album' => $album->getAlbum(),
+                'album' => $album,
                 'filePath' => $filePath,
             )
         );
     }
 
-    public function _getTranslationByName()
+    public function _getAlbumByName()
     {
     	if (null === $this->getParam('id')) {
     	    $this->getResponse()->setStatusCode(404);
     		return;
     	}
 
-        $translation = $this->getEntityManager()
-            ->getRepository('GalleryBundle\Entity\Album\Translation')
+        $album = $this->getEntityManager()
+            ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findOneByName($this->getParam('id'));
 
-    	if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
+    	if (null === $album) {
     	    $this->getResponse()->setStatusCode(404);
     		return;
     	}
 
-    	return $translation;
+    	return $album;
     }
 
     public function _getPhoto()

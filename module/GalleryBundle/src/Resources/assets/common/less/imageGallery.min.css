@@ -26,7 +26,7 @@
         overflow: hidden;
     }
     .loading-iG .throbber-iG {
-        background: url('images/throbber.png') no-repeat;
+        background: url('/_gallery/imageGallery/throbber.png') no-repeat;
         height: 480px;
         width: 40px;
         position: absolute;
@@ -70,7 +70,7 @@
         cursor: default;
     }
     .button-iG .image {
-        background: url('images/controls.png') no-repeat;
+        background: url('/_gallery/imageGallery//controls.png') no-repeat;
         width: 15px;
         height: 13px;
         display: inline-block;
@@ -131,7 +131,7 @@
         padding: 0;
     }
     .scroll-iG .image {
-        background: url('images/thumbScroll.png') no-repeat;
+        background: url('/_gallery/imageGallery//thumbScroll.png') no-repeat;
         width: 100%;
         height: 100%;
     }
