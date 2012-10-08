@@ -453,6 +453,9 @@ class Shift
             $getStartDate = clone $this->getStartDate();
 
             if ($volunteer->getPerson()->isPraesidium($this->getAcademicYear())) {
+                if ($person->isPraesidium($this->getAcademicYear()))
+                    return false;
+
                 if ($this->getStartDate()->sub($responsibleSignoutTreshold) < $now)
                     return true;
             }
