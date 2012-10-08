@@ -141,6 +141,20 @@ return array(
                     ),
                 ),
             ),
+            'career_index' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/career[/:action][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'career_index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -176,6 +190,7 @@ return array(
 
             'corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
             'corporate_auth'           => 'BrBundle\Controller\Corporate\AuthController',
+            'career_index'             => 'BrBundle\Controller\Career\IndexController',
         ),
     ),
     'assetic_configuration' => array(
