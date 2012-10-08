@@ -144,9 +144,14 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
 
+                $comments = array();
+                /**
                 $comments = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Comments\Comment')
-                    ->findAllExternalByArticle($article->getMainArticle());
+                    ->findAllExternalByArticle(
+                        null !== $article ? $article->getMainArticle() : null
+                    );
+                 **/
 
                 if ($article !== null) {
                     $articles[] = array(
