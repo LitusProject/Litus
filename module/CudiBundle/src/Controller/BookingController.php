@@ -146,7 +146,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                 $comments = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Comments\Comment')
-                    ->findAllExternalByArticle($article);
+                    ->findAllExternalByArticle($article->getMainArticle());
 
                 if ($article !== null) {
                     $articles[] = array(
