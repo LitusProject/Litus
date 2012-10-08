@@ -5,6 +5,9 @@ return array(
     'By Event' => 'By Event',
     'By Unit' => 'By Unit',
     'My Shifts' => 'My Shifts',
+    'Sign In' => 'Sign In'
+    'Responsible' => 'Responsible',
+    'Volunteer' => 'Volunteer',
     'Start' => 'Start',
     'End' => 'End',
     'Manager' => 'Manager',

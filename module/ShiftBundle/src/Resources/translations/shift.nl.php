@@ -5,6 +5,9 @@ return array(
     'By Event' => 'Per Evenement',
     'By Unit' => 'Per Eenheid',
     'My Shifts' => 'Mijn Shiften',
+    'Sign In' => 'Inschrijven'
+    'Responsible' => 'Verantwoordelijke',
+    'Volunteer' => 'Vrijwilliger',
     'Start' => 'Start',
     'End' => 'Einde',
     'Manager' => 'Beheerder',
