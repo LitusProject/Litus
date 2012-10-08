@@ -164,6 +164,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_location' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
+                    'admin_person_typeahead' => array(
+                        'typeahead'
+                    ),
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
