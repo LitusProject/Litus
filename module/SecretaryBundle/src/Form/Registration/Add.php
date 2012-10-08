@@ -117,11 +117,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $personal->add($field);
 
         $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
-        $field->setLabel('Kot Address');
+        $field->setLabel('Primary Address&mdash;Student Room or Home');
         $this->add($field);
 
         $field = new AddressForm('secondary_address', 'secondary_address');
-        $field->setLabel('Home Address');
+        $field->setLabel('Secondary Address&mdash;Home');
         $this->add($field);
 
         $internet = new Collection('internet');
