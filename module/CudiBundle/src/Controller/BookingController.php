@@ -180,9 +180,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
 
+            $comments = array();
+/*
             $comments = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Comments\Comment')
                 ->findAllExternalByArticle($commonArticle->getMainArticle());
+*/
 
             // Only add bookable articles
             if ($commonArticle->isBookable()) {
