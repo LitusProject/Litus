@@ -174,7 +174,7 @@
 
                         <span class="pull-right">
                             {% if 'search' == accordionName %}
-                                {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}
+                                {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) or shift.canHaveAsVolunteer(entityManager, authenticatedPerson) %}
                                     <i>{{ translate('Sign In') }}:</i>
                                 {% endif %}
 
