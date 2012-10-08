@@ -33,10 +33,12 @@
 					<tbody>
 
 					{% for subjectArticle in subjectArticleMap %}
-						<tr class="spacer"><td colspan="6"></td></tr>
+						<tr class="spacer">
+							<td colspan="7"></td>
+						</tr>
 
 						<tr class="course-title">
-							<td colspan="6">
+							<td colspan="7">
 								{% if null == subjectArticle['subject'] %}
 									{{ translate('General') }}
 								{% else %}
