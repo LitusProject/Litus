@@ -69,19 +69,19 @@
 											<span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText() }}<br/>
 										{% endfor %}
 
-										" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('remarks') : translate('remark') }}</span>
+										" data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('remarks') : translate('remark') }}</span>
 									{% endif %}
 								</td>
 							</tr>
 
 					        {% if element.getMessages()|length > 0  and map['article'].isBookable() %}
-					        <tr>
-					        	<td colspan="6"  style="border-top-width:0px;">
-						            <div class="help-inline pull-right">
-						                {{ formElementErrors(element) }}
-						            </div>
-					            </td>
-				            </tr>
+						        <tr>
+						        	<td colspan="7"  style="border-top-width:0px;">
+							            <div class="help-inline pull-right">
+							                {{ formElementErrors(element) }}
+							            </div>
+						            </td>
+					            </tr>
 					        {% endif %}
 						{% endfor %}
 					{% endfor %}
