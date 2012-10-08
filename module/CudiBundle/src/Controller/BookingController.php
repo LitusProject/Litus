@@ -150,7 +150,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                 if ($article !== null) {
                     $articles[] = array(
-                        'article' => $article->getMainArticle(),
+                        'article' => $article,
                         'comments' => $comments,
                         'mandatory' => $subjectMap->isMandatory(),
                         'booked' => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
