@@ -442,27 +442,25 @@ class Shift
                 return false;
         }
 
-        foreach ($this->volunteers as $volunteer) {
-            $now = new DateTime();
+        if ($this->countVolunteers() >= $this->getNbVolunteers()) {
+            foreach ($this->volunteers as $volunteer) {
+                $now = new DateTime();
 
-            $responsibleSignoutTreshold = new DateInterval(
-                $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('shiftbundle.responsible_signout_treshold')
-            );
+                $responsibleSignoutTreshold = new DateInterval(
+                    $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('shiftbundle.responsible_signout_treshold')
+                );
 
-            $getStartDate = clone $this->getStartDate();
+                $getStartDate = clone $this->getStartDate();
 
-            if ($volunteer->getPerson()->isPraesidium($this->getAcademicYear())) {
-                if ($person->isPraesidium($this->getAcademicYear()))
-                    return false;
-
-                if ($this->getStartDate()->sub($responsibleSignoutTreshold) < $now)
-                    return true;
+                if ($volunteer->getPerson()->isPraesidium($this->getAcademicYear())) {
+                    if (!$person->isPraesidium($this->getAcademicYear()) && $getStartDate->sub($responsibleSignoutTreshold) < $now)
+                        return true;
+                }
             }
-        }
 
-        if ($this->countVolunteers() >= $this->getNbVolunteers())
             return false;
+        }
 
         return true;
     }
