@@ -173,6 +173,8 @@
                         {{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}-{{ dateLocalized(shift.getEndDate(), 'H:mm') }}&mdash;{{ shift.getName() }}
 
                         <span class="pull-right">
+                            <i>Sign In:</i>
+
                             {% if 'search' == accordionName %}
                                 {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
                                     <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" type="button">
@@ -230,7 +232,12 @@
                                             <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
 
                                             <dt>{{ translate('Location') }}</dt>
-                                            <dd><img class="img-rounded" src="{{ staticMapUrl(shift.getLocation(), '367x125', '7a43b6') }}" /></dd>
+                                            <dd>
+                                                {{ shift.getLocation().getName() }}
+                                            </dd>
+                                            <dd style="margin-top: 5px;">
+                                                <img class="img-rounded" src="{{ staticMapUrl(shift.getLocation(), '367x125', '7a43b6') }}" />
+                                            </dd>
                                         </dl>
                                     </span>
                                 </div>
