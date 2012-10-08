@@ -40,9 +40,12 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             'email' => $person->getEmail()
         );
 
-        if ($person instanceof Academic) {
-            $result['university_status'] = $person->getUniversityStatus($this->getCurrentAcademicYear());
-        }
+        $academic = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneById($person->getId());
+
+        if (null !== $academic)
+            $result['university_status'] = $academic->getUniversityStatus($this->getCurrentAcademicYear());
 
         return new ViewModel(
             array(
