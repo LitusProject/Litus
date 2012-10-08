@@ -15,6 +15,7 @@
 namespace ShiftBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     DateTime,
     DateInterval,
     ShiftBundle\Entity\Shifts\Responsible,
