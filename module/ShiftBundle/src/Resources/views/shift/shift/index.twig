@@ -173,9 +173,11 @@
                         {{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}-{{ dateLocalized(shift.getEndDate(), 'H:mm') }}&mdash;{{ shift.getName() }}
 
                         <span class="pull-right">
-                            <i>Sign In:</i>
-
                             {% if 'search' == accordionName %}
+                                {% if 0 != shift.getNbResponsibles() or 0 != shift.getNbVolunteers() %}
+                                    <i>Sign In:</i>
+                                {% endif %}
+
                                 {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
                                     <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" type="button">
                                         {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
