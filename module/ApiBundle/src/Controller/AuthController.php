@@ -45,7 +45,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findOneById($person->getId());
 
         if (null !== $academic)
-            $result['university_status'] = $academic->getUniversityStatus($this->getCurrentAcademicYear());
+            $result['university_status'] = $person->getUniversityStatus($this->getCurrentAcademicYear())->getStatus();
 
         return new ViewModel(
             array(
