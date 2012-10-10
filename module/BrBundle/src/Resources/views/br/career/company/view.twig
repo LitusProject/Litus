@@ -10,14 +10,14 @@
         <hr/>
 
         <center>
-            <address>
+            <address><strong>
                 {{ company.getAddress().getStreet() }} {{ company.getAddress().getNumber() }}
                     {% if company.getAddress().getMailbox() %}
                         / {{ company.getAddress().getMailbox() }}
                     {% endif %}<br>
                 {{ company.getAddress().getPostal() }} {{ company.getAddress().getCity() }}<br>
                 {{ company.getAddress().getCountry() }}
-            </address>
+            </strong></address>
         </center>
 
         {% if company.getSummary() != "" %}
@@ -32,8 +32,57 @@
     <div class="span9">
         <h1>{{ company.getName() }}</h1>
 
-        {% autoescape false %}
-            {{ markdown(company.getDescription()) }}
-        {% endautoescape %}
+        <div class="accordion" id="accordion2">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#events">
+                        Events
+                    </a>
+                </div>
+                <div id="events" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        TODO Events
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#vacancies">
+                        Vacancies
+                    </a>
+                </div>
+                <div id="vacancies" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        TODO Vacancies
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#internships">
+                        Internships
+                    </a>
+                </div>
+                <div id="internships" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        TODO Internships
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#about">
+                        About
+                    </a>
+                </div>
+                <div id="about" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        {% autoescape false %}
+                            {{ markdown(company.getDescription()) }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
