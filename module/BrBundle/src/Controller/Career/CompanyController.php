@@ -15,6 +15,7 @@
 namespace BrBundle\Controller\Career;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
