@@ -96,12 +96,7 @@ class Company
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
      *
-     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", cascade={"persist"})
-     * @ORM\JoinTable(
-     *      name="br.companies_contacts_map",
-     *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}
-     * )
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", mappedBy="company")
      */
     private $contacts;
 
@@ -129,6 +124,7 @@ class Company
         $this->setHistory($history);
         $this->setDescription($description);
         $this->setSector($sector);
+        $this->contacts = new ArrayCollection();
 
         $this->active = true;
     }
@@ -324,20 +320,5 @@ class Company
     public function getContacts()
     {
         return $this->contacts->toArray();
-    }
-
-    /**
-     * @param array $contact The contacts that should be added
-     * @return \BrBundle\Entity\Company
-     * @throws \InvalidArugmentException
-     */
-    public function addContact(Corporate $contact)
-    {
-        if ((null === $contact) || $this->contacts->contains($contact))
-            throw new \InvalidArgumentException('Invalid contact');
-
-        $this->contacts->add($contact);
-
-        return $this;
     }
 }
