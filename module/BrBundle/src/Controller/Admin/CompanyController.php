@@ -197,7 +197,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $image->cropThumbnailImage(320, 320);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {
-                    $fileName = $company->getLogo();
+                    $fileName = '/' . $company->getLogo();
                 } else {
                     $fileName = '';
                     do{
