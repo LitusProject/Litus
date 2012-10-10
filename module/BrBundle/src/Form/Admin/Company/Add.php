@@ -51,8 +51,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Textarea('history');
-        $field->setLabel('History')
+        $field = new Textarea('summary');
+        $field->setLabel('Summary')
             ->setRequired();
         $this->add($field);
 
@@ -113,8 +113,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'history',
-                        'required' => true,
+                        'name'     => 'summary',
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),

@@ -57,6 +57,13 @@ class Job
     private $description;
 
     /**
+     * @var string The profile required for this job.
+     *
+     * @ORM\Column(type="text")
+     */
+    private $profile;
+
+    /**
      * @var \BrBundle\Entity\Company The company of the job
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company")

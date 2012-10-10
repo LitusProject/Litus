@@ -12,10 +12,16 @@
 {% block content_script %}
     <script type="text/javascript">
 	    $(document).ready(function () {
-	        $('textarea#history').gollum({
-	            toolbar: {
-					"bold": ["bold", "Bold", "bold"],
-					"italic": ["italic", "Italic", "italic"],
+            $('textarea#description').gollum({
+                uploadURL: '{{ url('admin_company', {'action': 'upload'}) }}',
+                progressURL: '{{ url('admin_company', {'action': 'uploadProgress'}) }}',
+                uploadProgressName: '{{ uploadProgressName }}',
+                progressId: '{{ uploadProgressId }}',
+            });
+            $('textarea#summary').gollum({
+                toolbar: {
+                    "bold": ["bold", "Bold", "bold"],
+                    "italic": ["italic", "Italic", "italic"],
                     "divider": "-",
                     "link": ["link", "Link", "link"],
                     "divider": "-",
@@ -27,7 +33,7 @@
                     "help": ["help", "Help", "help"],
                 },
                 width: '500px',
-	        });
+            });
 	    });
     </script>
 {% endblock %}
