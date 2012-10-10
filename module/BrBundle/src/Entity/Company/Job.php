@@ -18,15 +18,23 @@ use BrBundle\Entity\Company,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * This is the entity for an internship.
+ * This is the entity for an job.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Internship")
- * @ORM\Table(name="br.companies_internships")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Job")
+ * @ORM\Table(name="br.companies_job")
  */
-class Internship
+class Job
 {
     /**
-     * @var string The internship's ID
+     * @static
+     * @var array All the possible types allowed
+     */
+    private static $_possibleStatuses = array(
+        'internship', 'vacancy'
+    );
+
+    /**
+     * @var string The job's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -35,21 +43,21 @@ class Internship
     private $id;
 
     /**
-     * @var string The internship's name
+     * @var string The job's name
      *
      * @ORM\Column(type="string", length=50)
      */
     private $name;
 
     /**
-     * @var string The description of the internship
+     * @var string The description of the job
      *
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
-     * @var \BrBundle\Entity\Company The company of the internship
+     * @var \BrBundle\Entity\Company The company of the job
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
@@ -57,15 +65,24 @@ class Internship
     private $company;
 
     /**
-     * @param string $name The internship's name
-     * @param string $description The internship's description
-     * @param \BrBundle\Entity\Company $company The internship's company
+     * @var string The type of the job
+     *
+     * @ORM\Column(type="text")
      */
-    public function __construct($name, $description, Company $company)
+    private $type;
+
+    /**
+     * @param string $name The job's name
+     * @param string $description The job's description
+     * @param \BrBundle\Entity\Company $company The job's company
+     * @param string $type The job's type (entry of $_possibleTypes)
+     */
+    public function __construct($name, $description, Company $company, $type)
     {
         $this->setName($name);
         $this->setDescription($description);
 
+        $this->type = $type;
         $this->company = $company;
     }
 
@@ -79,7 +96,7 @@ class Internship
 
     /**
      * @param string $name
-     * @return \BrBundle\Entity\Company\Internship
+     * @return \BrBundle\Entity\Company\job
      */
     public function setName($name)
     {
@@ -100,8 +117,30 @@ class Internship
     }
 
     /**
+     * @param string $type
+     * @return \BrBundle\Entity\Company\job
+     */
+    public function setType($type)
+    {
+        if ((null === $type) || !is_string($type))
+            throw new \InvalidArgumentException('Invalid type');
+
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * @param string $description
-     * @return \BrBundle\Entity\Company\Internship
+     * @return \BrBundle\Entity\Company\job
      */
     public function setDescription($description)
     {
