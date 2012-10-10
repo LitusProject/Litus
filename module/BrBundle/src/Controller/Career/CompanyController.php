@@ -31,6 +31,60 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        return new ViewModel();
+        if (!($company = $this->_getCompany()))
+            return new ViewModel();
+
+        return new ViewModel(
+            array(
+                'company' => $company
+            )
+        );
+    }
+
+    private function _getCompany()
+    {
+        if (null === $this->getParam('company')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No name was given to identify the company!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_company',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        $company = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findOneBySlug($this->getParam('company'));
+
+        if (null === $company) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No company with the given name was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_company',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        return $company;
     }
 }
