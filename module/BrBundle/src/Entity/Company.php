@@ -15,6 +15,7 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Users\People\Corporate,
+    CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Address,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -44,6 +45,13 @@ class Company
     private $name;
 
     /**
+     * @var string The company's URL
+     *
+     * @ORM\Column(type="string", length=50);
+     */
+    private $slug;
+
+    /**
      * @var string The company's VAT number
      *
      * @ORM\Column(type="string", name="vat_number")
@@ -59,11 +67,11 @@ class Company
     private $address;
 
     /**
-     * @var string The history of the company
+     * @var string The summary of the company
      *
      * @ORM\Column(type="text")
      */
-    private $history;
+    private $summary;
 
     /**
      * @var string The description of the company
@@ -112,16 +120,16 @@ class Company
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
      * @param \CommonBundle\Entity\General\Address $address The company's address
-     * @param string $history The company's history
+     * @param string $summary The company's summary
      * @param string $description The company's description
      * @param string $sector The company's sector
      */
-    public function __construct($name, $vatNumber, Address $address, $history, $description, $sector)
+    public function __construct($name, $vatNumber, Address $address, $summary, $description, $sector)
     {
         $this->setName($name);
         $this->setVatNumber($vatNumber);
         $this->setAddress($address);
-        $this->setHistory($history);
+        $this->summary($summary);
         $this->setDescription($description);
         $this->setSector($sector);
         $this->contacts = new ArrayCollection();
@@ -155,6 +163,7 @@ class Company
             throw new \InvalidArgumentException('Invalid name');
 
         $this->name = $name;
+        $this->url = Url::createSlug($name);
 
         return $this;
     }
@@ -209,12 +218,12 @@ class Company
     }
 
     /**
-     * @param string $history
+     * @param string $summary
      * @return \BrBundle\Entity\Company
      */
-    public function setHistory($history)
+    public function setSummary($summary)
     {
-        $this->history = $history;
+        $this->summary = $summary;
 
         return $this;
     }
@@ -222,9 +231,9 @@ class Company
     /**
      * @return string
      */
-    public function getHistory()
+    public function getSummary()
     {
-        return $this->history;
+        return $this->summary;
     }
 
     /**

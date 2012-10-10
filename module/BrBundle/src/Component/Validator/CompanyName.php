@@ -14,7 +14,8 @@
 
 namespace BrBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager,
+use CommonBundle\Component\Util\Url,
+    Doctrine\ORM\EntityManager,
     BrBundle\Entity\Company;
 
 /**
@@ -70,9 +71,9 @@ class CompanyName extends \Zend\Validator\AbstractValidator
 
         $company = $this->_entityManager
             ->getRepository('BrBundle\Entity\Company')
-            ->findOneByName($value);
+            ->findOneBySlug(Url::createSlug($value));
 
-        if (null === $company || ($this->_company && ($company == $this->_company || $company->isActive())))
+        if (null === $company || ($this->_company && ($company == $this->_company || !$company->isActive())))
             return true;
 
         $this->error(self::NOT_VALID);
