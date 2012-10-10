@@ -81,6 +81,13 @@ class Company
     private $description;
 
     /**
+     * @var string The company's website
+     *
+     * @ORM\Column(type="text")
+     */
+    private $website;
+
+    /**
      * @var string The sector of the company
      *
      * @ORM\Column(type="string")
@@ -124,11 +131,12 @@ class Company
      * @param string $description The company's description
      * @param string $sector The company's sector
      */
-    public function __construct($name, $vatNumber, Address $address, $summary, $description, $sector)
+    public function __construct($name, $vatNumber, Address $address, $website, $summary, $description, $sector)
     {
         $this->setName($name);
         $this->setVatNumber($vatNumber);
         $this->setAddress($address);
+        $this->setWebsite($website);
         $this->summary($summary);
         $this->setDescription($description);
         $this->setSector($sector);
@@ -163,7 +171,7 @@ class Company
             throw new \InvalidArgumentException('Invalid name');
 
         $this->name = $name;
-        $this->url = Url::createSlug($name);
+        $this->slug = Url::createSlug($name);
 
         return $this;
     }
@@ -215,6 +223,39 @@ class Company
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * @param string $website
+     * @return \BrBundle\Entity\Company
+     */
+    public function setWebsite($website)
+    {
+        if ((null === $website) || !is_string($website))
+            throw new \InvalidArgumentException('Invalid website');
+
+        $this->website = $website;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullWebsite()
+    {
+        $result =  $this->getWebsite();
+        if (!strpos($result, 'http://'))
+            $result = 'http://' . $result;
+        return $result;
     }
 
     /**
