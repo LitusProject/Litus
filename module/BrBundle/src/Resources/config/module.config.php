@@ -155,6 +155,50 @@ return array(
                     ),
                 ),
             ),
+            'career_company' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/career/company[/:action[/:company]][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'company'     => '[a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'career_company',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
+            'career_event' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/career/event[/:action][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'career_event',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
+            'career_vacancy' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/career/vacancy[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'career_vacancy',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -190,7 +234,11 @@ return array(
 
             'corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
             'corporate_auth'           => 'BrBundle\Controller\Corporate\AuthController',
+
             'career_index'             => 'BrBundle\Controller\Career\IndexController',
+            'career_vacancy'           => 'BrBundle\Controller\Career\VacancyController',
+            'career_event'             => 'BrBundle\Controller\Career\EventController',
+            'career_company'           => 'BrBundle\Controller\Career\CompanyController',
         ),
     ),
     'assetic_configuration' => array(
