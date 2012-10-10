@@ -59,7 +59,7 @@ class Edit extends Add
         $this->setData(
             array(
                 'company_name' => $company->getName(),
-                'history' => $company->getHistory(),
+                'summary' => $company->getSummary(),
                 'description' => $company->getDescription(),
                 'sector' => $company->getSectorCode(),
                 'vat_number' => $company->getVatNumber(),

@@ -199,6 +199,19 @@ return array(
                     ),
                 ),
             ),
+            'career_file' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/career/company/file/:name[/]',
+                    'constraints' => array(
+                        'name'     => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'career_company',
+                        'action'     => 'file',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(

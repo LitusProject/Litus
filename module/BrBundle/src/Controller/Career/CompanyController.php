@@ -41,6 +41,36 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function fileAction()
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.file_path') . '/' . $this->getParam('name');
+
+        if ($this->getParam('name') == '' || !file_exists($filePath)) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
+            'Content-type' => mime_content_type($filePath),
+            'Content-Length' => filesize($filePath),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath, 'r');
+        $data = fread($handle, filesize($filePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+
     private function _getCompany()
     {
         if (null === $this->getParam('company')) {

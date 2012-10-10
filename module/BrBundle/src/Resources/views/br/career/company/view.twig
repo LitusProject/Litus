@@ -2,25 +2,38 @@
 
 {% block page_content %}
 
-    <div class="span3">
+    <div class="span2">
         {% if company.getLogo() %}
             <img src="{{ url('admin_company', {'action': 'logo', 'id': company.getLogo()}) }}" alt="{{ company.getName() }}">
         {% endif %}
 
         <hr/>
 
-        <address>
-            <strong>{{ translate('Address') }}</strong><br>
-            {{ company.getAddress().getStreet() }} {{ company.getAddress().getNumber() }}
-                {% if company.getAddress().getMailbox() %}
-                    / {{ company.getAddress().getMailbox() }}
-                {% endif %}<br>
-            {{ company.getAddress().getPostal() }} {{ company.getAddress().getCity() }}<br>
-            {{ company.getAddress().getCountry() }}
-        </address>
+        <center>
+            <address>
+                {{ company.getAddress().getStreet() }} {{ company.getAddress().getNumber() }}
+                    {% if company.getAddress().getMailbox() %}
+                        / {{ company.getAddress().getMailbox() }}
+                    {% endif %}<br>
+                {{ company.getAddress().getPostal() }} {{ company.getAddress().getCity() }}<br>
+                {{ company.getAddress().getCountry() }}
+            </address>
+        </center>
+
+        {% if company.getSummary() != "" %}
+            <hr/>
+
+            {% autoescape false %}
+                {{ markdown(company.getSummary()) }}
+            {% endautoescape %}
+        {% endif %}
+
     </div>
-    <div class="span8">
+    <div class="span9">
         <h1>{{ company.getName() }}</h1>
 
+        {% autoescape false %}
+            {{ markdown(company.getDescription()) }}
+        {% endautoescape %}
     </div>
 {% endblock %}
