@@ -74,6 +74,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(new AddressForm('', 'address'));
 
+        $field = new Text('website');
+        $field->setLabel('Website')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'company_add');
@@ -117,6 +122,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'website',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'uri',
+                            )
                         ),
                     )
                 )

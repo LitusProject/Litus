@@ -63,6 +63,7 @@ class Edit extends Add
                 'description' => $company->getDescription(),
                 'sector' => $company->getSectorCode(),
                 'vat_number' => $company->getVatNumber(),
+                'website' => $company->getWebsite(),
                 'address_street' => $company->getAddress()->getStreet(),
                 'address_number' => $company->getAddress()->getNumber(),
                 'address_mailbox' => $company->getAddress()->getMailbox(),
