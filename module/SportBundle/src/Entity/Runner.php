@@ -13,12 +13,13 @@ use \Zend\Registry;
 class Runner
 {
     /**
-     * @var string The runner's university identification
+     * @var int The ID of this runner
      *
      * @Id
-     * @Column(name="university_identification", type="string", length=8)
+     * @GeneratedValue
+     * @Column(type="bigint")
      */
-    private $universityIdentification;
+    private $id;
 
     /**
      * @var string The runner's first name
@@ -35,12 +36,17 @@ class Runner
     private $lastName;
 
     /**
-     * @var \Litus\Entity\Sport\Group The runner's group
+     * @var \SportBundle\Entity\Group The runner's group
      *
      * @ManyToOne(targetEntity="Litus\Entity\Sport\Group", inversedBy="members")
      * @JoinColumn(name="group_of_friends", referencedColumnName="id")
      */
     private $group;
+
+    /**
+     * @var \CommonBundle\Entity\Users\People\Academic The academic linked to this runner
+     */
+    private $person;
 
     /**
      * @param string $universityIdentification The runner's university identification
