@@ -14,18 +14,18 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company\Vacancy,
-    BrBundle\Form\Admin\Company\Vacancy\Add as AddForm,
-    BrBundle\Form\Admin\Company\Vacancy\Edit as EditForm,
+use BrBundle\Entity\Company\Job,
+    BrBundle\Form\Admin\Company\Job\Add as AddForm,
+    BrBundle\Form\Admin\Company\Job\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
- * VacancyController
+ * JobController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class VacancyController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class JobController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -34,7 +34,7 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company\Vacancy')
+                ->getRepository('BrBundle\Entity\Company\Job')
                 ->findAllByCompany($company),
             $this->getParam('page')
         );
@@ -60,25 +60,28 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $vacancy = new Vacancy(
-                    $formData['vacancy_name'],
+
+                $job = new Job(
+                    $formData['job_name'],
                     $formData['description'],
-                    $company
+                    $formData['profile'],
+                    $company,
+                    $formData['type']
                 );
 
-                $this->getEntityManager()->persist($vacancy);
+                $this->getEntityManager()->persist($job);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The vacancy was successfully created!'
+                        'The job was successfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company_vacancy',
+                    'admin_company_job',
                     array(
                         'action' => 'manage',
                         'id' => $company->getId(),
@@ -99,32 +102,33 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($vacancy = $this->_getVacancy()))
+        if (!($job = $this->_getJob()))
             return new ViewModel();
 
-        $form = new EditForm($vacancy);
+        $form = new EditForm($job);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $vacancy->setName($formData['vacancy_name'])
+                $job->setName($formData['job_name'])
+                    ->setProfile($formData['profile'])
                     ->setDescription($formData['description']);
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The vacancy was successfully edited!'
+                        'The job was successfully edited!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company_vacancy',
+                    'admin_company_job',
                     array(
                         'action' => 'manage',
-                        'id' => $vacancy->getCompany()->getId(),
+                        'id' => $job->getCompany()->getId(),
                     )
                 );
 
@@ -134,7 +138,7 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'company' => $vacancy->getCompany(),
+                'company' => $job->getCompany(),
                 'form' => $form,
             )
         );
@@ -144,10 +148,10 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($vacancy = $this->_getVacancy()))
+        if (!($job = $this->_getJob()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($vacancy);
+        $this->getEntityManager()->remove($job);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -204,14 +208,14 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
         return $company;
     }
 
-    private function _getVacancy()
+    private function _getJob()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the vacancy!'
+                    'No ID was given to identify the job!'
                 )
             );
 
@@ -225,16 +229,16 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
             return;
         }
 
-        $vacancy = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Vacancy')
+        $job = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Job')
             ->findOneById($this->getParam('id'));
 
-        if (null === $vacancy) {
+        if (null === $job) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No vacancy with the given ID was found!'
+                    'No job with the given ID was found!'
                 )
             );
 
@@ -248,6 +252,6 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
             return;
         }
 
-        return $vacancy;
+        return $job;
     }
 }

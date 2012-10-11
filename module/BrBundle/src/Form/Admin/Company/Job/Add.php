@@ -12,9 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Company\Vacancy;
+namespace BrBundle\Form\Admin\Company\Job;
 
-use BrBundle\Entity\Company\Vacancy,
+use BrBundle\Entity\Company\Job,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     Zend\InputFilter\InputFilter,
@@ -22,7 +23,7 @@ use BrBundle\Entity\Company\Vacancy,
     Zend\Form\Element\Submit;
 
 /**
- * Add an vacancy.
+ * Add a job.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -35,13 +36,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($name);
 
-        $field = new Text('vacancy_name');
-        $field->setLabel('Vacancy Name')
+        $field = new Text('job_name');
+        $field->setLabel('Job Name')
             ->setRequired();
         $this->add($field);
 
         $field = new Textarea('description');
         $field->setLabel('Description')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Textarea('profile');
+        $field->setLabel('Profile')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Select('type');
+        $field->setLabel('Type')
+            ->setAttribute('options', Job::$possibleTypes)
             ->setRequired();
         $this->add($field);
 
@@ -51,12 +63,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    public function populateFromVacancy(Vacancy $vacancy)
+    public function populateFromJob(Job $job)
     {
         $this->setData(
             array(
-                'vacancy_name' => $vacancy->getName(),
-                'description' => $vacancy->getDescription(),
+                'job_name' => $job->getName(),
+                'description' => $job->getDescription(),
             )
         );
     }
@@ -70,7 +82,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'vacancy_name',
+                        'name'     => 'job_name',
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),

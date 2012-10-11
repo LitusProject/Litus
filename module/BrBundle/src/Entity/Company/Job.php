@@ -29,8 +29,9 @@ class Job
      * @static
      * @var array All the possible types allowed
      */
-    private static $_possibleStatuses = array(
-        'internship', 'vacancy'
+    public static $possibleTypes = array(
+        'internship' => 'Internship',
+        'vacancy' => 'Vacancy',
     );
 
     /**
@@ -66,7 +67,7 @@ class Job
     /**
      * @var \BrBundle\Entity\Company The company of the job
      *
-     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
@@ -81,14 +82,16 @@ class Job
     /**
      * @param string $name The job's name
      * @param string $description The job's description
+     * @param string $profile The job's profile
      * @param \BrBundle\Entity\Company $company The job's company
-     * @param string $type The job's type (entry of $_possibleTypes)
+     * @param string $type The job's type (entry of $possibleTypes)
      */
-    public function __construct($name, $description, Company $company, $type)
+    public function __construct($name, $description, $profile, Company $company, $type)
     {
         $this->setName($name);
         $this->setDescription($description);
 
+        $this->profile = $profile;
         $this->type = $type;
         $this->company = $company;
     }
@@ -143,6 +146,14 @@ class Job
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeName()
+    {
+        return Job::$possibleTypes[$this->type];
     }
 
     /**
