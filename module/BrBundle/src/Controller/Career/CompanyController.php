@@ -35,9 +35,24 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         if (!($page = $this->_getPage()))
             return new ViewModel();
 
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Event')
+            ->findAllByCompany($page->getCompany());
+
+        $internships = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Job')
+            ->findAllByCompanyAndType($page->getCompany(), 'internship');
+
+        $vacancies = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Job')
+            ->findAllByCompanyAndType($page->getCompany(), 'vacancy');
+
         return new ViewModel(
             array(
-                'page' => $page
+                'page' => $page,
+                'events' => $events,
+                'internships' => $internships,
+                'vacancies' => $vacancies,
             )
         );
     }
