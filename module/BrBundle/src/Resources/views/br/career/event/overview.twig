@@ -1,5 +1,17 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
-    Company
+    <h1>{{ translate('Events') }}</h1>
+
+        {% for event in events %}
+        <div>
+            {{ event.getEvent().getStartDate().format('d/m/Y h:i') }}
+
+
+            {% if event.getEvent().getPoster() %}
+                <img src="{{ url('admin_calendar', {'action': 'poster', 'id': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+            {% endif %}
+        </div>
+        {% endfor %}
+
 {% endblock %}
