@@ -1,11 +1,26 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Litus\Entity\Sport;
+namespace SportBundle\Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Sport\Group")
+ * This entity represents a group of friends.
+ *
+ * @Entity(repositoryClass="SportBundle\Repository\Group")
  * @Table(name="sport.groups")
  */
 class Group
@@ -29,7 +44,7 @@ class Group
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The members of this group
      *
-     * @OneToMany(targetEntity="Litus\Entity\Sport\Runner", mappedBy="group", cascade={"persist"})
+     * @OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="group", cascade={"persist"})
      */
     private $members;
 
@@ -73,7 +88,7 @@ class Group
 
     /**
      * @param array $members
-     * @return \Litus\Entity\Sport\Group
+     * @return \SportBundle\Entity\Group
      */
     public function setMembers(array $members)
     {
