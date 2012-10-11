@@ -48,7 +48,7 @@ class Event
     /**
      * @var \BrBundle\Entity\Company The company of the event
      *
-     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;

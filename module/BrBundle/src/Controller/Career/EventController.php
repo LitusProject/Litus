@@ -15,6 +15,7 @@
 namespace BrBundle\Controller\Career;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    \DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -26,6 +27,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function overviewAction()
     {
-        return new ViewModel();
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Event')
+            ->findAllFuture(new DateTime());
+
+        return new ViewModel(
+            array(
+                'events' => $events,
+            )
+        );
     }
 }
