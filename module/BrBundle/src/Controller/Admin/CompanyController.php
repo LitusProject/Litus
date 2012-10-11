@@ -15,6 +15,7 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Page,
     BrBundle\Form\Admin\Company\Add as AddForm,
     BrBundle\Form\Admin\Company\Edit as EditForm,
     BrBundle\Form\Admin\Company\Logo as LogoForm,
@@ -73,12 +74,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         $formData['address_country']
                     ),
                     $formData['website'],
-                    $formData['summary'],
-                    $formData['description'],
                     $formData['sector']
                 );
 
                 $this->getEntityManager()->persist($company);
+
+                if (isset($formData['page']) && $formData['page']) {
+                    $page = new Page(
+                        $company,
+                        $formData['summary'],
+                        $formData['description']
+                    );
+
+                    $this->getEntityManager()->persist($page);
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -123,8 +133,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $company->setName($formData['company_name'])
                     ->setVatNumber($formData['vat_number'])
-                    ->setSummary($formData['summary'])
-                    ->setDescription($formData['description'])
                     ->setSector($formData['sector'])
                     ->setWebsite($formData['website'])
                     ->getAddress()
@@ -134,6 +142,25 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->setPostal($formData['address_postal'])
                         ->setCity($formData['address_city'])
                         ->setCountry($formData['address_country']);
+
+                if (isset($formData['page']) && $formData['page']) {
+                    if ($company->getPage() != null) {
+                        $company->getPage()
+                            ->setSummary($formData['summary'])
+                            ->setDescription($formData['description']);
+                    } else {
+                        $page = new Page(
+                            $company,
+                            $formData['summary'],
+                            $formData['description']
+                        );
+                        $this->getEntityManager()->persist($page);
+                    }
+                } else {
+                    if ($company->getPage() != null) {
+                        $this->getEntityManager()->remove($company->getPage());
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
