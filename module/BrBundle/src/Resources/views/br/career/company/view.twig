@@ -39,6 +39,7 @@
         <h1>{{ page.getCompany().getName() }}</h1>
 
         <div class="accordion" id="accordion2">
+            {% if events|length > 0 %}
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#events">
@@ -53,6 +54,8 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+            {% if vacancies|length > 0 %}
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#vacancies">
@@ -67,6 +70,8 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+            {% if internships|length > 0 %}
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#internships">
@@ -81,6 +86,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#about">
