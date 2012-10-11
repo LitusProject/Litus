@@ -23,6 +23,7 @@ return array(
     'BrBundle\Repository\Company'                            => __DIR__ . '/src/Repository/Company.php',
     'BrBundle\Repository\Company\Event'                      => __DIR__ . '/src/Repository/Company/Event.php',
     'BrBundle\Repository\Company\Vacancy'                    => __DIR__ . '/src/Repository/Company/Job.php',
+    'BrBundle\Repository\Company\Page'                       => __DIR__ . '/src/Repository/Company/Page.php',
     'BrBundle\Repository\Company\Job'                        => __DIR__ . '/src/Repository/Company/Vacancy.php',
     'BrBundle\Component\Validator\CompanyName'               => __DIR__ . '/src/Component/Validator/CompanyName.php',
     'BrBundle\Component\Controller\CorporateController'      => __DIR__ . '/src/Component/Controller/CorporateController.php',

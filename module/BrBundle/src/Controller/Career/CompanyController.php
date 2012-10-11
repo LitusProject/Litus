@@ -27,20 +27,17 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function overviewAction()
     {
-        $companies = 
-
-
         return new ViewModel();
     }
 
     public function viewAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($page = $this->_getPage()))
             return new ViewModel();
 
         return new ViewModel(
             array(
-                'company' => $company
+                'page' => $page
             )
         );
     }
@@ -75,7 +72,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getCompany()
+    private function _getPage()
     {
         if (null === $this->getParam('company')) {
             $this->flashMessenger()->addMessage(
@@ -97,8 +94,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneBySlug($this->getParam('company'));
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findOneActiveBySlug($this->getParam('company'));
 
         if (null === $company) {
             $this->flashMessenger()->addMessage(

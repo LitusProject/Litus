@@ -3,40 +3,40 @@
 {% block page_content %}
 
     <div class="span2">
-        {% if company.getLogo() %}
-            <img src="{{ url('admin_company', {'action': 'logo', 'id': company.getLogo()}) }}" alt="{{ company.getName() }}">
+        {% if page.getCompany().getLogo() %}
+            <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
         {% endif %}
 
         <hr/>
 
         <center>
             <address><strong>
-                {{ company.getAddress().getStreet() }} {{ company.getAddress().getNumber() }}
-                    {% if company.getAddress().getMailbox() %}
-                        / {{ company.getAddress().getMailbox() }}
+                {{ page.getCompany().getAddress().getStreet() }} {{ page.getCompany().getAddress().getNumber() }}
+                    {% if page.getCompany().getAddress().getMailbox() %}
+                        / {{ page.getCompany().getAddress().getMailbox() }}
                     {% endif %}<br>
-                {{ company.getAddress().getPostal() }} {{ company.getAddress().getCity() }}<br>
-                {{ company.getAddress().getCountry() }}
+                {{ page.getCompany().getAddress().getPostal() }} {{ page.getCompany().getAddress().getCity() }}<br>
+                {{ page.getCompany().getAddress().getCountry() }}
             </strong></address>
         </center>
 
         <hr/>
 
         <center>
-            <a style="word-wrap: break-word;" href="{{ company.getFullWebsite() }}">{{ company.getWebsite() }}</a>
+            <a style="word-wrap: break-word;" href="{{ page.getCompany().getFullWebsite() }}">{{ page.getCompany().getWebsite() }}</a>
         </center>
 
-        {% if company.getSummary() != "" %}
+        {% if page.getSummary() != "" %}
             <hr/>
 
             {% autoescape false %}
-                {{ markdown(company.getSummary()) }}
+                {{ markdown(page.getSummary()) }}
             {% endautoescape %}
         {% endif %}
 
     </div>
     <div class="span9">
-        <h1>{{ company.getName() }}</h1>
+        <h1>{{ page.getCompany().getName() }}</h1>
 
         <div class="accordion" id="accordion2">
             <div class="accordion-group">
@@ -84,7 +84,7 @@
                 <div id="about" class="accordion-body collapse in">
                     <div class="accordion-inner">
                         {% autoescape false %}
-                            {{ markdown(company.getDescription()) }}
+                            {{ markdown(page.getDescription()) }}
                         {% endautoescape %}
                     </div>
                 </div>
