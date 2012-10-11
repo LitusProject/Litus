@@ -27,6 +27,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function overviewAction()
     {
+        $companies = 
+
+
         return new ViewModel();
     }
 

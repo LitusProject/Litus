@@ -67,20 +67,6 @@ class Company
     private $address;
 
     /**
-     * @var string The summary of the company
-     *
-     * @ORM\Column(type="text")
-     */
-    private $summary;
-
-    /**
-     * @var string The description of the company
-     *
-     * @ORM\Column(type="text")
-     */
-    private $description;
-
-    /**
      * @var string The company's website
      *
      * @ORM\Column(type="text")
@@ -116,6 +102,13 @@ class Company
     private $contacts;
 
     /**
+     * @var \BrBundle\Entity\Company\Page The company's page
+     *
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company\Page", mappedBy="company")
+     */
+    private $page;
+
+    /**
      * @var array The possible sectors of a company
      */
     public static $POSSIBLE_SECTORS = array(
@@ -127,18 +120,14 @@ class Company
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
      * @param \CommonBundle\Entity\General\Address $address The company's address
-     * @param string $summary The company's summary
-     * @param string $description The company's description
      * @param string $sector The company's sector
      */
-    public function __construct($name, $vatNumber, Address $address, $website, $summary, $description, $sector)
+    public function __construct($name, $vatNumber, Address $address, $website, $sector)
     {
         $this->setName($name);
         $this->setVatNumber($vatNumber);
         $this->setAddress($address);
         $this->setWebsite($website);
-        $this->summary($summary);
-        $this->setDescription($description);
         $this->setSector($sector);
         $this->contacts = new ArrayCollection();
 
@@ -159,6 +148,14 @@ class Company
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \BrBundle\Entity\Company\Page
+     */
+    public function getPage()
+    {
+        return $this->page;
     }
 
     /**
@@ -256,44 +253,6 @@ class Company
         if (!strpos($result, 'http://'))
             $result = 'http://' . $result;
         return $result;
-    }
-
-    /**
-     * @param string $summary
-     * @return \BrBundle\Entity\Company
-     */
-    public function setSummary($summary)
-    {
-        $this->summary = $summary;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSummary()
-    {
-        return $this->summary;
-    }
-
-    /**
-     * @param string $description
-     * @return \BrBundle\Entity\Company
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**

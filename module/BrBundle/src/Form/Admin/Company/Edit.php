@@ -56,22 +56,26 @@ class Edit extends Add
 
     private function _populateFromCompany(Company $company)
     {
-        $this->setData(
-            array(
-                'company_name' => $company->getName(),
-                'summary' => $company->getSummary(),
-                'description' => $company->getDescription(),
-                'sector' => $company->getSectorCode(),
-                'vat_number' => $company->getVatNumber(),
-                'website' => $company->getWebsite(),
-                'address_street' => $company->getAddress()->getStreet(),
-                'address_number' => $company->getAddress()->getNumber(),
-                'address_mailbox' => $company->getAddress()->getMailbox(),
-                'address_postal' => $company->getAddress()->getPostal(),
-                'address_city' => $company->getAddress()->getCity(),
-                'address_country' => $company->getAddress()->getCountryCode(),
-            )
+        $formData =  array(
+            'company_name' => $company->getName(),
+            'page' => $company->getPage() !== null,
+            'sector' => $company->getSectorCode(),
+            'vat_number' => $company->getVatNumber(),
+            'website' => $company->getWebsite(),
+            'address_street' => $company->getAddress()->getStreet(),
+            'address_number' => $company->getAddress()->getNumber(),
+            'address_mailbox' => $company->getAddress()->getMailbox(),
+            'address_postal' => $company->getAddress()->getPostal(),
+            'address_city' => $company->getAddress()->getCity(),
+            'address_country' => $company->getAddress()->getCountryCode(),
         );
+
+        if ($company->getPage() !== null) {
+            $formData['summary'] = $company->getPage()->getSummary();
+            $formData['description'] = $company->getPage()->getDescription();
+        }
+
+        $this->setData($formData);
     }
 
     public function getInputFilter()
