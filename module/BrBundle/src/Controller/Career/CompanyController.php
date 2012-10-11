@@ -27,7 +27,15 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function overviewAction()
     {
-        return new ViewModel();
+        $pages = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findAllActive();
+
+        return new ViewModel(
+            array(
+                'pages' => $pages,
+            )
+        );
     }
 
     public function viewAction()

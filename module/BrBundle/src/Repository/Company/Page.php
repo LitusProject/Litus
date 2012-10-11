@@ -44,7 +44,6 @@ class Page extends EntityRepository
             ->where(
                 $query->expr()->eq('c.active', 'true')
             )
-            ->setParameter('slug', $slug)
             ->getQuery()
             ->getResult();
 

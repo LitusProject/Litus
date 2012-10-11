@@ -330,4 +330,9 @@ class Company
     {
         return $this->contacts->toArray();
     }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 }

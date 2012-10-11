@@ -1,5 +1,13 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
-    Company
+    <ul class="thumbnails">
+        {% for page in pages %}
+            <li class="span4">
+                <a href="{{ url('career_company', {'action': 'view', 'company': page.getCompany().getSlug() }) }}" class="thumbnail">
+                    <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
