@@ -12,36 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class Company extends EntityRepository
 {
-
-    public function findOneWithPageBySlug($slug)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('c')
-            ->from('BrBundle\Entity\Company', 'c')
-            ->where(
-                $query->expr()->andx(
-                    $query->expr()->eq('active', true),
-                    $query->expr()->eq('slug', ':slug')
-                )
-            )
-            ->setParameter('slug', $slug)
-            ->getQuery()
-            ->getResult();
-
-        return $resultSet;
-    }
-
-    public function findAllWithPage()
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('c')
-            ->from('BrBundle\Entity\Company', 'c')
-            ->where(
-                $query->expr()->eq('active', true)
-            )
-            ->getQuery()
-            ->getResult();
-
-        return $resultSet;
-    }
 }
