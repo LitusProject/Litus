@@ -52,13 +52,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_company_event' => array(
                         'add', 'delete', 'edit', 'editPoster', 'manage'
                     ),
-                    'admin_company_intership' => array(
+                    'admin_company_job' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'admin_company_user' => array(
-                        'add', 'delete', 'edit', 'manage'
-                    ),
-                    'admin_company_vacancy' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
                 )

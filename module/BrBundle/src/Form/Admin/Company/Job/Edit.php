@@ -12,29 +12,30 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Company\Internship;
+namespace BrBundle\Form\Admin\Company\Job;
 
-use BrBundle\Entity\Company\Internship,
+use BrBundle\Entity\Company\Job,
     CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
 /**
- * Edit an internship.
+ * Edit a job.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends Add
 {
     /**
-     * @param \BrBundle\Entity\Company\Internship $internship
+     * @param \BrBundle\Entity\Company\Job $job
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Internship $internship, $name = null)
+    public function __construct(Job $job, $name = null)
     {
         parent::__construct($name);
 
+        $this->remove('type');
         $this->remove('submit');
 
         $field = new Submit('submit');
@@ -42,6 +43,6 @@ class Edit extends Add
             ->setAttribute('class', 'companies_edit');
         $this->add($field);
 
-        $this->populateFromInternship($internship);
+        $this->populateFromJob($job);
     }
 }

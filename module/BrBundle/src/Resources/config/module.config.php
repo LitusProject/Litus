@@ -53,30 +53,16 @@ return array(
                     ),
                 ),
             ),
-            'admin_company_internship' => array(
+            'admin_company_job' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/company/internship[/:action[/:id]][/]',
+                    'route' => '/admin/company/job[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_company_internship',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
-            'admin_company_vacancy' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/company/vacancy[/:action[/:id]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'admin_company_vacancy',
+                        'controller' => 'admin_company_job',
                         'action'     => 'manage',
                     ),
                 ),
@@ -240,8 +226,7 @@ return array(
 
             'admin_company'            => 'BrBundle\Controller\Admin\CompanyController',
             'admin_company_event'      => 'BrBundle\Controller\Admin\Company\EventController',
-            'admin_company_internship' => 'BrBundle\Controller\Admin\Company\InternshipController',
-            'admin_company_vacancy'    => 'BrBundle\Controller\Admin\Company\VacancyController',
+            'admin_company_job' => 'BrBundle\Controller\Admin\Company\JobController',
             'admin_company_user'       => 'BrBundle\Controller\Admin\Company\UserController',
             'admin_section'            => 'BrBundle\Controller\Admin\SectionController',
 

@@ -1,20 +1,20 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'br/admin/company/internship/partials/navigation.twig' %}
+	{% include 'br/admin/company/job/partials/navigation.twig' %}
 
 	<div id="controller_action">
 		{% include 'admin/partials/flashMessenger.twig' %}
-	    <div class="flashmessage success_message full_width internship_removed_success hide">
+	    <div class="flashmessage success_message full_width job_removed_success hide">
 	    	<div class="title">Success</div>
 	    	<div class="content">
-	    		<p>The internship was successfully removed!</p>
+	    		<p>The job was successfully removed!</p>
 	    	</div>
 	    </div>
-	    <div class="flashmessage error_message full_width internship_removed_error hide">
+	    <div class="flashmessage error_message full_width job_removed_error hide">
 	    	<div class="title">Error</div>
 	    	<div class="content">
-	    		<p>An error occurred while trying to delete an internship.</p>
+	    		<p>An error occurred while trying to delete an job.</p>
 	    	</div>
 	    </div>
 
@@ -26,22 +26,24 @@
 	            <tr>
 	                <th>Name</th>
 	                <th width="300px">Description</th>
+					<th width="120px">Type</th>
 	                <th width="120px">Action</th>
 	            </tr>
 	        </thead>
 
 	        <tbody>
-	            {% for internship in paginator %}
-	                <tr class="item item-{{ internship.getId() }}">
-	                    <td>{{ internship.getName() }}</td>
-	                    <td>{{ internship.getSummary() }}</td>
+	            {% for job in paginator %}
+	                <tr class="item item-{{ job.getId() }}">
+	                    <td>{{ job.getName() }}</td>
+	                    <td>{{ job.getSummary() }}</td>
+	                    <td>{{ job.getTypeName() }}</td>
 	                    <td class="actions">
 	                        <ul>
-	                        	{% if hasAccess('admin_company_internship', 'delete') %}
-	                            	<li><a href="#" class="delete" data-id="{{ internship.getId() }}" data-name="{{ internship.getName() }}">Delete</a></li>
+	                        	{% if hasAccess('admin_company_job', 'delete') %}
+	                            	<li><a href="#" class="delete" data-id="{{ job.getId() }}" data-name="{{ job.getName() }}">Delete</a></li>
 	                            {% endif %}
-                            	{% if hasAccess('admin_company_internship', 'edit') %}
-                                	<li><a href="{{ url('admin_company_internship', {"action": "edit", "id": internship.getId()}) }}" class="edit">Edit</a></li>
+                            	{% if hasAccess('admin_company_job', 'edit') %}
+                                	<li><a href="{{ url('admin_company_job', {"action": "edit", "id": job.getId()}) }}" class="edit">Edit</a></li>
                                 {% endif %}
 	                        </ul>
 	                    </td>
@@ -53,14 +55,14 @@
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
 
-	<div class="modal hide fade" id="removeInternship">
+	<div class="modal hide fade" id="removeJob">
 		<div class="modal-header">
 			<span>Litus Admin</span>
-			/Delete Internship
+			/Delete Job
 		</div>
 		<div class="modal-body">
 			<p>
-				You are about to delete the following internship: <b class="internshipName"></b>!
+				You are about to delete the following job: <b class="jobName"></b>!
 				Please note that this operation cannot be undone!
 			</p>
 			<p>
@@ -84,28 +86,28 @@
 			var $this = $(this);
 
 			e.preventDefault();
-			var removeInternship = $('#removeInternship');
-			removeInternship.find('.internshipName').html($(this).data('name'));
+			var removeJob = $('#removeJob');
+			removeJob.find('.jobName').html($(this).data('name'));
 			var id = $this.data('id');
-			removeInternship.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_company_internship', {"action": "delete"}) }}/' + id, function (data) {
+			removeJob.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_company_job', {"action": "delete"}) }}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
-    					$('.internship_removed_success').removeClass('hide');
+    					$('.job_removed_success').removeClass('hide');
     					$('.item-' + id).remove();
-    					removeInternship.modal('hide');
+    					removeJob.modal('hide');
     				} else {
     				    errorRemove();
     				}
 				}, 'json').error(errorRemove);
 			});
-			removeInternship.modal();
+			removeJob.modal();
 		}
 
 		function errorRemove() {
     		$('.flashmessage').addClass('hide');
-    		$('.internship_removed_error').removeClass('hide');
-    		$('#removeInternship').modal('hide');
+    		$('.job_removed_error').removeClass('hide');
+    		$('#removeJob').modal('hide');
 		}
 	</script>
 {% endblock %}
