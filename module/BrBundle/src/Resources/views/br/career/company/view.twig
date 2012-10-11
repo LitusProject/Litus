@@ -47,7 +47,9 @@
                 </div>
                 <div id="events" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        TODO Events
+                        {% for event in events %}
+                            {{ event.getEvent().getName() }}<br/>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -59,7 +61,9 @@
                 </div>
                 <div id="vacancies" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        TODO Vacancies
+                        {% for vacancy in vacancies %}
+                            {{ vacancy.getName() }}<br/>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -71,7 +75,9 @@
                 </div>
                 <div id="internships" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        TODO Internships
+                        {% for internship in internships %}
+                            {{ internship.getName() }}<br/>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
