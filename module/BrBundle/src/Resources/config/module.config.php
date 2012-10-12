@@ -187,6 +187,22 @@ return array(
                     ),
                 ),
             ),
+            'career_internship' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/career/internship[/:action[/:id]][/page/:page][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[0-9_-]*',
+                        'language' => '[a-z]{2}',
+                        'page'     => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'career_internship',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
             'career_file' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -237,6 +253,7 @@ return array(
 
             'career_index'             => 'BrBundle\Controller\Career\IndexController',
             'career_vacancy'           => 'BrBundle\Controller\Career\VacancyController',
+            'career_internship'        => 'BrBundle\Controller\Career\InternshipController',
             'career_event'             => 'BrBundle\Controller\Career\EventController',
             'career_company'           => 'BrBundle\Controller\Career\CompanyController',
         ),

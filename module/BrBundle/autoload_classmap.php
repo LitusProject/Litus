@@ -38,6 +38,7 @@ return array(
     'BrBundle\Entity\Company\Page'                      => __DIR__ . '/src/Entity/Company/Page.php',
     'BrBundle\Entity\Company\Vacancy'                   => __DIR__ . '/src/Entity/Company/Vacancy.php',
     'BrBundle\Controller\Career\EventController'        => __DIR__ . '/src/Controller/Career/EventController.php',
+    'BrBundle\Controller\Career\InternshipController'   => __DIR__ . '/src/Controller/Career/InternshipController.php',
     'BrBundle\Controller\Career\IndexController'        => __DIR__ . '/src/Controller/Career/IndexController.php',
     'BrBundle\Controller\Career\VacancyController'      => __DIR__ . '/src/Controller/Career/VacancyController.php',
     'BrBundle\Controller\Career\CompanyController'      => __DIR__ . '/src/Controller/Career/CompanyController.php',
