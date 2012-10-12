@@ -525,11 +525,6 @@ return array(
                             'bootstrap/js/bootstrap-popover.js',
                         ),
                     ),
-                    'bootstrap_js_rowlink' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-rowlink.js',
-                        ),
-                    ),
                     'bootstrap_js_scrollspy' => array(
                         'assets' => array(
                             'bootstrap/js/bootstrap-scrollspy.js',
