@@ -39,6 +39,8 @@
         <label class="checkbox">
             <input type="checkbox" class="subject_enroll" data-id="{{ subject.getId() }}" checked="checked"> {{ subject.getName() }}<small>&mdash;{{ subject.getCode() }}</small>
         </label>
+    {% else %}
+        <em>{{ translate('You have not yet added any other subjects.') }}</em>
     {% endfor %}
 
     <h2>{{ translate('Add Other Subjects') }}</h2>
