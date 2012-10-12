@@ -285,6 +285,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'event' => $event,
                 'form' => $form,
+                'company' => $event->getCompany(),
             )
         );
     }
