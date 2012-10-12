@@ -51,7 +51,7 @@ class Html extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::TITLE_EXISTS => 'There is a html edition with this title already for this publication!',
+        self::TITLE_EXISTS => 'There already is a HTML edition with this title for this publication',
     );
 
     /**

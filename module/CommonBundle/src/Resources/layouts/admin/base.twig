@@ -297,7 +297,7 @@
 		                    <li>
 			                    <div class="subtitle">
 			                    		<b>Sport</b><br />
-			                    		Twenty Four
+			                    		24h-Run
 			                    </div>
 
 			                    <ul
@@ -305,8 +305,8 @@
 			                    		style="display: block;"
 			                    	{% endif %}
 			                    >
-			                        {% if hasAccess('admin_run', 'index') %}
-			                            <li><a href="{{ url('admin_index') }}">24h-Run</a></li>
+			                        {% if hasAccess('admin_run', 'queue') %}
+			                            <li><a href="{{ url('admin_run') }}">24h-Run</a></li>
 			                        {% endif %}
 			                    </ul>
 			            	</li>

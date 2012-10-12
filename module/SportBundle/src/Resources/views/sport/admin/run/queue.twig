@@ -1,0 +1,193 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message lap_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The lap was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message lap_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the lap.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <table class="manage">
+            <thead>
+                <tr>
+                    <th>Runner</th>
+                    <th width="150px">Registration Time</th>
+                    <th width="150px">Duration</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for lap in previousLaps %}
+                    <tr>
+                        <td>{{ lap.getRunner().getFullName() }}</td>
+                        <td>{{ lap.getRegistrationTime().format('d/m/Y H:i:s') }}</td>
+                        <td>{{ lap.getLapTime().format('%i:%S') }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+
+                {% if currentLap is not null %}
+                    <tr class="item item-{{ currentLap.getId() }}">
+                        <td>&raquo; {{ currentLap.getRunner().getFullName() }}</td>
+                        <td>{{ currentLap.getRegistrationTime().format('d/m/Y H:i:s') }}</td>
+                        <td><i>Running</i></td>
+                        <td>
+                            <a href="#" data-id="{{ lap.getId() }}" data-runner="{{ lap.getRunner().getFullName() }}" class="delete">Delete</a>
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% for lap in nextLaps %}
+                    <tr class="item item-{{ lap.getId() }}">
+                        <td>{{ lap.getRunner().getFullName() }}</td>
+                        <td>{{ lap.getRegistrationTime().format('d/m/Y H:i:s') }}</td>
+                        <td><i>Queued</i></td>
+                        <td class="actions">
+                            {% if hasAccess('admin_run', 'delete') %}
+                                <a href="#" data-id="{{ lap.getId() }}" data-runner="{{ lap.getRunner().getFullName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <aside>
+        <div class="sidebox">
+            <div class="title">New Lap</div>
+            <div class="content">
+                <p>
+                    <i>Please hit the link below to start timing a new lap or to stop the current lap!</i>
+                </p>
+                <p>
+                    {% if nextLap is not null %}
+                        <a href="{{ url('admin_run', {"action": "start"}) }}">&rarr; Next Lap</a>
+                    {% else %}
+                        {% if currentLap is not null %}
+                            <a href="{{ url('admin_run', {"action": "stop"}) }}">&rarr; Stop</a>
+                        {% else %}
+                            &rarr; Stop
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="sidebox">
+            <div class="title">Total Laps</div>
+            <div class="content">
+                <p>
+                    According to our own counter, we have run <b>{{ nbLaps }}</b> laps right now.
+                </p>
+
+                <p>
+                    The official count currently is <b>{% if nbOfficialLaps is null %}N/A{% else %}{{ nbOfficialLaps }}{% endif %}</b>.
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    <div class="modal hide fade" id="removeLap">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Lap
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the lap from the following runner: <b class="runner"></b>?
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+
+            $(document).bind('keypress.space', startShortKey);
+            $(document).bind('keypress.l', loadShortKey);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeLap = $('#removeLap');
+            removeLap.find('.runner').html($(this).data('runner'));
+            removeLap.find('.cancel').one('click', function () {
+                removeLap.modal('hide');
+            });
+            var id = $this.data('id');
+            removeLap.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_run', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.lap_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeLap.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeLap.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.lap_removed_error').removeClass('hide');
+            $('#removeLap').modal('hide');
+        }
+
+        function startShortKey(e) {
+            if (e.keyCode == 32) {
+                $(document).unbind('keypress.space');
+
+                $(document).bind('keypress.s', function(e) {
+                    if (e.keyCode == 115) {
+                        {% if nextLap is not null %}
+                            window.location.href = "{{ url('admin_run', {"action": "start"}) }}";
+                        {% else %}
+                            {% if currentLap is not null %}
+                                window.location.href = "{{ url('admin_run', {"action": "stop"}) }}";
+                            {% else %}
+                                window.location.reload();
+                            {% endif %}
+                        {% endif %}
+
+                        $(document).unbind('keypress.s').bind('keypress.space', startShortKey);
+                    }
+                });
+            }
+        }
+
+        function loadShortKey(e) {
+            if (e.keyCode == 108) {
+                window.location.reload();
+            }
+        }
+    </script>
+{% endblock %}

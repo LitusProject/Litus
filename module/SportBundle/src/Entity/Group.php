@@ -1,57 +1,82 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Litus\Entity\Sport;
+namespace SportBundle\Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Sport\Group")
- * @Table(name="sport.groups")
+ * This entity represents a group of friends.
+ *
+ * @ORM\Entity(repositoryClass="SportBundle\Repository\Group")
+ * @ORM\Table(name="sport.groups")
  */
 class Group
 {
     /**
      * @var int The ID of this group
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
+
+    /**
      * @var string The name of this group
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $name;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The members of this group
      *
-     * @OneToMany(targetEntity="Litus\Entity\Sport\Runner", mappedBy="group", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="group", cascade={"persist"})
      */
     private $members;
 
     /**
      * @var array
      *
-     * @Column(name="happy_hours", type="string")
+     * @ORM\Column(name="happy_hours", type="string")
      */
     private $happyHours;
 
     /**
-     * @param string $name The name of this group
-     * @param array $happyHours An array containing the happy hours of this group
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param string $name
+     * @param array $members
+     * @param array $happyHours
      */
-
-    /**
-     * @param string $name The name of this group
-     * @param array $happyHours An array containing the happy hours of this group
-     */
-    public function __construct($name, array $happyHours)
+    public function __construct(AcademicYear $academicYear, $name, array $members, array $happyHours)
     {
+        $this->academicYear = $academicYear;
+
         $this->name = $name;
+
+        $this->members = new ArrayCollection($members);
         $this->happyHours = serialize($happyHours);
     }
 
@@ -69,16 +94,6 @@ class Group
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param array $members
-     * @return \Litus\Entity\Sport\Group
-     */
-    public function setMembers(array $members)
-    {
-        $this->members = new ArrayCollection($members);
-        return $this;
     }
 
     /**
