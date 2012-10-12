@@ -85,7 +85,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $part->type = Mime::TYPE_HTML;
                     else
                         $part->type = Mime::TYPE_TEXT;
-                    $part->charset='windows-1252';
                     $message = new MimeMessage();
                     $message->addPart($part);
 
@@ -110,6 +109,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $part = new Part(fopen($file['tmp_name'], 'r'));
                         $part->type = $file['type'];
                         $part->id = $file['name'];
+                        $part->filename = $file['name'];
                         $part->encoding = Mime::ENCODING_BASE64;
                         $message->addPart($part);
                     }
