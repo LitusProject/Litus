@@ -155,7 +155,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = $event->getEvent()->getTranslation($language);
+                    $translation = $event->getEvent()->getTranslation($language, false);
 
                     if ($translation) {
                         $translation->setLocation($formData['location_' . $language->getAbbrev()])
@@ -166,20 +166,20 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                             '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                                 && '' != $formData['content_' . $language->getAbbrev()]
                         ) {
-                            $event->addTranslation(
-                                new Translation(
-                                    $event,
+                            echo 'succes\n';
+                            $translation = new Translation(
+                                    $event->getEvent(),
                                     $language,
                                     $formData['location_' . $language->getAbbrev()],
                                     $formData['title_' . $language->getAbbrev()],
                                     $formData['content_' . $language->getAbbrev()]
-                                )
-                            );
+                                );
+                            $event->getEvent()->addTranslation($translation);
                             $this->getEntityManager()->persist($translation);
                         }
                     }
                 }
-                $event->updateName();
+                $event->getEvent()->updateName();
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
