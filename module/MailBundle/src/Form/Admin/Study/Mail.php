@@ -40,6 +40,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'uploadFile');
         $this->setAttribute('enctype', 'multipart/form-data');
+        $this->setAttribute('accept-charset', 'utf-8');
 
         $studyNames = array();
         foreach($studies as $study) {

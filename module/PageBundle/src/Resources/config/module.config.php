@@ -122,6 +122,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'page_install'        => 'PageBundle\Controller\Admin\InstallController',
+
             'admin_page'          => 'PageBundle\Controller\Admin\PageController',
             'admin_page_category' => 'PageBundle\Controller\Admin\CategoryController',
 

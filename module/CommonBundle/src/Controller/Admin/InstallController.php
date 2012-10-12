@@ -234,6 +234,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'shift_install' => array(
                         'index'
                     ),
+                    'sport_install' => array(
+                        'index'
+                    ),
                     'syllabus_install' => array(
                         'index'
                     ),

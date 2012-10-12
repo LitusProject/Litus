@@ -1,9 +1,8 @@
 <?php
 
-namespace Litus\Repository\Sport;
+namespace SportBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * Lap
@@ -13,19 +12,20 @@ use Doctrine\ORM\QueryBuilder;
  */
 class Lap extends EntityRepository
 {
-
     public function findPrevious($nbResults = 1)
     {
-        $queryBuilder = new QueryBuilder(
-            $this->_em
-        );
-
-        $queryBuilder->select('l')
-            ->from('Litus\Entity\Sport\Lap', 'l')
-            ->where('l.startTime is not null AND l.endTime is not null')
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNotNull('l.startTime'),
+                    $query->expr()->isNotNull('l.endTime')
+                )
+            )
             ->orderBy('l.registrationTime', 'DESC')
-            ->setMaxResults($nbResults);
-        $resultSet = $queryBuilder->getQuery()
+            ->setMaxResults($nbResults)
+            ->getQuery()
             ->getResult();
 
         return array_reverse($resultSet);
@@ -33,16 +33,18 @@ class Lap extends EntityRepository
 
     public function findCurrent()
     {
-        $queryBuilder = new QueryBuilder(
-            $this->_em
-        );
-
-        $queryBuilder->select('l')
-            ->from('Litus\Entity\Sport\Lap', 'l')
-            ->where('l.startTime is not null AND l.endTime is null')
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNotNull('l.startTime'),
+                    $query->expr()->isNotNull('l.endTime')
+                )
+            )
             ->orderBy('l.registrationTime', 'DESC')
-            ->setMaxResults(1);
-        $resultSet = $queryBuilder->getQuery()
+            ->setMaxResults(1)
+            ->getQuery()
             ->getResult();
 
         if (isset($resultSet[0]))
@@ -53,16 +55,18 @@ class Lap extends EntityRepository
 
     public function findNext($nbResults = 1)
     {
-        $queryBuilder = new QueryBuilder(
-            $this->_em
-        );
-
-        $queryBuilder->select('l')
-            ->from('Litus\Entity\Sport\Lap', 'l')
-            ->where('l.startTime is null AND l.endTime is null')
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNull('l.startTime'),
+                    $query->expr()->isNull('l.endTime')
+                )
+            )
             ->orderBy('l.registrationTime', 'ASC')
-            ->setMaxResults($nbResults);
-        $resultSet = $queryBuilder->getQuery()
+            ->setMaxResults($nbResults)
+            ->getQuery()
             ->getResult();
 
         if (1 == $nbResults)
@@ -73,16 +77,19 @@ class Lap extends EntityRepository
 
     public function countAll()
     {
-        $queryBuilder = new QueryBuilder(
-            $this->_em
-        );
-
-        $queryBuilder->select('l')
-            ->from('Litus\Entity\Sport\Lap', 'l')
-            ->select($queryBuilder->expr()->count('l.id'))
-            ->where('l.startTime is not null AND l.endTime is not null');
-
-        $resultSet = $queryBuilder->getQuery()
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->select(
+                $query->expr()->count('l.id')
+            )
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNotNull('l.startTime'),
+                    $query->expr()->isNotNull('l.endTime')
+                )
+            )
+            ->getQuery()
             ->getResult();
 
         return $resultSet[0][1];
@@ -90,15 +97,13 @@ class Lap extends EntityRepository
 
     public function countRunners()
     {
-        $queryBuilder = new QueryBuilder(
-            $this->_em
-        );
-
-        $queryBuilder->select('l')
-            ->from('Litus\Entity\Sport\Lap', 'l')
-            ->select($queryBuilder->expr()->count('DISTINCT l.runner'));
-
-        $resultSet = $queryBuilder->getQuery()
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->select(
+                $query->expr()->countDistinct('l.runner')
+            )
+            ->getQuery()
             ->getResult();
 
         return $resultSet[0][1];
