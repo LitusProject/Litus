@@ -28,6 +28,7 @@ return array(
         'CudiBundle',
         'MailBundle',
         'ShiftBundle',
+        'SportBundle',
         'SyllabusBundle',
 
     	'LogisticsBundle',

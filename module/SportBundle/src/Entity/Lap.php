@@ -14,63 +14,74 @@
 
 namespace SportBundle\Entity;
 
+use CommonBundle\Entity\General\AcademicYear,
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="SportBundle\Repository\Lap")
- * @Table(name="sport.laps")
+ * This entity represents a lap.
+ *
+ * @ORM\Entity(repositoryClass="SportBundle\Repository\Lap")
+ * @ORM\Table(name="sport.laps")
  */
 class Lap
 {
     /**
      * @var int The ID of this lap
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
-     * @var [type]
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
 
     /**
-     * @var \Litus\Entity\Sport\Runner The person who ran this lap
+     * @var \SportBundle\Entity\Runner The person who ran this lap
      *
-     * @ManyToOne(targetEntity="SportBundle\Entity\Runner", cascade={"persist"})
-     * @JoinColumn(name="runner", referencedColumnName="university_identification")
+     * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Runner", cascade={"persist"})
+     * @ORM\JoinColumn(name="runner", referencedColumnName="id")
      */
     private $runner;
 
     /**
      * @var \DateTime The time when this runner registered for this lap
      *
-     * @Column(name="registration_time", type="datetime")
+     * @ORM\Column(name="registration_time", type="datetime")
      */
     private $registrationTime;
 
     /**
      * @var \DateTime The time this runner started his lap
      *
-     * @Column(name="start_time", type="datetime", nullable=true)
+     * @ORM\Column(name="start_time", type="datetime", nullable=true)
      */
     private $startTime;
 
     /**
      * @var \DateTime The time this runner ended his lap
      *
-     * @Column(name="end_time", type="datetime", nullable=true)
+     * @ORM\Column(name="end_time", type="datetime", nullable=true)
      */
     private $endTime;
 
     /**
-     * @param \Litus\Entity\Sport\Runner $runner The person who ran this lap
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \SportBundle\Entity\Runner $runner
      */
-    public function __construct(Runner $runner)
+    public function __construct(AcademicYear $academicYear, Runner $runner)
     {
-        $this->setRunner($runner);
+        $this->academicYear = $academicYear;
 
-        $this->registrationTime = new \DateTime();
+        $this->runner = $runner;
+        $this->registrationTime = new DateTime();
     }
 
     /**
@@ -82,20 +93,17 @@ class Lap
     }
 
     /**
-     * @param \Litus\Entity\Sport\Runner $runner The person who ran this lap
-     * @return \Litus\Entity\Sport\Lap
+     * @param \SportBundle\Entity\Runner $runner
+     * @return \SportBundle\Entity\Lap
      */
     public function setRunner(Runner $runner)
     {
-        if (null === $runner)
-            throw new \InvalidArgumentException('Invalid runner');
         $this->runner = $runner;
-
         return $this;
     }
 
     /**
-     * @return \Litus\Entity\Sport\Runner
+     * @return \SportBundle\Entity\Runner
      */
     public function getRunner()
     {
@@ -108,28 +116,6 @@ class Lap
     public function getRegistrationTime()
     {
         return $this->registrationTime;
-    }
-
-    /**
-     * Starts this lap
-     *
-     * @return \Litus\Entity\Sport\Lap
-     */
-    public function start()
-    {
-        $this->startTime = new \DateTime();
-        return $this;
-    }
-
-    /**
-     * Ends this lap
-     *
-     * @return \Litus\Entity\Sport\Lap
-     */
-    public function stop()
-    {
-        $this->endTime = new \DateTime();
-        return $this;
     }
 
     /**
@@ -157,10 +143,31 @@ class Lap
             $lapTime = $this->endTime->diff($this->startTime);
         } else {
             $now = new \DateTime();
-
             $lapTime = $now->diff($this->startTime);
         }
 
         return $lapTime;
+    }
+
+    /**
+     * Starts this lap.
+     *
+     * @return \SportBundle\Entity\Lap
+     */
+    public function start()
+    {
+        $this->startTime = new DateTime();
+        return $this;
+    }
+
+    /**
+     * Ends this lap.
+     *
+     * @return \SportBundle\Entity\Lap
+     */
+    public function stop()
+    {
+        $this->endTime = new DateTime();
+        return $this;
     }
 }

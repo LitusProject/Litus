@@ -51,7 +51,7 @@ class Pdf extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::TITLE_EXISTS => 'There is a pdf edition with this title already for this publication!',
+        self::TITLE_EXISTS => 'There already is a PDF edition with this title for this publication',
     );
 
     /**
