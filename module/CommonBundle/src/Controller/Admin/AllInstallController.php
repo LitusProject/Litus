@@ -41,6 +41,7 @@ class AllInstallController extends \CommonBundle\Component\Controller\ActionCont
             'publication',
             'secretary',
             'shift',
+            'sport',
             'syllabus',
         );
 

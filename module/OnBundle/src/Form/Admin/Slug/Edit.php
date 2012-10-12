@@ -16,6 +16,7 @@ namespace OnBundle\Form\Admin\Slug;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ODM\MongoDB\DocumentManager,
+    OnBundle\Component\Validator\Name as NameValidator,
     OnBundle\Document\Slug,
     Zend\Form\Element\Submit;
 
@@ -27,13 +28,20 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Edit extends Add
 {
     /**
+     * @var \OnBundle\Document\Slug The slug we're going to modify
+     */
+    private $_slug = null;
+
+    /**
      * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param \OnBundle\Document\Slug $slug The key we're going to modify
+     * @param \OnBundle\Document\Slug $slug The slug we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(DocumentManager $documentManager, Slug $slug, $name = null)
     {
         parent::__construct($documentManager, $name);
+
+        $this->_slug = $slug;
 
         $field = new Text('name');
         $field->setLabel('Name')
@@ -66,7 +74,10 @@ class Edit extends Add
             $inputFilter = parent::getInputFilter();
 
             $inputFilter->get('name')
-                ->setRequired(true);
+                ->setRequired(true)
+                ->setValidators(
+                    new NameValidator($this->_documentManager, $this->_slug)
+                );
 
             $this->_inputFilter = $inputFilter;
         }
