@@ -218,6 +218,20 @@ return array(
             ),
         ),
     ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/career.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/career.nl.php',
+                'locale'   => 'nl'
+            ),
+        ),
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             'br_layout' => __DIR__ . '/../layouts',
