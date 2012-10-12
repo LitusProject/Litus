@@ -27,7 +27,7 @@ use CommonBundle\Component\Controller\Exception\HasNoAccessException,
 class LogisticsController extends \CommonBundle\Component\Controller\ActionController
 {
     /**
-     * Execute the request
+     * Execute the request.
      *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
