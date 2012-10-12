@@ -105,6 +105,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@bootstrap_js_rowlink',
         ),
         'career_event' => array(
             '@common_jquery',
@@ -118,6 +119,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@bootstrap_js_rowlink',
         ),
     ),
     'routes' => array(),

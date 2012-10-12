@@ -3,26 +3,27 @@
 {% block page_content %}
     <h1>{{ translate('Events') }}</h1>
 
-        {% for event in events %}
-            <div class="span12">
-                {% if event.getEvent().getPoster() %}
-                    <div class="span2">
+        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+            {% for event in paginator %}
+                <tr>
+                    <td width="120">
                         <a href="{{ url('calendar', {'action': 'view', 'id': event.getEvent().getName() }) }}">
-                            <img class="thumbnail" src="{{ url('calendar', {'action': 'poster', 'id': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+                            {% if event.getEvent().getPoster() %}
+                                    <img width="120" src="{{ url('calendar', {'action': 'poster', 'id': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+                            {% endif %}
                         </a>
-                    </div>
-                {% endif %}
+                    </td>
 
-                <div class="span9">
-                    <!-- {{ event.getEvent().getStartDate().format('d/m/Y h:i') }} -->
-                    <strong>{{ event.getEvent().getTitle(language) }}</strong>
-                    <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
-                    <br/>{% autoescape false %}{{ event.getEvent().getSummary(400, language) }}{% endautoescape %}
-                </div>
-            </div>
+                    <td>
+                        <strong>{{ event.getEvent().getTitle(language) }}</strong>
+                        <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                        <br/>{% autoescape false %}{{ event.getEvent().getSummary(400, language) }}{% endautoescape %}
+                    </td>
+                </tr>
 
-            <hr/>
+            {% endfor %}
+        </table>
 
-        {% endfor %}
+        {% include 'site/partials/paginationControl.twig' %}
 
 {% endblock %}

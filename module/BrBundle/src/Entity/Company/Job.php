@@ -15,6 +15,7 @@
 namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company,
+    DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -80,6 +81,13 @@ class Job
     private $type;
 
     /**
+     * @var string The last time this job was updated.
+     *
+     * @ORM\Column(type="date")
+     */
+    private $dateUpdated;
+
+    /**
      * @param string $name The job's name
      * @param string $description The job's description
      * @param string $profile The job's profile
@@ -94,6 +102,7 @@ class Job
         $this->profile = $profile;
         $this->type = $type;
         $this->company = $company;
+        $this->dateUpdated = new DateTime();
     }
 
     /**
@@ -189,5 +198,23 @@ class Job
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * @return \BrBundle\Entity\Company\job
+     */
+    public function updateDate()
+    {
+        $this->dateUpdated = new DateTime();
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime The last time this job was updated.
+     */
+    public function getLastUpdateDate()
+    {
+        return $this->dateUpdated;
     }
 }
