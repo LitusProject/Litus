@@ -4,14 +4,23 @@
     <h1>{{ translate('Events') }}</h1>
 
         {% for event in events %}
-        <div>
-            {{ event.getEvent().getStartDate().format('d/m/Y h:i') }}
+            <div class="span12">
+                {% if event.getEvent().getPoster() %}
+                    <div class="span2">
+                        <img src="{{ url('admin_company', {'action': 'logo', 'id': event.getCompany().getLogo()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+                    </div>
+                {% endif %}
 
+                <div class="span9">
+                    <!-- {{ event.getEvent().getStartDate().format('d/m/Y h:i') }} -->
+                    {{ event.getEvent().getTitle(language) }}
+                    <br/>{{ event.getEvent().getStartDate().format('d/m/Y h:i') }}
+                    <br/>{% autoescape false %}{{ event.getEvent().getSummary(300, language) }}{% endautoescape %}
+                </div>
+            </div>
 
-            {% if event.getEvent().getPoster() %}
-                <img src="{{ url('admin_calendar', {'action': 'poster', 'id': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
-            {% endif %}
-        </div>
+            <hr/>
+
         {% endfor %}
 
 {% endblock %}
