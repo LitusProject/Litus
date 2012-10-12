@@ -25,7 +25,7 @@ use Exception,
 class SaleController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     /**
-     * Execute the request
+     * Execute the request.
      *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array

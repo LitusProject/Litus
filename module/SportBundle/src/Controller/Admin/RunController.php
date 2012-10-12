@@ -1,106 +1,200 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Admin;
+namespace SportBundle\Controller\Admin;
 
-use \Admin\Form\Auth\Login as LoginForm;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    Zend\View\Model\ViewModel;
 
-class RunController extends \Litus\Controller\Action
+/**
+ * RunController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class RunController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    private $currentLap = null;
-    private $nextLap = null;
-
-    public function init()
-    {
-        parent::init();
-
-        $this->currentLap = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
-            ->findCurrent();
-        $this->nextLap = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
-            ->findNext();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('queue');
-    }
-
     public function queueAction()
     {
-        $this->view->currentLap = $this->currentLap;
-        $this->view->nextLap = $this->nextLap;
-
-        $this->view->previousLaps = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
+        $previousLaps = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
             ->findPrevious(5);
-        $this->view->nextLaps = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
+        $nextLaps = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
             ->findNext(15);
 
-        $this->view->nbLaps = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
+        $nbLaps = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
             ->countAll();
 
-        $resultPage = $this->getEntityManager()
-            ->getRepository('Litus\Entity\General\Config')
-            ->getConfigValue('sport.run_result_page');
+        $resultPage = @simplexml_load_file(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.run_result_page')
+        );
 
-        $resultPageContent = @simplexml_load_file($resultPage);
-
-        if (false !== $resultPageContent) {
+        $nbOfficialLaps = null;
+        if (null !== $resultPage) {
             $teamId = $this->getEntityManager()
-                ->getRepository('Litus\Entity\General\Config')
+                ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
 
-            $teamData = $resultPageContent->xpath('//team[@id=\'' . $teamId . '\']');
-
-            $this->view->nbOfficialLaps = $teamData[0]->rounds->__toString();
-        } else {
-            $this->view->nbOfficialLaps = false;
+            $nbOfficialLaps = (string) $resultPage->xpath('//team[@id=\'' . $teamId . '\']')[0]->rounds;
         }
+
+        return new ViewModel(
+            array(
+                'currentLap' => $this->_getCurrentLap(),
+                'nextLap' => $this->_getNextLap(),
+                'previousLaps' => $previousLaps,
+                'nextLaps' => $nextLaps,
+                'nbLaps' => $nbLaps,
+                'nbOfficialLaps' => $nbOfficialLaps
+            )
+        );
     }
 
     public function startAction()
     {
-        $this->broker('viewRenderer')->setNoRender();
+        if (null !== $this->_getCurrentLap())
+            $this->_getCurrentLap()->stop();
 
-        if (null !== $this->currentLap)
-            $this->currentLap->stop();
+        if (null !== $this->_getNextLap())
+            $this->_getNextLap()->start();
 
-        if (null !== $this->nextLap)
-            $this->nextLap->start();
+        $this->getEntityManager()->flush();
 
-        $this->_redirect('queue');
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Succes',
+                'The next lap was successfully started!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'admin_lap',
+            array(
+                'action' => 'queue'
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function stopAction()
     {
-        $this->broker('viewRenderer')->setNoRender();
+        if (null !== $this->_getCurrentLap())
+            $this->_getCurrentLap()->stop();
 
-        if (null !== $this->currentLap)
-            $this->currentLap->stop();
+        $this->getEntityManager()->flush();
 
-        $this->_redirect('queue');
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Succes',
+                'The current lap was successfully stopped!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'admin_lap',
+            array(
+                'action' => 'queue'
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function deleteAction()
     {
-        $lap = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
-            ->findOneById($this->getRequest()->getParam('id'));
+        $this->initAjax();
 
-        $this->view->lapDeleted = false;
+        if (!($lap = $this->_getKey()))
+            return new ViewModel();
 
-        if (null === $this->getRequest()->getParam('confirm')) {
-            $this->view->lap = $lap;
-        } else {
-            if (1 == $this->getRequest()->getParam('confirm')) {
-                $this->getEntityManager()->remove($lap);
-                $this->view->lapDeleted = true;
-            } else {
-                $this->_redirect('queue');
-            }
+        $this->getEntityManager()->remove($lap);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
+    private function _getLap()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the lap!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_lap',
+                array(
+                    'action' => 'queue'
+                )
+            );
+
+            return;
         }
+
+        $lap = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $key) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No lap with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_lap',
+                array(
+                    'action' => 'queue'
+                )
+            );
+
+            return;
+        }
+
+        return $key;
+    }
+
+    private function _getCurrentLap()
+    {
+        return $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findCurrent();
+    }
+
+    private function _getNextLap()
+    {
+        return $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findNext();
     }
 }

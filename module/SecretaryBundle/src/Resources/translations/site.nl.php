@@ -87,6 +87,7 @@ return array(
 
     'This field should not contain an @' => 'Dit veld mag geen @ bevatten',
     'Other Subjects' => 'Andere Vakken',
+    'You have not yet added any other subjects.' => 'Je hebt nog geen andere vakken toegevoegd.',
     'Add Other Subjects' => 'Andere Vakken Toevoegen',
     'The subject was succesfully added!' => 'Het vak is succesvol toegevoegd!',
 );

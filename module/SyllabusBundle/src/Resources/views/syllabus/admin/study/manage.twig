@@ -74,7 +74,7 @@
 							);
 
 							{% if hasAccess('admin_subject', 'manage') %}
-							    actions.append('<a href="{{ url('admin_subject') }}/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+							    actions.append('<a href="{{ url('admin_subject', {"action": "manage"}) }}' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
 							{% endif %}
 					});
 					$('#study_search table').change();

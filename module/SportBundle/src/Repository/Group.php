@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Sport;
+namespace SportBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -104,7 +104,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'admin_shift',
                     array(
-                        'action' => 'manage'
+                        'action' => 'add'
                     )
                 );
 
