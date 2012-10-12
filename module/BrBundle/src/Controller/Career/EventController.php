@@ -27,13 +27,17 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function overviewAction()
     {
-        $events = $this->getEntityManager()
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Event')
-            ->findAllFuture(new DateTime());
+            ->findAllFuture(new DateTime()),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
-                'events' => $events,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }

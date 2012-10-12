@@ -159,10 +159,11 @@ return array(
             'career_event' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/event[/:action][/]',
+                    'route' => '[/:language]/career/event[/:action][/page/:page][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
+                        'page'     => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'career_event',
@@ -173,11 +174,12 @@ return array(
             'career_vacancy' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/vacancy[/:action[/:id]][/]',
+                    'route' => '[/:language]/career/vacancy[/:action[/:id]][/page/:page][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
                         'language' => '[a-z]{2}',
+                        'page'     => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'career_vacancy',

@@ -41,7 +41,7 @@ class Event extends EntityRepository
                 $query->expr()->gte('c.startDate', ':date')
             )
             ->setParameter('date', $date)
-            ->orderBy('c.startDate', 'DESC')
+            ->orderBy('c.startDate', 'ASC')
             ->getQuery()
             ->getResult();
 

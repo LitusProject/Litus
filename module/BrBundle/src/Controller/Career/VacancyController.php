@@ -26,7 +26,19 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function overviewAction()
     {
-        return new ViewModel();
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Job')
+            ->findAllByType('vacancy'),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     public function viewAction()

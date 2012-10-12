@@ -29,6 +29,22 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllByType($type)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->where(
+                $query->expr()->eq('v.type', ':type')
+            )
+            ->setParameter('type', $type)
+            ->orderBy('v.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllByCompanyAndType(CompanyEntity $company, $type)
     {
         $query = $this->_em->createQueryBuilder();
@@ -42,7 +58,7 @@ class Job extends EntityRepository
             )
             ->setParameter('type', $type)
             ->setParameter('company', $company->getId())
-            ->orderBy('v.name', 'DESC')
+            ->orderBy('v.name', 'ASC')
             ->getQuery()
             ->getResult();
 
