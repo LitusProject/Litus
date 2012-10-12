@@ -7,15 +7,17 @@
             <div class="span12">
                 {% if event.getEvent().getPoster() %}
                     <div class="span2">
-                        <img src="{{ url('admin_company', {'action': 'logo', 'id': event.getCompany().getLogo()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+                        <a href="{{ url('calendar', {'action': 'view', 'id': event.getEvent().getName() }) }}">
+                            <img class="thumbnail" src="{{ url('calendar', {'action': 'poster', 'id': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+                        </a>
                     </div>
                 {% endif %}
 
                 <div class="span9">
                     <!-- {{ event.getEvent().getStartDate().format('d/m/Y h:i') }} -->
-                    {{ event.getEvent().getTitle(language) }}
-                    <br/>{{ event.getEvent().getStartDate().format('d/m/Y h:i') }}
-                    <br/>{% autoescape false %}{{ event.getEvent().getSummary(300, language) }}{% endautoescape %}
+                    <strong>{{ event.getEvent().getTitle(language) }}</strong>
+                    <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                    <br/>{% autoescape false %}{{ event.getEvent().getSummary(400, language) }}{% endautoescape %}
                 </div>
             </div>
 
