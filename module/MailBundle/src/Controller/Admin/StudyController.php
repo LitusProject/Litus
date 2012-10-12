@@ -54,8 +54,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $upload->addValidator(new SizeValidator(array('max' => '50MB')));
 
-                var_dump($upload->getFileInfo());
-
                 if ($upload->isValid()) {
 
                     $enrollments = array();
