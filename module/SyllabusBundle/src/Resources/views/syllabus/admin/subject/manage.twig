@@ -93,7 +93,7 @@
 							.append('<td>' + this.credits + '</td>')
 							.append(actions = $('<td>', {'class': 'actions'}));
 						{% if hasAccess('admin_subject', 'subject') %}
-						    actions.append('<a href="{{ url('admin_subject', {"action": "subject"}) }}/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+						    actions.append('<a href="{{ url('admin_subject') }}subject/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
 						{% endif %}
 					});
 					$('#subject_search table').change();
