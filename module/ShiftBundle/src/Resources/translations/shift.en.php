@@ -4,6 +4,7 @@ return array(
     'Search' => 'Search',
     'By Event' => 'By Event',
     'By Unit' => 'By Unit',
+    'By Date' => 'By Date',
     'My Shifts' => 'My Shifts',
     'Sign In' => 'Sign In',
     'Responsible' => 'Responsible',
