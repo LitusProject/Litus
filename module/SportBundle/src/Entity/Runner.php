@@ -1,65 +1,107 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Litus\Entity\Sport;
+namespace SportBundle\Entity;
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-use \Zend\Registry;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Sport\Runner")
- * @Table(name="sport.runners")
+ * This entity represents a runner.
+ *
+ * @ORM\Entity(repositoryClass="Litus\Repository\Sport\Runner")
+ * @ORM\Table(name="sport.runners")
  */
 class Runner
 {
     /**
-     * @var string The runner's university identification
+     * @var int The ID of this runner
      *
-     * @Id
-     * @Column(name="university_identification", type="string", length=8)
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
-    private $universityIdentification;
+    private $id;
+
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
+
+    /**
+     * @var \CommonBundle\Entity\Users\People\Academic The academic linked to this runner
+     */
+    private $academic;
 
     /**
      * @var string The runner's first name
      *
-     * @Column(name="first_name", type="string", length=20)
+     * @ORM\Column(name="first_name", type="string")
      */
     private $firstName;
 
     /**
      * @var string The runner's last name
      *
-     * @Column(name="last_name", type="string", length=30)
+     * @ORM\Column(name="last_name", type="string")
      */
     private $lastName;
 
     /**
-     * @var \Litus\Entity\Sport\Group The runner's group
+     * @var \SportBundle\Entity\Group The runner's group
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Sport\Group", inversedBy="members")
-     * @JoinColumn(name="group_of_friends", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Group", inversedBy="members")
+     * @ORM\JoinColumn(name="group_of_friends", referencedColumnName="id")
      */
     private $group;
 
     /**
-     * @param string $universityIdentification The runner's university identification
-     * @param string $firstName The runner's first name
-     * @param string $lastName The runner's last name
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param string $firstName
+     * @param string $lastName
+     * @param \SportBundle\Entity\Group $group
+     * @param \CommonBundle\Entity\Users\People\Academic $academic
      */
-    public function __construct($universityIdentification, $firstName, $lastName)
+    public function __construct(AcademicYear $academicYear, $firstName, $lastName, Group $group = null, Academic $academic = null)
     {
-        $this->universityIdentification = $universityIdentification;
+        $this->academicYear = $academicYear;
+        $this->academic = $academic;
+
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+
+        $this->group = $group;
     }
 
     /**
      * @return string
      */
-    public function getUniversityIdentification()
+    public function getId()
     {
-        return $this->universityIdentification;
+        return $this->id;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\Users\People\Academic
+     */
+    public function getAcademic()
+    {
+        return $this->academic;
     }
 
     /**
@@ -79,6 +121,14 @@ class Runner
     }
 
     /**
+     * @return \SportBundle\Entity\Group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
      * @return string
      */
     public function getFullName()
@@ -87,33 +137,19 @@ class Runner
     }
 
     /**
-     * @return \Litus\Entity\Sport\Group
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
-     * @throws \InvalidArgumentException
-     * @param \Litus\Entity\Sport\Group $group The runner's group
-     * @return \Litus\Entity\Sport\Runner
-     */
-    public function setGroup(Group $group) {
-        if (null === $group)
-            throw new \InvalidArgumentException('The group cannot be null');
-        $this->group = $group;
-
-        return $this;
-    }
-
-    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager Instance
      * @return array
      */
-    public function getLaps() {
-        $entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
-
-        return $entityManager->getRepository('Litus\Entity\Sport\Lap')
-            ->findByRunner($this->universityIdentification);
+    public function getLaps(EntityManager $entityManager, AcademicYear $academicYear) {
+        return $entityManager->getRepository('SportBundle\Entity\Lap')
+            ->findBy(
+                array(
+                    'runner' => $this->id,
+                    'academicYear' => $academicYear
+                ),
+                array(
+                    'registrationTime' => 'ASC'
+                )
+            );
     }
 }

@@ -18,6 +18,7 @@ config/database.config.php
 # Cached data doesn't have to be versioned
 data/banner/images
 data/br/companies
+data/br/files
 data/cache
 data/calendar/posters
 data/common/profile

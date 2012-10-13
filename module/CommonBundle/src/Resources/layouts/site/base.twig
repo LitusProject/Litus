@@ -74,7 +74,7 @@
         		        </a>
         		        <ul class="dropdown-menu">
         		            {% for language in languages %}
-        			            <li><a href="{{ url('index', {'language': language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a></li>
+        			            <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'name': getParam('name')}) }}">{{ translate(language.getName()) }}</a></li>
         		            {% endfor %}
         		        </ul>
         			</li>
@@ -189,6 +189,7 @@
                             <a id="kbc" href="http://www.kbc.be"></a>
                             <a id="exxon" href="http://www.exxonmobil.com"></a>
                             <a id="basf" href="http://www.basf.be/ecp2/Jobs_Career_belgium_nl/index"></a>
+                            <a id="gdfsuez" href="http://www.gdfsuez.com/"></a>
                         </p>
 		        	</span>
 		        </div>

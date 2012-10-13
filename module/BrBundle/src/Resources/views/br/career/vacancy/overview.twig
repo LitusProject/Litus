@@ -1,0 +1,29 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+    <h1>{{ translate('Vacancies') }}</h1>
+
+        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+            {% for vacancy in paginator %}
+                <tr>
+                    <td width="120">
+                        <a href="{{ url('career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                            {% if vacancy.getCompany().getLogo() %}
+                                    <img width="120" src="{{ url('admin_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
+                            {% endif %}
+                        </a>
+                    </td>
+
+                    <td>
+                        <strong>{{ vacancy.getName() }}</strong>
+                        <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                        <br/>{% autoescape false %}{{ vacancy.getDescription() }}{% endautoescape %}
+                    </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+        {% include 'site/partials/paginationControl.twig' %}
+
+{% endblock %}

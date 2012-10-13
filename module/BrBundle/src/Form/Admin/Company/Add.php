@@ -16,6 +16,8 @@ namespace BrBundle\Form\Admin\Company;
 
 use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
     BrBundle\Entity\Company,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
@@ -51,16 +53,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Textarea('history');
-        $field->setLabel('History')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('description');
-        $field->setLabel('Description')
-            ->setRequired();
-        $this->add($field);
-
         $field = new Select('sector');
         $field->setLabel('Sector')
             ->setRequired()
@@ -73,6 +65,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $this->add(new AddressForm('', 'address'));
+
+        $field = new Text('website');
+        $field->setLabel('Website')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Checkbox('page');
+        $field->setLabel('Create Page');
+        $this->add($field);
+
+        $page = new Collection('page_collection');
+        $page->setLabel('Page')
+            ->setAttribute('id', 'page_form');
+        $this->add($page);
+
+        $field = new Textarea('summary');
+        $field->setLabel('Summary');
+        $page->add($field);
+
+        $field = new Textarea('description');
+        $field->setLabel('Description');
+        $page->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -113,26 +127,45 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'history',
+                        'name'     => 'website',
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'uri',
+                            )
                         ),
                     )
                 )
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'description',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+            if (isset($this->data['page']) && $this->data['page']) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'description',
+                            'required' => false,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'summary',
+                            'required' => false,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+            }
 
             $inputFilter->add(
                 $factory->createInput(

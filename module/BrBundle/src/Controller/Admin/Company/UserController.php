@@ -79,8 +79,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     $formData['last_name'],
                     $formData['email'],
                     $formData['phone_number'],
-                    $formData['sex'],
-                    $company
+                    $formData['sex']
                 );
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();

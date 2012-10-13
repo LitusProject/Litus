@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="run">24h-Run</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('admin_run', 'queue') %}
+                <li><a {% if 'queue' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_run", {"action": "queue"}) }}">Queue</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

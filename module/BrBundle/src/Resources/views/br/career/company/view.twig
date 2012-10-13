@@ -1,0 +1,106 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+
+    <div class="span2">
+        {% if page.getCompany().getLogo() %}
+            <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
+        {% endif %}
+
+        <hr/>
+
+        <center>
+            <address><strong>
+                {{ page.getCompany().getAddress().getStreet() }} {{ page.getCompany().getAddress().getNumber() }}
+                    {% if page.getCompany().getAddress().getMailbox() %}
+                        / {{ page.getCompany().getAddress().getMailbox() }}
+                    {% endif %}<br>
+                {{ page.getCompany().getAddress().getPostal() }} {{ page.getCompany().getAddress().getCity() }}<br>
+                {{ page.getCompany().getAddress().getCountry() }}
+            </strong></address>
+        </center>
+
+        <hr/>
+
+        <center>
+            <a style="word-wrap: break-word;" href="{{ page.getCompany().getFullWebsite() }}">{{ page.getCompany().getWebsite() }}</a>
+        </center>
+
+        {% if page.getSummary() != "" %}
+            <hr/>
+
+            {% autoescape false %}
+                {{ markdown(page.getSummary()) }}
+            {% endautoescape %}
+        {% endif %}
+
+    </div>
+    <div class="span9">
+        <h1>{{ page.getCompany().getName() }}</h1>
+
+        <div class="accordion" id="accordion2">
+            {% if events|length > 0 %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#events">
+                        Events
+                    </a>
+                </div>
+                <div id="events" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        {% for event in events %}
+                            {{ event.getEvent().getName() }}<br/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if vacancies|length > 0 %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#vacancies">
+                        Vacancies
+                    </a>
+                </div>
+                <div id="vacancies" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        {% for vacancy in vacancies %}
+                            {{ vacancy.getName() }}<br/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if internships|length > 0 %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#internships">
+                        Internships
+                    </a>
+                </div>
+                <div id="internships" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        {% for internship in internships %}
+                            {{ internship.getName() }}<br/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#about">
+                        About
+                    </a>
+                </div>
+                <div id="about" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        {% autoescape false %}
+                            {{ markdown(page.getDescription()) }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
