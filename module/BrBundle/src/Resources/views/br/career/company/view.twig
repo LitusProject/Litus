@@ -48,9 +48,20 @@
                 </div>
                 <div id="events" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        {% for event in events %}
-                            {{ event.getEvent().getName() }}<br/>
-                        {% endfor %}
+                        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                            <tbody>
+                                {% for event in events %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url('calendar', {'action': 'view', 'name': event.getEvent().getName() }) }}">
+                                                <strong>{{ event.getEvent().getTitle(language) }}</strong>
+                                                <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -64,9 +75,19 @@
                 </div>
                 <div id="vacancies" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        {% for vacancy in vacancies %}
-                            {{ vacancy.getName() }}<br/>
-                        {% endfor %}
+                        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                            {% for vacancy in vacancies %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url('career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                                            <strong>{{ vacancy.getName() }}</strong>
+                                            <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                        </table>
                     </div>
                 </div>
             </div>
@@ -80,9 +101,19 @@
                 </div>
                 <div id="internships" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        {% for internship in internships %}
-                            {{ internship.getName() }}<br/>
-                        {% endfor %}
+                        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                            {% for internship in internships %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url('career_internship', {'action': 'view', 'id': internship.getId() }) }}">
+                                            <strong>{{ internship.getName() }}</strong>
+                                            <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                        </table>
                     </div>
                 </div>
             </div>

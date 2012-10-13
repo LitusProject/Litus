@@ -43,6 +43,59 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
 
     public function viewAction()
     {
-        return new ViewModel();
+        $internship = $this->_getInternship();
+
+        return new ViewModel(
+            array(
+                'internship' => $internship,
+            )
+        );
+    }
+
+    private function _getInternship()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the internship!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_internship',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        $internship = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Job')
+            ->findOneByTypeAndId('internship', $this->getParam('id'));
+
+        if (null === $internship) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No internship with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_internship',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        return $internship;
     }
 }
