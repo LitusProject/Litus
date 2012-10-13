@@ -59,10 +59,17 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $startAcademicYear->setTime(0, 0);
 
         $now = new DateTime();
-        $profStart = new DateTime($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.prof_start_academic_year'));
-        if ($now > $profStart) {
+        $profStart = new DateTime(
+            str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.prof_start_academic_year')
+            )
+        );
+
+        if ($now > $profStart && $startAcademicYear > $now) {
             $startAcademicYear->add(new DateInterval('P1Y2M'));
             $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
         }
