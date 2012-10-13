@@ -51,6 +51,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Textarea('requiredKnowledge');
+        $field->setLabel('Required Knowledge')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text('city');
+        $field->setLabel('City')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Select('type');
         $field->setLabel('Type')
             ->setAttribute('options', Job::$possibleTypes)
@@ -102,6 +112,43 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     )
                 )
             );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'profile',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'requiredKnowledge',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'city',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
             $this->_inputFilter = $inputFilter;
         }
         return $this->_inputFilter;

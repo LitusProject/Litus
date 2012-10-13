@@ -66,6 +66,20 @@ class Job
     private $profile;
 
     /**
+     * @var string The required knowledge for this job.
+     *
+     * @ORM\Column(name="required_knowledge", type="text")
+     */
+    private $requiredKnowledge;
+
+    /**
+     * @var string The city where the job is located
+     *
+     * @ORM\Column(type="text")
+     */
+    private $city;
+
+    /**
      * @var \BrBundle\Entity\Company The company of the job
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
@@ -91,15 +105,18 @@ class Job
      * @param string $name The job's name
      * @param string $description The job's description
      * @param string $profile The job's profile
+     * @param string $profile The job's required knowledge
      * @param \BrBundle\Entity\Company $company The job's company
      * @param string $type The job's type (entry of $possibleTypes)
      */
-    public function __construct($name, $description, $profile, Company $company, $type)
+    public function __construct($name, $description, $profile, $requiredKnowledge, $city, Company $company, $type)
     {
         $this->setName($name);
         $this->setDescription($description);
+        $this->setProfile($profile);
+        $this->setRequiredKnowledge($requiredKnowledge);
+        $this->setCity($city);
 
-        $this->profile = $profile;
         $this->type = $type;
         $this->company = $company;
         $this->dateUpdated = new DateTime();
@@ -182,6 +199,63 @@ class Job
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param string $profile
+     * @return \BrBundle\Entity\Company\job
+     */
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * @param string $requiredKnowledge
+     * @return \BrBundle\Entity\Company\job
+     */
+    public function setRequiredKnowledge($requiredKnowledge)
+    {
+        $this->requiredKnowledge = $requiredKnowledge;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequiredKnowledge()
+    {
+        return $this->requiredKnowledge;
+    }
+
+    /**
+     * @param string $city
+     * @return \BrBundle\Entity\Company\job
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
     }
 
     /**
