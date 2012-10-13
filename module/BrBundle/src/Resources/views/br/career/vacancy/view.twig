@@ -6,6 +6,7 @@
         {% if vacancy.getCompany().getLogo() %}
             <img src="{{ url('admin_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
         {% endif %}
+        <center>{{ vacancy.getCompany().getName() }}</center>
 
 
         {% if vacancy.getCity() %}
