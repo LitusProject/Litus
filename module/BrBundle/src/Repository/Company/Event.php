@@ -14,6 +14,23 @@ use BrBundle\Entity\Company as CompanyEntity,
  */
 class Event extends EntityRepository
 {
+    public function findAllByCompany(CompanyEntity $company)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('BrBundle\Entity\Company\Event', 'e')
+            ->innerJoin('e.event', 'c')
+            ->where(
+                $query->expr()->eq('e.company', ':company')
+            )
+            ->setParameter('company', $company->getId())
+            ->orderBy('c.startDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllFutureByCompany(DateTime $date, CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
