@@ -263,7 +263,7 @@ class Job
      */
     public function getSummary($length = 50)
     {
-        return substr($this->description, 0, $length) . (strlen($this->description) > $length ? '...' : '');
+        return \CommonBundle\Component\Util\String::truncate($this->getDescription(), $length, '...', true);
     }
 
     /**
