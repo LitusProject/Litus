@@ -13,6 +13,28 @@ use BrBundle\Entity\Company as CompanyEntity,
  */
 class Job extends EntityRepository
 {
+    public function findOneByTypeAndId($type, $id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->eq('v.id', ':id')
+                )
+            )
+            ->setParameter('id', $id)
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findAllByCompany(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();

@@ -92,6 +92,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@career_rowlink',
         ),
         'career_vacancy' => array(
             '@common_jquery',
