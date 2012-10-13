@@ -67,8 +67,10 @@ class Comment
     /**
      * @var array The possible types of a comment
      */
-    private static $POSSIBLE_TYPES = array(
-        'external', 'internal', 'site'
+    public static $POSSIBLE_TYPES = array(
+        'internal' => 'Internal',
+        'external' => 'External',
+        'site' => 'Site',
     );
 
     /**
@@ -97,7 +99,7 @@ class Comment
      */
     public static function isValidCommentType($type)
     {
-        return in_array($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$POSSIBLE_TYPES);
     }
 
     /**
