@@ -16,15 +16,15 @@
             		});
             		$(document).on('keyup.dismiss.modal', function ( e ) {
             		  e.which == 27 && $this.modal('hide');
-            		})
+            		});
             	} else {
             		$this.find('.close').hide();
             		$('.modal-backdrop').unbind('click');
-            		$(document).off('keyup.dismiss.modal');
+                    $this.off('keyup.dismiss.modal');
             	}
             });
 
-            $(this).modal('show');
+            $(this).modal('show', {keyboard: options.closable});
 
             return this;
         },

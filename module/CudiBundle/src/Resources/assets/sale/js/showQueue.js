@@ -114,6 +114,14 @@
         $('#hideHold').click(function () {
             _toggleHoldItems($this);
         });
+
+        $('#universityIdentificationFilter').keyup(function () {
+            _universityIdentificationFilter($this);
+        }).keydown(function (e) {
+            if (e.which == 27)
+                e.stopPropagation();
+        });
+
         $.webSocket(
         	{
         		name: 'showQueue',
@@ -142,6 +150,7 @@
                         });
 
                         _toggleHoldItems($this);
+                        _universityIdentificationFilter($this);
         			} else if(data.sale) {
                         $this.showQueue('updatePayDesk');
         				options.openSale('showQueue', data);
@@ -280,6 +289,17 @@
             row.find('button').addClass('disabled');
         else
             row.find('button').removeClass('disabled');
+    }
+
+    function _universityIdentificationFilter($this)
+    {
+        var value = $('#universityIdentificationFilter').val();
+        $this.find('tr').each(function () {
+            if ($(this).data('info').university_identification.indexOf(value) == 0)
+                $(this).show();
+            else
+                $(this).hide();
+        });
     }
 
     function _updateActions($this) {
