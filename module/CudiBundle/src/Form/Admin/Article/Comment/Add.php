@@ -16,6 +16,7 @@ namespace CudiBundle\Form\Admin\Article\Comment;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CudiBundle\Entity\Comments\Comment,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -41,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('type');
         $field->setLabel('Type')
-            ->setAttribute('options', array('internal' => 'Internal', 'external' => 'External'))
+            ->setAttribute('options', Comment::$POSSIBLE_TYPES)
             ->setRequired();
         $this->add($field);
 
