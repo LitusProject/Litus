@@ -22,7 +22,7 @@ class Event extends EntityRepository
             ->innerJoin('e.event', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->gte('c.startDate', ':date'),
+                    $query->expr()->gte('c.endDate', ':date'),
                     $query->expr()->eq('e.company', ':company')
                 )
             )
@@ -42,7 +42,7 @@ class Event extends EntityRepository
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'c')
             ->where(
-                $query->expr()->gte('c.startDate', ':date')
+                $query->expr()->gte('c.endDate', ':date')
             )
             ->setParameter('date', $date)
             ->orderBy('c.startDate', 'ASC')
