@@ -6,7 +6,7 @@
         {% if internship.getCompany().getLogo() %}
             <img src="{{ url('admin_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
         {% endif %}
-
+        <center>{{ internship.getCompany().getName() }}</center>
 
         {% if internship.getCity() %}
 
