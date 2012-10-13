@@ -145,13 +145,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
 
                 $comments = array();
-                /**
+
                 $comments = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Comments\Comment')
-                    ->findAllExternalByArticle(
+                    ->findAllSiteByArticle(
                         null !== $article ? $article->getMainArticle() : null
                     );
-                 **/
 
                 if ($article !== null) {
                     $articles[] = array(
@@ -181,11 +180,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($commonArticles as $commonArticle) {
 
             $comments = array();
-/*
+
             $comments = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Comments\Comment')
-                ->findAllExternalByArticle($commonArticle->getMainArticle());
-*/
+                ->findAllSiteByArticle($commonArticle->getMainArticle());
 
             // Only add bookable articles
             if ($commonArticle->isBookable()) {

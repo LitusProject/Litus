@@ -54,4 +54,27 @@ class Comment extends EntityRepository
 
         return $comments;
     }
+
+    public function findAllSiteByArticle(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('CudiBundle\Entity\Comments\Mapping', 'm')
+            ->innerJoin('m.comment', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('m.article', ':article'),
+                    $query->expr()->eq('c.type', '\'site\'')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->getQuery()
+            ->getResult();
+
+        $comments = array();
+        foreach($resultSet as $mapping)
+            $comments[] = $mapping->getComment();
+
+        return $comments;
+    }
 }

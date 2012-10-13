@@ -5,7 +5,7 @@
         <h1>{{ translate('Gallery') }}</h1>
     </div>
 
-    <h2>{{ translate('Academic Year') }} {{ currentYear }}</h2>
+    <h2>{{ currentYear }}</h2>
     {% for album in attribute(albums, currentYear).albums %}
         <div class="album">
             <div class="title">{{ album.getTitle(language) }}</div>

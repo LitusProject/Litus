@@ -68,7 +68,7 @@ class Comment
      * @var array The possible types of a comment
      */
     private static $POSSIBLE_TYPES = array(
-        'external', 'internal'
+        'external', 'internal', 'site'
     );
 
     /**
