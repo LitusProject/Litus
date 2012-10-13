@@ -138,15 +138,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                             '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                                 && '' != $formData['content_' . $language->getAbbrev()]
                         ) {
-                            $event->addTranslation(
-                                new Translation(
+                            $translation = new Translation(
                                     $event,
                                     $language,
                                     $formData['location_' . $language->getAbbrev()],
                                     $formData['title_' . $language->getAbbrev()],
                                     $formData['content_' . $language->getAbbrev()]
-                                )
-                            );
+                                );
+                            $event->addTranslation($translation);
                             $this->getEntityManager()->persist($translation);
                         }
                     }
