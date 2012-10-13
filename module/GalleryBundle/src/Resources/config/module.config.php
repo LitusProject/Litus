@@ -74,6 +74,20 @@ return array(
             ),
         ),
     ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/site.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/site.nl.php',
+                'locale'   => 'nl'
+            ),
+        ),
+    ),
     'assetic_configuration' => array(
         'modules' => array(
             'gallerybundle' => array(
