@@ -354,6 +354,9 @@ VTK Cudi
                     'admin_supplier_user' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'prof_auth' => array(
+                        'login', 'logout', 'shibboleth',
+                    ),
                     'prof_article' => array(
                         'add', 'edit', 'manage', 'typeahead'
                     ),
