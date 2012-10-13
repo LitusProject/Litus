@@ -15,6 +15,7 @@
 namespace BrBundle\Controller\Career;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -45,7 +46,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         $events = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Event')
-            ->findAllByCompany($page->getCompany());
+            ->findAllFutureByCompany(new DateTime(), $page->getCompany());
 
         $internships = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
