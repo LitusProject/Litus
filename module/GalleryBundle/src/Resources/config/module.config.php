@@ -33,10 +33,10 @@ return array(
             'gallery' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/gallery[/:action[/:id]][/]',
+                    'route' => '[/:language]/gallery[/:action[/:name]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'       => '[a-zA-Z0-9_-]*',
+                        'name'     => '[a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(

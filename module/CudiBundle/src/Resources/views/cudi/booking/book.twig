@@ -22,11 +22,11 @@
 						<tr>
 							<th>{{ translate('Title') }}</th>
 							<th>{{ translate('Authors') }}</th>
-							<th width="100px">{{ translate('Price / piece') }}</th>
-							<th width="70px">{{ translate('Mandatory') }}</th>
-							<th width="80px">#</th>
-							<th width="80px" style="text-align: center">{{ translate('Booked') }}</th>
-							<th width="50px">{{ translate('Remarks') }}</th>
+							<th class="span2">{{ translate('Price / Piece') }}</th>
+							<th class="span1">{{ translate('Mandatory') }}</th>
+							<th class="span1">#</th>
+							<th class="span1" style="text-align: center">{{ translate('Booked') }}</th>
+							<th class="span1">{{ translate('Remarks') }}</th>
 						</tr>
 					</thead>
 
@@ -65,13 +65,13 @@
 								<td style="text-align: center">{{ map['booked'] }}</td>
 								<td>
 									{% if map['comments']|length > 0 %}
-										<span rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
+										<a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
 
 										{% for comment in map['comments'] %}
 											<span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText() }}<br/>
 										{% endfor %}
 
-										" data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('remarks') : translate('remark') }}</span>
+										" data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('remarks') : translate('remark') }}</a>
 									{% endif %}
 								</td>
 							</tr>
@@ -109,7 +109,7 @@
 {% block content_script %}
 	<script type="text/javascript">
 
-		$('span[rel=popover]').popover({'trigger': 'hover'});
+		$('a[rel=popover]').popover({'trigger': 'hover'});
 
 		$('input[id*=article-]').each(function(i) {
 			$('[id="' + this.id + '"]').each(function(i) {

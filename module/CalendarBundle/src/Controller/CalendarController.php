@@ -82,7 +82,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $date = $this->getParam('id');
+        $date = $this->getParam('name');
         $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
 
         if (!$first) {
@@ -160,12 +160,12 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function _getEvent()
     {
-        if (null === $this->getParam('id'))
+        if (null === $this->getParam('name'))
             return;
 
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
-            ->findOneByName($this->getParam('id'));
+            ->findOneByName($this->getParam('name'));
 
         if (null === $event)
             return;
@@ -175,12 +175,12 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     private function _getEventByPoster()
     {
-        if (null === $this->getParam('id'))
+        if (null === $this->getParam('name'))
             return;
 
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
-            ->findOneByPoster($this->getParam('id'));
+            ->findOneByPoster($this->getParam('name'));
 
         if (null === $event)
             return;

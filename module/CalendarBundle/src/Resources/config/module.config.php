@@ -45,11 +45,11 @@ return array(
             'calendar' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/calendar[/:action[/:id]][/]',
+                    'route' => '[/:language]/calendar[/:action[/:name]][/]',
                     'constraints' => array(
                         'language' => '[a-z]{2}',
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'       => '[a-zA-Z0-9\-_]*',
+                        'name'     => '[a-zA-Z0-9\-_]*',
                     ),
                     'defaults' => array(
                         'controller' => 'calendar',

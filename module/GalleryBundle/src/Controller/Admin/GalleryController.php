@@ -261,9 +261,19 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $image->scaleImage(640, 480, true);
+        $thumb = $image->clone();
+        $watermark = new Imagick();
+        $watermark->readImage(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('gallery.watermark_path')
+        );
+        $watermark->scaleImage(57, 48);
+        $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
         $image->writeImage($filePath . '/' . $album->getId() . $filename);
-        $image->cropThumbnailImage(150, 150);
-        $image->writeImage($filePath . '/' . $album->getId() . '/thumbs'. $filename);
+
+        $thumb->cropThumbnailImage(150, 150);
+        $thumb->writeImage($filePath . '/' . $album->getId() . '/thumbs'. $filename);
 
         $photo = new Photo($album, $filename);
         $this->getEntityManager()->persist($photo);
