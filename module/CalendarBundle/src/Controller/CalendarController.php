@@ -133,7 +133,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     'calendar',
                     array(
                         'action' => 'view',
-                        'id' => $event->getName(),
+                        'name' => $event->getName(),
                     )
                 ),
             );
