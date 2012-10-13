@@ -1,0 +1,29 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+    <h1>{{ translate('Events') }}</h1>
+
+        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+            {% for event in paginator %}
+                <tr>
+                    <td width="120">
+                        <a href="{{ url('calendar', {'action': 'view', 'id': event.getEvent().getName() }) }}">
+                            {% if event.getEvent().getPoster() %}
+                                    <img width="120" src="{{ url('calendar', {'action': 'poster', 'id': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+                            {% endif %}
+                        </a>
+                    </td>
+
+                    <td>
+                        <strong>{{ event.getEvent().getTitle(language) }}</strong>
+                        <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                        <br/>{% autoescape false %}{{ event.getEvent().getSummary(400, language) }}{% endautoescape %}
+                    </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+        {% include 'site/partials/paginationControl.twig' %}
+
+{% endblock %}

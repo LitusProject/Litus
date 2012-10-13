@@ -21,6 +21,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Mime\Part,
     Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Validator\File\Count as CountValidator,
     Zend\Validator\File\Size as SizeValidator,
     Zend\View\Model\ViewModel;
 
@@ -49,7 +50,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
             if ($form->isValid()) {
 
-                $upload = new FileUpload();
+                $upload = new FileUpload(array('ignoreNoFile' => true));
 
                 $upload->addValidator(new SizeValidator(array('max' => '50MB')));
 
@@ -85,6 +86,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $part->type = Mime::TYPE_HTML;
                     else
                         $part->type = Mime::TYPE_TEXT;
+                    $part->charset='utf-8';
                     $message = new MimeMessage();
                     $message->addPart($part);
 
@@ -109,6 +111,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $part = new Part(fopen($file['tmp_name'], 'r'));
                         $part->type = $file['type'];
                         $part->id = $file['name'];
+                        $part->disposition = "attachment";
+                        $part->filename = $file['name'];
                         $part->encoding = Mime::ENCODING_BASE64;
                         $message->addPart($part);
                     }

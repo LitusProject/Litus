@@ -35,28 +35,15 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_company_internship', 'manage') %}
+        {% if hasAccess('admin_company_job', 'manage') %}
             <div class="sidebox">
-                <div class="title">Internships</div>
+                <div class="title">Jobs</div>
                	<div class="content">
                 	<p>
-                    	<i>Please hit the link below to view the internships of this company!</i>
+                    	<i>Please hit the link below to view the jobs of this company!</i>
                     </p>
                     <p>
-                       	<a href="{{ url('admin_company_internship', {"action": "manage", "id": company.getId()}) }}">&rarr; Internships</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
-        {% if hasAccess('admin_company_vacancy', 'manage') %}
-            <div class="sidebox">
-                <div class="title">Vacancies</div>
-               	<div class="content">
-                	<p>
-                    	<i>Please hit the link below to view the vacancy of this company!</i>
-                    </p>
-                    <p>
-                       	<a href="{{ url('admin_company_vacancy', {"action": "manage", "id": company.getId()}) }}">&rarr; Vacancies</a>
+                       	<a href="{{ url('admin_company_job', {"action": "manage", "id": company.getId()}) }}">&rarr; Jobs</a>
                     </p>
                 </div>
             </div>
@@ -67,10 +54,19 @@
 {% block content_script %}
     <script type="text/javascript">
 	    $(document).ready(function () {
-	        $('textarea#history').gollum({
-	            toolbar: {
-					"bold": ["bold", "Bold", "bold"],
-					"italic": ["italic", "Italic", "italic"],
+            $('#page').click(togglePage);
+            togglePage();
+
+            $('textarea#description').gollum({
+                uploadURL: '{{ url('admin_company', {'action': 'upload'}) }}',
+                progressURL: '{{ url('admin_company', {'action': 'uploadProgress'}) }}',
+                uploadProgressName: '{{ uploadProgressName }}',
+                progressId: '{{ uploadProgressId }}',
+            });
+            $('textarea#summary').gollum({
+                toolbar: {
+                    "bold": ["bold", "Bold", "bold"],
+                    "italic": ["italic", "Italic", "italic"],
                     "divider": "-",
                     "link": ["link", "Link", "link"],
                     "divider": "-",
@@ -82,7 +78,14 @@
                     "help": ["help", "Help", "help"],
                 },
                 width: '500px',
-	        });
+            });
 	    });
+
+        function togglePage() {
+            if ($('#page').is(':checked'))
+                $('#page_form').show();
+            else
+                $('#page_form').hide();
+        }
     </script>
 {% endblock %}

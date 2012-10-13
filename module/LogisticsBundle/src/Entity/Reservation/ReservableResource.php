@@ -27,48 +27,48 @@ class ReservableResource
 
     /**
      * @var string The name of this resource.
-     * 
+     *
      * @ORM\Id
      * @ORM\Column(type="string", length=30)
      */
     private $name;
-    
+
     /**
      * @var array An array of \LogisticsBundle\Entity\Reservation\Reservation indicating when this resource is reserved.
-     * 
+     *
      * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Reservation\Reservation", mappedBy="resource_id")
      */
     private $reservations;
-    
+
     /**
      * Creates a new reservable resource.
-     * 
+     *
      * @param string $name The name of the resource.
      */
     public function __construct($name) {
         $this->name = $name;
         $this->reservations = new ArrayCollection();
     }
-    
+
     /**
      * @return string The name of the resource.
      */
     public function getName() {
         return $name;
     }
-    
+
     /**
      * @return array An array of \LogisticsBundle\Entity\Reservation indicating when this resource is reserved.
      */
     public function getReservations() {
         return $this->reservations->toArray();
     }
-    
+
     /**
      * @param Reservation $reservation The reservation to add to this resource.
      */
     public function addReservation(Reservation $reservation) {
         $this->reservations->add($reservation);
     }
-    
+
 }

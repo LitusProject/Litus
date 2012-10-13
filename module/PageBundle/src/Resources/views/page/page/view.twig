@@ -28,7 +28,7 @@
                                 </li>
                             {% else %}
                                 {% if hasAccess('page', 'view') %}
-                                    <li><a href="{{ url('page', {"name": item.name}) }}">{{ item.title }}</a></li>
+                                    <li {% if item.name == getParam('name') %}class="active"{% endif %}><a href="{{ url('page', {"name": item.name}) }}">{{ item.title }}</a></li>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}

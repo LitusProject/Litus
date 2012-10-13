@@ -39,7 +39,7 @@ class Publication extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::TITLE_EXISTS => 'There is a publication with this title already!',
+        self::TITLE_EXISTS => 'There already is a publication with this title',
     );
 
     /**

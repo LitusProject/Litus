@@ -29,7 +29,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
     /**
-     * Execute the request
+     * Execute the request.
      *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array

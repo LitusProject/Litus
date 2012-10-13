@@ -15,6 +15,7 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Page,
     BrBundle\Form\Admin\Company\Add as AddForm,
     BrBundle\Form\Admin\Company\Edit as EditForm,
     BrBundle\Form\Admin\Company\Logo as LogoForm,
@@ -23,6 +24,7 @@ use BrBundle\Entity\Company,
     Imagick,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\View\Model\ViewModel;
 
 /**
@@ -71,12 +73,22 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         $formData['address_city'],
                         $formData['address_country']
                     ),
-                    $formData['history'],
-                    $formData['description'],
+                    $formData['website'],
                     $formData['sector']
                 );
 
                 $this->getEntityManager()->persist($company);
+
+                if (isset($formData['page']) && $formData['page']) {
+                    $page = new Page(
+                        $company,
+                        $formData['summary'],
+                        $formData['description']
+                    );
+
+                    $this->getEntityManager()->persist($page);
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -101,6 +113,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'form' => $form,
+                'uploadProgressName' => ini_get('session.upload_progress.name'),
+                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -119,9 +133,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $company->setName($formData['company_name'])
                     ->setVatNumber($formData['vat_number'])
-                    ->setHistory($formData['history'])
-                    ->setDescription($formData['description'])
                     ->setSector($formData['sector'])
+                    ->setWebsite($formData['website'])
                     ->getAddress()
                         ->setStreet($formData['address_street'])
                         ->setNumber($formData['address_number'])
@@ -129,6 +142,27 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->setPostal($formData['address_postal'])
                         ->setCity($formData['address_city'])
                         ->setCountry($formData['address_country']);
+
+                if (isset($formData['page']) && $formData['page']) {
+                    if ($company->getPage() != null) {
+                        $company->getPage()
+                            ->setSummary($formData['summary'])
+                            ->setDescription($formData['description']);
+                    } else {
+                        $page = new Page(
+                            $company,
+                            $formData['summary'],
+                            $formData['description']
+                        );
+                        $this->getEntityManager()->persist($page);
+                    }
+                } else {
+                    if ($company->getPage() != null) {
+                        $this->getEntityManager()->remove($company->getPage());
+                    }
+                }
+
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -153,6 +187,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'form' => $form,
                 'company' => $company,
+                'uploadProgressName' => ini_get('session.upload_progress.name'),
+                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -170,6 +206,58 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    public function uploadAction()
+    {
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if (!(in_array($_FILES['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $_POST['type'] == 'image') &&
+                    $_POST['type'] !== 'file') {
+                return new ViewModel();
+            }
+
+            $filePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.file_path') . '/';
+
+            $upload = new FileUpload();
+
+            $fileName = '';
+            do{
+                $fileName = sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+
+            $upload->addFilter('Rename', $filePath . $fileName);
+            $upload->receive();
+
+            $url = $this->url()->fromRoute(
+                'career_file',
+                array(
+                    'name' => $fileName,
+                )
+            );
+
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'name' => $url,
+                    )
+                )
+            );
+        }
+    }
+
+    public function uploadProgressAction()
+    {
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+
+        return new ViewModel(
+            array(
+                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
             )
         );
     }
@@ -197,7 +285,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $image->cropThumbnailImage(320, 320);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {
-                    $fileName = $company->getLogo();
+                    $fileName = '/' . $company->getLogo();
                 } else {
                     $fileName = '';
                     do{

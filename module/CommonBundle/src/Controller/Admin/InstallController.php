@@ -164,6 +164,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_location' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
+                    'admin_person' => array(
+                        'typeahead'
+                    ),
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
@@ -229,6 +232,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'index'
                     ),
                     'shift_install' => array(
+                        'index'
+                    ),
+                    'sport_install' => array(
                         'index'
                     ),
                     'syllabus_install' => array(

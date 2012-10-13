@@ -15,6 +15,7 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Users\People\Corporate,
+    CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Address,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -44,6 +45,13 @@ class Company
     private $name;
 
     /**
+     * @var string The company's URL
+     *
+     * @ORM\Column(type="string", length=50);
+     */
+    private $slug;
+
+    /**
      * @var string The company's VAT number
      *
      * @ORM\Column(type="string", name="vat_number")
@@ -59,18 +67,11 @@ class Company
     private $address;
 
     /**
-     * @var string The history of the company
+     * @var string The company's website
      *
      * @ORM\Column(type="text")
      */
-    private $history;
-
-    /**
-     * @var string The description of the company
-     *
-     * @ORM\Column(type="text")
-     */
-    private $description;
+    private $website;
 
     /**
      * @var string The sector of the company
@@ -96,14 +97,16 @@ class Company
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
      *
-     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", cascade={"persist"})
-     * @ORM\JoinTable(
-     *      name="br.companies_contacts_map",
-     *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}
-     * )
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", mappedBy="company")
      */
     private $contacts;
+
+    /**
+     * @var \BrBundle\Entity\Company\Page The company's page
+     *
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company\Page", mappedBy="company")
+     */
+    private $page;
 
     /**
      * @var array The possible sectors of a company
@@ -117,18 +120,16 @@ class Company
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
      * @param \CommonBundle\Entity\General\Address $address The company's address
-     * @param string $history The company's history
-     * @param string $description The company's description
      * @param string $sector The company's sector
      */
-    public function __construct($name, $vatNumber, Address $address, $history, $description, $sector)
+    public function __construct($name, $vatNumber, Address $address, $website, $sector)
     {
         $this->setName($name);
         $this->setVatNumber($vatNumber);
         $this->setAddress($address);
-        $this->setHistory($history);
-        $this->setDescription($description);
+        $this->setWebsite($website);
         $this->setSector($sector);
+        $this->contacts = new ArrayCollection();
 
         $this->active = true;
     }
@@ -150,6 +151,14 @@ class Company
     }
 
     /**
+     * @return \BrBundle\Entity\Company\Page
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+    /**
      * @param string $name
      * @return \BrBundle\Entity\Company
      */
@@ -159,6 +168,7 @@ class Company
             throw new \InvalidArgumentException('Invalid name');
 
         $this->name = $name;
+        $this->slug = Url::createSlug($name);
 
         return $this;
     }
@@ -213,12 +223,15 @@ class Company
     }
 
     /**
-     * @param string $history
+     * @param string $website
      * @return \BrBundle\Entity\Company
      */
-    public function setHistory($history)
+    public function setWebsite($website)
     {
-        $this->history = $history;
+        if ((null === $website) || !is_string($website))
+            throw new \InvalidArgumentException('Invalid website');
+
+        $this->website = $website;
 
         return $this;
     }
@@ -226,28 +239,20 @@ class Company
     /**
      * @return string
      */
-    public function getHistory()
+    public function getWebsite()
     {
-        return $this->history;
-    }
-
-    /**
-     * @param string $description
-     * @return \BrBundle\Entity\Company
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
+        return $this->website;
     }
 
     /**
      * @return string
      */
-    public function getDescription()
+    public function getFullWebsite()
     {
-        return $this->description;
+        $result =  $this->getWebsite();
+        if (!strpos($result, 'http://'))
+            $result = 'http://' . $result;
+        return $result;
     }
 
     /**
@@ -326,18 +331,8 @@ class Company
         return $this->contacts->toArray();
     }
 
-    /**
-     * @param array $contact The contacts that should be added
-     * @return \BrBundle\Entity\Company
-     * @throws \InvalidArugmentException
-     */
-    public function addContact(Corporate $contact)
+    public function getSlug()
     {
-        if ((null === $contact) || $this->contacts->contains($contact))
-            throw new \InvalidArgumentException('Invalid contact');
-
-        $this->contacts->add($contact);
-
-        return $this;
+        return $this->slug;
     }
 }

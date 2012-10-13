@@ -27,6 +27,7 @@ class AllInstallController extends \CommonBundle\Component\Controller\ActionCont
         $bundles = array(
             'api',
             'banner',
+            'br',
             'calendar',
             'common',
             'cudi',
@@ -41,6 +42,7 @@ class AllInstallController extends \CommonBundle\Component\Controller\ActionCont
             'publication',
             'secretary',
             'shift',
+            'sport',
             'syllabus',
         );
 
