@@ -7,9 +7,9 @@
             {% for event in paginator %}
                 <tr>
                     <td width="120">
-                        <a href="{{ url('calendar', {'action': 'view', 'id': event.getEvent().getName() }) }}">
+                        <a href="{{ url('calendar', {'action': 'view', 'name': event.getEvent().getName() }) }}">
                             {% if event.getEvent().getPoster() %}
-                                    <img width="120" src="{{ url('calendar', {'action': 'poster', 'id': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+                                    <img width="120" src="{{ url('calendar', {'action': 'poster', 'name': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
                             {% endif %}
                         </a>
                     </td>

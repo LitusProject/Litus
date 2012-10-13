@@ -65,6 +65,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     $formData['job_name'],
                     $formData['description'],
                     $formData['profile'],
+                    $formData['requiredKnowledge'],
+                    $formData['city'],
                     $company,
                     $formData['type']
                 );
@@ -113,8 +115,12 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
             if ($form->isValid()) {
                 $job->setName($formData['job_name'])
+                    ->setDescription($formData['description'])
                     ->setProfile($formData['profile'])
-                    ->setDescription($formData['description']);
+                    ->setRequiredKnowledge($formData['requiredKnowledge'])
+                    ->setCity($formData['city']);
+
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
