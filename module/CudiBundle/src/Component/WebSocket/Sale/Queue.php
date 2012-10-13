@@ -527,6 +527,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->id = $item->getId();
             $result->number = $item->getQueueNumber();
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
+            $result->university_identification = $item->getPerson()->getUniversityIdentification();
             $result->status = $item->getStatus();
             $result->locked = isset($this->_lockedItems[$item->getId()]);
 
