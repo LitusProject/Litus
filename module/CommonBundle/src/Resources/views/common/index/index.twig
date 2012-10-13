@@ -32,7 +32,7 @@
 
 		        	<p class="calendarItem">
 		        	    {% for event in day.events %}
-    		        		<i class="icon-time"></i> <a href="{{ url('calendar', {'action': 'view', 'id': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ event.getSummary(200, language) }}">{{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+    		        		<i class="icon-time"></i> <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ event.getSummary(200, language) }}">{{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
     		        	{% endfor %}
 		        	</p>
 		        </div>
