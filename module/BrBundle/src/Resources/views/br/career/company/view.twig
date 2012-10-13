@@ -38,11 +38,11 @@
     <div class="span9">
         <h1>{{ page.getCompany().getName() }}</h1>
 
-        <div class="accordion" id="accordion2">
+        <div class="accordion" id="accordion">
             {% if events|length > 0 %}
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#events">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#events">
                         Events
                     </a>
                 </div>
@@ -69,7 +69,7 @@
             {% if vacancies|length > 0 %}
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#vacancies">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#vacancies">
                         Vacancies
                     </a>
                 </div>
@@ -95,7 +95,7 @@
             {% if internships|length > 0 %}
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#internships">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#internships">
                         Internships
                     </a>
                 </div>
@@ -120,7 +120,7 @@
             {% endif %}
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#about">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#about">
                         About
                     </a>
                 </div>

@@ -43,6 +43,59 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        return new ViewModel();
+        $vacancy = $this->_getVacancy();
+
+        return new ViewModel(
+            array(
+                'vacancy' => $vacancy,
+            )
+        );
+    }
+
+    private function _getVacancy()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the vacancy!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_vacancy',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        $vacancy = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Job')
+            ->findOneByTypeAndId('vacancy', $this->getParam('id'));
+
+        if (null === $vacancy) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No vacancy with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_vacancy',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        return $vacancy;
     }
 }

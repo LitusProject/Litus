@@ -79,6 +79,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'job_name' => $job->getName(),
                 'description' => $job->getDescription(),
+                'profile' => $job->getProfile(),
+                'requiredKnowledge' => $job->getRequiredKnowledge(),
+                'city' => $job->getCity(),
             )
         );
     }

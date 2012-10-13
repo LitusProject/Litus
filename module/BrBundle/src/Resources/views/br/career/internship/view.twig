@@ -1,5 +1,65 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
-    {{ internship.getName() }}
+
+    <div class="span2">
+        {% if internship.getCompany().getLogo() %}
+            <img src="{{ url('admin_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
+        {% endif %}
+
+
+        {% if internship.getCity() %}
+
+            <hr/>
+
+            <center>
+                <strong>
+                    Location: {{ internship.getCity() }}
+                </strong>
+            </center>
+
+        {% endif %}
+
+    </div>
+    <div class="span9">
+        <h1>{{ internship.getName() }}</h1>
+        <div class="accordion" id="accordion">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#about">
+                        Description
+                    </a>
+                </div>
+                <div id="about" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        {{ internship.getDescription() }}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#profile">
+                        Profile
+                    </a>
+                </div>
+                <div id="profile" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        {{ internship.getProfile() }}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#knowledge">
+                        Required Knowledge
+                    </a>
+                </div>
+                <div id="knowledge" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        {{ internship.getRequiredKnowledge() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
