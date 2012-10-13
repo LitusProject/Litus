@@ -37,6 +37,18 @@
                                 </li>
                             {% endif %}
                         {% endfor %}
+                        {% if hasAccess('gallery', 'overview') %}
+                            <li class="dropdown">
+                                <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
+                                    {{ translate('Media') }} <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% if hasAccess('gallery', 'overview') %}
+                                        <li><a href="{{ url('gallery', {"action": 'overview'}) }}">{{ translate('Gallery') }}</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
                         {% if authenticatedPerson is not null %}
                             <li class="dropdown hidden-desktop" id="accountDropdown">
                                 <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">

@@ -22,6 +22,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'key'         => 'gallery.watermark_path',
                     'value'       => 'data/gallery/img/watermark.png',
                     'description' => 'The path to the watermark',
+                ),
+                array(
+                    'key'         => 'gallery.archive_url',
+                    'value'       => 'http://old.vtk.be/ontspanning/fotoboek/',
+                    'description' => 'The url to the archive',
                 )
             )
         );

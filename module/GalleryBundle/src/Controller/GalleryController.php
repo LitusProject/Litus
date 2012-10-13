@@ -35,11 +35,16 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery.path');
 
+        $archiveUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('gallery.archive_url');
+
         return new ViewModel(
             array(
                 'albums' => $sorted,
                 'currentYear' => AcademicYear::getAcademicYear(),
                 'filePath' => $filePath,
+                'archiveUrl' => $archiveUrl,
             )
         );
     }
