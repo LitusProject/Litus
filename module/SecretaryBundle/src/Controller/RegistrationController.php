@@ -547,7 +547,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     foreach ($tshirts as $tshirt) {
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
-                            ->findOneSoldByArticleAndPerson(
+                            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                                 $this->getEntityManager()
                                     ->getRepository('CudiBundle\Entity\Sales\Article')
                                     ->findOneById($tshirt),
