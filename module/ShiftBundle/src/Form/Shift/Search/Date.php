@@ -16,6 +16,7 @@ namespace ShiftBundle\Form\Shift\Search;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    DateTime,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -42,9 +43,11 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->_entityManager = $entityManager;
 
+        $today = new DateTime();
         $field = new Text('date');
         $field->setAttribute('class', 'input-large')
-            ->setAttribute('placeholder', 'dd/mm/yyyy');
+            ->setAttribute('placeholder', 'dd/mm/yyyy')
+            ->setValue($today->format('d/m/Y'));
         $this->add($field);
 
         $field = new Submit('search');

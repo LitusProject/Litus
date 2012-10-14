@@ -29,4 +29,7 @@ return array(
     'Please log in to view the shifts!' => 'Meld je aan om de shiften te bekijken!',
     'The subscription was successfully removed!' => 'De inschrijving werd succesvol verwijderd!',
     'An error occurred while trying to delete a subscription.' => 'Er trad een fout op bij het verwijderen van de inschrijving!',
+    'Shifts from %start% to %end%' => 'Shiften van %start% tot %end%',
+    'Shifts for %unit%' => 'Shiften voor %unit%',
+    'Shifts for %event%' => 'Shiften voor %event%',
 );

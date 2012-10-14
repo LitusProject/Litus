@@ -33,6 +33,12 @@
             <h2>{{ translate('Search') }}</h2>
 
             <div class="well well-small">
+                <h4>{{ translate('By Date') }}</h4>
+
+                {{ forms.renderForm(dateSearchForm) }}
+            </div>
+
+            <div class="well well-small">
                 <h4>{{ translate('By Event') }}</h4>
 
                 {{ forms.renderForm(eventSearchForm) }}
@@ -44,17 +50,12 @@
                 {{ forms.renderForm(unitSearchForm) }}
             </div>
 
-            <div class="well well-small">
-                <h4>{{ translate('By Date') }}</h4>
-
-                {{ forms.renderForm(dateSearchForm) }}
-            </div>
         </span>
         <span class="span8">
             <h2>{{ translate('My Shifts') }}</h2>
                 {{ _self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
 
-            <h2>{{ translate('Results') }}</h2>
+            <h2>{{ resultString }}</h2>
             {% if searchResults is not null %}
                 {{ _self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
             {% else %}

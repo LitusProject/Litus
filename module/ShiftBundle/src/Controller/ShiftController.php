@@ -80,6 +80,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $searchResults = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift')
                         ->findAllActiveByEvent($event);
+
+                    $resultString = $this->getTranslator()->translate('Shifts for %event%');
+                    $resultString = str_replace('%event%', $event->getTitle(), $resultString);
                 } else {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -102,6 +105,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $searchResults = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift')
                         ->findAllActiveByUnit($unit);
+
+                    $resultString = $this->getTranslator()->translate('Shifts for %unit%');
+                    $resultString = str_replace('%unit%', $unit->getName(), $resultString);
                 } else {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -130,11 +136,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     } else {
                         $start_date->setTime(0, 0, 0);
                         $end_date = clone $start_date;
-                        $end_date->add(new DateInterval('P1D'));
+                        $end_date->add(new DateInterval('P1W'));
 
                         $searchResults = $this->getEntityManager()
                             ->getRepository('ShiftBundle\Entity\Shift')
                             ->findAllActiveBetweenDates($start_date, $end_date);
+
+                        $resultString = $this->getTranslator()->translate('Shifts from %start% to %end%');
+                        $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
+                        $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
                     }
                 } else {
                     $this->flashMessenger()->addMessage(
@@ -146,7 +156,23 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     );
                 }
             }
+        } else {
+            $start_date = new DateTime();
+            $start_date->setTime(0, 0, 0);
+            $end_date = clone $start_date;
+            $end_date->add(new DateInterval('P1W'));
+
+            $searchResults = $searchResults = $this->getEntityManager()
+                            ->getRepository('ShiftBundle\Entity\Shift')
+                            ->findAllActiveBetweenDates($start_date, $end_date);
+
+            $resultString = $this->getTranslator()->translate('Shifts from %start% to %end%');
+            $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
+            $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
         }
+
+        if (!isset($resultString))
+            $resultString = 'Results';
 
         if (null !== $searchResults) {
             foreach ($myShifts as $shift) {
@@ -157,6 +183,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'resultString' => $resultString,
                 'eventSearchForm' => $eventSearchForm,
                 'unitSearchForm' => $unitSearchForm,
                 'dateSearchForm' => $dateSearchForm,

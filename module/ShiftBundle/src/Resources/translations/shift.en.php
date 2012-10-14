@@ -29,4 +29,7 @@ return array(
     'Please log in to view the shifts!' => 'Please log in to view the shifts!',
     'The subscription was successfully removed!' => 'The subscription was successfully removed!',
     'An error occurred while trying to delete a subscription.' => 'An error occurred while trying to delete a subscription.',
+    'Shifts from %start% to %end%' => 'Shifts from %start% to %end%',
+    'Shifts for %unit%' => 'Shifts for %unit%',
+    'Shifts for %event%' => 'Shifts for %event%',
 );
