@@ -138,7 +138,10 @@
 	    		if ($(this).data('info').barcodes[i] == value && $(this).data('info').currentNumber < $(this).data('info').number) {
 	    			found = true;
 	    			$(this).find('.addArticle').click();
+	    			$(this).removeClass('error').addClass('success');
 	            	return false;
+	    		} else if ($(this).data('info').barcodes[i] == value) {
+	    			$(this).removeClass('success').addClass('error');
 	    		}
 	    	}
 	    });
