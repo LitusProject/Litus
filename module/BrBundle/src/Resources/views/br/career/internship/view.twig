@@ -3,10 +3,14 @@
 {% block page_content %}
 
     <div class="span2">
-        {% if internship.getCompany().getLogo() %}
-            <img src="{{ url('admin_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
-        {% endif %}
-        <center>{{ internship.getCompany().getName() }}</center>
+            {% if internship.getCompany().getPage() %}
+            <a href="{{ url('career_company',{ 'action': 'view', 'company': internship.getCompany().getSlug() }) }}">
+            {% endif %}
+                <img src="{{ url('admin_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
+            {% if internship.getCompany().getPage() %}
+            </a>
+            {% endif %}
+        <center class="company-name">{{ internship.getCompany().getName() }}</center>
 
         {% if internship.getCity() %}
 

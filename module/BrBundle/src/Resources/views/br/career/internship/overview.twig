@@ -15,7 +15,7 @@
                     </td>
 
                     <td>
-                        <strong>{{ internship.getName() }}</strong>
+                        <strong>{{ internship.getCompany().getName() }} - {{ internship.getName() }}</strong>
                         <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
                         <br/>{% autoescape false %}{{ internship.getSummary(200) }}{% endautoescape %}
                     </td>

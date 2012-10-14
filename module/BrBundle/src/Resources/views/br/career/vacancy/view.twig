@@ -4,9 +4,15 @@
 
     <div class="span2">
         {% if vacancy.getCompany().getLogo() %}
-            <img src="{{ url('admin_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
+            {% if vacancy.getCompany().getPage() %}
+            <a href="{{ url('career_company',{ 'action': 'view', 'company': vacancy.getCompany().getSlug() }) }}">
+            {% endif %}
+                <img src="{{ url('admin_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
+            {% if vacancy.getCompany().getPage() %}
+            </a>
+            {% endif %}
         {% endif %}
-        <center>{{ vacancy.getCompany().getName() }}</center>
+        <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
 
 
         {% if vacancy.getCity() %}
