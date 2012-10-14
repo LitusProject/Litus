@@ -21,9 +21,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Validator\Year as YearValidator,
-    CudiBundle\Component\Validator\SubjectCode as SubjectCodeValidator,
     CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager,
+    SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -397,7 +397,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     array('name' => 'StringTrim'),
                                 ),
                                 'validators' => array(
-                                    new SubjectCodeValidator($this->_entityManager),
+                                    new SubjectValidator($this->_entityManager),
                                 ),
                             )
                         )

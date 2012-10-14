@@ -12,25 +12,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Validator;
+namespace CudiBundle\Component\Validator\Sales\Article\Barcodes;
 
-use CudiBundle\Entity\Sales\Article,
-    Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager;
 
-class Discount extends \Zend\Validator\AbstractValidator
+/**
+ * Matches the given article barcode against the database to check whether it exists or not.
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class Exists extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-
-    /**
-     * @var \CudiBundle\Entity\Article
-     */
-    private $_article;
 
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-
 
     /**
      * Error messages
@@ -38,19 +36,19 @@ class Discount extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The discount already exist!'
+        self::NOT_VALID => 'The article barcode does not exist'
     );
 
     /**
-     * Create a new Discount validator.
+     * Create a new Article Barcode validator.
      *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param mixed $opts The validator's options
      */
-    public function __construct(Article $article, EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
 
-        $this->_article = $article;
         $this->_entityManager = $entityManager;
     }
 
@@ -67,11 +65,16 @@ class Discount extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $discount = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
-            ->findOneByArticleAndType($this->_article, $value);
+        if (! is_numeric($value)) {
+            $this->error(self::NOT_VALID);
+            return false;
+        }
 
-        if (null === $discount)
+        $article = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneByBarcode($value);
+
+        if (null !== $article)
             return true;
 
         $this->error(self::NOT_VALID);

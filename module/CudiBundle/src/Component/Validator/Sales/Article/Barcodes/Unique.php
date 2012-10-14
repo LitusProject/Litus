@@ -12,12 +12,17 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Validator;
+namespace CudiBundle\Component\Validator\Sales\Article\Barcodes;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager;
 
-class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
+/**
+ * Matches the given article barcode against the database to check whether it is unique or not.
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class Unique extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 

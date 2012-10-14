@@ -285,12 +285,11 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 }
 
                 if ($metaData->becomeMember()) {
-
                     $hasShirt = false;
                     foreach ($tshirts as $tshirt) {
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
-                            ->findOneSoldByArticleAndPerson(
+                            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                                 $this->getEntityManager()
                                     ->getRepository('CudiBundle\Entity\Sales\Article')
                                     ->findOneById($tshirt),
@@ -303,6 +302,14 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                         }
                     }
 
+                    $enableAssignment = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_automatic_assignment');
+                    $currentPeriod = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\Period')
+                        ->findOneActive();
+                    $currentPeriod->setEntityManager($this->getEntityManager());
+
                     // Only make a new booking if no tshirt has been sold before
                     if (!$hasShirt) {
                         $booking = new Booking(
@@ -311,21 +318,31 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sales\Article')
                                 ->findOneById($tshirts[$formData['tshirt_size']]),
-                            'assigned',
+                            'booked',
                             1,
                             true
                         );
 
                         $this->getEntityManager()->persist($booking);
+
+                        if ($enableAssignment == '1') {
+                            $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                            if ($available > 0) {
+                                if ($available >= $booking->getNumber()) {
+                                    $booking->setStatus('assigned', $this->getEntityManager());
+                                }
+                            }
+                        }
                     }
 
                     // Book the other articles that should be booked on registration
-                    $registrationArticles = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.registration_articles');
+                    $registrationArticles = unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.registration_articles')
+                    );
 
                     foreach ($registrationArticles as $registrationArticle) {
-
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
                             ->findOneSoldByArticleAndPerson(
@@ -358,11 +375,20 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sales\Article')
                                 ->findOneById($registrationArticle),
-                            'assigned',
+                            'booked',
                             1,
                             true
                         );
                         $this->getEntityManager()->persist($booking);
+
+                        if ($enableAssignment == '1') {
+                            $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                            if ($available > 0) {
+                                if ($available >= $booking->getNumber()) {
+                                    $booking->setStatus('assigned', $this->getEntityManager());
+                                }
+                            }
+                        }
                     }
 
                 }
