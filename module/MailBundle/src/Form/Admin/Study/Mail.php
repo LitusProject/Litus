@@ -44,7 +44,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $studyNames = array();
         foreach($studies as $study) {
-            $studyNames[$study->getId()] = $study->getFullTitle() . ' - Phase ' . $study->getPhase();
+            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
         }
 
         $field = new Select('studies');
