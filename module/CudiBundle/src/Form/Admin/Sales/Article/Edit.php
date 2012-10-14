@@ -16,7 +16,7 @@ namespace CudiBundle\Form\Admin\Sales\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Entity\General\AcademicYear as AcademicYear,
-    CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
+    CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -80,7 +80,7 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
                                     'useChecksum' => false,
                                 ),
                             ),
-                            new UniqueArticleBarcodeValidator($this->_entityManager, $this->_academicYear, array($this->_article->getId())),
+                            new UniqueBarcodeValidator($this->_entityManager, $this->_academicYear, array($this->_article->getId())),
                         ),
                     )
                 )

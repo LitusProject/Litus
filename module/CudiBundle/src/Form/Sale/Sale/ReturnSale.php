@@ -18,7 +18,7 @@ use CommonBundle\Component\Validator\Username as UsernameValidator,
     CommonBundle\Component\Form\Bootstrap\Element\Reset,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
+    CudiBundle\Component\Validator\Sales\Article\Barcodes\Exists as BarcodeValidator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Hidden,
     Zend\InputFilter\InputFilter,
@@ -122,7 +122,7 @@ class ReturnSale extends \CommonBundle\Component\Form\Bootstrap\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new ArticleBarcodeValidator($this->_entityManager),
+                            new BarcodeValidator($this->_entityManager),
                         ),
                     )
                 )
