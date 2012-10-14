@@ -3,7 +3,7 @@ return array(
     'Shifts' => 'Shiften',
     'Search' => 'Zoeken',
     'By Event' => 'Per Evenement',
-    'By Unit' => 'Per Eenheid',
+    'By Unit' => 'Op Post',
     'By Date' => 'Op Datum',
     'My Shifts' => 'Mijn Shiften',
     'Sign In' => 'Inschrijven',
