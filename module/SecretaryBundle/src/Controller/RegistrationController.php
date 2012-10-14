@@ -215,6 +215,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         );
                         $registrationArticles[] = $tshirts[$formData['tshirt_size']];
 
+                        $enableAssignment = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_automatic_assignment');
+                        $currentPeriod = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Stock\Period')
+                            ->findOneActive();
+                        $currentPeriod->setEntityManager($this->getEntityManager());
+
                         foreach ($registrationArticles as $registrationArticle) {
                             $booking = new Booking(
                                 $this->getEntityManager(),
@@ -222,11 +230,20 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                 $this->getEntityManager()
                                     ->getRepository('CudiBundle\Entity\Sales\Article')
                                     ->findOneById($registrationArticle),
-                                'assigned',
+                                'booked',
                                 1,
                                 true
                             );
                             $this->getEntityManager()->persist($booking);
+
+                            if ($enableAssignment == '1') {
+                                $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                                if ($available > 0) {
+                                    if ($available >= $booking->getNumber()) {
+                                        $booking->setStatus('assigned', $this->getEntityManager());
+                                    }
+                                }
+                            }
                         }
 
                     } else {
@@ -543,6 +560,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         }
                     }
 
+                    $enableAssignment = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_automatic_assignment');
+                    $currentPeriod = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\Period')
+                        ->findOneActive();
+                    $currentPeriod->setEntityManager($this->getEntityManager());
+
                     // Only make a new booking if no tshirt has been sold before
                     if (!$hasShirt) {
                         $booking = new Booking(
@@ -551,12 +576,21 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sales\Article')
                                 ->findOneById($tshirts[$formData['tshirt_size']]),
-                            'assigned',
+                            'booked',
                             1,
                             true
                         );
 
                         $this->getEntityManager()->persist($booking);
+
+                        if ($enableAssignment == '1') {
+                            $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                            if ($available > 0) {
+                                if ($available >= $booking->getNumber()) {
+                                    $booking->setStatus('assigned', $this->getEntityManager());
+                                }
+                            }
+                        }
                     }
 
                     // Book the other articles that should be booked on registration
@@ -567,7 +601,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
 
                     foreach ($registrationArticles as $registrationArticle) {
-
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
                             ->findOneSoldByArticleAndPerson(
@@ -600,11 +633,20 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sales\Article')
                                 ->findOneById($registrationArticle),
-                            'assigned',
+                            'booked',
                             1,
                             true
                         );
                         $this->getEntityManager()->persist($booking);
+
+                        if ($enableAssignment == '1') {
+                            $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                            if ($available > 0) {
+                                if ($available >= $booking->getNumber()) {
+                                    $booking->setStatus('assigned', $this->getEntityManager());
+                                }
+                            }
+                        }
                     }
 
                 }
