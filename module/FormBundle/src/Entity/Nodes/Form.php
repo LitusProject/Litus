@@ -276,8 +276,11 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      * @param \CommonBundle\Entity\Users\Person $person The person to check.
      * @return boolean
      */
-    public function canBeEditedBy(Person $person)
+    public function canBeEditedBy(Person $person = null)
     {
+        if (null === $person)
+            return false;
+
         if ($this->getCreationPerson()->getId() === $person->getId())
             return true;
 

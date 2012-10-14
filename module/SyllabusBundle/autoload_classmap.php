@@ -3,6 +3,7 @@
 return array(
     'SyllabusBundle\Module'                                     => __DIR__ . '/Module.php',
     'SyllabusBundle\Component\Validator\Department\Name'        => __DIR__ . '/src/Component/Validator/Department/Name.php',
+    'SyllabusBundle\Component\Validator\Subject\Code'           => __DIR__ . '/src/Component/Validator/Subject/Code.php',
     'SyllabusBundle\Component\WebSocket\Syllabus\Update'        => __DIR__ . '/src/Component/WebSocket/Update.php',
     'SyllabusBundle\Component\XMLParser\Study'                  => __DIR__ . '/src/Component/XMLParser/Study.php',
     'SyllabusBundle\Controller\Admin\DepartmentController'      => __DIR__ . '/src/Controller/Admin/DepartmentController.php',

@@ -21,12 +21,12 @@
 					<thead>
 						<tr>
 							<th>{{ translate('Title') }}</th>
-							<th>{{ translate('Authors') }}</th>
+							<th class="hidden-phone">{{ translate('Authors') }}</th>
 							<th class="span2">{{ translate('Price / Piece') }}</th>
-							<th class="span1">{{ translate('Mandatory') }}</th>
+							<th class="span1 hidden-phone">{{ translate('Mandatory') }}</th>
 							<th class="span1">#</th>
 							<th class="span1" style="text-align: center">{{ translate('Booked') }}</th>
-							<th class="span1">{{ translate('Remarks') }}</th>
+							<th class="span1 hidden-phone">{{ translate('Remarks') }}</th>
 						</tr>
 					</thead>
 
@@ -50,9 +50,9 @@
 						{% for map in subjectArticle['articles'] %}
 							<tr {% if map['sold'] > 0 %}class="success"{% endif %}>
 								<td>{{ map['article'].getMainArticle().getTitle() }}</td>
-								<td>{{ map['article'].getMainArticle().getAuthors() }}</td>
+								<td class="hidden-phone">{{ map['article'].getMainArticle().getAuthors() }}</td>
 								<td>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</td>
-								<td>{{ map['mandatory'] ? 'X' : '' }}</td>
+								<td class="hidden-phone">{{ map['mandatory'] ? 'X' : '' }}</td>
 								<td>
 									{% if map['article'].isBookable() %}
 										{% set name = 'article-' ~ map['article'].getId() %}
@@ -63,7 +63,7 @@
 									{% endif %}
 								</td>
 								<td style="text-align: center">{{ map['booked'] }}</td>
-								<td>
+								<td class="hidden-phone">
 									{% if map['comments']|length > 0 %}
 										<a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
 

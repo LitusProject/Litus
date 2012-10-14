@@ -12,11 +12,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Validator;
+namespace SyllabusBundle\Component\Validator\Subject;
 
 use Doctrine\ORM\EntityManager;
 
-class SubjectCode extends \Zend\Validator\AbstractValidator
+/**
+ * Matches the given subject code against the database to check whether it exists or not.
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class Code extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
