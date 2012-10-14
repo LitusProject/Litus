@@ -261,8 +261,11 @@ class Page extends \CommonBundle\Entity\Nodes\Node
      * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
      * @return boolean
      */
-    public function canBeEditedBy(Person $person)
+    public function canBeEditedBy(Person $person = null)
     {
+        if (null === $person)
+            return false;
+
         foreach ($person->getFlattenedRoles() as $role) {
             if ($this->editRoles->contains($role) || $role->getName() == 'editor')
                 return true;
