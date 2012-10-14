@@ -285,12 +285,11 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 }
 
                 if ($metaData->becomeMember()) {
-
                     $hasShirt = false;
                     foreach ($tshirts as $tshirt) {
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
-                            ->findOneSoldByArticleAndPerson(
+                            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                                 $this->getEntityManager()
                                     ->getRepository('CudiBundle\Entity\Sales\Article')
                                     ->findOneById($tshirt),

@@ -433,6 +433,44 @@ class Booking extends EntityRepository
         return null;
     }
 
+    public function findOneSoldOrAssignedOrBookedByArticleAndPerson(ArticleEntity $article, Person $person)
+    {
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.person', ':person'),
+                    $query->expr()->eq('b.article', ':article'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('b.status', '\'sold\''),
+                        $query->expr()->eq('b.status', '\'assigned\''),
+                        $query->expr()->eq('b.status', '\'booked\'')
+                    ),
+                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter(':person', $person->getId())
+            ->setParameter(':article', $article->getId())
+            ->setParameter('startDate', $period->getStartDate());
+
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findAllOpenByPerson(Person $person)
     {
         $period = $this->getEntityManager()
@@ -667,7 +705,7 @@ class Booking extends EntityRepository
             ->orderBy('b.assignmentDate', 'DESC')
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
 }
