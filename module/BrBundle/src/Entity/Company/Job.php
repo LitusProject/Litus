@@ -102,6 +102,20 @@ class Job
     private $dateUpdated;
 
     /**
+     * @var DateTime The start date and time of this reservation.
+     *
+     * @ORM\Column(name="start_date", type="datetime")
+     */
+    private $startDate;
+
+    /**
+     * @var DateTime The end date and time of this reservation.
+     *
+     * @ORM\Column(name="end_date", type="datetime")
+     */
+    private $endDate;
+
+    /**
      * @param string $name The job's name
      * @param string $description The job's description
      * @param string $profile The job's profile
@@ -109,13 +123,15 @@ class Job
      * @param \BrBundle\Entity\Company $company The job's company
      * @param string $type The job's type (entry of $possibleTypes)
      */
-    public function __construct($name, $description, $profile, $requiredKnowledge, $city, Company $company, $type)
+    public function __construct($name, $description, $profile, $requiredKnowledge, $city, Company $company, $type, $startDate, $endDate)
     {
         $this->setName($name);
         $this->setDescription($description);
         $this->setProfile($profile);
         $this->setRequiredKnowledge($requiredKnowledge);
         $this->setCity($city);
+        $this->setStartDate($startDate);
+        $this->setEndDate($endDate);
 
         $this->type = $type;
         $this->company = $company;
@@ -290,5 +306,39 @@ class Job
     public function getLastUpdateDate()
     {
         return $this->dateUpdated;
+    }
+
+    /**
+     * @param DateTime $startDate
+     *
+     * @return \BrBundle\Entity\Company\Job
+     */
+    public function setStartDate($startDate) {
+        $this->startDate = $startDate;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getStartDate() {
+        return $this->startDate;
+    }
+
+    /**
+     * @param DateTime $endDate
+     *
+     * @return \BrBundle\Entity\Company\Job
+     */
+    public function setEndDate($endDate) {
+        $this->endDate = $endDate;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getEndDate() {
+        return $this->endDate;
     }
 }

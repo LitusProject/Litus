@@ -18,6 +18,7 @@ use BrBundle\Entity\Company\Job,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -38,6 +39,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('job_name');
         $field->setLabel('Job Name')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text('start_date');
+        $field->setLabel('Start Date')
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text('end_date');
+        $field->setLabel('End Date')
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
             ->setRequired();
         $this->add($field);
 
@@ -82,6 +95,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'profile' => $job->getProfile(),
                 'requiredKnowledge' => $job->getRequiredKnowledge(),
                 'city' => $job->getCity(),
+                'start_date' => $job->getStartDate()->format('d/m/Y H:i'),
+                'end_date' => $job->getEndDate()->format('d/m/Y H:i'),
             )
         );
     }
@@ -99,6 +114,47 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'start_date',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'end_date',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                            new DateCompareValidator('start_date', 'd/m/Y H:i'),
                         ),
                     )
                 )
