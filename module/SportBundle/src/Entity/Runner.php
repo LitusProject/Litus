@@ -144,7 +144,7 @@ class Runner
      * @param string $lastName
      * @return \SportBundle\Entity\Runner
      */
-    public function setFirstName($lastName)
+    public function setLastName($lastName)
     {
         $this->lastName = $lastName;
         return $this;

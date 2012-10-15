@@ -1,67 +1,81 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Run\Form\Group;
+namespace SportBundle\Form\Group;
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-use \Litus\Form\Bootstrap\Decorator\ButtonDecorator;
-use \Litus\Form\Bootstrap\Decorator\FieldDecorator;
+use CommonBundle\Component\Form\Bootstrap\Element\Collection,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
-use \Zend\Form\Form;
-use \Zend\Form\Element\Select;
-use \Zend\Form\Element\Submit;
-use \Zend\Form\Element\Text;
-use \Zend\Registry;
-
-class Add extends \Litus\Form\Admin\Form
+/**
+ * Add a group of friends
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    public function __construct(array $allMembers, $options = null)
+    /**
+     * @var array
+     */
+    private $_allMembers;
+
+    /**
+     * @param array $allMembers
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(array $allMembers, $name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
+
+        $this->_allMembers = $allMembers;
+
+        $group = new Collection('group_information');
+        $group->setLabel('Group Information')
+            ->setAttribute('id', 'group_information');
+        $this->add($group);
 
         $field = new Text('group_name');
         $field->setLabel('Group Name')
-            ->setAttrib('class', 'xlarge span4')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
+            ->setRequired();
+        $group->add($field);
 
         $field = new Select('happy_hour_one');
         $field->setLabel('Happy Hour One')
-            ->setAttrib('class', 'xlarge span3')
+            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
             ->setRequired()
-            ->setMultiOptions($this->_generateHappyHours(20))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('options', $this->_generateHappyHours(20));
+        $group->add($field);
 
         $field = new Select('happy_hour_two');
         $field->setLabel('Happy Hour Two')
-            ->setAttrib('class', 'xlarge span3')
+            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
             ->setRequired()
-            ->setMultiOptions($this->_generateHappyHours(8))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-
-        $this->addDisplayGroup(
-            array(
-                'group_name',
-                'happy_hour_one',
-                'happy_hour_two'
-            ),
-            'group_information'
-        );
-        $this->getDisplayGroup('group_information')
-            ->setLegend('Group Information')
-            ->removeDecorator('DtDdWrapper');
+            ->setAttribute('options', $this->_generateHappyHours(8));
+        $group->add($field);
 
         foreach ($allMembers as $memberNb) {
             $this->_generateMemberForm($memberNb);
         }
 
         $field = new Submit('submit');
-        $field->setLabel('Submit')
-            ->setAttrib('class', 'btn primary')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Submit');
+        $this->add($field);
     }
 
     private function _generateHappyHours($startTime)
@@ -122,46 +136,124 @@ class Add extends \Litus\Form\Admin\Form
 
     private function _generateMemberForm($memberNb, $required = false)
     {
+        $user = new Collection('user_' . $memberNb);
+        $user->setLabel('Group Information')
+            ->setAttribute('id', 'user_' . $memberNb);
+        $this->add($user);
+
         $field = new Text('university_identification_' . $memberNb);
         $field->setLabel('Student Number')
-            ->setAttrib('class', 'xlarge span2')
-            ->setDecorators(array(new FieldDecorator()));
-
-        if ($required)
-            $field->setRequired();
-
-        $this->addElement($field);
+            ->setRequired($required)
+            ->setAttribute('class', $field->getAttribute('class') . 'large');
+        $user->add($field);
 
         $field = new Text('first_name_' . $memberNb);
         $field->setLabel('First Name')
-            ->setAttrib('class', 'xlarge span3')
-            ->setDecorators(array(new FieldDecorator()));
-
-        if ($required)
-            $field->setRequired();
-
-        $this->addElement($field);
+            ->setRequired($required)
+            ->setAttribute('class', $field->getAttribute('class') . 'xlarge');
+        $user->add($field);
 
         $field = new Text('last_name_' . $memberNb);
         $field->setLabel('Last Name')
-            ->setAttrib('class', 'xlarge span3')
-            ->setDecorators(array(new FieldDecorator()));
+            ->setRequired($required)
+            ->setAttribute('class', $field->getAttribute('class') . 'xlarge');
+        $user->add($field);
+    }
 
-        if ($required)
-            $field->setRequired();
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
 
-        $this->addElement($field);
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'group_name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
 
-        $this->addDisplayGroup(
-            array(
-                'university_identification_' . $memberNb,
-                'first_name_' . $memberNb,
-                'last_name_' . $memberNb
-            ),
-            'user_' . $memberNb
-        );
-        $this->getDisplayGroup('user_' . $memberNb)
-            ->setLegend('Team Member ' . ucfirst($memberNb))
-            ->removeDecorator('DtDdWrapper');
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'happy_hour_one',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'happy_hour_two',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            foreach ($allMembers as $memberNb) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'user_' . $memberNb,
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'university_identification_' . $memberNb,
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'first_name_' . $memberNb,
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'last_name_' . $memberNb,
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+            }
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }
