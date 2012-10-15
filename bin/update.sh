@@ -27,3 +27,5 @@ touch module/CudiBundle/src/Resources/assets/sale/less/base.less
 touch module/CudiBundle/src/Resources/assets/supplier/less/base.less
 
 touch module/LogisticsBundle/src/Resources/assets/logistics/less/base.less
+
+touch module/SportBundle/src/Resources/assets/run/less/base.less

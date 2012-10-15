@@ -26,6 +26,8 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@run_js',
+            '@common_socket',
         ),
         'run_index' => array(
             '@common_jquery',
@@ -33,6 +35,8 @@ return array(
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
             '@run_css',
+            '@run_js',
+            '@common_socket',
         ),
     ),
     'routes' => array(),

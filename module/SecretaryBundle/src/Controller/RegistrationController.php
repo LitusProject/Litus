@@ -984,11 +984,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return false;
     }
 
-    /**
-     * Create the full Shibboleth URL.
-     *
-     * @return string
-     */
     private function _getRegisterhibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()

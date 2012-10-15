@@ -4,6 +4,12 @@
     {% include 'sport/admin/run/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage error_message hide" id="loading_queue_error">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while loading the queue.</p>
+        </div>
+    </div>
     <div class="flashmessage success_message lap_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
@@ -18,7 +24,7 @@
     </div>
 
     <div id="controller_action">
-        <table class="manage">
+        <table id="queue" class="manage">
             <thead>
                 <tr>
                     <th>Runner</th>
@@ -92,11 +98,11 @@
             <div class="title">Total Laps</div>
             <div class="content">
                 <p>
-                    According to our own counter, we have run <b>{{ nbLaps }}</b> laps right now.
+                    According to our own counter, we have run <b id="own_laps">N/A</b> laps right now.
                 </p>
 
                 <p>
-                    The official count currently is <b>{% if nbOfficialLaps is null %}N/A{% else %}{{ nbOfficialLaps }}{% endif %}</b>.
+                    The official count currently is <b id="official_laps">N/A</b>.
                 </p>
             </div>
         </div>
@@ -126,6 +132,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#queue').runQueue({
+                url: '{{ socketUrl }}',
+                errorDialog: $('#loading_queue_error'),
+                ownLaps: $('#own_laps'),
+                officialLaps: $('#official_laps'),
+            });
+        });
+        /*$(document).ready(function () {
             $('.item .delete').click(openModal);
 
             $(document).bind('keypress.space', startShortKey);
@@ -188,6 +202,6 @@
             if (e.keyCode == 108) {
                 window.location.reload();
             }
-        }
+        }*/
     </script>
 {% endblock %}

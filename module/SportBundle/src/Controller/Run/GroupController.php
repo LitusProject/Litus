@@ -54,14 +54,6 @@ class GroupController extends \Litus\Controller\Action
                 }
 
                 if ($createGroup) {
-                    $newGroup = new Group(
-                        $formData['group_name'],
-                        array(
-                            $formData['happy_hour_one'],
-                            $formData['happy_hour_two']
-                        )
-                    );
-
                     $groupMembers = array();
                     foreach ($allMembers as $memberNb) {
                         $repositoryCheck = $this->getEntityManager()
@@ -87,7 +79,13 @@ class GroupController extends \Litus\Controller\Action
                     }
 
                     if (0 != count($groupMembers)) {
-                        $newGroup->setMembers($groupMembers);
+                        $newGroup = new Group(
+                            $formData['group_name'],
+                            array(
+                                $formData['happy_hour_one'],
+                                $formData['happy_hour_two']
+                            )
+                        );
 
                         $this->getEntityManager()->persist($newGroup);
 

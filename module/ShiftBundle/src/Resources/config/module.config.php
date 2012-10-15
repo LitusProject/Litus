@@ -45,11 +45,15 @@ return array(
             'admin_shift_counter' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/shift/counter[/:action[/:id]][/:academicyear][/:field/:string][/]',
+                    'route' => '/admin/shift/counter[/:action[/:id[/:person/:payed]]][/:academicyear][/:field/:string][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
+                        'person'       => '[0-9]*',
+                        'payed'        => '(true|false)',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string'       => '[a-zA-Z][%a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_shift_counter',
