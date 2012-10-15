@@ -76,7 +76,7 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByCompanyAndType(CompanyEntity $company, $type)
+    public function findAllActiveByCompanyAndType(CompanyEntity $company, $type)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
@@ -84,11 +84,14 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.company', ':company'),
-                    $query->expr()->eq('v.type', ':type')
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now')
                 )
             )
             ->setParameter('type', $type)
             ->setParameter('company', $company->getId())
+            ->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery()
             ->getResult();
