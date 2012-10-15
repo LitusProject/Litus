@@ -112,11 +112,11 @@
     function _init ($this) {
         var options = $this.data('showQueueSettings');
         $('#hideHold').click(function () {
-            _toggleHoldItems($this);
+            _hideItems($this);
         });
 
         $('#universityIdentificationFilter').keyup(function () {
-            _universityIdentificationFilter($this);
+            _hideItems($this);
         }).keydown(function (e) {
             if (e.which == 27)
                 e.stopPropagation();
@@ -149,8 +149,7 @@
                                 $(this).remove();
                         });
 
-                        _toggleHoldItems($this);
-                        _universityIdentificationFilter($this);
+                        _hideItems($this);
         			} else if(data.sale) {
                         $this.showQueue('updatePayDesk');
         				options.openSale('showQueue', data);
@@ -239,17 +238,6 @@
         }
     }
 
-    function _toggleHoldItems($this) {
-        if ($('#hideHold').is(':checked')) {
-            $this.find('tr').each(function () {
-                if ($(this).data('info').status == 'hold')
-                    $(this).hide();
-            });
-        } else {
-            $this.find('tr').show();
-        }
-    }
-
     function _visibilityActions(row, allowHide) {
         allowHide = allowHide == undefined ? true : allowHide;
         if (allowHide)
@@ -291,14 +279,21 @@
             row.find('button').removeClass('disabled');
     }
 
-    function _universityIdentificationFilter($this)
+    function _hideItems($this)
     {
         var value = $('#universityIdentificationFilter').val();
+        var hideHold = $('#hideHold').is(':checked');
+
         $this.find('tr').each(function () {
-            if ($(this).data('info').university_identification.indexOf(value) == 0)
-                $(this).show();
-            else
+            if ($(this).data('info').university_identification.indexOf(value) == 0) {
+                if (hideHold && $(this).data('info').status == 'hold') {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            } else {
                 $(this).hide();
+            }
         });
     }
 

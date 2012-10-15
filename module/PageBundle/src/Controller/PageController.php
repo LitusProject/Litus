@@ -127,7 +127,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $sort = array();
         foreach ($submenu as $key => $value)
             $sort[$key] = isset($value['title'])? $value['title'] : $value['name'];
-
+        print_r($sort);
         array_multisort($sort, $submenu);
 
         return $submenu;
