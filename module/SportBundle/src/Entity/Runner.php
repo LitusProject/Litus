@@ -105,11 +105,31 @@ class Runner
     }
 
     /**
+     * @param \CommonBundle\Entity\Users\People\Academic $academic
+     * @return \SportBundle\Entity\Runner
+     */
+    public function setAcademic(Academic $academic)
+    {
+        $this->academic = $academic;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFirstName()
     {
         return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     * @return \SportBundle\Entity\Runner
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
     }
 
     /**
@@ -121,11 +141,32 @@ class Runner
     }
 
     /**
+     * @param string $lastName
+     * @return \SportBundle\Entity\Runner
+     */
+    public function setFirstName($lastName)
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+
+    /**
      * @return \SportBundle\Entity\Group
      */
     public function getGroup()
     {
         return $this->group;
+    }
+
+    /**
+     * @param \SportBundle\Entity\Group $group
+     * @return \SportBundle\Entity\Runner
+     */
+    public function setGroup(Group $group)
+    {
+        $this->group = $group;
+        return $this;
     }
 
     /**

@@ -352,7 +352,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the user!'
+                    'No ID was given to identify the academic!'
                 )
             );
 
@@ -375,7 +375,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No user with the given ID was found!'
+                    'No academic with the given ID was found!'
                 )
             );
 

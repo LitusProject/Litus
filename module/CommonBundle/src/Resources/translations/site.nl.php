@@ -23,7 +23,7 @@ return array(
     'Login' => 'Aanmelden',
     'Account' => 'Account',
     'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Centrale Login',
-    'Language' => 'Taal',
+    'Language' => 'Language',
     'Dutch' => 'Nederlands',
     'English' => 'English',
 

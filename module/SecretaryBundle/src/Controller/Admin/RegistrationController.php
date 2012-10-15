@@ -180,11 +180,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    /**
-     * Returns the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
     private function _getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {

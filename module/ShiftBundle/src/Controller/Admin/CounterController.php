@@ -58,6 +58,12 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function viewAction()
+    {
+        if (!($person = $this->_getPerson()))
+            return new ViewModel();
+    }
+
     public function searchAction()
     {
         $this->initAjax();
@@ -107,11 +113,6 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    /**
-     * Returns the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
     private function _getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
@@ -172,7 +173,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return $academicYear;
     }
 
-    private function _getRegistration()
+    private function _getPerson()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -184,38 +185,38 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'admin_academic',
                 array(
-                    'action' => 'index'
+                    'action' => 'manage'
                 )
             );
 
             return;
         }
 
-        $registration = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Registration')
+        $academic = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneById($this->getParam('id'));
 
-        if (null === $registration) {
+        if (null === $academic) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No registration with the given ID was found!'
+                    'No person with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'admin_academic',
                 array(
-                    'action' => 'index'
+                    'action' => 'manage'
                 )
             );
 
             return;
         }
 
-        return $registration;
+        return $academic;
     }
 }

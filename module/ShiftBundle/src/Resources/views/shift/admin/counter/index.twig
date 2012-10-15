@@ -43,7 +43,12 @@
                         $('#shift_counter_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.universityIdentification + '</td>')
                             .append('<td>' + this.name + '</td>')
-                            .append('<td>' + this.count + '</td>');
+                            .append('<td>' + this.count + '</td>')
+                            .append(actions = $('<td>', {'class': 'actions'}));
+
+                        {% if hasAccess('admin_shift_counter', 'view') %}
+                            actions.append('<a href="{{ url('admin_shift_counter', {"action": "view"}) }}' + this.id +'" class="view">View</a>');
+                        {% endif %}
                     });
                     $('#shift_counter_search table').change();
                 },

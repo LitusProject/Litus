@@ -41,6 +41,19 @@ return array(
                     ),
                 ),
             ),
+            'run_index' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/run[/:action][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'run_index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'translator' => array(
@@ -59,6 +72,7 @@ return array(
     ),
     'view_manager' => array(
         'template_path_stack' => array(
+            'sport_layout' => __DIR__ . '/../layouts',
             'sport_view' => __DIR__ . '/../views',
         ),
     ),
@@ -81,6 +95,8 @@ return array(
             'sport_install' => 'SportBundle\Controller\Admin\InstallController',
 
             'admin_run'     => 'SportBundle\Controller\Admin\RunController',
+
+            'run_index'     => 'SportBundle\Controller\Run\IndexController',
         ),
     ),
     'assetic_configuration' => array(
@@ -93,7 +109,7 @@ return array(
                             'run/less/base.less',
                         ),
                         'filters' => array(
-                            'corporate_less' => array(
+                            'run_less' => array(
                                 'name' => 'Assetic\Filter\LessFilter',
                                 'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
