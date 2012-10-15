@@ -114,7 +114,7 @@ You have been removed from the following shift by an administrator:
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'admin_shift_counter' => array(
-                        'index', 'search'
+                        'index', 'payed', 'search', 'view'
                     ),
                     'admin_subscription' => array(
                         'manage', 'delete',
