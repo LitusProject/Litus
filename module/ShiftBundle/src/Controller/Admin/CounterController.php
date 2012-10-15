@@ -37,23 +37,10 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $paginator = $this->paginator()->createFromEntity(
-            'SecretaryBundle\Entity\Registration',
-            $this->getParam('page'),
-            array(
-                'academicYear' => $academicYear,
-            ),
-            array(
-                'timestamp' => 'ASC'
-            )
-        );
-
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
                 'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
+                'academicYears' => $academicYears
             )
         );
     }
@@ -62,6 +49,68 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!($person = $this->_getPerson()))
             return new ViewModel();
+
+        $asResponsible = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsReponsible($person, $this->_getAcademicYear());
+
+        $asVolunteer = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsVolunteer($person, $this->_getAcademicYear());
+
+        $payed = array();
+        foreach ($asVolunteer as $shift) {
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if ($volunteer->getPerson() == $person)
+                    $payed[$shift->getId()] = $volunteer->getPayed();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'person' => $person->getId(),
+                'asResponsible' => $asResponsible,
+                'asVolunteer' => $asVolunteer,
+                'payed' => $payed
+            )
+        );
+    }
+
+    public function payedAction()
+    {
+        $this->initAjax();
+
+        $shift = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $shift)
+            return new ViewModel();
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->findOneById($this->getParam('person'));
+
+        if (null === $person)
+            return new ViewModel();
+
+        foreach ($shift->getVolunteers() as $volunteer) {
+            if ($volunteer->getPerson() == $person) {
+                $volunteer->setPayed(
+                    'true' == $this->getParam('payed') ? true : false
+                );
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
     }
 
     public function searchAction()
@@ -185,20 +234,20 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_academic',
+                'admin_shift_counter',
                 array(
-                    'action' => 'manage'
+                    'action' => 'index'
                 )
             );
 
             return;
         }
 
-        $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Person')
             ->findOneById($this->getParam('id'));
 
-        if (null === $academic) {
+        if (null === $person) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -208,15 +257,15 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_academic',
+                'admin_shift_counter',
                 array(
-                    'action' => 'manage'
+                    'action' => 'index'
                 )
             );
 
             return;
         }
 
-        return $academic;
+        return $person;
     }
 }
