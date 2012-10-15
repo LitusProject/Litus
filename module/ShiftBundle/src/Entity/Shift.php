@@ -448,7 +448,7 @@ class Shift
 
                 $responsibleSignoutTreshold = new DateInterval(
                     $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('shiftbundle.responsible_signout_treshold')
+                        ->getConfigValue('shift.responsible_signout_treshold')
                 );
 
                 $getStartDate = clone $this->getStartDate();
@@ -578,7 +578,7 @@ class Shift
 
         $signoutTreshold = new DateInterval(
             $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shiftbundle.signout_treshold')
+                ->getConfigValue('shift.signout_treshold')
         );
 
         $getStartDate = clone $this->getStartDate();
