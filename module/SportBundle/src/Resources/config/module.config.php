@@ -124,6 +124,11 @@ return array(
                             'output' => 'run_css.css',
                         ),
                     ),
+                    'run_js' => array(
+                        'assets' => array(
+                            'run/js/*.js',
+                        ),
+                    ),
                 ),
             ),
         ),
