@@ -70,6 +70,7 @@
     function _close ($this) {
         var settings = $this.data('collectingSettings');
 
+        $this.hide();
         $this.find('.name').html('&nbsp;');
         $this.find('.articles').html('');
 
