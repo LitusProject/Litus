@@ -93,6 +93,14 @@ class Lap
     }
 
     /**
+     * @return \SportBundle\Entity\Runner
+     */
+    public function getRunner()
+    {
+        return $this->runner;
+    }
+
+    /**
      * @param \SportBundle\Entity\Runner $runner
      * @return \SportBundle\Entity\Lap
      */
@@ -100,14 +108,6 @@ class Lap
     {
         $this->runner = $runner;
         return $this;
-    }
-
-    /**
-     * @return \SportBundle\Entity\Runner
-     */
-    public function getRunner()
-    {
-        return $this->runner;
     }
 
     /**
@@ -127,11 +127,33 @@ class Lap
     }
 
     /**
+     * Starts this lap.
+     *
+     * @return \SportBundle\Entity\Lap
+     */
+    public function start()
+    {
+        $this->startTime = new DateTime();
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getEndTime()
     {
         return $this->endTime;
+    }
+
+    /**
+     * Ends this lap.
+     *
+     * @return \SportBundle\Entity\Lap
+     */
+    public function stop()
+    {
+        $this->endTime = new DateTime();
+        return $this;
     }
 
     /**
@@ -147,27 +169,5 @@ class Lap
         }
 
         return $lapTime;
-    }
-
-    /**
-     * Starts this lap.
-     *
-     * @return \SportBundle\Entity\Lap
-     */
-    public function start()
-    {
-        $this->startTime = new DateTime();
-        return $this;
-    }
-
-    /**
-     * Ends this lap.
-     *
-     * @return \SportBundle\Entity\Lap
-     */
-    public function stop()
-    {
-        $this->endTime = new DateTime();
-        return $this;
     }
 }

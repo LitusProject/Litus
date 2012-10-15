@@ -37,23 +37,78 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $paginator = $this->paginator()->createFromEntity(
-            'SecretaryBundle\Entity\Registration',
-            $this->getParam('page'),
+        return new ViewModel(
             array(
-                'academicYear' => $academicYear,
-            ),
-            array(
-                'timestamp' => 'ASC'
+                'activeAcademicYear' => $academicYear,
+                'academicYears' => $academicYears
             )
         );
+    }
+
+    public function viewAction()
+    {
+        if (!($person = $this->_getPerson()))
+            return new ViewModel();
+
+        $asResponsible = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsReponsible($person, $this->_getAcademicYear());
+
+        $asVolunteer = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsVolunteer($person, $this->_getAcademicYear());
+
+        $payed = array();
+        foreach ($asVolunteer as $shift) {
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if ($volunteer->getPerson() == $person)
+                    $payed[$shift->getId()] = $volunteer->getPayed();
+            }
+        }
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
-                'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
+                'person' => $person->getId(),
+                'asResponsible' => $asResponsible,
+                'asVolunteer' => $asVolunteer,
+                'payed' => $payed
+            )
+        );
+    }
+
+    public function payedAction()
+    {
+        $this->initAjax();
+
+        $shift = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $shift)
+            return new ViewModel();
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->findOneById($this->getParam('person'));
+
+        if (null === $person)
+            return new ViewModel();
+
+        foreach ($shift->getVolunteers() as $volunteer) {
+            if ($volunteer->getPerson() == $person) {
+                $volunteer->setPayed(
+                    'true' == $this->getParam('payed') ? true : false
+                );
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
             )
         );
     }
@@ -107,11 +162,6 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    /**
-     * Returns the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
     private function _getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
@@ -172,7 +222,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return $academicYear;
     }
 
-    private function _getRegistration()
+    private function _getPerson()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -193,16 +243,16 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             return;
         }
 
-        $registration = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Registration')
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Person')
             ->findOneById($this->getParam('id'));
 
-        if (null === $registration) {
+        if (null === $person) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No registration with the given ID was found!'
+                    'No person with the given ID was found!'
                 )
             );
 
@@ -216,6 +266,6 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             return;
         }
 
-        return $registration;
+        return $person;
     }
 }

@@ -139,6 +139,14 @@ class Shift extends EntityRepository
 
     public function findAllByPerson(Person $person, AcademicYear $academicYear = null)
     {
+        return array_merge(
+            $this->findAllByPersonAsReponsible($person, $academicYear),
+            $this->findAllByPersonAsVolunteer($person, $academicYear)
+        );
+    }
+
+    public function findAllByPersonAsReponsible(Person $person, AcademicYear $academicYear = null)
+    {
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
@@ -167,10 +175,13 @@ class Shift extends EntityRepository
         if (null !== $academicYear)
             $query->setParameter('academicYear', $academicYear);
 
-        $responsibleResultSet = $query->getQuery()
+        return $query->getQuery()
             ->getResult();
+    }
 
-        $queryBuilder = $this->_em->createQueryBuilder();
+    public function findAllByPersonAsVolunteer(Person $person, AcademicYear $academicYear = null)
+    {
+                $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v');
@@ -198,12 +209,8 @@ class Shift extends EntityRepository
         if (null !== $academicYear)
             $query->setParameter('academicYear', $academicYear);
 
-        $volunteerResultSet = $query->getQuery()
+        return $query->getQuery()
             ->getResult();
-
-        return array_merge(
-            $responsibleResultSet, $volunteerResultSet
-        );
     }
 
     public function findOneActiveByVolunteer($id)

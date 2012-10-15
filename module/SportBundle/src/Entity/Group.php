@@ -67,16 +67,13 @@ class Group
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param string $name
-     * @param array $members
      * @param array $happyHours
      */
-    public function __construct(AcademicYear $academicYear, $name, array $members, array $happyHours)
+    public function __construct(AcademicYear $academicYear, $name, array $happyHours)
     {
         $this->academicYear = $academicYear;
 
         $this->name = $name;
-
-        $this->members = new ArrayCollection($members);
         $this->happyHours = serialize($happyHours);
     }
 
@@ -97,6 +94,16 @@ class Group
     }
 
     /**
+     * @param string $name
+     * @return \SportBundle\Entity\Group
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getMembers()
@@ -105,10 +112,30 @@ class Group
     }
 
     /**
+     * @param array $members
+     * @return \SportBundle\Entity\Group
+     */
+    public function setMembers(array $members)
+    {
+        $this->members = new ArrayCollection($members);
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getHappyHours()
     {
         return unserialize($this->happyHours);
+    }
+
+    /**
+     * @param array $happyHours
+     * @return \SportBundle\Entity\Group
+     */
+    public function setHappyHours(array $happyHours)
+    {
+        $this->happyHours = serialize($happyHours);
+        return $this;
     }
 }

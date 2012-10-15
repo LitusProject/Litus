@@ -84,11 +84,6 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getTranslator()->setLocale($language->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
-
-        if ($this->getAuthentication()->isAuthenticated()) {
-            $this->getAuthentication()->getPersonObject()->setLanguage($language);
-            $this->getEntityManager()->flush();
-        }
     }
 
     /**
