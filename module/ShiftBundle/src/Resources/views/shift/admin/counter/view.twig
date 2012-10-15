@@ -1,0 +1,96 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shift/admin/shift/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width change_payed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The shift's payed status was successfully changed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width change_payed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to change the shift's payed status.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <h1>As Responsible</h1>
+        <table class="full_width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Event</th>
+                    <th>Start</th>
+                    <th>End</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for shift in asResponsible %}
+                    <tr class="item item-{{ shift.getId() }}">
+                        <td>{{ shift.getName() }}</td>
+                        <td>{{ shift.getEvent().getTitle(language) }}</td>
+                        <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h1>As Volunteer</h1>
+        <table class="full_width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Event</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th width="45px">Payed</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for shift in asVolunteer %}
+                    <tr class="item item-{{ shift.getId() }}">
+                        <td>{{ shift.getName() }}</td>
+                        <td>{{ shift.getEvent().getTitle(language) }}</td>
+                        <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
+                        <td style="text-align: center;">
+                            <input type="checkbox" id="{{ shift.getId() }}" {% if payed[shift.getId()] %}checked="checked"{% endif %} />
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item input[type=checkbox]').click(changePayed);
+        });
+
+        function changePayed(e) {
+            var $this = $(this);
+            $.get('{{ url('admin_shift_counter', {"action": "payed"})}}' +  $this.attr('id') + '/{{ person }}/' + $(this).is(':checked'), function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.change_payed_success').removeClass('hide');
+                } else {
+                    errorRemove();
+                }
+            }, 'json').error(errorChangePayed);
+        }
+
+        function errorChangePayed() {
+            $('.flashmessage').addClass('hide');
+            $('.change_payed_error').removeClass('hide');
+        }
+    </script>
+{% endblock %}
