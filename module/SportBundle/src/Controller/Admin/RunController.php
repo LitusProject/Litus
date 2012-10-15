@@ -33,33 +33,13 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->getRepository('SportBundle\Entity\Lap')
             ->findNext(15);
 
-        $nbLaps = $this->getEntityManager()
-            ->getRepository('SportBundle\Entity\Lap')
-            ->countAll();
-
-        $resultPage = @simplexml_load_file(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_result_page')
-        );
-
-        $nbOfficialLaps = null;
-        if (null !== $resultPage) {
-            $teamId = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_team_id');
-
-            $nbOfficialLaps = (string) $resultPage->xpath('//team[@id=\'' . $teamId . '\']')[0]->rounds;
-        }
-
         return new ViewModel(
             array(
+                'socketUrl' => $this->getSocketUrl(),
                 'currentLap' => $this->_getCurrentLap(),
                 'nextLap' => $this->_getNextLap(),
                 'previousLaps' => $previousLaps,
                 'nextLaps' => $nextLaps,
-                'nbLaps' => $nbLaps,
-                'nbOfficialLaps' => $nbOfficialLaps
             )
         );
     }
@@ -196,5 +176,22 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         return $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Lap')
             ->findNext();
+    }
+
+    /**
+     * Returns the WebSocket URL.
+     *
+     * @return string
+     */
+    protected function getSocketUrl()
+    {
+        $address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_remote_host');
+        $port = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_port');
+
+        return 'ws://' . $address . ':' . $port;
     }
 }
