@@ -29,7 +29,7 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllByType('internship'),
+            ->findAllActiveByType('internship'),
             $this->getParam('page')
         );
 
@@ -75,7 +75,7 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
 
         $internship = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneByTypeAndId('internship', $this->getParam('id'));
+            ->findOneActiveByTypeAndId('internship', $this->getParam('id'));
 
         if (null === $internship) {
             $this->flashMessenger()->addMessage(
