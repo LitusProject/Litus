@@ -29,42 +29,8 @@
             </thead>
 
             <tbody id="queue">
-                {% for lap in previousLaps %}
-                    <tr>
-                        <td>{{ lap.getRunner().getFullName() }}</td>
-                        <td>{{ lap.getRegistrationTime().format('d/m/Y H:i:s') }}</td>
-                        <td>{{ lap.getLapTime().format('%i:%S') }}</td>
-                        <td></td>
-                    </tr>
-                {% endfor %}
-
-                {% if currentLap is not null %}
-                    <tr class="item item-{{ currentLap.getId() }}">
-                        <td>&raquo; {{ currentLap.getRunner().getFullName() }}</td>
-                        <td>{{ currentLap.getRegistrationTime().format('d/m/Y H:i:s') }}</td>
-                        <td><i>Running</i></td>
-                        <td>
-                            <a href="#" data-id="{{ lap.getId() }}" data-runner="{{ lap.getRunner().getFullName() }}" class="delete">Delete</a>
-                        </td>
-                    </tr>
-                {% endif %}
-
-                {% for lap in nextLaps %}
-                    <tr class="item item-{{ lap.getId() }}">
-                        <td>{{ lap.getRunner().getFullName() }}</td>
-                        <td>{{ lap.getRegistrationTime().format('d/m/Y H:i:s') }}</td>
-                        <td><i>Queued</i></td>
-                        <td class="actions">
-                            {% if hasAccess('admin_run', 'delete') %}
-                                <a href="#" data-id="{{ lap.getId() }}" data-runner="{{ lap.getRunner().getFullName() }}" class="delete">Delete</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
             </tbody>
         </table>
-
-        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <aside>
@@ -75,15 +41,9 @@
                     <i>Please hit the link below to start timing a new lap or to stop the current lap!</i>
                 </p>
                 <p>
-                    {% if nextLap is not null %}
-                        <a href="{{ url('admin_run', {"action": "start"}) }}">&rarr; Next Lap</a>
-                    {% else %}
-                        {% if currentLap is not null %}
-                            <a href="{{ url('admin_run', {"action": "stop"}) }}">&rarr; Stop</a>
-                        {% else %}
-                            &rarr; Stop
-                        {% endif %}
-                    {% endif %}
+                    <a href="#" id="nextLap" style="display: none">&rarr; Next Lap</a>
+                    <a href="#" id="stopLap" style="display: none">&rarr; Stop</a>
+                    <a href="#" id="noAction">&rarr; Stop</a>
                 </p>
             </div>
         </div>
@@ -131,66 +91,75 @@
                 errorDialog: $('#loading_queue_error'),
                 ownLaps: $('#own_laps'),
                 officialLaps: $('#official_laps'),
-                removeLapModal: $('#removeLap'),
-                removeLapSuccess: $('.lap_removed_success'),
+                displayLaps: displayLaps
             });
-        });
-        /*$(document).ready(function () {
-            $('.item .delete').click(openModal);
 
-            $(document).bind('keypress.space', startShortKey);
+            $(document).on('keypress.space', spacePressed);
         });
 
-        function openModal(e) {
-            var $this = $(this);
-            e.preventDefault();
-            var removeLap = $('#removeLap');
-            removeLap.find('.runner').html($(this).data('runner'));
-            removeLap.find('.cancel').one('click', function () {
-                removeLap.modal('hide');
-            });
-            var id = $this.data('id');
-            removeLap.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_run', {"action": "delete"})}}' + id, function (data) {
-                    if (data && 'success' == data.status) {
-                        $('.flashmessage').addClass('hide');
-                        $('.lap_removed_success').removeClass('hide');
-                        $('.item-' + id).remove();
-                        removeLap.modal('hide');
-                    } else {
-                        errorRemove();
-                    }
-                }, 'json').error(errorRemove);
-            });
-            removeLap.modal();
-        }
-
-        function errorRemove() {
-            $('.flashmessage').addClass('hide');
-            $('.lap_removed_error').removeClass('hide');
-            $('#removeLap').modal('hide');
-        }
-
-        function startShortKey(e) {
-            if (e.keyCode == 32) {
-                $(document).unbind('keypress.space');
-
-                $(document).bind('keypress.s', function(e) {
-                    if (e.keyCode == 115) {
-                        {% if nextLap is not null %}
-                            window.location.href = "{{ url('admin_run', {"action": "start"}) }}";
-                        {% else %}
-                            {% if currentLap is not null %}
-                                window.location.href = "{{ url('admin_run', {"action": "stop"}) }}";
-                            {% else %}
-                                window.location.reload();
-                            {% endif %}
-                        {% endif %}
-
-                        $(document).unbind('keypress.s').bind('keypress.space', startShortKey);
+        function spacePressed(e) {
+            if (e.which == 32) {
+                e.preventDefault();
+                $(document).off('keypress.s');
+                $(document).on('keypress.s', function (e) {
+                    if (e.which == 115) {
+                        $(document).off('keypress.s');
+                        $('#queue').runQueue('startLap');
                     }
                 });
             }
-        }*/
+        }
+
+        function displayLaps(data) {
+            $(data.laps.laps).each(function (num, lap) {
+                if (lap == undefined)
+                    return;
+
+                var row = $('<tr>', {'class': 'item item-' + lap.id});
+                row.append(
+                    runnerName = $('<td>').html(lap.fullName),
+                    $('<td>').html(lap.registrationTime),
+                    lapTime = $('<td>'),
+                    actions = $('<td>')
+                );
+
+                if (lap.state == 'previous') {
+                    lapTime.html(lap.lapTime);
+                } else if (lap.state == 'current') {
+                    lapTime.html($('<i>').html('Running'));
+                    runnerName.html('&rarr; ' + runnerName.html());
+                } else {
+                    lapTime.html($('<i>').html('Queued'));
+                }
+
+                if (lap.state != 'previous') {
+                    actions.append(
+                        $('<a>', {'class': 'delete', 'href': '#'}).html('Delete').data({
+                            id: lap.id,
+                            runner: lap.fullName
+                        })
+                    );
+                }
+                $('#queue').append(row);
+
+                actions.find('.delete').click(removeLap);
+            });
+        }
+
+        function removeLap(e) {
+            e.preventDefault();
+
+            var removeLap = $('#removeLap');
+            removeLap.find('.runner').html($(this).data('runner'));
+            var id = $(this).data('id');
+            removeLap.find('.delete').unbind('click').click(function () {
+                $('#queue').runQueue('deleteLap', id)
+                $('.flashmessage').addClass('hide');
+                $('.lap_removed_success').removeClass('hide');
+                $('.item-' + id).remove();
+                removeLap.modal('hide');
+            });
+            removeLap.modal();
+        }
     </script>
 {% endblock %}
