@@ -18,7 +18,7 @@ return array(
     'Home' => 'Home',
     'Group of Friends' => 'Group of Friends',
 
-    'A group of friends is a small team of runners. Each team must choose 2 slots of 2 hours during the run. During these happy hours, you get 2 points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the run wins!' => 'A group of friends is a small team of runners. Each team must choose 2 slots of 2 hours during the run. During these happy hours, you get 2 points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the run wins!',
+    'A group of friends is a small team of runners. Each team must choose two slots of two hours during the 24h-Run. During these happy hours, you get two points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the 24h-Run wins!' => 'A group of friends is a small team of runners. Each team must choose two slots of two hours during the 24h-Run. During these happy hours, you get two points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the 24h-Run wins!',
 
     'Group Information' => 'Group Information',
     'Runner One' => 'Runner One',
@@ -32,5 +32,5 @@ return array(
     'Second Happy Hour' => 'Second Happy Hour',
     'University Identification' => 'University Identification',
     'First Name' => 'First Name',
-    'Last Name' => 'Last Name,'
+    'Last Name' => 'Last Name',
 );
