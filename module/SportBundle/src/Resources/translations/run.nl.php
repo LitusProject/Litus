@@ -15,22 +15,22 @@
 return array(
     '24h-Run' => '24h-Run',
 
-    'Home' => 'Home',
-    'Group of Friends' => 'Group of Friends',
+    'Home' => 'Start',
+    'Group of Friends' => 'Groepje Vrienden',
 
-    'A group of friends is a small team of runners. Each team must choose 2 slots of 2 hours during the run. During these happy hours, you get 2 points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the run wins!' => 'A group of friends is a small team of runners. Each team must choose 2 slots of 2 hours during the run. During these happy hours, you get 2 points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the run wins!',
+    'A group of friends is a small team of runners. Each team must choose two slots of two hours during the 24h-Run. During these happy hours, you get two points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the 24h-Run wins!' => 'Een groepje vrienden is een klein team lopers. Elk team moet twee tijdsloten van twee uur tijdens de 24-Urenloop kiezen. Gedurende deze happy hours krijgen jullie twee punten voor elk rondje. Wanneer je buiten deze uren loopt, krijg je &eacute;&eacute;n punt voor elk rondje. De groep met het grootste aantal punten op het einde van de 24-Urenloop, wint!',
 
-    'Group Information' => 'Group Information',
-    'Runner One' => 'Runner One',
-    'Runner Two' => 'Runner Two',
-    'Runner Three' => 'Runner Three',
-    'Runner Four' => 'Runner Four',
-    'Runner Five' => 'Runner Five',
+    'Group Information' => 'Group Informatie',
+    'Runner One' => 'Loper E&eacute;n',
+    'Runner Two' => 'Loper Twee',
+    'Runner Three' => 'Loper Drie',
+    'Runner Four' => 'Loper Vier',
+    'Runner Five' => 'Runner Vijf',
 
-    'Group Name' => 'Group Name',
-    'First Happy Hour' => 'First Happy Hour',
-    'Second Happy Hour' => 'Second Happy Hour',
-    'University Identification' => 'University Identification',
-    'First Name' => 'First Name',
-    'Last Name' => 'Last Name,'
+    'Group Name' => 'Groepsnaam',
+    'First Happy Hour' => 'Eerste Happy Hour',
+    'Second Happy Hour' => 'Tweede Happy Hour',
+    'University Identification' => 'Studentennummer',
+    'First Name' => 'Voornaam',
+    'Last Name' => 'Achternaam',
 );
