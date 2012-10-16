@@ -41,8 +41,8 @@
                 message: function (e, data) {
                     options.errorDialog.addClass('hide');
                     if (data.laps) {
-                        options.ownLaps.html(data.laps.own);
-                        options.officialLaps.html(data.laps.official);
+                        options.ownLaps.html(data.laps.number.own);
+                        options.officialLaps.html(data.laps.number.official);
                     }
                 },
                 error: function (e) {
