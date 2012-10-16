@@ -16,15 +16,9 @@
             <p>The lap was successfully removed!</p>
         </div>
     </div>
-    <div class="flashmessage error_message lap_removed_error hide">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to delete the lap.</p>
-        </div>
-    </div>
 
     <div id="controller_action">
-        <table id="queue" class="manage">
+        <table class="manage">
             <thead>
                 <tr>
                     <th>Runner</th>
@@ -34,7 +28,7 @@
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody id="queue">
                 {% for lap in previousLaps %}
                     <tr>
                         <td>{{ lap.getRunner().getFullName() }}</td>
@@ -137,6 +131,8 @@
                 errorDialog: $('#loading_queue_error'),
                 ownLaps: $('#own_laps'),
                 officialLaps: $('#official_laps'),
+                removeLapModal: $('#removeLap'),
+                removeLapSuccess: $('.lap_removed_success'),
             });
         });
         /*$(document).ready(function () {

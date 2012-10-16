@@ -39,7 +39,7 @@ class Lap extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->isNotNull('l.startTime'),
-                    $query->expr()->isNotNull('l.endTime')
+                    $query->expr()->isNull('l.endTime')
                 )
             )
             ->orderBy('l.registrationTime', 'DESC')
