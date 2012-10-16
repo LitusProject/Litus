@@ -29,7 +29,7 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllByType('vacancy'),
+            ->findAllActiveByType('vacancy'),
             $this->getParam('page')
         );
 
@@ -75,7 +75,7 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
 
         $vacancy = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneByTypeAndId('vacancy', $this->getParam('id'));
+            ->findOneActiveByTypeAndId('vacancy', $this->getParam('id'));
 
         if (null === $vacancy) {
             $this->flashMessenger()->addMessage(

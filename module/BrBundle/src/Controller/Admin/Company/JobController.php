@@ -18,6 +18,7 @@ use BrBundle\Entity\Company\Job,
     BrBundle\Form\Admin\Company\Job\Add as AddForm,
     BrBundle\Form\Admin\Company\Job\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -68,7 +69,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     $formData['requiredKnowledge'],
                     $formData['city'],
                     $company,
-                    $formData['type']
+                    $formData['type'],
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
                 );
 
                 $this->getEntityManager()->persist($job);
@@ -118,7 +121,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     ->setDescription($formData['description'])
                     ->setProfile($formData['profile'])
                     ->setRequiredKnowledge($formData['requiredKnowledge'])
-                    ->setCity($formData['city']);
+                    ->setCity($formData['city'])
+                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
 
                 $this->getEntityManager()->flush();
 

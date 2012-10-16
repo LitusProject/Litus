@@ -159,9 +159,10 @@ return array(
             'career_event' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/event[/:action][/page/:page][/]',
+                    'route' => '[/:language]/career/event[/:action[/:id]][/page/:page][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[0-9_-]*',
                         'language' => '[a-z]{2}',
                         'page'     => '[0-9]*',
                     ),
