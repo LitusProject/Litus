@@ -6,7 +6,7 @@
     </div>
 
     <div class="row">
-        <div class="span3">
+        <div class="span3 columns">
             <h2>Laps</h2>
 
             <p>
@@ -40,32 +40,38 @@
                 </tbody>
             </table>
         </div>
-        <div class="span9">
-            <h2>Current Runner</h2>
-            <div id="currentLap" class="alert-message success">
-                <p>
-                    <span style="font-size: 18px;">
-                        <strong id="currentLapRunnerName">
-                            {% if currentlap is not null %}{{ currentLap.getRunner().getFullName() }}{% else %}Nobody{% endif %}
-                        </strong>
-                    </span>
-                </p>
 
-                <p>
-                    <span id="currentLapTime">{% if currentlap is not null %}{{ currentLap.getLapTime().format('%i:%S') }}{% else %}00:00{% endif %}</span>,
-                    <span id="officialPosition">{% if officialResults is null %}N/A{% else %}{{ officialResults['position'] }}{% endif %}</span>%,
-                    <span id="officialSpeed">{% if officialResults is null %}N/A{% else %}{{ officialResults['speed'] }}{% endif %}</span></span> km/h
-                </p>
-            </div>
+        <div class="span9 columns">
+            <div class="row">
+                <h2>Current Runner</h2>
+                <div id="currentLap" class="well">
+                    <p>
+                        <span style="font-size: 18px;">
+                            <strong id="currentLapRunnerName">
+                                {% if currentlap is not null %}{{ currentLap.getRunner().getFullName() }}{% else %}Nobody{% endif %}
+                            </strong>
+                        </span>
+                    </p>
 
-            <div id="noCurrentLap" class="alert-message error" style="display: none;">
-                <p>
-                    <span style="font-size: 18px;">There is nobody running!</span>
-                </p>
+                    {% if officialResults is not null %}
+                        <span id="currentLapTime">{% if currentlap is not null %}{{ currentLap.getLapTime().format('%i:%S') }}{% else %}00:00{% endif %}</span>,
+                        <span id="officialSpeed">{% if officialResults is null %}N/A{% else %}{{ officialResults['speed'] }}{% endif %}</span></span> km/h
+
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="bar" style="width: {{ officialResults['position'] }}%;"></div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div id="noCurrentLap" class="alert error" style="display: none;">
+                    <p>
+                        <span style="font-size: 18px;">There is nobody running!</span>
+                    </p>
+                </div>
             </div>
 
             <div class="row">
-                <div class="span6">
+                <div class="span5">
                     <h3>Previous Runners</h3>
 
                     <table class="zebra-striped">
@@ -85,7 +91,7 @@
                     </table>
                 </div>
 
-                <div class="span6">
+                <div class="span4">
                     <h3>Next Runners</h3>
 
                     <table class="zebra-striped">
