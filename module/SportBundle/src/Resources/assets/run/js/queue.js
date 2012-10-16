@@ -2,8 +2,6 @@
     var defaults = {
         url: '',
         errorDialog: null,
-        ownLaps: null,
-        officialLaps: null,
         displayLaps: function () {},
     };
 
@@ -23,6 +21,10 @@
         },
         deleteLap: function (options) {
             _sendToSocket('action: deleteLap ' + options);
+            return this;
+        },
+        reloadQueue: function (options) {
+            _sendToSocket('reloadQueue');
             return this;
         }
     }
@@ -50,11 +52,7 @@
                 message: function (e, data) {
                     options.errorDialog.addClass('hide');
                     if (data.laps) {
-                        $this.html('');
-                        options.ownLaps.html(data.laps.number.own);
-                        options.officialLaps.html(data.laps.number.official);
-                        
-                        options.displayLaps(data);
+                        options.displayLaps(data.laps);
                     }
                 },
                 error: function (e) {

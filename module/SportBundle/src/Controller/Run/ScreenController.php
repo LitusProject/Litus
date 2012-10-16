@@ -32,15 +32,9 @@ class ScreenController extends \SportBundle\Component\Controller\RunController
 {
     public function indexAction()
     {
-        $uniqueRunners = $this->getEntityManager()
-            ->getRepository('SportBundle\Entity\Lap')
-            ->countRunners($this->_getAcademicYear());
-
         return new ViewModel(
             array(
-                'currentLap' => $this->_getCurrentLap(),
-                'officialResults' => $this->_getOfficialResults(),
-                'uniqueRunners' => $uniqueRunners
+                'socketUrl' => $this->getSocketUrl(),
             )
         );
     }
@@ -226,5 +220,22 @@ class ScreenController extends \SportBundle\Component\Controller\RunController
         }
 
         return $academicYear;
+    }
+
+    /**
+     * Returns the WebSocket URL.
+     *
+     * @return string
+     */
+    protected function getSocketUrl()
+    {
+        $address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_remote_host');
+        $port = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_port');
+
+        return 'ws://' . $address . ':' . $port;
     }
 }
