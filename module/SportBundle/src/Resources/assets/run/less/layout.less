@@ -46,17 +46,35 @@
     font-weight: bold;
  }
 
- .flashmessage.fade {
-   .transition(all .15s linear);
-   height: 0;
-   margin-bottom: 0px;
-   padding-top: 0px;
-   padding-bottom: 0px;
-   overflow: hidden;
-   &.in {
-     height: auto;
-     margin-bottom: 18px;
-     padding-top: 8px;
-     padding-bottom: 8px;
-   }
- }
+ .form-horizontal {
+    .control-label {
+        width: 200px !important;
+    }
+
+    .controls {
+        margin-left: 220px !important;
+    }
+
+    .form-actions {
+        padding-left: 220px !important;
+    }
+}
+
+.flashmessage.fade {
+    .transition(all .15s linear);
+    height: 0;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+    &.in {
+        height: auto;
+        margin-bottom: 18px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
+
+.justify {
+    text-align: justify;
+}

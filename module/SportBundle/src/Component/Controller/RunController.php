@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Controller;
+namespace SportBundle\Component\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Mvc\MvcEvent;
@@ -47,6 +47,12 @@ class RunController extends \CommonBundle\Component\Controller\ActionController
      */
     public function getAuthenticationHandler()
     {
-        return array();
+        return array(
+            'action'         => 'index',
+            'controller'     => 'index',
+
+            'auth_route'     => 'run_index',
+            'redirect_route' => 'run_index'
+        );
     }
 }

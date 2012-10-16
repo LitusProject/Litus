@@ -77,8 +77,7 @@
         });
 
         function changePayed(e) {
-            var $this = $(this);
-            $.get('{{ url('admin_shift_counter', {"action": "payed"})}}' +  $this.attr('id') + '/{{ person }}/' + $(this).is(':checked'), function (data) {
+            $.get('{{ url('admin_shift_counter', {"action": "payed"})}}' +  $(this).attr('id') + '/{{ person }}/' + $(this).is(':checked'), function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').addClass('hide');
                     $('.change_payed_success').removeClass('hide');
@@ -86,6 +85,8 @@
                     errorRemove();
                 }
             }, 'json').error(errorChangePayed);
+
+            $('#flashmessage').delay(2000).addClass('hide')
         }
 
         function errorChangePayed() {

@@ -18,6 +18,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -30,18 +31,24 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var array
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    private $_allMembers;
+    private $_entityManager = null;
+
+    /**
+     * @var array An array containing all members that should be created
+     */
+    private $_allMembers = array();
 
     /**
      * @param array $allMembers
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(array $allMembers, $name = null)
+    public function __construct(EntityManager $entityManager, array $allMembers, $name = null)
     {
         parent::__construct($name);
 
+        $this->_entityManager = $entityManager;
         $this->_allMembers = $allMembers;
 
         $group = new Collection('group_information');
@@ -56,21 +63,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $group->add($field);
 
         $field = new Select('happy_hour_one');
-        $field->setLabel('Happy Hour One')
+        $field->setLabel('First Happy Hour')
             ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
-            ->setRequired()
             ->setAttribute('options', $this->_generateHappyHours(20));
         $group->add($field);
 
         $field = new Select('happy_hour_two');
-        $field->setLabel('Happy Hour Two')
+        $field->setLabel('Second Happy Hour')
             ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
-            ->setRequired()
             ->setAttribute('options', $this->_generateHappyHours(8));
         $group->add($field);
 
-        foreach ($allMembers as $memberNb) {
-            $this->_generateMemberForm($memberNb);
+        foreach ($allMembers as $i => $memberNb) {
+            $this->_generateMemberForm($memberNb, ($i < 2));
         }
 
         $field = new Submit('submit');
@@ -96,8 +101,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $optionsArray[$optionKey] = $optionValue;
         }
 
-        $entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
-        $groups = $entityManager->getRepository('Litus\Entity\Sport\Group')
+        $groups = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Group')
             ->findAll();
 
         $returnArray = $this->_cleanHappyHoursArray($optionsArray, $groups);
@@ -137,13 +142,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _generateMemberForm($memberNb, $required = false)
     {
         $user = new Collection('user_' . $memberNb);
-        $user->setLabel('Group Information')
+        $user->setLabel('Runner ' . ucfirst($memberNb))
             ->setAttribute('id', 'user_' . $memberNb);
         $this->add($user);
 
         $field = new Text('university_identification_' . $memberNb);
-        $field->setLabel('Student Number')
-            ->setRequired($required)
+        $field->setLabel('University Identification')
             ->setAttribute('class', $field->getAttribute('class') . 'large');
         $user->add($field);
 
@@ -202,24 +206,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 )
             );
 
-            foreach ($allMembers as $memberNb) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'user_' . $memberNb,
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
-                    )
-                );
-
+            foreach ($this->_allMembers as $i => $memberNb) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
                             'name'     => 'university_identification_' . $memberNb,
-                            'required' => true,
+                            'required' => false,
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
@@ -231,7 +223,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $factory->createInput(
                         array(
                             'name'     => 'first_name_' . $memberNb,
-                            'required' => true,
+                            'required' => ($i < 2),
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
@@ -243,7 +235,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $factory->createInput(
                         array(
                             'name'     => 'last_name_' . $memberNb,
-                            'required' => true,
+                            'required' => ($i < 2),
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),

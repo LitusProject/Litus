@@ -22,7 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class IndexController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class IndexController extends \SportBundle\Component\Controller\RunController
 {
     public function indexAction()
     {
