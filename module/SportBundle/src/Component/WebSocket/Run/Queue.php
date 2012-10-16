@@ -146,19 +146,20 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SportBundle\Entity\Lap')
             ->countAll();
 
-        $previousLaps = array();
-        $laps = $this->_entityManager
+        $laps = array();
+        $previousLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->findPrevious(5);
-        foreach($laps as $lap)
-            $previousLaps[] = $this->_jsonLap($lap);
+        foreach($previousLaps as $lap)
+            $laps[] = $this->_jsonLap($lap, 'previous');
 
-        $nextLaps = array();
-        $laps = $this->_entityManager
+        $laps[] = $this->_jsonLap($this->_getCurrentLap(), 'current');
+
+        $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->findNext(15);
-        foreach($laps as $lap)
-            $nextLaps[] = $this->_jsonLap($lap);
+        foreach($nextLaps as $lap)
+            $laps[] = $this->_jsonLap($lap, 'next');
 
         $data = (object) array(
             'laps' => (object) array(
@@ -166,26 +167,25 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'official' => $nbOfficialLaps,
                     'own' => $nbLaps,
                 ),
-                'laps' => (object) array(
-                    'previous' => $previousLaps,
-                    'current' => $this->_jsonLap($this->_getCurrentLap()),
-                    'next' => $nextLaps,
-                ),
+                'laps' => $laps,
             ),
         );
 
         return json_encode($data);
     }
 
-    private function _jsonLap(Lap $lap = null)
+    private function _jsonLap(Lap $lap = null, $state)
     {
         if (null === $lap)
             return null;
         return (object) array(
             'id' => $lap->getId(),
+            'fullName' => $lap->getRunner()->getFullName(),
             'firstName' => $lap->getRunner()->getFirstName(),
             'lastName' => $lap->getRunner()->getLastName(),
             'registrationTime' => $lap->getRegistrationTime()->format('d/m/Y H:i:s'),
+            'lapTime' => $lap->getEndTime() ? $lap->getLapTime()->format('%i:%S') : '',
+            'state' => $state,
         );
     }
 
