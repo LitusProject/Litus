@@ -86,6 +86,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function _gotAction(User $user, $data)
     {
+        $data .= ' ';
         $action = substr($data, strlen('action: '), strpos($data, ' ', strlen('action: ')) - strlen('action: '));
         $params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
 
@@ -97,9 +98,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 break;
             case 'startLap':
                 $this->_startLap();
-                break;
-            case 'stopLap':
-                $this->_stopLap();
                 break;
         }
 
@@ -206,12 +204,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         if (null !== $this->_getNextLap())
             $this->_getNextLap()->start();
-    }
 
-    private function _stopLap()
-    {
-        if (null !== $this->_getCurrentLap())
-            $this->_getCurrentLap()->stop();
+        $this->_entityManager->flush();
     }
 
     private function _getCurrentLap()
