@@ -2,17 +2,13 @@
 
 {% block content %}
 	<div class="flashmessage alert alert-error fade" id="add_queue_error">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>There are no bookings for you.</p>
-		</div>
+		<a class="close" data-dismiss="alert">&times;</a>
+		There are no bookings for you.
 	</div>
 
 	<div class="flashmessage alert alert-success fade" id="add_queue_success">
-		<div class="title">Success</div>
-		<div class="content">
-			<p>You are succesfully added to the queue. Your queue number is: <strong class="queueNumber"></strong></p>
-		</div>
+		<a class="close" data-dismiss="alert">&times;</a>
+		You have been succesfully added to the queue. Your queue number is: <strong class="queueNumber"></strong>.
 	</div>
 
 	<div class="flashmessage alert alert-error fade" id="socket_error">

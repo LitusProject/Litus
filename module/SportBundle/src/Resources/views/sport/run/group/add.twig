@@ -48,7 +48,6 @@
                 $.get('{{ url('run_group', {"action": "getName"})}}' +  $(this).val(), function (data) {
                     if (data && 'success' == data.status) {
                         var fieldSet = $this.closest('fieldset');
-                        console.log(fieldSet);
 
                         fieldSet.find('[id^=first_name]').val(data.firstName).addClass('uneditable-input').attr('disabled', 'disabled');
                         fieldSet.find('[id^=last_name]').val(data.lastName).addClass('uneditable-input').attr('disabled', 'disabled');

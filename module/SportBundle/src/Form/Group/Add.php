@@ -23,7 +23,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
- * Add a group of friends
+ * Add a group of friends.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -58,19 +58,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('group_name');
         $field->setLabel('Group Name')
-            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
             ->setRequired();
         $group->add($field);
 
         $field = new Select('happy_hour_one');
         $field->setLabel('First Happy Hour')
-            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
             ->setAttribute('options', $this->_generateHappyHours(20));
         $group->add($field);
 
         $field = new Select('happy_hour_two');
         $field->setLabel('Second Happy Hour')
-            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
             ->setAttribute('options', $this->_generateHappyHours(8));
         $group->add($field);
 

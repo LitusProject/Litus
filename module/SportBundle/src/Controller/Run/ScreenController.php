@@ -1,69 +1,117 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Run;
+namespace SportBundle\Controller\Run;
 
-use \Run\Form\Group\Add as AddForm;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear,
+    DateInterval,
+    DateTime,
+    SportBundle\Entity\Lap,
+    SportBundle\Entity\Runner,
+    SportBundle\Form\Queue\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
-use \Litus\Entity\Sport\Group;
-use \Litus\Entity\Sport\Runner;
-
-use \Zend\Dom\Query;
-use \Zend\Json\Json;
-
-class ScreenController extends \Litus\Controller\Action
+/**
+ * ScreenController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class ScreenController extends \SportBundle\Component\Controller\RunController
 {
-    private $_json = null;
-
-    private $currentLap = null;
-
-    public function init()
+    public function indexAction()
     {
-        parent::init();
+        $uniqueRunners = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
+            ->countRunners($this->_getAcademicYear());
 
-        $this->broker('contextSwitch')
-            ->addActionContext('currentlap', 'json')
-            ->setAutoJsonSerialization(false)
-            ->initContext();
-
-        $this->broker('layout')->disableLayout();
-
-        $this->_json = new Json();
-
-        $this->currentLap = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
-            ->findCurrent();
+        return new ViewModel(
+            array(
+                'currentLap' => $this->_getCurrentLap(),
+                'officialResults' => $this->_getOfficialResults(),
+                'uniqueRunners' => $uniqueRunners
+            )
+        );
     }
 
-    private function _getOfficialResults()
+    public function updateAction()
     {
-        $resultPage = $this->getEntityManager()
-            ->getRepository('Litus\Entity\General\Config')
-            ->getConfigValue('sport.run_result_page');
+        $this->initAjax();
 
-        $resultPageContent = @simplexml_load_file($resultPage);
+        $result = array();
 
-        if (false !== $resultPageContent) {
-            $teamId = $this->getEntityManager()
-                ->getRepository('Litus\Entity\General\Config')
-                ->getConfigValue('sport.run_team_id');
-
-            $teamData = $resultPageContent->xpath('//team[@id=\'' . $teamId . '\']');
-
-            return array(
-                'nbLaps' => $teamData[0]->rounds->__toString(),
-                'position' => $teamData[0]->position->__toString(),
-                'speed' => $teamData[0]->speed_kmh->__toString()
+        if (null !== $this->_getCurrentLap()) {
+            $result['currentLap'] = array(
+                'runnerName' => $this->_getCurrentLap()->getRunner()->getFullName(),
+                'time' => $this->_getCurrentLap()->getLapTime()->format('%i:%S')
             );
         } else {
-            return false;
+            $result['currentLap'] = null;
         }
+
+        $previousLaps = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Sport\Lap')
+            ->findPrevious($this->_getAcademicYear(), 5);
+
+        $result['previousLaps'] = array();
+        foreach ($previousLaps as $lap) {
+            $result['previousLaps'][] = array(
+                'id' => $lap->getId(),
+                'runner' => $lap->getRunner()->getFullName(),
+                'time' => $lap->getLapTime()->format('%i:%S')
+            );
+        }
+
+        $nextLaps = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Sport\Lap')
+            ->findNext($this->_getAcademicYear(), 5);
+
+        $result['nextLaps'] = array();
+        foreach ($nextLaps as $lap) {
+            $result['nextLaps'][] = array(
+                'id' => $nextLap->getId(),
+                'runner' => $nextLap->getRunner()->getFullName()
+            );
+        }
+
+        $result['officialResults'] = $this->_getOfficialResults();
+
+        $result['uniqueRunners'] = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
+            ->countRunners($this->_getAcademicYear());
+
+        $result['groupsOfFriends'] = $this->_getGroupsOfFriends();
+
+        return new ViewModel(
+            array(
+                'result' => (object) $result
+            )
+        );
+    }
+
+    private function _getCurrentLap()
+    {
+        return $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findCurrent($this->_getAcademicYear());
     }
 
     private function _getGroupsOfFriends()
     {
         $groups = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Group')
-            ->findAll();
+            ->getRepository('SportBundle\Entity\Group')
+            ->findAll($this->_getAcademicYear());
 
         $returnArray = array();
         foreach ($groups as $group) {
@@ -89,70 +137,94 @@ class ScreenController extends \Litus\Controller\Action
                 }
             }
         }
+
         return $returnArray;
     }
 
-    public function indexAction()
+    private function _getOfficialResults()
     {
-        $this->view->currentLap = $this->currentLap;
-
-        $this->view->officialResults = $this->_getOfficialResults();
-
-        $this->view->uniqueRunners = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
-            ->countRunners();
-    }
-
-    public function updateAction()
-    {
-        $this->_initAjax();
+        $resultPage = @simplexml_load_file(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.run_result_page')
+        );
 
         $returnArray = array();
+        if (false !== $resultPage) {
+            $teamId = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.run_team_id');
 
-        if (null !== $this->currentLap) {
-            $now = new \DateTime();
+            $teamData = $resultPage->xpath('//team[@id=\'' . $teamId . '\']');
 
-            $returnArray['currentLap'] = array(
-                'runnerName' => $this->currentLap->getRunner()->getFullName(),
-                'time' => $this->currentLap->getLapTime()->format('%i:%S')
+            $returnArray = array(
+                'nbLaps' => $teamData[0]->rounds->__toString(),
+                'position' => round($teamData[0]->position->__toString() * 100),
+                'speed' => $teamData[0]->speed_kmh->__toString(),
+                'behind' => $teamData[0]->behind->__toString()
             );
+        }
+
+        return $returnArray;
+    }
+
+    private function _getAcademicYear()
+    {
+        if (null === $this->getParam('academicyear')) {
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+
+            $next = clone $start;
+            $next->add(new DateInterval('P1Y'));
+            if ($next <= new DateTime())
+                $start = $next;
         } else {
-            $returnArray['currentLap'] = false;
-        }
+            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
 
-        $previousLaps = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
-            ->findPrevious(5);
-
-        $returnArray['previousLaps'] = array();
-        foreach ($previousLaps as $previousLap) {
-            $returnArray['previousLaps'][] = array(
-                'id' => $previousLap->getId(),
-                'runner' => $previousLap->getRunner()->getFullName(),
-                'time' => $previousLap->getLapTime()->format('%i:%S')
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
             );
         }
+        $startAcademicYear->setTime(0, 0);
 
-        $nextLaps = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
-            ->findNext(5);
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStart($start);
 
-        $returnArray['nextLaps'] = array();
-        foreach ($nextLaps as $nextLap) {
-            $returnArray['nextLaps'][] = array(
-                'id' => $nextLap->getId(),
-                'runner' => $nextLap->getRunner()->getFullName()
+        if (null === $academicYear) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No academic year was found!'
+                )
             );
+
+            $this->redirect()->toRoute(
+                'admin_shift_counter',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return;
         }
 
-        $returnArray['officialResults'] = $this->_getOfficialResults();
-
-        $returnArray['uniqueRunners'] = $this->view->uniqueRunners = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Sport\Lap')
-            ->countRunners();
-
-        $returnArray['groupsOfFriends'] = $this->_getGroupsOfFriends();
-
-        echo $this->_json->encode($returnArray);
+        return $academicYear;
     }
 }

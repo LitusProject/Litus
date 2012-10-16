@@ -1,0 +1,45 @@
+{% extends 'run/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Queue') }}</h1>
+    </div>
+
+    <div class="row">
+        <div class="span3 columns justify">
+            <p>{{ translate('When you want to run a lap, you should first fill out this form and you will then be added to the runner queue.') }}</p>
+        </div>
+        <div class="span9 columns">
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#university_identification').bind('keyup blur', getName);
+
+            $('#university_identification').each(function () {
+                $(this).trigger('keyup');
+            });
+
+            $('.flashmessage').delay(2000).addClass('hide');
+        });
+
+        function getName() {
+            var $this = $(this);
+            if (8 == $(this).val().length) {
+                $.get('{{ url('run_queue', {"action": "getName"})}}' +  $(this).val(), function (data) {
+                    if (data && 'success' == data.status) {
+                        var fieldSet = $this.closest('fieldset');
+
+                        fieldSet.find('#first_name').val(data.firstName).addClass('uneditable-input').attr('disabled', 'disabled');
+                        fieldSet.find('#last_name').val(data.lastName).addClass('uneditable-input').attr('disabled', 'disabled');
+                    }
+                }, 'json');
+            }
+        }
+    </script>
+{% endblock %}

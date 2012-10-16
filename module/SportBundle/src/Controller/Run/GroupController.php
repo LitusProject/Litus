@@ -16,8 +16,8 @@ namespace SportBundle\Controller\Run;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    DateTime,
     DateInterval,
+    DateTime,
     SportBundle\Entity\Group,
     SportBundle\Entity\Runner,
     SportBundle\Form\Group\Add as AddForm,

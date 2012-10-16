@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SportBundle\Form\Queue
+namespace SportBundle\Form\Queue;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
- * Add to queue
+ * Add a runner to the queue.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -41,23 +41,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($information);
 
         $field = new Text('university_identification');
-        $field->setLabel('Student Number')
-            ->setRequired()
-            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
+        $field->setLabel('University Identification')
             ->setAttribute('autocomplete', 'off');
         $information->add($field);
 
         $field = new Text('first_name');
         $field->setLabel('First Name')
             ->setRequired()
-            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
             ->setAttribute('autocomplete', 'off');
         $information->add($field);
 
         $field = new Text('last_name');
         $field->setLabel('Last Name')
             ->setRequired()
-            ->setAttribute('class', $field->getAttribute('class') . 'xlarge')
             ->setAttribute('autocomplete', 'off');
         $information->add($field);
 
@@ -76,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $factory->createInput(
                     array(
                         'name'     => 'university_identification',
-                        'required' => true,
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
