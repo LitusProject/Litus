@@ -64,6 +64,12 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_run' => array(
                         'delete', 'queue', 'start', 'stop'
                     ),
+                    'run_group' => array(
+                        'add', 'getName'
+                    ),
+                    'run_index' => array(
+                        'index'
+                    ),
                 ),
             )
         );
@@ -75,6 +81,12 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'parents' => array(
                     ),
                     'actions' => array(
+                        'run_group' => array(
+                            'add', 'getName'
+                        ),
+                        'run_index' => array(
+                            'index'
+                        ),
                     ),
                 ),
             )
