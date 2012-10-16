@@ -41,4 +41,62 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
     }
+
+    public function viewAction()
+    {
+        $event = $this->_getEvent();
+
+        return new ViewModel(
+            array(
+                'event' => $event,
+            )
+        );
+    }
+
+    private function _getEvent()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the event!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_event',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        $event = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Event')
+            ->findOneActiveById($this->getParam('id'));
+
+        if (null === $event) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No event with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_event',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        return $event;
+    }
 }

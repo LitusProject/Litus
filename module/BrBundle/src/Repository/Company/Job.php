@@ -3,6 +3,7 @@
 namespace BrBundle\Repository\Company;
 
 use BrBundle\Entity\Company as CompanyEntity,
+    DateTime,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -13,7 +14,7 @@ use BrBundle\Entity\Company as CompanyEntity,
  */
 class Job extends EntityRepository
 {
-    public function findOneByTypeAndId($type, $id)
+    public function findOneActiveByTypeAndId($type, $id)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
@@ -21,11 +22,14 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->eq('v.id', ':id')
+                    $query->expr()->eq('v.id', ':id'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now')
                 )
             )
             ->setParameter('id', $id)
             ->setParameter('type', $type)
+            ->setParameter('now', new DateTime())
             ->getQuery()
             ->getResult();
 
@@ -51,15 +55,20 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByType($type)
+    public function findAllActiveByType($type)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->where(
-                $query->expr()->eq('v.type', ':type')
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now')
+                )
             )
             ->setParameter('type', $type)
+            ->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery()
             ->getResult();
@@ -67,7 +76,7 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByCompanyAndType(CompanyEntity $company, $type)
+    public function findAllActiveByCompanyAndType(CompanyEntity $company, $type)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
@@ -75,11 +84,14 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.company', ':company'),
-                    $query->expr()->eq('v.type', ':type')
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now')
                 )
             )
             ->setParameter('type', $type)
             ->setParameter('company', $company->getId())
+            ->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery()
             ->getResult();

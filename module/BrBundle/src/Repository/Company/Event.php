@@ -74,4 +74,30 @@ class Event extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findOneActiveById($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('BrBundle\Entity\Company\Event', 'e')
+            ->innerJoin('e.event', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->orx(
+                        $query->expr()->gte('c.endDate', ':date'),
+                        $query->expr()->gte('c.startDate', ':date')
+                    ),
+                    $query->expr()->eq('e.id', ':id')
+                )
+            )
+            ->setParameter('date', new DateTime())
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

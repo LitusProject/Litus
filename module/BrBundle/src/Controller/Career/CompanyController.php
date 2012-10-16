@@ -50,11 +50,11 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         $internships = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllByCompanyAndType($page->getCompany(), 'internship');
+            ->findAllActiveByCompanyAndType($page->getCompany(), 'internship');
 
         $vacancies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllByCompanyAndType($page->getCompany(), 'vacancy');
+            ->findAllActiveByCompanyAndType($page->getCompany(), 'vacancy');
 
         return new ViewModel(
             array(
