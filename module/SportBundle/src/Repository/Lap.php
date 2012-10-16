@@ -2,7 +2,8 @@
 
 namespace SportBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Lap
@@ -12,17 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class Lap extends EntityRepository
 {
-    public function findPrevious($nbResults = 1)
+    public function findPrevious(AcademicYear $academicYear, $nbResults = 1)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('l.academicYear', ':academicYear'),
                     $query->expr()->isNotNull('l.startTime'),
                     $query->expr()->isNotNull('l.endTime')
                 )
             )
+            ->setParameter('academicYear', $academicYear)
             ->orderBy('l.registrationTime', 'DESC')
             ->setMaxResults($nbResults)
             ->getQuery()
@@ -31,17 +34,19 @@ class Lap extends EntityRepository
         return array_reverse($resultSet);
     }
 
-    public function findCurrent()
+    public function findCurrent(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('l.academicYear', ':academicYear'),
                     $query->expr()->isNotNull('l.startTime'),
                     $query->expr()->isNull('l.endTime')
                 )
             )
+            ->setParameter('academicYear', $academicYear)
             ->orderBy('l.registrationTime', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
@@ -60,10 +65,12 @@ class Lap extends EntityRepository
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('l.academicYear', ':academicYear'),
                     $query->expr()->isNull('l.startTime'),
                     $query->expr()->isNull('l.endTime')
                 )
             )
+            ->setParameter('academicYear', $academicYear)
             ->orderBy('l.registrationTime', 'ASC')
             ->setMaxResults($nbResults)
             ->getQuery()
@@ -75,7 +82,7 @@ class Lap extends EntityRepository
         return $resultSet;
     }
 
-    public function countAll()
+    public function countAll(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -85,17 +92,19 @@ class Lap extends EntityRepository
             )
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('l.academicYear', ':academicYear'),
                     $query->expr()->isNotNull('l.startTime'),
                     $query->expr()->isNotNull('l.endTime')
                 )
             )
+            ->setParameter('academicYear', $academicYear)
             ->getQuery()
             ->getResult();
 
         return $resultSet[0][1];
     }
 
-    public function countRunners()
+    public function countRunners(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -103,6 +112,10 @@ class Lap extends EntityRepository
             ->select(
                 $query->expr()->countDistinct('l.runner')
             )
+            ->where(
+                $query->expr()->eq('l.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear)
             ->getQuery()
             ->getResult();
 

@@ -1,0 +1,178 @@
+{% extends 'run/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Welcome!</h1>
+    </div>
+
+    <div class="row">
+        <div class="span3">
+            <h2>Laps</h2>
+
+            <p>
+                We have run <span id="nbOfficialLaps" class="label important" style="font-size: 16px;">{% if officialResults is null %}N/A{% else %}{{ officialResults[nbLaps] }}{% endif %}</span> <span id="nbOfficialLapsText">{% if 1 == officialResults[nbLaps] %}lap{% else %}laps{% endif %}</span>.
+            </p>
+
+            <h2>Runners</h2>
+
+            <p>
+                There {% if 1 == uniqueRunners %}has{% else %}have{% endif %} been <span id="uniqueRunners" class="label success" style="font-size: 16px;">{{ uniqueRunners }}</span> unique <span id="uniqueRunnersText">{% if 1 == uniqueRunners %}runner{% else %}runners{% endif %}</span>.
+            </p>
+
+            <h2>Groups of Friends</h2>
+
+            <p>
+                The current groups ranking of the groups of friends.
+            </p>
+
+            <table class="zebra-striped">
+                <thead>
+                    <tr>
+                        <th width="80%">Name</th>
+                        <th width="20%">Points</th>
+                    </tr>
+                </thead>
+
+                <tbody id="groups_of_friends">
+                    <tr>
+                        <td colspan="3"><i>There are no groups of friends!</i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="span9">
+            <h2>Current Runner</h2>
+            <div id="currentLap" class="alert-message success">
+                <p>
+                    <span style="font-size: 18px;">
+                        <strong id="currentLapRunnerName">
+                            {% if currentlap is not null %}{{ currentLap.getRunner().getFullName() }}{% else %}Nobody{% endif %}
+                        </strong>
+                    </span>
+                </p>
+
+                <p>
+                    <span id="currentLapTime">{% if currentlap is not null %}{{ currentLap.getLapTime().format('%i:%S') }}{% else %}00:00{% endif %}</span>,
+                    <span id="officialPosition">{% if officialResults is null %}N/A{% else %}{{ officialResults['position'] }}{% endif %}</span>%,
+                    <span id="officialSpeed">{% if officialResults is null %}N/A{% else %}{{ officialResults['speed'] }}{% endif %}</span></span> km/h
+                </p>
+            </div>
+
+            <div id="noCurrentLap" class="alert-message error" style="display: none;">
+                <p>
+                    <span style="font-size: 18px;">There is nobody running!</span>
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="span6">
+                    <h3>Previous Runners</h3>
+
+                    <table class="zebra-striped">
+                        <thead>
+                            <tr>
+                                <th width="10%">#</th>
+                                <th width="60%">Runner</th>
+                                <th width="30%">Lap Time</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="previous_runners">
+                            <tr>
+                                <td colspan="3"><i>There are no previous runners!</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="span6">
+                    <h3>Next Runners</h3>
+
+                    <table class="zebra-striped">
+                        <thead>
+                            <tr>
+                                <th width="10%">#</th>
+                                <th width="90%">Runner</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="next_runners">
+                            <tr>
+                                <td colspan="3"><i>There are no next runners!</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+        <script type="text/javascript">
+        setInterval(function() {
+                $.getJSON('<?= $this->url(array('action' => 'update')); ?>?format=json', function(data) {
+                    if (false != data.currentLap) {
+                        $('#noCurrentLap').fadeOut('slow', function() {
+                            $('#currentLap').fadeIn('slow');
+                        });
+
+                        $('#currentLapRunnerName').text(data.currentLap.runnerName);
+                        $('#currentLapTime').text(data.currentLap.time);
+                    } else {
+                        $('#currentLap').fadeOut('slow', function() {
+                            $('#noCurrentLap').fadeIn('slow');
+                        });
+                    }
+
+                    if (0 != data.previousLaps.length) {
+                        $('#previous_runners').empty();
+
+                        $.each(data.previousLaps, function(lapNb, previousLap) {
+                            $('#previous_runners').append('<tr><td>' + previousLap.id + '</td><td>' + previousLap.runner + '</td><td>' + previousLap.time + '</td></tr>')
+                        });
+                    }
+
+                    if (0 != data.nextLaps.length) {
+                        $('#next_runners').empty();
+
+                        $.each(data.nextLaps, function(lapNb, nextLap) {
+                            $('#next_runners').append('<tr><td>' + nextLap.id + '</td><td>' + nextLap.runner + '</td></tr>')
+                        });
+                    }
+
+                    if (false != data.officialResults) {
+                        $('#nbOfficialLaps').html(data.officialResults.nbLaps);
+
+                        $('#nbOfficialLapsText').html(
+                            data.officialResults.nbLaps == 1 ? 'lap' : 'laps'
+                        );
+
+                        $('#officialPosition').html(Math.round(data.officialResults.position * 100, 2));
+                        $('#officialSpeed').html(data.officialResults.speed);
+                    } else {
+                        $('#nbOfficialLaps').html('N/A');
+
+                        $('#nbOfficialLapsText').html('laps');
+
+                        $('#officialPosition').html('N/A');
+                        $('#officialSpeed').html('N/A');
+                    }
+
+                    $('#uniqueRunners').html(data.uniqueRunners);
+                    uniqueRunnersText = data.uniqueRunners == 1 ? 'runner' : 'runners';
+                    $('#uniqueRunnersText').html(uniqueRunnersText);
+
+                    if (0 != data.groupsOfFriends.length) {
+                        $('#groups_of_friends').empty();
+
+                        $.each(data.groupsOfFriends, function(groupNb, group) {
+                            $('#groups_of_friends').append('<tr><td>' + group.name + '</td><td>' + group.points + '</td></tr>')
+                        });
+                    }
+                })
+            },
+            1000
+        );
+    </script>
+{% endblock %}

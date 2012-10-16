@@ -45,6 +45,23 @@ return array(
             '@run_css',
             '@run_js',
         ),
+        'run_queue' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@run_css',
+            '@run_js',
+        ),
+        'run_screen' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@run_css',
+            '@run_js',
+            '@common_socket',
+        ),
     ),
     'routes' => array(),
 );

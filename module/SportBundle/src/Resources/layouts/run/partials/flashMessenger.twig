@@ -1,9 +1,6 @@
 {% for flashMessage in flashMessenger %}
     <div class="flashmessage alert alert-{{ flashMessage.getType() }} fade in">
         <a class="close" data-dismiss="alert">&times;</a>
-        <div class="title">{{ translate(flashMessage.getTitle()) }}</div>
-        <div class="content">
-            <p>{% autoescape false %}{{ translate(flashMessage.getMessage()) }}{% endautoescape %}</p>
-        </div>
+        {% autoescape false %}{{ translate(flashMessage.getMessage()) }}{% endautoescape %}
     </div>
 {% endfor %}
