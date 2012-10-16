@@ -17,7 +17,8 @@ namespace SportBundle\Component\WebSocket\Run;
 use CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\Users\Person,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    SportBundle\Entity\Lap;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
@@ -72,7 +73,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         if (strpos($data, 'action: ') === 0) {
             $this->_gotAction($user, $data);
-        } elseif ($data == 'queueUpdated') {
+        } elseif ($data == 'reloadQueue') {
             $this->sendQueueToAll();
         }
     }
@@ -91,7 +92,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         switch ($action) {
             case 'addToQueue':
                 break;
+            case 'deleteLap':
+                $this->_deleteLap($params);
+                break;
+            case 'startLap':
+                $this->_startLap();
+                break;
+            case 'stopLap':
+                $this->_stopLap();
+                break;
         }
+
+        $this->sendQueueToAll();
     }
 
     /**
@@ -134,13 +146,85 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SportBundle\Entity\Lap')
             ->countAll();
 
+        $previousLaps = array();
+        $laps = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findPrevious(5);
+        foreach($laps as $lap)
+            $previousLaps[] = $this->_jsonLap($lap);
+
+        $nextLaps = array();
+        $laps = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findNext(15);
+        foreach($laps as $lap)
+            $nextLaps[] = $this->_jsonLap($lap);
+
         $data = (object) array(
             'laps' => (object) array(
-                'official' => $nbOfficialLaps,
-                'own' => $nbLaps,
+                'number' => (object) array(
+                    'official' => $nbOfficialLaps,
+                    'own' => $nbLaps,
+                ),
+                'laps' => (object) array(
+                    'previous' => $previousLaps,
+                    'current' => $this->_jsonLap($this->_getCurrentLap()),
+                    'next' => $nextLaps,
+                ),
             ),
         );
 
         return json_encode($data);
+    }
+
+    private function _jsonLap(Lap $lap = null)
+    {
+        if (null === $lap)
+            return null;
+        return (object) array(
+            'id' => $lap->getId(),
+            'firstName' => $lap->getRunner()->getFirstName(),
+            'lastName' => $lap->getRunner()->getLastName(),
+            'registrationTime' => $lap->getRegistrationTime()->format('d/m/Y H:i:s'),
+        );
+    }
+
+    private function _deleteLap($data)
+    {
+        $lap = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findOneById($data);
+
+        $this->_entityManager->remove($lap);
+        $this->_entityManager->flush();
+    }
+
+    private function _startLap()
+    {
+        if (null !== $this->_getCurrentLap())
+            $this->_getCurrentLap()->stop();
+
+        if (null !== $this->_getNextLap())
+            $this->_getNextLap()->start();
+    }
+
+    private function _stopLap()
+    {
+        if (null !== $this->_getCurrentLap())
+            $this->_getCurrentLap()->stop();
+    }
+
+    private function _getCurrentLap()
+    {
+        return $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findCurrent();
+    }
+
+    private function _getNextLap()
+    {
+        return $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findNext();
     }
 }
