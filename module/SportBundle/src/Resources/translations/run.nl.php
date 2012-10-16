@@ -20,7 +20,7 @@ return array(
 
     'A group of friends is a small team of runners. Each team must choose two slots of two hours during the 24h-Run. During these happy hours, you get two points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the 24h-Run wins!' => 'Een groepje vrienden is een klein team lopers. Elk team moet twee tijdsloten van twee uur tijdens de 24-Urenloop kiezen. Gedurende deze happy hours krijgen jullie twee punten voor elk rondje. Wanneer je buiten deze uren loopt, krijg je &eacute;&eacute;n punt voor elk rondje. De groep met het grootste aantal punten op het einde van de 24-Urenloop, wint!',
 
-    'Group Information' => 'Group Informatie',
+    'Group Information' => 'Groupsinformatie',
     'Runner One' => 'Loper E&eacute;n',
     'Runner Two' => 'Loper Twee',
     'Runner Three' => 'Loper Drie',
