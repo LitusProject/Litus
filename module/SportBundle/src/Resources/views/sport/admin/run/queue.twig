@@ -52,14 +52,29 @@
             <div class="title">Total Laps</div>
             <div class="content">
                 <p>
-                    According to our own counter, we have run <b id="own_laps">N/A</b> laps right now.
+                    According to our own counter, we have run <b id="nbOwnLaps">N/A</b> laps right now.
                 </p>
 
                 <p>
-                    The official count currently is <b id="official_laps">N/A</b>.
+                    The official count currently is <b id="nbOfficialLaps">N/A</b>.
                 </p>
             </div>
         </div>
+
+        {% if hasAccess('admin_run', 'update') %}
+            <div class="sidebox">
+                <div class="title">Update Manager</div>
+                <div class="content">
+                    <p>
+                        Force the socket to push changes to the clients.
+                    </p>
+
+                    <p>
+                        <a href="{{ url('admin_run', {'action': 'update'}) }}">&rarr; Update Manager</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
     <div class="modal hide fade" id="removeLap">
@@ -89,8 +104,6 @@
             $('#queue').runQueue({
                 url: '{{ socketUrl }}',
                 errorDialog: $('#loading_queue_error'),
-                ownLaps: $('#own_laps'),
-                officialLaps: $('#official_laps'),
                 displayLaps: displayLaps
             });
 
@@ -111,7 +124,12 @@
         }
 
         function displayLaps(data) {
-            $(data.laps.laps).each(function (num, lap) {
+            $('#queue').html('');
+
+            $('#nbOwnLaps').html(data.number.own);
+            $('#nbOfficialLaps').html(data.number.official);
+
+            $(data.laps).each(function (num, lap) {
                 if (lap == undefined)
                     return;
 

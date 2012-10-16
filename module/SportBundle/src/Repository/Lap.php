@@ -58,7 +58,7 @@ class Lap extends EntityRepository
         return null;
     }
 
-    public function findNext($nbResults = 1)
+    public function findNext(AcademicYear $academicYear, $nbResults = 1)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')

@@ -25,26 +25,15 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function queueAction()
     {
-        /*$lap = new \SportBundle\Entity\Lap(
-            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\AcademicYear')->findOneById(2),
-                new \SportBundle\Entity\Runner(
-                    $this->getEntityManager()->getRepository('CommonBundle\Entity\General\AcademicYear')->findOneById(2),
-                    'Kristof',
-                    'Mariën'
-                )
+        return new ViewModel(
+            array(
+                'socketUrl' => $this->getSocketUrl(),
+            )
         );
-        $this->getEntityManager()->persist($lap);
-        $lap = new \SportBundle\Entity\Lap(
-            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\AcademicYear')->findOneById(2),
-                new \SportBundle\Entity\Runner(
-                    $this->getEntityManager()->getRepository('CommonBundle\Entity\General\AcademicYear')->findOneById(2),
-                    'Pieter',
-                    'Maene'
-                )
-        );
-        $this->getEntityManager()->persist($lap);
-        $this->getEntityManager()->flush();*/
+    }
 
+    public function updateAction()
+    {
         return new ViewModel(
             array(
                 'socketUrl' => $this->getSocketUrl(),

@@ -14,9 +14,11 @@
 
 namespace SportBundle\Component\WebSocket\Run;
 
-use CommonBundle\Component\WebSocket\User,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\Users\Person,
     DateTime,
+    DateInterval,
     Doctrine\ORM\EntityManager,
     SportBundle\Entity\Lap;
 
@@ -142,12 +144,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nbLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->countAll();
+            ->countAll($this->_getAcademicYear());
+
+        $uniqueRunners = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->countRunners($this->_getAcademicYear());
 
         $laps = array();
         $previousLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findPrevious(5);
+            ->findPrevious($this->_getAcademicYear(), 5);
         foreach($previousLaps as $lap)
             $laps[] = $this->_jsonLap($lap, 'previous');
 
@@ -155,7 +161,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findNext(15);
+            ->findNext($this->_getAcademicYear(), 15);
         foreach($nextLaps as $lap)
             $laps[] = $this->_jsonLap($lap, 'next');
 
@@ -164,6 +170,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'number' => (object) array(
                     'official' => $nbOfficialLaps,
                     'own' => $nbLaps,
+                    'uniqueRunners' => $uniqueRunners,
                 ),
                 'laps' => $laps,
             ),
@@ -182,7 +189,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             'firstName' => $lap->getRunner()->getFirstName(),
             'lastName' => $lap->getRunner()->getLastName(),
             'registrationTime' => $lap->getRegistrationTime()->format('d/m/Y H:i:s'),
-            'lapTime' => $lap->getEndTime() ? $lap->getLapTime()->format('%i:%S') : '',
+            'lapTime' => $lap->getStartTime() ? $lap->getLapTime()->format('%i:%S') : '',
             'state' => $state,
         );
     }
@@ -212,13 +219,41 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         return $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findCurrent();
+            ->findCurrent($this->_getAcademicYear());
     }
 
     private function _getNextLap()
     {
         return $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findNext();
+            ->findNext($this->_getAcademicYear());
+    }
+
+    private function _getAcademicYear()
+    {
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+
+        $start = new DateTime(
+            str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
+            )
+        );
+
+        $next = clone $start;
+        $next->add(new DateInterval('P1Y'));
+        if ($next <= new DateTime())
+            $start = $next;
+
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStart($start);
+
+        return $academicYear;
     }
 }

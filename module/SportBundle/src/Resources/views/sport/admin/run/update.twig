@@ -1,0 +1,49 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage error_message hide" id="loading_queue_error">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while loading the queue.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <p>
+            Last update was on <b id="lastUpdate">N/A</b>.
+        </p>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var initial = true;
+            $(document).runQueue({
+                url: '{{ socketUrl }}',
+                errorDialog: $('#loading_queue_error'),
+                displayLaps: function () {
+                    if (initial)
+                        update();
+                    initial = false;
+                }
+            });
+
+            setInterval(update, 1000);
+        });
+
+        function update () {
+            $(document).runQueue('reloadQueue');
+
+            var currentTime = new Date();
+            var hours = currentTime.getHours();
+            var minutes = currentTime.getMinutes();
+            var seconds = currentTime.getSeconds();
+
+            $('#lastUpdate').html(hours + ':' + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+        }
+    </script>
+{% endblock %}
