@@ -143,7 +143,6 @@
             $('.item .delete').click(openModal);
 
             $(document).bind('keypress.space', startShortKey);
-            $(document).bind('keypress.l', loadShortKey);
         });
 
         function openModal(e) {
@@ -195,12 +194,6 @@
                         $(document).unbind('keypress.s').bind('keypress.space', startShortKey);
                     }
                 });
-            }
-        }
-
-        function loadShortKey(e) {
-            if (e.keyCode == 108) {
-                window.location.reload();
             }
         }*/
     </script>
