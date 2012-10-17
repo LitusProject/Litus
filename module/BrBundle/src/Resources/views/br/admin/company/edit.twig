@@ -54,8 +54,6 @@
 {% block content_script %}
     <script type="text/javascript">
 	    $(document).ready(function () {
-            $('#page').click(togglePage);
-            togglePage();
 
             $('textarea#description').gollum({
                 uploadURL: '{{ url('admin_company', {'action': 'upload'}) }}',
@@ -81,11 +79,5 @@
             });
 	    });
 
-        function togglePage() {
-            if ($('#page').is(':checked'))
-                $('#page_form').show();
-            else
-                $('#page_form').hide();
-        }
     </script>
 {% endblock %}
