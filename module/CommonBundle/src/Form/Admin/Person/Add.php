@@ -99,7 +99,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $roles = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Acl\Role')
-            ->findAll();
+            ->findBy(array(), array('name' => 'ASC'));
 
         $rolesArray = array();
         foreach ($roles as $role) {

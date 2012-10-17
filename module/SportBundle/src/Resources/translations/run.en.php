@@ -12,4 +12,25 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array();
+return array(
+    '24h-Run' => '24h-Run',
+
+    'Home' => 'Home',
+    'Group of Friends' => 'Group of Friends',
+
+    'A group of friends is a small team of runners. Each team must choose two slots of two hours during the 24h-Run. During these happy hours, you get two points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the 24h-Run wins!' => 'A group of friends is a small team of runners. Each team must choose two slots of two hours during the 24h-Run. During these happy hours, you get two points for each lap. When you run outside of these hours, each lap earns you one point. Off course, the group who has collected the most points at the end of the 24h-Run wins!',
+
+    'Group Information' => 'Group Information',
+    'Runner One' => 'Runner One',
+    'Runner Two' => 'Runner Two',
+    'Runner Three' => 'Runner Three',
+    'Runner Four' => 'Runner Four',
+    'Runner Five' => 'Runner Five',
+
+    'Group Name' => 'Group Name',
+    'First Happy Hour' => 'First Happy Hour',
+    'Second Happy Hour' => 'Second Happy Hour',
+    'University Identification' => 'University Identification',
+    'First Name' => 'First Name',
+    'Last Name' => 'Last Name',
+);

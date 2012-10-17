@@ -62,7 +62,19 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'sportbundle' => array(
                     'admin_run' => array(
-                        'delete', 'queue', 'start', 'stop'
+                        'delete', 'queue', 'next'
+                    ),
+                    'run_group' => array(
+                        'add', 'getName'
+                    ),
+                    'run_index' => array(
+                        'index'
+                    ),
+                    'run_queue' => array(
+                        'index', 'getName'
+                    ),
+                    'run_screen' => array(
+                        'index'
                     ),
                 ),
             )
@@ -75,6 +87,12 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'parents' => array(
                     ),
                     'actions' => array(
+                        'run_group' => array(
+                            'add', 'getName'
+                        ),
+                        'run_index' => array(
+                            'index'
+                        ),
                     ),
                 ),
             )

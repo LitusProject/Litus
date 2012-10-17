@@ -1,1 +1,28 @@
-{% extends 'common/admin/academic/add.twig' %}
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'common/admin/academic/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    {% if hasAccess('admin_academic', 'activate') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Send Activation</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to send an activation code to the person!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_academic', {"action": "activate", "id": academic.getId()}) }}">&rarr; Send Activation</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+{% endblock %}

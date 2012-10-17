@@ -14,8 +14,7 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * RunController
@@ -25,6 +24,15 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class RunController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function queueAction()
+    {
+        return new ViewModel(
+            array(
+                'socketUrl' => $this->getSocketUrl(),
+            )
+        );
+    }
+
+    public function updateAction()
     {
         return new ViewModel(
             array(

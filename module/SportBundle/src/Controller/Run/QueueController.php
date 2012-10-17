@@ -1,86 +1,81 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Run;
+namespace SportBundle\Controller\Run;
 
-use \Run\Form\Queue\Add as AddForm;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    SportBundle\Form\Queue\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
-use \Litus\Entity\Sport\Lap;
-use \Litus\Entity\Sport\Runner;
-
-use \Zend\Json\Json;
-
-class QueueController extends \Litus\Controller\Action
+/**
+ * QueueController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class QueueController extends \SportBundle\Component\Controller\RunController
 {
-    private $_json = null;
-
-    public function init()
-    {
-        parent::init();
-
-        $this->broker('contextSwitch')
-            ->addActionContext('runner', 'json')
-            ->setAutoJsonSerialization(false)
-            ->initContext();
-
-        $this->_json = new Json();
-    }
-
     public function indexAction()
-    {
-        $this->_redirect('add');
-    }
-
-    public function addAction()
     {
         $form = new AddForm();
 
-        $this->view->form = $form;
-        $this->view->queueCreated = false;
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-
-            if ($form->isValid($formData)) {
-                $runner = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\Sport\Runner')
-                    ->find($formData['university_identification']);
-
-                $lap = new Lap(
-                    null !== $runner ?
-                        $runner :
-                        new Runner(
-                            $formData['university_identification'],
-                            $formData['first_name'],
-                            $formData['last_name']
-                        )
-                );
-                $this->getEntityManager()->persist($lap);
-
-                $this->view->queueCreated = true;
-                $this->view->form = new AddForm();
-            }
-        }
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'socketUrl' => $this->getSocketUrl(),
+            )
+        );
     }
 
-    public function runnerAction()
+    public function getNameAction()
     {
-        $this->_initAjax();
+        $this->initAjax();
 
-        $universityIdentification = $this->getRequest()->getParam('university_identification', '');
+        if (8 == strlen($this->getParam('university_identification'))) {
+            $academic = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->findOneByUniversityIdentification($this->getParam('university_identification'));
 
-        $returnArray = array();
-        if (8 == strlen($universityIdentification)) {
-            $runner = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Sport\Runner')
-                ->find($universityIdentification);
-
-            if (null !== $runner) {
-                $returnArray['firstName'] = $runner->getFirstName();
-                $returnArray['lastName'] = $runner->getLastName();
+            if (null !== $academic) {
+                return new ViewModel(
+                    array(
+                        'result' => (object) array(
+                            'status' => 'success',
+                            'firstName' => $academic->getFirstName(),
+                            'lastName' => $academic->getLastName()
+                        )
+                    )
+                );
             }
         }
 
-        echo $this->_json->encode($returnArray);
+        return new ViewModel();
+    }
+
+    /**
+     * Returns the WebSocket URL.
+     *
+     * @return string
+     */
+    protected function getSocketUrl()
+    {
+        $address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_remote_host');
+        $port = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_port');
+
+        return 'ws://' . $address . ':' . $port;
     }
 }
-
