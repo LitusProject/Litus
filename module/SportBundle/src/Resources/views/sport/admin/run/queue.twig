@@ -34,18 +34,20 @@
     </div>
 
     <aside>
-        <div class="sidebox">
-            <div class="title">New Lap</div>
-            <div class="content">
-                <p>
-                    <i>Please hit the link below to start timing a new lap or to stop the current lap!</i>
-                </p>
-                <p>
-                    <a href="#" id="nextLap" style="display: none">&rarr; Next Lap</a>
-                    <a href="#" id="stopLap" style="display: none">&rarr; Stop</a>
-                </p>
+        {% if hasAccess('admin_run', 'next') %}
+            <div class="sidebox">
+                <div class="title">New Lap</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to start timing a new lap or to stop the current lap!</i>
+                    </p>
+                    <p>
+                        <a href="#" id="nextLap" style="display: none">&rarr; Next Lap</a>
+                        <a href="#" id="stopLap" style="display: none">&rarr; Stop</a>
+                    </p>
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="sidebox">
             <div class="title">Total Laps</div>
@@ -106,9 +108,12 @@
                 displayLaps: displayLaps
             });
 
+            {% if hasAccess('admin_run', 'next') %}
             $(document).on('keypress.space', spacePressed);
+            {% endif %}
         });
 
+        {% if hasAccess('admin_run', 'next') %}
         function spacePressed(e) {
             if (e.which == 32) {
                 e.preventDefault();
@@ -121,6 +126,7 @@
                 });
             }
         }
+        {% endif %}
 
         function displayLaps(data) {
             $('#queue').html('');
@@ -128,7 +134,9 @@
             $('#nbOwnLaps').html(data.number.own);
             $('#nbOfficialLaps').html(data.number.official);
 
+            {% if hasAccess('admin_run', 'next') %}
             $('#nextLap, #stopLap').unbind('click').click(function () {$('#queue').runQueue('startLap')});
+            {% endif %}
 
             var hasCurrentRunner = false;
             var hasNextRunner = false;
@@ -156,12 +164,14 @@
                 }
 
                 if (lap.state != 'previous') {
+                    {% if hasAccess('admin_run', 'delete') %}
                     actions.append(
                         $('<a>', {'class': 'delete', 'href': '#'}).html('Delete').data({
                             id: lap.id,
                             runner: lap.fullName
                         })
                     );
+                    {% endif %}
                 }
                 $('#queue').append(row);
 
