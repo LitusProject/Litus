@@ -94,6 +94,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         switch ($action) {
             case 'addToQueue':
+                $this->_addToQueue(json_decode($params));
                 break;
             case 'deleteLap':
                 $this->_deleteLap($params);
@@ -123,6 +124,44 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         foreach($this->getUsers() as $user)
             $this->sendQueue($user);
+    }
+
+    private function _addToQueue($data)
+    {
+        if ('' != $data->universityIdentification
+            && '' == $data->firstName
+            && '' == $data->lastName
+        ) {
+            $academic = $this->_entityManager
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->findOneByUniversityIdentification($data->universityIdentification);
+
+            $data->firstName = $academic->getFirstName();
+            $data->lastName = $academic->getLastName();
+        }
+
+        $runner = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Runner')
+            ->findOneByUniversityIdentification($data->universityIdentification);
+
+        if (null === $runner) {
+            $academic = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->findOneByUniversityIdentification($data->universityIdentification);
+
+            $runner = new Runner(
+                $this->_getAcademicYear(),
+                $data->firstName,
+                $data->lastName,
+                null,
+                $academic
+            );
+        }
+
+        $lap = new Lap($this->_getAcademicYear(), $runner);
+        $this->_entityManager->persist($lap);
+
+        $this->_entityManager->flush();
     }
 
     private function _getJsonQueue()
