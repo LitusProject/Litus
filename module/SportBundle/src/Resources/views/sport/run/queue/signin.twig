@@ -1,6 +1,11 @@
 {% extends 'run/base.twig' %}
 
 {% block content %}
+    <div class="flashmessage alert alert-success fade in">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate('You have been succesfully added to the queue.') }}
+    </div>
+
     <div class="page-header">
         <h1>{{ translate('Queue') }}</h1>
     </div>
@@ -19,6 +24,19 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#queue').click(function (e) {
+                e.preventDefault();
+                
+            }).prop('disabled', 'disabled');
+
+            $('#first_name, #last_name, #university_identification').keyup(function () {
+                if ($('#first_name').val() != '' && $('#last_name').val() != '') {
+                    $('#queue').removeProp('disabled');
+                } else {
+                    $('#queue').prop('disabled', 'disabled');
+                }
+            });
+
             $('#university_identification').bind('keyup blur', getName);
 
             $('#university_identification').each(function () {
@@ -37,6 +55,7 @@
 
                         fieldSet.find('#first_name').val(data.firstName).addClass('uneditable-input').attr('disabled', 'disabled');
                         fieldSet.find('#last_name').val(data.lastName).addClass('uneditable-input').attr('disabled', 'disabled');
+                        $('#queue').removeProp('disabled');
                     }
                 }, 'json');
             }

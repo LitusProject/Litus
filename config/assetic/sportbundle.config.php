@@ -52,6 +52,7 @@ return array(
             '@bootstrap_js_alert',
             '@run_css',
             '@run_js',
+            '@common_socket',
         ),
         'run_screen' => array(
             '@common_jquery',

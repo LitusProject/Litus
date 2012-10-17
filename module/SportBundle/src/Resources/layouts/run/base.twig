@@ -21,6 +21,11 @@
                         <a href="{{ url("run_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                     </li>
                 {% endif %}
+                {% if hasAccess('run_queue', 'signin') %}
+                    <li {% if 'signin' == getParam('action') and 'run_queue' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("run_queue", {"language": language.getAbbrev()}) }}">{{ translate('Sign In') }}</a>
+                    </li>
+                {% endif %}
                 {% if hasAccess('run_screen', 'index') %}
                     <li {% if 'index' == getParam('action') and 'run_screen' == getParam('controller') %} class="active" {% endif %}>
                         <a href="{{ url("run_screen", {"language": language.getAbbrev()}) }}">{{ translate('Screen') }}</a>
