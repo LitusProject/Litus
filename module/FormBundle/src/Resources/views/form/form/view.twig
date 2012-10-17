@@ -8,12 +8,15 @@
     <div class="row page">
         <div class="span12">
 
+            {% autoescape false %}
+                {{ markdown(specification.getIntroduction(language)) }}
+            {% endautoescape %}
+
+            <hr/>
+
             {% if not form %}
                 {{ translate(message) }}
 			{% else %}
-                {% autoescape false %}
-                    {{ markdown(specification.getIntroduction(language)) }}
-                {% endautoescape %}
 
                 {% if form %}
                     {% import 'site/partials/form.twig' as forms %}
