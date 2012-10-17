@@ -616,7 +616,7 @@ abstract class Person
                     ->findOneByCode($code);
             } while(isset($found));
 
-            $code = new Code($code);
+            $code = new Code($code, 86400);
             $entityManager->persist($code);
             $this->setCode($code);
 
