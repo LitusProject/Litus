@@ -18,4 +18,5 @@ function backgroundTask() {
 
 # Starting the WebSockets
 backgroundTask "php bin/CudiBundle/queue.php --run"
+backgroundTask "php bin/SportBundle/run.php --run"
 backgroundTask "php bin/SyllabusBundle/update.php --run"
