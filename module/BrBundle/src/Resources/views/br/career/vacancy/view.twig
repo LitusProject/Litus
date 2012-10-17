@@ -26,6 +26,18 @@
             <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
         {% endif %}
 
+        {% if vacancy.getSector() %}
+
+            <hr/>
+
+            <center>
+                <strong>
+                    {{ translate('Sector') }}: {{ vacancy.getSector() }}<br/>
+                </strong>
+            </center>
+
+        {% endif %}
+
         {% if vacancy.getCity() %}
 
             <hr/>

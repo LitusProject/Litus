@@ -21,5 +21,6 @@ return array(
     'Last updated' => 'Last updated',
     'Wanted Profile' => 'Wanted Profile',
     'Required Knowledge' => 'Required Knowledge',
+    'Sector' => 'Sector',
     'Location' => 'Location',
 );
