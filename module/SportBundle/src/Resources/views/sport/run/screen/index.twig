@@ -1,104 +1,117 @@
-{% extends 'run/base.twig' %}
+<html lang="en">
+<head>
 
-{% block content %}
-    <div id="noCurrentLap" class="flashmessage alert alert-error fade">
-        <span style="font-size: 18px;">There is nobody running!</span>
-    </div>
+    {{ headMeta() }}
+    {{ headTitle('24h-Run', 'PREPEND') }}
 
-    <div class="row">
-        <div class="span4 columns">
-            <h2>Laps</h2>
+    {{ headLink() }}
+</head>
 
-            <p>
-                We have run <span id="nbOfficialLaps" class="label label-important" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-important" style="font-size: 16px;"></span> laps behind the first one.</span><span id="firtOne" class="label label-success" style="font-size: 16px;display: none">first!</span>
-            </p>
+<body>
+    <div class="container">
+        {% include 'run/partials/flashMessenger.twig' %}
 
-            <h2>Runners</h2>
+        <div id="content_controller">
+            <div id="noCurrentLap" class="flashmessage alert alert-error fade">
+                <span style="font-size: 18px;">There is nobody running!</span>
+            </div>
 
-            <p>
-                There <span id="uniqueRunnersTextVerb">have</span> been <span id="uniqueRunners" class="label label-success" style="font-size: 16px;">N/A</span> unique <span id="uniqueRunnersText">runners</span>.
-            </p>
-
-            <h2>Groups of Friends</h2>
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th width="80%">Name</th>
-                        <th width="20%">Points</th>
-                    </tr>
-                </thead>
-
-                <tbody id="groupsOfFriends">
-                    <tr>
-                        <td colspan="3"><i>There are no groups of friends!</i></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="span8 columns">
             <div class="row">
-                <h2>Current Runner</h2>
-                <div id="currentLap" class="well">
-                    <h4 id="currentLapRunnerName" style="margin-top: 0;">Nobody</h4>
+                <div class="span4 columns">
+                    <h2>Laps</h2>
 
-                    <div id="currentLapInfo" style="display: none">
-                        <span id="currentLapTime"></span>,
-                        <span id="officialSpeed">N/A</span> km/h
+                    <p>
+                        We have run <span id="nbOfficialLaps" class="label label-important" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-important" style="font-size: 16px;"></span> laps behind the first one</span><span id="firtOne" class="label label-success" style="font-size: 16px;display: none">first</span>!
+                    </p>
 
-                        <div class="progress progress-striped active" style="margin-bottom: 0;">
-                            <div class="bar" style="width: 0%;"></div>
+                    <h2>Runners</h2>
+
+                    <p>
+                        There <span id="uniqueRunnersTextVerb">have</span> been <span id="uniqueRunners" class="label label-success" style="font-size: 16px;">N/A</span> unique <span id="uniqueRunnersText">runners</span>.
+                    </p>
+
+                    <h2>Groups of Friends</h2>
+
+                    <table class="table table-striped" style="width: 90%">
+                        <thead>
+                            <tr>
+                                <th width="80%">Name</th>
+                                <th width="20%">Points</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="groupsOfFriends">
+                            <tr>
+                                <td colspan="3"><i>There are no groups of friends!</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="span8 columns">
+                    <div class="row">
+                        <h2>Current Runner</h2>
+                        <div id="currentLap" class="well">
+                            <h4 id="currentLapRunnerName" style="margin-top: 0;">Nobody</h4>
+
+                            <div id="currentLapInfo" style="display: none">
+                                <span id="currentLapTime"></span>,
+                                <span id="officialSpeed">N/A</span> km/h
+
+                                <div class="progress progress-striped active" style="margin-bottom: 0;">
+                                    <div class="bar" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="span4">
+                            <h3>Previous Runners</h3>
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="20px">#</th>
+                                        <th width="200px">Runner</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="previousRunners">
+                                    <tr>
+                                        <td colspan="3"><i>There are no previous runners!</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="span4">
+                            <h3>Next Runners</h3>
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="20px">#</th>
+                                        <th>Runner</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="nextRunners">
+                                    <tr>
+                                        <td colspan="3"><i>There are no next runners!</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="span4">
-                    <h3>Previous Runners</h3>
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th width="20px">#</th>
-                                <th width="200px">Runner</th>
-                                <th>Time</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="previousRunners">
-                            <tr>
-                                <td colspan="3"><i>There are no previous runners!</i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="span4">
-                    <h3>Next Runners</h3>
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th width="20px">#</th>
-                                <th>Runner</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="nextRunners">
-                            <tr>
-                                <td colspan="3"><i>There are no next runners!</i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
-{% endblock %}
 
-{% block content_script %}
+    {{ inlineScript() }}
+
     <script type="text/javascript">
         var counter;
         $(document).ready(function () {
@@ -207,4 +220,6 @@
             $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('position') / $('#currentLapInfo').data('startSimulationTime') * lapTime) + '%');
         }
     </script>
-{% endblock %}
+
+</body>
+</html>
