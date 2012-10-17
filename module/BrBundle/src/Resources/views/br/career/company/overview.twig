@@ -2,7 +2,7 @@
 
 {% block page_content %}
     <ul class="thumbnails">
-        {% for page in pages %}
+        {% for page in paginator %}
             <li class="span2">
                 <a style="text-decoration:none;height:150px;" href="{{ url('career_company', {'action': 'view', 'company': page.getCompany().getSlug() }) }}" class="thumbnail">
 
@@ -27,4 +27,7 @@
             </li>
         {% endfor %}
     </ul>
+
+    {% include 'site/partials/paginationControl.twig' %}
+
 {% endblock %}

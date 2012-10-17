@@ -16,6 +16,7 @@ namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Users\People\Corporate,
     CommonBundle\Component\Util\Url,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -140,6 +141,10 @@ class Page
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function hasYear(AcademicYear $academicYear) {
+        return $this->years->contains($academicYear);
     }
 
     /**
