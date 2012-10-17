@@ -241,9 +241,42 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
+                'academic' => $academic,
             )
         );
+    }
+
+    public function activateAction()
+    {
+        if (!($academic = $this->_getAcademic()))
+            return new ViewModel();
+
+        $academic->activate(
+            $this->getEntityManager(),
+            $this->getMailTransport(),
+            false
+        );
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Succes',
+                'The user was successfully activated!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'admin_academic',
+            array(
+                'action' => 'edit',
+                'id' => $academic->getId(),
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function deleteAction()

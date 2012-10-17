@@ -15,13 +15,14 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\People\Academic,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a runner.
  *
- * @ORM\Entity(repositoryClass="Litus\Repository\Sport\Runner")
+ * @ORM\Entity(repositoryClass="SportBundle\Repository\Runner")
  * @ORM\Table(name="sport.runners")
  */
 class Runner
@@ -45,6 +46,9 @@ class Runner
 
     /**
      * @var \CommonBundle\Entity\Users\People\Academic The academic linked to this runner
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+     * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
 

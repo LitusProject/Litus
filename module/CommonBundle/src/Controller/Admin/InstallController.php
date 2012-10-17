@@ -147,7 +147,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
             array(
                 'commonbundle' => array(
                     'admin_academic' => array(
-                        'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
+                        'activate', 'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
                     ),
                     'admin_auth' => array(
                         'authenticate', 'login', 'logout', 'shibboleth'

@@ -2,8 +2,7 @@
     var defaults = {
         url: '',
         errorDialog: null,
-        ownLaps: null,
-        officialLaps: null,
+        displayLaps: function () {},
     };
 
     var methods = {
@@ -16,6 +15,22 @@
 
             return this;
         },
+        startLap: function (options) {
+            _sendToSocket('action: startLap');
+            return this;
+        },
+        deleteLap: function (options) {
+            _sendToSocket('action: deleteLap ' + options);
+            return this;
+        },
+        reloadQueue: function (options) {
+            _sendToSocket('reloadQueue');
+            return this;
+        },
+        addToQueue: function (options) {
+            _sendToSocket('action: addToQueue ' + JSON.stringify(options));
+            return this;
+        }
     }
 
     $.fn.runQueue = function (method) {
@@ -41,8 +56,7 @@
                 message: function (e, data) {
                     options.errorDialog.addClass('hide');
                     if (data.laps) {
-                        options.ownLaps.html(data.laps.number.own);
-                        options.officialLaps.html(data.laps.number.official);
+                        options.displayLaps(data.laps);
                     }
                 },
                 error: function (e) {
@@ -53,6 +67,6 @@
     }
 
     function _sendToSocket (text) {
-        $.webSocket('send', {name: 'showQueue', text: text});
+        $.webSocket('send', {name: 'runQueue', text: text});
     }
 }) (jQuery);

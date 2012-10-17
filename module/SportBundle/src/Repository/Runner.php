@@ -12,4 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class Runner extends EntityRepository
 {
+    public function findOneByUniversityIdentification($universityIdentification)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('SportBundle\Entity\Runner', 'r')
+            ->innerJoin('r.academic', 'a')
+            ->where(
+                $query->expr()->eq('a.universityIdentification', ':universityIdentification')
+            )
+            ->setParameter('universityIdentification', $universityIdentification)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

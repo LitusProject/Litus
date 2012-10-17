@@ -44,12 +44,57 @@ return array(
             'run_index' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/run[/:action][/]',
+                    'route' => '[/:language]/run[/:action][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'run_index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'run_group' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/run/group[/:action[/:university_identification]][/]',
+                    'constraints' => array(
+                        'language'                  => '[a-z]{2}',
+                        'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'university_identification' => '[a-z]{1}[0-9]{7}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'run_group',
+                        'action'     => 'add',
+                    ),
+                ),
+            ),
+            'run_queue' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/run/queue[/:action[/:university_identification]][/]',
+                    'constraints' => array(
+                        'language'                  => '[a-z]{2}',
+                        'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'university_identification' => '[a-z]{1}[0-9]{7}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'run_queue',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'run_screen' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/run/screen[/:action][/]',
+                    'constraints' => array(
+                        'language' => '[a-z]{2}',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'run_screen',
                         'action'     => 'index',
                     ),
                 ),
@@ -97,6 +142,9 @@ return array(
             'admin_run'     => 'SportBundle\Controller\Admin\RunController',
 
             'run_index'     => 'SportBundle\Controller\Run\IndexController',
+            'run_group'     => 'SportBundle\Controller\Run\GroupController',
+            'run_queue'     => 'SportBundle\Controller\Run\QueueController',
+            'run_screen'    => 'SportBundle\Controller\Run\ScreenController',
         ),
     ),
     'assetic_configuration' => array(
