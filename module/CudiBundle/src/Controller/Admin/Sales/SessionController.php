@@ -258,9 +258,15 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                     $this->getEntityManager()->persist($amountUnit);
                 }
 
-                $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
-                    ->expireBookings();
+                $autoExpire = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_automatic_expire');
+
+                if ('1' == $autoExpire) {
+                    $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->expireBookings();
+                }
 
                 $session->close($cashRegister);
 
