@@ -21,6 +21,11 @@
                         <a href="{{ url("run_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                     </li>
                 {% endif %}
+                {% if hasAccess('run_screen', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'run_screen' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("run_screen", {"language": language.getAbbrev()}) }}">{{ translate('Screen') }}</a>
+                    </li>
+                {% endif %}
                 {% if hasAccess('run_group', 'add') %}
                     <li {% if 'add' == getParam('action') and 'run_group' == getParam('controller') %} class="active" {% endif %}>
                         <a href="{{ url("run_group", {"language": language.getAbbrev()}) }}">{{ translate('Group of Friends') }}</a>
