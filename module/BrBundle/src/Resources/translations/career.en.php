@@ -17,6 +17,7 @@ return array(
     'Events' => 'Events',
     'Vacancies' => 'Vacancies',
     'Internships' => 'Internships',
+    'About' => 'About',
     'Last updated' => 'Last updated',
     'Wanted Profile' => 'Wanted Profile',
     'Required Knowledge' => 'Required Knowledge',

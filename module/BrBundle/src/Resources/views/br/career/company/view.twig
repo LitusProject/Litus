@@ -5,9 +5,13 @@
     <div class="span2">
         {% if page.getCompany().getLogo() %}
             <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
-        {% endif %}
 
         <hr/>
+        {% else %}
+            <div class="logo-replacement">
+            </div>
+        {% endif %}
+
 
         <center>
             <address><strong>

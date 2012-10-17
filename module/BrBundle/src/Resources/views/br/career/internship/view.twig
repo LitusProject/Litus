@@ -3,14 +3,29 @@
 {% block page_content %}
 
     <div class="span2">
-            {% if internship.getCompany().getPage() %}
-            <a href="{{ url('career_company',{ 'action': 'view', 'company': internship.getCompany().getSlug() }) }}">
+
+        {% if not internship.getCompany().getLogo() %}
+            <div class="logo-replacement">
+            </div>
+        {% endif %}
+
+        {% if internship.getCompany().getPage() %}
+        <a href="{{ url('career_company',{ 'action': 'view', 'company': internship.getCompany().getSlug() }) }}">
+        {% endif %}
+            {% if internship.getCompany().getLogo() %}
+
+                    <img src="{{ url('admin_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
+            {% else %}
+
+                <h2><center class="company-name">{{ internship.getCompany().getName() }}</center></h2>
             {% endif %}
-                <img src="{{ url('admin_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
-            {% if internship.getCompany().getPage() %}
-            </a>
-            {% endif %}
-        <center class="company-name">{{ internship.getCompany().getName() }}</center>
+        {% if internship.getCompany().getPage() %}
+        </a>
+        {% endif %}
+
+        {% if internship.getCompany().getLogo() %}
+            <center class="company-name">{{ internship.getCompany().getName() }}</center>
+        {% endif %}
 
         {% if internship.getCity() %}
 

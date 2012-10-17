@@ -105,17 +105,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
                 array(
                     'name'     => $this->_prefix . 'address_street',
                     'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'alpha',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
-                        ),
-                    ),
                 )
             )
         );
@@ -125,12 +114,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
                 array(
                     'name'     => $this->_prefix . 'address_number',
                     'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
                     'validators' => array(
                         array(
                             'name' => 'alnum',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
                         ),
                     ),
                 )
@@ -147,6 +136,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
                         'options' => array(
                             'allowWhiteSpace' => true,
                         ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
+                                array(
+                                    'max' => 5,
+                                )
+                            )
+                        )
                     ),
                 ),
             )
@@ -162,7 +159,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'digits',
+                            'name' => 'alnum',
                         ),
                     ),
                 )
@@ -174,14 +171,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
                 array(
                     'name'     => $this->_prefix . 'address_city',
                     'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'alpha',
-                        ),
-                    ),
                 )
             )
         );

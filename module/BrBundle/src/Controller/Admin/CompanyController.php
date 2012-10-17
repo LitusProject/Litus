@@ -79,15 +79,23 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->persist($company);
 
-                if (isset($formData['page']) && $formData['page']) {
-                    $page = new Page(
-                        $company,
-                        $formData['summary'],
-                        $formData['description']
-                    );
-
-                    $this->getEntityManager()->persist($page);
+                $yearIds = $formData['years'];
+                $years = array();
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                foreach($yearIds as $yearId) {
+                    $years[] = $repository->findOneById($yearId);
                 }
+
+                $page = new Page(
+                    $company,
+                    $formData['summary'],
+                    $formData['description']
+                );
+
+                $page->setYears($years);
+
+                $this->getEntityManager()->persist($page);
 
                 $this->getEntityManager()->flush();
 
@@ -143,24 +151,18 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->setCity($formData['address_city'])
                         ->setCountry($formData['address_country']);
 
-                if (isset($formData['page']) && $formData['page']) {
-                    if ($company->getPage() != null) {
-                        $company->getPage()
-                            ->setSummary($formData['summary'])
-                            ->setDescription($formData['description']);
-                    } else {
-                        $page = new Page(
-                            $company,
-                            $formData['summary'],
-                            $formData['description']
-                        );
-                        $this->getEntityManager()->persist($page);
-                    }
-                } else {
-                    if ($company->getPage() != null) {
-                        $this->getEntityManager()->remove($company->getPage());
-                    }
+                $yearIds = $formData['years'];
+                $years = array();
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                foreach($yearIds as $yearId) {
+                    $years[] = $repository->findOneById($yearId);
                 }
+
+                $company->getPage()
+                    ->setSummary($formData['summary'])
+                    ->setDescription($formData['description'])
+                    ->setYears($years);
 
                 $this->getEntityManager()->flush();
 
