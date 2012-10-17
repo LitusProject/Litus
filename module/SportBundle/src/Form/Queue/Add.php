@@ -57,7 +57,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('autocomplete', 'off');
         $information->add($field);
 
-        $field = new Submit('submit');
+        $field = new Submit('queue');
         $field->setValue('Queue');
         $this->add($field);
     }

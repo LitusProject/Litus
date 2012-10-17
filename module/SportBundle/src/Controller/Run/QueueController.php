@@ -16,6 +16,8 @@ namespace SportBundle\Controller\Run;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
+    DateTime,
+    DateInterval,
     SportBundle\Entity\Lap,
     SportBundle\Entity\Runner,
     SportBundle\Form\Queue\Add as AddForm,
@@ -31,7 +33,7 @@ class QueueController extends \SportBundle\Component\Controller\RunController
     public function signinAction()
     {
         $form = new AddForm();
-        if ($this->getRequest()->isPost()) {
+        /*if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
             if ('' != $formData['university_identification']
@@ -87,11 +89,12 @@ class QueueController extends \SportBundle\Component\Controller\RunController
                     )
                 );
             }
-        }
+        }*/
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
+                'socketUrl' => $this->getSocketUrl(),
             )
         );
     }
@@ -179,5 +182,22 @@ class QueueController extends \SportBundle\Component\Controller\RunController
         }
 
         return $academicYear;
+    }
+
+    /**
+     * Returns the WebSocket URL.
+     *
+     * @return string
+     */
+    protected function getSocketUrl()
+    {
+        $address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_remote_host');
+        $port = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_port');
+
+        return 'ws://' . $address . ':' . $port;
     }
 }
