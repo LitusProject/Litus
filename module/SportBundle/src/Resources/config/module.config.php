@@ -81,7 +81,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'run_queue',
-                        'action'     => 'signin',
+                        'action'     => 'index',
                     ),
                 ),
             ),
