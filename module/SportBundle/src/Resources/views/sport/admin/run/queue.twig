@@ -43,7 +43,6 @@
                 <p>
                     <a href="#" id="nextLap" style="display: none">&rarr; Next Lap</a>
                     <a href="#" id="stopLap" style="display: none">&rarr; Stop</a>
-                    <a href="#" id="noAction">&rarr; Stop</a>
                 </p>
             </div>
         </div>
@@ -129,6 +128,10 @@
             $('#nbOwnLaps').html(data.number.own);
             $('#nbOfficialLaps').html(data.number.official);
 
+            $('#nextLap, #stopLap').unbind('click').click(function () {$('#queue').runQueue('startLap')});
+
+            var hasCurrentRunner = false;
+            var hasNextRunner = false;
             $(data.laps).each(function (num, lap) {
                 if (lap == undefined)
                     return;
@@ -146,8 +149,10 @@
                 } else if (lap.state == 'current') {
                     lapTime.html($('<i>').html('Running'));
                     runnerName.html('&rarr; ' + runnerName.html());
+                    hasCurrentRunner = true;
                 } else {
                     lapTime.html($('<i>').html('Queued'));
+                    hasNextRunner = true;
                 }
 
                 if (lap.state != 'previous') {
@@ -162,6 +167,16 @@
 
                 actions.find('.delete').click(removeLap);
             });
+
+            if (hasNextRunner) {
+                $('#stopLap').hide();
+                $('#nextLap').show();
+            } else if (hasCurrentRunner) {
+                $('#nextLap').hide();
+                $('#stopLap').show();
+            } else {
+                $('#stopLap, #nextLap').hide();
+            }
         }
 
         function removeLap(e) {
