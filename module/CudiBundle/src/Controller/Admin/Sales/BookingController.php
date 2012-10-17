@@ -395,6 +395,27 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
+    public function expireAllAction()
+    {
+        $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->expireBookings();
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The bookings are successfully expired'
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
+    }
+
     public function searchAction()
     {
         $this->initAjax();

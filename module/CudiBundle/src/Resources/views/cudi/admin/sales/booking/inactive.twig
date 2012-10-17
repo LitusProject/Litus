@@ -62,6 +62,7 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    $('#controller_nav .assignAll').click(openAssignAllModal);
+	        $('#controller_nav .expireAll').click(openExpireAllModal);
 
 		    {% if hasAccess('admin_sales_booking', 'search') %}
 			$.searchDatabase({
