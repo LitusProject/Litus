@@ -3,6 +3,9 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('admin_run', 'groups') %}
+                <li><a {% if 'groups' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_run", {"action": "queue"}) }}">Groups of Friends</a></li>
+            {% endif %}
             {% if hasAccess('admin_run', 'queue') %}
                 <li><a {% if 'queue' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_run", {"action": "queue"}) }}">Queue</a></li>
             {% endif %}
