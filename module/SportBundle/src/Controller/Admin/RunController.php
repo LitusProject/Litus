@@ -41,18 +41,23 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    public function groupAction()
+    public function groupsAction()
     {
-        $groups = $this->getEntityManager()
-            ->getRepository()
-            ->findBy(
-                array(
-                    'academicYear' => $this->_getAcademicYear()
-                ),
-                array(
-                    'name' => 'ASC'
-                )
-            );
+        $paginator = $this->paginator()->createFromEntity(
+            'SportBundle\Entity\Group',
+            $this->getParam('page'),
+            array(),
+            array(
+                'name' => 'ASC'
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     /**

@@ -1,0 +1,39 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="600px">Runners</th>
+                    <th width="100px">Happy Hours</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for group in paginator %}
+                    <tr>
+                        <td>{{ group.getName() }}</td>
+                        <td>
+                            {% for runner in group.getMembers() %}
+                                {{ runner.getFullName() }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for happyHour in group.getHappyHours() %}
+                                {{ happyHour }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}
