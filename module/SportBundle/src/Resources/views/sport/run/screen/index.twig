@@ -11,11 +11,15 @@
     <div class="container">
         {% include 'run/partials/flashMessenger.twig' %}
 
-        <div id="content_controller">
-            <div id="noCurrentLap" class="flashmessage alert alert-error fade">
-                <span style="font-size: 18px;">There is nobody running!</span>
-            </div>
+        <div id="loading_queue_error" class="flashmessage alert alert-error fade in">
+            An error occurred while loading the queue.
+        </div>
 
+        <div id="noCurrentLap" class="flashmessage alert alert-error fade">
+            <span style="font-size: 18px;">There is nobody running!</span>
+        </div>
+
+        <div id="content_controller">
             <div class="row">
                 <div class="span4 columns">
                     <h2>Laps</h2>

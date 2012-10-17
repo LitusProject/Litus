@@ -230,6 +230,11 @@ VTK Cudi
                     'description' => 'Enable automatic assignment of bookings',
                 ),
                 array(
+                    'key'         => 'cudi.enable_automatic_expire',
+                    'value'       => '1',
+                    'description' => 'Enable automatic expire of bookings',
+                ),
+                array(
                     'key'         => 'cudi.print_socket_address',
                     'value'       => '127.0.0.1',
                     'description' => 'The ip address of the print socket',
@@ -322,7 +327,7 @@ VTK Cudi
                         'delete', 'manage'
                     ),
                     'admin_sales_booking' => array(
-                        'add', 'article', 'assign', 'assignAll', 'assignments', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
+                        'add', 'article', 'assign', 'assignAll', 'assignments', 'delete', 'edit', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
                     ),
                     'admin_sales_discount' => array(
                         'delete', 'manage'
