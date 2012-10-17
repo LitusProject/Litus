@@ -173,6 +173,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'uniqueRunners' => $uniqueRunners,
                 ),
                 'laps' => $laps,
+                'officialResults' => $this->_getOfficialResults(),
+                'groupsOfFriends' => $this->_getGroupsOfFriends(),
             ),
         );
 
@@ -183,6 +185,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         if (null === $lap)
             return null;
+
         return (object) array(
             'id' => $lap->getId(),
             'fullName' => $lap->getRunner()->getFullName(),
@@ -255,5 +258,69 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneByStart($start);
 
         return $academicYear;
+    }
+
+    private function _getOfficialResults()
+    {
+        $resultPage = @simplexml_load_file(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.run_result_page')
+        );
+
+        $returnArray = array();
+        if (false !== $resultPage) {
+            $teamId = $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.run_team_id');
+
+            $teamData = $resultPage->xpath('//team[@id=\'' . $teamId . '\']');
+
+            $returnArray = array(
+                'nbLaps' => $teamData[0]->rounds->__toString(),
+                'position' => round($teamData[0]->position->__toString() * 100),
+                'speed' => $teamData[0]->speed_kmh->__toString(),
+                'behind' => $teamData[0]->behind->__toString()
+            );
+        }
+
+        return $returnArray;
+    }
+
+    private function _getGroupsOfFriends()
+    {
+        $groups = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Group')
+            ->findAll($this->_getAcademicYear());
+
+        $returnArray = array();
+        foreach ($groups as $group) {
+            $array = (object) array(
+                'name' => $group->getName(),
+                'points' => 0,
+            );
+
+            $happyHours = $group->getHappyHours();
+
+            foreach ($group->getMembers() as $member) {
+                foreach ($member->getLaps() as $lap) {
+                    if (null === $lap->getEndTime())
+                        continue;
+
+                    $startTime = $lap->getStartTime()->format('H');
+                    $endTime = $lap->getEndTime()->format('H');
+
+                    $array->points += 1;
+
+                    for ($i = 0; isset($happyHours[$i]); $i++) {
+                        if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2))
+                            $array->points += 1;
+                    }
+                }
+            }
+            $returnArray[] = $array;
+        }
+
+        return $returnArray;
     }
 }
