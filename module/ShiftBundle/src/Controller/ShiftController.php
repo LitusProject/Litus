@@ -256,7 +256,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($shift->countVolunteers() >= $shift->getNbVolunteers()) {
             foreach ($shift->getVolunteers() as $volunteer) {
-                if ($volunteer->getPerson()->getOrganizationStatus($this->getCurrentAcademicYear()) == OrganizationStatus::$possibleStatuses['praesidium']) {
+                if ($volunteer->getPerson()->isPraesidium($this->getCurrentAcademicYear())) {
                     $shift->removeVolunteer($volunteer);
 
                     $mailAddress = $this->getEntityManager()
@@ -287,6 +287,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         $this->getMailTransport()->send($mail);
 
                     $this->getEntityManager()->remove($volunteer);
+                    break;
                 }
             }
         }
