@@ -41,6 +41,20 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    public function groupAction()
+    {
+        $groups = $this->getEntityManager()
+            ->getRepository()
+            ->findBy(
+                array(
+                    'academicYear' => $this->_getAcademicYear()
+                ),
+                array(
+                    'name' => 'ASC'
+                )
+            );
+    }
+
     /**
      * Returns the WebSocket URL.
      *
