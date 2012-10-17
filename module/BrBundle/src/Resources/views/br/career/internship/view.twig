@@ -9,7 +9,7 @@
             </div>
         {% endif %}
 
-        {% if internship.getCompany().getPage() %}
+        {% if internship.getCompany().getPage().hasYear(currentAcademicYear) %}
         <a href="{{ url('career_company',{ 'action': 'view', 'company': internship.getCompany().getSlug() }) }}">
         {% endif %}
             {% if internship.getCompany().getLogo() %}
@@ -19,7 +19,7 @@
 
                 <h2><center class="company-name">{{ internship.getCompany().getName() }}</center></h2>
             {% endif %}
-        {% if internship.getCompany().getPage() %}
+        {% if internship.getCompany().getPage().hasYear(currentAcademicYear) %}
         </a>
         {% endif %}
 
