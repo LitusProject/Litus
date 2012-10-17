@@ -21,5 +21,6 @@ return array(
     'Last updated' => 'Laatst gewijzigd',
     'Wanted Profile' => 'Gezocht Profiel',
     'Required Knowledge' => 'Vereiste Kennis',
+    'Sector' => 'Sector',
     'Location' => 'Locatie',
 );

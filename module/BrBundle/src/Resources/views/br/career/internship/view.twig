@@ -27,6 +27,18 @@
             <center class="company-name">{{ internship.getCompany().getName() }}</center>
         {% endif %}
 
+        {% if internship.getSector() %}
+
+            <hr/>
+
+            <center>
+                <strong>
+                    {{ translate('Sector') }}: {{ internship.getSector() }}<br/>
+                </strong>
+            </center>
+
+        {% endif %}
+
         {% if internship.getCity() %}
 
             <hr/>
