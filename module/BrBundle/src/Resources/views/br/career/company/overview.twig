@@ -4,14 +4,25 @@
     <ul class="thumbnails">
         {% for page in pages %}
             <li class="span2">
-                <a style="text-decoration:none;" href="{{ url('career_company', {'action': 'view', 'company': page.getCompany().getSlug() }) }}" class="thumbnail">
-                    <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
+                <a style="text-decoration:none;height:150px;" href="{{ url('career_company', {'action': 'view', 'company': page.getCompany().getSlug() }) }}" class="thumbnail">
 
-                <center>
-                    <span class="company-name">
-                        {{ page.getCompany().getName() }}
-                    </span>
-                </center>
+                    <div class="company-container">
+                        <div>
+                            {% if page.getCompany().getLogo() %}
+                            <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}"/>
+                            {% else %}
+                            <h1 class="company-logo-replacement">{{ page.getCompany().getName() }}</h1>
+                            {% endif %}
+                        </div>
+
+                        <div class="name-container">
+                            <center>
+                                <span class="company-name">
+                                    {{ page.getCompany().getName() }}
+                                </span>
+                            </center>
+                        </div>
+                    </div>
                 </a>
             </li>
         {% endfor %}
