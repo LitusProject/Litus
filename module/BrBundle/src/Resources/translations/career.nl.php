@@ -17,8 +17,10 @@ return array(
     'Events' => 'Evenementen',
     'Vacancies' => 'Jobs',
     'Internships' => 'Stages',
+    'About' => 'Over',
     'Last updated' => 'Laatst gewijzigd',
     'Wanted Profile' => 'Gezocht Profiel',
     'Required Knowledge' => 'Vereiste Kennis',
+    'Sector' => 'Sector',
     'Location' => 'Locatie',
 );

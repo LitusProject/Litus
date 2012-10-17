@@ -56,7 +56,7 @@ class Driver
      * Creates a new driver for the given person
      *
      * @param \CommonBundle\Entity\Users\Person $person The person to mark as a driver.
-     * @param array $years The years in which this person was a driver.
+     * @param $color The color for this driver.
      */
     public function __construct(Person $person, $color)
     {

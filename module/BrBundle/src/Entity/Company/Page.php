@@ -59,6 +59,15 @@ class Page
     private $company;
 
     /**
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="br.page_years",
+     *      joinColumns={@ORM\JoinColumn(name="page_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="year_id", referencedColumnName="id")}
+     * )
+     */
+    private $years;
+
+    /**
      * @param string $company The company
      * @param string $summary The page's summary
      * @param string $description The page's description
@@ -68,6 +77,7 @@ class Page
         $this->setSummary($summary);
         $this->setDescription($description);
         $this->company = $company;
+        $this->years = new ArrayCollection();
     }
 
     /**
@@ -130,5 +140,23 @@ class Page
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Retrieves the years in which this page existed.
+     *
+     * @return array The years in which this page existed.
+     */
+    public function getYears() {
+        return $this->years->toArray();
+    }
+
+    /**
+     * @param array $years Sets the years in which this page existed.
+     * @return \BrBundle\Entity\Company\Page This
+     */
+    public function setYears(array $years) {
+        $this->years = new ArrayCollection($years);
+        return $this;
     }
 }
