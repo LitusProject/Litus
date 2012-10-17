@@ -30,7 +30,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class QueueController extends \SportBundle\Component\Controller\RunController
 {
-    public function signinAction()
+    public function indexAction()
     {
         $form = new AddForm();
         /*if ($this->getRequest()->isPost()) {
