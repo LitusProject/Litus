@@ -1,6 +1,10 @@
 {% extends 'run/base.twig' %}
 
 {% block content %}
+    <div id="noCurrentLap" class="flashmessage alert alert-error fade">
+        <span style="font-size: 18px;">There is nobody running!</span>
+    </div>
+
     <div class="row">
         <div class="span4 columns">
             <h2>Laps</h2>
@@ -47,12 +51,6 @@
                             <div class="bar" style="width: 0%;"></div>
                         </div>
                     </div>
-                </div>
-
-                <div id="noCurrentLap" class="flashmessage alert alert-error fade">
-                    <p>
-                        <span style="font-size: 18px;">There is nobody running!</span>
-                    </p>
                 </div>
             </div>
 
@@ -175,7 +173,6 @@
             });
 
             $(data.groupsOfFriends).each(function (num, group) {
-                console.log(group);
                 $('#groupsOfFriends').append(
                     $('<tr>').append(
                         $('<td>').html(group.name),

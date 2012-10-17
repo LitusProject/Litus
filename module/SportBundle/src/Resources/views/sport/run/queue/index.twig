@@ -1,7 +1,7 @@
 {% extends 'run/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-success fade in">
+    <div class="flashmessage alert alert-success fade" id="added_success">
         <a class="close" data-dismiss="alert">&times;</a>
         {{ translate('You have been succesfully added to the queue.') }}
     </div>
@@ -24,9 +24,21 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $(document).runQueue({
+                url: '{{ socketUrl }}',
+                errorDialog: $('#loading_queue_error'),
+
+            });
+
             $('#queue').click(function (e) {
                 e.preventDefault();
-                
+                $(document).runQueue('addToQueue', {
+                    universityIdentification: $('#university_identification').val(),
+                    lastName: $('#last_name').val(),
+                    firstName: $('#first_name').val(),
+                });
+                $('#added_success').addClass('in');
+                setTimeout(function () {$('.flashmessage').removeClass('in')}, 2000);
             }).prop('disabled', 'disabled');
 
             $('#first_name, #last_name, #university_identification').keyup(function () {
@@ -42,8 +54,6 @@
             $('#university_identification').each(function () {
                 $(this).trigger('keyup');
             });
-
-            $('.flashmessage').delay(2000).addClass('hide');
         });
 
         function getName() {

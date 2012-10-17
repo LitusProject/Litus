@@ -26,6 +26,10 @@
         reloadQueue: function (options) {
             _sendToSocket('reloadQueue');
             return this;
+        },
+        addToQueue: function (options) {
+            _sendToSocket('action: addToQueue ' + JSON.stringify(options));
+            return this;
         }
     }
 
