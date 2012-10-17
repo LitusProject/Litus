@@ -6,6 +6,9 @@
             {% if hasAccess('admin_sales_booking', 'assignments') %}
                 <li><a {% if 'assignments' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "assignments"}) }}">Assignments</a></li>
             {% endif %}
+            {% if hasAccess('admin_sales_booking', 'expireAll') %}
+                <li><a href="#" class="expireAll">Expire All</a></li>
+            {% endif %}
             {% if hasAccess('admin_sales_booking', 'assignAll') %}
                 <li><a href="#" class="assignAll">Assign All</a></li>
             {% endif %}
@@ -47,6 +50,25 @@
 	</div>
 </div>
 
+<div class="modal hide fade" id="expireAllBooking">
+    <div class="modal-header">
+        <span>Litus Admin</span>
+        /Expire All Bookings
+    </div>
+    <div class="modal-body">
+        <p>
+            You are about to expire all the possible bookings!
+        </p>
+        <p>
+            Are you sure you want to continue?
+        </p>
+        <div class="footer">
+            <input type="button" class="delete" value="Yes">
+            <input type="button" class="cancel" data-dismiss="modal" value="No">
+        </div>
+    </div>
+</div>
+
 {% block content_script %}
 	<script type="text/javascript">
 	    function openAssignAllModal(e) {
@@ -59,5 +81,16 @@
 			});
 			assignAllBooking.modal();
 		}
+
+        function openExpireAllModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var expireAllBooking = $('#expireAllBooking');
+            expireAllBooking.find('.delete').unbind('click').click(function () {
+                window.location.href = '{{ url('admin_sales_booking', {"action": "expireAll"})}}';
+            });
+            expireAllBooking.modal();
+        }
 	</script>
 {% endblock %}
