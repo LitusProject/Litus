@@ -58,6 +58,22 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_company_user' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+
+                    'career_index' => array(
+                        'index'
+                    ),
+                    'career_company' => array(
+                        'view', 'overview', 'file'
+                    ),
+                    'career_event' => array(
+                        'view', 'overview'
+                    ),
+                    'career_vacancy' => array(
+                        'view', 'overview'
+                    ),
+                    'career_internship' => array(
+                        'view', 'overview'
+                    ),
                 )
             )
         );
