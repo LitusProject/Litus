@@ -13,7 +13,7 @@
  */
 
 return array(
-    'My Bookings' => 'Mijn Cursusreservaties',
+    'My Bookings' => 'Mijn Cursus Reservaties',
 
     'Please log in to view your bookings.' => 'Meld je aan om je cursusreservaties te bekijken.',
     'Please log in to book textbooks.' => 'Meld je aan om cursussen te reserveren.',
@@ -29,6 +29,7 @@ return array(
     'Actions' => 'Acties',
     'Mandatory' => 'Verplicht',
     'Booked' => 'Gereserveerd',
+    'Assigned' => 'Toegewezen',
     'Remarks' => 'Opmerkingen',
     'remark' => 'opmerking',
     'remarks' => 'opmerkingen',
@@ -37,6 +38,7 @@ return array(
     'Book' => 'Reserveer',
 
     'Not Bookable' => 'Niet Reserveerbaar',
+    'Total' => 'Totaal',
 
     'Back' => 'Terug',
 
