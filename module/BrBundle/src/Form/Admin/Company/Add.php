@@ -48,6 +48,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
+        $years = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $yearnames = array();
+        foreach($years as $year) {
+            $yearnames[$year->getId()] = $year->getCode();
+        }
+
         $field = new Text('company_name');
         $field->setLabel('Company Name')
             ->setRequired();
@@ -71,14 +80,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Checkbox('page');
-        $field->setLabel('Create Page');
-        $this->add($field);
-
         $page = new Collection('page_collection');
         $page->setLabel('Page')
             ->setAttribute('id', 'page_form');
         $this->add($page);
+
+        $field = new Select('years');
+        $field->setLabel('Page Visible During')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $yearnames);
+        $page->add($field);
 
         $field = new Textarea('summary');
         $field->setLabel('Summary');

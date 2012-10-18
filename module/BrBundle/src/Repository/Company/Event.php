@@ -60,15 +60,19 @@ class Event extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Company\Event', 'e')
-            ->innerJoin('e.event', 'c')
+            ->innerJoin('e.event', 'ev')
+            ->innerJoin('e.company', 'c')
             ->where(
-                $query->expr()->orx(
-                    $query->expr()->gte('c.endDate', ':date'),
-                    $query->expr()->gte('c.startDate', ':date')
+                $query->expr()->andx(
+                    $query->expr()->orx(
+                        $query->expr()->gte('ev.endDate', ':date'),
+                        $query->expr()->gte('ev.startDate', ':date')
+                    ),
+                    $query->expr()->eq('c.active', 'true')
                 )
             )
             ->setParameter('date', $date)
-            ->orderBy('c.startDate', 'ASC')
+            ->orderBy('ev.startDate', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -80,14 +84,16 @@ class Event extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Company\Event', 'e')
-            ->innerJoin('e.event', 'c')
+            ->innerJoin('e.event', 'ev')
+            ->innerJoin('e.company', 'c')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->orx(
-                        $query->expr()->gte('c.endDate', ':date'),
-                        $query->expr()->gte('c.startDate', ':date')
+                        $query->expr()->gte('ev.endDate', ':date'),
+                        $query->expr()->gte('ev.startDate', ':date')
                     ),
-                    $query->expr()->eq('e.id', ':id')
+                    $query->expr()->eq('e.id', ':id'),
+                    $query->expr()->eq('c.active', 'true')
                 )
             )
             ->setParameter('date', new DateTime())

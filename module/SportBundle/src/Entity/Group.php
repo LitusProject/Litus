@@ -53,7 +53,8 @@ class Group
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The members of this group
      *
-     * @ORM\OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="group", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="group")
+     * @ORM\OrderBy({"lastName" = "ASC"})
      */
     private $members;
 
