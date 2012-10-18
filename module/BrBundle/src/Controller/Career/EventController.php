@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class EventController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class EventController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {

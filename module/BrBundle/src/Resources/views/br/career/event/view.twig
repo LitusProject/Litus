@@ -3,14 +3,28 @@
 {% block page_content %}
 
     <div class="span2">
-            {% if event.getCompany().getPage() %}
-            <a href="{{ url('career_company',{ 'action': 'view', 'company': event.getCompany().getSlug() }) }}">
+        {% if not event.getCompany().getLogo() %}
+            <div class="logo-replacement">
+            </div>
+        {% endif %}
+
+        {% if event.getCompany().getPage().hasYear(currentAcademicYear) %}
+        <a href="{{ url('career_company',{ 'action': 'view', 'company': event.getCompany().getSlug() }) }}">
+        {% endif %}
+            {% if event.getCompany().getLogo() %}
+
+                    <img src="{{ url('admin_company', {'action': 'logo', 'id': event.getCompany().getLogo()}) }}" alt="{{ event.getCompany().getName() }}">
+            {% else %}
+
+                <h2><center class="company-name">{{ event.getCompany().getName() }}</center></h2>
             {% endif %}
-                <img src="{{ url('admin_company', {'action': 'logo', 'id': event.getCompany().getLogo()}) }}" alt="{{ event.getCompany().getName() }}">
-            {% if event.getCompany().getPage() %}
-            </a>
-            {% endif %}
-        <center class="company-name">{{ event.getCompany().getName() }}</center>
+        {% if event.getCompany().getPage().hasYear(currentAcademicYear) %}
+        </a>
+        {% endif %}
+
+        {% if event.getCompany().getLogo() %}
+            <center class="company-name">{{ event.getCompany().getName() }}</center>
+        {% endif %}
 
         {% if event.getEvent().getPoster() %}
             <hr/>

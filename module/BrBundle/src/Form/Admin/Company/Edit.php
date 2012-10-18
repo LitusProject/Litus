@@ -56,9 +56,15 @@ class Edit extends Add
 
     private function _populateFromCompany(Company $company)
     {
+        $years = $company->getPage()->getYears();
+
+        $yearids = array();
+        foreach($years as $year) {
+            $yearids[] = $year->getId();
+        }
+
         $formData =  array(
             'company_name' => $company->getName(),
-            'page' => $company->getPage() !== null,
             'sector' => $company->getSectorCode(),
             'vat_number' => $company->getVatNumber(),
             'website' => $company->getWebsite(),
@@ -68,12 +74,11 @@ class Edit extends Add
             'address_postal' => $company->getAddress()->getPostal(),
             'address_city' => $company->getAddress()->getCity(),
             'address_country' => $company->getAddress()->getCountryCode(),
+            'years' => $yearids,
         );
 
-        if ($company->getPage() !== null) {
-            $formData['summary'] = $company->getPage()->getSummary();
-            $formData['description'] = $company->getPage()->getDescription();
-        }
+        $formData['summary'] = $company->getPage()->getSummary();
+        $formData['description'] = $company->getPage()->getDescription();
 
         $this->setData($formData);
     }

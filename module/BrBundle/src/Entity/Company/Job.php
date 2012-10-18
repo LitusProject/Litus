@@ -116,6 +116,13 @@ class Job
     private $endDate;
 
     /**
+     * @var string The sector of the company
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $sector;
+
+    /**
      * @param string $name The job's name
      * @param string $description The job's description
      * @param string $profile The job's profile
@@ -123,7 +130,7 @@ class Job
      * @param \BrBundle\Entity\Company $company The job's company
      * @param string $type The job's type (entry of $possibleTypes)
      */
-    public function __construct($name, $description, $profile, $requiredKnowledge, $city, Company $company, $type, $startDate, $endDate)
+    public function __construct($name, $description, $profile, $requiredKnowledge, $city, Company $company, $type, $startDate, $endDate, $sector)
     {
         $this->setName($name);
         $this->setDescription($description);
@@ -132,6 +139,7 @@ class Job
         $this->setCity($city);
         $this->setStartDate($startDate);
         $this->setEndDate($endDate);
+        $this->setSector($sector);
 
         $this->type = $type;
         $this->company = $company;
@@ -340,5 +348,34 @@ class Job
      */
     public function getEndDate() {
         return $this->endDate;
+    }
+
+    /**
+     * @param string $sector
+     * @return \BrBundle\Entity\Company\Job
+     */
+    public function setSector($sector)
+    {
+        if (!Company::isValidSector($sector))
+            throw new \InvalidArgumentException('The sector is not valid.');
+        $this->sector = $sector;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSector()
+    {
+        return Company::$POSSIBLE_SECTORS[$this->sector];
+    }
+
+    /**
+     * @return string
+     */
+    public function getSectorCode()
+    {
+        return $this->sector;
     }
 }
