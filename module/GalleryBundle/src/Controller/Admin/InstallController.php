@@ -36,11 +36,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->installAcl(
             array(
-                'galleryBundle' => array(
+                'gallerybundle' => array(
                     'admin_gallery' => array(
                         'add', 'addPhotos', 'censorPhoto', 'delete', 'edit', 'manage', 'photos', 'upload'
                     ),
-                    'common_gallery' => array(
+                    'gallery' => array(
                         'album', 'overview', 'year'
                     )
                 )

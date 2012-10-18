@@ -25,7 +25,7 @@
 							<th class="span2">{{ translate('Price / Piece') }}</th>
 							<th class="span1 hidden-phone">{{ translate('Mandatory') }}</th>
 							<th class="span1">#</th>
-							<th class="span1" style="text-align: center">{{ translate('Booked') }}</th>
+							<th class="span1 hidden-phone" style="text-align: center">{{ translate('Booked') }}</th>
 							<th class="span1 hidden-phone">{{ translate('Remarks') }}</th>
 						</tr>
 					</thead>
@@ -59,10 +59,10 @@
 										{% set element = form.get(name) %}
 										{{ formElement(element) }}
 									{% else %}
-										<span class="label label-info">{{ translate('Not Bookable') }}</span>
+										<span class="label label-info hidden-phone">{{ translate('Not Bookable') }}</span>
 									{% endif %}
 								</td>
-								<td style="text-align: center">{{ map['booked'] }}</td>
+								<td class="hidden-phone" style="text-align: center">{{ map['booked'] }}</td>
 								<td class="hidden-phone">
 									{% if map['comments']|length > 0 %}
 										<a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
