@@ -29,6 +29,7 @@ return array(
     'Actions' => 'Actions',
     'Mandatory' => 'Mandatory',
     'Booked' => 'Booked',
+    'Assigned' => 'Assigned',
     'Remarks' => 'Remarks',
     'remark' => 'remark',
     'remarks' => 'remarks',
@@ -37,6 +38,7 @@ return array(
     'Book' => 'Book',
 
     'Not Bookable' => 'Not Bookable',
+    'Total' => 'Total',
 
     'Back' => 'Back',
 

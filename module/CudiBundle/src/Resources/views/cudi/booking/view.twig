@@ -48,13 +48,14 @@
         			{% endfor %}
 
         			<tr class="total">
-        				<td>{{ translate('Total') }}</td>
-    					<td/>
-	            			<td>&euro; {{ (total/100)|number_format(2) }}</td>
-						<td/>
-						<td/>
-						<td/>
-						<td/>
+                        <td>{{ translate('Total') }}</td>
+                        <td class="hidden-phone"></td>
+                        <td>&euro; {{ (total/100)|number_format(2) }}</td>
+                        <td></td>
+                        <td class="hidden-phone"></td>
+                        <td class="hidden-phone"></td>
+                        <td class="visible-phone"></td>
+                        <td class="hidden-phone"></td>
     				</tr>
             	</table>
 
