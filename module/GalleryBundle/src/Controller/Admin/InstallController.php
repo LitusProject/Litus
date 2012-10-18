@@ -40,7 +40,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_gallery' => array(
                         'add', 'addPhotos', 'censorPhoto', 'delete', 'edit', 'manage', 'photos', 'upload'
                     ),
-                    'common_gallery' => array(
+                    'gallery' => array(
                         'album', 'overview', 'year'
                     )
                 )
