@@ -330,34 +330,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    public function viewPhotoAction()
-    {
-        if (!($photo = $this->_getPhoto()))
-            return new ViewModel();
-
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('gallery.path');
-
-        $path = $filePath . '/' . $photo->getAlbum()->getId() . $photo->getFilePath();
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-        	'Content-type' => mime_content_type($path),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($path, 'r');
-        $data = fread($handle, filesize($path));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
-            )
-        );
-    }
-
     public function _getAlbum()
     {
     	if (null === $this->getParam('id')) {
