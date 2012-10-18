@@ -342,7 +342,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $happyHours = $group->getHappyHours();
 
             foreach ($group->getMembers() as $member) {
-                foreach ($member->getLaps($this->_entityManager) as $lap) {
+                foreach ($member->getLaps($this->_entityManager $this->_getAcademicYear()) as $lap) {
                     if (null === $lap->getEndTime())
                         continue;
 
