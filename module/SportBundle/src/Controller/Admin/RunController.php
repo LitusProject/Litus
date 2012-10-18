@@ -41,6 +41,25 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    public function groupsAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'SportBundle\Entity\Group',
+            $this->getParam('page'),
+            array(),
+            array(
+                'name' => 'ASC'
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
     /**
      * Returns the WebSocket URL.
      *

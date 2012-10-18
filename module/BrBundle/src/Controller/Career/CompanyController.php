@@ -24,17 +24,20 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class CompanyController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class CompanyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $pages = $this->getEntityManager()
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findAllActive();
+            ->findAllActive($this->getCurrentAcademicYear()),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
-                'pages' => $pages,
+                'paginator' => $paginator,
             )
         );
     }
@@ -119,7 +122,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findOneActiveBySlug($this->getParam('company'));
+            ->findOneActiveBySlug($this->getParam('company'), $this->getCurrentAcademicYear());
 
         if (null === $company) {
             $this->flashMessenger()->addMessage(

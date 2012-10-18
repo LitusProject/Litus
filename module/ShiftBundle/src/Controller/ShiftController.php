@@ -255,7 +255,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         if ($shift->countVolunteers() >= $shift->getNbVolunteers()) {
-            foreach ($shift->getVolunteers() as $volunteer) {
+            foreach (array_reverse($shift->getVolunteers()) as $volunteer) {
                 if ($volunteer->getPerson()->isPraesidium($this->getCurrentAcademicYear())) {
                     $shift->removeVolunteer($volunteer);
 

@@ -101,6 +101,8 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                                 $academic
                             );
 
+                            $this->getEntityManager()->persist($newRunner);
+
                             $groupMembers[] = $newRunner;
                         } else {
                             if (null === $repositoryCheck->getGroup()) {

@@ -4,13 +4,13 @@
     {% include 'sport/admin/run/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
-    <div class="flashmessage error_message hide" id="loading_queue_error">
+    <div class="flashmessage error_message full_width hide" id="loading_queue_error">
         <div class="title">Error</div>
         <div class="content">
             <p>An error occurred while loading the queue.</p>
         </div>
     </div>
-    <div class="flashmessage success_message lap_removed_success hide">
+    <div class="flashmessage success_message full_width hide" id="lap_removed_success">
         <div class="title">Success</div>
         <div class="content">
             <p>The lap was successfully removed!</p>
@@ -198,7 +198,7 @@
             removeLap.find('.delete').unbind('click').click(function () {
                 $('#queue').runQueue('deleteLap', id)
                 $('.flashmessage').addClass('hide');
-                $('.lap_removed_success').removeClass('hide');
+                $('#lap_removed_success').removeClass('hide');
                 $('.item-' + id).remove();
                 removeLap.modal('hide');
             });

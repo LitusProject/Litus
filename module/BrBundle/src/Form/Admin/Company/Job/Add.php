@@ -14,7 +14,8 @@
 
 namespace BrBundle\Form\Admin\Company\Job;
 
-use BrBundle\Entity\Company\Job,
+use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Job,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
@@ -54,6 +55,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Select('sector');
+        $field->setLabel('Sector')
+            ->setAttribute('options', $this->_getSectors());
+        $this->add($field);
+
         $field = new Textarea('description');
         $field->setLabel('Description')
             ->setRequired();
@@ -86,6 +92,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
+    private function _getSectors()
+    {
+        $sectorArray = array();
+        foreach (Company::$POSSIBLE_SECTORS as $key => $sector)
+            $sectorArray[$key] = $sector;
+
+        return $sectorArray;
+    }
+
     public function populateFromJob(Job $job)
     {
         $this->setData(
@@ -97,6 +112,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'city' => $job->getCity(),
                 'start_date' => $job->getStartDate()->format('d/m/Y H:i'),
                 'end_date' => $job->getEndDate()->format('d/m/Y H:i'),
+                'sector' => $job->getSectorCode(),
             )
         );
     }
@@ -155,6 +171,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 ),
                             ),
                             new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'sector',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
                         ),
                     )
                 )
