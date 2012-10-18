@@ -5,9 +5,13 @@
     <div class="span2">
         {% if page.getCompany().getLogo() %}
             <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
-        {% endif %}
 
         <hr/>
+        {% else %}
+            <div class="logo-replacement">
+            </div>
+        {% endif %}
+
 
         <center>
             <address><strong>
@@ -53,7 +57,7 @@
                                 {% for event in events %}
                                     <tr>
                                         <td>
-                                            <a href="{{ url('calendar', {'action': 'view', 'name': event.getEvent().getName() }) }}">
+                                            <a href="{{ url('career_event', {'action': 'view', 'id': event.getId() }) }}">
                                                 <strong>{{ event.getEvent().getTitle(language) }}</strong>
                                                 <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
                                             </a>

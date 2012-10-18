@@ -71,7 +71,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     $company,
                     $formData['type'],
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $formData['sector']
                 );
 
                 $this->getEntityManager()->persist($job);
@@ -123,7 +124,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     ->setRequiredKnowledge($formData['requiredKnowledge'])
                     ->setCity($formData['city'])
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
+                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    ->setSector($formData['sector']);
 
                 $this->getEntityManager()->flush();
 
