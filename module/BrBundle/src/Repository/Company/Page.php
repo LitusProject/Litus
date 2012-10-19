@@ -73,6 +73,7 @@ class Page extends EntityRepository
                     $query->expr()->like('LOWER(c.name)', ':name')
                 )
             )
+            ->orderBy('c.name', 'ASC')
             ->setParameter('name', strtolower($string))
             ->setParameter('year', $academicYear)
             ->getQuery()

@@ -73,7 +73,8 @@ class Job extends EntityRepository
             )
             ->setParameter('type', $type)
             ->setParameter('now', new DateTime())
-            ->orderBy('v.name', 'ASC')
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
             ->getQuery()
             ->getResult();
 

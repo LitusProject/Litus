@@ -112,7 +112,6 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-
     private function _getPage()
     {
         if (null === $this->getParam('company')) {
