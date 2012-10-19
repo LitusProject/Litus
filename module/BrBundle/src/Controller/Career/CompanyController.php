@@ -99,6 +99,31 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $pages = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findAllActiveBySearch($this->getCurrentAcademicYear(), $this->getParam('string'));
+
+        $result = array();
+        foreach($pages as $page) {
+            $item = (object) array();
+            $item->name = $page->getCompany()->getName();
+            $item->logo = $page->getCompany()->getLogo();
+            $item->slug = $page->getCompany()->getSlug();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+
     private function _getPage()
     {
         if (null === $this->getParam('company')) {
