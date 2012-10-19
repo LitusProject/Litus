@@ -80,6 +80,27 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     private $active;
 
     /**
+     * @var boolean The flag whether a mail will be sent upon completion.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $mail;
+
+    /**
+     * @var string The subject of the mail sent upon completion.
+     *
+     * @ORM\Column(name="mail_subject", type="text")
+     */
+    private $mailSubject;
+
+    /**
+     * @var string The body of the mail sent upon completion.
+     *
+     * @ORM\Column(name="mail_body", type="text")
+     */
+    private $mailBody;
+
+    /**
      * @var array The translations of this form
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Nodes\Translation", mappedBy="form", cascade={"remove"})
@@ -91,8 +112,11 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      * @param string $title
      * @param boolean $redoable
      * @param boolean $multiple
+     * @param boolean $mail Whether to send a mail upon completion.
+     * @param string $mailSubject The subject of the mail.
+     * @param string $mailBody The body of the mail.
      */
-    public function __construct($person, $startDate, $endDate, $active, $max = 0, $multiple = false)
+    public function __construct($person, $startDate, $endDate, $active, $max, $multiple, $mail, $mailSubject, $mailBody)
     {
         parent::__construct($person);
 
@@ -103,6 +127,9 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->active = $active;
+        $this->mail = $mail;
+        $this->mailSubject = $mailSubject;
+        $this->mailBody = $mailBody;
     }
 
     /**
@@ -200,6 +227,57 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      */
     public function isActive() {
         return $this->active;
+    }
+
+    /**
+     * @param boolean $mail
+     *
+     * @return \BannerBundle\Entity\Nodes\Form
+     */
+    public function setMail($mail) {
+        $this->mail = $mail;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasMail() {
+        return $this->mail;
+    }
+
+    /**
+     * @param boolean $mailSubject
+     *
+     * @return \BannerBundle\Entity\Nodes\Form
+     */
+    public function setMailSubject($mailSubject) {
+        $this->mailSubject = $mailSubject;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMailSubject() {
+        return $this->mailSubject;
+    }
+
+    /**
+     * @param boolean $mailBody
+     *
+     * @return \BannerBundle\Entity\Nodes\Form
+     */
+    public function setMailBody($mailBody) {
+        $this->mailBody = $mailBody;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMailBody() {
+        return $this->mailBody;
     }
 
     /**
