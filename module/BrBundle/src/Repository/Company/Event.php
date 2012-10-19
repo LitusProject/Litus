@@ -79,6 +79,32 @@ class Event extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllFutureBySearch(DateTime $date, $string)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('BrBundle\Entity\Company\Event', 'e')
+            ->innerJoin('e.event', 'ev')
+            ->innerJoin('e.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->orx(
+                        $query->expr()->gte('ev.endDate', ':date'),
+                        $query->expr()->gte('ev.startDate', ':date')
+                    ),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->like('LOWER(c.name)', ':name')
+                )
+            )
+            ->setParameter('date', $date)
+            ->setParameter('name', strtolower($string))
+            ->orderBy('ev.startDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findOneActiveById($id)
     {
         $query = $this->_em->createQueryBuilder();
