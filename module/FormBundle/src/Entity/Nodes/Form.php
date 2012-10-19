@@ -17,6 +17,7 @@ namespace FormBundle\Entity\Nodes;
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     CommonBundle\Component\Util\Url,
+    FormBundle\Entity\Nodes\Entry,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -55,6 +56,8 @@ class Form extends \CommonBundle\Entity\Nodes\Node
 
     /**
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field", mappedBy="form")
+     *
+     * @ORM\OrderBy({"order" = "ASC"})
      */
     private $fields;
 
@@ -278,6 +281,14 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      */
     public function getMailBody() {
         return $this->mailBody;
+    }
+
+    public function getCompletedMailBody(Entry $entry) {
+        $body = $this->getMailBody();
+        $body = str_replace('%id%', $entry->getId(), $body);
+        $body = str_replace('%first_name%', $entry->getCreationPerson()->getFirstName(), $body);
+        $body = str_replace('%last_name%', $entry->getCreationPerson()->getLastName(), $body);
+        return $body;
     }
 
     /**
