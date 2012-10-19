@@ -8,7 +8,6 @@ cd "${scriptDirectory}/../"
 
 function backgroundTask() {
 	if ps aux | grep -v grep | grep "$1" > /dev/null; then
-		echo " Running: $1"
 		return 0
 	fi
 
@@ -17,6 +16,11 @@ function backgroundTask() {
 }
 
 # Starting the WebSockets
-backgroundTask "php bin/CudiBundle/queue.php --run"
-backgroundTask "php bin/SportBundle/run.php --run"
-backgroundTask "php bin/SyllabusBundle/update.php --run"
+for i in {1..50}
+do
+    backgroundTask "php bin/CudiBundle/queue.php --run"
+    backgroundTask "php bin/SportBundle/run.php --run"
+    backgroundTask "php bin/SyllabusBundle/update.php --run"
+
+    sleep 1
+done
