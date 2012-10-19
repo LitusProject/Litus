@@ -28,18 +28,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Page')
-            ->findAllActive($this->getCurrentAcademicYear()),
-            $this->getParam('page')
-        );
-
-        return new ViewModel(
-            array(
-                'paginator' => $paginator,
-            )
-        );
+        return new ViewModel();
     }
 
     public function viewAction()

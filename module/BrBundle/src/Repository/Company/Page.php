@@ -70,10 +70,10 @@ class Page extends EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('y', ':year'),
-                    $query->expr()->like('c.name', ':name')
+                    $query->expr()->like('LOWER(c.name)', ':name')
                 )
             )
-            ->setParameter('name', $string)
+            ->setParameter('name', strtolower($string))
             ->setParameter('year', $academicYear)
             ->getQuery()
             ->getResult();
