@@ -9,6 +9,7 @@ return array(
     'Sign In' => 'Inschrijven',
     'Responsible' => 'Verantwoordelijke',
     'Volunteer' => 'Vrijwilliger',
+    'Name' => 'Naam',
     'Start' => 'Start',
     'End' => 'Einde',
     'Manager' => 'Beheerder',
