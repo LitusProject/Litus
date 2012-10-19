@@ -206,6 +206,32 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function deletePhotoAction()
+    {
+        if (!($photo = $this->_getPhoto()))
+            return new ViewModel();
+
+        $filePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('gallery.path') . '/' . $photo->getAlbum()->getId();
+
+        if (file_exists($filePath . $photo->getFilePath()))
+            unlink($filePath . $photo->getFilePath());
+        if (file_exists($filePath . $photo->getThumbPath()))
+            unlink($filePath . $photo->getThumbPath());
+
+        $this->getEntityManager()->remove($photo);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     public function uploadAction()
     {
         if (!($album = $this->_getAlbum()))
