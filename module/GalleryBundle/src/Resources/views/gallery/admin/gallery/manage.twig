@@ -11,7 +11,6 @@
         </div>
     </div>
     <div class="flashmessage error_message full_width album_removed_error hide">
-    	<a class="close" data-dismiss="alert">&times;</a>
     	<div class="title">Error</div>
     	<div class="content">
     		<p>An error occurred while trying to delete the album.</p>
@@ -86,6 +85,7 @@
 			e.preventDefault();
 			var removeAlbum = $('#removeAlbum');
 			removeAlbum.find('.title').html($(this).data('title'));
+            var id = $(this).data('id');
 			removeAlbum.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_gallery', {"action": "delete"})}}' + $this.data('id'), function  (data) {
 				    if (data && 'success' == data.status) {

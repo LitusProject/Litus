@@ -4,6 +4,18 @@
     {% include 'gallery/admin/gallery/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width photo_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The photo was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width photo_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the photo.</p>
+        </div>
+    </div>
 
     <div id="controller_action">
         <h1>{{ album.getTitle(language) }}</h1>
@@ -16,23 +28,27 @@
                 <th width="90px">Actions</th>
             </tr>
             {% for photo in paginator %}
-                <tr class="item">
+                <tr class="item item-{{ photo.getId() }}">
                     <td>{{ photo.getId() }}</td>
                     <td>{{ photo.getFilePath() }}</td>
                     <td>{% if photo.isCensored() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('admin_gallery', 'viewPhoto') %}
-                            <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="view">{{ translate('View') }}</a>
+                            <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="view">View</a>
                         {% endif %}
 
                         {% if not photo.isCensored() %}
                             {% if hasAccess('admin_gallery', 'censorPhoto') %}
-                                <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="delete">{{ translate('Censor') }}</a>
+                                <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="delete">Censor</a>
                             {% endif %}
                         {% else %}
                             {% if hasAccess('admin_gallery', 'unCensorPhoto') %}
-                                <a href="{{ url('admin_gallery', {"action": "unCensorPhoto", "id": photo.getId()}) }}" class="add">{{ translate('Uncensor') }}</a>
+                                <a href="{{ url('admin_gallery', {"action": "unCensorPhoto", "id": photo.getId()}) }}" class="add">Uncensor</a>
                             {% endif %}
+                        {% endif %}
+
+                        {% if hasAccess('admin_gallery', 'deletePhoto') %}
+                            <a href="#" class="delete" data-id="{{ photo.getId() }}" data-name="{{ photo.getFilePath() }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -69,12 +85,33 @@
             </div>
         </div>
     </div>
+
+    <div class="modal hide fade" id="removePhoto">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Photo
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following photo: <b class="name"></b>?
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .view').click(openViewModal);
+            $('.item .delete').click(openRemoveModal);
 		});
 
 		function openViewModal(e) {
@@ -89,5 +126,33 @@
 			showPhoto.find('.photo').html(photo).css('text-align', 'center');
 			showPhoto.modal();
 		}
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removePhoto = $('#removePhoto');
+            removePhoto.find('.name').html($(this).data('name'));
+            var id = $(this).data('id');
+            removePhoto.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_gallery', {"action": "deletePhoto"})}}' + $this.data('id'), function  (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.photo_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removePhoto.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removePhoto.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.photo_removed_error').removeClass('hide');
+            $('#removePhoto').modal('hide');
+        }
 	</script>
 {% endblock %}
