@@ -170,42 +170,25 @@
         {% for shift in shifts %}
             <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}">
-                        {{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}-{{ dateLocalized(shift.getEndDate(), 'H:mm') }}&mdash;{{ shift.getName() }}
-
-                        <span class="pull-right">
-                            {% if 'search' == accordionName %}
-                                {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}
-                                    <i>{{ translate('Sign In') }}:</i>
-                                {% endif %}
-
-                                {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
-                                    <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" type="button">
-                                        {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
-                                    </button>
-                                {% endif %}
-                                {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
-                                    <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" type="button">
-                                        {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
-                                    </button>
-                                {% endif %}
-                            {% else %}
-                                {% if shift.canSignout(entityManager, authenticatedPerson) %}
-                                    <button class="btn btn-mini signout" data-id="{{ shift.getId() }}" data-accordion="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                                        {{ translate('Signout') }}
-                                    </button>
-                                {% endif %}
-                            {% endif %}
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
+                        <span class="pull-right visible-desktop">
+                            {{ _self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
                         </span>
+                        {{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}-{{ dateLocalized(shift.getEndDate(), 'H:mm') }}&mdash;{{ shift.getName() }}
                     </a>
                 </div>
                 <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="accordion-body collapse">
                     <div class="accordion-inner">
+                        <span class="pull-right hidden-desktop">
+                            {{ _self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
+                        </span>
                         <div class="row-fluid">
                             <span class="span8">
                                 <div class="row-fluid">
                                     <span class="span6">
                                         <dl>
+                                            <dt>{{ translate('Name') }}</dt>
+                                            <dd>{{ shift.getName() }}</dd>
                                             <dt>{{ translate('Start') }}</dt>
                                             <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}</dd>
                                             <dt>{{ translate('End') }}</dt>
@@ -295,5 +278,30 @@
         btn-warning
     {% elseif ratio == 1 %}
         btn-danger
+    {% endif %}
+{% endmacro %}
+
+{% macro buttons(entityManager, authenticatedPerson, shift, accordionName) %}
+    {% if 'search' == accordionName %}
+        {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}
+            <i>{{ translate('Sign In') }}:</i>
+        {% endif %}
+
+        {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
+            <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" type="button">
+                {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
+            </button>
+        {% endif %}
+        {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
+            <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" type="button">
+                {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
+            </button>
+        {% endif %}
+    {% else %}
+        {% if shift.canSignout(entityManager, authenticatedPerson) %}
+            <button class="btn btn-mini signout" data-id="{{ shift.getId() }}" data-accordion="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+                {{ translate('Signout') }}
+            </button>
+        {% endif %}
     {% endif %}
 {% endmacro %}

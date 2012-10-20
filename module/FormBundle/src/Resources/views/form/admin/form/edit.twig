@@ -45,10 +45,18 @@
 
         $(document).ready(function () {
             $('#languages a:first').click();
+            $('textarea.md').gollum();
+            $('#mail').click(toggleMail);
+            toggleMail();
+
         });
 
-        $(document).ready(function () {
-            $('textarea').gollum();
-        });
+        function toggleMail() {
+            if ($('#mail').is(':checked'))
+                $('#mail_form').show();
+            else
+                $('#mail_form').hide();
+        }
+
     </script>
 {% endblock %}

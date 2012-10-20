@@ -63,7 +63,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'index'
                     ),
                     'career_company' => array(
-                        'view', 'overview', 'file'
+                        'view', 'overview', 'file', 'search',
                     ),
                     'career_event' => array(
                         'view', 'overview'

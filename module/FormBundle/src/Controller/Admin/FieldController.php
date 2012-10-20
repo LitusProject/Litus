@@ -56,9 +56,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $fields = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Field')
-            ->findAllByForm($formSpecification);
+        $fields = $formSpecification->getFields();
 
         return new ViewModel(
             array(
