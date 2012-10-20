@@ -15,6 +15,8 @@
 namespace CommonBundle\Component\Amon\Connection;
 
 use CommonBundle\Component\Amon\Data,
+    CommonBundle\Component\Amon\Data\Exception as ExceptionData,
+    CommonBundle\Component\Amon\Data\Log as LogData,
     Exception,
     Zend\Http\Client,
     Zend\Http\Request,
@@ -67,10 +69,10 @@ class Http extends \CommonBundle\Component\Amon\Connection
     public function send(Data $data)
     {
         $client = new Client($this->_getRequestUrl($data));
-        $client->setMethod(Request::POST)
+        $client->setMethod(Request::METHOD_POST)
             ->setRawBody((string) $data);
 
-        $client->send()->getBody();
+        $client->send();
     }
 
     /**

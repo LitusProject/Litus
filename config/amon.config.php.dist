@@ -13,20 +13,8 @@
  */
 
 return array(
-    'controllers'  => array(
-        'on_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
-        'admin_slug' => array(
-            '@common_jquery',
-            '@admin_js',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_modal',
-            '@admin_css',
-        ),
-    ),
-    'routes' => array(),
+    'protocol'  => 'http',
+    'server'    => '127.0.0.1',
+    'port'      => '2464',
+    'secretKey' => '',
 );
