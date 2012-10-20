@@ -313,11 +313,6 @@ return array(
                             'output' => 'corporate_css.css',
                         ),
                     ),
-                    'career_rowlink' => array(
-                        'assets'  => array(
-                            'career/js/bootstrap-rowlink.js',
-                        ),
-                    ),
                     'career_css' => array(
                         'assets' => array(
                             'career/less/career.less',

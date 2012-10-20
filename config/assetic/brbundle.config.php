@@ -92,7 +92,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_vacancy' => array(
@@ -107,7 +107,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_internship' => array(
@@ -122,7 +122,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_event' => array(
@@ -137,7 +137,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
     ),
