@@ -80,9 +80,7 @@
         <h2>{{ message }}</h2>
 
         {% if display_exceptions is defined and display_exceptions %}
-
             {% if exception is defined %}
-
                 <h3>Exception Information</h3>
                 <p>
                     <b>Message:</b> {{ exception.getMessage() }}
@@ -100,20 +98,15 @@
                     {% for traceNumber, traceItem in exception.getTrace() %}
                         <tr>
                             <td>{{ traceNumber }}</td>
-                            <td>{{ traceItem.line }}</td>
-                            <td>{{ traceItem.function }}</td>
-                            <td>{{ traceItem.class }}</td>
+                            <td>{{ traceItem['line'] }}</td>
+                            <td>{{ traceItem['function'] }}</td>
+                            <td>{{ traceItem['class'] }}</td>
                         </tr>
                     {% endfor %}
-
                 </table>
-
             {% else %}
-
-                <h3>No Exception available</h3>
-
+                <h3>No Exception Available</h3>
             {% endif %}
-
         {% endif %}
     </section>
 </div>
