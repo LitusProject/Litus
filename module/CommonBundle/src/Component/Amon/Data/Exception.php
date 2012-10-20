@@ -34,6 +34,7 @@ class Exception extends \CommonBundle\Component\Amon\Data
     public function __construct(\Exception $exception)
     {
         $this->_data = array(
+            'url' => $this->_formatUrl(),
             'exception_class' => get_class($exception),
             'message' => $exception->getMessage(),
             'backtrace' => $this->_formatBacktrace($exception)
@@ -65,9 +66,21 @@ class Exception extends \CommonBundle\Component\Amon\Data
             if (!isset($t['file']))
                 continue;
 
-            $backtrace[] = '    at ' . (isset($t['class']) ? $t['class'] . '.' : '') . $t['function'] . '(' . $t['file'] . ':' . $t['line'] . ')';
+            $backtrace[] = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at ' . (isset($t['class']) ? $t['class'] . '.' : '') . $t['function'] . '(' . basename($t['file']) . ':' . $t['line'] . ')';
         }
 
         return $backtrace;
+    }
+
+    /**
+     * Formats the request URL.
+     *
+     * @return string
+     */
+    private function _formatUrl()
+    {
+        return '' != $_SERVER['HTTP_HOST']
+            ? ((isset($_SERVER['HTTPS']) && 'off' != $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+            : '';
     }
 }
