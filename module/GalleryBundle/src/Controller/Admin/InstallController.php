@@ -41,7 +41,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'addPhotos', 'censorPhoto', 'delete', 'deletePhoto', 'edit', 'manage', 'photos', 'unCensorPhoto', 'upload', 'viewPhoto'
                     ),
                     'gallery' => array(
-                        'album', 'overview', 'year'
+                        'album', 'overview', 'year', 'censor', 'uncensor'
                     )
                 )
             )

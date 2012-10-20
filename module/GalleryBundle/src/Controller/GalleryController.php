@@ -81,10 +81,62 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery.path');
 
+        $allowCensor = false;
+        if ($this->getAuthentication()->isAuthenticated()) {
+            if ($this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())
+                && $this->hasAccess('gallery', 'censor') && $this->hasAccess('gallery', 'uncensor'))
+                $allowCensor = true;
+        }
+
         return new ViewModel(
             array(
                 'album' => $album,
                 'filePath' => $filePath,
+                'allowCensor' => $allowCensor,
+            )
+        );
+    }
+
+    public function censorAction()
+    {
+        if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        if (!($photo = $this->_getPhoto()))
+            return new ViewModel();
+
+        $photo->setCensored(true);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
+    public function uncensorAction()
+    {
+        if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        if (!($photo = $this->_getPhoto()))
+            return new ViewModel();
+
+        $photo->setCensored(false);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
             )
         );
     }
