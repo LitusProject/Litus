@@ -353,8 +353,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     $array->points += 1;
 
                     for ($i = 0; isset($happyHours[$i]); $i++) {
-                        if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2))
-                            $array->points += 1;
+                        if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
+                            if ($lap->getLapTime() <= new DateInterval('P1M30S'))
+                                $array->points += 1;
+                        }
                     }
                 }
             }
