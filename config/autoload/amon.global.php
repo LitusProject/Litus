@@ -46,4 +46,6 @@ if ('production' == getenv('APPLICATION_ENV')) {
             ),
         ),
     );
+} else {
+    return array();
 }

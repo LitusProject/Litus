@@ -29,7 +29,8 @@ class Module
         $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('amon'), 'handleMvcEvent'));
+        if ('production' == getenv('APPLICATION_ENV'))
+            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('amon'), 'handleMvcEvent'));
 
         $injectTemplateListener = new InjectTemplateListener();
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);
