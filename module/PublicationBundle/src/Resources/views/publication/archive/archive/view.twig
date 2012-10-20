@@ -17,7 +17,7 @@
                 <tbody>
                     {% for pdf in pdfs %}
                         <tr>
-                            <td><a href="{{ pdf.getFileName() }}">{{ pdf.getTitle() }}</a></td>
+                            <td><a href="/{{ pdf.getUrl() }}">{{ pdf.getTitle() }}</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
