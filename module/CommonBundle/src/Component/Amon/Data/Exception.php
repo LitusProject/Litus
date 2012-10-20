@@ -36,7 +36,8 @@ class Exception extends \CommonBundle\Component\Amon\Data
         $this->_data = array(
             'exception_class' => get_class($exception),
             'message' => $exception->getMessage(),
-            'backtrace' => $this->_formatBacktrace($exception)
+            'backtrace' => $this->_formatBacktrace($exception),
+            'request' => $this->_formatRequest()
         );
     }
 
@@ -69,5 +70,20 @@ class Exception extends \CommonBundle\Component\Amon\Data
         }
 
         return $backtrace;
+    }
+
+    /**
+     * Creates that has the request information.
+     *
+     * @return array
+     */
+    private function _formatRequest()
+    {
+        $protocol = ('' != $server['HTTPS'] && 'off' != $server['HTTPS']) ? 'https://' : 'http://';
+
+        return array(
+            'url' => '' != $server['HTTP_HOST'] ? $protocol . $server[HTTP_HOST] . $server[REQUEST_URI] : '',
+            'request_method' => strtolower($server["REQUEST_METHOD"])
+        );
     }
 }
