@@ -145,7 +145,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneByUniversityIdentification($data->universityIdentification);
 
         if (null === $runner) {
-            $academic = $this->getEntityManager()
+            $academic = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
 
