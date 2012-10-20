@@ -20,7 +20,8 @@ use CommonBundle\Component\Util\AcademicYear,
     DateTime,
     DateInterval,
     Doctrine\ORM\EntityManager,
-    SportBundle\Entity\Lap;
+    SportBundle\Entity\Lap,
+    SportBundle\Entity\Runner;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
