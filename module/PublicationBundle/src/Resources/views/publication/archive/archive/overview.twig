@@ -1,1 +1,26 @@
-overview
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Archive') }}</h1>
+    </div>
+
+    <div class="row page">
+        <div class="span12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ translate('Title') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for publication in publications %}
+                        <tr>
+                            <td><a href="{{ url('archive', { 'action': 'year', 'publication': publication.getId() }) }}">{{ publication.getTitle() }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
