@@ -32,9 +32,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-        	    'paginator' => $paginator,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
-        	)
+            )
         );
     }
 
@@ -72,11 +72,11 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_gallery',
-                	array(
-                		'action' => 'addPhotos',
-                		'id' => $album->getId(),
-                	)
+                    'admin_gallery',
+                    array(
+                        'action' => 'addPhotos',
+                        'id' => $album->getId(),
+                    )
                 );
 
                 return new ViewModel();
@@ -133,10 +133,10 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_gallery',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_gallery',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
 
                 return new ViewModel();
@@ -161,13 +161,13 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $this->getEntityManager()->flush();
 
-    	return new ViewModel(
-    	    array(
-        		'result' => array(
-        			'status' => 'success'
-        		),
-        	)
-    	);
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
     }
 
     public function photosAction()
@@ -307,9 +307,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-            	'result' => array(
-            		'status' => 'success'
-            	),
+                'result' => array(
+                    'status' => 'success'
+                ),
             )
         );
     }
@@ -358,95 +358,95 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function _getAlbum()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the album!'
-    		    )
-    		);
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the album!'
+                )
+            );
 
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
-    		return;
-    	}
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findOneById($this->getParam('id'));
 
-    	if (null === $album) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No album with the given id was found!'
-    		    )
-    		);
+        if (null === $album) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No album with the given id was found!'
+                )
+            );
 
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
-    		return;
-    	}
+            return;
+        }
 
-    	return $album;
+        return $album;
     }
 
     public function _getPhoto()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the photo!'
-    		    )
-    		);
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the photo!'
+                )
+            );
 
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
-    		return;
-    	}
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('id'));
 
-    	if (null === $album) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No photo with the given id was found!'
-    		    )
-    		);
+        if (null === $album) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No photo with the given id was found!'
+                )
+            );
 
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
-    		return;
-    	}
+            return;
+        }
 
-    	return $album;
+        return $album;
     }
 }
