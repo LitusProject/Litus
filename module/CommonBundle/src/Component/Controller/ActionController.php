@@ -426,6 +426,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 $language = new Language(
                     'en', 'English'
                 );
+
+                $this->getEntityManager()->persist($language);
+                $this->getEntityManager()->flush();
             }
         }
 
