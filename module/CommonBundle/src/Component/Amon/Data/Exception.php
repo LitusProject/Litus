@@ -79,11 +79,11 @@ class Exception extends \CommonBundle\Component\Amon\Data
      */
     private function _formatRequest()
     {
-        $protocol = ('' != $server['HTTPS'] && 'off' != $server['HTTPS']) ? 'https://' : 'http://';
+        $protocol = ('' != $_SERVER['HTTPS'] || 'off' != $_SERVER['HTTPS']) ? 'https://' : 'http://';
 
         return array(
-            'url' => '' != $server['HTTP_HOST'] ? $protocol . $server[HTTP_HOST] . $server[REQUEST_URI] : '',
-            'request_method' => strtolower($server["REQUEST_METHOD"])
+            'url' => '' != $_SERVER['HTTP_HOST'] ? $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : '',
+            'request_method' => $_SERVER['REQUEST_METHOD']
         );
     }
 }
