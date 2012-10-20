@@ -118,6 +118,10 @@
         float: right;
         border-radius: 6px;
     }
+    .censorControl-iG {
+        float: left;
+        border-radius: 6px;
+    }
     .thumbBar-iG {
         position: absolute;
         left: 5px;
