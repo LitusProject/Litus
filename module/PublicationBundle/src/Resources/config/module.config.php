@@ -70,6 +70,45 @@ return array(
                     ),
                 ),
             ),
+            'archive_overview' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/archive[/]',
+                    'constraints' => array(
+                    ),
+                    'defaults' => array(
+                        'controller' => 'archive',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
+            'archive_year' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/archive/:publication[/]',
+                    'constraints' => array(
+                        'publication'  => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'archive',
+                        'action'     => 'year',
+                    ),
+                ),
+            ),
+            'archive_view' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/archive/:publication/:year[/]',
+                    'constraints' => array(
+                        'publication'  => '[a-zA-Z0-9_-]+',
+                        'year'         => '[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'archive',
+                        'action'     => 'view',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -98,6 +137,8 @@ return array(
             'admin_publication'   => 'PublicationBundle\Controller\Admin\PublicationController',
             'admin_edition_pdf'   => 'PublicationBundle\Controller\Admin\Edition\PdfController',
             'admin_edition_html'  => 'PublicationBundle\Controller\Admin\Edition\HtmlController',
+
+            'archive'             => 'PublicationBundle\Controller\Archive\ArchiveController',
         ),
     ),
 );
