@@ -14,7 +14,7 @@
  */
 
 if (!extension_loaded('apc'))
-    return array();
+    throw new \RuntimeException('Litus requires the APC extension to be loaded');
 
 return array(
     'service_manager' => array(
