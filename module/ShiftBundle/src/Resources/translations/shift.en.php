@@ -9,6 +9,7 @@ return array(
     'Sign In' => 'Sign In',
     'Responsible' => 'Responsible',
     'Volunteer' => 'Volunteer',
+    'Name' => 'Name',
     'Start' => 'Start',
     'End' => 'End',
     'Manager' => 'Manager',

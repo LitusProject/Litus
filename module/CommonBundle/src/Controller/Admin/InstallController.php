@@ -137,6 +137,11 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'value'       => 'http://maps.googleapis.com/maps/api/staticmap',
                     'description' => 'The URL to Google\'s static maps API',
                 ),
+                array(
+                    'key'         => 'common.sport_info_on_homepage',
+                    'value'       => '0',
+                    'description' => 'Show sport information on homepage',
+                ),
             )
         );
     }

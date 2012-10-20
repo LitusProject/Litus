@@ -156,6 +156,21 @@ return array(
                     ),
                 ),
             ),
+            'career_company_search' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/career/company/search[/:string][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string'     => '[%a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'career_company',
+                        'action'     => 'search',
+                    ),
+                ),
+            ),
             'career_event' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

@@ -58,4 +58,27 @@ class Page extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllActiveBySearch(AcademicYear $academicYear, $string)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('BrBundle\Entity\Company\Page', 'p')
+            ->innerJoin('p.years', 'y')
+            ->innerJoin('p.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('y', ':year'),
+                    $query->expr()->like('LOWER(c.name)', ':name')
+                )
+            )
+            ->orderBy('c.name', 'ASC')
+            ->setParameter('name', strtolower($string))
+            ->setParameter('year', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

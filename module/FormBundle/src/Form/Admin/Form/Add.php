@@ -15,6 +15,7 @@
 namespace FormBundle\Form\Admin\Form;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
@@ -69,6 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             $field = new TextArea('introduction_' . $language->getAbbrev());
             $field->setLabel('Introduction')
+                ->setAttribute('class', 'md')
                 ->setAttribute('rows', 20)
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
@@ -106,6 +108,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $field = new Checkbox('multiple');
         $field->setLabel('Multiple Entries / Person Allowed');
         $this->add($field);
+
+        $field = new Checkbox('mail');
+        $field->setLabel('Send Confirmation Mail');
+        $this->add($field);
+
+        $mail = new Collection('mail_form');
+        $mail->setLabel('Mail')
+            ->setAttribute('id', 'mail_form');
+        $this->add($mail);
+
+        $field = new Text('mail_subject');
+        $field->setLabel('Subject')
+            ->setRequired();
+        $mail->add($field);
+
+        $field = new TextArea('mail_body');
+        $field->setLabel('Body')
+            ->setAttribute('rows', 20)
+            ->setRequired();
+        $mail->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')

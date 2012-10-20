@@ -7,7 +7,7 @@
     {{ headLink() }}
 </head>
 
-<body>
+<body class="screen-wall">
     <div class="container">
         {% include 'run/partials/flashMessenger.twig' %}
 
@@ -19,7 +19,8 @@
             <span style="font-size: 18px;">There is nobody running!</span>
         </div>
 
-        <div id="content_controller">
+        <div id="ticket"></div>
+        <div id="content_controller" class="ticket-content">
             <div class="row">
                 <div class="span4 columns">
                     <h2>Laps</h2>
@@ -150,6 +151,9 @@
             $('#groupsOfFriends').html('');
 
             $(data.laps).each(function (num, lap) {
+                if (undefined == lap)
+                    return true;
+
                 if (lap.state == 'current') {
                     var lapTime = parseInt(lap.lapTime.substring(0, lap.lapTime.indexOf(':')), 10) * 60 + parseInt(lap.lapTime.substring(lap.lapTime.indexOf(':') + 1), 10);
 

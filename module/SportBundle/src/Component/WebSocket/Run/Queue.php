@@ -20,7 +20,8 @@ use CommonBundle\Component\Util\AcademicYear,
     DateTime,
     DateInterval,
     Doctrine\ORM\EntityManager,
-    SportBundle\Entity\Lap;
+    SportBundle\Entity\Lap,
+    SportBundle\Entity\Runner;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
@@ -145,7 +146,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneByUniversityIdentification($data->universityIdentification);
 
         if (null === $runner) {
-            $academic = $this->getEntityManager()
+            $academic = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
 

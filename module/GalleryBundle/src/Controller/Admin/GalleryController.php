@@ -206,6 +206,32 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function deletePhotoAction()
+    {
+        if (!($photo = $this->_getPhoto()))
+            return new ViewModel();
+
+        $filePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('gallery.path') . '/' . $photo->getAlbum()->getId();
+
+        if (file_exists($filePath . $photo->getFilePath()))
+            unlink($filePath . $photo->getFilePath());
+        if (file_exists($filePath . $photo->getThumbPath()))
+            unlink($filePath . $photo->getThumbPath());
+
+        $this->getEntityManager()->remove($photo);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     public function uploadAction()
     {
         if (!($album = $this->_getAlbum()))
@@ -328,34 +354,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
 
         return new ViewModel();
-    }
-
-    public function viewPhotoAction()
-    {
-        if (!($photo = $this->_getPhoto()))
-            return new ViewModel();
-
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('gallery.path');
-
-        $path = $filePath . '/' . $photo->getAlbum()->getId() . $photo->getFilePath();
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-        	'Content-type' => mime_content_type($path),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($path, 'r');
-        $data = fread($handle, filesize($path));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
-            )
-        );
     }
 
     public function _getAlbum()
