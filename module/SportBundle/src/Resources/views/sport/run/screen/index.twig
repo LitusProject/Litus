@@ -150,6 +150,9 @@
             $('#groupsOfFriends').html('');
 
             $(data.laps).each(function (num, lap) {
+                if (undefined == lap)
+                    return true;
+
                 if (lap.state == 'current') {
                     var lapTime = parseInt(lap.lapTime.substring(0, lap.lapTime.indexOf(':')), 10) * 60 + parseInt(lap.lapTime.substring(lap.lapTime.indexOf(':') + 1), 10);
 
