@@ -79,3 +79,59 @@
 .justify {
     text-align: justify;
 }
+
+.screen-wall {
+    background: #1777c8;
+}
+
+#ticket {
+    background: url('/_run/img/willy wonka.png') no-repeat;
+    width: 1124px;
+    height: 675px;
+    margin-left: -92px;
+    position: absolute;
+    z-index: 0;
+}
+
+.ticket-content {
+    position: absolute;
+    z-index: 100;
+    margin-top: 92px;
+
+    .table {
+        // Cells
+        th,
+        td {
+            border-top: 1px solid #b09544;
+        }
+        // Remove top border from thead by default
+        caption + thead tr:first-child th,
+        caption + thead tr:first-child td,
+        colgroup + thead tr:first-child th,
+        colgroup + thead tr:first-child td,
+        thead:first-child tr:first-child th,
+        thead:first-child tr:first-child td {
+            border-top: 0;
+        }
+        // Account for multiple tbody instances
+        tbody + tbody {
+            border-top: 2px solid #b09544;
+        }
+    }
+
+
+    .table-striped {
+        tbody {
+            tr:nth-child(odd) td,
+            tr:nth-child(odd) th {
+                background-color: #f5dd96;
+            }
+        }
+    }
+
+    .well {
+        background-color: #f5dd96;
+        border: 1px solid darken(#f5dd96, 7%);
+        .box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
+    }
+}
