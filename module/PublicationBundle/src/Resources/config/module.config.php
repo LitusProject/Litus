@@ -70,11 +70,14 @@ return array(
                     ),
                 ),
             ),
-            'archive_overview' => array(
+            'archive' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/archive[/]',
+                    'route' => '/archive[/:action[/:publication[/:year]]][/]',
                     'constraints' => array(
+                        'action'      => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'publication' => '[0-9]*',
+                        'year'        => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'archive',
@@ -82,29 +85,16 @@ return array(
                     ),
                 ),
             ),
-            'archive_year' => array(
+            'edition_html' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/archive/:publication[/]',
+                    'route' => '/archive/html[/:action[/:id]][/]',
                     'constraints' => array(
-                        'publication'  => '[a-zA-Z0-9_-]+',
+                        'action'      => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'          => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'archive',
-                        'action'     => 'year',
-                    ),
-                ),
-            ),
-            'archive_view' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/archive/:publication/:year[/]',
-                    'constraints' => array(
-                        'publication'  => '[a-zA-Z0-9_-]+',
-                        'year'         => '[0-9]{4}',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'archive',
+                        'controller' => 'edition_html',
                         'action'     => 'view',
                     ),
                 ),
@@ -139,6 +129,7 @@ return array(
             'admin_edition_html'  => 'PublicationBundle\Controller\Admin\Edition\HtmlController',
 
             'archive'             => 'PublicationBundle\Controller\Archive\ArchiveController',
+            'edition_html'        => 'PublicationBundle\Controller\Edition\HtmlController',
         ),
     ),
 );

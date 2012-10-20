@@ -1,1 +1,42 @@
-view
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ publication.getTitle() }} - {{ year.getCode() }}</h1>
+    </div>
+
+    <div class="row page">
+        <div class="span12">
+            <h1>PDFs</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ translate('Title') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pdf in pdfs %}
+                        <tr>
+                            <td><a href="{{ pdf.getFileName() }}">{{ pdf.getTitle() }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h1>HTMLs</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ translate('Title') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for html in htmls %}
+                        <tr>
+                            <td><a href="{{ url('edition_html', {'action': 'view', 'id': html.getId()}) }}">{{ html.getTitle() }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

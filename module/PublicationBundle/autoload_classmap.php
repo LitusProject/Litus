@@ -17,6 +17,7 @@ return array(
     'PublicationBundle\Entity\Publication'                      => __DIR__ . '/src/Entity/Publication.php',
     'PublicationBundle\Entity\Editions\Pdf'                     => __DIR__ . '/src/Entity/Editions/Pdf.php',
     'PublicationBundle\Entity\Editions\Html'                    => __DIR__ . '/src/Entity/Editions/Html.php',
+    'PublicationBundle\Controller\Edition\HtmlController'       => __DIR__ . '/src/Controller/Edition/HtmlController.php',
     'PublicationBundle\Controller\Archive\ArchiveController'    => __DIR__ . '/src/Controller/Archive/ArchiveController.php',
     'PublicationBundle\Controller\Admin\Edition\HtmlController' => __DIR__ . '/src/Controller/Admin/Edition/HtmlController.php',
     'PublicationBundle\Controller\Admin\Edition\PdfController'  => __DIR__ . '/src/Controller/Admin/Edition/PdfController.php',

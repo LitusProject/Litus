@@ -54,11 +54,10 @@ return array(
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
             '@bootstrap_js_carousel',
-            '@bootstrap_js_tooltip',
-            '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@bootstrap_js_rowlink',
+        ),
+        'edition_html' => array(
         ),
     ),
     'routes' => array(),
