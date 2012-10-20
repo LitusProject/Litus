@@ -12,8 +12,9 @@
 # Excluding all nasty .DS_Store files
 .DS_Store
 
-# We don't want to version the database configuration
+# We don't want to version some configuration files
 config/database.config.php
+config/amon.config.php
 
 # Cached data doesn't have to be versioned
 data/banner/images
