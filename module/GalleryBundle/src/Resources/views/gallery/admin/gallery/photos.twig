@@ -39,7 +39,7 @@
 
                         {% if not photo.isCensored() %}
                             {% if hasAccess('admin_gallery', 'censorPhoto') %}
-                                <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="delete">Censor</a>
+                                <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="delete censor">Censor</a>
                             {% endif %}
                         {% else %}
                             {% if hasAccess('admin_gallery', 'unCensorPhoto') %}
@@ -48,7 +48,7 @@
                         {% endif %}
 
                         {% if hasAccess('admin_gallery', 'deletePhoto') %}
-                            <a href="#" class="delete" data-id="{{ photo.getId() }}" data-name="{{ photo.getFilePath() }}">Delete</a>
+                            <a href="#" class="delete deletePhoto" data-id="{{ photo.getId() }}" data-name="{{ photo.getFilePath() }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -111,7 +111,7 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .view').click(openViewModal);
-            $('.item .delete').click(openRemoveModal);
+            $('.item .deletePhoto').click(openRemoveModal);
 		});
 
 		function openViewModal(e) {

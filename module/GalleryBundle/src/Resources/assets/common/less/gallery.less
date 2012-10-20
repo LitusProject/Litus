@@ -4,39 +4,51 @@
     position: relative;
 
     img {
-    	width: 150px;
-    	height: 150px;
+        width: 150px;
+        height: 150px;
     }
 
     .title {
-    	position: absolute;
-    	bottom: 0;
-    	text-align: center;
-    	width: 150px;
-    	padding: 5px;
-    	background: #fff;
-    	color: #111;
-    	opacity: 0.6;
-    	.transition(all 150ms ease-in-out);
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        width: 150px;
+        padding: 5px;
+        background: #fff;
+        color: #111;
+        opacity: 0.6;
+        .transition(all 150ms ease-in-out);
     }
 
     &:hover {
         .title {
-        	opacity: 0.9;
+            opacity: 0.9;
         }
     }
 }
 
 #images {
     a {
-    	display: block;
-    	margin: 8px;
-    	float: left;
+        display: block;
+        margin: 8px;
+        float: left;
+        overflow: hidden;
 
-    	img {
-    		height: 100px;
-    		width: 100px;
-    	}
+        img {
+            height: 100px;
+            width: 100px;
+            max-width: none;
+            overflow: hidden;
+            float: left;
+        }
+
+        &.censored {
+            border: 2px solid #f00;
+
+            img {
+                margin: -2px;
+            }
+        }
     }
 }
 
