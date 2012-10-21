@@ -412,9 +412,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         }
 
         if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $language = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
+            $local = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+            if ($local) {
+                $language = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findOneByAbbrev($local);
+            }
         }
 
         if (!isset($language)) {
