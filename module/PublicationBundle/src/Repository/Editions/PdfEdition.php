@@ -28,6 +28,7 @@ class PdfEdition extends EntityRepository
             )
             ->setParameter('publication', $publication)
             ->setParameter('year', $academicYear)
+            ->orderBy('p.title', 'ASC')
             ->getQuery()
             ->getResult();
 
