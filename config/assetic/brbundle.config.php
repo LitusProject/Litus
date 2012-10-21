@@ -53,6 +53,13 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'admin_company_logo' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'admin_section' => array(
             '@common_jquery',
             '@common_jqueryui',
@@ -92,7 +99,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_vacancy' => array(
@@ -107,7 +114,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_internship' => array(
@@ -122,7 +129,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_event' => array(
@@ -137,7 +144,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
     ),

@@ -73,10 +73,10 @@
         </aside>
     {% endif %}
 
-    <div class="modal hide fade" id="showPhoto">
+    <div class="modal hide fade" id="viewPhoto">
         <div class="modal-header">
             <span>Litus Admin</span>
-            /Show Photo
+            /View Photo
         </div>
         <div class="modal-body">
             <div class="photo"></div>
@@ -118,13 +118,13 @@
 			var $this = $(this);
 
 			e.preventDefault();
-			var showPhoto = $('#showPhoto');
-			showPhoto.find('.photo').html('');
+			var viewPhoto = $('#viewPhoto');
+			viewPhoto.find('.photo').html('');
 			var photo = $('<img>', {src: $this.data('url')}).load(function () {
 			    $(this).height(300);
 			});
-			showPhoto.find('.photo').html(photo).css('text-align', 'center');
-			showPhoto.modal();
+			viewPhoto.find('.photo').html(photo).css('text-align', 'center');
+			viewPhoto.modal();
 		}
 
         function openRemoveModal(e) {

@@ -112,8 +112,20 @@ class Company
      * @var array The possible sectors of a company
      */
     public static $POSSIBLE_SECTORS = array(
-        'research' => 'Research',
-        'finance' => 'Finance',
+        'architecture' => 'Architecture & Construction',
+        'audit' => 'Audit',
+        'automobile' => 'Automobile',
+        'biomedical' => 'Biomedical & Pharmaceutical',
+        'chemistry' => 'Chemistry',
+        'consultancy' => 'Consultancy',
+        'consumer' => 'Consumer goods & services',
+        'distribution' => 'Distribution, Logistics & Transportation',
+        'electronics' => 'Electronics',
+        'energy' => 'Energy',
+        'financial' => 'Financial',
+        'it' => 'IT',
+        'metal' => 'Metal',
+        'telecom' => 'Telecom',
     );
 
     /**
@@ -250,7 +262,7 @@ class Company
     public function getFullWebsite()
     {
         $result =  $this->getWebsite();
-        if (!strpos($result, 'http://'))
+        if (!strpos($result, 'http://') === FALSE)
             $result = 'http://' . $result;
         return $result;
     }

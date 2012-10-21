@@ -56,10 +56,17 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage',
                     ),
                     'admin_edition_html' => array(
-                        'add', 'delete', 'manage', 'view', 'progress',
+                        'add', 'delete', 'manage', 'progress',
                     ),
                     'admin_edition_pdf' => array(
                         'add', 'delete', 'manage', 'progress',
+                    ),
+
+                    'edition_html' => array(
+                        'view',
+                    ),
+                    'archive' => array(
+                        'overview', 'view', 'year',
                     ),
                 )
             )

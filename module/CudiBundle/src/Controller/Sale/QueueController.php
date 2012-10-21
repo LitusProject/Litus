@@ -38,9 +38,19 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
     public function screenAction()
     {
+        /*$logos = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Logo')
+            ->findAllByType('cudi');
+
+        $logoPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path');*/
+
         return new ViewModel(
             array(
                 'socketUrl' => $this->getSocketUrl(),
+                //'logos' => $logos,
+                //'logoPath' => $logoPath,
             )
         );
     }

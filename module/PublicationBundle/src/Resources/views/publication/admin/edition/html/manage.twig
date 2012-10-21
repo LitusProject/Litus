@@ -33,8 +33,8 @@
 					<tr class="item item-{{ edition.getId() }}">
 						<td>{{ edition.getTitle() }}</td>
 						<td class="actions">
-						    {% if hasAccess('admin_edition_html', 'view') %}
-		                        <a href="{{ url('admin_edition_html', {'action': 'view','id': edition.getId()}) }}" class="view">View</a>
+						    {% if hasAccess('edition_html', 'view') %}
+		                        <a href="{{ url('edition_html', {'action': 'view','id': edition.getId()}) }}" class="view">View</a>
 		                    {% endif %}
 						    {% if hasAccess('admin_edition_html', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ edition.getId() }}" data-title="{{ edition.getTitle() }}" data-publication-title="{{ publication.getTitle() }}">Delete</a>
