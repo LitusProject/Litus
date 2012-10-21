@@ -73,7 +73,7 @@ return array(
             'archive' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/archive[/:action[/:publication[/:year]]][/]',
+                    'route' => '[/:language]/archive[/:action[/:publication[/:year]]][/]',
                     'constraints' => array(
                         'action'      => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'publication' => '[0-9]*',

@@ -16,7 +16,7 @@ class Edition extends EntityRepository
     public function findAllYearsByPublication(PublicationEntity $publication)
     {
         $resultSet = $this->_em
-        ->createQuery('SELECT y FROM CommonBundle\Entity\General\AcademicYear y, PublicationBundle\Entity\Edition e WHERE e.academicYear = y AND e.publication = :publication')
+        ->createQuery('SELECT y FROM CommonBundle\Entity\General\AcademicYear y WHERE EXISTS (SELECT e FROM PublicationBundle\Entity\Edition e WHERE e.academicYear = y AND e.publication = :publication)')
         ->setParameter('publication', $publication)
         ->getResult();
 

@@ -25,7 +25,6 @@ class PdfEdition extends EntityRepository
             	   $query->expr()->eq('p.publication', ':publication'),
                    $query->expr()->eq('p.academicYear', ':year')
                )
-
             )
             ->setParameter('publication', $publication)
             ->setParameter('year', $academicYear)
