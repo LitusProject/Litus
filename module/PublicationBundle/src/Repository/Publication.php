@@ -58,6 +58,7 @@ class Publication extends EntityRepository
             ->where(
             	$query->expr()->eq('p.deleted', 'false')
             )
+            ->orderBy('p.title', 'ASC')
             ->getQuery()
             ->getResult();
 

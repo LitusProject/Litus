@@ -202,6 +202,9 @@
                             <a id="exxon" href="http://www.exxonmobil.com"></a>
                             <a id="basf" href="http://www.basf.be/ecp2/Jobs_Career_belgium_nl/index"></a>
                             <a id="gdfsuez" href="http://www.gdfsuez.com/"></a>
+                            {#% for logo in logos %}
+                                <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
+                            {% endfor %#}
                         </p>
 		        	</span>
 		        </div>

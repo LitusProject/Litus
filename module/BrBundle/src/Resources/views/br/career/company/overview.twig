@@ -10,7 +10,7 @@
     </div>
 
     <div style="text-align:right;">
-        <input id="searchbox" type="text" class="search-query" placeholder="Search">
+        <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
     </div>
 
     <div id="debug"></div>
@@ -49,13 +49,13 @@
 
                     $('#companies').append(
                         '<li class="span2">\
-                            <a style="text-decoration:none;height:150px;" href="{{ url("career_company", {"action": "view"}) }}' + element.slug + '" class="thumbnail"><div class="company-container">\
-                                    <div>'
+                            <a class="company-container thumbnail" href="{{ url("career_company", {"action": "view"}) }}' + element.slug + '">\
+                                    <div class="company-logo">'
                                         + (element.logo ?
                                             '<img src="{{ url("admin_company", {"action": "logo"}) }}' + element.logo + '" alt="' + element.name + '"/>'
                                         :
                                             '<h1 class="company-logo-replacement">' + element.name + '</h1>')
-                                        + '</div><div class="name-container"><center><span class="company-name">' + element.name + '</span></center></div></div></a></li>'
+                                        + '</div><div class="name-container"><center><span class="company-name">' + element.name + '</span></center></div></a></li>'
                     );
 
                 });

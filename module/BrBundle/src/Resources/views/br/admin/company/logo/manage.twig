@@ -1,0 +1,136 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/company/logo/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        {% include 'admin/partials/flashMessenger.twig' %}
+        <div class="flashmessage success_message full_width logo_removed_success hide">
+            <div class="title">Success</div>
+            <div class="content">
+                <p>The logo was successfully removed!</p>
+            </div>
+        </div>
+        <div class="flashmessage error_message full_width logo_removed_error hide">
+            <div class="title">Error</div>
+            <div class="content">
+                <p>An error occurred while trying to delete a logo.</p>
+            </div>
+        </div>
+
+        <h1>Company</h1>
+        <p>Name: <b>{{ company.getName() }}</b></p>
+        <br />
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th width="200px">Url</th>
+                    <th width="120px">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for logo in paginator %}
+                    <tr class="item item-{{ logo.getId() }}">
+                        <td>{{ logo.getType() }}</td>
+                        <td>{{ logo.getUrl() }}</td>
+                        <td class="actions">
+                            <ul>
+                                {% if hasAccess('admin_company_logo', 'view') %}
+                                    <li><a href="#" data-url="/{{ filePath }}/{{ logo.getPath() }}" class="view">View</a></li>
+                                {% endif %}
+                                {% if hasAccess('admin_company_logo', 'delete') %}
+                                    <li><a href="#" class="delete" data-id="{{ logo.getId() }}" data-type="{{ logo.getType() }}">Delete</a></li>
+                                {% endif %}
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal hide fade" id="viewLogo">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /View Logo
+        </div>
+        <div class="modal-body">
+            <div class="logo"></div>
+            <div class="footer">
+                <input type="button" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="removeLogo">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Logo
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following logo: <b class="logoType"></b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .view').click(openViewModal);
+            $('.item .delete').click(openModal);
+        });
+
+        function openViewModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var viewLogo = $('#viewLogo');
+            viewLogo.find('.logo').html('');
+            var logo = $('<img>', {src: $this.data('url')});
+            viewLogo.find('.logo').html(logo).css('text-align', 'center');
+            viewLogo.modal();
+        }
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeLogo = $('#removeLogo');
+            removeLogo.find('.logoType').html($(this).data('type'));
+            var id = $this.data('id');
+            removeLogo.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_company_logo', {"action": "delete"}) }}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.logo_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeLogo.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeLogo.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.logo_removed_error').removeClass('hide');
+            $('#removeLogo').modal('hide');
+        }
+    </script>
+{% endblock %}
