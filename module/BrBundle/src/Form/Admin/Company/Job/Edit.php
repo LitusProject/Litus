@@ -40,7 +40,7 @@ class Edit extends Add
 
         $field = new Submit('submit');
         $field->setValue('Edit')
-            ->setAttribute('class', 'companies_edit');
+            ->setAttribute('class', 'company_edit');
         $this->add($field);
 
         $this->populateFromJob($job);
