@@ -59,7 +59,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         /*$result->logos = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Logo')
-            ->findAllHomepage();
+            ->findAllByType('homepage');
 
         $result->logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
