@@ -12,6 +12,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ImagickPixel,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\Validator\File\Size as SizeValidator,
+    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -247,68 +249,81 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             mkdir($filePath . '/' . $album->getId() . '/thumbs/');
         }
 
-        $file = new FileTransfer();
-        $file->receive();
+        $upload = new FileTransfer();
+        $upload->addValidator(new SizeValidator(array('max' => '5MB')));
+        $upload->addValidator(new ImageValidator());
 
-        do {
-            $filename = '/' . sha1(uniqid());
-        } while(file_exists($filePath . '/' . $album->getId() . $filename));
+        if ($upload->isValid()) {
+            $upload->receive();
 
-        $image = new Imagick($file->getFileName());
+            do {
+                $filename = '/' . sha1(uniqid());
+            } while(file_exists($filePath . '/' . $album->getId() . $filename));
 
-        $exif = exif_read_data($file->getFileName());
+            $image = new Imagick($upload->getFileName());
 
-        switch($exif['Orientation']) {
-            case 1: // nothing
-                break;
-            case 2: // horizontal flip
-                $image->flopImage();
-                break;
-            case 3: // 180 rotate
-                $image->rotateImage(new ImagickPixel(), 180);
-                break;
-            case 4: // vertical flip
-                $image->flipImage();
-                break;
-            case 5: // vertical flip + 90 rotate clockwise
-                $image->flipImage();
-                $image->rotateImage(new ImagickPixel(), 90);
-                break;
-            case 6: // 90 rotate clockwise
-                $image->rotateImage(new ImagickPixel(), 90);
-                break;
-            case 7: // horizontal flip + 90 rotate clockwise
-                $image->flopImage();
-                $image->rotateImage(new ImagickPixel(), 90);
-                break;
-            case 8:    // 90 rotate counter clockwise
-                $image->rotateImage(new ImagickPixel(), -90);
-                break;
+            $exif = exif_read_data($upload->getFileName());
+
+            switch($exif['Orientation']) {
+                case 1: // nothing
+                    break;
+                case 2: // horizontal flip
+                    $image->flopImage();
+                    break;
+                case 3: // 180 rotate
+                    $image->rotateImage(new ImagickPixel(), 180);
+                    break;
+                case 4: // vertical flip
+                    $image->flipImage();
+                    break;
+                case 5: // vertical flip + 90 rotate clockwise
+                    $image->flipImage();
+                    $image->rotateImage(new ImagickPixel(), 90);
+                    break;
+                case 6: // 90 rotate clockwise
+                    $image->rotateImage(new ImagickPixel(), 90);
+                    break;
+                case 7: // horizontal flip + 90 rotate clockwise
+                    $image->flopImage();
+                    $image->rotateImage(new ImagickPixel(), 90);
+                    break;
+                case 8:    // 90 rotate counter clockwise
+                    $image->rotateImage(new ImagickPixel(), -90);
+                    break;
+            }
+
+            $image->scaleImage(640, 480, true);
+            $thumb = $image->clone();
+            $watermark = new Imagick();
+            $watermark->readImage(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('gallery.watermark_path')
+            );
+            $watermark->scaleImage(57, 48);
+            $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
+            $image->writeImage($filePath . '/' . $album->getId() . $filename);
+
+            $thumb->cropThumbnailImage(150, 150);
+            $thumb->writeImage($filePath . '/' . $album->getId() . '/thumbs'. $filename);
+
+            $photo = new Photo($album, $filename);
+            $this->getEntityManager()->persist($photo);
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'status' => 'success'
+                    ),
+                )
+            );
         }
-
-        $image->scaleImage(640, 480, true);
-        $thumb = $image->clone();
-        $watermark = new Imagick();
-        $watermark->readImage(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('gallery.watermark_path')
-        );
-        $watermark->scaleImage(57, 48);
-        $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
-        $image->writeImage($filePath . '/' . $album->getId() . $filename);
-
-        $thumb->cropThumbnailImage(150, 150);
-        $thumb->writeImage($filePath . '/' . $album->getId() . '/thumbs'. $filename);
-
-        $photo = new Photo($album, $filename);
-        $this->getEntityManager()->persist($photo);
-        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'error'
                 ),
             )
         );
