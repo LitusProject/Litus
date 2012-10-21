@@ -37,7 +37,8 @@ class Exception extends \CommonBundle\Component\Amon\Data
             'url' => $this->_formatUrl(),
             'exception_class' => get_class($exception),
             'message' => $exception->getMessage(),
-            'backtrace' => $this->_formatBacktrace($exception)
+            'backtrace' => $this->_formatBacktrace($exception),
+            'environment' => $_SERVER['HTTP_USER_AGENT']
         );
     }
 
