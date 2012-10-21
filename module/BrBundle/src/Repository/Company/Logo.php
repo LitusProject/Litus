@@ -51,7 +51,7 @@ class Logo extends EntityRepository
         return null;
     }
 
-    public function findAllHomepage()
+    public function findAllByType($type)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -59,7 +59,7 @@ class Logo extends EntityRepository
             ->where(
                 $query->expr()->eq('l.type', ':type')
             )
-            ->setParameter('type', 'homepage')
+            ->setParameter('type', $type)
             ->getQuery()
             ->getResult();
 
