@@ -57,6 +57,14 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('BannerBundle\Entity\Nodes\Banner')
             ->findAllActive();
 
+        /*$result->logos = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Logo')
+            ->findAllHomepage();
+
+        $result->logoPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path');*/
+
         $e->setResult($result);
 
         return $result;

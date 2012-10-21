@@ -37,6 +37,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => 'data/br/files',
                     'description' => 'The path to the company files',
                 ),
+                array(
+                    'key'         => 'br.public_logo_path',
+                    'value'       => '_br/img',
+                    'description' => 'The path to the public company logo files',
+                ),
             )
         );
     }

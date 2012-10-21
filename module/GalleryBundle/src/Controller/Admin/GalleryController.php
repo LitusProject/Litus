@@ -293,7 +293,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             }
 
             $image->scaleImage(640, 480, true);
-            $thumb = $image->clone();
+            $thumb = clone $image;
             $watermark = new Imagick();
             $watermark->readImage(
                 $this->getEntityManager()

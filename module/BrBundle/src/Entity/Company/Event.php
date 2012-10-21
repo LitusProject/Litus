@@ -39,7 +39,6 @@ class Event
     /**
      * @var string The event
      *
-     *
      * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Nodes\Event", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
      */
@@ -72,7 +71,7 @@ class Event
     }
 
     /**
-     * @return \BrBundle\Entity\Company
+     * @return \CalendarBundle\Entity\Nodes\Event
      */
     public function getEvent()
     {

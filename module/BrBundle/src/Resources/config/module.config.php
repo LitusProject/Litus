@@ -82,6 +82,20 @@ return array(
                     ),
                 ),
             ),
+            'admin_company_logo' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/company/logo[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_company_logo',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'admin_section' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -274,8 +288,9 @@ return array(
 
             'admin_company'            => 'BrBundle\Controller\Admin\CompanyController',
             'admin_company_event'      => 'BrBundle\Controller\Admin\Company\EventController',
-            'admin_company_job' => 'BrBundle\Controller\Admin\Company\JobController',
+            'admin_company_job'        => 'BrBundle\Controller\Admin\Company\JobController',
             'admin_company_user'       => 'BrBundle\Controller\Admin\Company\UserController',
+            'admin_company_logo'       => 'BrBundle\Controller\Admin\Company\LogoController',
             'admin_section'            => 'BrBundle\Controller\Admin\SectionController',
 
             'corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
