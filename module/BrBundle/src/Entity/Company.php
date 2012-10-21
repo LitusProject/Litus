@@ -262,7 +262,7 @@ class Company
     public function getFullWebsite()
     {
         $result =  $this->getWebsite();
-        if (!strpos($result, 'http://'))
+        if (!strpos($result, 'http://') === FALSE)
             $result = 'http://' . $result;
         return $result;
     }
