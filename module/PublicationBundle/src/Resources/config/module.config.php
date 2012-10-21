@@ -101,6 +101,20 @@ return array(
             ),
         ),
     ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/archive.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/archive.nl.php',
+                'locale'   => 'nl'
+            ),
+        ),
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             'publication_view' => __DIR__ . '/../views',
