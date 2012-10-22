@@ -28,7 +28,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
     {
         $publications = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Publication')
-            ->findAllActive();
+            ->findAllActiveWithEdition();
 
         return new ViewModel(
             array(
