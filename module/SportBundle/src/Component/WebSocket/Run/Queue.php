@@ -148,7 +148,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (null === $runner) {
             $runner = $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Runner')
-                ->findOneByOptionalIdentification($this->getParam('university_identification'));
+                ->findOneByRunnerIdentification($this->getParam('university_identification'));
         }
 
         if (null === $runner) {

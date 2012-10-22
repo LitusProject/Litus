@@ -11,6 +11,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 if ('development' != getenv('APPLICATION_ENV')) {
     if (!extension_loaded('apc'))
         throw new \RuntimeException('Litus requires the APC extension to be loaded');
