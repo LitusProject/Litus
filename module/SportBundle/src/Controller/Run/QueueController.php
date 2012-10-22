@@ -49,7 +49,7 @@ class QueueController extends \SportBundle\Component\Controller\RunController
             if (null === $runner) {
                 $runner = $this->getEntityManager()
                     ->getRepository('SportBundle\Entity\Runner')
-                    ->findOneByOptionalIdentification($this->getParam('university_identification'));
+                    ->findOneByRunnerIdentification($this->getParam('university_identification'));
             }
 
             if (null !== $runner) {

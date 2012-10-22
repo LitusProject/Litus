@@ -55,9 +55,9 @@ class Runner
     /**
      * @var string The user's university identification
      *
-     * @ORM\Column(name="optional_identification", type="string", length=8, nullable=true)
+     * @ORM\Column(name="runner_identification", type="string", length=8, nullable=true)
      */
-    private $optionalIdentification;
+    private $runnerIdentification;
 
     /**
      * @var string The runner's first name
