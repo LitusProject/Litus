@@ -146,6 +146,8 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
                 $academic->setFirstName($formData['first_name'])
@@ -579,6 +581,8 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $this->getEntityManager()->persist(
                     new SubjectEnrollment(
                         $academic,
@@ -673,7 +677,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
             return new ViewModel();
         }
-        
+
         $this->initAjax();
 
         $data = $this->getRequest()->getPost();
@@ -715,6 +719,8 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $user->setCode(null)
                     ->setCredential(
                         new Credential(

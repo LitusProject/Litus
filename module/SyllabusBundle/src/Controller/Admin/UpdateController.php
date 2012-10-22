@@ -23,7 +23,6 @@ use Zend\View\Model\ViewModel;
  */
 class UpdateController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function indexAction()
     {
         $address = $this->getEntityManager()

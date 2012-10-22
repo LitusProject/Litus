@@ -57,6 +57,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
                 do {
                     $code = md5(uniqid(rand(), true));
                     $found = $this->getEntityManager()
@@ -110,6 +111,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
                 $key->setHost($formData['host']);
 
                 $this->getEntityManager()->flush();

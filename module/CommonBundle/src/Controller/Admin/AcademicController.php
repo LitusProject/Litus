@@ -60,6 +60,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $roles = array();
                 $roles[] = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Acl\Role')
@@ -158,6 +160,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $roles = array();
                 $roles[] = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Acl\Role')

@@ -56,6 +56,8 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $supplier = new Supplier(
                     $formData['name'],
                     $formData['phone_number'],
@@ -110,6 +112,8 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $supplier->setName($formData['name'])
                     ->setPhoneNumber($formData['phone_number'])
                     ->setVatNumber($formData['vat_number'])

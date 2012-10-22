@@ -73,6 +73,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $eventSearchForm->setData($formData);
 
                 if ($eventSearchForm->isValid() && '' != $formData['event']) {
+                    $formData = $eventSearchForm->getFormData($formData);
+
                     $event = $this->getEntityManager()
                         ->getRepository('CalendarBundle\Entity\Nodes\Event')
                         ->findOneById($formData['event']);
@@ -98,6 +100,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $unitSearchForm->setData($formData);
 
                 if ($unitSearchForm->isValid() && '' != $formData['unit']) {
+                    $formData = $unitSearchForm->getFormData($formData);
+
                     $unit = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Unit')
                         ->findOneById($formData['unit']);
@@ -123,6 +127,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $dateSearchForm->setData($formData);
 
                 if ($dateSearchForm->isValid() && '' != $formData['date']) {
+                    $formData = $dateSearchForm->getFormData($formData);
 
                     $start_date = DateTime::createFromFormat('d/m/Y' , $formData['date']);
                     if(!$start_date) {
