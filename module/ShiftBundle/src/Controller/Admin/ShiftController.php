@@ -43,7 +43,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
