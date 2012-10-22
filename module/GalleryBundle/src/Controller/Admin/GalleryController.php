@@ -12,6 +12,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ImagickPixel,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\Validator\File\Size as SizeValidator,
+    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -32,9 +34,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-        	    'paginator' => $paginator,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
-        	)
+            )
         );
     }
 
@@ -47,6 +49,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d#m#Y', $formData['date']));
                 $this->getEntityManager()->persist($album);
 
@@ -72,11 +76,11 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_gallery',
-                	array(
-                		'action' => 'addPhotos',
-                		'id' => $album->getId(),
-                	)
+                    'admin_gallery',
+                    array(
+                        'action' => 'addPhotos',
+                        'id' => $album->getId(),
+                    )
                 );
 
                 return new ViewModel();
@@ -102,6 +106,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $album->setDate(\DateTime::createFromFormat('d#m#Y', $formData['date']));
 
                 $languages = $this->getEntityManager()
@@ -133,10 +139,10 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_gallery',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_gallery',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
 
                 return new ViewModel();
@@ -161,13 +167,13 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $this->getEntityManager()->flush();
 
-    	return new ViewModel(
-    	    array(
-        		'result' => array(
-        			'status' => 'success'
-        		),
-        	)
-    	);
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
     }
 
     public function photosAction()
@@ -206,6 +212,32 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function deletePhotoAction()
+    {
+        if (!($photo = $this->_getPhoto()))
+            return new ViewModel();
+
+        $filePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('gallery.path') . '/' . $photo->getAlbum()->getId();
+
+        if (file_exists($filePath . $photo->getFilePath()))
+            unlink($filePath . $photo->getFilePath());
+        if (file_exists($filePath . $photo->getThumbPath()))
+            unlink($filePath . $photo->getThumbPath());
+
+        $this->getEntityManager()->remove($photo);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     public function uploadAction()
     {
         if (!($album = $this->_getAlbum()))
@@ -221,69 +253,82 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             mkdir($filePath . '/' . $album->getId() . '/thumbs/');
         }
 
-        $file = new FileTransfer();
-        $file->receive();
+        $upload = new FileTransfer();
+        $upload->addValidator(new SizeValidator(array('max' => '5MB')));
+        $upload->addValidator(new ImageValidator());
 
-        do {
-            $filename = '/' . sha1(uniqid());
-        } while(file_exists($filePath . '/' . $album->getId() . $filename));
+        if ($upload->isValid()) {
+            $upload->receive();
 
-        $image = new Imagick($file->getFileName());
+            do {
+                $filename = '/' . sha1(uniqid());
+            } while(file_exists($filePath . '/' . $album->getId() . $filename));
 
-        $exif = exif_read_data($file->getFileName());
+            $image = new Imagick($upload->getFileName());
 
-        switch($exif['Orientation']) {
-            case 1: // nothing
-                break;
-            case 2: // horizontal flip
-                $image->flopImage();
-                break;
-            case 3: // 180 rotate
-                $image->rotateImage(new ImagickPixel(), 180);
-                break;
-            case 4: // vertical flip
-                $image->flipImage();
-                break;
-            case 5: // vertical flip + 90 rotate clockwise
-                $image->flipImage();
-                $image->rotateImage(new ImagickPixel(), 90);
-                break;
-            case 6: // 90 rotate clockwise
-                $image->rotateImage(new ImagickPixel(), 90);
-                break;
-            case 7: // horizontal flip + 90 rotate clockwise
-                $image->flopImage();
-                $image->rotateImage(new ImagickPixel(), 90);
-                break;
-            case 8:    // 90 rotate counter clockwise
-                $image->rotateImage(new ImagickPixel(), -90);
-                break;
+            $exif = exif_read_data($upload->getFileName());
+
+            switch($exif['Orientation']) {
+                case 1: // nothing
+                    break;
+                case 2: // horizontal flip
+                    $image->flopImage();
+                    break;
+                case 3: // 180 rotate
+                    $image->rotateImage(new ImagickPixel(), 180);
+                    break;
+                case 4: // vertical flip
+                    $image->flipImage();
+                    break;
+                case 5: // vertical flip + 90 rotate clockwise
+                    $image->flipImage();
+                    $image->rotateImage(new ImagickPixel(), 90);
+                    break;
+                case 6: // 90 rotate clockwise
+                    $image->rotateImage(new ImagickPixel(), 90);
+                    break;
+                case 7: // horizontal flip + 90 rotate clockwise
+                    $image->flopImage();
+                    $image->rotateImage(new ImagickPixel(), 90);
+                    break;
+                case 8:    // 90 rotate counter clockwise
+                    $image->rotateImage(new ImagickPixel(), -90);
+                    break;
+            }
+
+            $image->scaleImage(640, 480, true);
+            $thumb = clone $image;
+            $watermark = new Imagick();
+            $watermark->readImage(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('gallery.watermark_path')
+            );
+            $watermark->scaleImage(57, 48);
+            $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
+            $image->writeImage($filePath . '/' . $album->getId() . $filename);
+
+            $thumb->cropThumbnailImage(150, 150);
+            $thumb->writeImage($filePath . '/' . $album->getId() . '/thumbs'. $filename);
+
+            $photo = new Photo($album, $filename);
+            $this->getEntityManager()->persist($photo);
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'status' => 'success'
+                    ),
+                )
+            );
         }
-
-        $image->scaleImage(640, 480, true);
-        $thumb = $image->clone();
-        $watermark = new Imagick();
-        $watermark->readImage(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('gallery.watermark_path')
-        );
-        $watermark->scaleImage(57, 48);
-        $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
-        $image->writeImage($filePath . '/' . $album->getId() . $filename);
-
-        $thumb->cropThumbnailImage(150, 150);
-        $thumb->writeImage($filePath . '/' . $album->getId() . '/thumbs'. $filename);
-
-        $photo = new Photo($album, $filename);
-        $this->getEntityManager()->persist($photo);
-        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
-            	'result' => array(
-            		'status' => 'success'
-            	),
+                'result' => array(
+                    'status' => 'error'
+                ),
             )
         );
     }
@@ -330,125 +375,97 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    public function viewPhotoAction()
-    {
-        if (!($photo = $this->_getPhoto()))
-            return new ViewModel();
-
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('gallery.path');
-
-        $path = $filePath . '/' . $photo->getAlbum()->getId() . $photo->getFilePath();
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-        	'Content-type' => mime_content_type($path),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($path, 'r');
-        $data = fread($handle, filesize($path));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
-            )
-        );
-    }
-
     public function _getAlbum()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the album!'
-    		    )
-    		);
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the album!'
+                )
+            );
 
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
-    		return;
-    	}
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findOneById($this->getParam('id'));
 
-    	if (null === $album) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No album with the given id was found!'
-    		    )
-    		);
+        if (null === $album) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No album with the given id was found!'
+                )
+            );
 
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
-    		return;
-    	}
+            return;
+        }
 
-    	return $album;
+        return $album;
     }
 
     public function _getPhoto()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the photo!'
-    		    )
-    		);
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the photo!'
+                )
+            );
 
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
-    		return;
-    	}
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('id'));
 
-    	if (null === $album) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No photo with the given id was found!'
-    		    )
-    		);
+        if (null === $album) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No photo with the given id was found!'
+                )
+            );
 
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
-    		return;
-    	}
+            return;
+        }
 
-    	return $album;
+        return $album;
     }
 }

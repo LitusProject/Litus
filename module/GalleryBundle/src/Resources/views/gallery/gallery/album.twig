@@ -8,7 +8,9 @@
     <div id="images">
         {% for photo in album.getPhotos() %}
             {% if not photo.isCensored() %}
-                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="imageGallery"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getThumbPath() }}"></a>
+                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="imageGallery" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getThumbPath() }}"></a>
+            {% elseif photo.isCensored() and allowCensor %}
+                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="imageGallery censored" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getThumbPath() }}"></a>
             {% endif %}
         {% endfor %}
     </div>
@@ -17,15 +19,20 @@
 
 {% block content_script %}
     <script type="text/javascript">
-    	$(document).ready(function () {
-    		$('#images').imageGallery({
-    		    closeText				: '{{ translate('Close') }}',
-    		    previousText			: '{{ translate('Previous') }}',
-    		    playText				: '',
-    		    pauzeText				: '',
-    		    nextText				: '{{ translate('Next') }}',
-    			zIndex					: 20000
-    		});
-    	});
+        $(document).ready(function () {
+            $('#images').imageGallery({
+                closeText               : '{{ translate('Close') }}',
+                previousText            : '{{ translate('Previous') }}',
+                playText                : '',
+                pauzeText               : '',
+                nextText                : '{{ translate('Next') }}',
+                censorText              : '{{ translate('Censor') }}',
+                uncensorText            : '{{ translate('Uncensor') }}',
+                censorUrl               : '{{ url('gallery', {'action': 'censor'}) }}',
+                uncensorUrl             : '{{ url('gallery', {'action': 'uncensor'}) }}',
+                zIndex                  : 20000,
+                allowCensor             : {% if allowCensor %}1{% else %}0{% endif %},
+            });
+        });
     </script>
 {% endblock %}

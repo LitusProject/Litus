@@ -1,19 +1,69 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
-    <ul class="thumbnails">
-        {% for page in pages %}
-            <li class="span2">
-                <a style="text-decoration:none;" href="{{ url('career_company', {'action': 'view', 'company': page.getCompany().getSlug() }) }}" class="thumbnail">
-                    <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
 
-                <center>
-                    <span class="company-name">
-                        {{ page.getCompany().getName() }}
-                    </span>
-                </center>
-                </a>
-            </li>
-        {% endfor %}
+    <div class="flashmessage alert alert-error full_width search_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to perform the search.</p>
+        </div>
+    </div>
+
+    <div style="text-align:right;">
+        <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
+    </div>
+
+    <div id="debug"></div>
+
+    <ul id="companies" class="thumbnails">
+
     </ul>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#searchbox').bind("input propertychange", function(){
+                var $this = $(this);
+                var delay = 500; // delay after last input
+
+                clearTimeout($this.data("timer"));
+                $this.data("timer", setTimeout(function(){
+                    $this.removeData("timer");
+
+                    // Do your stuff after 2 seconds of last user input
+                    performSearch('%25' + $('#searchbox').val() + '%25');
+
+                }, delay));
+            });
+
+            performSearch('%25%25');
+        });
+
+        function performSearch(text) {
+            $.post('{{ url('career_company', {"action": "search"})}}' + text, function (data) {
+                $('#companies').html('');
+                $.each(data, function(index, element) {
+
+                    $('#companies').append(
+                        '<li class="span2">\
+                            <a class="company-container thumbnail" href="{{ url("career_company", {"action": "view"}) }}' + element.slug + '">\
+                                    <div class="company-logo">'
+                                        + (element.logo ?
+                                            '<img src="{{ url("admin_company", {"action": "logo"}) }}' + element.logo + '" alt="' + element.name + '"/>'
+                                        :
+                                            '<h1 class="company-logo-replacement">' + element.name + '</h1>')
+                                        + '</div><div class="name-container"><center><span class="company-name">' + element.name + '</span></center></div></a></li>'
+                    );
+
+                });
+            }, 'json').error(errorSearch);
+        }
+
+        function errorSearch() {
+            $('.search_error').show();
+        }
+    </script>
 {% endblock %}

@@ -82,6 +82,20 @@ return array(
                     ),
                 ),
             ),
+            'admin_company_logo' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/company/logo[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_company_logo',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'admin_section' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -153,6 +167,21 @@ return array(
                     'defaults' => array(
                         'controller' => 'career_company',
                         'action'     => 'overview',
+                    ),
+                ),
+            ),
+            'career_company_search' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/career/company/search[/:string][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string'     => '[%a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'career_company',
+                        'action'     => 'search',
                     ),
                 ),
             ),
@@ -259,8 +288,9 @@ return array(
 
             'admin_company'            => 'BrBundle\Controller\Admin\CompanyController',
             'admin_company_event'      => 'BrBundle\Controller\Admin\Company\EventController',
-            'admin_company_job' => 'BrBundle\Controller\Admin\Company\JobController',
+            'admin_company_job'        => 'BrBundle\Controller\Admin\Company\JobController',
             'admin_company_user'       => 'BrBundle\Controller\Admin\Company\UserController',
+            'admin_company_logo'       => 'BrBundle\Controller\Admin\Company\LogoController',
             'admin_section'            => 'BrBundle\Controller\Admin\SectionController',
 
             'corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
@@ -296,11 +326,6 @@ return array(
                         ),
                         'options' => array(
                             'output' => 'corporate_css.css',
-                        ),
-                    ),
-                    'career_rowlink' => array(
-                        'assets'  => array(
-                            'career/js/bootstrap-rowlink.js',
                         ),
                     ),
                     'career_css' => array(

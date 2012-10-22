@@ -38,6 +38,8 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 $discount = new Discount($article);
 
                 if ($formData['template'] == 0) {

@@ -58,6 +58,8 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $location = new Location(
                     $this->getEntityManager(),
                     $formData['name'],
@@ -117,6 +119,8 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $location->setName($formData['name'])
                     ->setAddress(
                         $this->getEntityManager(),

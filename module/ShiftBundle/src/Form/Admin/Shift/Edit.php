@@ -37,11 +37,13 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $name);
 
-        $field = new Hidden('start_date');
-        $this->add($field);
+        if ($shift->countResponsibles() != 0 || $shift->countVolunteers() != 0) {
+            $field = new Hidden('start_date');
+            $this->add($field);
 
-        $field = new Hidden('end_date');
-        $this->add($field);
+            $field = new Hidden('end_date');
+            $this->add($field);
+        }
 
         $field = new Submit('submit');
         $field->setValue('Save')

@@ -64,6 +64,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $upload = new FileUpload();
 
@@ -145,21 +146,6 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 'form' => $form,
                 'uploadProgressName' => ini_get('session.upload_progress.name'),
                 'uploadProgressId' => uniqid(),
-            )
-        );
-    }
-
-    public function viewAction()
-    {
-        $edition = $this->_getEdition();
-
-        if (!$edition) {
-            return new ViewModel();
-        }
-
-        return new ViewModel(
-            array(
-                'edition' => $edition
             )
         );
     }

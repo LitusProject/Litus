@@ -116,7 +116,7 @@ return array(
                     ),
                     'gallery_js' => array(
                         'assets'  => array(
-                            'common/js/imageGallery.pack.js',
+                            'common/js/imageGallery.js',
                         ),
                     ),
                     'plupload_js' => array(

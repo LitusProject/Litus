@@ -2,7 +2,8 @@
 
 namespace BrBundle\Repository\Company;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Page
@@ -13,19 +14,22 @@ use Doctrine\ORM\EntityRepository;
 class Page extends EntityRepository
 {
 
-    public function findOneActiveBySlug($slug)
+    public function findOneActiveBySlug($slug, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('BrBundle\Entity\Company\Page', 'p')
+            ->innerJoin('p.years', 'y')
             ->innerJoin('p.company', 'c')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('c.active', 'true'),
-                    $query->expr()->eq('c.slug', ':slug')
+                    $query->expr()->eq('c.slug', ':slug'),
+                    $query->expr()->eq('y', ':year')
                 )
             )
             ->setParameter('slug', $slug)
+            ->setParameter('year', $academicYear)
             ->getQuery()
             ->getResult();
 
@@ -35,15 +39,43 @@ class Page extends EntityRepository
         return null;
     }
 
-    public function findAllActive()
+    public function findAllActive(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('BrBundle\Entity\Company\Page', 'p')
+            ->innerJoin('p.years', 'y')
             ->innerJoin('p.company', 'c')
             ->where(
-                $query->expr()->eq('c.active', 'true')
+                $query->expr()->andx(
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('y', ':year')
+                )
             )
+            ->setParameter('year', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveBySearch(AcademicYear $academicYear, $string)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('BrBundle\Entity\Company\Page', 'p')
+            ->innerJoin('p.years', 'y')
+            ->innerJoin('p.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('y', ':year'),
+                    $query->expr()->like('LOWER(c.name)', ':name')
+                )
+            )
+            ->orderBy('c.name', 'ASC')
+            ->setParameter('name', strtolower($string))
+            ->setParameter('year', $academicYear)
             ->getQuery()
             ->getResult();
 

@@ -54,6 +54,8 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $notification = new Notification(
                     $this->getAuthentication()->getPersonObject(),
                     $formData['content'],
@@ -103,6 +105,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $notification->setContent($formData['content'])
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))

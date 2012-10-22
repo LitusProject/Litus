@@ -38,10 +38,20 @@ class Pdf extends \PublicationBundle\Entity\Edition
         parent::__construct($publication, $academicYear, $title);
     }
 
+    private function getBase()
+    {
+        return '_publications/' . $this->getAcademicYear()->getCode(true) .
+            '/pdf/' . Url::createSlug($this->getPublication()->getTitle());
+    }
+
+    private function getFile()
+    {
+        return Url::createSlug($this->getTitle()) . '.pdf';
+    }
+
     public function getDirectory()
     {
-        return 'public/_publications/' . $this->getAcademicYear()->getCode(true) .
-            '/pdf/' . Url::createSlug($this->getPublication()->getTitle());
+        return 'public/' . $this->getBase();
     }
 
     /**
@@ -49,6 +59,14 @@ class Pdf extends \PublicationBundle\Entity\Edition
      */
     public function getFileName()
     {
-        return $this->getDirectory() . '/' . Url::createSlug($this->getTitle()) . '.pdf';
+        return $this->getDirectory() . '/' . $this->getFile();
+    }
+
+    /**
+     * @return string The url of the file of this edition
+     */
+    public function getUrl()
+    {
+        return $this->getBase() . '/' . $this->getFile();
     }
 }

@@ -57,7 +57,7 @@
                                 {% for event in events %}
                                     <tr>
                                         <td>
-                                            <a href="{{ url('calendar', {'action': 'view', 'name': event.getEvent().getName() }) }}">
+                                            <a href="{{ url('career_event', {'action': 'view', 'id': event.getId() }) }}">
                                                 <strong>{{ event.getEvent().getTitle(language) }}</strong>
                                                 <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
                                             </a>
@@ -85,7 +85,7 @@
                                     <td>
                                         <a href="{{ url('career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
                                             <strong>{{ vacancy.getName() }}</strong>
-                                            <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                                            <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM YYYY') }}</strong></div>
                                         </a>
                                     </td>
                                 </tr>
@@ -111,7 +111,7 @@
                                     <td>
                                         <a href="{{ url('career_internship', {'action': 'view', 'id': internship.getId() }) }}">
                                             <strong>{{ internship.getName() }}</strong>
-                                            <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+                                            <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM YYYY') }}</strong></div>
                                         </a>
                                     </td>
                                 </tr>

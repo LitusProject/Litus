@@ -95,11 +95,11 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\Person');
                 if ($formData['person_id'] == '') {
-
                     // No autocompletion used, we assume the username was entered
                     $person = $repository->findOneByUsername($formData['person_name']);
                 } else {

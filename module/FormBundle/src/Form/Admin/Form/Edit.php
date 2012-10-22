@@ -54,6 +54,9 @@ class Edit extends Add
             'active'       => $form->isActive(),
             'max'          => $form->getMax(),
             'multiple'     => $form->isMultiple(),
+            'mail'         => $form->hasMail(),
+            'mail_subject' => $form->getMailSubject(),
+            'mail_body'    => $form->getMailBody(),
         );
 
         foreach($this->getLanguages() as $language) {

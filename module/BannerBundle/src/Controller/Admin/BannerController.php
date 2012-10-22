@@ -63,8 +63,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $upload = new FileUpload();
 
@@ -152,8 +152,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
 
             if ($form->isValid()) {
-                $upload = new FileUpload();
+                $formData = $form->getFormData($formData);
 
+                $upload = new FileUpload();
 
                 $upload->addValidator(new SizeValidator(array('max' => '10MB')));
                 $upload->addValidator(new ImageValidator());

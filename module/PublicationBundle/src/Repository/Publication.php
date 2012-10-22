@@ -58,6 +58,28 @@ class Publication extends EntityRepository
             ->where(
             	$query->expr()->eq('p.deleted', 'false')
             )
+            ->orderBy('p.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveWithEdition()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $internal = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('PublicationBundle\Entity\Publication', 'p')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('p.deleted', 'false'),
+                    $query->expr()->exists(
+                        'SELECT e FROM PublicationBundle\Entity\Edition e WHERE e.publication = p'
+                    )
+                )
+            )
+            ->orderBy('p.title', 'ASC')
             ->getQuery()
             ->getResult();
 

@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -54,6 +53,13 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'admin_company_logo' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'admin_section' => array(
             '@common_jquery',
             '@common_jqueryui',
@@ -93,7 +99,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_vacancy' => array(
@@ -108,7 +114,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_internship' => array(
@@ -123,7 +129,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
         'career_event' => array(
@@ -138,7 +144,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_rowlink',
+            '@bootstrap_js_rowlink',
             '@career_css',
         ),
     ),

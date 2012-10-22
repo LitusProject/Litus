@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Nodes\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\SpecifiedForm,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -98,7 +99,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if ($message) {
-
             return new ViewModel(
                 array(
                     'message'       => $message,
@@ -115,6 +115,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $formEntry = new FormEntry($person, $formSpecification);
 
@@ -133,6 +134,28 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 $this->getEntityManager()->flush();
+
+                if ($formSpecification->hasMail()) {
+
+                    $mailAddress = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_mail_address');
+
+                    $mailName = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_mail_name');
+
+                    $mail = new Message();
+                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry))
+                        ->setFrom($mailAddress, $mailName)
+                        ->setSubject($formSpecification->getMailSubject());
+
+                    $mail->addTo($person->getEmail(), $person->getFullName());
+
+                    if ('development' != getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
+                }
+
 
                 $this->redirect()->toRoute(
                     'form_view',

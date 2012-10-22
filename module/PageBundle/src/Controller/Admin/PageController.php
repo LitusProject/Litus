@@ -68,7 +68,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $fallbackLanguage = \Locale::getDefault();
 
                 $category = $this->getEntityManager()
@@ -160,6 +162,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $page->close();
 
                 $category = $this->getEntityManager()

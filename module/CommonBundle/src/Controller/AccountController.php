@@ -95,6 +95,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index'
+            );
+
+            return new ViewModel();
+        }
+
         $academic = $this->getAuthentication()->getPersonObject();
 
         $metaData = $this->getEntityManager()
@@ -130,6 +146,8 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
                 $academic->setFirstName($formData['first_name'])
@@ -437,6 +455,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
     public function studiesAction()
     {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index'
+            );
+
+            return new ViewModel();
+        }
+
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($this->getCurrentAcademicYear());
@@ -459,6 +493,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
     public function saveStudiesAction()
     {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index'
+            );
+
+            return new ViewModel();
+        }
+
         $this->initAjax();
 
         $data = $this->getRequest()->getPost();
@@ -506,6 +556,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
     public function subjectsAction()
     {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index'
+            );
+
+            return new ViewModel();
+        }
+
         $academic = $this->getAuthentication()->getPersonObject();
 
         $form = new SubjectForm();
@@ -515,6 +581,8 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $this->getEntityManager()->persist(
                     new SubjectEnrollment(
                         $academic,
@@ -594,6 +662,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
     public function saveSubjectsAction()
     {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index'
+            );
+
+            return new ViewModel();
+        }
+
         $this->initAjax();
 
         $data = $this->getRequest()->getPost();
@@ -635,6 +719,8 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $user->setCode(null)
                     ->setCredential(
                         new Credential(

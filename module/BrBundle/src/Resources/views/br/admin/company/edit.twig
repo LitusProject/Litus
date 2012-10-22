@@ -11,13 +11,26 @@
     <aside>
         {% if hasAccess('admin_company', 'logo') %}
             <div class="sidebox">
-                <div class="title">Edit Logo</div>
+                <div class="title">Edit General Logo</div>
                	<div class="content">
                 	<p>
-                    	<i>Please hit the link below to edit the logo of this company!</i>
+                    	<i>Please hit the link below to edit the general logo of this company!</i>
                     </p>
                     <p>
-                       	<a href="{{ url('admin_company', {"action": "editLogo", "id": company.getId()}) }}">&rarr; Edit Logo</a>
+                       	<a href="{{ url('admin_company', {"action": "editLogo", "id": company.getId()}) }}">&rarr; Edit General Logo</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_company_logo', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Edit Logo's</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the logo's of this company!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_company_logo', {"action": "manage", "id": company.getId()}) }}">&rarr; Edit Logo's</a>
                     </p>
                 </div>
             </div>

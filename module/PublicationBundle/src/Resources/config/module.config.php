@@ -70,6 +70,49 @@ return array(
                     ),
                 ),
             ),
+            'archive' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/archive[/:action[/:publication[/:year]]][/]',
+                    'constraints' => array(
+                        'action'      => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'publication' => '[0-9]*',
+                        'year'        => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'archive',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
+            'edition_html' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/archive/html[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'      => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'          => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'edition_html',
+                        'action'     => 'view',
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/archive.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/archive.nl.php',
+                'locale'   => 'nl'
+            ),
         ),
     ),
     'view_manager' => array(
@@ -98,6 +141,9 @@ return array(
             'admin_publication'   => 'PublicationBundle\Controller\Admin\PublicationController',
             'admin_edition_pdf'   => 'PublicationBundle\Controller\Admin\Edition\PdfController',
             'admin_edition_html'  => 'PublicationBundle\Controller\Admin\Edition\HtmlController',
+
+            'archive'             => 'PublicationBundle\Controller\Archive\ArchiveController',
+            'edition_html'        => 'PublicationBundle\Controller\Edition\HtmlController',
         ),
     ),
 );

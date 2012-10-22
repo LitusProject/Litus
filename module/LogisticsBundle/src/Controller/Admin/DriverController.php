@@ -49,6 +49,8 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
                 if ($formData['person_id'] == '') {
@@ -113,6 +115,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $yearIds = $formData['years'];
                 $years = array();

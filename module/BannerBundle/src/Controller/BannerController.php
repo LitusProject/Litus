@@ -32,7 +32,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class BannerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function viewAction()
     {
         $imagePath = $this->getEntityManager()

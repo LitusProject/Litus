@@ -24,19 +24,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class CompanyController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class CompanyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $pages = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Page')
-            ->findAllActive();
-
-        return new ViewModel(
-            array(
-                'pages' => $pages,
-            )
-        );
+        return new ViewModel();
     }
 
     public function viewAction()
@@ -96,6 +88,30 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $pages = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findAllActiveBySearch($this->getCurrentAcademicYear(), $this->getParam('string'));
+
+        $result = array();
+        foreach($pages as $page) {
+            $item = (object) array();
+            $item->name = $page->getCompany()->getName();
+            $item->logo = $page->getCompany()->getLogo();
+            $item->slug = $page->getCompany()->getSlug();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     private function _getPage()
     {
         if (null === $this->getParam('company')) {
@@ -119,7 +135,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findOneActiveBySlug($this->getParam('company'));
+            ->findOneActiveBySlug($this->getParam('company'), $this->getCurrentAcademicYear());
 
         if (null === $company) {
             $this->flashMessenger()->addMessage(

@@ -14,6 +14,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class HtmlEdition extends EntityRepository
 {
+
     public function findAllByPublicationAndAcademicYear(PublicationEntity $publication, AcademicYear $academicYear)
 	{
         $query = $this->_em->createQueryBuilder();
@@ -24,10 +25,10 @@ class HtmlEdition extends EntityRepository
                    $query->expr()->eq('p.publication', ':publication'),
                    $query->expr()->eq('p.academicYear', ':year')
                )
-
             )
             ->setParameter('publication', $publication)
             ->setParameter('year', $academicYear)
+            ->orderBy('p.title', 'ASC')
             ->getQuery()
             ->getResult();
 

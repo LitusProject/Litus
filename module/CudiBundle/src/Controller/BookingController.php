@@ -203,7 +203,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
             if ($form->isValid()) {
                 foreach ($formData as $formKey => $formValue) {
-                    if (substr($formKey, 0, 8) === 'article-' && $formValue !== '' && $formValue !== '0') {
+                    if (substr($formKey, 0, 8) === 'article-' && $formValue != '' && $formValue != '0') {
                         $saleArticleId = substr($formKey, 8, strlen($formKey));
 
                         $saleArticle = $this->getEntityManager()
