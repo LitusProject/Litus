@@ -146,6 +146,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneByUniversityIdentification($data->universityIdentification);
 
         if (null === $runner) {
+            $runner = $this->getEntityManager()
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneByOptionalIdentification($this->getParam('university_identification'));
+        }
+
+        if (null === $runner) {
             $academic = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
@@ -214,7 +220,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ),
                 'laps' => $laps,
                 'officialResults' => $this->_getOfficialResults(),
-                'groupsOfFriends' => $this->_getGroupsOfFriends(5),
+                'groupsOfFriends' => $this->_getGroupsOfFriends(),
             ),
         );
 
