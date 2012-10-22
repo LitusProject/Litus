@@ -71,6 +71,8 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $entry->setValue($formData['value']);
 
                 $this->getEntityManager()->flush();

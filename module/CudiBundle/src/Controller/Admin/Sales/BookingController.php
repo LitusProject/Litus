@@ -109,6 +109,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $booking = new Booking(
                     $this->getEntityManager(),
                     $this->getEntityManager()
@@ -142,7 +144,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                                 'booked',
                                 $booking->getNumber() - $available
                             );
-                            
+
                             $this->getEntityManager()->persist($new);
                             $booking->setNumber($available)
                                 ->setStatus('assigned', $this->getEntityManager());

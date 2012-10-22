@@ -231,6 +231,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $action->getEntity()->setTitle($formData['title'])
                     ->setAuthors($formData['author'])
                     ->setPublishers($formData['publisher'])
@@ -296,6 +298,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 $action->getEntity()
                     ->setPrintable($formData['printable'])
                     ->getFile()->setDescription($formData['description']);

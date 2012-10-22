@@ -71,6 +71,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $supplier = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Supplier')
                     ->findOneById($formData['supplier']);
@@ -135,6 +137,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $history = new History($saleArticle);
                 $this->getEntityManager()->persist($history);
 
@@ -196,6 +200,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 $new = $saleArticle->duplicate();
 
                 $supplier = $this->getEntityManager()

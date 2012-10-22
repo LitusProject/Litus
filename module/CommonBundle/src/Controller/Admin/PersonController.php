@@ -25,7 +25,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class PersonController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function typeaheadAction()
     {
         $this->initAjax();

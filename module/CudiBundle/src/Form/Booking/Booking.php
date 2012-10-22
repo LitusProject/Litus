@@ -88,8 +88,6 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                         'validators' => array(
                             array(
                                 'name' => 'digits',
-                                'options' => array(
-                                ),
                             ),
                             array(
                                 'name' => 'between',

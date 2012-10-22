@@ -71,6 +71,8 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $this->getEntityManager()->persist(new Department($formData['name']));
                 $this->getEntityManager()->flush();
 
@@ -122,6 +124,8 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $department->setName($formData['name']);
                 $this->getEntityManager()->flush();
 
@@ -175,6 +179,8 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($formData['study_id']);
