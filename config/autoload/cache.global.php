@@ -11,27 +11,30 @@
  *
  * @license http://litus.cc/LICENSE
  */
+if ('development' != getenv('APPLICATION_ENV')) {
+    if (!extension_loaded('apc'))
+        throw new \RuntimeException('Litus requires the APC extension to be loaded');
 
-if (!extension_loaded('apc'))
-    throw new \RuntimeException('Litus requires the APC extension to be loaded');
-
-return array(
-    'service_manager' => array(
-        'factories' => array(
-            'cache' => function ($serviceManager) {
-                $cache = \Zend\Cache\StorageFactory::factory(
-                    array(
-                        'adapter' => array(
-                            'name' => 'apc',
-                            'options' => array(
-                                'ttl' => 0,
-                                'namespace' => 'litus_cache',
+    return array(
+        'service_manager' => array(
+            'factories' => array(
+                'cache' => function ($serviceManager) {
+                    $cache = \Zend\Cache\StorageFactory::factory(
+                        array(
+                            'adapter' => array(
+                                'name' => 'apc',
+                                'options' => array(
+                                    'ttl' => 0,
+                                    'namespace' => 'litus_cache',
+                                ),
                             ),
-                        ),
-                    )
-                );
-                return $cache;
-            },
+                        )
+                    );
+                    return $cache;
+                },
+            ),
         ),
-    ),
-);
+    );
+}
+
+return array();
