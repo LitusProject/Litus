@@ -37,6 +37,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => 'data/br/files',
                     'description' => 'The path to the company files',
                 ),
+                array(
+                    'key'         => 'br.public_logo_path',
+                    'value'       => '_br/img',
+                    'description' => 'The path to the public company logo files',
+                ),
             )
         );
     }
@@ -57,6 +62,22 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     ),
                     'admin_company_user' => array(
                         'add', 'delete', 'edit', 'manage'
+                    ),
+
+                    'career_index' => array(
+                        'index'
+                    ),
+                    'career_company' => array(
+                        'view', 'overview', 'file', 'search',
+                    ),
+                    'career_event' => array(
+                        'view', 'overview'
+                    ),
+                    'career_vacancy' => array(
+                        'view', 'overview'
+                    ),
+                    'career_internship' => array(
+                        'view', 'overview'
                     ),
                 )
             )

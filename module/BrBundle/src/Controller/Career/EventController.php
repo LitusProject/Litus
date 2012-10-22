@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class EventController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class EventController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
@@ -49,6 +49,33 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'event' => $event,
+            )
+        );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Event')
+            ->findAllFutureBySearch(new DateTime(), $this->getParam('string'));
+
+        $result = array();
+        foreach($events as $event) {
+            $item = (object) array();
+            $item->id = $event->getId();
+            $item->poster = $event->getEvent()->getPoster();
+            $item->title = $event->getEvent()->getTitle($this->getLanguage());
+            $item->companyName = $event->getCompany()->getName();
+            $item->startDate = $event->getEvent()->getStartDate()->format('d/m/Y h:i'); // TODO localized
+            $item->summary = $event->getEvent()->getSummary(400, $this->getLanguage());
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
             )
         );
     }

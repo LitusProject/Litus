@@ -43,6 +43,8 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $comment = new Comment(
                     $this->getEntityManager(),
                     $this->getAuthentication()->getPersonObject(),

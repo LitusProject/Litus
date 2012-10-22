@@ -66,6 +66,8 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $newUser = new SupplierPerson(
                     $formData['username'],
                     array(
@@ -131,6 +133,8 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])

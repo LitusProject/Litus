@@ -57,6 +57,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $unit = new Unit(
                     $formData['name']
                 );
@@ -103,6 +105,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $unit->setName($formData['name']);
 
                 $this->getEntityManager()->flush();

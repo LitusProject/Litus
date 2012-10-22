@@ -46,8 +46,10 @@
                 <tr class="item item-{{ volunteer.getId() }}">
                     <td>{{ volunteer.getPerson().getFullName() }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_subscription', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ volunteer.getId() }}" data-type="volunteer" data-name="{{ volunteer.getPerson().getFullName() }}">Delete</a>
+                        {% if shift.canBeEditedBy(authenticatedPerson) %}
+                            {% if hasAccess('admin_subscription', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ volunteer.getId() }}" data-type="volunteer" data-name="{{ volunteer.getPerson().getFullName() }}">Delete</a>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>

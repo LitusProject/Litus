@@ -59,6 +59,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $cashRegister = new CashRegister();
                 $this->getEntityManager()->persist($cashRegister);
 
@@ -122,6 +124,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $session->setComment($formData['comment']);
 
                 $this->getEntityManager()->flush();
@@ -180,6 +184,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $devices = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
@@ -240,6 +246,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 $cashRegister = new CashRegister();
 
                 $devices = $this->getEntityManager()

@@ -49,6 +49,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $upload = new FileUpload(array('ignoreNoFile' => true));
 

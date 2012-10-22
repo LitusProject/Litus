@@ -56,6 +56,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 if ($formData['max'] == '')
                     $max = 0;
@@ -68,7 +69,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $formData['active'],
                     $max,
-                    $formData['multiple']
+                    $formData['multiple'],
+                    $formData['mail'],
+                    $formData['mail_subject'],
+                    $formData['mail_body']
                 );
 
                 $this->getEntityManager()->persist($form);
@@ -155,6 +159,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 if ($formData['max'] == '')
                     $max = 0;
@@ -165,7 +170,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
                     ->setActive($formData['active'])
                     ->setMax($max)
-                    ->setMultiple($formData['multiple']);
+                    ->setMultiple($formData['multiple'])
+                    ->setMail($formData['mail'])
+                    ->setMailSubject($formData['mail_subject'])
+                    ->setMailBody($formData['mail_body']);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')

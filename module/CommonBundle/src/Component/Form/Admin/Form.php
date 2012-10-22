@@ -94,4 +94,17 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 
         return $this;
     }
+
+    /**
+     * Return the form validated data, combined with post data
+     *
+     * @return object
+     */
+    public function getFormData($formData)
+    {
+        foreach($this->getData() as $key => $value) {
+            $formData->{$key} = $value;
+        }
+        return $formData;
+    }
 }

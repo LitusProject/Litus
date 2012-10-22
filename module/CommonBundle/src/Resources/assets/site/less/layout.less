@@ -9,6 +9,7 @@
 
 body {
     background: #252525;
+    word-wrap: break-word;
 }
 
 header {
@@ -38,37 +39,6 @@ header {
             width: 940px;
             height: 100px;
         }
-    }
-}
-
-@media (min-width: 1200px) {
-
-    // Fixed grid
-    #grid > .core(@gridColumnWidth, @gridGutterWidth);
-
-    // Fluid grid
-    #grid > .fluid(@fluidGridColumnWidth, @fluidGridGutterWidth);
-
-    // Input grid
-    #grid > .input(@gridColumnWidth, @gridGutterWidth);
-
-    // Thumbnails
-    .thumbnails {
-        margin-left: -@gridGutterWidth;
-    }
-    .thumbnails > li {
-        margin-left: @gridGutterWidth;
-    }
-    .row-fluid .thumbnails {
-        margin-left: 0;
-    }
-}
-
-
-@media (max-width: 767px) {
-    body {
-        padding-left: 0;
-        padding-right: 0;
     }
 }
 
@@ -202,7 +172,7 @@ header {
     }
 
     #content {
-        padding: 0 40px;
+        padding: 0 20px;
 
         .container {
             padding: 20px 0px;
@@ -465,6 +435,51 @@ fieldset .control-group:first-child {
         }
         dd {
             margin-left: 270px;
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+
+    // Fixed grid
+    #grid > .core(@gridColumnWidth, @gridGutterWidth);
+
+    // Fluid grid
+    #grid > .fluid(@fluidGridColumnWidth, @fluidGridGutterWidth);
+
+    // Input grid
+    #grid > .input(@gridColumnWidth, @gridGutterWidth);
+
+    // Thumbnails
+    .thumbnails {
+        margin-left: -@gridGutterWidth;
+    }
+    .thumbnails > li {
+        margin-left: @gridGutterWidth;
+    }
+    .row-fluid .thumbnails {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    body {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    td, th {
+        &.visible-phone     { display: table-cell !important; }
+    }
+
+    .dl-horizontal {
+        dt {
+            float: none;
+            clear: none;
+            width: auto !important;
+            text-align: left;
+        }
+        dd {
+            margin-left: 0 !important;
         }
     }
 }

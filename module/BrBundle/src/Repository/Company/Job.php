@@ -19,12 +19,14 @@ class Job extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->eq('v.id', ':id'),
                     $query->expr()->lt('v.startDate', ':now'),
-                    $query->expr()->gt('v.endDate', ':now')
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true')
                 )
             )
             ->setParameter('id', $id)
@@ -60,16 +62,19 @@ class Job extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->lt('v.startDate', ':now'),
-                    $query->expr()->gt('v.endDate', ':now')
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true')
                 )
             )
             ->setParameter('type', $type)
             ->setParameter('now', new DateTime())
-            ->orderBy('v.name', 'ASC')
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
             ->getQuery()
             ->getResult();
 

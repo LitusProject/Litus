@@ -24,6 +24,7 @@
 
 	    	<thead>
 	    		<tr>
+                    <th width="20px">{{ translate('ID') }}</th>
 	    			<th width="130px">{{ translate("Submitter") }}</th>
 	    			<th width="130px">{{ translate("Submitted") }}</th>
 
@@ -41,6 +42,7 @@
     		<tbody>
 		    {% for entry in entries %}
 		    	<tr class="item item-{{ entry.getId() }}">
+                    <td>{{ entry.getId() }}</td>
     				<td>{{ entry.getCreationPerson().getFullName() }}</td>
     				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y H:mm') }}</td>
 

@@ -53,6 +53,8 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $newSection = new Section(
                     $formData['name'],
                     $formData['content'],
@@ -90,6 +92,8 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $section->setName($formData['name'])
                     ->setContent($formData['content'])
                     ->setPrice($formData['price'])

@@ -41,6 +41,8 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 if ($formData['subject_id'] == '') {
                     $subject = $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\Subject')

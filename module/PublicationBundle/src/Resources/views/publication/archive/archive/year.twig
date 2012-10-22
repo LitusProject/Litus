@@ -1,0 +1,26 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ publication.getTitle() }} </h1>
+    </div>
+
+    <div class="row page">
+        <div class="span12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ translate('Year') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for year in years %}
+                        <tr>
+                            <td><a href="{{ url('archive', { 'action': 'view', 'publication': publication.getId(), 'year': year.getId() }) }}">{{ year.getCode() }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

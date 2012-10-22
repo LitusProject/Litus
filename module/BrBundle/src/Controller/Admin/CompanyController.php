@@ -62,6 +62,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $company = new Company(
                     $formData['company_name'],
                     $formData['vat_number'],
@@ -139,6 +141,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $company->setName($formData['company_name'])
                     ->setVatNumber($formData['vat_number'])
                     ->setSector($formData['sector'])
@@ -276,6 +280,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.logo_path');
@@ -284,7 +290,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $file->receive();
 
                 $image = new Imagick($file->getFileName());
-                $image->cropThumbnailImage(320, 320);
+                $image->thumbnailImage(320, 320, true);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {
                     $fileName = '/' . $company->getLogo();

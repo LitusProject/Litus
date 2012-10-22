@@ -8,7 +8,7 @@
             </div>
         {% endif %}
 
-        {% if vacancy.getCompany().getPage() %}
+        {% if vacancy.getCompany().getPage().hasYear(currentAcademicYear) %}
         <a href="{{ url('career_company',{ 'action': 'view', 'company': vacancy.getCompany().getSlug() }) }}">
         {% endif %}
             {% if vacancy.getCompany().getLogo() %}
@@ -18,7 +18,7 @@
 
                 <h2><center class="company-name">{{ vacancy.getCompany().getName() }}</center></h2>
             {% endif %}
-        {% if vacancy.getCompany().getPage() %}
+        {% if vacancy.getCompany().getPage().hasYear(currentAcademicYear) %}
         </a>
         {% endif %}
 
@@ -53,7 +53,7 @@
     </div>
     <div class="span10">
         <h1>{{ vacancy.getName() }}</h1>
-        <div class="pull-right" style="margin-top:-35px;">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM YYYY HH:mm') }}</strong></div>
+        <div class="pull-right" style="margin-top:-35px;">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM YYYY') }}</strong></div>
         <div class="accordion" id="accordion">
             <div class="accordion-group">
                 <div class="accordion-heading">
