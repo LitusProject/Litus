@@ -214,7 +214,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ),
                 'laps' => $laps,
                 'officialResults' => $this->_getOfficialResults(),
-                'groupsOfFriends' => $this->_getGroupsOfFriends(),
+                'groupsOfFriends' => $this->_getGroupsOfFriends(5),
             ),
         );
 
@@ -327,13 +327,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return $returnArray;
     }
 
-    private function _getGroupsOfFriends()
+    private function _getGroupsOfFriends($number = 5)
     {
         $groups = $this->_entityManager
             ->getRepository('SportBundle\Entity\Group')
             ->findAll($this->_getAcademicYear());
 
         $returnArray = array();
+        $sort = array();
         foreach ($groups as $group) {
             $array = (object) array(
                 'name' => $group->getName(),
@@ -354,14 +355,20 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
                     for ($i = 0; isset($happyHours[$i]); $i++) {
                         if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                            if ($lap->getLapTime() <= new DateInterval('P1M30S'))
+                            if ($lap->getLapTime() <= new DateInterval('PT90S'))
                                 $array->points += 1;
                         }
                     }
                 }
             }
+            $array->points = rand(1, 10);
             $returnArray[] = $array;
+            $sort[] = $array->points;
         }
+
+        array_multisort($sort, $returnArray);
+        $returnArray = array_reverse($returnArray);
+        $returnArray = array_splice($returnArray, 0, $number);
 
         return $returnArray;
     }
