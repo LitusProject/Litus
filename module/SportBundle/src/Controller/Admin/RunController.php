@@ -144,7 +144,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        system('kill `ps aux | grep -i "php bin/SportBundle/run.php --run" | grep -v grep | cut -d\  -f 2`');
+        system("kill $(ps aux | grep -i \"php bin/SportBundle/run.php --run\" | grep -v grep | awk '{print $2}')");
 
         return new ViewModel(
             array(
