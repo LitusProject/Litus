@@ -161,6 +161,16 @@ class Runner
         return $this;
     }
 
+    /**
+     * @param string $runnerIdentification
+     * @return \SportBundle\Entity\Runner
+     */
+    public function setRunnerIdentification($runnerIdentification)
+    {
+        $this->runnerIdentification = $runnerIdentification;
+        return $this;
+    }
+
 
     /**
      * @return \SportBundle\Entity\Group
