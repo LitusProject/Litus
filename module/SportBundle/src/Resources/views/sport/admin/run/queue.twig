@@ -134,11 +134,14 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('#socket_killed_success').removeClass('hide');
+                    } else {
+                        console.log(data);
                     }
-                });
+                }, 'json');
+            });
 
             {% if hasAccess('admin_run', 'next') %}
-            $(document).on('keypress.space', spacePressed);
+                $(document).on('keypress.space', spacePressed);
             {% endif %}
         });
 
