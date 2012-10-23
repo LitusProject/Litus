@@ -99,7 +99,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if ($message) {
-
             return new ViewModel(
                 array(
                     'message'       => $message,
@@ -116,6 +115,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $formEntry = new FormEntry($person, $formSpecification);
 

@@ -78,6 +78,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             $enrollmentForm->setData($formData);
 
             if ($enrollmentForm->isValid()) {
+                $formData = $enrollmentForm->getFormData($formData);
+
                 if ($enrollment) {
                     $enrollment->setNumber($formData['students']);
                 } else {

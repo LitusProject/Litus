@@ -146,6 +146,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneByUniversityIdentification($data->universityIdentification);
 
         if (null === $runner) {
+            $runner = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneByRunnerIdentification($data->universityIdentification);
+        }
+
+        if (null === $runner) {
             $academic = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
@@ -157,6 +163,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 null,
                 $academic
             );
+
+            $runner->setRunnerIdentification($data->universityIdentification);
         }
 
         $lap = new Lap($this->_getAcademicYear(), $runner);
@@ -201,7 +209,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findNext($this->_getAcademicYear(), 15);
+            ->findNext($this->_getAcademicYear(), 6);
         foreach($nextLaps as $lap)
             $laps[] = $this->_jsonLap($lap, 'next');
 
@@ -327,13 +335,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return $returnArray;
     }
 
-    private function _getGroupsOfFriends()
+    private function _getGroupsOfFriends($number = 5)
     {
         $groups = $this->_entityManager
             ->getRepository('SportBundle\Entity\Group')
             ->findAll($this->_getAcademicYear());
 
         $returnArray = array();
+        $sort = array();
         foreach ($groups as $group) {
             $array = (object) array(
                 'name' => $group->getName(),
@@ -354,14 +363,20 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
                     for ($i = 0; isset($happyHours[$i]); $i++) {
                         if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                            if ($lap->getLapTime() <= new DateInterval('P1M30S'))
+                            if ($lap->getLapTime() <= new DateInterval('PT90S'))
                                 $array->points += 1;
                         }
                     }
                 }
             }
+
             $returnArray[] = $array;
+            $sort[] = $array->points;
         }
+
+        array_multisort($sort, $returnArray);
+        $returnArray = array_reverse($returnArray);
+        $returnArray = array_splice($returnArray, 0, $number);
 
         return $returnArray;
     }

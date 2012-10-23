@@ -189,6 +189,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             if (isset($formData['updateStock'])) {
                 $stockForm->setData($formData);
                 if ($stockForm->isValid()) {
+                    $formData = $stockForm->getFormData($formData);
+
                     $delta = new Delta(
                         $this->getAuthentication()->getPersonObject(),
                         $article,
@@ -235,6 +237,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             } elseif (isset($formData['add_order'])) {
                 $orderForm->setData($formData);
                 if ($orderForm->isValid()) {
+                    $formData = $orderForm->getFormData($formData);
+
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
                         ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
@@ -262,6 +266,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             } elseif (isset($formData['add_delivery'])) {
                 $deliveryForm->setData($formData);
                 if ($deliveryForm->isValid()) {
+                    $formData = $deliveryForm->getFormData($formData);
+
                     $delivery = new Delivery($article, $formData['number'], $this->getAuthentication()->getPersonObject());
                     $this->getEntityManager()->persist($delivery);
                     $this->getEntityManager()->flush();

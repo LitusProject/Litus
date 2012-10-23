@@ -38,6 +38,8 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 $article->addAdditionalBarcode(new Barcode($article, $formData['barcode']));
 
                 $this->getEntityManager()->flush();

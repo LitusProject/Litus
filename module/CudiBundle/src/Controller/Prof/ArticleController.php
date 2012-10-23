@@ -56,6 +56,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -169,6 +171,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 if (!$article->isProf()) {
                     $duplicate = $article->duplicate();
                     $duplicate->setIsProf(true);

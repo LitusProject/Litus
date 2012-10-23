@@ -61,6 +61,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $job = new Job(
                     $formData['job_name'],
@@ -118,6 +119,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $job->setName($formData['job_name'])
                     ->setDescription($formData['description'])
                     ->setProfile($formData['profile'])
