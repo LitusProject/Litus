@@ -16,6 +16,12 @@
             <p>The lap was successfully removed!</p>
         </div>
     </div>
+    <div class="flashmessage warning_message full_width hide" id="socket_killed_success">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The socket was successfully killed!</p>
+        </div>
+    </div>
 
     <div id="controller_action">
         <table class="manage">
@@ -76,6 +82,21 @@
                 </div>
             </div>
         {% endif %}
+
+        {% if hasAccess('admin_run', 'killSocket') %}
+            <div class="sidebox">
+                <div class="title">Restart Socket</div>
+                <div class="content">
+                    <p>
+                        Force the socket to restart.
+                    </p>
+
+                    <p>
+                        <a id="killSocket" href="#">&rarr; Restart Socket</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
     <div class="modal hide fade" id="removeLap">
@@ -108,8 +129,19 @@
                 displayLaps: displayLaps
             });
 
+            $('#killSocket').click(function() {
+                $.post('{{ url('admin_run', {"action": "killSocket"})}}', function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('#socket_killed_success').removeClass('hide');
+                    } else {
+                        console.log(data);
+                    }
+                }, 'json');
+            });
+
             {% if hasAccess('admin_run', 'next') %}
-            $(document).on('keypress.space', spacePressed);
+                $(document).on('keypress.space', spacePressed);
             {% endif %}
         });
 

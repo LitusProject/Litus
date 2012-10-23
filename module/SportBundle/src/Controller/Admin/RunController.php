@@ -140,6 +140,19 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    public function killSocketAction()
+    {
+        $this->initAjax();
+
+        system('kill `ps aux | grep -i "php bin/SportBundle/run.php --run" | grep -v grep | cut -d\  -f 2`');
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
     public function _getRunner()
     {
         if (null === $this->getParam('id')) {
