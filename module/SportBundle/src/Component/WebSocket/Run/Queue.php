@@ -175,14 +175,21 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getJsonQueue()
     {
-        $resultPage = @simplexml_load_file(
-            $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_result_page')
+        $url = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.run_result_page');
+
+        $opts = array('http' =>
+            array(
+                'timeout' => 10,
+            )
         );
+        $fp = file_get_contents($url, false, stream_context_create($opts), -1, 40000);
+        if ($fp)
+            $resultPage = @simplexml_load_file($url);
 
         $nbOfficialLaps = null;
-        if (null !== $resultPage) {
+        if (isset($resultPage)) {
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
