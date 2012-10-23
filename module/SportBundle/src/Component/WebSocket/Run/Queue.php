@@ -216,7 +216,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findNext($this->_getAcademicYear(), 6);
+            ->findNext($this->_getAcademicYear(), 15);
         foreach($nextLaps as $lap)
             $laps[] = $this->_jsonLap($lap, 'next');
 
