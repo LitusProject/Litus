@@ -1,0 +1,14 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        <p>Name: <b>{{ runner.getFullName() }}</b></p>
+        {% if runner.getAcademic() %}
+            <p>University Identification: <b>{{ runner.getAcademic().getUniversityIdentification() }}</b></p>
+        {% endif %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
