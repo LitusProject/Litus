@@ -22,7 +22,7 @@
                         <td>{{ lap.getRunner().getFullName() }}</td>
                         <td>{{ lap.getStartTime().format('d/m/Y H:i') }}</td>
                         <td>{{ lap.getEndTime().format('d/m/Y H:i') }}</td>
-                        <td>{{ lap.getLapTime().format('i:s') }}</td>
+                        <td>{{ lap.getLapTime().format('%i:%S') }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
