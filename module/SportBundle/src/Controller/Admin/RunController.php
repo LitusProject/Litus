@@ -60,6 +60,13 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    public function killSocketAction()
+    {
+        $this->initAjax();
+
+        return new ViewModel();
+    }
+
     /**
      * Returns the WebSocket URL.
      *
