@@ -146,9 +146,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneByUniversityIdentification($data->universityIdentification);
 
         if (null === $runner) {
-            $runner = $this->getEntityManager()
+            $runner = $this->_entityManager
                 ->getRepository('SportBundle\Entity\Runner')
-                ->findOneByRunnerIdentification($this->getParam('university_identification'));
+                ->findOneByRunnerIdentification($data->universityIdentification);
         }
 
         if (null === $runner) {
@@ -163,6 +163,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 null,
                 $academic
             );
+
+            $runner->setRunnerIdentification($data->universityIdentification);
         }
 
         $lap = new Lap($this->_getAcademicYear(), $runner);
@@ -207,7 +209,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findNext($this->_getAcademicYear(), 15);
+            ->findNext($this->_getAcademicYear(), 6);
         foreach($nextLaps as $lap)
             $laps[] = $this->_jsonLap($lap, 'next');
 
@@ -367,7 +369,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     }
                 }
             }
-            $array->points = rand(1, 10);
+
             $returnArray[] = $array;
             $sort[] = $array->points;
         }
