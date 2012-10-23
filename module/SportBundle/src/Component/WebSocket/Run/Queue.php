@@ -182,7 +182,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         );
 
         $nbOfficialLaps = null;
-        if (null !== $resultPage) {
+        if (null != $resultPage) {
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
