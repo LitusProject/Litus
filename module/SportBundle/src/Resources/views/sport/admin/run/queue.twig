@@ -16,6 +16,12 @@
             <p>The lap was successfully removed!</p>
         </div>
     </div>
+    <div class="flashmessage warning_message full_width hide" id="socket_killed_success">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The socket was successfully killed!</p>
+        </div>
+    </div>
 
     <div id="controller_action">
         <table class="manage">
@@ -79,14 +85,14 @@
 
         {% if hasAccess('admin_run', 'killSocket') %}
             <div class="sidebox">
-                <div class="title">Update Manager</div>
+                <div class="title">Restart Socket</div>
                 <div class="content">
                     <p>
-                        Force the socket to push changes to the clients.
+                        Force the socket to restart.
                     </p>
 
                     <p>
-                        <a href="{{ url('admin_run', {'action': 'update'}) }}">&rarr; Update Manager</a>
+                        <a id="killSocket" href="#">&rarr; Restart Socket</a>
                     </p>
                 </div>
             </div>
@@ -122,6 +128,14 @@
                 errorDialog: $('#loading_queue_error'),
                 displayLaps: displayLaps
             });
+
+            $('#killSocket').click(function() {
+                $.post('{{ url('admin_run', {"action": "killSocket"})}}', function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('#socket_killed_success').removeClass('hide');
+                    }
+                });
 
             {% if hasAccess('admin_run', 'next') %}
             $(document).on('keypress.space', spacePressed);

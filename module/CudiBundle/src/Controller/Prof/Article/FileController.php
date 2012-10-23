@@ -113,12 +113,15 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $formData = $this->getRequest()->getPost();
         $form->setData($formData);
 
-        if ($form->isValid()) {
+        $upload = new FileUpload();
+
+        if ($form->isValid() && $upload->isValid()) {
+            $formData = $form->getFormData($formData);
+
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.file_path');
 
-            $upload = new FileUpload();
             $originalName = $upload->getFileName(null, false);
 
             $fileName = '';

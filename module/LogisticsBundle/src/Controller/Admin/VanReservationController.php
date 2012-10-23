@@ -63,6 +63,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
 
@@ -147,6 +149,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
 

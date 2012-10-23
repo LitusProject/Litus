@@ -42,6 +42,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 if (!($article = $this->_getArticle($formData['article_id'])))
                     return;
 

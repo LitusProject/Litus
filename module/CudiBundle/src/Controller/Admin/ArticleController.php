@@ -63,6 +63,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -173,6 +175,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 $history = new History($article);
                 $this->getEntityManager()->persist($history);
 

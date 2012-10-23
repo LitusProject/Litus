@@ -49,6 +49,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d#m#Y', $formData['date']));
                 $this->getEntityManager()->persist($album);
 
@@ -104,6 +106,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $album->setDate(\DateTime::createFromFormat('d#m#Y', $formData['date']));
 
                 $languages = $this->getEntityManager()

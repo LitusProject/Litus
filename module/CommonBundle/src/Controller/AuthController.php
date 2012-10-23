@@ -36,6 +36,8 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(

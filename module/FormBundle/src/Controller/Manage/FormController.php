@@ -138,6 +138,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 foreach ($formSpecification->getFields() as $field) {
 

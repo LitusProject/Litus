@@ -51,6 +51,8 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 if ('' == $formData['name']) {
                     do {
                         $name = $this->_createRandomName();
@@ -107,6 +109,8 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $slug->setName($formData['name'])
                     ->setUrl($formData['url']);
 

@@ -57,6 +57,8 @@ class GroupController extends \SportBundle\Component\Controller\RunController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $createGroup = true;
                 foreach ($allMembers as $memberNb) {
                     if ('' != $formData['university_identification_' . $memberNb]) {
