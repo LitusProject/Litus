@@ -184,7 +184,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'timeout' => 10,
             )
         );
-        $fp = file_get_contents($url, false, stream_context_create($opts), -1, 40000);
+        $fp = @file_get_contents($url, false, stream_context_create($opts), -1, 40000);
         if ($fp)
             $resultPage = @simplexml_load_file($url);
 
@@ -317,11 +317,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $resultPage = @simplexml_load_file(
-            $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_result_page')
-        );
+        $url = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.run_result_page');
+
+        $fp = @file_get_contents($url, false, stream_context_create($opts), -1, 40000);
+        if ($fp)
+            $resultPage = @simplexml_load_file($url);
 
         $returnArray = array();
         if (false !== $resultPage) {
