@@ -14,7 +14,9 @@
 
 namespace SportBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    SportBundle\Form\Admin\Runner\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * RunController
@@ -41,6 +43,64 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    public function identificationAction()
+    {
+        $runners = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Runner')
+            ->findAllWithoutIdentification();
+
+        return new ViewModel(
+            array(
+                'runners' => $runners,
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        if (!($runner = $this->_getRunner()))
+            return new ViewModel();
+
+        $form = new EditForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $runner->setRunnerIdentification($formData['runner_identification']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The runner was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_run',
+                    array(
+                        'action' => 'identification'
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'runner' => $runner,
+                'form' => $form,
+            )
+        );
+    }
+
     public function groupsAction()
     {
         $paginator = $this->paginator()->createFromEntity(
@@ -58,6 +118,53 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
+    }
+
+    public function _getRunner()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the runner!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_run',
+                array(
+                    'action' => 'identification'
+                )
+            );
+
+            return;
+        }
+
+        $runner = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Runner')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $runner) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No runner with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_run',
+                array(
+                    'action' => 'identification'
+                )
+            );
+
+            return;
+        }
+
+        return $runner;
     }
 
     /**
