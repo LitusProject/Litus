@@ -37,7 +37,9 @@
                     lastName: $('#last_name').val(),
                     firstName: $('#first_name').val(),
                 });
-                $('#university_identification, #last_name, #first_name').val('').removeProp('disabled');
+                $('#university_identification').val('').removeProp('disabled');
+                $('#last_name').val('').removeProp('disabled');
+                $('#first_name').val('').removeProp('disabled');
                 $('#added_success').addClass('in');
                 setTimeout(function () {$('.flashmessage').removeClass('in')}, 2000);
             }).prop('disabled', 'disabled');
