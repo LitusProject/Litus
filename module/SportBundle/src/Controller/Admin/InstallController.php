@@ -62,7 +62,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'sportbundle' => array(
                     'admin_run' => array(
-                        'edit', 'groups', 'identification', 'queue', 'update', 'laps'
+                        'edit', 'groups', 'identification', 'queue', 'update', 'laps', 'killSocket'
                     ),
                     'run_group' => array(
                         'add', 'getName'
