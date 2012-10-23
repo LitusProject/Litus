@@ -138,6 +138,10 @@
                         console.log(data);
                     }
                 }, 'json');
+
+                setTimeout(function() {
+                    $('#socket_killed_success').addClass('hide');
+                }, 2000);
             });
 
             {% if hasAccess('admin_run', 'next') %}
