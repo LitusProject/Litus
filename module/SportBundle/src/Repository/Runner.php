@@ -38,7 +38,10 @@ class Runner extends EntityRepository
         $resultSet = $query->select('r')
             ->from('SportBundle\Entity\Runner', 'r')
             ->where(
-                $query->expr()->isNull('r.runnerIdentification')
+                $query->expr()->andX(
+                    $query->expr()->isNull('r.runnerIdentification'),
+                    $query->expr()->isNull('r.academic')
+                )
             )
             ->getQuery()
             ->getResult();
