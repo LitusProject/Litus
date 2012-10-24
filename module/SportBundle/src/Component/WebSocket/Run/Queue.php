@@ -302,7 +302,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'timeout' => 1,
             )
         );
-        $fileContents = file_get_contents($url, false, stream_context_create($opts));
+        $fileContents = @file_get_contents($url, false, stream_context_create($opts));
 
         $resultPage = null;
         if (false !== $fileContents)
