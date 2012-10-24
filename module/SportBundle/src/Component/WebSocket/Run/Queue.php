@@ -123,8 +123,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueueToAll()
     {
+        $queue= $this->_getJsonQueue();
         foreach($this->getUsers() as $user)
-            $this->sendQueue($user, $this->_getJsonQueue());
+            $this->sendQueue($user, $queue);
     }
 
     private function _addToQueue($data)
