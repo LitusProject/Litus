@@ -84,14 +84,22 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if ($showInfo != '1')
             return null;
 
-        $resultPage = @simplexml_load_file(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_result_page')
+        $url = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.run_result_page');
+        $opts = array('http' =>
+            array(
+                'timeout' => 1,
+            )
         );
+        $fileContents = @file_get_contents($url, false, stream_context_create($opts));
+
+        $resultPage = null;
+        if (false !== $fileContents)
+            $resultPage = simplexml_load_string($fileContents);
 
         $returnArray = array();
-        if (false !== $resultPage) {
+        if (null !== $resultPage) {
             $teamId = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
