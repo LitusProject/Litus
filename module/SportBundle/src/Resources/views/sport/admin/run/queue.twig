@@ -129,7 +129,9 @@
                 displayLaps: displayLaps
             });
 
+            {% if hasAccess('admin_run', 'killSocket') %}
             $('#killSocket').click(function() {
+                e.preventDefault();
                 $.post('{{ url('admin_run', {"action": "killSocket"})}}', function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
@@ -143,6 +145,7 @@
                     $('#socket_killed_success').addClass('hide');
                 }, 2000);
             });
+            {% endif %}
 
             {% if hasAccess('admin_run', 'next') %}
                 $(document).on('keypress.space', spacePressed);

@@ -203,7 +203,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $data = (object) array(
             'laps' => (object) array(
                 'number' => (object) array(
-                    'official' => $officialResults['nbLaps'],
+                    'official' => isset($officialResults['nbLaps']) ? $officialResults['nbLaps'] :  0,
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
@@ -319,7 +319,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
             $teamData = $resultPage->xpath('//team[@id=\'' . $teamId . '\']');
 
-            $returnArray = array(
+            return array(
                 'nbLaps' => $teamData[0]->rounds->__toString(),
                 'position' => round($teamData[0]->position->__toString() * 100),
                 'speed' => $teamData[0]->speed_kmh->__toString(),
@@ -327,7 +327,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
-        return $returnArray;
+        return;
     }
 
     private function _getGroupsOfFriends($number = 5)

@@ -247,7 +247,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
             if($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $cashRegister = new CashRegister();
 
                 $devices = $this->getEntityManager()
@@ -322,6 +322,19 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             array(
                 'session' => $session,
                 'items' => $items,
+            )
+        );
+    }
+
+    public function killSocketAction()
+    {
+        $this->initAjax();
+
+        system("kill $(ps aux | grep -i \"php bin/CudiBundle/queue.php --run\" | grep -v grep | awk '{print $2}')");
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
             )
         );
     }
