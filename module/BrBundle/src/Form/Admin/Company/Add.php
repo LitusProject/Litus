@@ -116,73 +116,47 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = $this->get('address')->getInputFilter();
-            $factory = new InputFactory();
+        $inputFilter = $this->get('address')->getInputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'company_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new CompanyNameValidator($this->_entityManager),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'company_name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new CompanyNameValidator($this->_entityManager),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'website',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'uri',
-                            )
-                        ),
-                    )
-                )
-            );
-
-            if (isset($this->data['page']) && $this->data['page']) {
-                $inputFilter->add(
-                    $factory->createInput(
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'website',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
                         array(
-                            'name'     => 'description',
-                            'required' => false,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
+                            'name' => 'uri',
                         )
-                    )
-                );
+                    ),
+                )
+            )
+        );
 
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'summary',
-                            'required' => false,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
-                    )
-                );
-            }
-
+        if (isset($this->data['page']) && $this->data['page']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'sector',
-                        'required' => true,
+                        'name'     => 'description',
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -193,16 +167,40 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'vat_number',
-                        'required' => true,
+                        'name'     => 'summary',
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
                     )
                 )
             );
-            $this->_inputFilter = $inputFilter;
         }
-        return $this->_inputFilter;
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'sector',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'vat_number',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

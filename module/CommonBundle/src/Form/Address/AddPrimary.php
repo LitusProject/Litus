@@ -163,7 +163,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             )
         );
 
-        /*if ($this->get($this->_prefix . 'address_city')->getValue() != 'other') {
+        if ($this->get($this->_prefix . 'address_city')->getValue() != 'other') {
             $inputs[] = $factory->createInput(
                 array(
                     'name'     => $this->_prefix . 'address_street',
@@ -220,7 +220,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                     ),
                 )
             );
-        }*/
+        }
 
         $inputs[] = $factory->createInput(
             array(

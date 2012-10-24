@@ -48,35 +48,32 @@ class Logo extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'logo',
-                        'required' => false,
-                        'validators' => array(
-                            array(
-                                'name' => 'fileextension',
-                                'options' => array(
-                                    'extension' => 'jpg,png',
-                                ),
-                            ),
-                            array(
-                                'name' => 'filefilessize',
-                                'options' => array(
-                                    'extension' => '2MB',
-                                ),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'logo',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'fileextension',
+                            'options' => array(
+                                'extension' => 'jpg,png',
                             ),
                         ),
-                    )
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'extension' => '2MB',
+                            ),
+                        ),
+                    ),
                 )
-            );
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

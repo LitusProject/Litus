@@ -70,17 +70,14 @@ class Edit extends Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
+        $inputFilter = parent::getInputFilter();
 
-            $inputFilter->get('name')
-                ->setRequired(true)
-                ->setValidators(
-                    new NameValidator($this->_documentManager, $this->_slug)
-                );
+        $inputFilter->get('name')
+            ->setRequired(true)
+            ->setValidators(
+                new NameValidator($this->_documentManager, $this->_slug)
+            );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

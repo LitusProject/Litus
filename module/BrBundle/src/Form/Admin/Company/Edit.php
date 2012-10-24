@@ -85,27 +85,25 @@ class Edit extends Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
-            $factory = new InputFactory();
+        $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->remove('company_name');
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'company_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new CompanyNameValidator($this->_entityManager, $this->_company),
-                        ),
-                    )
+        $inputFilter->remove('company_name');
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'company_name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new CompanyNameValidator($this->_entityManager, $this->_company),
+                    ),
                 )
-            );
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+            )
+        );
+
+        return $inputFilter;
     }
 }

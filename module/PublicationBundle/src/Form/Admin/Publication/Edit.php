@@ -63,32 +63,28 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
         $this->setData($formData);
     }
 
-    public function getInputFilter() {
-        if ($this->_inputFilter == null) {
+    public function getInputFilter()
+    {
+        $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter = parent::getInputFilter();
-            $factory = new InputFactory();
+        $inputFilter->remove('title');
 
-            $inputFilter->remove('title');
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'title',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new PublicationTitleValidator($this->_entityManager, $this->_id)
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'title',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PublicationTitleValidator($this->_entityManager, $this->_id)
+                    ),
                 )
-            );
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

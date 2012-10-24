@@ -53,33 +53,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'text',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'text',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'type',
-                        'required' => true,
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'type',
+                    'required' => true,
                 )
-            );
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+            )
+        );
+
+        return $inputFilter;
     }
 }

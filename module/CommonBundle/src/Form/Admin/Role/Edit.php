@@ -84,11 +84,9 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
-            $inputFilter->remove('name');
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        $inputFilter = parent::getInputFilter();
+        $inputFilter->remove('name');
+
+        return $inputFilter;
     }
 }
