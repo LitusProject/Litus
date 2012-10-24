@@ -223,7 +223,7 @@
         }
 
         function updateLapInfo() {
-            if (!$('#currentLapInfo').is(':visible') || $('#currentLapInfo').data('position') == 'N/A')
+            if (!$('#currentLapInfo').is(':visible'))
                 return;
 
             var lapTime = $('#currentLapInfo').data('lapTime');
@@ -231,7 +231,8 @@
             $('#currentLapInfo').data('lapTime', lapTime);
             $('#currentLapTime').html(Math.floor(lapTime / 60) + ':' + (lapTime % 60 < 10 ? "0" + lapTime % 60 : lapTime % 60));
 
-            $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('position') / $('#currentLapInfo').data('startSimulationTime') * lapTime) + '%');
+            if ($('#currentLapInfo').data('position') !== 'N/A')
+                $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('position') / $('#currentLapInfo').data('startSimulationTime') * lapTime) + '%');
         }
     </script>
 
