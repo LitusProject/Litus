@@ -166,12 +166,13 @@
                     $('#currentLapInfo').show().data({
                         'startSimulationTime': lapTime,
                         'lapTime': lapTime,
-                        'position': data.officialResults ? data.officialResults.position : 100,
+                        'position': data.officialResults ? data.officialResults.position : 'N/A',
                         'speed': data.officialResults ? data.officialResults.speed : 'N/A',
                     });
                     $('#currentLapTime').html(lap.lapTime);
                     $('#officialSpeed').html(data.officialResults ? data.officialResults.speed : 'N/A');
-                    $('#currentLapInfo .bar').css('width', (data.officialResults ? data.officialResults.position : 100) + '%');
+                    if (data.officialResults)
+                        $('#currentLapInfo .bar').css('width', data.officialResults.position + '%');
 
                     foundCurrent = true;
                 } else if (lap.state == 'previous') {
@@ -222,7 +223,7 @@
         }
 
         function updateLapInfo() {
-            if (!$('#currentLapInfo').is(':visible'))
+            if (!$('#currentLapInfo').is(':visible') || $('#currentLapInfo').data('position') == 'N/A')
                 return;
 
             var lapTime = $('#currentLapInfo').data('lapTime');
