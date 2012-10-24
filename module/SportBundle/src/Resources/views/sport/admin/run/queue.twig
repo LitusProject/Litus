@@ -130,7 +130,7 @@
             });
 
             {% if hasAccess('admin_run', 'killSocket') %}
-            $('#killSocket').click(function() {
+            $('#killSocket').click(function(e) {
                 e.preventDefault();
                 $.post('{{ url('admin_run', {"action": "killSocket"})}}', function (data) {
                     if (data && 'success' == data.status) {
