@@ -150,6 +150,7 @@
             $('#nextRunners').html('');
             $('#groupsOfFriends').html('');
 
+            var nextNum = 0;
             $(data.laps).each(function (num, lap) {
                 if (undefined == lap)
                     return true;
@@ -178,7 +179,8 @@
                             $('<td>').html(lap.lapTime)
                         )
                     );
-                } else if (lap.state == 'next') {
+                } else if (lap.state == 'next' && nextNum < 5) {
+                    nextNum++;
                     $('#nextRunners').append(
                         $('<tr>').append(
                             $('<td>').html($('#nextRunners tr').length + 1),
