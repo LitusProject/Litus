@@ -175,29 +175,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getJsonQueue()
     {
-        $url = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.run_result_page');
-
-        $opts = array('http' =>
-            array(
-                'timeout' => 5,
-            )
-        );
-        $fileContents = file_get_contents($url, false, stream_context_create($opts));
-
-        $resultPage = null;
-        if (false !== $fileContents)
-            $resultPage = simplexml_load_string($fileContents);
-
-        $nbOfficialLaps = null;
-        if (null !== $resultPage) {
-            $teamId = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_team_id');
-
-            $nbOfficialLaps = (string) $resultPage->xpath('//team[@id=\'' . $teamId . '\']')[0]->rounds;
-        }
+        $officialResults = $this->_getOfficialResults();
 
         $nbLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
@@ -225,7 +203,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $data = (object) array(
             'laps' => (object) array(
                 'number' => (object) array(
-                    'official' => $nbOfficialLaps,
+                    'official' => $officialResults['nbLaps'],
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
@@ -324,7 +302,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getConfigValue('sport.run_result_page');
         $opts = array('http' =>
             array(
-                'timeout' => 5,
+                'timeout' => 1,
             )
         );
         $fileContents = file_get_contents($url, false, stream_context_create($opts));
