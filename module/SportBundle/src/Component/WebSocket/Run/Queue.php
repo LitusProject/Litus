@@ -175,8 +175,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getJsonQueue()
     {
-        $officialResults = $this->_getOfficialResults();
-
         $nbLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->countAll($this->_getAcademicYear());
@@ -203,7 +201,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $data = (object) array(
             'laps' => (object) array(
                 'number' => (object) array(
-                    'official' => isset($officialResults['nbLaps']) ? $officialResults['nbLaps'] :  'N/A',
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),

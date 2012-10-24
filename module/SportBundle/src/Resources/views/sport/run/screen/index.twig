@@ -130,19 +130,22 @@
         });
 
         function displayLaps(data) {
-            $('#nbOfficialLaps').html(data.number.official);
-            $('#nbOfficialLapsText').html((data.number.official == 1 ? 'lap' : 'laps'));
             $('#uniqueRunners').html(data.number.uniqueRunners);
             $('#uniqueRunnersText').html((data.number.uniqueRunners == 1 ? 'runner' : 'runners'));
             $('#uniqueRunnersTextVerb').html((data.number.uniqueRunners == 1 ? 'has' : 'have'));
 
-            if (data.officialResults.behind > 0) {
-                $('#nbLapsBehind').html(data.officialResults.behind);
-                $('#behindFirstOne').show();
-                $('#firtOne').hide();
-            } else {
-                $('#behindFirstOne').hide();
-                $('#firtOne').show();
+            if (data.officialResults) {
+                $('#nbOfficialLaps').html(data.officialResults.nbLaps);
+                $('#nbOfficialLapsText').html((data.officialResults.nbLaps == 1 ? 'lap' : 'laps'));
+
+                if (data.officialResults.behind > 0) {
+                    $('#nbLapsBehind').html(data.officialResults.behind);
+                    $('#behindFirstOne').show();
+                    $('#firtOne').hide();
+                } else {
+                    $('#behindFirstOne').hide();
+                    $('#firtOne').show();
+                }
             }
 
             var foundCurrent = false;
