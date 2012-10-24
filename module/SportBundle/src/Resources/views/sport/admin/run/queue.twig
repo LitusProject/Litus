@@ -237,6 +237,10 @@
                 $('#lap_removed_success').removeClass('hide');
                 $('.item-' + id).remove();
                 removeLap.modal('hide');
+
+                setTimeout(function() {
+                    $('#lap_removed_success').addClass('hide');
+                }, 2000);
             });
             removeLap.modal();
         }
