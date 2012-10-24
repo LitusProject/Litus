@@ -203,7 +203,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $data = (object) array(
             'laps' => (object) array(
                 'number' => (object) array(
-                    'official' => isset($officialResults['nbLaps']) ? $officialResults['nbLaps'] :  0,
+                    'official' => isset($officialResults['nbLaps']) ? $officialResults['nbLaps'] :  'N/A',
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
