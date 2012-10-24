@@ -166,12 +166,12 @@
                     $('#currentLapInfo').show().data({
                         'startSimulationTime': lapTime,
                         'lapTime': lapTime,
-                        'position': data.officialResults.position,
-                        'speed': data.officialResults.speed,
+                        'position': data.officialResults ? data.officialResults.position : 1,
+                        'speed': data.officialResults ? data.officialResults.speed : 'N/A',
                     });
                     $('#currentLapTime').html(lap.lapTime);
-                    $('#officialSpeed').html(data.officialResults.speed);
-                    $('#currentLapInfo .bar').css('width', data.officialResults.position + '%');
+                    $('#officialSpeed').html(data.officialResults ? data.officialResults.speed : 'N/A');
+                    $('#currentLapInfo .bar').css('width', (data.officialResults ? data.officialResults.position : 1) + '%');
 
                     foundCurrent = true;
                 } else if (lap.state == 'previous') {
