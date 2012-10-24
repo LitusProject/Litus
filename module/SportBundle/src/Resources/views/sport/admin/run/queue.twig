@@ -171,7 +171,7 @@
             $('#queue').html('');
 
             $('#nbOwnLaps').html(data.number.own);
-            $('#nbOfficialLaps').html(data.number.official);
+            $('#nbOfficialLaps').html(data.officialResults.nbLaps);
 
             {% if hasAccess('admin_run', 'next') %}
             $('#nextLap, #stopLap').unbind('click').click(function () {$('#queue').runQueue('startLap')});
