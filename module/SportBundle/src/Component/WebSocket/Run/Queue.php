@@ -137,9 +137,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $academic = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
-
-            $data->firstName = $academic->getFirstName();
-            $data->lastName = $academic->getLastName();
+            if (null !== $academic) {
+                $data->firstName = $academic->getFirstName();
+                $data->lastName = $academic->getLastName();
+            }
         }
 
         $runner = $this->_entityManager
