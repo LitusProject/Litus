@@ -61,7 +61,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     protected function onConnect(User $user)
     {
-        $this->sendQueue($user);
+        $this->sendQueue($user, $this->_getJsonQueue());
     }
 
     /**
@@ -113,9 +113,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
      */
-    private function sendQueue(User $user)
+    private function sendQueue(User $user, $json)
     {
-        $this->sendText($user, $this->_getJsonQueue());
+        $this->sendText($user, $json);
     }
 
     /**
@@ -124,7 +124,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private function sendQueueToAll()
     {
         foreach($this->getUsers() as $user)
-            $this->sendQueue($user);
+            $this->sendQueue($user, $this->_getJsonQueue());
     }
 
     private function _addToQueue($data)
@@ -297,9 +297,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $url = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('sport.run_result_page');
+            echo 'official';
         $opts = array('http' =>
             array(
-                'timeout' => 1,
+                'timeout' => 0.5,
             )
         );
         $fileContents = @file_get_contents($url, false, stream_context_create($opts));
@@ -310,6 +311,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nbOfficialLaps = null;
         if (null !== $resultPage) {
+            echo 'done' . PHP_EOL;
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
@@ -323,7 +325,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'behind' => $teamData[0]->behind->__toString()
             );
         }
-
+echo 'timeout' . PHP_EOL;
         return;
     }
 
