@@ -104,75 +104,70 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
-
-            if (isset($this->data['person_id']) && '' == $this->data['person_id']) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name' => 'person_name',
-                            'required' => true,
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new DriverValidator(
-                                    $this->_entityManager,
-                                    array(
-                                        'byId' => false,
-                                    )
-                                )
-                            ),
-                        )
-                    )
-                );
-            } else {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name' => 'person_id',
-                            'required' => true,
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new DriverValidator(
-                                    $this->_entityManager,
-                                    array(
-                                        'byId' => true,
-                                    )
-                                )
-                            ),
-                        )
-                    )
-                );
-            }
-
+        if (isset($this->data['person_id']) && '' == $this->data['person_id']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name' => 'color',
+                        'name' => 'person_name',
+                        'required' => true,
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'regex',
-                                'options' => array(
-                                    'pattern' => '/^#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/',
-                                ),
-                            ),
+                            new DriverValidator(
+                                $this->_entityManager,
+                                array(
+                                    'byId' => false,
+                                )
+                            )
                         ),
                     )
                 )
             );
-
-            $this->_inputFilter = $inputFilter;
+        } else {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name' => 'person_id',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new DriverValidator(
+                                $this->_entityManager,
+                                array(
+                                    'byId' => true,
+                                )
+                            )
+                        ),
+                    )
+                )
+            );
         }
 
-        return $this->_inputFilter;
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'color',
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'regex',
+                            'options' => array(
+                                'pattern' => '/^#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

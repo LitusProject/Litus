@@ -99,50 +99,47 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $units = $this->_getUnits();
-            foreach($units as $unit) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'unit_' . $unit->getId(),
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+        $units = $this->_getUnits();
+        foreach($units as $unit) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'unit_' . $unit->getId(),
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
                             ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        )
+                        ),
                     )
-                );
-            }
-
-            $devices = $this->_getDevices();
-            foreach($devices as $device) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'device_' . $device->getId(),
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new PriceValidator(),
-                            ),
-                        )
-                    )
-                );
-            }
-
-            $this->_inputFilter = $inputFilter;
+                )
+            );
         }
-        return $this->_inputFilter;
+
+        $devices = $this->_getDevices();
+        foreach($devices as $device) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'device_' . $device->getId(),
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PriceValidator(),
+                        ),
+                    )
+                )
+            );
+        }
+
+        return $inputFilter;
     }
 }

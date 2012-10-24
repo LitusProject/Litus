@@ -163,15 +163,51 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'group_name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'happy_hour_one',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'happy_hour_two',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        foreach ($this->_allMembers as $i => $memberNb) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'group_name',
-                        'required' => true,
+                        'name'     => 'university_identification_' . $memberNb,
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -182,8 +218,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'happy_hour_one',
-                        'required' => true,
+                        'name'     => 'first_name_' . $memberNb,
+                        'required' => ($i < 2),
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -194,55 +230,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'happy_hour_two',
-                        'required' => true,
+                        'name'     => 'last_name_' . $memberNb,
+                        'required' => ($i < 2),
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
                     )
                 )
             );
-
-            foreach ($this->_allMembers as $i => $memberNb) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'university_identification_' . $memberNb,
-                            'required' => false,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
-                    )
-                );
-
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'first_name_' . $memberNb,
-                            'required' => ($i < 2),
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
-                    )
-                );
-
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'last_name_' . $memberNb,
-                            'required' => ($i < 2),
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
-                    )
-                );
-            }
-
-            $this->_inputFilter = $inputFilter;
         }
-        return $this->_inputFilter;
+
+        return $inputFilter;
     }
 }

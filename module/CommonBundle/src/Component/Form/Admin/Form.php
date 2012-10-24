@@ -25,11 +25,6 @@ use Zend\InputFilter\InputFilterAwareInterface;
 abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 {
     /**
-     * @var \Zend\InputFilter\InputFilter
-     */
-    protected $_inputFilter;
-
-    /**
      * @param null|string|int $name Optional name for the element
      */
     public function __construct($name = null)
@@ -103,7 +98,8 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     public function getFormData($formData)
     {
         foreach($this->getData() as $key => $value) {
-            $formData->{$key} = $value;
+            if (null !== $value)
+                $formData->{$key} = $value;
         }
         return $formData;
     }

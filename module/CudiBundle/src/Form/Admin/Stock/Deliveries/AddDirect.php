@@ -39,14 +39,11 @@ class AddDirect extends Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
+        $inputFilter = parent::getInputFilter();
 
-            $inputFilter->remove('article_id');
-            $inputFilter->remove('article');
+        $inputFilter->remove('article_id');
+        $inputFilter->remove('article');
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

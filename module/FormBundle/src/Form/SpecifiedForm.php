@@ -94,32 +94,29 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            foreach ($this->_form->getFields() as $fieldSpecification) {
-                if ($fieldSpecification instanceof StringField) {
-                    $inputFilter->add(
-                        $factory->createInput(
-                            array(
-                                'name'     => 'field-' . $fieldSpecification->getId(),
-                                'required' => $fieldSpecification->isRequired(),
-                                'filters'  => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                            )
+        foreach ($this->_form->getFields() as $fieldSpecification) {
+            if ($fieldSpecification instanceof StringField) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'field-' . $fieldSpecification->getId(),
+                            'required' => $fieldSpecification->isRequired(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
                         )
-                    );
-                } elseif ($fieldSpecification instanceof Dropdown) {
-                } elseif ($fieldSpecification instanceof CheckboxField) {
-                } else {
-                    throw new UnsupportedTypeException('This field type is unknown!');
-                }
+                    )
+                );
+            } elseif ($fieldSpecification instanceof Dropdown) {
+            } elseif ($fieldSpecification instanceof CheckboxField) {
+            } else {
+                throw new UnsupportedTypeException('This field type is unknown!');
             }
-
-            $this->_inputFilter = $inputFilter;
         }
-        return $this->_inputFilter;
+
+        return $inputFilter;
     }
 }
