@@ -319,6 +319,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
+        $url = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.run_result_page');
         $opts = array('http' =>
             array(
                 'timeout' => 5,
