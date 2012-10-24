@@ -298,7 +298,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $url = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('sport.run_result_page');
-            echo 'official';
         $opts = array('http' =>
             array(
                 'timeout' => 0.5,
@@ -312,7 +311,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nbOfficialLaps = null;
         if (null !== $resultPage) {
-            echo 'done' . PHP_EOL;
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
@@ -326,7 +324,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'behind' => $teamData[0]->behind->__toString()
             );
         }
-echo 'timeout' . PHP_EOL;
+
         return;
     }
 
