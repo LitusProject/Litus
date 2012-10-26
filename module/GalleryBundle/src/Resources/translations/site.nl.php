@@ -1,6 +1,6 @@
 <?php
 return array(
-    'Gallery' => 'Gallerij',
+    'Pictures' => 'Foto\'s',
     'Close' => 'Sluit',
     'Previous' => 'Vorige',
     'Next' => 'Volgende',
