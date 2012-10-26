@@ -233,8 +233,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
                     $image = new Imagick($upload->getFileName());
 
-                    if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
-                        $fileName = '/' . $event->getEvent()->getPoster();
+                    if ($event->getPoster() != '' || $event->getPoster() !== null) {
+                        $fileName = '/' . $event->getPoster();
                     } else {
                         $fileName = '';
                         do{
@@ -242,7 +242,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         } while (file_exists($filePath . $fileName));
                     }
                     $image->writeImage($filePath . $fileName);
-                    $event->getEvent()->setPoster($fileName);
+                    $event->setPoster($fileName);
 
                     $this->getEntityManager()->flush();
 
@@ -255,7 +255,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_company_event',
+                        'admin_calendar',
                         array(
                             'action' => 'editPoster',
                             'id' => $event->getId(),
