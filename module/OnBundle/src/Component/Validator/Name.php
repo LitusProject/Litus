@@ -68,13 +68,10 @@ class Name extends \Zend\Validator\AbstractValidator
             ->getRepository('OnBundle\Document\Slug')
             ->findOneByName($value);
 
-        if (null !== $slug) {
-            if (null === $this->_slug || $slug === $this->_slug) {
-                $this->error(self::TITLE_EXISTS);
-                return false;
-            }
-        }
+        if (null === $slug || ($this->_slug && $slug == $this->_slug))
+            return true;
 
-        return true;
+        $this->error(self::TITLE_EXISTS);
+        return false;
     }
 }
