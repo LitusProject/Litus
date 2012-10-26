@@ -31,12 +31,18 @@
             });
 
             $('#queue').click(function (e) {
+                if ($('#university_identification').val().length != 8)
+                    return;
+
                 e.preventDefault();
                 $(document).runQueue('addToQueue', {
                     universityIdentification: $('#university_identification').val(),
                     lastName: $('#last_name').val(),
                     firstName: $('#first_name').val(),
                 });
+                $('#university_identification').removeProp('disabled').val('');
+                $('#last_name').removeProp('disabled').val('');
+                $('#first_name').removeProp('disabled').val('');
                 $('#added_success').addClass('in');
                 setTimeout(function () {$('.flashmessage').removeClass('in')}, 2000);
             }).prop('disabled', 'disabled');

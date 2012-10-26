@@ -30,7 +30,24 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CalendarBundle\Entity\Nodes\Event')
-                ->findAll(),
+                ->findAllActive(0),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                ->findAllOld(),
             $this->getParam('page')
         );
 
@@ -51,6 +68,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $event = new Event(
                     $this->getAuthentication()->getPersonObject(),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
@@ -121,6 +140,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $event->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
 
@@ -214,6 +235,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('calendar.poster_path');
@@ -227,8 +250,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
                     $image = new Imagick($upload->getFileName());
 
-                    if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
-                        $fileName = '/' . $event->getEvent()->getPoster();
+                    if ($event->getPoster() != '' || $event->getPoster() !== null) {
+                        $fileName = '/' . $event->getPoster();
                     } else {
                         $fileName = '';
                         do{
@@ -236,7 +259,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         } while (file_exists($filePath . $fileName));
                     }
                     $image->writeImage($filePath . $fileName);
-                    $event->getEvent()->setPoster($fileName);
+                    $event->setPoster($fileName);
 
                     $this->getEntityManager()->flush();
 
@@ -249,7 +272,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_company_event',
+                        'admin_calendar',
                         array(
                             'action' => 'editPoster',
                             'id' => $event->getId(),

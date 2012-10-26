@@ -69,6 +69,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $commonEvent = new CommonEvent(
                     $this->getAuthentication()->getPersonObject(),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
@@ -148,6 +150,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $event->getEvent()
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
@@ -241,6 +245,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('calendar.poster_path');
@@ -254,8 +260,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $image = new Imagick($upload->getFileName());
 
-                    if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
-                        $fileName = '/' . $event->getEvent()->getPoster();
+                    if ($event->getPoster() != '' || $event->getPoster() !== null) {
+                        $fileName = '/' . $event->getPoster();
                     } else {
                         $fileName = '';
                         do{
@@ -263,7 +269,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         } while (file_exists($filePath . $fileName));
                     }
                     $image->writeImage($filePath . $fileName);
-                    $event->getEvent()->setPoster($fileName);
+                    $event->setPoster($fileName);
 
                     $this->getEntityManager()->flush();
 

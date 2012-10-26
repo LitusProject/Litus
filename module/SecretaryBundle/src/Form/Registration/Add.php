@@ -251,165 +251,162 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
+        $inputFilter = new InputFilter();
 
-            $inputs = $this->get('secondary_address')
+        $inputs = $this->get('secondary_address')
+            ->getInputs();
+        foreach($inputs as $input)
+            $inputFilter->add($input);
+
+        $inputs =$this->get('primary_address')
                 ->getInputs();
-            foreach($inputs as $input)
-                $inputFilter->add($input);
+        foreach($inputs as $input)
+            $inputFilter->add($input);
 
-            $inputs =$this->get('primary_address')
-                    ->getInputs();
-            foreach($inputs as $input)
-                $inputFilter->add($input);
+        $factory = new InputFactory();
 
-            $factory = new InputFactory();
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'first_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'first_name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'last_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'last_name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'birthday',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'Date',
-                                'options' => array(
-                                    'format' => 'd/m/Y',
-                                ),
-                            ),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'sex',
-                        'required' => true,
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'profile',
-                        'required' => false,
-                        'validators' => array(
-                            array(
-                                'name' => 'fileextension',
-                                'options' => array(
-                                    'extension' => 'jpg,png',
-                                ),
-                            ),
-                            array(
-                                'name' => 'filefilessize',
-                                'options' => array(
-                                    'extension' => '2MB',
-                                ),
-                            ),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'phone_number',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new PhoneNumberValidator(),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'university_email',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new NoAtValidator(),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'personal_email',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
-                            ),
-                        ),
-                    )
-                )
-            );
-
-            if (!$this->_conditionsAlreadyChecked) {
-                $inputFilter->add(
-                    $factory->createInput(
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'birthday',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
                         array(
-                            'name'     => 'conditions',
-                            'required' => true,
-                            'validators' => array(
-                                array(
-                                    'name' => 'notempty',
-                                    'options' => array(
-                                        'type' => 16,
-                                    ),
+                            'name' => 'Date',
+                            'options' => array(
+                                'format' => 'd/m/Y',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'sex',
+                    'required' => true,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'profile',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'fileextension',
+                            'options' => array(
+                                'extension' => 'jpg,png',
+                            ),
+                        ),
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'extension' => '2MB',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'phone_number',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PhoneNumberValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'university_email',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new NoAtValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'personal_email',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'EmailAddress',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        if (!$this->_conditionsAlreadyChecked) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'conditions',
+                        'required' => true,
+                        'validators' => array(
+                            array(
+                                'name' => 'notempty',
+                                'options' => array(
+                                    'type' => 16,
                                 ),
                             ),
-                        )
+                        ),
                     )
-                );
-            }
-
-            $this->_inputFilter = $inputFilter;
+                )
+            );
         }
-        return $this->_inputFilter;
+
+        return $inputFilter;
     }
 }

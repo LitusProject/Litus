@@ -36,6 +36,22 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllOld()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                    $query->expr()->lt('s.endDate', ':now')
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllActiveByEvent(Event $event)
     {
         $query = $this->_em->createQueryBuilder();

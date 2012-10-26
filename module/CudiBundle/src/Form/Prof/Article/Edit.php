@@ -47,14 +47,11 @@ class Edit extends Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
+        $inputFilter = parent::getInputFilter();
 
-            $inputFilter->remove('subject');
-            $inputFilter->remove('subject_id');
+        $inputFilter->remove('subject');
+        $inputFilter->remove('subject_id');
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

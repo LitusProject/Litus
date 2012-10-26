@@ -80,64 +80,61 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'logo',
-                        'required' => false,
-                        'validators' => array(
-                            array(
-                                'name' => 'fileisimage',
-                            ),
-                            array(
-                                'name' => 'filefilessize',
-                                'options' => array(
-                                    'extension' => '2MB',
-                                ),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'logo',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'fileisimage',
+                        ),
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'extension' => '2MB',
                             ),
                         ),
-                    )
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'type',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new TypeValidator($this->_entityManager, $this->_company),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'type',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new TypeValidator($this->_entityManager, $this->_company),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'url',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'uri',
-                            )
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'url',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'uri',
+                        )
+                    ),
                 )
-            );
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

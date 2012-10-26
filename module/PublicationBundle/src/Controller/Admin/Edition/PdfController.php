@@ -63,6 +63,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $upload = new FileUpload();
 

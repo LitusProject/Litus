@@ -57,29 +57,26 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'students',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'students',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
                         ),
-                        'validators' => array(
-                            array(
-                                'name' => 'int',
-                            ),
-                        ),
-                    )
+                    ),
                 )
-            );
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

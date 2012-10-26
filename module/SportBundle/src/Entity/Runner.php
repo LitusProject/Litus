@@ -53,6 +53,13 @@ class Runner
     private $academic;
 
     /**
+     * @var string The user's university identification
+     *
+     * @ORM\Column(name="runner_identification", type="string", length=8, nullable=true, unique=true)
+     */
+    private $runnerIdentification;
+
+    /**
      * @var string The runner's first name
      *
      * @ORM\Column(name="first_name", type="string")
@@ -151,6 +158,16 @@ class Runner
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+        return $this;
+    }
+
+    /**
+     * @param string $runnerIdentification
+     * @return \SportBundle\Entity\Runner
+     */
+    public function setRunnerIdentification($runnerIdentification)
+    {
+        $this->runnerIdentification = $runnerIdentification;
         return $this;
     }
 

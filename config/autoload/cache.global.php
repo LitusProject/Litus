@@ -35,3 +35,5 @@ return array(
         ),
     ),
 );
+
+return array();

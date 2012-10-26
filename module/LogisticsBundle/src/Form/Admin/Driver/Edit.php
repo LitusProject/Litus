@@ -60,17 +60,13 @@ class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
         $this->populateFromDriver($driver);
     }
 
-    public function getInputFilter() {
-        if ($this->_inputFilter == null) {
+    public function getInputFilter()
+    {
+        $inputFilter = parent::getInputFilter();
 
-            $inputFilter = parent::getInputFilter();
+        $inputFilter->remove('person_id');
+        $inputFilter->remove('person_name');
 
-            $inputFilter->remove('person_id');
-            $inputFilter->remove('person_name');
-
-            $this->_inputFilter = $inputFilter;
-        }
-
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

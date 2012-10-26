@@ -117,94 +117,92 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'username',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'username',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'alnum'
                         ),
-                        'validators' => array(
-                            array(
-                                'name' => 'alnum'
-                            ),
-                            new UsernameValidator($this->_entityManager),
-                        ),
-                    )
+                        new UsernameValidator($this->_entityManager),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'first_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'first_name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'last_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'last_name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'email',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'email',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'EmailAddress',
                         ),
-                        'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
-                            ),
-                        ),
-                    )
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'phone_number',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new PhoneNumberValidator(),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'phone_number',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PhoneNumberValidator(),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'sex',
-                        'required' => true,
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'sex',
+                    'required' => true,
                 )
-            );
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+            )
+        );
+
+        return $inputFilter;
     }
 }

@@ -69,12 +69,18 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'unit',
+                    'required' => true,
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

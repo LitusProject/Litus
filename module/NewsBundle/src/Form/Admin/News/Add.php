@@ -93,40 +93,38 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            foreach($this->getLanguages() as $language) {
-                if ($language->getAbbrev() !== \Locale::getDefault())
-                    continue;
+        foreach($this->getLanguages() as $language) {
+            if ($language->getAbbrev() !== \Locale::getDefault())
+                continue;
 
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'title_' . $language->getAbbrev(),
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'title_' . $language->getAbbrev(),
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     )
-                );
+                )
+            );
 
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'content_' . $language->getAbbrev(),
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'content_' . $language->getAbbrev(),
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     )
-                );
-            }
-            $this->_inputFilter = $inputFilter;
+                )
+            );
         }
-        return $this->_inputFilter;
+
+        return $inputFilter;
     }
 }

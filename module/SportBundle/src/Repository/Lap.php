@@ -34,6 +34,26 @@ class Lap extends EntityRepository
         return array_reverse($resultSet);
     }
 
+    public function findAllPreviousLaps(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('l.academicYear', ':academicYear'),
+                    $query->expr()->isNotNull('l.startTime'),
+                    $query->expr()->isNotNull('l.endTime')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('l.startTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return array_reverse($resultSet);
+    }
+
     public function findCurrent(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();

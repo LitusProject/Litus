@@ -68,6 +68,8 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $filePath = 'public/' . $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.public_logo_path') . '/';

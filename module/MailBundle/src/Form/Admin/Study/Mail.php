@@ -99,77 +99,74 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'subject',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'subject',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'message',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'message',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'studies',
-                        'required' => true,
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'studies',
+                    'required' => true,
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'from',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'emailAddress',
-                            )
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'from',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'emailAddress',
+                        )
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'bcc',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new MultiMailValidator()
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'bcc',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new MultiMailValidator()
+                    ),
                 )
-            );
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

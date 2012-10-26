@@ -192,150 +192,147 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'title',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'author',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'author',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'publisher',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'publisher',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'year',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'int',
-                            ),
-                            new YearValidator(),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'isbn',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'isbn',
-                                'options' => array(
-                                    'type' => 'auto'
-                                ),
-                            ),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'url',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new UriValidator(),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'type',
-                        'required' => true,
-                    )
-                )
-            );
-
-            if (isset($this->data['internal']) && $this->data['internal']) {
-                $inputFilter->add(
-                    $factory->createInput(
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'year',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
                         array(
-                            'name'     => 'binding',
-                            'required' => true,
-                        )
-                    )
-                );
-            }
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'subject_id',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
+                            'name' => 'int',
                         ),
-                        'validators' => array(
-                            array(
-                                'name' => 'int',
+                        new YearValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'isbn',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'isbn',
+                            'options' => array(
+                                'type' => 'auto'
                             ),
                         ),
-                    )
+                    ),
                 )
-            );
+            )
+        );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'url',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new UriValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'type',
+                    'required' => true,
+                )
+            )
+        );
+
+        if (isset($this->data['internal']) && $this->data['internal']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'subject',
+                        'name'     => 'binding',
                         'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
                     )
                 )
             );
-
-            $this->_inputFilter = $inputFilter;
         }
-        return $this->_inputFilter;
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'subject_id',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'subject',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

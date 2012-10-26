@@ -209,51 +209,113 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'title',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'author',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'author',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'publisher',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'publisher',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'year',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                        new YearValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'isbn',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'isbn',
+                            'options' => array(
+                                'type' => 'auto'
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'url',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new UriValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'type',
+                    'required' => true,
+                )
+            )
+        );
+
+        if (isset($this->data['internal']) && $this->data['internal']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'year',
-                        'required' => false,
+                        'name'     => 'nb_black_and_white',
+                        'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -261,7 +323,6 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
                             array(
                                 'name' => 'int',
                             ),
-                            new YearValidator(),
                         ),
                     )
                 )
@@ -270,17 +331,14 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'isbn',
-                        'required' => false,
+                        'name'     => 'nb_colored',
+                        'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
                             array(
-                                'name' => 'isbn',
-                                'options' => array(
-                                    'type' => 'auto'
-                                ),
+                                'name' => 'int',
                             ),
                         ),
                     )
@@ -290,83 +348,22 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'url',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new UriValidator(),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'type',
+                        'name'     => 'binding',
                         'required' => true,
                     )
                 )
             );
 
-            if (isset($this->data['internal']) && $this->data['internal']) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'nb_black_and_white',
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        )
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'front_color',
+                        'required' => true,
                     )
-                );
-
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'nb_colored',
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        )
-                    )
-                );
-
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'binding',
-                            'required' => true,
-                        )
-                    )
-                );
-
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'front_color',
-                            'required' => true,
-                        )
-                    )
-                );
-            }
-
-            $this->_inputFilter = $inputFilter;
+                )
+            );
         }
-        return $this->_inputFilter;
+
+        return $inputFilter;
     }
 }

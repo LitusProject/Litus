@@ -18,6 +18,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ODM\MongoDB\DocumentManager,
     OnBundle\Component\Validator\Name as NameValidator,
     OnBundle\Document\Slug,
+    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -70,17 +71,25 @@ class Edit extends Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
+        $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->get('name')
-                ->setRequired(true)
-                ->setValidators(
-                    new NameValidator($this->_documentManager, $this->_slug)
-                );
+        $inputFilter->remove('name');
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'name',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new NameValidator($this->_documentManager, $this->_slug),
+                    ),
+                )
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

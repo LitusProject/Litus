@@ -80,6 +80,8 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $person = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\Person')
                     ->findOneById($formData['person_id']);

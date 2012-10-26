@@ -115,6 +115,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($formData['article_id']);

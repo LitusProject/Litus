@@ -59,35 +59,32 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->remove('barcode');
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'barcode',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'barcode',
-                                'options' => array(
-                                    'adapter'     => 'Ean12',
-                                    'useChecksum' => false,
-                                ),
+        $inputFilter->remove('barcode');
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'barcode',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'barcode',
+                            'options' => array(
+                                'adapter'     => 'Ean12',
+                                'useChecksum' => false,
                             ),
-                            new UniqueBarcodeValidator($this->_entityManager, $this->_academicYear, array($this->_article->getId())),
                         ),
-                    )
+                        new UniqueBarcodeValidator($this->_entityManager, $this->_academicYear, array($this->_article->getId())),
+                    ),
                 )
-            );
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

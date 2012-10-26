@@ -50,43 +50,41 @@ class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'credential',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'credential',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'verify_credential',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'identical',
-                                'options' => array(
-                                    'token' => 'credential',
-                                ),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'verify_credential',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'identical',
+                            'options' => array(
+                                'token' => 'credential',
                             ),
                         ),
-                    )
+                    ),
                 )
-            );
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+            )
+        );
+
+        return $inputFilter;
     }
 }

@@ -76,6 +76,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 if (null !== $registration->getAcademic()->getBarcode()) {
                     if ($registration->getAcademic()->getBarcode()->getBarcode() != $formData['barcode']) {
                         $this->getEntityManager()->remove($registration->getAcademic()->getBarcode());

@@ -61,6 +61,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.mail');

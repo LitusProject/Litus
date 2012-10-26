@@ -1,0 +1,33 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="100px">Start Time</th>
+                    <th width="100px">End Time</th>
+                    <th width="100px">Lap Time</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for lap in paginator %}
+                    <tr>
+                        <td>{{ lap.getRunner().getFullName() }}</td>
+                        <td>{{ lap.getStartTime().format('d/m/Y H:i') }}</td>
+                        <td>{{ lap.getEndTime().format('d/m/Y H:i') }}</td>
+                        <td>{{ lap.getLapTime().format('%i:%S') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

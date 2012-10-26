@@ -61,7 +61,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     protected function onConnect(User $user)
     {
-        $this->sendQueue($user);
+        $this->sendQueue($user, $this->_getJsonQueue());
     }
 
     /**
@@ -113,9 +113,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
      */
-    private function sendQueue(User $user)
+    private function sendQueue(User $user, $json)
     {
-        $this->sendText($user, $this->_getJsonQueue());
+        $this->sendText($user, $json);
     }
 
     /**
@@ -123,8 +123,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueueToAll()
     {
+        $queue= $this->_getJsonQueue();
         foreach($this->getUsers() as $user)
-            $this->sendQueue($user);
+            $this->sendQueue($user, $queue);
     }
 
     private function _addToQueue($data)
@@ -136,14 +137,21 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $academic = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
-
-            $data->firstName = $academic->getFirstName();
-            $data->lastName = $academic->getLastName();
+            if (null !== $academic) {
+                $data->firstName = $academic->getFirstName();
+                $data->lastName = $academic->getLastName();
+            }
         }
 
         $runner = $this->_entityManager
             ->getRepository('SportBundle\Entity\Runner')
             ->findOneByUniversityIdentification($data->universityIdentification);
+
+        if (null === $runner) {
+            $runner = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneByRunnerIdentification($data->universityIdentification);
+        }
 
         if (null === $runner) {
             $academic = $this->_entityManager
@@ -157,6 +165,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 null,
                 $academic
             );
+
+            $runner->setRunnerIdentification($data->universityIdentification);
         }
 
         $lap = new Lap($this->_getAcademicYear(), $runner);
@@ -167,21 +177,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getJsonQueue()
     {
-        $resultPage = @simplexml_load_file(
-            $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_result_page')
-        );
-
-        $nbOfficialLaps = null;
-        if (null !== $resultPage) {
-            $teamId = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_team_id');
-
-            $nbOfficialLaps = (string) $resultPage->xpath('//team[@id=\'' . $teamId . '\']')[0]->rounds;
-        }
-
         $nbLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->countAll($this->_getAcademicYear());
@@ -208,7 +203,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $data = (object) array(
             'laps' => (object) array(
                 'number' => (object) array(
-                    'official' => $nbOfficialLaps,
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
@@ -302,21 +296,29 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $resultPage = @simplexml_load_file(
-            $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_result_page')
+        $url = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.run_result_page');
+        $opts = array('http' =>
+            array(
+                'timeout' => 0.5,
+            )
         );
+        $fileContents = @file_get_contents($url, false, stream_context_create($opts));
 
-        $returnArray = array();
-        if (false !== $resultPage) {
+        $resultPage = null;
+        if (false !== $fileContents)
+            $resultPage = simplexml_load_string($fileContents);
+
+        $nbOfficialLaps = null;
+        if (null !== $resultPage) {
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
 
             $teamData = $resultPage->xpath('//team[@id=\'' . $teamId . '\']');
 
-            $returnArray = array(
+            return array(
                 'nbLaps' => $teamData[0]->rounds->__toString(),
                 'position' => round($teamData[0]->position->__toString() * 100),
                 'speed' => $teamData[0]->speed_kmh->__toString(),
@@ -324,16 +326,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
-        return $returnArray;
+        return;
     }
 
-    private function _getGroupsOfFriends()
+    private function _getGroupsOfFriends($number = 5)
     {
         $groups = $this->_entityManager
             ->getRepository('SportBundle\Entity\Group')
             ->findAll($this->_getAcademicYear());
 
         $returnArray = array();
+        $sort = array();
         foreach ($groups as $group) {
             $array = (object) array(
                 'name' => $group->getName(),
@@ -354,14 +357,20 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
                     for ($i = 0; isset($happyHours[$i]); $i++) {
                         if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                            if ($lap->getLapTime() <= new DateInterval('P1M30S'))
+                            if ($lap->getLapTime() <= new DateInterval('PT90S'))
                                 $array->points += 1;
                         }
                     }
                 }
             }
+
             $returnArray[] = $array;
+            $sort[] = $array->points;
         }
+
+        array_multisort($sort, $returnArray);
+        $returnArray = array_reverse($returnArray);
+        $returnArray = array_splice($returnArray, 0, $number);
 
         return $returnArray;
     }

@@ -38,6 +38,7 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 $editionId = $formData['edition'];
 

@@ -1,0 +1,31 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="100px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for runner in runners %}
+                    <tr>
+                        <td>{{ runner.getFullName() }}</td>
+                        <td>
+                            {% if hasAccess('admin_run', 'edit') %}
+                                <a href="{{ url('admin_run', {'action': 'edit', 'id': runner.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

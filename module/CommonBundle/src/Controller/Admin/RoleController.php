@@ -59,6 +59,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $parents = array();
                 if (isset($formData['parents'])) {
                     foreach ($formData['parents'] as $parent) {
@@ -130,6 +132,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $parents = array();
                 if (isset($formData['parents'])) {
                     foreach ($formData['parents'] as $parent) {

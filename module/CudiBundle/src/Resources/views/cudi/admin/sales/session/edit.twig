@@ -4,6 +4,12 @@
 	{% include 'cudi/admin/sales/session/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage warning_message full_width hide" id="socket_killed_success">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The socket was successfully killed!</p>
+        </div>
+    </div>
 
 	<div id="controller_action">
 		<h1>Sale Session</h1>
@@ -125,6 +131,20 @@
 				</div>
 			</div>
 		{% endif %}
+        {% if hasAccess('admin_sales_session', 'killSocket') %}
+            <div class="sidebox">
+                <div class="title">Restart Socket</div>
+                <div class="content">
+                    <p>
+                        Force the socket to restart.
+                    </p>
+
+                    <p>
+                        <a id="killSocket" href="#">&rarr; Restart Socket</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
 	</aside>
 
 	<div class="modal hide fade" id="closeSession">
@@ -152,6 +172,24 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.closeSession').click(openModal);
+
+            {% if hasAccess('admin_sales_session', 'killSocket') %}
+            $('#killSocket').click(function(e) {
+                e.preventDefault();
+                $.post('{{ url('admin_sales_session', {"action": "killSocket"})}}', function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('#socket_killed_success').removeClass('hide');
+                    } else {
+                        console.log(data);
+                    }
+                }, 'json');
+
+                setTimeout(function() {
+                    $('#socket_killed_success').addClass('hide');
+                }, 2000);
+            });
+            {% endif %}
         });
 
         function openModal(e) {

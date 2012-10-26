@@ -31,4 +31,21 @@ class Runner extends EntityRepository
 
         return null;
     }
+
+    public function findAllWithoutIdentification()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('SportBundle\Entity\Runner', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNull('r.runnerIdentification'),
+                    $query->expr()->isNull('r.academic')
+                )
+            )
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }
