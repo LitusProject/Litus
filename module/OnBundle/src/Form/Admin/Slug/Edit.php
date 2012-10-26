@@ -72,11 +72,21 @@ class Edit extends Add
     {
         $inputFilter = parent::getInputFilter();
 
-        $inputFilter->get('name')
-            ->setRequired(true)
-            ->setValidators(
-                new NameValidator($this->_documentManager, $this->_slug)
-            );
+        $inputFilter->remove('name');
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'name',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new NameValidator($this->_documentManager, $this->_slug),
+                    ),
+                )
+            )
+        );
 
         return $inputFilter;
     }

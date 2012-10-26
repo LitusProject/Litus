@@ -260,8 +260,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $image = new Imagick($upload->getFileName());
 
-                    if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
-                        $fileName = '/' . $event->getEvent()->getPoster();
+                    if ($event->getPoster() != '' || $event->getPoster() !== null) {
+                        $fileName = '/' . $event->getPoster();
                     } else {
                         $fileName = '';
                         do{
@@ -269,7 +269,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         } while (file_exists($filePath . $fileName));
                     }
                     $image->writeImage($filePath . $fileName);
-                    $event->getEvent()->setPoster($fileName);
+                    $event->setPoster($fileName);
 
                     $this->getEntityManager()->flush();
 
