@@ -30,7 +30,24 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CalendarBundle\Entity\Nodes\Event')
-                ->findAll(),
+                ->findAllActive(0),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                ->findAllOld(),
             $this->getParam('page')
         );
 

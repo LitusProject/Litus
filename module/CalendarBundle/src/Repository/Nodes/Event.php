@@ -16,7 +16,7 @@ class Event extends EntityRepository
     public function findAllActive($nbResults = 15)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('e')
+        $query->select('e')
             ->from('CalendarBundle\Entity\Nodes\Event', 'e')
             ->where(
                 $query->expr()->orX(
@@ -25,8 +25,27 @@ class Event extends EntityRepository
                 )
             )
             ->orderBy('e.startDate', 'ASC')
+            ->setParameter('now', new DateTime());
+
+        if ($nbResults > 0)
+            $query->setMaxResults($nbResults);
+
+        $resultSet = $query->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllOld()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('CalendarBundle\Entity\Nodes\Event', 'e')
+            ->where(
+                $query->expr()->lt('e.startDate', ':now')
+            )
+            ->orderBy('e.startDate', 'ASC')
             ->setParameter('now', new DateTime())
-            ->setMaxResults($nbResults)
             ->getQuery()
             ->getResult();
 

@@ -31,13 +31,28 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'ShiftBundle\Entity\Shift',
-            $this->getParam('page'),
-            array(),
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActive(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
             array(
-                'startDate' => 'ASC',
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllOld(),
+            $this->getParam('page')
         );
 
         return new ViewModel(
