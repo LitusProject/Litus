@@ -71,6 +71,7 @@ class Edit extends Add
     public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
 
         $inputFilter->remove('name');
         $inputFilter->add(
