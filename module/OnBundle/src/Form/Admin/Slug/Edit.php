@@ -18,6 +18,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ODM\MongoDB\DocumentManager,
     OnBundle\Component\Validator\Name as NameValidator,
     OnBundle\Document\Slug,
+    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
