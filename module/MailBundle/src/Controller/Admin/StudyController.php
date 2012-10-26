@@ -42,7 +42,11 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($currentYear);
 
-        $form = new MailForm($studies);
+        $groups = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Department')
+            ->findAll();
+
+        $form = new MailForm($studies, $groups);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -61,23 +65,54 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $studyIds = $formData['studies'];
 
-                    foreach ($studyIds as $studyId) {
+                    if ($studyIds) {
+                        foreach ($studyIds as $studyId) {
 
-                        $study = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Study')
-                            ->findOneById($studyId);
+                            $study = $this->getEntityManager()
+                                ->getRepository('SyllabusBundle\Entity\Study')
+                                ->findOneById($studyId);
 
-                        $children = $study->getAllChildren();
+                            $children = $study->getAllChildren();
 
-                        foreach ($children as $child) {
+                            foreach ($children as $child) {
+                                $enrollments = array_merge($enrollments, $this->getEntityManager()
+                                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                    ->findAllByStudyAndAcademicYear($child, $currentYear));
+                            }
+
                             $enrollments = array_merge($enrollments, $this->getEntityManager()
                                 ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                ->findAllByStudyAndAcademicYear($child, $currentYear));
+                                ->findAllByStudyAndAcademicYear($study, $currentYear));
                         }
+                    }
 
-                        $enrollments = array_merge($enrollments, $this->getEntityManager()
-                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                            ->findAllByStudyAndAcademicYear($study, $currentYear));
+                    $groupIds = $formData['groups'];
+
+                    if ($groupIds) {
+                        foreach ($groupIds as $groupId) {
+
+                            $group = $this->getEntityManager()
+                                ->getRepository('SyllabusBundle\Entity\Department')
+                                ->findOneById($groupId);
+
+                            $studies = $this->getEntityManager()
+                                ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
+                                ->findAllByDepartmentAndAcademicYear($group, $this->getCurrentAcademicYear());
+
+                            foreach  ($studies as $study) {
+                                $children = $study->getAllChildren();
+
+                                foreach ($children as $child) {
+                                    $enrollments = array_merge($enrollments, $this->getEntityManager()
+                                        ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                        ->findAllByStudyAndAcademicYear($child, $currentYear));
+                                }
+
+                                $enrollments = array_merge($enrollments, $this->getEntityManager()
+                                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                    ->findAllByStudyAndAcademicYear($study, $currentYear));
+                            }
+                        }
                     }
 
                     $body = $formData['message'];
@@ -109,6 +144,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     $upload->receive();
 
                     foreach ($upload->getFileInfo() as $file) {
+                        if ($file['size'] === NULL)
+                            continue;
                         $part = new Part(fopen($file['tmp_name'], 'r'));
                         $part->type = $file['type'];
                         $part->id = $file['name'];
