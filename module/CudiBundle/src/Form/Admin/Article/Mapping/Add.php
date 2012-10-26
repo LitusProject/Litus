@@ -69,47 +69,43 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-
-            if (isset($this->data['subject_id']) && $this->data['subject_id'] == '') {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'subject',
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new SubjectValidator($this->_entityManager),
-                            ),
-                        )
+        if (isset($this->data['subject_id']) && $this->data['subject_id'] == '') {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'subject',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new SubjectValidator($this->_entityManager),
+                        ),
                     )
-                );
-            } else {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'subject_id',
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+                )
+            );
+        } else {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'subject_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
                             ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        )
+                        ),
                     )
-                );
-            }
-
-            $this->_inputFilter = $inputFilter;
+                )
+            );
         }
-        return $this->_inputFilter;
+
+        return $inputFilter;
     }
 }

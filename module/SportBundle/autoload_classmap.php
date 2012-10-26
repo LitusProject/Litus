@@ -13,6 +13,7 @@ return array(
     'SportBundle\Entity\Group'                       => __DIR__ . '/src/Entity/Group.php',
     'SportBundle\Entity\Lap'                         => __DIR__ . '/src/Entity/Lap.php',
     'SportBundle\Entity\Runner'                      => __DIR__ . '/src/Entity/Runner.php',
+    'SportBundle\Form\Admin\Runner\Edit'             => __DIR__ . '/src/Form/Admin/Runner/Edit.php',
     'SportBundle\Form\Group\Add'                     => __DIR__ . '/src/Form/Group/Add.php',
     'SportBundle\Form\Queue\Add'                     => __DIR__ . '/src/Form/Queue/Add.php',
     'SportBundle\Repository\Group'                   => __DIR__ . '/src/Repository/Group.php',

@@ -75,34 +75,31 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'barcode',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'barcode',
-                                'options' => array(
-                                    'adapter'     => 'Ean12',
-                                    'useChecksum' => false,
-                                ),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'barcode',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'barcode',
+                            'options' => array(
+                                'adapter'     => 'Ean12',
+                                'useChecksum' => false,
                             ),
-                            new UniqueBarcodeValidator($this->_entityManager, $this->_academicYear),
                         ),
-                    )
+                        new UniqueBarcodeValidator($this->_entityManager, $this->_academicYear),
+                    ),
                 )
-            );
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

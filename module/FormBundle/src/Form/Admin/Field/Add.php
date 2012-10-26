@@ -117,43 +117,40 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            foreach($this->getLanguages() as $language) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'label_' . $language->getAbbrev(),
-                            'required' => $language->getAbbrev() == \Locale::getDefault(),
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
-                    )
-                );
-            }
-
+        foreach($this->getLanguages() as $language) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'order',
-                        'required' => true,
+                        'name'     => 'label_' . $language->getAbbrev(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault(),
                         'filters'  => array(
                             array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'digits',
-                            ),
                         ),
                     )
                 )
             );
-
-            $this->_inputFilter = $inputFilter;
         }
-        return $this->_inputFilter;
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'order',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits',
+                        ),
+                    ),
+                )
+            )
+        );
+        
+        return $inputFilter;
     }
 }

@@ -101,6 +101,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $form->setData($formData);
 
                 if ($form->isValid()) {
+                    $formData = $form->getFormData($formData);
+
                     $roles = array(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
@@ -387,6 +389,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $universityEmail)
@@ -803,6 +807,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $this->getEntityManager()->persist(
                     new SubjectEnrollment(
                         $academic,

@@ -69,29 +69,27 @@ class Edit extends Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
-            $factory = new InputFactory();
+        $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
 
-            foreach($this->getLanguages() as $language) {
-                $inputFilter->remove('title_' . $language->getAbbrev());
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'title_' . $language->getAbbrev(),
-                            'required' => $language->getAbbrev() == \Locale::getDefault(),
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new EventNameValidator($this->_entityManager, $language, $this->_event),
-                            ),
-                        )
+        foreach($this->getLanguages() as $language) {
+            $inputFilter->remove('title_' . $language->getAbbrev());
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'title_' . $language->getAbbrev(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault(),
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new EventNameValidator($this->_entityManager, $language, $this->_event),
+                        ),
                     )
-                );
-            }
-            $this->_inputFilter = $inputFilter;
+                )
+            );
         }
-        return $this->_inputFilter;
+
+        return $inputFilter;
     }
 }

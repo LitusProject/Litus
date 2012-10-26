@@ -31,19 +31,34 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'ShiftBundle\Entity\Shift',
-            $this->getParam('page'),
-            array(),
-            array(
-                'startDate' => 'ASC',
-            )
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActive(),
+            $this->getParam('page')
         );
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllOld(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -57,6 +72,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
 
@@ -131,6 +148,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 if ($shift->canEditDates()) {
                     $shift->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                         ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));

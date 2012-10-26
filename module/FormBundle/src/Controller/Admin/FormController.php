@@ -56,6 +56,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 if ($formData['max'] == '')
                     $max = 0;
@@ -158,6 +159,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
                 if ($formData['max'] == '')
                     $max = 0;

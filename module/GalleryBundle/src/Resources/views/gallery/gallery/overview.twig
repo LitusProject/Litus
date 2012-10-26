@@ -22,12 +22,13 @@
             <div class="album">
                 <div class="title">{{ year.year }}</div>
                 <a href="{{ url('gallery', {'action': 'year', 'name': year.year}) }}">
-                    <img src="{{ filePath }}/{{ random(year.albums).getId() }}{{ random(year.albums).getPhoto().getThumbPath() }}" alt="{{ year.year }}" />
+                    {% set album = random(year.albums) %}
+                    <img src="{{ filePath }}/{{ album.getId() }}{{ album.getPhoto().getThumbPath() }}" alt="{{ year.year }}" />
                 </a>
             </div>
         {% endif %}
     {% endfor %}
-    <br class="clear" />
+    <br style="clear: both" />
     {% if archiveUrl %}
         <p>
             {% autoescape false %}

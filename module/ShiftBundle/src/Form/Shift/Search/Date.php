@@ -73,30 +73,27 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $factory->createInput(
-                array(
-                    'name'     => 'date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y',
-                            ),
+        $factory->createInput(
+            array(
+                'name'     => 'date',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => 'd/m/Y',
                         ),
                     ),
-                )
-            );
+                ),
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

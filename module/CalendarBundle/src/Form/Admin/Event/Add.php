@@ -105,70 +105,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            foreach($this->getLanguages() as $language) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'title_' . $language->getAbbrev(),
-                            'required' => $language->getAbbrev() == \Locale::getDefault(),
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new EventNameValidator($this->_entityManager, $language),
-                            ),
-                        )
+        foreach($this->getLanguages() as $language) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'title_' . $language->getAbbrev(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault(),
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new EventNameValidator($this->_entityManager, $language),
+                        ),
                     )
-                );
+                )
+            );
 
-                if ($language->getAbbrev() !== \Locale::getDefault())
-                    continue;
-
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'location_' . $language->getAbbrev(),
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
-                    )
-                );
-
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'content_' . $language->getAbbrev(),
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        )
-                    )
-                );
-            }
+            if ($language->getAbbrev() !== \Locale::getDefault())
+                continue;
 
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'start_date',
+                        'name'     => 'location_' . $language->getAbbrev(),
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'd/m/Y H:i',
-                                ),
-                            ),
-                        ),
                     )
                 )
             );
@@ -176,25 +142,57 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'end_date',
-                        'required' => false,
+                        'name'     => 'content_' . $language->getAbbrev(),
+                        'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'd/m/Y H:i',
-                                ),
-                            ),
-                            new DateCompareValidator('start_date', 'd/m/Y H:i'),
                         ),
                     )
                 )
             );
-            $this->_inputFilter = $inputFilter;
         }
-        return $this->_inputFilter;
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'start_date',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'end_date',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

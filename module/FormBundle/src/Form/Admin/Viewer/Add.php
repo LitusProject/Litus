@@ -77,54 +77,51 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            if (isset($this->data['person_id']) && '' == $this->data['person_id']) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name' => 'person_name',
-                            'required' => true,
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new PersonValidator(
-                                    $this->_entityManager,
-                                    array(
-                                        'byId' => false,
-                                    )
+        if (isset($this->data['person_id']) && '' == $this->data['person_id']) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name' => 'person_name',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PersonValidator(
+                                $this->_entityManager,
+                                array(
+                                    'byId' => false,
                                 )
-                            ),
-                        )
+                            )
+                        ),
                     )
-                );
-            } else {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name' => 'person_id',
-                            'required' => true,
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new PersonValidator(
-                                    $this->_entityManager,
-                                    array(
-                                        'byId' => true,
-                                    )
+                )
+            );
+        } else {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name' => 'person_id',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PersonValidator(
+                                $this->_entityManager,
+                                array(
+                                    'byId' => true,
                                 )
-                            ),
-                        )
+                            )
+                        ),
                     )
-                );
-            }
-
-            $this->_inputFilter = $inputFilter;
+                )
+            );
         }
-        return $this->_inputFilter;
+
+        return $inputFilter;
     }
 }

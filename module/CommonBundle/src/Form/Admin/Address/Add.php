@@ -126,26 +126,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
             )
         );
 
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_mailbox',
-                'required' => false,
-                'validators' => array(
-                    array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'StringLength',
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_mailbox',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'alnum',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
+                            'validators' => array(
                                 array(
-                                    'max' => 5,
+                                    'name' => 'StringLength',
+                                    array(
+                                        'max' => 5,
+                                    )
                                 )
                             )
-                        )
+                        ),
                     ),
-                ),
+                )
             )
         );
 

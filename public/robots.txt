@@ -1,0 +1,8 @@
+#
+# Robots File
+#
+
+# Taking care of AJAX locations
+User-agent: *
+Disallow: /*/calendar/month/
+Disallow: /*/run/group/getName/

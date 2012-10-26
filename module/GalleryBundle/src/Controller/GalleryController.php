@@ -51,7 +51,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function yearAction()
     {
-        $start = AcademicYear::getDateTime($this->getParam('id'));
+        $start = AcademicYear::getDateTime($this->getParam('name'));
         $end = clone $start;
         $end = AcademicYear::getStartOfAcademicYear($end->modify('+1year +2months'));
 

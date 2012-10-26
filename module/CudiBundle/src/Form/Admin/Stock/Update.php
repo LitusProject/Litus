@@ -57,48 +57,45 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'number',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'number',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
                         ),
-                        'validators' => array(
-                            array(
-                                'name' => 'int',
-                            ),
-                            array(
-                                'name' => 'greaterthan',
-                                'options' => array(
-                                    'min' => 0,
-                                    'inclusive' => true,
-                                ),
+                        array(
+                            'name' => 'greaterthan',
+                            'options' => array(
+                                'min' => 0,
+                                'inclusive' => true,
                             ),
                         ),
-                    )
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'comment',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'comment',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        return $inputFilter;
     }
 }

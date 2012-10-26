@@ -125,12 +125,10 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
+        $inputFilter = parent::getInputFilter();
 
-            $inputFilter->remove('username');
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+        $inputFilter->remove('username');
+
+        return $inputFilter;
     }
 }

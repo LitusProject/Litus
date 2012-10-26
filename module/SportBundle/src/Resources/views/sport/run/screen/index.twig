@@ -25,13 +25,13 @@
                 <div class="span4 columns">
                     <h2>Laps</h2>
 
-                    <p>
-                        We have run <span id="nbOfficialLaps" class="label label-important" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-important" style="font-size: 16px;"></span> laps behind the first one</span><span id="firtOne" class="label label-success" style="font-size: 16px;display: none">first</span>!
+                    <p style="margin-right: 20px">
+                        We have run <span id="nbOfficialLaps" class="label label-important" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-important" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firtOne" class="label label-success" style="font-size: 16px;display: none">first</span>!
                     </p>
 
                     <h2>Runners</h2>
 
-                    <p>
+                    <p style="margin-right: 20px">
                         There <span id="uniqueRunnersTextVerb">have</span> been <span id="uniqueRunners" class="label label-success" style="font-size: 16px;">N/A</span> unique <span id="uniqueRunnersText">runners</span>.
                     </p>
 
@@ -130,19 +130,22 @@
         });
 
         function displayLaps(data) {
-            $('#nbOfficialLaps').html(data.number.official);
-            $('#nbOfficialLapsText').html((data.number.official == 1 ? 'lap' : 'laps'));
             $('#uniqueRunners').html(data.number.uniqueRunners);
             $('#uniqueRunnersText').html((data.number.uniqueRunners == 1 ? 'runner' : 'runners'));
             $('#uniqueRunnersTextVerb').html((data.number.uniqueRunners == 1 ? 'has' : 'have'));
 
-            if (data.officialResults.behind > 0) {
-                $('#nbLapsBehind').html(data.officialResults.behind);
-                $('#behindFirstOne').show();
-                $('#firtOne').hide();
-            } else {
-                $('#behindFirstOne').hide();
-                $('#firtOne').show();
+            if (data.officialResults) {
+                $('#nbOfficialLaps').html(data.officialResults.nbLaps);
+                $('#nbOfficialLapsText').html((data.officialResults.nbLaps == 1 ? 'lap' : 'laps'));
+
+                if (data.officialResults.behind > 0) {
+                    $('#nbLapsBehind').html(data.officialResults.behind);
+                    $('#behindFirstOne').show();
+                    $('#firtOne').hide();
+                } else {
+                    $('#behindFirstOne').hide();
+                    $('#firtOne').show();
+                }
             }
 
             var foundCurrent = false;
@@ -150,6 +153,7 @@
             $('#nextRunners').html('');
             $('#groupsOfFriends').html('');
 
+            var nextNum = 0;
             $(data.laps).each(function (num, lap) {
                 if (undefined == lap)
                     return true;
@@ -162,12 +166,13 @@
                     $('#currentLapInfo').show().data({
                         'startSimulationTime': lapTime,
                         'lapTime': lapTime,
-                        'position': data.officialResults.position,
-                        'speed': data.officialResults.speed,
+                        'position': data.officialResults ? data.officialResults.position : 'N/A',
+                        'speed': data.officialResults ? data.officialResults.speed : 'N/A',
                     });
                     $('#currentLapTime').html(lap.lapTime);
-                    $('#officialSpeed').html(data.officialResults.speed);
-                    $('#currentLapInfo .bar').css('width', data.officialResults.position + '%');
+                    $('#officialSpeed').html(data.officialResults ? data.officialResults.speed : 'N/A');
+                    if (data.officialResults)
+                        $('#currentLapInfo .bar').css('width', data.officialResults.position + '%');
 
                     foundCurrent = true;
                 } else if (lap.state == 'previous') {
@@ -178,7 +183,8 @@
                             $('<td>').html(lap.lapTime)
                         )
                     );
-                } else if (lap.state == 'next') {
+                } else if (lap.state == 'next' && nextNum < 5) {
+                    nextNum++;
                     $('#nextRunners').append(
                         $('<tr>').append(
                             $('<td>').html($('#nextRunners tr').length + 1),
@@ -225,7 +231,8 @@
             $('#currentLapInfo').data('lapTime', lapTime);
             $('#currentLapTime').html(Math.floor(lapTime / 60) + ':' + (lapTime % 60 < 10 ? "0" + lapTime % 60 : lapTime % 60));
 
-            $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('position') / $('#currentLapInfo').data('startSimulationTime') * lapTime) + '%');
+            if ($('#currentLapInfo').data('position') !== 'N/A')
+                $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('position') / $('#currentLapInfo').data('startSimulationTime') * lapTime) + '%');
         }
     </script>
 

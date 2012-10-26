@@ -25,11 +25,6 @@ use Zend\InputFilter\InputFilterAwareInterface;
 abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 {
     /**
-     * @var \Zend\InputFilter\InputFilter
-     */
-    protected $_inputFilter;
-
-    /**
      * @var boolean Whether or not to show the form-actions div
      */
     private $_displayFormActions;
@@ -114,5 +109,19 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     public function getDisplayFormActions()
     {
         return $this->_displayFormActions;
+    }
+
+    /**
+     * Return the form validated data, combined with post data
+     *
+     * @return object
+     */
+    public function getFormData($formData)
+    {
+        foreach($this->getData() as $key => $value) {
+            if (null !== $value)
+                $formData->{$key} = $value;
+        }
+        return $formData;
     }
 }

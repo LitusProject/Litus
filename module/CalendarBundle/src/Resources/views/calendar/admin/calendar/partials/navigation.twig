@@ -6,14 +6,18 @@
             {% if hasAccess('admin_calendar', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_calendar', {"action": "add"}) }}">Add</a></li>
             {% endif %}
+            {% if hasAccess('admin_calendar', 'old') %}
+                <li>
+                    <a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_calendar', {"action": "old"}) }}">
+                        Old
+                    </a>
+                </li>
+            {% endif %}
             {% if hasAccess('admin_calendar', 'manage') %}
                 <li>
-                	<a
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
-                		href="{{ url('admin_calendar', {"action": "manage"}) }}"
-                	>
-                		Manage
-                	</a>
+                    <a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_calendar', {"action": "manage"}) }}">
+                        Manage
+                    </a>
                 </li>
             {% endif %}
         </ul>

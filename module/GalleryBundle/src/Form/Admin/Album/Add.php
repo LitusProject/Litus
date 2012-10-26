@@ -104,48 +104,46 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            foreach($this->_getLanguages() as $language) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'title_' . $language->getAbbrev(),
-                            'required' => $language->getAbbrev() == \Locale::getDefault(),
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new NameValidator($this->_entityManager, $this->album),
-                            ),
-                        )
-                    )
-                );
-            }
-
+        foreach($this->_getLanguages() as $language) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'date',
-                        'required' => true,
+                        'name'     => 'title_' . $language->getAbbrev(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault(),
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'd/m/Y',
-                                ),
-                            ),
+                            new NameValidator($this->_entityManager, $this->album),
                         ),
                     )
                 )
             );
-            $this->_inputFilter = $inputFilter;
         }
-        return $this->_inputFilter;
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'date',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

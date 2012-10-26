@@ -336,7 +336,7 @@ VTK Cudi
                         'deliveries', 'retours', 'sales', 'stock', 'supplier'
                     ),
                     'admin_sales_session' => array(
-                        'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems'
+                        'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
                     ),
                     'admin_stock' => array(
                         'delta', 'edit', 'manage', 'notDelivered', 'search', 'searchNotDelivered'

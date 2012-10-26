@@ -54,7 +54,7 @@
     <div class="span10">
         <h1>{{ vacancy.getName() }}</h1>
         <div class="pull-right" style="margin-top:-35px;">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM YYYY') }}</strong></div>
-        <div class="accordion" id="accordion">
+        <div class="accordion" id="accordion" data-collapse-type="manual">
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#about">
@@ -73,7 +73,7 @@
                         {{ translate('Wanted Profile') }}
                     </a>
                 </div>
-                <div id="profile" class="accordion-body collapse">
+                <div id="profile" class="accordion-body collapse in">
                     <div class="accordion-inner">
                         {{ vacancy.getProfile() }}
                     </div>
@@ -85,7 +85,7 @@
                         {{ translate('Required Knowledge') }}
                     </a>
                 </div>
-                <div id="knowledge" class="accordion-body collapse">
+                <div id="knowledge" class="accordion-body collapse in">
                     <div class="accordion-inner">
                         {{ vacancy.getRequiredKnowledge() }}
                     </div>
