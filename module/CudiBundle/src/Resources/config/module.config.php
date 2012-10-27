@@ -261,11 +261,12 @@ return array(
             'admin_stock_order' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/stock/order[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/stock/order[/:action[/:id[/:date]][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
                         'page'    => '[0-9]*',
+                        'date'    => '[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_stock_order',
