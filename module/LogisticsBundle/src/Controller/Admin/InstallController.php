@@ -35,7 +35,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'admin_van_reservation' => array(
-                        'add', 'delete', 'edit', 'manage'
+                        'add', 'delete', 'edit', 'manage', 'old'
                     ),
                     'logistics_index' => array(
                         'fetch', 'index'
