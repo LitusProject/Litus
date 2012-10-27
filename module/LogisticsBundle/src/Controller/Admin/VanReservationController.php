@@ -30,7 +30,36 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findAll(),
+            ->findAllActive(),
+            $this->getParam('page')
+        );
+
+        $current = $this->getAuthentication()->getPersonObject();
+        if ($current != null) {
+            $driver = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Driver')
+                ->findOneById($current->getId());
+            $isDriverLoggedIn = ($driver !== null);
+        } else {
+            $isDriverLoggedIn = false;
+        }
+
+        return new ViewModel(
+            array(
+                'currentUser' => $current,
+                'isDriverLoggedIn' => $isDriverLoggedIn,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->findAllOld(),
             $this->getParam('page')
         );
 
