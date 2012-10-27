@@ -510,6 +510,11 @@ return array(
                             'bootstrap/js/bootstrap-collapse.js',
                         ),
                     ),
+                    'bootstrap_js_custom_collapse' => array(
+                        'assets'  => array(
+                            'common/js/bootstrap-custom-collapse.js',
+                        ),
+                    ),
                     'bootstrap_js_dropdown' => array(
                         'assets' => array(
                             'bootstrap/js/bootstrap-dropdown.js',
