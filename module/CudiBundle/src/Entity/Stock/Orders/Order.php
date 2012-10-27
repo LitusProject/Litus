@@ -57,6 +57,13 @@ class Order
     private $dateOrdered;
 
     /**
+     * @var \DateTime The time the delivery is expected
+     *
+     * @ORM\Column(name="date_delivery", type="datetime", nullable=true)
+     */
+    private $dateDelivery;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The items ordered
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Orders\Item", mappedBy="order")
@@ -179,5 +186,25 @@ class Order
     {
         $this->dateOrdered = null;
         return $this;
+    }
+
+    /**
+     * @param \DateTime $deliveryDate
+     *
+     * @return \CudiBundle\Entity\Stock\Orders\Order
+     */
+    public function setDeliveryDate(DateTime $deliveryDate)
+    {
+        $deliveryDate->setTime(0, 0);
+        $this->dateDelivery = $deliveryDate;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeliveryDate()
+    {
+        return $this->dateDelivery;
     }
 }

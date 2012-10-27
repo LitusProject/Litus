@@ -116,7 +116,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
             if($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($formData['article_id']);
@@ -236,6 +236,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     {
         if (!($order = $this->_getOrder()))
             return new ViewModel();
+
+        $order->setDeliveryDate(\DateTime::createFromFormat('d-m-Y', $this->getParam('date')));
+        $this->getEntityManager()->flush();
 
         $document = new OrderXmlGenerator($this->getEntityManager(), $order);
 
