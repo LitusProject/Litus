@@ -177,8 +177,9 @@
                         </ul>
                     </div>
                 </div>
+                <br style="clear: both;">
+                <p>The generation of the xml's can take a while, so please be patient.</p>
             </div>
-            <br style="clear: both;">
             <div class="footer">
                 <input type="button" class="exportOrder" value="Export">
                 <input type="button" data-dismiss="modal" value="Cancel">
@@ -200,8 +201,7 @@
                         return;
                     }
                     modal.find('.errors').addClass('hide');
-                    $(this).unbind('click').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date);
-                    $(this).trigger('click');
+                    $(this).unbind('click').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date).trigger('click');
 
                     modal.modal('hide');
                 });
