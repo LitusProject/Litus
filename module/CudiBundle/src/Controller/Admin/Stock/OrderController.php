@@ -242,15 +242,16 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $document = new OrderXmlGenerator($this->getEntityManager(), $order);
 
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="order.zip"',
-            'Content-type'        => 'application/zip',
-        ));
-        $this->getResponse()->setHeaders($headers);
-
         $archive = new TmpFile();
         $document->generateArchive($archive);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition'        => 'attachment; filename="order.zip"',
+            'Content-type'               => 'application/zip',
+            'Content-Length'             => filesize($archive->getFileName()),
+        ));
+        $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($archive->getFileName(), 'r');
         $data = fread($handle, filesize($archive->getFileName()));
