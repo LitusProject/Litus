@@ -25,7 +25,7 @@ use CommonBundle\Component\Authentication\Authentication,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AuthController extends \CommonBundle\Component\Controller\ActionController\WikiController
+class AuthController extends \WikiBundle\Component\Controller\ActionController\WikiController
 {
     public function loginAction()
     {
