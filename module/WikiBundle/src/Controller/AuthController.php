@@ -25,7 +25,7 @@ use CommonBundle\Component\Authentication\Authentication,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AuthController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class AuthController extends \CommonBundle\Component\Controller\ActionController\WikiController
 {
     public function loginAction()
     {
@@ -154,17 +154,5 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return new ViewModel();
-    }
-
-    private function _getShibbolethUrl()
-    {
-        $shibbolethUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_url');
-
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
-
-        return $shibbolethUrl . '?source=wiki';
     }
 }
