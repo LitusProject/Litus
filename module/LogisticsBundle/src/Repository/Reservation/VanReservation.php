@@ -2,7 +2,8 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use Doctrine\ORM\EntityRepository;
+use DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * VanReservation
@@ -28,6 +29,36 @@ class VanReservation extends EntityRepository
             return $resultSet[0];
 
         return null;
+    }
+
+    public function findAllActive() {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
+        ->where(
+            $query->expr()->gte('r.endDate', ':start')
+        )
+        ->setParameter('start', new DateTime())
+        ->orderBy('r.startDate')
+        ->getQuery()
+        ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllOld() {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
+        ->where(
+            $query->expr()->lt('r.endDate', ':end')
+        )
+        ->setParameter('end', new DateTime())
+        ->orderBy('r.startDate')
+        ->getQuery()
+        ->getResult();
+
+        return $resultSet;
     }
 
     public function findAllByDates($start, $end) {
