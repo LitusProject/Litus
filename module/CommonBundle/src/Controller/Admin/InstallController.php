@@ -246,6 +246,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'syllabus_install' => array(
                         'index'
                     ),
+                    'wiki_install' => array(
+                        'index'
+                    ),
                 )
             )
         );
