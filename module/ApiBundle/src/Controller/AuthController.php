@@ -44,8 +44,14 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneById($person->getId());
 
-        if (null !== $academic)
-            $result['university_status'] = $person->getUniversityStatus($this->getCurrentAcademicYear())->getStatus();
+        if (null !== $academic) {
+            $result['university_status'] = (null !== $person->getUniversityStatus($this->getCurrentAcademicYear()))
+                ? $person->getUniversityStatus($this->getCurrentAcademicYear())->getStatus()
+                : '';
+            $result['organization_status'] = (null !== $person->getOrganizationStatus($this->getCurrentAcademicYear()))
+                ? $person->getOrganizationStatus($this->getCurrentAcademicYear())->getStatus()
+                : '';
+        }
 
         return new ViewModel(
             array(

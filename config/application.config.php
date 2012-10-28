@@ -45,6 +45,8 @@ return array(
 
         'ApiBundle',
         'OnBundle',
+
+        'WikiBundle',
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(
