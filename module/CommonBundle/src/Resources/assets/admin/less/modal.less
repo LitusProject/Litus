@@ -43,6 +43,24 @@
                 text-align: left;
             }
         }
+
+        .errors {
+            clear: both;
+            margin-left: @formLabelWidth + 4 * @defaultSpacing;
+            padding-top: @formSpacing;
+
+            li {
+                color: @cError;
+            }
+        }
+
+        .required {
+            font-weight: bold;
+        }
+
+        .required:after {
+            content: @formRequired;
+        }
 	}
 }
 
