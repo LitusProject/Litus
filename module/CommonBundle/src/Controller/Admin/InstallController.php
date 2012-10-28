@@ -113,7 +113,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                             'register'  => 'https://dev.vtk.be/secretary/registration/',
                             'form'      => 'https://dev.vtk.be/form/manage/auth/shibboleth/',
                             'logistics' => 'https://dev.vtk.be/logistics/auth/shibboleth/',
-                            'wiki'      => 'https://wiki.vtk.be/',
+                            'wiki'      => 'https://dev.vtk.be/wiki/auth/shibboleth/',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
