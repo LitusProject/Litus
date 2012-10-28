@@ -44,6 +44,7 @@ class AllInstallController extends \CommonBundle\Component\Controller\ActionCont
             'shift',
             'sport',
             'syllabus',
+            'wiki',
         );
 
         return new ViewModel(
