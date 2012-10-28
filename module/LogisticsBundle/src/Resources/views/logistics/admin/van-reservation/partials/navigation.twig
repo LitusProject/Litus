@@ -6,6 +6,9 @@
             {% if hasAccess('admin_van_reservation', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_van_reservation', {"action": "add"}) }}">Add</a></li>
             {% endif %}
+            {% if hasAccess('admin_van_reservation', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_van_reservation', {"action": "old"}) }}">Old</a></li>
+            {% endif %}
             {% if hasAccess('admin_van_reservation', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_van_reservation', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}

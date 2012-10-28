@@ -68,13 +68,11 @@ class OrderXml
             $xmlFile = new TmpFile();
             $this->generateXml($item, $xmlFile);
 
-            if ($item->getArticle()->getMainArticle()->isInternal()) {
-                $file = new TmpFile();
-                $document = new FrontGenerator($this->_entityManager, $item->getArticle(), $file);
-                $document->generate();
+            $file = new TmpFile();
+            $document = new FrontGenerator($this->_entityManager, $item->getArticle(), $file);
+            $document->generate();
 
-                $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
-            }
+            $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
 
             $mappings = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Files\Mapping')
@@ -95,18 +93,18 @@ class OrderXml
 
         $xml = new Generator($tmpFile);
 
-        $attachments = array();
         $num = 1;
-        if ($item->getArticle()->getMainArticle()->isInternal()) {
-            $attachments[] = new Object(
+
+        $attachments = array(
+            new Object(
                 'Attachment',
                 array(
                     'AttachmentKey' => 'File' . $num++,
                     'FileName' => 'front_' . $item->getArticle()->getId() . '.pdf',
                 ),
                 null
-            );
-        }
+            )
+        );
 
         $mappings = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Files\Mapping')
@@ -120,6 +118,18 @@ class OrderXml
                 ),
                 null
             );
+        }
+
+        switch($item->getArticle()->getMainArticle()->getBinding()->getCode()) {
+            case 'glued':
+                $binding = 'Ingelijmd';
+                break;
+            case 'stapled':
+                $binding = 'Geniet';
+                break;
+            default:
+                $binding = 'Los en ingepakt in krimpfolie';
+                break;
         }
 
         $itemValues = array(
@@ -162,7 +172,6 @@ class OrderXml
                     )
                 )
             ),
-            // TODO: generate text
             new Object(
                 'ItemValue',
                 array(
@@ -172,7 +181,7 @@ class OrderXml
                     new Object(
                         'LastUsedValue',
                         null,
-                        (string) ''
+                        $binding
                     )
                 )
             ),
@@ -215,7 +224,6 @@ class OrderXml
                     )
                 )
             ),
-            // TODO: generate text
             new Object(
                 'ItemValue',
                 array(
@@ -225,11 +233,10 @@ class OrderXml
                     new Object(
                         'LastUsedValue',
                         null,
-                        (string) ''
+                        $this->_order->getDeliveryDate()->format('d/m/Y')
                     )
                 )
             ),
-            // TODO: generate text
             new Object(
                 'ItemValue',
                 array(
@@ -239,7 +246,7 @@ class OrderXml
                     new Object(
                         'LastUsedValue',
                         null,
-                        (string) ''
+                        (string) 'cursus vtk'
                     )
                 )
             ),
@@ -266,7 +273,7 @@ class OrderXml
                     new Object(
                         'Job',
                         array(
-                            'JobID' => 'vtk-' . $this->_order->getDateOrdered()->format('YmdHi') . '-'
+                            'JobID' => 'vtk-' . $this->_order->getDateOrdered()->format('YmdHi')
                         ),
                         array(
                             new Object(

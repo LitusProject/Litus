@@ -34,7 +34,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($studies, $name = null)
+    public function __construct($studies, $groups, $name = null)
     {
         parent::__construct($name);
 
@@ -47,12 +47,24 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
         }
 
+        $groupNames = array();
+        foreach($groups as $group) {
+            $groupNames[$group->getId()] = $group->getName();
+        }
+
         $field = new Select('studies');
         $field->setLabel('Studies')
             ->setAttribute('multiple', true)
-            ->setAttribute('options', $studyNames)
-            ->setRequired();
+            ->setAttribute('options', $studyNames);
         $this->add($field);
+
+        if ($groupNames) {
+            $field = new Select('groups');
+            $field->setLabel('Groups')
+                ->setAttribute('multiple', true)
+                ->setAttribute('options', $groupNames);
+            $this->add($field);
+        }
 
         $field = new Checkbox('test');
         $field->setLabel('Test mail');
@@ -122,15 +134,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'studies',
-                    'required' => true,
                 )
             )
         );

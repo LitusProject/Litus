@@ -156,12 +156,67 @@
 			</div>
 		</div>
 	</div>
+    <div class="modal hide fade" id="deliveryDateModal">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delivery Date
+        </div>
+        <div class="modal-body">
+            <div class="form">
+                <p>Enter here the prefered delivery date: </p>
+                <div class="row">
+                    <span class="label">
+                        <label class="required" for="deliveryDate">Delivery Date</label>
+                    </span>
+                    <span class="field">
+                        <input type="text" id="deliveryDate" value="{{ order.getDeliveryDate().format('d/m/Y') }}" placeholder="dd/mm/yyyy">
+                    </span>
+                    <div class="errors hide">
+                        <ul>
+                            <li>Please enter a valid date</li>
+                        </ul>
+                    </div>
+                </div>
+                <br style="clear: both;">
+                <p>The generation of the xml's can take a while, so please be patient.</p>
+            </div>
+            <div class="footer">
+                <input type="button" class="exportOrder" value="Export">
+                <input type="button" data-dismiss="modal" value="Cancel">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$('#exportOrder').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}');
+            $('#exportOrder').click(function (e) {
+                e.preventDefault();
+                var modal = $('#deliveryDateModal');
+                modal.find('.exportOrder').unbind('click').click(function () {
+                    var date = modal.find('#deliveryDate').val().replace(/\//g, '-');
+                    var matches = /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/.exec(date);
+                    if (null == matches) {
+                        modal.find('.errors').removeClass('hide');
+                        return;
+                    }
+                    var d = matches[1];
+                    var m = matches[2] - 1;
+                    var y = matches[3];
+                    var composedDate = new Date(y, m, d);
+                    console.log(composedDate);
+                    if (composedDate.getDate() != d || composedDate.getMonth() != m || composedDate.getFullYear() != y) {
+                        modal.find('.errors').removeClass('hide');
+                        return;
+                    }
+                    modal.find('.errors').addClass('hide');
+                    $(this).unbind('click').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date).trigger('click');
+
+                    modal.modal('hide');
+                });
+                modal.modal();
+            });
 			$('#printOrder').downloadFile('{{ url('admin_stock_order', {"action": "pdf", "id": order.getId()}) }}');
 
 			$('.item .delete').click(openModalRemove);
