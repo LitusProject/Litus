@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Controller\ActionController;
+namespace WikiBundle\Component\Controller\ActionController;
 
 /**
  * We extend the CommonBundle controller.
