@@ -29,6 +29,16 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 {
     public function loginAction()
     {
+        if ($authentication->isAuthenticated()) {
+            $this->redirect()->toUrl(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('wiki.url')
+            );
+
+            return new ViewModel();
+        }
+
         $form = new LoginForm();
 
         if($this->getRequest()->isPost()) {
@@ -110,6 +120,16 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 
     public function shibbolethAction()
     {
+        if ($authentication->isAuthenticated()) {
+            $this->redirect()->toUrl(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('wiki.url')
+            );
+
+            return new ViewModel();
+        }
+
         if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
