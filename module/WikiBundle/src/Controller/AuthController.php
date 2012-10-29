@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Controller;
+namespace WikiBundle\Controller;
 
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
@@ -25,10 +25,20 @@ use CommonBundle\Component\Authentication\Authentication,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AuthController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class AuthController extends \WikiBundle\Component\Controller\ActionController\WikiController
 {
     public function loginAction()
     {
+        if ($authentication->isAuthenticated()) {
+            $this->redirect()->toUrl(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('wiki.url')
+            );
+
+            return new ViewModel();
+        }
+
         $form = new LoginForm();
 
         if($this->getRequest()->isPost()) {
@@ -53,11 +63,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
 
-                    $this->redirect()->toRoute(
-                        'index',
-                        array(
-                            'language' => $this->getLanguage()->getAbbrev(),
-                        )
+                    $this->redirect()->toUrl(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('wiki.url')
                     );
                 } else {
                     $this->flashMessenger()->addMessage(
@@ -69,9 +78,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     $this->redirect()->toRoute(
-                        'index',
+                        'wiki_auth',
                         array(
-                            'action' => 'index'
+                            'action' => 'login'
                         )
                     );
 
@@ -111,6 +120,16 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
     public function shibbolethAction()
     {
+        if ($authentication->isAuthenticated()) {
+            $this->redirect()->toUrl(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('wiki.url')
+            );
+
+            return new ViewModel();
+        }
+
         if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
@@ -137,12 +156,17 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        $this->redirect()->toRoute(
-                            'index'
+                        $this->redirect()->toUrl(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('wiki.url')
                         );
                     } else {
                         $this->redirect()->toRoute(
-                            'secretary_registration'
+                            'wiki_auth',
+                            array(
+                                'action' => 'login'
+                            )
                         );
                     }
                 }

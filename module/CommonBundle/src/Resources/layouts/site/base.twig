@@ -190,6 +190,7 @@
 
                         <ul class="nav-list">
                             <li><a href="http://www.loko.be">LOKO</a></li>
+                            <li><a href="http://best.vtk.be">BEST</a></li>
                         </ul>
 		        	</span>
 		        	<span class="span9">
@@ -202,6 +203,7 @@
                             <a id="exxon" href="http://www.exxonmobil.com"></a>
                             <a id="basf" href="http://www.basf.be/ecp2/Jobs_Career_belgium_nl/index"></a>
                             <a id="gdfsuez" href="http://www.gdfsuez.com/"></a>
+
                             {#% for logo in logos %}
                                 <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
                             {% endfor %#}
@@ -243,11 +245,12 @@
     <script type="text/javascript">
         var pkBaseURL = (("https:" == document.location.protocol) ? "https://analytics.vtk.be/" : "http://analytics.vtk.be/");
         document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-        </script><script type="text/javascript">
+    </script>
+    <script type="text/javascript">
         try {
-        var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 2);
-        piwikTracker.trackPageView();
-        piwikTracker.enableLinkTracking();
+            var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 2);
+            piwikTracker.trackPageView();
+            piwikTracker.enableLinkTracking();
         } catch( err ) {}
     </script>
 
