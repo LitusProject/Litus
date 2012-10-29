@@ -17,35 +17,50 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use Doctrine\ORM\EntityManager;
 
 class Printer {
-    public static function queuePrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNum, $totalPrice, $articles, $prices)
+    public static function queuePrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
     {
-        if (sizeof($articles) != sizeof($prices))
+        if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
             return;
 
-        $data = $identification . '##' . $barcode . '##' . $queueNum . '##' . number_format($totalPrice, 2) . '#';
-        foreach($articles as $article)
-            $data .= '#' . $article;
-        $data .= '#';
-        foreach($prices as $price)
-            $data .= '#' . number_format($price, 2);
-        self::_print($entityManger, $printer, strpos($printer, 'collect') === 0 ? 2 : 1, $data);
+        $data = self::_createData($identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data->type = 1;
+        self::_print($entityManger, $printer, $data);
     }
 
-    public static function salePrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNum, $totalPrice, $articles, $prices)
+    public static function collectPrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
     {
-        if (sizeof($articles) != sizeof($prices))
+        if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
             return;
 
-        $data = $identification . '##' . $barcode . '##' . $queueNum . '##' . number_format($totalPrice, 2) . '#';
-        foreach($articles as $article)
-            $data .= '#' . $article;
-        $data .= '#';
-        foreach($prices as $price)
-            $data .= '#' . number_format($price, 2);
-        self::_print($entityManger, $printer, 2, $data);
+        $data = self::_createData($identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data->type = 2;
+        self::_print($entityManger, $printer, $data);
     }
 
-    private static function _print(EntityManager $entityManger, $printer, $type, $data)
+    public static function salePrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    {
+        if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
+            return;
+
+        $data = self::_createData($identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data->type = 3;
+        self::_print($entityManger, $printer, $data);
+    }
+
+    private static function _createData($identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    {
+        return (object) array(
+            'id' => $identification,
+            'barcode' => $barcode,
+            'queuenumber' => $queueNumber,
+            'totalAmount' => $totalPrice,
+            'items' => $articles,
+            'prices' => $prices,
+            'itemBarcodes' => $barcodes,
+        );
+    }
+
+    private static function _print(EntityManager $entityManger, $printer, $data)
     {
         $printers = unserialize(
             $entityManger->getRepository('CommonBundle\Entity\General\Config')
@@ -55,13 +70,19 @@ class Printer {
         if (!isset($printers[$printer]))
             return;
 
-        $data = 'PRINT ' . $printers[$printer] . ' ' . $type . ' ' . $data;
+        $data = json_encode(
+            (object) array(
+                'command' => 'PRINT',
+                'id' => $printers[$printer],
+                'ticket' => $data
+            )
+        );
 
         $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
         socket_connect(
             $socket,
-            $entityManger->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.print_socket_address'),
+            '127.0.0.1',/*$entityManger->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.print_socket_address'),*/
             $entityManger->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.print_socket_port')
         );
