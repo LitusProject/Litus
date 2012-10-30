@@ -29,7 +29,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 {
     public function loginAction()
     {
-        if ($authentication->isAuthenticated()) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $this->redirect()->toUrl(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -120,7 +120,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 
     public function shibbolethAction()
     {
-        if ($authentication->isAuthenticated()) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $this->redirect()->toUrl(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
