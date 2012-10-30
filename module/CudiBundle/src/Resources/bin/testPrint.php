@@ -48,34 +48,62 @@ if (isset($opts->p) && isset($opts->t)) {
 
     if (!isset($printers[$opts->p])) {
         echo 'Invalid printer name: ' . $opts->p . PHP_EOL;
+        echo 'Possible printers:' . PHP_EOL;
+        foreach($printers as $key => $printer)
+            echo '    -> ' . $key . ':' . $printer . PHP_EOL;
         exit;
     }
 
+    $data = (object) array(
+        'id' => 's0210425',
+        'barcode' => '1234567890',
+        'queuenumber' => '3',
+        'totalAmount' => '63,00',
+        'items' => array(
+            'Fundamentals of Computer Graphics',
+            'De Bijbel',
+        ),
+        'prices' => array(
+            '45,00',
+            '8,00',
+        ),
+        'itemBarcodes' => array(
+            '12345',
+            '54321',
+        ),
+    );
     switch($opts->t) {
         case 'signin':
-            $type = 1;
-            $data = 's0202187##1234567890##3##63,00##Fundamentals of Computer Graphics#De Bijbel##45,00#8,00';
+            $data->type = 1;
             break;
         case 'collect':
-            $type = 2;
-            $data = 's0202187##1234567890##3##63,00##Fundamentals of Computer Graphics#De Bijbel##45,00#8,00';
+            $data->type = 2;
             break;
         case 'sale':
-            $type = 2;
-            $data = 's0202187##1234567890##3##63,00##Fundamentals of Computer Graphics#De Bijbel##45,00#8,00';
+            $data->type = 3;
             break;
         default:
             echo 'Invalid ticket type: ' . $opts->t . PHP_EOL;
+            echo 'Possible printers:' . PHP_EOL;
+            echo '    -> signin' . PHP_EOL;
+            echo '    -> collect' . PHP_EOL;
+            echo '    -> sale' . PHP_EOL;
             exit(2);
     }
 
-    $data = 'PRINT ' . $printers[$opts->p] . ' ' . $type . ' ' . $data;
+    $data = json_encode(
+        (object) array(
+            'command' => 'PRINT',
+            'id' => $printers[$opts->p],
+            'ticket' => $data
+        )
+    );
 
     $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
     socket_connect(
         $socket,
-        $em->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.print_socket_address'),
+        '127.0.0.1'/*$em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.print_socket_address')*/,
         $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.print_socket_port')
     );
