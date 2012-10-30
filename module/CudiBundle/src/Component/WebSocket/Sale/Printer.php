@@ -17,41 +17,42 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use Doctrine\ORM\EntityManager;
 
 class Printer {
-    public static function queuePrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    public static function queuePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
     {
         if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
             return;
 
-        $data = self::_createData($identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
         $data->type = 1;
         self::_print($entityManger, $printer, $data);
     }
 
-    public static function collectPrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    public static function collectPrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
     {
         if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
             return;
 
-        $data = self::_createData($identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
         $data->type = 2;
         self::_print($entityManger, $printer, $data);
     }
 
-    public static function salePrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    public static function salePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
     {
         if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
             return;
 
-        $data = self::_createData($identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
         $data->type = 3;
         self::_print($entityManger, $printer, $data);
     }
 
-    private static function _createData($identification, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    private static function _createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
     {
         return (object) array(
             'id' => $identification,
             'barcode' => $barcode,
+            'name' => $fullName,
             'queuenumber' => $queueNumber,
             'totalAmount' => $totalPrice,
             'items' => $articles,
@@ -81,8 +82,8 @@ class Printer {
         $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
         socket_connect(
             $socket,
-            '127.0.0.1',/*$entityManger->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.print_socket_address'),*/
+            $entityManger->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.print_socket_address'),
             $entityManger->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.print_socket_port')
         );

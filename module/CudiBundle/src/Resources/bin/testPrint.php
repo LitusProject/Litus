@@ -102,8 +102,8 @@ if (isset($opts->p) && isset($opts->t)) {
     $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
     socket_connect(
         $socket,
-        '127.0.0.1'/*$em->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.print_socket_address')*/,
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.print_socket_address'),
         $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.print_socket_port')
     );
