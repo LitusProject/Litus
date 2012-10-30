@@ -660,7 +660,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
                 $articles[] = ($currentNumber > 1 ?' (' . $currentNumber . 'x)' : '') . $booking->getArticle()->getMainArticle()->getTitle();
                 $prices[] = (string) number_format($price * $currentNumber / 100, 2);
-                $barcodes[] = $booking->getArticle()->getBarcode();
+                $barcodes[] = substr($booking->getArticle()->getBarcode(), 7);
                 $totalPrice += $price * $currentNumber;
             }
         }
@@ -669,6 +669,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager,
             $queueItem->getPayDesk()->getCode(),
             $queueItem->getPerson()->getUniversityIdentification(),
+            $queueItem->getPerson()->getFullName(),
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
@@ -776,7 +777,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     continue;
                 $articles[] = ($booking->getNumber() > 1 ?' (' . $booking->getNumber() . 'x)' : '') . $booking->getArticle()->getMainArticle()->getTitle();
                 $prices[] = (string) number_format($booking->getArticle()->getSellPrice() * $booking->getNumber() / 100, 2);
-                $barcodes[] = $booking->getArticle()->getBarcode();
+                $barcodes[] = substr($booking->getArticle()->getBarcode(), 7);
                 $totalPrice += $booking->getArticle()->getSellPrice() * $booking->getNumber();
             }
         }
@@ -792,6 +793,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager,
             $printer,
             $item->getPerson()->getUniversityIdentification(),
+            $item->getPerson()->getFullName(),
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $item->getId(),
@@ -811,6 +813,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager,
             $printer,
             $item->getPerson()->getUniversityIdentification(),
+            $item->getPerson()->getFullName(),
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $item->getId(),
