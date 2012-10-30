@@ -159,7 +159,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_prof' => array(
                         'add', 'delete', 'typeahead'
                     ),
-                    'admin_department' => array(
+                    'admin_syllabus_group' => array(
                         'add', 'deleteStudy', 'edit', 'manage', 'studies'
                     ),
                     'admin_study' => array(

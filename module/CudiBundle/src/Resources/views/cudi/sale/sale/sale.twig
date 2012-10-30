@@ -1,74 +1,74 @@
 {% extends 'sale/base.twig' %}
 
 {% block content %}
-	<div class="flashmessage alert alert-error fade" id="loading_queue_error">
-	    <a class="close" data-dismiss="alert">&times;</a>
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while loading the queue.</p>
-		</div>
-	</div>
-	<div class="flashmessage alert alert-success fade" id="comment_saved_success">
-	    <a class="close" data-dismiss="alert">&times;</a>
-		<div class="title">Success</div>
-		<div class="content">
-			<p>The comment was successfully saved.</p>
-		</div>
-	</div>
-	<div class="flashmessage alert alert-error fade" id="comment_saved_error">
-	    <a class="close" data-dismiss="alert">&times;</a>
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while saving the comment.</p>
-		</div>
-	</div>
+    <div class="flashmessage alert alert-error fade" id="loading_queue_error">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while loading the queue.</p>
+        </div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="comment_saved_success">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The comment was successfully saved.</p>
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="comment_saved_error">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while saving the comment.</p>
+        </div>
+    </div>
 
-	<div id="sale" style="display: none;">
-	    <div class="flashmessage alert alert-error fade" id="barcodeFailure">
-	        <a class="close" data-dismiss="alert">&times;</a>
-	    	<div class="title">Error</div>
-	    	<div class="content">
-	    		<p>The scanned barcode was not valid and was ignored.</p>
-	    	</div>
-	    </div>
+    <div id="sale" style="display: none;">
+        <div class="flashmessage alert alert-error fade" id="barcodeFailure">
+            <a class="close" data-dismiss="alert">&times;</a>
+            <div class="title">Error</div>
+            <div class="content">
+                <p>The scanned barcode was not valid and was ignored.</p>
+            </div>
+        </div>
 
-		<div class="row wrapper">
-			<div class="span7 customer">
-				<div class="row title">Current Customer</div>
-				<div class="row customerName">
-					<span class="name">&nbsp;</span> (<span class="university_identification">&nbsp;</span>)
-				</div>
-				<div class="row actions">
-					<button class="btn btn-info addComment">
-					    <i class="icon-comment icon-white"></i>
-					    Comment
-					</button>
-					<button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">
-					    <i class="icon-eye-open icon-white"></i>
-					    Queue - F8
-					</button>
-					<button class="btn btn-success concludeSelling" data-key="120" data-dismiss="key">
-					    <i class="icon-shopping-cart icon-white"></i>
-					    Sell - F9
-					</button>
-					<button class="btn btn-danger cancelSelling" data-key="121" data-dismiss="key">
-					    <i class="icon-remove icon-white"></i>
-					    Cancel - F10
-					</button>
-				</div>
-			</div>
-			<div class="span2 discounts">
-				Discounts:
-				<div class="options">
-				    <p>
-				        <label class="radio">
-				            <input type="radio" name="discounts" id="discount_none" value="none" data-type="none">
-				            None
-				        </label>
-				    </p>
-				    <p>
-				        <label class="radio">
-				            <input type="radio" name="discounts" id="discount_acco" value="acco" data-type="acco">
+        <div class="row wrapper">
+            <div class="span7 customer">
+                <div class="row title">Current Customer</div>
+                <div class="row customerName">
+                    <span class="name">&nbsp;</span> (<span class="university_identification">&nbsp;</span>)
+                </div>
+                <div class="row actions">
+                    <button class="btn btn-info addComment">
+                        <i class="icon-comment icon-white"></i>
+                        Comment
+                    </button>
+                    <button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">
+                        <i class="icon-eye-open icon-white"></i>
+                        Queue - F8
+                    </button>
+                    <button class="btn btn-success concludeSelling" data-key="120" data-dismiss="key">
+                        <i class="icon-shopping-cart icon-white"></i>
+                        Sell - F9
+                    </button>
+                    <button class="btn btn-danger cancelSelling" data-key="121" data-dismiss="key">
+                        <i class="icon-remove icon-white"></i>
+                        Cancel - F10
+                    </button>
+                </div>
+            </div>
+            <div class="span2 discounts">
+                Discounts:
+                <div class="options">
+                    <p>
+                        <label class="radio">
+                            <input type="radio" name="discounts" id="discount_none" value="none" data-type="none">
+                            None
+                        </label>
+                    </p>
+                    <p>
+                        <label class="radio">
+                            <input type="radio" name="discounts" id="discount_acco" value="acco" data-type="acco">
                             Acco
                         </label>
                     </p>
@@ -78,53 +78,53 @@
                             Member
                         </label>
                     </p>
-				</div>
-			</div>
-			<div class="span3 money">
-				<div class="total">
-					&euro; <span id="totalMoney">0.00</span>
-				</div>
-			</div>
-		</div>
-		<table class="table table-striped table-bordered">
-			<thead>
-				<tr>
-					<th width="110px">Barcode</th>
-					<th>Title</th>
-					<th width="110px">Status</th>
-					<th width="50px">Number</th>
-					<th width="100px">Price</th>
-					<th class="actions" width="150px">Action</th>
-				</tr>
-			</thead>
+                </div>
+            </div>
+            <div class="span3 money">
+                <div class="total">
+                    &euro; <span id="totalMoney">0.00</span>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th width="110px">Barcode</th>
+                    <th>Title</th>
+                    <th width="110px">Status</th>
+                    <th width="50px">Number</th>
+                    <th width="100px">Price</th>
+                    <th class="actions" width="150px">Action</th>
+                </tr>
+            </thead>
 
-			<tbody class="articles"></tbody>
-		</table>
+            <tbody class="articles"></tbody>
+        </table>
 
-		<div id="modalCancelSelling" class="modal fade">
-			<div class="modal-header">
-				<a class="close" data-dismiss="modal">&times;</a>
-				<h3>Cancel Selling</h3>
-			</div>
-			<div class="modal-body">
-				Are you sure you want to cancel this selling? All changes will be lost.
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-danger confirmCancel" data-key="122">OK - F11</button>
-				<button class="btn" data-dismiss="modal">Close</button>
-			</div>
-		</div>
+        <div id="modalCancelSelling" class="modal fade">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h3>Cancel Selling</h3>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to cancel this selling? All changes will be lost.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger confirmCancel" data-key="122">OK - F11</button>
+                <button class="btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
 
-		<div id="modalConcludeSelling" class="modal fade">
-			<div class="modal-header">
-				<a class="close" data-dismiss="modal">&times;</a>
-				<h3>Confirm Selling</h3>
-			</div>
-			<div class="modal-body">
-				<p>Do you want to confirm the selling? After this it cannot be undone.</p>
-				<h4>Calculate change:</h4>
-				<form class="form-horizontal">
-				    <div class="control-group">
+        <div id="modalConcludeSelling" class="modal fade">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h3>Confirm Selling</h3>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to confirm the selling? After this it cannot be undone.</p>
+                <h4>Calculate change:</h4>
+                <form class="form-horizontal">
+                    <div class="control-group">
                         <label class="control-label" for="payedMoney">Payed: </label>
                         <div class="controls">
                             <div class="input-prepend">
@@ -151,274 +151,274 @@
                             </div>
                         </div>
                     </div>
-    			</form>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-success confirmConclude" data-key="122">Sell - F11</button>
-				<button class="btn" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-	<div id="collecting" style="display: none;">
-	    <div class="flashmessage alert alert-error fade" id="barcodeFailure">
-	        <a class="close" data-dismiss="alert">&times;</a>
-	    	<div class="title">Error</div>
-	    	<div class="content">
-	    		<p>The scanned barcode was not valid and was ignored.</p>
-	    	</div>
-	    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success confirmConclude" data-key="122">Sell - F11</button>
+                <button class="btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="collecting" style="display: none;">
+        <div class="flashmessage alert alert-error fade" id="barcodeFailure">
+            <a class="close" data-dismiss="alert">&times;</a>
+            <div class="title">Error</div>
+            <div class="content">
+                <p>The scanned barcode was not valid and was ignored.</p>
+            </div>
+        </div>
 
-		<div class="row wrapper">
-			<div class="span7 customer">
-				<div class="row title">Current Customer</div>
-				<div class="row customerName">
-					<span class="name">&nbsp;</span> (<span class="university_identification">&nbsp;</span>)
-				</div>
-				<div class="row actions">
-					<button class="btn btn-info addComment">
-					    <i class="icon-comment icon-white"></i>
-					    Comment
-					</button>
-					<button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">
-					    <i class="icon-eye-open icon-white"></i>
-					    Queue - F8
-					</button>
-					<button class="btn btn-success concludeCollecting" data-key="120" data-dismiss="key">
-					    <i class="icon-ok-circle icon-white"></i>
-					    Finish - F9
-					</button>
-					<button class="btn btn-danger cancelCollecting" data-key="121" data-dismiss="key">
-					    <i class="icon-remove icon-white"></i>
-					    Cancel - F10
-					</button>
-				</div>
-			</div>
-		</div>
-		<table class="table table-striped table-bordered">
-			<thead>
-				<tr>
-					<th width="110px">Barcode</th>
-					<th>Title</th>
-					<th width="110px">Status</th>
-					<th width="50px">Number</th>
-					<th width="100px">Price</th>
-					<th class="actions" width="150px">Action</th>
-				</tr>
-			</thead>
+        <div class="row wrapper">
+            <div class="span7 customer">
+                <div class="row title">Current Customer</div>
+                <div class="row customerName">
+                    <span class="name">&nbsp;</span> (<span class="university_identification">&nbsp;</span>)
+                </div>
+                <div class="row actions">
+                    <button class="btn btn-info addComment">
+                        <i class="icon-comment icon-white"></i>
+                        Comment
+                    </button>
+                    <button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">
+                        <i class="icon-eye-open icon-white"></i>
+                        Queue - F8
+                    </button>
+                    <button class="btn btn-success concludeCollecting" data-key="120" data-dismiss="key">
+                        <i class="icon-ok-circle icon-white"></i>
+                        Finish - F9
+                    </button>
+                    <button class="btn btn-danger cancelCollecting" data-key="121" data-dismiss="key">
+                        <i class="icon-remove icon-white"></i>
+                        Cancel - F10
+                    </button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th width="110px">Barcode</th>
+                    <th>Title</th>
+                    <th width="110px">Status</th>
+                    <th width="50px">Number</th>
+                    <th width="100px">Price</th>
+                    <th class="actions" width="150px">Action</th>
+                </tr>
+            </thead>
 
-			<tbody class="articles"></tbody>
-		</table>
+            <tbody class="articles"></tbody>
+        </table>
 
-		<div id="modalCancelCollecting" class="modal fade">
-			<div class="modal-header">
-				<a class="close" data-dismiss="modal">&times;</a>
-				<h3>Cancel Collecting</h3>
-			</div>
-			<div class="modal-body">
-				Are you sure you want to cancel this collecting? All changes will be lost.
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-danger confirmCancel" data-key="122">OK - F11</button>
-				<button class="btn" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-	<div id="queueModal" class="modal fade">
-		<div class="modal-header">
-			<a class="close" data-dismiss="modal">&times;</a>
-			<input type="text" class="input-medium search-query pull-right" placeholder="University Identification" id="universityIdentificationFilter" />
-			<h3>Queue</h3>
-		</div>
-		<div class="modal-body">
-			<table class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<th class="number">Num</th>
-						<th class="name">Name</th>
-						<th class="status">Status</th>
-						<th class="actions">Action</th>
-					</tr>
-				</thead>
+        <div id="modalCancelCollecting" class="modal fade">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h3>Cancel Collecting</h3>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to cancel this collecting? All changes will be lost.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger confirmCancel" data-key="122">OK - F11</button>
+                <button class="btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="queueModal" class="modal fade">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <input type="text" class="input-medium search-query pull-right" placeholder="University Identification" id="universityIdentificationFilter" />
+            <h3>Queue</h3>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th class="number">Num</th>
+                        <th class="name">Name</th>
+                        <th class="status">Status</th>
+                        <th class="actions">Action</th>
+                    </tr>
+                </thead>
 
-				<tbody id="queueList"></tbody>
-			</table>
-		</div>
-		<div class="modal-footer">
-			<label class="checkbox pull-left">
-				<input type="checkbox" id="hideHold" checked="checked">
-				Hide Hold
-			</label>
-		    <button id="undoLastSelling" class="btn btn-danger hide" data-key="117">
-		        <i class="icon-arrow-left icon-white"></i>
-		        Undo Last Selling - F6
-		    </button>
-			<button id="startCollectingNext" class="btn btn-success" data-key="118">
-			    <i class="icon-print icon-white"></i>
-			    Print Next - F7
-			</button>
-		</div>
-	</div>
-	<div id="modalAddComment" class="modal fade">
-		<div class="modal-header">
-			<a class="close" data-dismiss="modal">&times;</a>
-			<h3>Comments</h3>
-		</div>
-		<div class="modal-body">
-			<textarea style="width: 97%;" rows="10"></textarea>
-		</div>
-		<div class="modal-footer">
-			<button class="btn btn-primary save" data-dismiss="modal">Save</button>
-			<button class="btn" data-dismiss="modal">Close</button>
-		</div>
-	</div>
-	<div id="modalChoosePayDesk" class="modal fade">
-		<div class="modal-header">
-			<h3>Choose Desk</h3>
-		</div>
-		<div class="modal-body">
-		    {% for payDesk in payDesks %}
-				<div class="span2">
-				    <h3>{{ payDesk.getName() }}</h3>
-				    <br>
-				    <button class="btn" data-code="{{ payDesk.getCode() }}">Choose</button>
-				</div>
-			{% endfor %}
-		</div>
-		<div class="modal-footer">
-		</div>
-	</div>
+                <tbody id="queueList"></tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <label class="checkbox pull-left">
+                <input type="checkbox" id="hideHold" checked="checked">
+                Hide Hold
+            </label>
+            <button id="undoLastSelling" class="btn btn-danger hide" data-key="117">
+                <i class="icon-arrow-left icon-white"></i>
+                Undo Last Selling - F6
+            </button>
+            <button id="startCollectingNext" class="btn btn-success" data-key="118">
+                <i class="icon-print icon-white"></i>
+                Print Next - F7
+            </button>
+        </div>
+    </div>
+    <div id="modalAddComment" class="modal fade">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>Comments</h3>
+        </div>
+        <div class="modal-body">
+            <textarea style="width: 97%;" rows="10"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary save" data-dismiss="modal">Save</button>
+            <button class="btn" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    <div id="modalChoosePayDesk" class="modal fade">
+        <div class="modal-header">
+            <h3>Choose Desk</h3>
+        </div>
+        <div class="modal-body">
+            {% for payDesk in payDesks %}
+                <div class="span2">
+                    <h3>{{ payDesk.getName() }}</h3>
+                    <br>
+                    <button class="btn" data-code="{{ payDesk.getCode() }}">Choose</button>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-		    $('#modalChoosePayDesk button').click(function () {
-		        $('#modalChoosePayDesk').permanentModal('hide');
-		        $('#queueList').showQueue('setPayDesk', $(this).data('code'));
-		        $('#queueModal').permanentModal('open', {closable: false});
-		    });
-		    $('#modalChoosePayDesk').permanentModal('open', {closable: false});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#modalChoosePayDesk button').click(function () {
+                $('#modalChoosePayDesk').permanentModal('hide');
+                $('#queueList').showQueue('setPayDesk', $(this).data('code'));
+                $('#queueModal').permanentModal('open', {closable: false});
+            });
+            $('#modalChoosePayDesk').permanentModal('open', {closable: false});
 
-		    $('.addComment').click(function () {
-		        $('#modalAddComment').modal();
-		    });
+            $('.addComment').click(function () {
+                $('#modalAddComment').modal();
+            });
 
-			$('.showQueue').click(function () {
-				$('#queueModal').permanentModal('open', {closable: true});
-			});
+            $('.showQueue').click(function () {
+                $('#queueModal').permanentModal('open', {closable: true});
+            });
 
-			$('#startCollectingNext').click(function () {
-				$('#queueList .startCollecting:visible').filter(':first').click();
-			});
+            $('#startCollectingNext').click(function () {
+                $('#queueList .startCollecting:visible').filter(':first').click();
+            });
 
-			$('body').barcodeControl();
+            $('body').barcodeControl();
 
-			$('#queueModal').on('shown', function () {
-				$('#queueList').showQueue('updateActions');
-			    $('body').barcodeControl('option', {
-			        onBarcode: function (value) {
-			            $('#queueList').showQueue('gotBarcode', value);
-			        }
-			    });
-			}).on('hidden', function () {
-			    $('body').barcodeControl('option', {
-			        onBarcode: function (value) {
-			            $('#sale').sale('gotBarcode', value);
-			        }
-			    });
-			});
+            $('#queueModal').on('shown', function () {
+                $('#queueList').showQueue('updateActions');
+                $('body').barcodeControl('option', {
+                    onBarcode: function (value) {
+                        $('#queueList').showQueue('gotBarcode', value);
+                    }
+                });
+            }).on('hidden', function () {
+                $('body').barcodeControl('option', {
+                    onBarcode: function (value) {
+                        $('#sale').sale('gotBarcode', value);
+                    }
+                });
+            });
 
-			$('#queueList').showQueue({
-				url: '{{ socketUrl }}',
-				session: {{ session.getId() }},
-				errorDialog: $('#loading_queue_error'),
-				barcodePrefix: {{ barcodePrefix }},
-				collectScanning: {% if enableCollectScanning == 1 %}true{% else %}false{% endif %},
-				statusTranslate: function (status) {
-					switch (status) {
-						case 'signed_in':
-							return 'Signed In';
-						case 'collecting':
-							return 'Collecting';
-						case 'collected':
-							return 'Collected';
-						case 'selling':
-							return 'Selling';
-						case 'hold':
-							return 'Hold';
-					}
-				},
-				openCollecting: function (socketName, data) {
-					$('#sale').hide();
-				    $('#collecting').show().collecting({
-						socketName: socketName,
-						data: data,
-						modal: $('#queueModal'),
-						statusTranslate: function (status) {
-							switch (status) {
-								case 'booked':
-									return 'Not Assigned';
-								case 'assigned':
-									return 'Assigned';
-							}
-						}
-					});
+            $('#queueList').showQueue({
+                url: '{{ socketUrl }}',
+                session: {{ session.getId() }},
+                errorDialog: $('#loading_queue_error'),
+                barcodePrefix: {{ barcodePrefix }},
+                collectScanning: {% if enableCollectScanning == 1 %}true{% else %}false{% endif %},
+                statusTranslate: function (status) {
+                    switch (status) {
+                        case 'signed_in':
+                            return 'Signed In';
+                        case 'collecting':
+                            return 'Collecting';
+                        case 'collected':
+                            return 'Collected';
+                        case 'selling':
+                            return 'Selling';
+                        case 'hold':
+                            return 'Hold';
+                    }
+                },
+                openCollecting: function (socketName, data) {
+                    $('#sale').hide();
+                    $('#collecting').show().collecting({
+                        socketName: socketName,
+                        data: data,
+                        modal: $('#queueModal'),
+                        statusTranslate: function (status) {
+                            switch (status) {
+                                case 'booked':
+                                    return 'Not Assigned';
+                                case 'assigned':
+                                    return 'Assigned';
+                            }
+                        }
+                    });
 
-					$('#modalAddComment textarea').val(data.collecting.comment);
-					$('#modalAddComment .save').click(function () {
-					    $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}' + data.collecting.id, {'comment': $('#modalAddComment textarea').val()}, function (data) {
-					        if (data && 'success' == data.status) {
-					    		$('.flashmessage').removeClass('in');
-					    		$('#comment_saved_success').addClass('in');
-					    		$('#modalAddComment').modal('hide');
-					    	} else {
-					    	    errorSaveComment();
-					    	}
-					    }, 'json').error(errorSaveComment);
-					});
-				},
-				openSale: function (socketName, data) {
-					$('#collecting').hide();
-				    $('#sale').show().sale({
-						socketName: socketName,
-						data: data,
-						modal: $('#queueModal'),
-						statusTranslate: function (status) {
-							switch (status) {
-								case 'booked':
-									return 'Not Assigned';
-								case 'assigned':
-									return 'Assigned';
-							}
-						}
-					});
+                    $('#modalAddComment textarea').val(data.collecting.comment);
+                    $('#modalAddComment .save').click(function () {
+                        $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}' + data.collecting.id, {'comment': $('#modalAddComment textarea').val()}, function (data) {
+                            if (data && 'success' == data.status) {
+                                $('.flashmessage').removeClass('in');
+                                $('#comment_saved_success').addClass('in');
+                                $('#modalAddComment').modal('hide');
+                            } else {
+                                errorSaveComment();
+                            }
+                        }, 'json').error(errorSaveComment);
+                    });
+                },
+                openSale: function (socketName, data) {
+                    $('#collecting').hide();
+                    $('#sale').show().sale({
+                        socketName: socketName,
+                        data: data,
+                        modal: $('#queueModal'),
+                        statusTranslate: function (status) {
+                            switch (status) {
+                                case 'booked':
+                                    return 'Not Assigned';
+                                case 'assigned':
+                                    return 'Assigned';
+                            }
+                        }
+                    });
 
-					$('#modalAddComment textarea').val(data.sale.comment);
-					$('#modalAddComment .save').click(function () {
-					    $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}' + data.sale.id, {'comment': $('#modalAddComment textarea').val()}, function (data) {
-					        if (data && 'success' == data.status) {
-					    		$('.flashmessage').removeClass('in');
-					    		$('#comment_saved_success').addClass('in');
-					    		$('#modalAddComment').modal('hide');
-					    	} else {
-					    	    errorSaveComment();
-					    	}
-					    }, 'json').error(errorSaveComment);
-					});
-				},
-				closeSale: function () {
-					$('#sale').sale('close');
-				},
-				isSelling: function () {
-				    return $('#sale').is(':visible') || $('#collecting').is(':visible');
-				}
-			});
-		});
+                    $('#modalAddComment textarea').val(data.sale.comment);
+                    $('#modalAddComment .save').click(function () {
+                        $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}' + data.sale.id, {'comment': $('#modalAddComment textarea').val()}, function (data) {
+                            if (data && 'success' == data.status) {
+                                $('.flashmessage').removeClass('in');
+                                $('#comment_saved_success').addClass('in');
+                                $('#modalAddComment').modal('hide');
+                            } else {
+                                errorSaveComment();
+                            }
+                        }, 'json').error(errorSaveComment);
+                    });
+                },
+                closeSale: function () {
+                    $('#sale').sale('close');
+                },
+                isSelling: function () {
+                    return $('#sale').is(':visible') || $('#collecting').is(':visible');
+                }
+            });
+        });
 
-		function errorSaveComment() {
-			$('.flashmessage').removeClass('in');
-			$('#comment_saved_error').addClass('in');
-			$('#modalAddComment').modal('hide');
-		}
-	</script>
+        function errorSaveComment() {
+            $('.flashmessage').removeClass('in');
+            $('#comment_saved_error').addClass('in');
+            $('#modalAddComment').modal('hide');
+        }
+    </script>
 {% endblock %}

@@ -12,37 +12,37 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Form\Admin\Department;
+namespace SyllabusBundle\Form\Admin\Group;
 
 use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Department\Name as NameValidator,
-    SyllabusBundle\Entity\Department,
+    SyllabusBundle\Component\Validator\Group\Name as NameValidator,
+    SyllabusBundle\Entity\Group,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Edit Department
+ * Edit Group
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends Add
 {
     /**
-     * @var \SyllabusBundle\Entity\Department
+     * @var \SyllabusBundle\Entity\Group
      */
-    private $_department = null;
+    private $_group = null;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Department $department The department we're going to modify
+     * @param \SyllabusBundle\Entity\Group $group The group we're going to modify
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Department $department, $name = null)
+    public function __construct(EntityManager $entityManager, Group $group, $name = null)
     {
         parent::__construct($entityManager, $name);
 
-        $this->_department = $department;
+        $this->_group = $group;
 
         $this->remove('submit');
 
@@ -51,7 +51,7 @@ class Edit extends Add
             ->setAttribute('class', 'edit');
         $this->add($field);
 
-        $this->populateFromDepartment($department);
+        $this->populateFromGroup($group);
     }
 
     public function getInputFilter()
@@ -69,7 +69,7 @@ class Edit extends Add
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->_entityManager, $this->_department),
+                        new NameValidator($this->_entityManager, $this->_group),
                     ),
                 )
             )

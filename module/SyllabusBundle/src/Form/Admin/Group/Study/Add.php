@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Form\Admin\Department\Study;
+namespace SyllabusBundle\Form\Admin\Group\Study;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,

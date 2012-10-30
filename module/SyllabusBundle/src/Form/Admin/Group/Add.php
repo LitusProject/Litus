@@ -12,18 +12,18 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Form\Admin\Department;
+namespace SyllabusBundle\Form\Admin\Group;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Department\Name as NameValidator,
-    SyllabusBundle\Entity\Department,
+    SyllabusBundle\Component\Validator\Group\Name as NameValidator,
+    SyllabusBundle\Entity\Group,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Add Department
+ * Add Group
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -56,11 +56,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    protected function populateFromDepartment(Department $department)
+    protected function populateFromGroup(Group $group)
     {
         $this->setData(
             array(
-                'name' => $department->getName(),
+                'name' => $group->getName(),
             )
         );
     }

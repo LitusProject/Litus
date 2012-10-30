@@ -12,13 +12,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Component\Validator\Department;
+namespace SyllabusBundle\Component\Validator\Group;
 
 use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Department;
+    SyllabusBundle\Entity\Group;
 
 /**
- * Matches the given department name against the database to check whether it is
+ * Matches the given group name against the database to check whether it is
  * unique or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -33,7 +33,7 @@ class Name extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \SyllabusBundle\Entity\Department The deparment exluded from this check
+     * @var \SyllabusBundle\Entity\Group The group exluded from this check
      */
     private $_exclude = '';
 
@@ -41,7 +41,7 @@ class Name extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'There already exists a department with this name'
+        self::NOT_VALID => 'There already exists a group with this name'
     );
 
     /**
@@ -49,7 +49,7 @@ class Name extends \Zend\Validator\AbstractValidator
      * @param string The name exluded from this check
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, Department $exclude = null, $opts = null)
+    public function __construct(EntityManager $entityManager, Group $exclude = null, $opts = null)
     {
         parent::__construct($opts);
 
@@ -68,11 +68,11 @@ class Name extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $department = $this->_entityManager
-            ->getRepository('SyllabusBundle\Entity\Department')
+        $group = $this->_entityManager
+            ->getRepository('SyllabusBundle\Entity\Group')
             ->findOneByName($value);
 
-        if (null === $department || ($this->_exclude !== null && $department->getId() == $this->_exclude->getId()))
+        if (null === $group || ($this->_exclude !== null && $group->getId() == $this->_exclude->getId()))
             return true;
 
         $this->error(self::NOT_VALID);
