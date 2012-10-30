@@ -39,10 +39,10 @@ return array(
                     ),
                 ),
             ),
-            'admin_department' => array(
+            'admin_syllabus_group' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/department[/:action[/:id][/page/:page][/:academicyear]][/]',
+                    'route' => '/admin/syllabus/group[/:action[/:id][/page/:page][/:academicyear]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
@@ -50,7 +50,7 @@ return array(
                         'page'         => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_department',
+                        'controller' => 'admin_syllabus_group',
                         'action'     => 'manage',
                     ),
                 ),
@@ -201,7 +201,7 @@ return array(
             'syllabus_install'       => 'SyllabusBundle\Controller\Admin\InstallController',
 
             'admin_update_syllabus'  => 'SyllabusBundle\Controller\Admin\UpdateController',
-            'admin_department'       => 'SyllabusBundle\Controller\Admin\DepartmentController',
+            'admin_syllabus_group'   => 'SyllabusBundle\Controller\Admin\GroupController',
             'admin_study'            => 'SyllabusBundle\Controller\Admin\StudyController',
             'admin_subject'          => 'SyllabusBundle\Controller\Admin\SubjectController',
             'admin_subject_comment'  => 'SyllabusBundle\Controller\Admin\Subject\CommentController',

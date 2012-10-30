@@ -43,7 +43,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllParentsByAcademicYear($currentYear);
 
         $groups = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Department')
+            ->getRepository('SyllabusBundle\Entity\Group')
             ->findAll();
 
         $form = new MailForm($studies, $groups);
@@ -92,12 +92,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         foreach ($groupIds as $groupId) {
 
                             $group = $this->getEntityManager()
-                                ->getRepository('SyllabusBundle\Entity\Department')
+                                ->getRepository('SyllabusBundle\Entity\Group')
                                 ->findOneById($groupId);
 
                             $studies = $this->getEntityManager()
-                                ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
-                                ->findAllByDepartmentAndAcademicYear($group, $this->getCurrentAcademicYear());
+                                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                                ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
 
                             foreach  ($studies as $study) {
                                 $children = $study->getAllChildren();

@@ -16,19 +16,19 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    SyllabusBundle\Entity\Department,
-    SyllabusBundle\Entity\StudyDepartmentMap,
-    SyllabusBundle\Form\Admin\Department\Add as AddForm,
-    SyllabusBundle\Form\Admin\Department\Edit as EditForm,
-    SyllabusBundle\Form\Admin\Department\Study\Add as StudyForm,
+    SyllabusBundle\Entity\Group,
+    SyllabusBundle\Entity\StudyGroupMap,
+    SyllabusBundle\Form\Admin\Group\Add as AddForm,
+    SyllabusBundle\Form\Admin\Group\Edit as EditForm,
+    SyllabusBundle\Form\Admin\Group\Study\Add as StudyForm,
     Zend\View\Model\ViewModel;
 
 /**
- * DepartmentController
+ * GroupController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class DepartmentController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class GroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -37,13 +37,13 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Department')
+                ->getRepository('SyllabusBundle\Entity\Group')
                 ->findAll(),
             $this->getParam('page')
         );
 
-        foreach($paginator as $department)
-            $department->setEntityManager($this->getEntityManager());
+        foreach($paginator as $group)
+            $group->setEntityManager($this->getEntityManager());
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -73,19 +73,19 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $this->getEntityManager()->persist(new Department($formData['name']));
+                $this->getEntityManager()->persist(new Group($formData['name']));
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The department was successfully added!'
+                        'The group was successfully added!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_department',
+                    'admin_syllabus_group',
                     array(
                         'action' => 'manage',
                         'academicyear' => $academicYear->getCode(),
@@ -114,10 +114,10 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        if (!($department = $this->_getDepartment()))
+        if (!($group = $this->_getGroup()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $department);
+        $form = new EditForm($this->getEntityManager(), $group);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -126,22 +126,22 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $department->setName($formData['name']);
+                $group->setName($formData['name']);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The department was successfully updated!'
+                        'The group was successfully updated!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_department',
+                    'admin_syllabus_group',
                     array(
                         'action' => 'edit',
-                        'id' => $department->getId(),
+                        'id' => $group->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -159,7 +159,7 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
                 'academicYears' => $academicYears,
                 'currentAcademicYear' => $academicYear,
                 'form' => $form,
-                'department' => $department,
+                'group' => $group,
             )
         );
     }
@@ -169,7 +169,7 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        if (!($department = $this->_getDepartment()))
+        if (!($group = $this->_getGroup()))
             return new ViewModel();
 
         $form = new StudyForm();
@@ -186,19 +186,19 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
                     ->findOneById($formData['study_id']);
 
                 $map = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
-                    ->findOneByStudyDepartmentAndAcademicYear($study, $department, $academicYear);
+                    ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                    ->findOneByStudyGroupAndAcademicYear($study, $group, $academicYear);
 
                 if (null !== $map) {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
                             'Error',
-                            'The department study mapping already existed!'
+                            'The group study mapping already existed!'
                         )
                     );
                 } else {
-                    $this->getEntityManager()->persist(new StudyDepartmentMap($study, $department, $academicYear));
+                    $this->getEntityManager()->persist(new StudyGroupMap($study, $group, $academicYear));
 
                     $this->getEntityManager()->flush();
 
@@ -206,16 +206,16 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
                         new FlashMessage(
                             FlashMessage::SUCCESS,
                             'Succes',
-                            'The department study mapping was successfully added!'
+                            'The group study mapping was successfully added!'
                         )
                     );
                 }
 
                 $this->redirect()->toRoute(
-                    'admin_department',
+                    'admin_syllabus_group',
                     array(
                         'action' => 'studies',
-                        'id' => $department->getId(),
+                        'id' => $group->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -229,8 +229,8 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
         }
 
         $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
-            ->findAllByDepartmentAndAcademicYear($department, $academicYear);
+            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            ->findAllByGroupAndAcademicYear($group, $academicYear);
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -241,7 +241,7 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
                 'academicYears' => $academicYears,
                 'currentAcademicYear' => $academicYear,
                 'form' => $form,
-                'department' => $department,
+                'group' => $group,
                 'studies' => $studies,
             )
         );
@@ -299,19 +299,19 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
         return $academicYear;
     }
 
-    private function _getDepartment()
+    private function _getGroup()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the department!'
+                    'No ID was given to identify the group!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_department',
+                'admin_syllabus_group',
                 array(
                     'action' => 'manage'
                 )
@@ -320,21 +320,21 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             return;
         }
 
-        $department = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Department')
+        $group = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Group')
             ->findOneById($this->getParam('id'));
 
-        if (null === $department) {
+        if (null === $group) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No department with the given ID was found!'
+                    'No group with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_department',
+                'admin_syllabus_group',
                 array(
                     'action' => 'manage'
                 )
@@ -343,9 +343,9 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             return;
         }
 
-        $department->setEntityManager($this->getEntityManager());
+        $group->setEntityManager($this->getEntityManager());
 
-        return $department;
+        return $group;
     }
 
     private function _getMapping()
@@ -360,7 +360,7 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             );
 
             $this->redirect()->toRoute(
-                'admin_department',
+                'admin_syllabus_group',
                 array(
                     'action' => 'manage'
                 )
@@ -370,7 +370,7 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
+            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
             ->findOneById($this->getParam('id'));
 
         if (null === $mapping) {
@@ -383,7 +383,7 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             );
 
             $this->redirect()->toRoute(
-                'admin_department',
+                'admin_syllabus_group',
                 array(
                     'action' => 'manage'
                 )

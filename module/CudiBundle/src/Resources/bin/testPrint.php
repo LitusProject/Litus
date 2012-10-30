@@ -57,6 +57,7 @@ if (isset($opts->p) && isset($opts->t)) {
     $data = (object) array(
         'id' => 's0210425',
         'barcode' => '1234567890',
+        'name' => 'Kristof Mariën',
         'queuenumber' => '3',
         'totalAmount' => '63,00',
         'items' => array(

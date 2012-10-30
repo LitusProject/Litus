@@ -1,27 +1,27 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'syllabus/admin/department/partials/navigation.twig' %}
+    {% include 'syllabus/admin/group/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    {% include 'syllabus/admin/department/partials/years.twig' %}
+    {% include 'syllabus/admin/group/partials/years.twig' %}
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
 
-    {% if hasAccess('admin_department', 'studies') %}
+    {% if hasAccess('admin_syllabus_group', 'studies') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Manage Studies</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to manage the studies of this department!</i>
+                        <i>Please hit the link below to manage the studies of this group!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_department', {'action': 'studies', 'id': department.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Manage Studies</a>
+                        <a href="{{ url('admin_syllabus_group', {'action': 'studies', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Manage Studies</a>
                     </p>
                 </div>
             </div>

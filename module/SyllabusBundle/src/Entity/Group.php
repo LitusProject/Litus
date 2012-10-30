@@ -19,13 +19,13 @@ use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Department")
- * @ORM\Table(name="syllabus.departments")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Group")
+ * @ORM\Table(name="syllabus.groups")
  */
-class Department
+class Group
 {
     /**
-     * @var integer The ID of the department
+     * @var integer The ID of the group
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -34,7 +34,7 @@ class Department
     private $id;
 
     /**
-     * @var string The title of the department
+     * @var string The title of the group
      *
      * @ORM\Column(type="string")
      */
@@ -66,7 +66,7 @@ class Department
 
     /**
      * @param string $name
-     * @return \SyllabusBundle\Entity\Department
+     * @return \SyllabusBundle\Entity\Group
      */
     public function setName($name)
     {
@@ -76,7 +76,7 @@ class Department
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @return \SyllabusBundle\Entity\Department
+     * @return \SyllabusBundle\Entity\Group
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -91,7 +91,7 @@ class Department
     public function getNbStudents(AcademicYear $academicYear)
     {
         return $this->_entityManager
-            ->getRepository('SyllabusBundle\Entity\Department')
-            ->findNbStudentsByDepartmentAndAcademicYear($this, $academicYear);
+            ->getRepository('SyllabusBundle\Entity\Group')
+            ->findNbStudentsByGroupAndAcademicYear($this, $academicYear);
     }
 }

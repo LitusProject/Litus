@@ -18,10 +18,10 @@ use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\StudyDepartmentMap")
- * @ORM\Table(name="syllabus.studies_departments_map")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\StudyGroupMap")
+ * @ORM\Table(name="syllabus.studies_group_map")
  */
-class StudyDepartmentMap
+class StudyGroupMap
 {
     /**
      * @var integer The ID of the mapping
@@ -41,12 +41,12 @@ class StudyDepartmentMap
     private $study;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The deparmtent of the mapping
+     * @var \SyllabusBundle\Entity\Subject The group of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Department")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
-    private $department;
+    private $group;
 
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
@@ -58,13 +58,13 @@ class StudyDepartmentMap
 
     /**
      * @param \SyllabusBundle\Entity\Study $study
-     * @param \SyllabusBundle\Entity\Department $department
+     * @param \SyllabusBundle\Entity\Group $group
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
      */
-    public function __construct(Study $study, Department $department, AcademicYear $academicYear)
+    public function __construct(Study $study, Group $group, AcademicYear $academicYear)
     {
         $this->study = $study;
-        $this->department = $department;
+        $this->group = $group;
         $this->academicYear = $academicYear;
     }
 
