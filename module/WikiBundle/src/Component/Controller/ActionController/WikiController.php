@@ -32,10 +32,10 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
     {
         return array(
             'action'         => 'login',
-            'controller'     => 'auth',
+            'controller'     => 'wiki_auth',
 
             'auth_route'     => 'wiki_auth',
-            'redirect_route' => 'wiki_redirect'
+            'redirect_route' => 'wiki_auth'
         );
     }
 
