@@ -246,6 +246,23 @@ return array(
                     ),
                 ),
             ),
+            'admin_cv_entry' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'page'         => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_cv_entry',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+
         ),
     ),
     'translator' => array(
@@ -301,6 +318,8 @@ return array(
             'career_internship'        => 'BrBundle\Controller\Career\InternshipController',
             'career_event'             => 'BrBundle\Controller\Career\EventController',
             'career_company'           => 'BrBundle\Controller\Career\CompanyController',
+
+            'admin_cv_entry'           => 'BrBundle\Controller\Admin\CvController',
         ),
     ),
     'assetic_configuration' => array(
