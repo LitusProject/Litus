@@ -27,7 +27,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 {
     public function cvAction()
     {
-        $form = new AddForm();
         $person = $this->getAuthentication()->getPersonObject();
         $message = null;
 
@@ -50,6 +49,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 )
             );
         }
+
+        $form = new AddForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear());
 
         if ($this->getRequest()->isPost()) {
 
