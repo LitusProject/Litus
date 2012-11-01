@@ -6,8 +6,14 @@
                 <h1>{{ translate('CV Book') }}</h1>
             </div>
 
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
+            {% if not form %}
+                {{ translate(message) }}
+            {% else %}
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(form) }}
+            {% endif %}
+
+
         </div>
     </div>
 {% endblock %}

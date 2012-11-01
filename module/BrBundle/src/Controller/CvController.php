@@ -28,6 +28,28 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function cvAction()
     {
         $form = new AddForm();
+        $person = $this->getAuthentication()->getPersonObject();
+        $message = null;
+
+        if ($person === null) {
+            $message = 'Please log in to add your CV.';
+        }
+
+        $open = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_book_open');
+
+        if (!$open) {
+            $message = 'The CV Book is currently not accepting entries.';
+        }
+
+        if ($message) {
+            return new ViewModel(
+                array(
+                    'message' => $message,
+                )
+            );
+        }
 
         if ($this->getRequest()->isPost()) {
 
