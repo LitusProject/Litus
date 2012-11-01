@@ -96,6 +96,22 @@ return array(
                     ),
                 ),
             ),
+            'admin_cv_entry' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'page'         => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_cv_entry',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'admin_section' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -108,36 +124,6 @@ return array(
                     'defaults' => array(
                         'controller' => 'admin_section',
                         'action'     => 'manage',
-                    ),
-                ),
-            ),
-            'corporate_index' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '[/:language]/corporate[/:action][/]',
-                    'constraints' => array(
-                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'session'  => '[0-9]*',
-                        'language' => '[a-z]{2}',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'corporate_index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'corporate_auth' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '[/:language]/corporate/auth[/:action][/]',
-                    'constraints' => array(
-                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'session'  => '[0-9]*',
-                        'language' => '[a-z]{2}',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'corporate_auth',
-                        'action'     => 'login',
                     ),
                 ),
             ),
@@ -246,23 +232,50 @@ return array(
                     ),
                 ),
             ),
-            'admin_cv_entry' => array(
+            'corporate_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
+                    'route' => '[/:language]/corporate[/:action][/]',
                     'constraints' => array(
-                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'           => '[0-9]*',
-                        'academicyear' => '[0-9]{4}-[0-9]{4}',
-                        'page'         => '[0-9]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'session'  => '[0-9]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_cv_entry',
-                        'action'     => 'manage',
+                        'controller' => 'corporate_index',
+                        'action'     => 'index',
                     ),
                 ),
             ),
-
+            'corporate_auth' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/corporate/auth[/:action][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'session'  => '[0-9]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'corporate_auth',
+                        'action'     => 'login',
+                    ),
+                ),
+            ),
+            'cv_index' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/cv[/:action][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cv_index',
+                        'action'     => 'cv',
+                    ),
+                ),
+            ),
         ),
     ),
     'translator' => array(
@@ -308,6 +321,7 @@ return array(
             'admin_company_job'        => 'BrBundle\Controller\Admin\Company\JobController',
             'admin_company_user'       => 'BrBundle\Controller\Admin\Company\UserController',
             'admin_company_logo'       => 'BrBundle\Controller\Admin\Company\LogoController',
+            'admin_cv_entry'           => 'BrBundle\Controller\Admin\CvController',
             'admin_section'            => 'BrBundle\Controller\Admin\SectionController',
 
             'corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
@@ -319,7 +333,7 @@ return array(
             'career_event'             => 'BrBundle\Controller\Career\EventController',
             'career_company'           => 'BrBundle\Controller\Career\CompanyController',
 
-            'admin_cv_entry'           => 'BrBundle\Controller\Admin\CvController',
+            'cv_index'                 => 'BrBundle\Controller\CvController',
         ),
     ),
     'assetic_configuration' => array(
