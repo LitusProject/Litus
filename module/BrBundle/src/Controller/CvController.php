@@ -14,7 +14,8 @@
 
 namespace BrBundle\Controller;
 
-use BrBundle\Form\Cv\Add as AddForm,
+use BrBundle\Entity\Cv\Entry as CvEntry,
+    BrBundle\Form\Cv\Add as AddForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
@@ -32,6 +33,10 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         if ($person === null) {
             $message = 'Please log in to add your CV.';
+        }
+
+        if (!($person instanceof Academic)) {
+            $message = 'You must be a student to add your CV.';
         }
 
         $open = $this->getEntityManager()
