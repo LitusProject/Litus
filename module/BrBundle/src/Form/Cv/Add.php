@@ -96,18 +96,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'test',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
         return $inputFilter;
     }
 }
