@@ -34,8 +34,8 @@
 	            {% for banner in paginator %}
 	                <tr class="item item-{{ banner.getId() }}">
 	                    <td>{{ banner.getName() }}</td>
-	                    <td>{{ dateLocalized(banner.getStartDate(), 'dd/MM/y H:mm') }}</td>
-	                    <td>{{ dateLocalized(banner.getEndDate(), 'dd/MM/y H:mm') }}</td>
+	                    <td>{{ dateLocalized(banner.getStartDate(), 'dd/MM/y HH:mm') }}</td>
+	                    <td>{{ dateLocalized(banner.getEndDate(), 'dd/MM/y HH:mm') }}</td>
 	                    <td>{{ banner.getCreationPerson().getFullName() }}</td>
 	                    <td>{% if banner.isActive() %} X {% endif %}</td>
 	                    <td class="actions">

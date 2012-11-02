@@ -53,7 +53,7 @@
     </div>
     <div class="span10">
         <h1>{{ vacancy.getName() }}</h1>
-        <div class="pull-right" style="margin-top:-35px;">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM YYYY') }}</strong></div>
+        <div class="pull-right" style="margin-top:-35px;">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
         <div class="accordion" id="accordion" data-collapse-type="manual">
             <div class="accordion-group">
                 <div class="accordion-heading">
