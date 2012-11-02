@@ -16,6 +16,7 @@ namespace BrBundle\Controller;
 
 use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Form\Cv\Add as AddForm,
+    CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
