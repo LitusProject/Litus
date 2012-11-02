@@ -1,0 +1,18 @@
+<header id="controller_header">
+    <div class="title"><span class="cv">CV Entries</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('admin_cv_entry', 'manage') %}
+                <li>
+                	<a
+                		{% if 'manage' == getParam('action') %} class="active" {% endif %}
+                		href="{{ url('admin_cv_entry', {"action": "manage"}) }}"
+                	>
+                		Manage
+                	</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
