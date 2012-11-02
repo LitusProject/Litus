@@ -89,7 +89,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
         }
 
         $entry = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Br\Entry')
+            ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneById($this->getParam('id'));
 
         if (null === $entry) {

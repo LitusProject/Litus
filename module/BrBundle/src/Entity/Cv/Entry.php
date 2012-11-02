@@ -61,6 +61,14 @@ class Entry
     }
 
     /**
+     * @return The id.
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return \CommonBundle\Entity\Users\People\Academic
      */
     public function getAcademic()
