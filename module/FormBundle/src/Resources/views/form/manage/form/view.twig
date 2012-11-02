@@ -44,7 +44,7 @@
 		    	<tr class="item item-{{ entry.getId() }}">
                     <td>{{ entry.getId() }}</td>
     				<td>{{ entry.getCreationPerson().getFullName() }}</td>
-    				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y H:mm') }}</td>
+    				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
 
 	    			{% for field in fields %}
 	    				<td class="column-{{ field.getId() }}"></td>

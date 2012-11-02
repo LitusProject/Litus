@@ -174,7 +174,7 @@
                         <span class="pull-right visible-desktop">
                             {{ _self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
                         </span>
-                        {{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}-{{ dateLocalized(shift.getEndDate(), 'H:mm') }}&mdash;{{ shift.getName() }}
+                        {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}&mdash;{{ shift.getName() }}
                     </a>
                 </div>
                 <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="accordion-body collapse">
@@ -190,9 +190,9 @@
                                             <dt>{{ translate('Name') }}</dt>
                                             <dd>{{ shift.getName() }}</dd>
                                             <dt>{{ translate('Start') }}</dt>
-                                            <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}</dd>
+                                            <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
                                             <dt>{{ translate('End') }}</dt>
-                                            <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/Y H:mm') }}</dd>
+                                            <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
                                         </dl>
                                     </span>
 
