@@ -1,0 +1,46 @@
+{% extends 'site/base.twig' %}
+{% block content %}
+    <div class="row-fluid page">
+        <div class="span12">
+            <div class="page-header">
+                <h1>{{ translate('CV Book') }}</h1>
+            </div>
+
+            {% if not form %}
+                {{ translate(message) }}
+            {% else %}
+
+                {{ translate('The following data from your account will be used in the CV Book:') }}
+
+                <dl class="dl-horizontal wide">
+                    <dt>{{ translate('Name') }}</dt>
+                    <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
+                    <dt>{{ translate('Birthday') }}</dt>
+                    <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM Y') }}&nbsp;</dd>
+                    <dt>{{ translate('Sex') }}</dt>
+                    <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
+                    <dt>{{ translate('Phone Number') }}</dt>
+                    <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
+                    <dt>{{ translate('E-mail') }}</dt>
+                    <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
+                    <dt>{{ translate('Secondary Address&mdash;Home') }}</dt>
+                    <dd>
+                        {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
+                        {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
+                            / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}
+                        {% endif %}<br>
+                        {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br>
+                        {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
+                    </dd>
+                </dl>
+
+                <p><strong>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved at the time the CV Book is created, so future updates will still be reflected. Everything you fill in below, should be updated manually afterwards.') }}</strong></p>
+
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(form) }}
+            {% endif %}
+
+
+        </div>
+    </div>
+{% endblock %}

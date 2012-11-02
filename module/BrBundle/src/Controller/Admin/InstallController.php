@@ -42,6 +42,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => '_br/img',
                     'description' => 'The path to the public company logo files',
                 ),
+                array(
+                    'key'         => 'br.cv_book_open',
+                    'value'       => '0',
+                    'description' => 'Whether the CV Book is currently open for entries or not',
+                ),
             )
         );
     }
@@ -63,6 +68,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_company_user' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'admin_cv_entry' => array(
+                        'manage', 'delete',
+                    ),
 
                     'career_index' => array(
                         'index'
@@ -78,6 +86,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     ),
                     'career_internship' => array(
                         'view', 'overview'
+                    ),
+
+                    'cv_index' => array(
+                        'cv', 'complete',
                     ),
                 )
             )
