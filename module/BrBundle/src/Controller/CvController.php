@@ -65,6 +65,13 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
             if ($form->isValid()) {
 
+                $entry = new CvEntry(
+                    $person,
+                    $this->getCurrentAcademicYear()
+                );
+                $this->getEntityManager()->persist($entry);
+                $this->getEntityManager()->flush();
+
                 $this->redirect()->toRoute(
                     'cv_index',
                     array(
