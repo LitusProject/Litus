@@ -227,7 +227,7 @@ return array(
             'admin_stock' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/stock[/:action[/:id][/:field/:string][/page/:page]][/]',
+                    'route' => '/admin/stock[/:action[/:id][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
