@@ -33,6 +33,12 @@ table {
         height: @tableRowHeight;
         line-height: @tableRowHeight;
 
+        &:hover {
+            td {
+                background: @cTableHeader url(@iTableBackground) no-repeat right 0;
+            }
+        }
+
         td {
             height: @tableRowHeight;
             overflow: hidden;
