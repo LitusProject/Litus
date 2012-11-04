@@ -8,16 +8,20 @@
         {
             "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/LitusProject/ZfcTwig"
         }
     ],
     "require": {
         "zendframework/zendframework" : "dev-master",
 
         "doctrine/doctrine-orm-module": "dev-master",
-	"doctrine/doctrine-mongo-odm-module": "dev-master",
+        "doctrine/doctrine-mongo-odm-module": "dev-master",
 
         "EvanDotPro/EdpMarkdown": "dev-master",
         "widmogrod/zf2-assetic-module": "dev-master",
-        "zf-commons/zfc-twig": "dev-master"
+        "zf-commons/zfc-twig": "dev-fix"
     }
 }
