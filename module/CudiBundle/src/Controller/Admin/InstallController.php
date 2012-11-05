@@ -333,7 +333,7 @@ VTK Cudi
                         'delete', 'manage'
                     ),
                     'admin_sales_financial' => array(
-                        'deliveries', 'retours', 'sales', 'stock', 'supplier'
+                        'deliveries', 'retours', 'sales', 'stock', 'suppliers'
                     ),
                     'admin_sales_session' => array(
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
