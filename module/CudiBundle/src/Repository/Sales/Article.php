@@ -26,7 +26,9 @@ class Article extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear')
+                    $query->expr()->eq('a.academicYear', ':academicYear'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
                 )
             )
             ->setParameter('academicYear', $academicYear->getId())
