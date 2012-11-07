@@ -45,6 +45,8 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@gollum_css',
+            '@gollum_js',
         ),
         'admin_company_user' => array(
             '@common_jquery',

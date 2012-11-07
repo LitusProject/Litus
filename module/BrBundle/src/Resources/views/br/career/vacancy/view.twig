@@ -63,7 +63,9 @@
                 </div>
                 <div id="about" class="accordion-body collapse in">
                     <div class="accordion-inner">
-                        {{ vacancy.getDescription() }}
+                        {% autoescape false %}
+                            {{ markdown(vacancy.getDescription()) }}
+                        {% endautoescape %}
                     </div>
                 </div>
             </div>
@@ -75,7 +77,9 @@
                 </div>
                 <div id="profile" class="accordion-body collapse in">
                     <div class="accordion-inner">
-                        {{ vacancy.getProfile() }}
+                        {% autoescape false %}
+                            {{ markdown(vacancy.getProfile()) }}
+                        {% endautoescape %}
                     </div>
                 </div>
             </div>
@@ -87,7 +91,9 @@
                 </div>
                 <div id="knowledge" class="accordion-body collapse in">
                     <div class="accordion-inner">
-                        {{ vacancy.getRequiredKnowledge() }}
+                        {% autoescape false %}
+                            {{ markdown(vacancy.getRequiredKnowledge()) }}
+                        {% endautoescape %}
                     </div>
                 </div>
             </div>
