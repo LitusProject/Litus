@@ -145,8 +145,6 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllByPerson($person, $academicYear);
 
-            $counter[$person->getUsername()] = count($shifts);
-
             $item = (object) array();
             $item->id = $person->getId();
             $item->universityIdentification = $person->getUniversityIdentification();
