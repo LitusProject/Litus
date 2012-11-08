@@ -35,9 +35,9 @@ abstract class Entry
     private $id;
 
     /**
-     * @var MailBundle\Entity\List The list associated with this entry.
+     * @var MailBundle\Entity\MailingList The list associated with this entry.
      *
-     * @ORM\ManyToOne(targetEntity="MailBundle\Entity\List", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MailBundle\Entity\MailingList", cascade={"persist"})
      * @ORM\JoinColumn(name="list", referencedColumnName="id")
      */
     private $list;
@@ -45,9 +45,9 @@ abstract class Entry
     /**
      * Creates a new list entry for the given list.
      *
-     * @param MailBundle\Entity\List $list The list for this entry.
+     * @param MailBundle\Entity\MailingList $list The list for this entry.
      */
-    public function __construct(List $list)
+    public function __construct(MailingList $list)
     {
         $this->list = $list;
     }
@@ -60,7 +60,7 @@ abstract class Entry
     }
 
     /**
-     * @return The list of this entry.
+     * @return MailBundle\Entity\MailingList The list of this entry.
      */
     public function getList()
     {

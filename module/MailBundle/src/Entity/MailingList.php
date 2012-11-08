@@ -19,10 +19,10 @@ use Doctrine\ORM\Mapping as ORM,
 /**
  * This is the entity for a driver.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\List")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList")
  * @ORM\Table(name="mail.list")
  */
-class List
+class MailingList
 {
 
     /**
@@ -46,7 +46,7 @@ class List
      *
      * @param $name The name for this list.
      */
-    public function __construct($ame)
+    public function __construct($name)
     {
         $this->name = $name;
     }

@@ -11,12 +11,12 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace MailBundle\Entity;
+namespace MailBundle\Entity\Entry;
 
-use CommonBundle\Entity\Users\People\Academic,
+use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
-    MailBundle\Entity\List;
+    MailBundle\Entity\MailingList;
 
 /**
  * This is the entity for a driver.
@@ -37,7 +37,7 @@ class Academic extends \MailBundle\Entity\Entry
     private $id;
 
     /**
-     * @var MailBundle\Entity\List The list associated with this entry.
+     * @var CommonBundle\Entity\Users\People\Academic The academic associated with this entry.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -47,10 +47,10 @@ class Academic extends \MailBundle\Entity\Entry
     /**
      * Creates a new list entry for the given list with the given academic.
      *
-     * @param MailBundle\Entity\List $list The list for this entry.
+     * @param MailBundle\Entity\MailingList $list The list for this entry.
      * @param CommonBundle\Entity\Users\People\Academic $academic The academic to add.
      */
-    public function __construct(List $list, Academic $academic)
+    public function __construct(MailingList $list, AcademicPerson $academic)
     {
         parent::__construct($list);
         $this->mail = $mail;

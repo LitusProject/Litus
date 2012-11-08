@@ -110,6 +110,20 @@ return array(
             ),
         ),
     ),
+    'doctrine' => array(
+        'driver' => array(
+            'orm_default' => array(
+                'drivers' => array(
+                    'MailBundle\Entity' => 'orm_annotation_driver'
+                ),
+            ),
+            'orm_annotation_driver' => array(
+                'paths' => array(
+                    'mailbundle' => __DIR__ . '/../../Entity',
+                ),
+            ),
+        ),
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             'mail_view' => __DIR__ . '/../views',
