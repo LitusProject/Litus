@@ -15,9 +15,8 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\Driver,
-    MailBundle\Form\Admin\Driver\Add,
-    MailBundle\Form\Admin\Driver\Edit,
+    MailBundle\Entity\MailingList,
+    MailBundle\Form\Admin\MailingList\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 class ListController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -37,5 +36,112 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
+    }
+
+
+    public function addAction()
+    {
+        $form = new AddForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $list = new MailingList($formData['name']);
+                $this->getEntityManager()->persist($list);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCES',
+                        'The list was succesfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_mail_list',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($list = $this->_getList()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($list);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    private function _getList()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the driver!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $list = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\MailingList')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $list) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No list with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $list;
     }
 }
