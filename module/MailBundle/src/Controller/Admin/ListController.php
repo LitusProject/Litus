@@ -24,5 +24,18 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\MailingList')
+            ->findAll(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 }

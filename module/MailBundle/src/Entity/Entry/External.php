@@ -11,11 +11,11 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace MailBundle\Entity;
+namespace MailBundle\Entity\Entry;
 
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
-    MailBundle\Entity\List;
+    MailBundle\Entity\MailingList;
 
 /**
  * This is the entity for a driver.
@@ -45,10 +45,10 @@ class External extends \MailBundle\Entity\Entry
     /**
      * Creates a new list entry for the given list with the given mail address.
      *
-     * @param MailBundle\Entity\List $list The list for this entry.
+     * @param MailBundle\Entity\MailingList $list The list for this entry.
      * @param string $mail The email address to add.
      */
-    public function __construct(List $list, $mail)
+    public function __construct(MailingList $list, $mail)
     {
         parent::__construct($list);
         $this->mail = $mail;
