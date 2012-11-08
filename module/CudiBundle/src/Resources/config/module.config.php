@@ -232,7 +232,7 @@ return array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string' => '[%a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9._-]*',
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
