@@ -126,7 +126,7 @@
         	    </div>
         	</div>
         {% endif %}
-        {% if booking.getStatus() == 'booked' and hasAccess('admin_sales_booking', 'delete') %}
+        {% if (booking.getStatus() == 'booked' or booking.getStatus() == 'assigned') and hasAccess('admin_sales_booking', 'delete') %}
         	<div class="sidebox">
         	    <div class="title">Remove Booking</div>
         	   	<div class="content">
