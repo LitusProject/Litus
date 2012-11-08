@@ -55,7 +55,7 @@ class MailingList
      * @return The id of this list.
      */
     public function getId() {
-        return $id;
+        return $this->id;
     }
 
     /**
