@@ -31,12 +31,14 @@
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>Email</th>
                 <th width="90px">Actions</th>
             </tr>
             {% for entry in entries %}
                 <tr class="item item-{{ entry.getId() }}">
                     <td>{{ entry.getFirstName() }}</td>
                     <td>{{ entry.getLastName() }}</td>
+                    <td>{{ entry.getMailAddress() }}</td>
                     <td>
                         <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getFirstName() }} {{ entry.getLastName() }}" class="delete">Delete</a>
                     </td>

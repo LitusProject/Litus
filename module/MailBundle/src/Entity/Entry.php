@@ -21,6 +21,12 @@ use Doctrine\ORM\Mapping as ORM,
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry")
  * @ORM\Table(name="mail.list_entry")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "academic"="MailBundle\Entity\Entry\Academic",
+ *      "external"="MailBundle\Entity\Entry\External"
+ * })
  */
 abstract class Entry
 {
