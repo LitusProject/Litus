@@ -68,4 +68,14 @@ abstract class Entry
     }
 
     abstract public function getMailAddress();
+
+    /**
+     * @return The first name of this entry.
+     */
+    abstract public function getFirstName();
+
+    /**
+     * @return The last name of this entry.
+     */
+    abstract public function getLastName();
 }
