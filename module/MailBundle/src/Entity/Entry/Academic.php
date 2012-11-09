@@ -28,15 +28,6 @@ class Academic extends \MailBundle\Entity\Entry
 {
 
     /**
-     * @var The entry's unique identifier
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
-    /**
      * @var CommonBundle\Entity\Users\People\Academic The academic associated with this entry.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
@@ -54,13 +45,6 @@ class Academic extends \MailBundle\Entity\Entry
     {
         parent::__construct($list);
         $this->mail = $mail;
-    }
-
-    /**
-     * @return The id of this entry.
-     */
-    public function getId() {
-        return $id;
     }
 
     /**
