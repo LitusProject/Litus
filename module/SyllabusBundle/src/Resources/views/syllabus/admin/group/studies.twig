@@ -71,7 +71,7 @@
             $('#studySearch').typeaheadRemote(
                 {
                     source: '{{ url('admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
-                    items: 20,
+                    items: 30,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
