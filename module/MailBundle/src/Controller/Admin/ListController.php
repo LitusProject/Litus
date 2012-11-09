@@ -16,6 +16,8 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Entity\MailingList,
+    MailBundle\Entity\Entry\Academic as AcademicEntry,
+    MailBundle\Entity\Entry\External as ExternalEntry,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
     MailBundle\Form\Admin\MailingList\Entry\External as ExternalForm,
     MailBundle\Form\Admin\MailingList\Entry\Member as MemberForm,
@@ -89,6 +91,54 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
 
         $externalForm = new ExternalForm($this->getEntityManager());
         $memberForm = new MemberForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if (isset($formData['firstname'])) {
+                $externalForm->setData($formData);
+                $form = $externalForm;
+            } else {
+                $memberForm->setData($formData);
+                $form = $memberForm;
+            }
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if (isset($formData['firstname'])) {
+                    $entry = new ExternalEntry(
+                        $list,
+                        $formData['firstname'],
+                        $formData['lastname'],
+                        $formData['email']
+                    );
+                } else {
+                    // TODO
+                }
+
+                $this->getEntityManager()->persist($entry);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCES',
+                        'The list was succesfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_mail_list',
+                    array(
+                        'action' => 'entries',
+                        'id' => $list->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
 
         $entries = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Entry')
