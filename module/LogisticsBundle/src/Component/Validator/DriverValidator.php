@@ -22,7 +22,7 @@ use Doctrine\ORM\EntityManager;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class DriverValidator extends AcademicValidator
+class DriverValidator extends \CommonBundle\Component\Validator\Academic
 {
     const DRIVER_EXISTS = 'driverExists';
 

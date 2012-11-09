@@ -31,7 +31,7 @@ class Academic extends \MailBundle\Entity\Entry
      * @var CommonBundle\Entity\Users\People\Academic The academic associated with this entry.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
-     * @ORM\JoinColumn(name="academic", referencedColumnName="id")
+     * @ORM\JoinColumn(name="academic", referencedColumnName="id", nullable=false)
      */
     private $academic;
 
@@ -44,7 +44,7 @@ class Academic extends \MailBundle\Entity\Entry
     public function __construct(MailingList $list, AcademicPerson $academic)
     {
         parent::__construct($list);
-        $this->mail = $mail;
+        $this->academic = $academic;
     }
 
     /**

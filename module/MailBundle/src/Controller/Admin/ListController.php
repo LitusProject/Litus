@@ -114,7 +114,16 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
                         $formData['email']
                     );
                 } else {
-                    // TODO
+                    if (!isset($formData['person_id']) || $formData['person_id'] == '') {
+                        $academic = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                            ->findOneByUsername($formData['person_name']);
+                    } else {
+                        $academic = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                            ->findOneById($formData['person_id']);
+                    }
+                    $entry = new AcademicEntry($list, $academic);
                 }
 
                 $this->getEntityManager()->persist($entry);
