@@ -107,7 +107,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        if (isset($this->data['person_id']) && '' == $this->data['person_id']) {
+        if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
