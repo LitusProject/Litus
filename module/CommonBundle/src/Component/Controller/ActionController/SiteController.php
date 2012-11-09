@@ -149,7 +149,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      *
      * @return string
      */
-    private function _getShibbolethUrl()
+    protected function _getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

@@ -40,7 +40,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('study');
         $field->setLabel('Study')
-            ->setAttribute('size', 70)
+            ->setAttribute('style', 'width: 500px')
             ->setAttribute('id', 'studySearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
