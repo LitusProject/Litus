@@ -62,7 +62,7 @@ abstract class Entry
      * @return The id of this entry.
      */
     public function getId() {
-        return $id;
+        return $this->id;
     }
 
     /**

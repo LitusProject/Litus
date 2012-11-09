@@ -27,15 +27,6 @@ class External extends \MailBundle\Entity\Entry
 {
 
     /**
-     * @var The entry's unique identifier
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
-    /**
      * @var string The first name of this entry.
      *
      * @ORM\Column(type="string")
@@ -70,13 +61,6 @@ class External extends \MailBundle\Entity\Entry
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->mail = $mail;
-    }
-
-    /**
-     * @return The id of this entry.
-     */
-    public function getId() {
-        return $id;
     }
 
     /**
