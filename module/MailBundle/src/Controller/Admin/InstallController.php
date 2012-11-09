@@ -86,6 +86,9 @@ Jorn Hendrickx',
                     'admin_mail' => array(
                         'groups', 'send'
                     ),
+                    'admin_mail_list' => array(
+                        'manage'
+                    ),
                     'admin_mail_prof' => array(
                         'cudi'
                     ),
