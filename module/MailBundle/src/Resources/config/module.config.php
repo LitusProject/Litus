@@ -93,6 +93,35 @@ return array(
                     ),
                 ),
             ),
+            'admin_mail_list' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/mail/list[/:action[/:id][/page/:page]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_mail_list',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            'orm_default' => array(
+                'drivers' => array(
+                    'MailBundle\Entity' => 'orm_annotation_driver'
+                ),
+            ),
+            'orm_annotation_driver' => array(
+                'paths' => array(
+                    'mailbundle' => __DIR__ . '/../../Entity',
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -108,6 +137,7 @@ return array(
             'admin_mail_prof'   => 'MailBundle\Controller\Admin\ProfController',
             'admin_mail_study'  => 'MailBundle\Controller\Admin\StudyController',
             'admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
+            'admin_mail_list'   => 'MailBundle\Controller\Admin\ListController',
         ),
     ),
 );
