@@ -33,8 +33,8 @@
                     <tr class="item item-{{ list.getId() }}">
                         <td>{{ list.getName() }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_mail_list', 'edit') %}
-                                <a href="{{ url('admin_mail_list', {"action": "edit", "id": list.getId()}) }}" class="edit">Edit</a>
+                            {% if hasAccess('admin_mail_list', 'entries') %}
+                                <a href="{{ url('admin_mail_list', {"action": "entries", "id": list.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('admin_mail_list', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ list.getId() }}" data-name="{{ list.getName() }}">Delete</a>

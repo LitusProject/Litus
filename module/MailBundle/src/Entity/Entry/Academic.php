@@ -77,4 +77,20 @@ class Academic extends \MailBundle\Entity\Entry
     {
         return $this->academic->getEmail();
     }
+
+    /**
+     * @return The first name of this entry.
+     */
+    public function getFirstName()
+    {
+        return $this->academic->getFirstName();
+    }
+
+    /**
+     * @return The last name of this entry.
+     */
+    public function getLastName()
+    {
+        return $this->academic->getLastName();
+    }
 }

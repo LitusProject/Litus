@@ -17,6 +17,8 @@ namespace MailBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Entity\MailingList,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
+    MailBundle\Form\Admin\MailingList\Entry\External as ExternalForm,
+    MailBundle\Form\Admin\MailingList\Entry\Member as MemberForm,
     Zend\View\Model\ViewModel;
 
 class ListController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -80,6 +82,27 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function entriesAction()
+    {
+        if(!($list = $this->_getList()))
+            return new ViewModel();
+
+        $externalForm = new ExternalForm($this->getEntityManager());
+        $memberForm = new MemberForm($this->getEntityManager());
+
+        $entries = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Entry')
+            ->findByList($list);
+
+        return new ViewModel(
+            array(
+                'list' => $list,
+                'externalForm' => $externalForm,
+                'memberForm' => $memberForm,
+                'entries' => $entries,
+            )
+        );
+    }
 
     public function deleteAction()
     {
