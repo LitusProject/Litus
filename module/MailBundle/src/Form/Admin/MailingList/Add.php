@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'maillist_add');
+            ->setAttribute('class', 'mail_add');
         $this->add($field);
     }
 
