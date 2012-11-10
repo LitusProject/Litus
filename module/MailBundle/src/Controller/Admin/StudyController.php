@@ -100,7 +100,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                                 ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
 
                             foreach  ($studies as $study) {
-                                $children = $study->getAllChildren();
+                                $children = $study->getStudy()->getAllChildren();
 
                                 foreach ($children as $child) {
                                     $enrollments = array_merge($enrollments, $this->getEntityManager()
@@ -110,7 +110,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                                 $enrollments = array_merge($enrollments, $this->getEntityManager()
                                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                    ->findAllByStudyAndAcademicYear($study, $currentYear));
+                                    ->findAllByStudyAndAcademicYear($study->getStudy(), $currentYear));
                             }
                         }
                     }

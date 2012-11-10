@@ -12,6 +12,9 @@
                 <a class="brand hidden-desktop" href="#">{{ page.getTitle(language) }}</a>
                 <div class="subnav nav-collapse">
                     <ul class="nav">
+                        {% if page.getParent() is not null %}
+                            <li><a href="{{ url('page', {"name": page.getParent().getName()}) }}"><i class="icon-arrow-left"></i> {{ page.getParent().getTitle(language) }}</a></li>
+                        {% endif %}
                         {% for item in submenu %}
                             {% if 'category' == item.type %}
                                 <li class="dropdown">
@@ -45,7 +48,7 @@
     <div class="row page">
         <div class="span12">
             {% autoescape false %}
-                {{ markdown(page.getContent(language)) }}
+                {{ hideEmail(markdown(page.getContent(language))) }}
             {% endautoescape %}
         </div>
     </div>

@@ -79,7 +79,7 @@ return array(
                     'route' => '/admin/syllabus/study/typeahead/:academicyear[/:string][/]',
                     'constraints' => array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
-                        'string'       => '[%a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_study',

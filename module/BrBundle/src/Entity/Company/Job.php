@@ -16,7 +16,8 @@ namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company,
     DateTime,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    Markdown_Parser;
 
 /**
  * This is the entity for an job.
@@ -287,7 +288,9 @@ class Job
      */
     public function getSummary($length = 50)
     {
-        return \CommonBundle\Component\Util\String::truncate($this->getDescription(), $length, '...', true);
+        $parser = new Markdown_Parser();
+        $summary = $parser->transform($this->getDescription());
+        return \CommonBundle\Component\Util\String::truncate($summary, $length, '...', true);
     }
 
     /**
