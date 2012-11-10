@@ -235,6 +235,11 @@ VTK Cudi
                     'description' => 'Enable automatic expire of bookings',
                 ),
                 array(
+                    'key'         => 'cudi.enable_bookings',
+                    'value'       => '1',
+                    'description' => 'Enable users to create bookings',
+                ),
+                array(
                     'key'         => 'cudi.print_socket_address',
                     'value'       => '127.0.0.1',
                     'description' => 'The ip address of the print socket',
