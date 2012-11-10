@@ -12,3 +12,25 @@
         {{ forms.renderForm(form) }}
 	</div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('textarea').gollum({
+                toolbar: {
+                    "bold": ["bold", "Bold", "bold"],
+                    "italic": ["italic", "Italic", "italic"],
+                    "divider": "-",
+                    "link": ["link", "Link", "link"],
+                    "divider": "-",
+                    "ul": ["ul", "Unordered List", "u-list"],
+                    "ol": ["ol", "Ordered List", "o-list"],
+                    "blockquote": ["blockquote", "Blockquote", "quotemark"],
+                    "hr": ["hr", "Horizontal Rule", "horizontal-rule"],
+                    "divider": "-",
+                    "help": ["help", "Help", "help"],
+                },
+            });
+        });
+    </script>
+{% endblock %}

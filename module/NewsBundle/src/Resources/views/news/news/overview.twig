@@ -12,7 +12,7 @@
             <span class="date left">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</span>
             <blockquote>
                 {% autoescape false %}
-                    {{ markdown(item.getSummary(100, language)) }}
+                    {{ hideEmail(markdown(item.getSummary(100, language))) }}
                 {% endautoescape %}
                 <small><a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('View') }}</a></small>
             </blockquote>

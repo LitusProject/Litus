@@ -399,17 +399,24 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function expireAllAction()
     {
-        $this->getEntityManager()
+        $number = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->expireBookings();
 
         $this->getEntityManager()->flush();
 
+        if (0 == $number)
+            $message = 'No booking could be expired!';
+        elseif (1 == $number)
+            $message = 'There is <b>one</b> booking expired!';
+        else
+            $message = 'There are <b>' . $number . '</b> bookings expired!';
+
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
                 'SUCCESS',
-                'The bookings are successfully expired'
+                $message
             )
         );
 

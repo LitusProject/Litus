@@ -48,7 +48,26 @@ class Session extends EntityRepository
             ->getSingleScalarResult();
 
         if (null === $resultSet)
-            return 0;
+            $resultSet = 0;
+
+        $query = $this->_em->createQueryBuilder();
+        $members = $query->select('COUNT(r.id)')
+            ->from('SecretaryBundle\Entity\Registration', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gte('r.payedTimestamp', ':startTime'),
+                    $query->expr()->lte('r.payedTimestamp', ':endTime'),
+                    $query->expr()->eq('r.payed', 'true')
+                )
+            )
+            ->setParameter('startTime', $session->getOpenDate())
+            ->setParameter('endTime', $session->getCloseDate())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $resultSet += $members * $this->_em
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.membership_price');
 
         return $resultSet;
     }
