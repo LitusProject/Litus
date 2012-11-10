@@ -23,7 +23,8 @@ use Zend\View\Model\ViewModel;
  */
 class AllInstallController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    public function indexAction() {
+    public function indexAction()
+    {
         $bundles = array(
             'api',
             'banner',
