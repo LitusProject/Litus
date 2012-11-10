@@ -1,0 +1,117 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'mail/admin/list/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width entry_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The entry was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width entry_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the entry.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <h1>List</h1>
+        <p>Name: <b>{{ list.getName() }}</b></p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(memberForm) }}
+        {{ forms.renderForm(externalForm) }}
+        <br style="clear:both">
+
+        <table class="full_width" style="margin-top: 5px;">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th width="90px">Actions</th>
+            </tr>
+            {% for entry in entries %}
+                <tr class="item item-{{ entry.getId() }}">
+                    <td>{{ entry.getFirstName() }}</td>
+                    <td>{{ entry.getLastName() }}</td>
+                    <td>{{ entry.getMailAddress() }}</td>
+                    <td>
+                        <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getFirstName() }} {{ entry.getLastName() }}" class="delete">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="modal hide fade" id="removeEntry">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Entry
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following entry: <b class="entryName"></b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url('admin_academic_typeahead', {})}}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeEntry = $('#removeEntry');
+            removeEntry.find('.entryName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeEntry.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_mail_list', {"action": "deleteEntry"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.entry_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeEntry.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeEntry.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.entry_removed_error').removeClass('hide');
+            $('#removeEntry').modal('hide');
+        }
+    </script>
+{% endblock %}

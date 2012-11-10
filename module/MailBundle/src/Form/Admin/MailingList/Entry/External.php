@@ -12,10 +12,9 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Form\Admin\MailingList;
+namespace MailBundle\Form\Admin\MailingList\Entry;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Text,
     MailBundle\Component\Validator\MailingList as NameValidator,
     Doctrine\ORM\EntityManager,
@@ -28,7 +27,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class External extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -45,15 +44,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
-        $field = new Text('name');
-        $field->setLabel('Name')
+        $external = new Collection('external');
+        $external->setLabel('Add External Address');
+        $this->add($external);
+
+        $field = new Text('firstname');
+        $field->setLabel('First Name')
             ->setRequired(true);
-        $this->add($field);
+        $external->add($field);
+
+        $field = new Text('lastname');
+        $field->setLabel('Last Name')
+            ->setRequired(true);
+        $external->add($field);
+
+        $field = new Text('email');
+        $field->setLabel('Email')
+            ->setRequired(true);
+        $external->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'mail_add');
-        $this->add($field);
+        $external->add($field);
     }
 
     public function getInputFilter()
@@ -64,15 +77,39 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name' => 'name',
+                    'name' => 'firstname',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'lastname',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'email',
                     'required' => true,
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator(
-                            $this->_entityManager
-                        )
+                        array(
+                            'name' => 'EmailAddress',
+                        ),
                     ),
                 )
             )

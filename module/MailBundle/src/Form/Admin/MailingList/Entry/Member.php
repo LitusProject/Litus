@@ -12,13 +12,14 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\Driver;
+namespace MailBundle\Form\Admin\MailingList\Entry;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
+use CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    LogisticsBundle\Component\Validator\DriverValidator,
-    LogisticsBundle\Entity\Driver,
+    CommonBundle\Component\Validator\Academic as AcademicValidator,
+    MailBundle\Component\Validator\MailingList as NameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -29,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Member extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -44,16 +45,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($name);
 
+        $member = new Collection('member');
+        $member->setLabel('Add Member');
+        $this->add($member);
+
         $this->_entityManager = $entityManager;
-
-        $years = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findAll();
-
-        $yearnames = array();
-        foreach($years as $year) {
-            $yearnames[$year->getId()] = $year->getCode();
-        }
 
         $field = new Text('person_name');
         $field->setLabel('Name')
@@ -61,45 +57,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('id', 'personSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead');
-        $this->add($field);
+        $member->add($field);
 
         $field = new Hidden('person_id');
         $field->setAttribute('id', 'personId');
-        $this->add($field);
-
-        $field = new Text('color');
-        $field->setLabel('Color')
-            ->setAttribute('value', '#888888')
-            ->setRequired(false);
-        $this->add($field);
-
-        $field = new Select('years');
-        $field->setLabel('Years')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $yearnames);
-        $this->add($field);
+        $member->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'driver_add');
-        $this->add($field);
-    }
-
-    public function populateFromDriver(Driver $driver)
-    {
-        $years = $driver->getYears();
-
-        $yearids = array();
-        foreach($years as $year) {
-            $yearids[] = $year->getId();
-        }
-
-        $formData = array(
-            'color' => $driver->getColor(),
-            'years' => $yearids,
-        );
-
-        $this->setData($formData);
+            ->setAttribute('class', 'mail_add');
+        $member->add($field);
     }
 
     public function getInputFilter()
@@ -117,7 +84,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new DriverValidator(
+                            new AcademicValidator(
                                 $this->_entityManager,
                                 array(
                                     'byId' => false,
@@ -137,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new DriverValidator(
+                            new AcademicValidator(
                                 $this->_entityManager,
                                 array(
                                     'byId' => true,
@@ -148,25 +115,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             );
         }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'color',
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'regex',
-                            'options' => array(
-                                'pattern' => '/^#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
 
         return $inputFilter;
     }

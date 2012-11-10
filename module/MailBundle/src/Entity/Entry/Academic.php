@@ -28,19 +28,10 @@ class Academic extends \MailBundle\Entity\Entry
 {
 
     /**
-     * @var The entry's unique identifier
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
-    /**
      * @var CommonBundle\Entity\Users\People\Academic The academic associated with this entry.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
-     * @ORM\JoinColumn(name="academic", referencedColumnName="id")
+     * @ORM\JoinColumn(name="academic", referencedColumnName="id", nullable=false)
      */
     private $academic;
 
@@ -53,14 +44,7 @@ class Academic extends \MailBundle\Entity\Entry
     public function __construct(MailingList $list, AcademicPerson $academic)
     {
         parent::__construct($list);
-        $this->mail = $mail;
-    }
-
-    /**
-     * @return The id of this entry.
-     */
-    public function getId() {
-        return $id;
+        $this->academic = $academic;
     }
 
     /**
@@ -76,5 +60,21 @@ class Academic extends \MailBundle\Entity\Entry
     public function getMailAddress()
     {
         return $this->academic->getEmail();
+    }
+
+    /**
+     * @return The first name of this entry.
+     */
+    public function getFirstName()
+    {
+        return $this->academic->getFirstName();
+    }
+
+    /**
+     * @return The last name of this entry.
+     */
+    public function getLastName()
+    {
+        return $this->academic->getLastName();
     }
 }
