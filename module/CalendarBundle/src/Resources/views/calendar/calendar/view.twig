@@ -17,14 +17,14 @@
                 <div class="span9">
                     <blockquote>
                         {% autoescape false %}
-                            {{ markdown(event.getContent(language)) }}
+                            {{ hideEmail(markdown(event.getContent(language))) }}
                         {% endautoescape %}
                     </blockquote>
                 </div>
             </div>
         {% else %}
             <blockquote>
-                {{ markdown(event.getContent(language)) }}
+                {{ hideEmail(markdown(event.getContent(language))) }}
             </blockquote>
         {% endif %}
     </div>

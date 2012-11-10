@@ -48,7 +48,7 @@
     <div class="row page">
         <div class="span12">
             {% autoescape false %}
-                {{ markdown(page.getContent(language)) }}
+                {{ hideEmail(markdown(page.getContent(language))) }}
             {% endautoescape %}
         </div>
     </div>
