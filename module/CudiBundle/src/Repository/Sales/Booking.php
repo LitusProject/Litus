@@ -687,6 +687,7 @@ class Booking extends EntityRepository
         foreach($bookings as $booking) {
                $booking->setStatus('expired', $this->getEntityManager());
         }
+        return sizeof($bookings);
     }
 
     public function findLastAssignedByArticle(ArticleEntity $article)

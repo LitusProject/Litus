@@ -11,7 +11,7 @@
         <span class="date left">{{ dateLocalized(news.getCreationTime(), 'd MMM') }}</span>
         <blockquote>
             {% autoescape false %}
-                {{ markdown(news.getContent(language)) }}
+                {{ hideEmail(markdown(news.getContent(language))) }}
             {% endautoescape %}
         </blockquote>
     </div>
