@@ -93,6 +93,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
     public function bookAction()
     {
+        $enableBookings = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_bookings') == '1';
+
         $form = new BookingForm($this->getEntityManager());
 
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
@@ -197,7 +201,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $form->addInputsForArticles($articles);
 
-        if($this->getRequest()->isPost()) {
+        if($this->getRequest()->isPost() && $enableBookings) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -276,7 +280,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'subjectArticleMap' => $result,
-                'form' => $form
+                'form' => $form,
+                'bookingsEnabled' => $enableBookings,
             )
         );
     }
