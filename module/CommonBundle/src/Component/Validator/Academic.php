@@ -12,17 +12,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Component\Validator;
+namespace CommonBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager;
 
 /**
- * Checks whether a user exists with the given name or id and whether
- * no driver is created for this user yet.
+ * Checks whether a user exists with the given name or id.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class AcademicValidator extends \Zend\Validator\AbstractValidator
+class Academic extends \Zend\Validator\AbstractValidator
 {
     const NO_SUCH_USER = 'noUser';
 

@@ -16,7 +16,11 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Entity\MailingList,
+    MailBundle\Entity\Entry\Academic as AcademicEntry,
+    MailBundle\Entity\Entry\External as ExternalEntry,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
+    MailBundle\Form\Admin\MailingList\Entry\External as ExternalForm,
+    MailBundle\Form\Admin\MailingList\Entry\Member as MemberForm,
     Zend\View\Model\ViewModel;
 
 class ListController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -80,6 +84,84 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function entriesAction()
+    {
+        if(!($list = $this->_getList()))
+            return new ViewModel();
+
+        $externalForm = new ExternalForm($this->getEntityManager());
+        $memberForm = new MemberForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if (isset($formData['firstname'])) {
+                $externalForm->setData($formData);
+                $form = $externalForm;
+            } else {
+                $memberForm->setData($formData);
+                $form = $memberForm;
+            }
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if (isset($formData['firstname'])) {
+                    $entry = new ExternalEntry(
+                        $list,
+                        $formData['firstname'],
+                        $formData['lastname'],
+                        $formData['email']
+                    );
+                } else {
+                    if (!isset($formData['person_id']) || $formData['person_id'] == '') {
+                        $academic = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                            ->findOneByUsername($formData['person_name']);
+                    } else {
+                        $academic = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                            ->findOneById($formData['person_id']);
+                    }
+                    $entry = new AcademicEntry($list, $academic);
+                }
+
+                $this->getEntityManager()->persist($entry);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCES',
+                        'The list was succesfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_mail_list',
+                    array(
+                        'action' => 'entries',
+                        'id' => $list->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $entries = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Entry')
+            ->findByList($list);
+
+        return new ViewModel(
+            array(
+                'list' => $list,
+                'externalForm' => $externalForm,
+                'memberForm' => $memberForm,
+                'entries' => $entries,
+            )
+        );
+    }
 
     public function deleteAction()
     {
@@ -98,6 +180,23 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function deleteEntryAction()
+    {
+        $this->initAjax();
+
+        if (!($entry = $this->_getEntry()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($entry);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
     private function _getList()
     {
         if (null === $this->getParam('id')) {
@@ -105,7 +204,7 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the driver!'
+                    'No ID was given to identify the list!'
                 )
             );
 
@@ -143,5 +242,52 @@ class ListController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $list;
+    }
+
+    private function _getEntry()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the entry!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $entry = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Entry')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $entry) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No entry with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $entry;
     }
 }
