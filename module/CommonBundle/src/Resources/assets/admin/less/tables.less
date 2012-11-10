@@ -33,12 +33,6 @@ table {
         height: @tableRowHeight;
         line-height: @tableRowHeight;
 
-        &:hover {
-            td {
-                background: @cTableHeader url(@iTableBackground) no-repeat right 0 !important;
-            }
-        }
-
         td {
             height: @tableRowHeight;
             overflow: hidden;
@@ -84,6 +78,16 @@ table {
                 a {
                     display: none;
                 }
+            }
+        }
+    }
+}
+
+table:not(.pagination) {
+    tr {
+        &:hover {
+            td {
+                background: @cTableHeader url(@iTableBackground) no-repeat right 0 !important;
             }
         }
     }
