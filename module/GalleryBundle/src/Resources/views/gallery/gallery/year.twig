@@ -7,7 +7,7 @@
     {% for album in albums %}
         <div class="album">
             <div class="title">{{ album.getTitle(language) }}</div>
-            <a href="{{ url('gallery', {"name": album.getName()}) }}">
+            <a href="{{ url('gallery', {'action': 'album', 'name': album.getName()}) }}">
                 <img src="{{ filePath }}/{{ album.getId() }}{{ album.getPhoto().getThumbPath() }}" alt="{{ album.getTitle(language) }}" />
             </a>
         </div>
