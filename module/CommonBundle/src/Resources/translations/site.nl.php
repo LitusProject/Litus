@@ -19,6 +19,8 @@ return array(
 
     'Dutch' => 'Nederlands',
     'English' => 'English',
+    'French' => 'Français',
+    'German' => 'Deutsch',
 
     'Login' => 'Aanmelden',
     'Account' => 'Account',
