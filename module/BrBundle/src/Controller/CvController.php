@@ -56,7 +56,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        $form = new AddForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear());
+        $form = new AddForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
 
         if ($this->getRequest()->isPost()) {
 
