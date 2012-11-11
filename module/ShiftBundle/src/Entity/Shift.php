@@ -495,7 +495,7 @@ class Shift
      * @param \CalendarBundle\Entity\Nodes\Event $event
      * @return \ShiftBundle\Entity\Shift
      */
-    public function setEvent(Event $event)
+    public function setEvent($event)
     {
         $this->event = $event;
         return $this;

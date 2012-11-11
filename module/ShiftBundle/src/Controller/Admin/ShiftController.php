@@ -177,6 +177,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setName($formData['name'])
                     ->setDescription($formData['description']);
 
+                if ('' != $formData['event']) {
+                    $shift->setEvent(
+                        $this->getEntityManager()
+                            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                            ->findOneById($formData['event'])
+                    );
+                } else {
+                    $shift->setEvent(null);
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
