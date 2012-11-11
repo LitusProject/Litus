@@ -14,7 +14,9 @@
 
 namespace BrBundle\Form\Cv;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Collection,
+use CommonBundle\Component\Form\Bootstrap\Element\Button,
+    CommonBundle\Component\Form\Bootstrap\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
@@ -86,6 +88,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         // TODO anticipate people that don't have their studies, photo, name, email, phone, address ... filled in correctly
         // TODO: set character limit on EVERY manual field
+        // TODO: languages: are they recreated properly when filling in something wrong?
         $studies = new Collection('studies');
         $studies->setLabel('Education');
         $this->add($studies);
@@ -141,17 +144,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $languageCollection->setLabel('Languages');
         $this->add($languageCollection);
 
-        foreach ($languages as $lang => $label) {
-            $field = new Select($lang . '_read');
-            $field->setLabel($label . ' - Reading')
-                ->setAttribute('options', $languageOptions);
-            $languageCollection->add($field);
+        $field = new Hidden('lang_count');
+        $field->setValue(0);
+        $this->add($field);
 
-            $field = new Select($lang . '_write');
-            $field->setLabel($label . ' - Writing')
-                ->setAttribute('options', $languageOptions);
-            $languageCollection->add($field);
-        }
+        $field = new Button('language_add');
+        $field->setLabel('Add Language')
+            ->setAttribute('class', 'btn btn-primary')
+            ->setAttribute('style', 'margin-top:20px; margin-left: 221px;');
+        $languageCollection->add($field);
 
         $capabilities = new Collection('capabilities');
         $capabilities->setLabel('Capabilities');
@@ -231,6 +232,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'thesis_title',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
 
         // TODO limit nr of characters per line + nr of lines
 
