@@ -14,10 +14,13 @@
 
 namespace BrBundle\Form\Cv;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
+use CommonBundle\Component\Form\Bootstrap\Element\Collection,
+    CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\People\Academic,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -50,12 +53,22 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Academic $academic, AcademicYear $year, $name = null)
+    public function __construct(EntityManager $entityManager, Academic $academic, AcademicYear $year, Language $language, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
         $this->_academic = $academic;
+
+        $languages = unserialize($entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_default_languages')
+        );
+        $languageOptions = array(
+            'not' => 'Not',
+            'active' => 'Active',
+            'passive' => 'Passive',
+        );
 
         $studiesMap = array();
         $studies = $entityManager->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
@@ -64,26 +77,149 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $studiesMap[$study->getStudy()->getId()] = $study->getStudy()->getFullTitle();
         }
 
-        // TODO anticipate people that don't have their studies filled in correctly
+        $currentYear = date("Y");
+        $years = array();
+        for ($i = -1; $i < 20; $i++) {
+            $year = $currentYear - $i;
+            $years[$year] = $year;
+        }
+
+        // TODO anticipate people that don't have their studies, photo, name, email, phone, address ... filled in correctly
         // TODO: set character limit on EVERY manual field
-        $field = new Select('studies');
+        $studies = new Collection('studies');
+        $studies->setLabel('Education');
+        $this->add($studies);
+
+        $field = new Select('degree');
         $field->setLabel('Primary Degree')
             ->setAttribute('options', $studiesMap);
-        $this->add($field);
+        $studies->add($field);
 
-        // TODO: results
+        $field = new Select('bachelor_start');
+        $field->setLabel('Started Bachelor In')
+            ->setAttribute('options', $years)
+            ->setValue($currentYear - 4);
+        $studies->add($field);
 
-        $field = new Text('highschool_studies');
-        $field->setLabel('High School Studies')
-            ->setRequired();
-        $this->add($field);
+        $field = new Select('bachelor_end');
+        $field->setLabel('Ended Bachelor In')
+            ->setAttribute('options', $years)
+            ->setValue($currentYear - 1);
+        $studies->add($field);
 
-        for ($i = 0; $i < $this::MAX_DEGREES; $i++) {
-            $field = new Text('additional_degrees' . $i);
-            if ($i == 0)
-                $field->setLabel('Additional Degrees (Max. 3)');
-            $this->add($field);
+        $field = new Select('master_start');
+        $field->setLabel('Started Master In')
+            ->setAttribute('options', $years)
+            ->setValue($currentYear - 1);
+        $studies->add($field);
+
+        $field = new Select('master_end');
+        $field->setLabel('Will End Master In')
+            ->setAttribute('options', $years)
+            ->setValue($currentYear + 1);
+        $studies->add($field);
+
+        $field = new TextArea('additional_diplomas');
+        $field->setLabel('Additional Diplomas (e.g. driver\'s license)')
+            ->setAttribute('rows', 3)
+            ->setAttribute('style', 'resize: none;');
+        $studies->add($field);
+
+        $erasmus = new Collection('erasmus');
+        $erasmus->setLabel('Erasmus (Optional)');
+        $this->add($erasmus);
+
+        $field = new Text('erasmus_period');
+        $field->setLabel('Period');
+        $erasmus->add($field);
+
+        $field = new Text('erasmus_location');
+        $field->setLabel('Location');
+        $erasmus->add($field);
+
+        $languageCollection = new Collection('Languages');
+        $languageCollection->setLabel('Languages');
+        $this->add($languageCollection);
+
+        foreach ($languages as $lang => $label) {
+            $field = new Select($lang . '_read');
+            $field->setLabel($label . ' - Reading')
+                ->setAttribute('options', $languageOptions);
+            $languageCollection->add($field);
+
+            $field = new Select($lang . '_write');
+            $field->setLabel($label . ' - Writing')
+                ->setAttribute('options', $languageOptions);
+            $languageCollection->add($field);
         }
+
+        $capabilities = new Collection('capabilities');
+        $capabilities->setLabel('Capabilities');
+        $this->add($capabilities);
+
+        $field = new TextArea('computer_skills');
+        $field->setLabel('Computer Skills')
+            ->setAttribute('rows', 3)
+            ->setAttribute('style', 'resize: none;');
+        $capabilities->add($field);
+
+        $field = new TextArea('experiences');
+        $field->setLabel('Experiences, Projects (e.g. Internship, Holiday Jobs)')
+            ->setAttribute('rows', 3)
+            ->setAttribute('style', 'resize: none;');
+        $capabilities->add($field);
+
+        $thesis = new Collection('thesis');
+        $thesis->setLabel('Thesis');
+        $this->add($thesis);
+
+        $field = new Text('thesis_title');
+        $field->setLabel('Title');
+        $thesis->add($field);
+
+        $field = new TextArea('thesis_about');
+        $field->setLabel('About')
+            ->setAttribute('rows', 3)
+            ->setAttribute('style', 'resize: none;');
+        $thesis->add($field);
+
+        $future = new Collection('future');
+        $future->setLabel('Future');
+        $this->add($future);
+
+        $field = new Text('field_of_interest');
+        $field->setLabel('Field Of Interest');
+        $future->add($field);
+
+        $field = new Text('mobility_europe');
+        $field->setLabel('Mobility Europe');
+        $future->add($field);
+
+        $field = new Text('mobility_world');
+        $field->setLabel('Mobility World');
+        $future->add($field);
+
+        $field = new TextArea('career_expectations');
+        $field->setLabel('Career Expectations')
+            ->setAttribute('rows', 3)
+            ->setAttribute('style', 'resize: none;');
+        $future->add($field);
+
+        $thesis = new Collection('profile');
+        $thesis->setLabel('Profile');
+        $this->add($thesis);
+
+        $field = new TextArea('hobbies');
+        $field->setLabel('Hobbies')
+            ->setAttribute('rows', 3)
+            ->setAttribute('style', 'resize: none;');
+        $thesis->add($field);
+
+        $field = new TextArea('profile_about');
+        $field->setLabel('About Me')
+            ->setAttribute('rows', 3)
+            ->setAttribute('style', 'resize: none;');
+        $thesis->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -95,6 +231,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+        // TODO limit nr of characters per line + nr of lines
 
         return $inputFilter;
     }
