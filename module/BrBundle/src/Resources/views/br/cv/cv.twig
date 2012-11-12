@@ -34,7 +34,7 @@
                     </dd>
                 </dl>
 
-                <p><strong>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved at the time the CV Book is created, so future updates will still be reflected. Everything you fill in below, should be updated manually afterwards.') }}</strong></p>
+                <p><strong>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected.')}}</strong></p>
 
                 {% import 'site/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}
@@ -43,4 +43,63 @@
 
         </div>
     </div>
+{% endblock %}
+
+{% block content_script %}
+
+    <script type="text/javascript">
+        var i = 0;
+        $(document).ready(function() {
+
+            $('#language_add').click(function() {
+                $('#language_add').before('\
+                    <div class="control-group ">\
+                        <label class="control-label" for="lang_name' + i + '">\
+                            Language\
+                        </label>\
+                        <div class="controls">\
+                            <div>\
+                                <input type="text" id="lang_name' + i + '" value=""/>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="control-group ">\
+                        <label class="control-label" for="lang_oral' + i + '">\
+                            Oral Skills\
+                        </label>\
+                        <div class="controls">\
+                            <div>\
+                                <select id="lang_oral' + i + '">\
+                                    <option value="none">None</option>\
+                                    <option value="passive">Passive</option>\
+                                    <option value="active">Active</option>\
+                                </select>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="control-group ">\
+                        <label class="control-label" for="lang_written' + i + '">\
+                            Oral Skills\
+                        </label>\
+                        <div class="controls">\
+                            <div>\
+                                <select id="lang_written' + i + '">\
+                                    <option value="none">None</option>\
+                                    <option value="passive">Passive</option>\
+                                    <option value="active">Active</option>\
+                                </select>\
+                            </div>\
+                        </div>\
+                    </div>'
+                );
+
+                $('#lang_count').val(parseInt($('#lang_count').val()) + 1);
+
+                i++;
+            });
+
+        });
+    </script>
+}
+
 {% endblock %}
