@@ -47,6 +47,18 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => '0',
                     'description' => 'Whether the CV Book is currently open for entries or not',
                 ),
+                array(
+                    'key'         => 'br.cv_default_languages',
+                    'value'       => serialize(
+                        array(
+                            'nl' => 'Dutch',
+                            'fr' => 'French',
+                            'de' => 'German',
+                            'en' => 'English',
+                        )
+                    ),
+                    'description' => 'The default languages present in the CV book form',
+                ),
             )
         );
     }
