@@ -34,17 +34,17 @@ abstract class Pdf
     /**
      * @var string The path to the document's XSL file
      */
-    private $_xslPath;
+    protected $_xslPath;
 
     /**
      * @var \CommonBundle\Component\Util\TmpFile A tempory file which holds the generated XML structure
      */
-    private $_xmlFile;
+    protected $_xmlFile;
 
     /**
      * @var string The
      */
-    private $_pdfPath;
+    protected $_pdfPath;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
