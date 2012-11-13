@@ -49,6 +49,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The path to the PDF generator files',
                 ),
                 array(
+                    'key'         => 'cudi.front_page_cache_dir',
+                    'value'       => 'data/cache/article',
+                    'description' => 'The path to the article front page cache files',
+                ),
+                array(
                     'key'         => 'fop_command',
                     'value'       => '/usr/local/bin/fop',
                     'description' => 'The command to call Apache FOP',

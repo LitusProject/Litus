@@ -42,7 +42,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 if ($formData['subject_id'] == '') {
                     $subject = $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\Subject')
@@ -60,6 +60,17 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 if (null === $mapping) {
                     $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                     $this->getEntityManager()->persist($mapping);
+
+                    if ($article->isInternal()) {
+                        $cachePath = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.front_page_cache_dir');
+                        if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+                            unlink($cachePath . '/' . $article->getFrontPage());
+                            $article->setFrontPage();
+                        }
+                    }
+
                     $this->getEntityManager()->flush();
                 }
 
@@ -109,6 +120,19 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             return new ViewModel();
 
         $this->getEntityManager()->remove($mapping);
+
+        $article = $mapping->getArticle();
+
+        if ($article->isInternal()) {
+            $cachePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.front_page_cache_dir');
+            if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+                unlink($cachePath . '/' . $article->getFrontPage());
+                $article->setFrontPage();
+            }
+        }
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(

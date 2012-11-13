@@ -265,6 +265,17 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
                 $action->setCompleted($this->getAuthentication()->getPersonObject());
 
+                $article = $action->getEntity();
+                if ($article->isInternal()) {
+                    $cachePath = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.front_page_cache_dir');
+                    if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+                        unlink($cachePath . '/' . $article->getFrontPage());
+                        $article->setFrontPage();
+                    }
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
