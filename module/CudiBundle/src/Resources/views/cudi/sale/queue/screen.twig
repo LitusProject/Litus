@@ -8,16 +8,30 @@
 
 	{{ headLink() }}
     <style type="text/css">
-        body {
-            font-size: 21px;
+        @media (min-width: 1310px) {
+            body {
+                font-size: 25px;
+            }
+
+            .container {
+                width: 1300px;
+            }
+
+            .span4 {
+                width: 420px;
+            }
         }
 
-        .container {
-            width: 1300px;
+        h2, h3 {
+            margin: 0;
         }
 
-        .span3 {
-            width: 290px;
+        .well {
+            padding: 5px 10px;
+        }
+
+        .page-header {
+            margin: 10px 0 20px 0;
         }
     </style>
 </head>
@@ -34,21 +48,32 @@
 			<p>An error occurred while loading the queue.</p>
 		</div>
 	</div>
+    
+    <div class="row">
+        <table style="width: 100%">
+            <tr>
+                {% for payDesk in payDesks %}
+                    <td style="padding: 5px">
+                        <div class="well">
+                            <h3>{{ payDesk.getName() }}</h3>
+                            <table class="table table-bordered table-striped paydesk" id="paydesk_{{ payDesk.getId() }}">
+                                <tr>
+                                    <td></td>
+                                    <td><i>No Customer</i></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
 
+    <div class="page-header">
+        <h2>Queue:</h2>
+    </div>
 	<div class="row">
-		<div class="span3">
-			<table class="table table-bordered table-striped">
-				<thead>
-					<tr>
-						<th></th>
-						<th>Selling</th>
-					</tr>
-				</thead>
-				<tbody class="queue_list" id="selling_list">
-				</tbody>
-			</table>
-		</div>
-		<div class="span3">
+		<div class="span4">
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
@@ -60,7 +85,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="span3">
+		<div class="span4">
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
@@ -72,7 +97,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="span3">
+		<div class="span4">
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
@@ -112,7 +137,26 @@
     				displayItem($('#signed_in_list'), data.queue.signed_in);
     				displayItem($('#collecting_list'), data.queue.collecting);
     				displayItem($('#collected_list'), data.queue.collected);
-    				displayItem($('#selling_list'), data.queue.selling);
+
+                    $('.paydesk').html(
+                        $('<tr>').append(
+                            $('<td>'),
+                            $('<td>').append(
+                                $('<i>').html('No Customer')
+                            )
+                        )
+                    );
+
+                    $(data.queue.selling).each(function () {
+                        $('#paydesk_' + this.payDeskId).html(
+                            $('<tr>').append(
+                                $('<td>').html(this.number),
+                                $('<td>').append(
+                                    (this.name ? this.name : 'guest ' + this.id)
+                                )
+                            )
+                        );
+                    });
     			},
     			error: function (e) {
     				$('#loading_queue_error').addClass('in');

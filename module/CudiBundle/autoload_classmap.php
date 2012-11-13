@@ -9,6 +9,7 @@ return array(
     'CudiBundle\Component\Document\Generator\Front'                 => __DIR__ . '/src/Component/Document/Generator/Front.php',
     'CudiBundle\Component\Document\Generator\OrderPdf'              => __DIR__ . '/src/Component/Document/Generator/OrderPdf.php',
     'CudiBundle\Component\Document\Generator\OrderXml'              => __DIR__ . '/src/Component/Document/Generator/OrderXml.php',
+    'CudiBundle\Component\Document\Generator\Stock'                 => __DIR__ . '/src/Component/Document/Generator/Stock.php',
     'CudiBundle\Component\Mail\Booking'                             => __DIR__ . '/src/Component/Mail/Booking.php',
     'CudiBundle\Component\Validator\Sales\Article\Barcodes\Exists'  => __DIR__ . '/src/Component/Validator/Sales/Article/Barcodes/Exists.php',
     'CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique'  => __DIR__ . '/src/Component/Validator/Sales/Article/Barcodes/Unique.php',
