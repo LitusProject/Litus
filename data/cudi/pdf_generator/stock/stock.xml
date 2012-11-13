@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<stock date="13 November 2012">
+    <our_union short_name="VTK">
+        <name>VTK VZW</name>
+        <logo>data/images/logo/logo.svg</logo>
+    </our_union>
+    <cudi name="CURSUSDIENST">
+        <mail>cursusdienst@vtk.be</mail>
+        <phone>0472/ 24 97 08</phone>
+    </cudi>
+    <items>
+        <item>
+            <barcode>0132037947</barcode>
+            <title>Digital and Analog Communication Systems</title>
+            <author>Couch</author>
+            <publisher>Pearson</publisher>
+            <amount>25</amount>
+        </item>
+        <item>
+            <barcode>9781112330117</barcode>
+            <title>Digitale en Analoge Communicatie</title>
+            <author>Bart Nauwelaerts</author>
+            <publisher>VTK</publisher>
+            <amount>2</amount>
+        </item>
+    </items>
+</stock>

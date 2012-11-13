@@ -17,38 +17,35 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use Doctrine\ORM\EntityManager;
 
 class Printer {
-    public static function queuePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    public static function queuePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
-        if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
-            return;
-
-        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
         $data->type = 1;
         self::_print($entityManger, $printer, $data);
     }
 
-    public static function collectPrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    public static function collectPrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
-        if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
-            return;
-
         $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
         $data->type = 2;
         self::_print($entityManger, $printer, $data);
     }
 
-    public static function salePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    public static function salePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
-        if (sizeof($articles) != sizeof($prices) || sizeof($articles) != sizeof($barcodes))
-            return;
-
         $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
         $data->type = 3;
         self::_print($entityManger, $printer, $data);
     }
 
-    private static function _createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes)
+    private static function _createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
+        $sort = array();
+        foreach($articles as $article) {
+            $sort[] = $article['barcode'];
+        }
+        array_multisort($articles, $sort);
+
         return (object) array(
             'id' => $identification,
             'barcode' => $barcode,
@@ -56,8 +53,6 @@ class Printer {
             'queuenumber' => $queueNumber,
             'totalAmount' => $totalPrice,
             'items' => $articles,
-            'prices' => $prices,
-            'itemBarcodes' => $barcodes,
         );
     }
 

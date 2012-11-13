@@ -344,7 +344,7 @@ VTK Cudi
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
                     ),
                     'admin_stock' => array(
-                        'delta', 'edit', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
+                        'delta', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
                     ),
                     'admin_stock_delivery' => array(
                         'add', 'delete', 'manage', 'supplier', 'typeahead'
