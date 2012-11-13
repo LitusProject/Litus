@@ -15,7 +15,9 @@
 namespace BrBundle\Controller;
 
 use BrBundle\Entity\Cv\Entry as CvEntry,
+    BrBundle\Entity\Cv\Language as CvLanguage,
     BrBundle\Form\Cv\Add as AddForm,
+    CommonBundle\Entity\General\Address,
     CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
@@ -38,6 +40,13 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         if (!($person instanceof Academic)) {
             $message = 'You must be a student to add your CV.';
+        } else {
+            $entry = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Cv\Entry')
+                ->findOneByAcademic($person);
+            if ($entry) {
+                //$message = 'You can only fill in the CV Book once.';
+            }
         }
 
         $open = $this->getEntityManager()
@@ -65,12 +74,60 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
             if ($form->isValid()) {
 
+                $address = new Address(
+                    $person->getSecondaryAddress()->getStreet(),
+                    $person->getSecondaryAddress()->getNumber(),
+                    $person->getSecondaryAddress()->getMailbox(),
+                    $person->getSecondaryAddress()->getPostal(),
+                    $person->getSecondaryAddress()->getCity(),
+                    $person->getSecondaryAddress()->getCountryCode()
+                );
+
                 $entry = new CvEntry(
                     $person,
-                    $this->getCurrentAcademicYear()
+                    $this->getCurrentAcademicYear(),
+                    $person->getFirstName(),
+                    $person->getLastName(),
+                    $person->getBirthDay(),
+                    $person->getSex(),
+                    $person->getPhoneNumber(),
+                    $person->getPersonalEmail(),
+                    $address,
+                    $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Study')
+                        ->findOneById($formData['degree']),
+                    $formData['bachelor_start'],
+                    $formData['bachelor_end'],
+                    $formData['master_start'],
+                    $formData['master_end'],
+                    $formData['additional_diplomas'],
+                    $formData['erasmus_period'],
+                    $formData['erasmus_location'],
+                    $formData['computer_skills'],
+                    $formData['experiences'],
+                    $formData['thesis_title'],
+                    $formData['thesis_summary'],
+                    $formData['field_of_interest'],
+                    $formData['mobility_europe'],
+                    $formData['mobility_world'],
+                    $formData['career_expectations'],
+                    $formData['hobbies'],
+                    $formData['profile_about']
                 );
+
+                for ($i = 0; $i < $formData['lang_count']; $i++) {
+                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i])
+                        continue;
+
+                    $language = new CvLanguage($entry, $formData['lang_name' . $i],
+                        $formData['lang_oral' . $i],
+                        $formData['lang_written' . $i]);
+
+                    $this->getEntityManager()->persist($language);
+                }
+
                 $this->getEntityManager()->persist($entry);
-                //$this->getEntityManager()->flush();
+                $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
                     'cv_index',
