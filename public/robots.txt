@@ -6,3 +6,6 @@
 User-agent: *
 Disallow: /*/calendar/month/
 Disallow: /*/run/group/getName/
+
+# We do not want it to access our admin
+Disallow: /admin/*
