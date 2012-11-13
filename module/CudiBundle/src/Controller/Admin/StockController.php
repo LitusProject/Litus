@@ -15,11 +15,14 @@
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile,
+    CudiBundle\Component\Document\Generator\Stock as StockGenerator,
     CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
     CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
     CudiBundle\Form\Admin\Stock\Update as StockForm,
     CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Entity\Stock\Periods\Values\Delta,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -327,6 +330,26 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 'article' => $article,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function exportAction()
+    {
+        $file = new TmpFile();
+        $document = new StockGenerator($this->getEntityManager(), $this->getAcademicYear(), $file);
+        $document->generate();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="stock.pdf"',
+            'Content-type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
