@@ -37,11 +37,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
 
     /**
-     * The maximum number of additional degrees.
-     */
-    const MAX_DEGREES = 3;
-
-    /**
      * The entity manager.
      */
     private $_entityManager;
@@ -62,16 +57,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->_entityManager = $entityManager;
         $this->_academic = $academic;
 
-        $languages = unserialize($entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.cv_default_languages')
-        );
-        $languageOptions = array(
-            'not' => 'Not',
-            'active' => 'Active',
-            'passive' => 'Passive',
-        );
-
         $studiesMap = array();
         $studies = $entityManager->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($academic, $year);
@@ -89,6 +74,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         // TODO anticipate people that don't have their studies, photo, name, email, phone, address ... filled in correctly
         // TODO: set character limit on EVERY manual field
         // TODO: languages: are they recreated properly when filling in something wrong?
+        // TODO enforce at least 1 language and max 5 languages
+
         $studies = new Collection('studies');
         $studies->setLabel('Education');
         $this->add($studies);
@@ -178,8 +165,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Title');
         $thesis->add($field);
 
-        $field = new TextArea('thesis_about');
-        $field->setLabel('About')
+        $field = new TextArea('thesis_summary');
+        $field->setLabel('Summary')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;');
         $thesis->add($field);
@@ -233,6 +220,65 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'additional_diplomas',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'erasmus_period',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'erasmus_location',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'computer_skills',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'experiences',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
 
         $inputFilter->add(
             $factory->createInput(
@@ -245,6 +291,91 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 )
             )
         );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'thesis_summary',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'field_of_interest',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'mobility_europe',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'mobility_world',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'career_expectations',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'hobbies',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'profile_about',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
 
         // TODO limit nr of characters per line + nr of lines
 
