@@ -113,6 +113,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_download_file',
         ),
         'admin_stock_period' => array(
             '@common_jquery',
@@ -120,6 +121,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_download_file',
         ),
         'admin_stock_order' => array(
             '@common_jquery',
@@ -139,6 +141,7 @@ return array(
             '@bootstrap_js_modal',
             '@supplier_nav',
             '@common_typeahead_remote',
+            '@common_download_file',
         ),
         'admin_stock_retour' => array(
             '@common_jquery',
@@ -148,6 +151,7 @@ return array(
             '@bootstrap_js_modal',
             '@supplier_nav',
             '@common_typeahead_remote',
+            '@common_download_file',
         ),
         'admin_prof_action' => array(
             '@common_jquery',
