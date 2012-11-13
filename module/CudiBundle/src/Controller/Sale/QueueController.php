@@ -46,9 +46,19 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');*/
 
+        $payDesks = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\PayDesk')
+            ->findBy(array(), array('name' => 'ASC'));
+
+        for ($i = 0 ; $i < sizeof($payDesks) ; $i++) {
+            if (strpos('paydesk', $payDesks[$i]->getCode()) !== 0)
+                unset($payDesks[$i]);
+        }
+
         return new ViewModel(
             array(
                 'socketUrl' => $this->getSocketUrl(),
+                'payDesks' => $payDesks,
                 //'logos' => $logos,
                 //'logoPath' => $logoPath,
             )
