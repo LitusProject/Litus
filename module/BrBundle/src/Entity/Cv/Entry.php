@@ -164,7 +164,7 @@ class Entry
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The languages added to this cv
      *
-     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Cv\Language", mappedBy="entry")
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Cv\Language", mappedBy="entry", cascade={"persist", "remove"})
      */
     private $languages;
 

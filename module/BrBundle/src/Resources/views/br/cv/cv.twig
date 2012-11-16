@@ -32,6 +32,10 @@
                         {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br>
                         {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
                     </dd>
+                    <dt>{{ translate('Profile Picture') }}</dt>
+                    <dd>
+                        <img width=200 src="/account/photo/image{{ authenticatedPerson.getPhotoPath() }}" alt=""/>
+                    </dd>
                 </dl>
 
                 <p><strong>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected.')}}</strong></p>
@@ -53,17 +57,18 @@
 
             $('#language_add').click(function() {
                 $('#language_add').before('\
-                    <div class="control-group ">\
+                    <div class="control-group lang_control' + i + '">\
                         <label class="control-label" for="lang_name' + i + '">\
                             Language\
                         </label>\
                         <div class="controls">\
                             <div>\
                                 <input type="text" name="lang_name' + i + '" id="lang_name' + i + '" value=""/>\
+                                <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">Remove Language</button>\
                             </div>\
                         </div>\
                     </div>\
-                    <div class="control-group ">\
+                    <div class="control-group lang_control' + i + '">\
                         <label class="control-label" for="lang_oral' + i + '">\
                             Oral Skills\
                         </label>\
@@ -77,7 +82,7 @@
                             </div>\
                         </div>\
                     </div>\
-                    <div class="control-group ">\
+                    <div class="control-group lang_control' + i + '">\
                         <label class="control-label" for="lang_written' + i + '">\
                             Written Skills\
                         </label>\
@@ -92,6 +97,11 @@
                         </div>\
                     </div>'
                 );
+
+                var id = '.lang_control' + i;
+                $('#lang_delete' + i).click(function() {
+                    $(id).remove();
+                });
 
                 $('#lang_count').val(parseInt($('#lang_count').val()) + 1);
 
