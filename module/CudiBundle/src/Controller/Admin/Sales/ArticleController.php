@@ -154,6 +154,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setSupplier($supplier)
                     ->setCanExpire($formData['can_expire']);
 
+                $article = $saleArticle->getMainArticle();
+                if ($article->isInternal()) {
+                    $cachePath = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.front_page_cache_dir');
+                    if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+                        unlink($cachePath . '/' . $article->getFrontPage());
+                        $article->setFrontPage();
+                    }
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
