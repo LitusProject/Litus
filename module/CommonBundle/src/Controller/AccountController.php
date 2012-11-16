@@ -30,6 +30,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Form\Registration\Edit as EditForm,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
     Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -750,6 +751,30 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function photoAction() {
+        $imagePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.profile_path') . '/' . $this->getParam('image');
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
+            'Content-type' => mime_content_type($imagePath),
+            'Content-Length' => filesize($imagePath),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($imagePath, 'r');
+        $data = fread($handle, filesize($imagePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }

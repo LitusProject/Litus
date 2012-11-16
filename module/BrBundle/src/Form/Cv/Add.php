@@ -71,10 +71,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $years[$year] = $year;
         }
 
-        // TODO anticipate people that don't have their studies, photo, name, email, phone, address ... filled in correctly
         // TODO: set character limit on EVERY manual field
         // TODO: languages: are they recreated properly when filling in something wrong?
-        // TODO enforce at least 1 language and max 5 languages
+        // TODO: enforce at least 1 language and max 5 languages
+        // TODO: knop om taal te verwijderen
 
         $studies = new Collection('studies');
         $studies->setLabel('Education');
