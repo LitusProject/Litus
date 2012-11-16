@@ -63,7 +63,7 @@
 
             // Add delete buttons to existing language fields
             var count = parseInt($('#lang_count').val());
-            for (i = 0; i < count; i++) {
+            for (i = 1; i < count; i++) {
                 $('#lang_name' + i).after('\
                     <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">Remove Language</button>'
                 );
