@@ -84,6 +84,13 @@ class Internal extends \CudiBundle\Entity\Article
     private $colored;
 
     /**
+     * @var string The file name of the cached front page
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $frontPage;
+
+    /**
      * @throws \InvalidArgumentException
      *
      * @param string $title The title of the article
@@ -276,6 +283,25 @@ class Internal extends \CudiBundle\Entity\Article
     public function setIsColored($colored)
     {
         $this->colored = $colored;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFrontPage()
+    {
+        return $this->frontPage;
+    }
+
+    /**
+     * @param string|null $frontPage
+     *
+     * @return \CudiBundle\Entity\Articles\Internal
+     */
+    public function setFrontPage($frontPage = null)
+    {
+        $this->frontPage = $frontPage;
         return $this;
     }
 

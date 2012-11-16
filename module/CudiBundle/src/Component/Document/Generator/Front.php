@@ -55,6 +55,40 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     }
 
     /**
+     * Generate the document.
+     *
+     * @return void
+     */
+    public function generate()
+    {
+        $cachePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.front_page_cache_dir');
+
+        if (!file_exists($cachePath))
+            mkdir($cachePath);
+
+        if (null !== $this->_article->getMainArticle()->getFrontPage() && file_exists($cachePath . '/' . $this->_article->getMainArticle()->getFrontPage())) {
+            copy($cachePath . '/' . $this->_article->getMainArticle()->getFrontPage(), $this->_pdfPath);
+            clearstatcache();
+        } else {
+            $this->generateXml(
+                $this->_xmlFile
+            );
+
+            $this->generatePdf();
+
+            do{
+                $fileName = sha1(uniqid());
+            } while (file_exists($cachePath . '/' . $fileName));
+
+            $this->_article->getMainArticle()->setFrontPage($fileName);
+            $this->getEntityManager()->flush();
+            copy($this->_pdfPath, $cachePath . '/' . $fileName);
+        }
+    }
+
+    /**
      * Generate the XML for the fop.
      *
      * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
