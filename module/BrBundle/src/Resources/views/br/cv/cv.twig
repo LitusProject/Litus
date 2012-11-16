@@ -52,10 +52,13 @@
 {% block content_script %}
 
     <script type="text/javascript">
-        var i = 0;
+
         $(document).ready(function() {
 
             $('#language_add').click(function() {
+
+                var i = parseInt($('#lang_count').val())
+
                 $('#language_add').before('\
                     <div class="control-group lang_control' + i + '">\
                         <label class="control-label" for="lang_name' + i + '">\
@@ -103,9 +106,7 @@
                     $(id).remove();
                 });
 
-                $('#lang_count').val(parseInt($('#lang_count').val()) + 1);
-
-                i++;
+                $('#lang_count').val(i + 1);
             });
 
         });

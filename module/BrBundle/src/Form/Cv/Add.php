@@ -14,7 +14,8 @@
 
 namespace BrBundle\Form\Cv;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Button,
+use BrBundle\Entity\Cv\Language as CvLanguage,
+    CommonBundle\Component\Form\Bootstrap\Element\Button,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
@@ -72,9 +73,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         // TODO: set character limit on EVERY manual field
-        // TODO: languages: are they recreated properly when filling in something wrong?
-        // TODO: enforce at least 1 language and max 5 languages
-        // TODO: knop om taal te verwijderen
+        // TODO: languages: enforce at least 1 and max 5
+        // TODO: languages: put correct stuff in the selects for dynamically added languages using twig
+        // TODO: languages: add remove buttons for all but i = 0
 
         $studies = new Collection('studies');
         $studies->setLabel('Education');
@@ -127,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Location');
         $erasmus->add($field);
 
-        $languageCollection = new Collection('Languages');
+        $languageCollection = new Collection('languages');
         $languageCollection->setLabel('Languages');
         $this->add($languageCollection);
 
@@ -213,6 +214,54 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setValue('Add')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
+
+        $this->addLanguages(null);
+    }
+
+    public function addLanguages($formData)
+    {
+        $languageCollection = $this->get('languages');
+        $langCount = $this->get('lang_count');
+
+        if (null === $formData) {
+            // Add 1 field
+            $field = new Text('lang_name0');
+            $field->setLabel('Language');
+            $languageCollection->add($field);
+
+            $field = new Select('lang_oral0');
+            $field->setLabel('Oral Skills')
+                ->setAttribute('options', CvLanguage::$ORAL_SKILLS);
+            $languageCollection->add($field);
+
+            $field = new Select('lang_written0');
+            $field->setLabel('Written Skills')
+                ->setAttribute('options', CvLanguage::$WRITTEN_SKILLS);
+            $languageCollection->add($field);
+
+            $langCount->setValue(1);
+        } else {
+            // Add fields for all filled languages
+            for ($i = 0; $i < $formData['lang_count']; $i++) {
+
+                if (!isset($formData['lang_name' . $i]))
+                    continue;
+
+                $field = new Text('lang_name' . $i);
+                $field->setLabel('Language');
+                $languageCollection->add($field);
+
+                $field = new Select('lang_oral' . $i);
+                $field->setLabel('Oral Skills')
+                    ->setAttribute('options', CvLanguage::$ORAL_SKILLS);
+                $languageCollection->add($field);
+
+                $field = new Select('lang_written' . $i);
+                $field->setLabel('Written Skills')
+                    ->setAttribute('options', CvLanguage::$WRITTEN_SKILLS);
+                $languageCollection->add($field);
+            }
+        }
     }
 
     public function getInputFilter()

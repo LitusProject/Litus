@@ -76,6 +76,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if ($this->getRequest()->isPost()) {
 
             $formData = $this->getRequest()->getPost();
+            $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
