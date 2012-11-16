@@ -73,6 +73,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         // TODO: set character limit on EVERY manual field
+        // TODO: languages: add validators
         // TODO: languages: enforce at least 1 and max 5
         // TODO: languages: put correct stuff in the selects for dynamically added languages using twig
         // TODO: languages: add remove buttons for all but i = 0
@@ -133,7 +134,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($languageCollection);
 
         $field = new Hidden('lang_count');
-        $field->setValue(0);
+        $field->setValue(1);
         $this->add($field);
 
         $field = new Button('language_add');
@@ -215,52 +216,38 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
 
-        $this->addLanguages(null);
+        $this->addLanguages(
+            array(
+                'lang_count' => 1,
+                'lang_name0' => '',
+            )
+        );
     }
 
     public function addLanguages($formData)
     {
         $languageCollection = $this->get('languages');
-        $langCount = $this->get('lang_count');
+        $this->get('lang_count')->setValue($formData['lang_count']);
 
-        if (null === $formData) {
-            // Add 1 field
-            $field = new Text('lang_name0');
+        for ($i = 0; $i < $formData['lang_count']; $i++) {
+
+            if (!isset($formData['lang_name' . $i]))
+                continue;
+
+            $field = new Text('lang_name' . $i);
             $field->setLabel('Language');
             $languageCollection->add($field);
 
-            $field = new Select('lang_oral0');
+            $field = new Select('lang_oral' . $i);
             $field->setLabel('Oral Skills')
                 ->setAttribute('options', CvLanguage::$ORAL_SKILLS);
             $languageCollection->add($field);
 
-            $field = new Select('lang_written0');
+            $field = new Select('lang_written' . $i);
             $field->setLabel('Written Skills')
                 ->setAttribute('options', CvLanguage::$WRITTEN_SKILLS);
             $languageCollection->add($field);
 
-            $langCount->setValue(1);
-        } else {
-            // Add fields for all filled languages
-            for ($i = 0; $i < $formData['lang_count']; $i++) {
-
-                if (!isset($formData['lang_name' . $i]))
-                    continue;
-
-                $field = new Text('lang_name' . $i);
-                $field->setLabel('Language');
-                $languageCollection->add($field);
-
-                $field = new Select('lang_oral' . $i);
-                $field->setLabel('Oral Skills')
-                    ->setAttribute('options', CvLanguage::$ORAL_SKILLS);
-                $languageCollection->add($field);
-
-                $field = new Select('lang_written' . $i);
-                $field->setLabel('Written Skills')
-                    ->setAttribute('options', CvLanguage::$WRITTEN_SKILLS);
-                $languageCollection->add($field);
-            }
         }
     }
 

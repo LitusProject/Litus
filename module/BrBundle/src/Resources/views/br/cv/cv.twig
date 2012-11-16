@@ -53,11 +53,31 @@
 
     <script type="text/javascript">
 
+        function addRemoveButton(i) {
+            $('#lang_delete' + i).click(function() {
+                $('.lang_control' + i).remove();
+            });
+        }
+
         $(document).ready(function() {
+
+            // Add delete buttons to existing language fields
+            var count = parseInt($('#lang_count').val());
+            for (i = 0; i < count; i++) {
+                $('#lang_name' + i).after('\
+                    <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">Remove Language</button>'
+                );
+
+                $('#lang_name' + i).parent().parent().parent().addClass('lang_control' + i);
+                $('#lang_oral' + i).parent().parent().parent().addClass('lang_control' + i);
+                $('#lang_written' + i).parent().parent().parent().addClass('lang_control' + i);
+
+                addRemoveButton(i);
+            }
 
             $('#language_add').click(function() {
 
-                var i = parseInt($('#lang_count').val())
+                var i = parseInt($('#lang_count').val());
 
                 $('#language_add').before('\
                     <div class="control-group lang_control' + i + '">\
@@ -101,10 +121,7 @@
                     </div>'
                 );
 
-                var id = '.lang_control' + i;
-                $('#lang_delete' + i).click(function() {
-                    $(id).remove();
-                });
+                addRemoveButton(i);
 
                 $('#lang_count').val(i + 1);
             });
