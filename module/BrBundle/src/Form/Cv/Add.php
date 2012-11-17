@@ -73,8 +73,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         // TODO: set character limit on EVERY manual field (including languages)
-        // TODO: languages: enforce at least 1 and max 5
-        // TODO: languages: put correct stuff in the selects for dynamically added languages using twig
 
         $studies = new Collection('studies');
         $studies->setLabel('Education');

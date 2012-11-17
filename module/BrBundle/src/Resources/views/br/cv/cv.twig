@@ -107,9 +107,9 @@
                         <div class="controls">\
                             <div>\
                                 <select name="lang_oral' + i + '" id="lang_oral' + i + '">\
-                                    <option value="none">None</option>\
-                                    <option value="passive">Passive</option>\
-                                    <option value="active">Active</option>\
+                                    {% for key,value in oral_skills %}
+                                        <option value="{{key}}">{{value}}</option>\
+                                    {% endfor %}
                                 </select>\
                             </div>\
                         </div>\
@@ -121,9 +121,9 @@
                         <div class="controls">\
                             <div>\
                                 <select name="lang_written' + i + '" id="lang_written' + i + '">\
-                                    <option value="none">None</option>\
-                                    <option value="passive">Passive</option>\
-                                    <option value="active">Active</option>\
+                                    {% for key,value in written_skills %}
+                                        <option value="{{key}}">{{value}}</option>\
+                                    {% endfor %}
                                 </select>\
                             </div>\
                         </div>\
