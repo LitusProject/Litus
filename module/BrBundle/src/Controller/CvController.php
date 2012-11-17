@@ -50,7 +50,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ->getRepository('BrBundle\Entity\Cv\Entry')
                     ->findOneByAcademic($person);
                 if ($entry) {
-                    //$message = 'You can only fill in the CV Book once.';
+                    $message = 'You can only fill in the CV Book once.';
                 }
             }
         }

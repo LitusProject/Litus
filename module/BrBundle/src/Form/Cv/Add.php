@@ -266,17 +266,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $factory = new InputFactory();
 
         for ($i = 0; $i < $this->data['lang_count']; $i++) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'lang_name' . $i,
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
+            if (isset($this->data['lang_name' . $i])) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name' => 'lang_name' . $i,
+                            'required' => true,
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
+            }
         }
 
         $inputFilter->add(
