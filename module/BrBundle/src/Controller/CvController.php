@@ -156,6 +156,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             array(
                 'form' => $form,
                 'languageError' => $languageError,
+                'oral_skills' => CvLanguage::$ORAL_SKILLS,
+                'written_skills' => CvLanguage::$WRITTEN_SKILLS,
             )
         );
     }
