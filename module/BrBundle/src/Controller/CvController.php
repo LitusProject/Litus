@@ -199,7 +199,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         if ($message) {
             $message = 'The following information in your account is incorrect:<br/><ul>' . $message .
-                '</ul>Please click <a href="/account">here</a> to edit your account.';
+                '</ul>To add your information to the CV Book, you must complete these. Please click <a href="/account">here</a> to edit your account.';
         }
 
         return $message;
