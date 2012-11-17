@@ -194,6 +194,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if ('' == $person->getPhotoPath())
             $message = $message . '<li>Your photo</li>';
 
+        if (null === $person->getBirthDay())
+            $message = $message . '<li>Your birthday</li>';
+
         if ($message) {
             $message = 'The following information in your account is incorrect:<br/><ul>' . $message .
                 '</ul>Please click <a href="/account">here</a> to edit your account.';

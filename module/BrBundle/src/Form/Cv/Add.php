@@ -72,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $years[$year] = $year;
         }
 
-        // TODO: set character limit on EVERY manual field (including languages)
+        // TODO: set character limit on EVERY manual field (including languages) + limit nr of lines + limit nr of characters per line (?)
 
         $studies = new Collection('studies');
         $studies->setLabel('Education');
@@ -453,9 +453,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 )
             )
         );
-
-
-        // TODO limit nr of characters per line + nr of lines
 
         return $inputFilter;
     }
