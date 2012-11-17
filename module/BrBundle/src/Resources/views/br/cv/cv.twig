@@ -61,6 +61,15 @@
 
         $(document).ready(function() {
 
+            {% if languageError %}
+                $('#language_add').after('\
+                    <div class="help-block" style="margin-left:221px;">\
+                        <ul>\
+                            <li>{{languageError}}</li>\
+                        </ul>\
+                    </div>');
+            {% endif %}
+
             // Add delete buttons to existing language fields
             var count = parseInt($('#lang_count').val());
             for (i = 1; i < count; i++) {

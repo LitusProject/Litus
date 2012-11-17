@@ -33,6 +33,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     {
         $person = $this->getAuthentication()->getPersonObject();
         $message = null;
+        $languageError = null;
 
         if ($person === null) {
             $message = 'Please log in to add your CV.';
@@ -76,7 +77,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if ($this->getRequest()->isPost()) {
 
             $formData = $this->getRequest()->getPost();
-            $form->addLanguages($formData);
+            $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -144,12 +145,17 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 );
 
                 return new ViewModel();
+            } else {
+                if (!$form->isValidLanguages($formData)) {
+                    $languageError = 'The number of languages must be between 1 and 5';
+                }
             }
         }
 
         return new ViewModel(
             array(
                 'form' => $form,
+                'languageError' => $languageError,
             )
         );
     }
