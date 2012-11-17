@@ -72,11 +72,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $years[$year] = $year;
         }
 
-        // TODO: set character limit on EVERY manual field
-        // TODO: languages: add validators
+        // TODO: set character limit on EVERY manual field (including languages)
         // TODO: languages: enforce at least 1 and max 5
         // TODO: languages: put correct stuff in the selects for dynamically added languages using twig
-        // TODO: languages: add remove buttons for all but i = 0
 
         $studies = new Collection('studies');
         $studies->setLabel('Education');
@@ -226,6 +224,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function addLanguages($formData)
     {
+        $realCount = 0;
         $languageCollection = $this->get('languages');
         $this->get('lang_count')->setValue($formData['lang_count']);
 
@@ -248,13 +247,56 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ->setAttribute('options', CvLanguage::$WRITTEN_SKILLS);
             $languageCollection->add($field);
 
+            if ('' !== $formData['lang_name' . $i])
+                $realCount++;
         }
+
+        $formData['lang_realcount'] = $realCount;
+
+        return $formData;
+    }
+
+    public function isValidLanguages($formData)
+    {
+        $count = $formData['lang_realcount'];
+        return $count > 0 && $count <= 5;
     }
 
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+        for ($i = 0; $i < $this->data['lang_count']; $i++) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name' => 'lang_name' . $i,
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+        }
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'lang_realcount',
+                    'validators' => array(
+                        array(
+                            'name' => 'between',
+                            'options' => array(
+                                'min' => 1,
+                                'max' => 5,
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
 
         $inputFilter->add(
             $factory->createInput(
