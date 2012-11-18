@@ -22,8 +22,10 @@
 
 	    <p>Title: <b>{{ shift.getName() }}</b></p>
 
+        {% if shift.canBeEditedBy(authenticatedPerson) %}
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
+        {% endif %}
         <br style="clear:both">
 
 	    <table class="manage full_width">
