@@ -9,6 +9,13 @@
         </div>
     </div>
 
+    <div class="flashmessage alert alert-error fade in delete_error hide">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="content">
+            There was an error while deleting the reservations.
+        </div>
+    </div>
+
     <div id="calendar"></div>
 
     <div id="popover_header" class="hide">
@@ -37,10 +44,15 @@
             <dd><span class="driver"></span></dd>
         </dl>
 
-        {% if has_access('admin_van_reservation', 'edit') %}
-            <hr />
+        {% if has_access('admin_van_reservation', 'edit') or has_access('admin_van_reservation', 'delete') %}
+        <hr />
+        {% endif %}
 
-            <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
+        {% if has_access('admin_van_reservation', 'delete') %}
+            <a class="delete btn btn-danger pull-right" href="#" style="margin-left: 10px;">{{ translate('Delete') }}</a>
+        {% endif %}
+        {% if has_access('admin_van_reservation', 'edit') %}
+            <a class="edit btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
         {% endif %}
     </div>
 
@@ -54,10 +66,10 @@
                 <dd><span class="end"></span></dd>
             </dl>
 
-            {% if has_access('admin_van_reservation', 'edit') %}
+            {% if has_access('admin_van_reservation', 'add') %}
                 <hr />
 
-                <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
+                <a class="btn btn-primary pull-right" href="#">{{ translate('Add') }}</a>
             {% endif %}
         </div>
     </div>
@@ -69,6 +81,21 @@
         var poppedElement = null;
 
         $(document).ready(function() {
+            $(".popover-content a.delete").live('click', function() {
+                var dbid = $(this).data('dbid');
+                $.post('{{ url('admin_van_reservation', {"action": "delete"})}}' + dbid, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        hidePopover(poppedElement);
+                        $('#calendar').fullCalendar('removeEvents', function(el) {
+                            return el.dbid == dbid;
+                        });
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
@@ -158,13 +185,10 @@
                 eventAfterRender: function(event, element, view) {
                     $('#popover_header .reason').text(event.title);
 
-                    {% if has_access('admin_van_reservation', 'edit') %}
-                        $("#popover_content a").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}' + event.dbid + '/return/logistics_index');
-                        $("#popover_content a").html('Edit');
-                        $("#popover_content a").removeClass("hide");
-                    {% else %}
-                        $("#popover_content a").addClass("hide");
-                    {% endif %}
+                    $("#popover_content a.edit").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}' + event.dbid + '/return/logistics_index');
+
+                    $("#popover_content a.delete").attr('data-id', event.id);
+                    $("#popover_content a.delete").attr('data-dbid', event.dbid);
 
                     $('#popover_content .start').text(formatDate(event.start));
                     $('#popover_content .end').text(formatDate(event.end));
@@ -199,14 +223,7 @@
                     $('#add_popover_content_internal .start').text(formatDate(startDate));
                     $('#add_popover_content_internal .end').text(formatDate(endDate));
 
-
-                    {% if has_access('admin_van_reservation', 'add') %}
-                        $("#add_popover_content_internal a").attr("href", '{{ url('admin_van_reservation', {'action': 'add'}) }}start/' + startDate.valueOf() / 1000 + '/end/' + endDate.valueOf() / 1000 + '/return/logistics_index');
-                        $("#add_popover_content_internal a").html('Add');
-                        $("#add_popover_content_internal a").removeClass("hide");
-                    {% else %}
-                        $("#add_popover_content_internal a").addClass("hide");
-                    {% endif %}
+                    $("#add_popover_content_internal a").attr("href", '{{ url('admin_van_reservation', {'action': 'add'}) }}start/' + startDate.valueOf() / 1000 + '/end/' + endDate.valueOf() / 1000 + '/return/logistics_index');
                 },
 
                 {% endif %}
@@ -258,5 +275,11 @@
             $('#calendar').removeClass('loading');
             $('.load_error').removeClass('hide');
         }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.remove_error').removeClass('hide');
+        }
+
     </script>
 {% endblock %}
