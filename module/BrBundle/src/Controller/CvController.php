@@ -33,21 +33,28 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     {
         $person = $this->getAuthentication()->getPersonObject();
         $message = null;
+        $languageError = null;
 
         if ($person === null) {
             $message = 'Please log in to add your CV.';
-        }
-
-        if (!($person instanceof Academic)) {
-            $message = 'You must be a student to add your CV.';
         } else {
-            $entry = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Cv\Entry')
-                ->findOneByAcademic($person);
-            if ($entry) {
-                //$message = 'You can only fill in the CV Book once.';
+            if (!($person instanceof Academic)) {
+                $message = 'You must be a student to add your CV.';
+            } else {
+
+                $temp = $this->_getBadAccountMessage($person);
+                if ($temp !== null && '' !== $temp)
+                    $message = $temp;
+
+                $entry = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Cv\Entry')
+                    ->findOneByAcademic($person);
+                if ($entry) {
+                    $message = 'You can only fill in the CV Book once.';
+                }
             }
         }
+
 
         $open = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -70,6 +77,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if ($this->getRequest()->isPost()) {
 
             $formData = $this->getRequest()->getPost();
+            $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -137,12 +145,19 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 );
 
                 return new ViewModel();
+            } else {
+                if (!$form->isValidLanguages($formData)) {
+                    $languageError = 'The number of languages must be between 1 and 5';
+                }
             }
         }
 
         return new ViewModel(
             array(
                 'form' => $form,
+                'languageError' => $languageError,
+                'oral_skills' => CvLanguage::$ORAL_SKILLS,
+                'written_skills' => CvLanguage::$WRITTEN_SKILLS,
             )
         );
     }
@@ -150,5 +165,43 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function completeAction()
     {
         return new ViewModel();
+    }
+
+    private function _getBadAccountMessage(Academic $person) {
+        $message = '';
+
+        $studies = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
+
+        if (empty($studies))
+            $message = $message . '<li>Your Studies</li>';
+
+        $address = $person->getSecondaryAddress();
+        if ($address === null || '' == $address->getStreet() || '' == $address->getNumber() 
+                || '' == $address->getPostal() || '' == $address->getCity() || '' == $address->getCountryCode())
+            $message = $message . '<li>Your address</li>';
+
+        if ('' == $person->getFirstName() || '' == $person->getLastName())
+            $message = $message . '<li>Your name</li>';
+
+        if ('' == $person->getPhoneNumber())
+            $message = $message . '<li>Your phone number</li>';
+
+        if ('' == $person->getPersonalEmail())
+            $message = $message . '<li>Your personal email address</li>';
+
+        if ('' == $person->getPhotoPath())
+            $message = $message . '<li>Your photo</li>';
+
+        if (null === $person->getBirthDay())
+            $message = $message . '<li>Your birthday</li>';
+
+        if ($message) {
+            $message = 'The following information in your account is incorrect:<br/><ul>' . $message .
+                '</ul>To add your information to the CV Book, you must complete these. Please click <a href="/account">here</a> to edit your account.';
+        }
+
+        return $message;
     }
 }
