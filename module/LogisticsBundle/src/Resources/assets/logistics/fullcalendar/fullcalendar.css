@@ -133,8 +133,8 @@ html .fc,
 	
 .fc-cell-overlay { /* semi-transparent rectangle while dragging */
 	background: #9cf;
-	opacity: .2;
-	filter: alpha(opacity=20); /* for IE */
+	opacity: .7;
+	filter: alpha(opacity=70); /* for IE */
 	}
 	
 
