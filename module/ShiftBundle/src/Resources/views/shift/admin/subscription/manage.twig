@@ -21,7 +21,10 @@
 	    <h1>Shift</h1>
 
 	    <p>Title: <b>{{ shift.getName() }}</b></p>
-	    <br/>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br style="clear:both">
 
 	    <table class="manage full_width">
             <tr>
@@ -82,8 +85,22 @@
 {% endblock %}
 
 {% block content_script %}
+
 	<script type="text/javascript">
 		$(document).ready(function () {
+
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("admin_academic_typeahead", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+
 		    $('.item .delete').click(openModal);
 		});
 
