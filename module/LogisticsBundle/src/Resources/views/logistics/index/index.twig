@@ -114,6 +114,7 @@
                 allDayDefault: false,
                 firstHour: 7,
                 firstDay: 1,
+                lazyFetching: false,
                 defaultView: 'agendaWeek',
 
                 timeFormat: {
@@ -142,9 +143,13 @@
                                     reservations = data.reservations;
 
                                     var events = [];
+                                    var firstHour = 7;
+
+                                    firstHour = 24;
                                     for (index in reservations) {
 
                                         var reservation = reservations[index];
+                                        firstHour = Math.min(firstHour, new Date(reservation.start*1000).getHours());
 
                                         events.push({
                                             title: reservation.reason,
@@ -163,6 +168,8 @@
                                     }
 
                                     callback(events);
+
+                                    $('#calendar').fullCalendar('option', 'firstHour', firstHour);
 
                                 } else {
                                     errorFetch();
