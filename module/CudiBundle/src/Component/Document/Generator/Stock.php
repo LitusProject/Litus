@@ -29,6 +29,16 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Stock extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
+     * @var string
+     */
+    private $_articles;
+
+    /**
+     * @var string
+     */
+    private $_order;
+
+    /**
      * @var \CommonBundle\Entity\General\AcademicYear
      */
     private $_academicYear;
@@ -37,10 +47,12 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
      * Create a new Article Front Generator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param string $articles The kind of articles to export
+     * @param string $order The ordering of the articles to export
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, TmpFile $file)
+    public function __construct(EntityManager $entityManager, $articles, $order, AcademicYear $academicYear, TmpFile $file)
     {
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -52,6 +64,8 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
 
+        $this->_articles = $articles;
+        $this->_order = $order;
         $this->_academicYear = $academicYear;
     }
 
@@ -74,12 +88,23 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\Users\Person')
             ->findOneById($configs->getConfigValue('cudi.person'));
 
-        $stock = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findAllByAcademicYear($this->_academicYear);
+        if ($this->_order == 'barcode') {
+            $stock = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->findAllByAcademicYearSortBarcode($this->_academicYear);
+        } else {
+            $stock = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->findAllByAcademicYear($this->_academicYear);
+        }
 
         $items = array();
         foreach($stock as $item) {
+            if ($this->_articles == 'external' && $item->getMainArticle()->isInternal())
+                continue;
+            if ($this->_articles == 'internal' && !$item->getMainArticle()->isInternal())
+                continue;
+
             $items[] = new Object(
                 'item',
                 null,

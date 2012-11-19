@@ -107,6 +107,7 @@ return array(
     'CudiBundle\Form\Admin\Stock\Deliveries\Add'                    => __DIR__ . '/src/Form/Admin/Stock/Deliveries/Add.php',
     'CudiBundle\Form\Admin\Stock\Deliveries\AddDirect'              => __DIR__ . '/src/Form/Admin/Stock/Deliveries/AddDirect.php',
     'CudiBundle\Form\Admin\Stock\Deliveries\Retour'                 => __DIR__ . '/src/Form/Admin/Stock/Deliveries/Retour.php',
+    'CudiBundle\Form\Admin\Stock\Export'                            => __DIR__ . '/src/Form/Admin/Stock/Export.php',
     'CudiBundle\Form\Admin\Stock\Orders\Add'                        => __DIR__ . '/src/Form/Admin/Stock/Orders/Add.php',
     'CudiBundle\Form\Admin\Stock\Orders\AddDirect'                  => __DIR__ . '/src/Form/Admin/Stock/Orders/AddDirect.php',
     'CudiBundle\Form\Admin\Stock\Update'                            => __DIR__ . '/src/Form/Admin/Stock/Update.php',
