@@ -145,10 +145,26 @@ class Server
             }
         }
 
+        try {
+            socket_close($socket);
+        } catch (\Exception $e) {
+
+        }
+
         foreach($this->_sockets as $key => $value) {
             if ($value == $socket)
                 unset($this->_sockets[$key]);
         }
+    }
+
+    /**
+     * Remove a user
+     *
+     * @param \CommonBundle\Component\WebSocket\User $user
+     */
+    protected function removeUser(User $user)
+    {
+        $this->_removeUserSocket($user->getSocket());
     }
 
     /**

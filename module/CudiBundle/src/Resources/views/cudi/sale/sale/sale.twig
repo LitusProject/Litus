@@ -332,6 +332,7 @@
                 url: '{{ socketUrl }}',
                 session: {{ session.getId() }},
                 errorDialog: $('#loading_queue_error'),
+                authKey: '{{ key }}',
                 barcodePrefix: {{ barcodePrefix }},
                 collectScanning: {% if enableCollectScanning == 1 %}true{% else %}false{% endif %},
                 statusTranslate: function (status) {

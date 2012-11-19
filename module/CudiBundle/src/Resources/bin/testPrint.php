@@ -98,7 +98,9 @@ if (isset($opts->p) && isset($opts->t)) {
         (object) array(
             'command' => 'PRINT',
             'id' => $printers[$opts->p],
-            'ticket' => $data
+            'ticket' => $data,
+            'key' => $em->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_socket_key'),
         )
     );
 
