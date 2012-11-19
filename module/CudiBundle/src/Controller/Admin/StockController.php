@@ -17,6 +17,7 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Stock as StockGenerator,
+    CudiBundle\Form\Admin\Stock\Export as ExportForm,
     CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
     CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
     CudiBundle\Form\Admin\Stock\Update as StockForm,
@@ -336,22 +337,49 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function exportAction()
     {
-        $file = new TmpFile();
-        $document = new StockGenerator($this->getEntityManager(), $this->getAcademicYear(), $file);
-        $document->generate();
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="stock.pdf"',
-            'Content-type'        => 'application/pdf',
-        ));
-        $this->getResponse()->setHeaders($headers);
+        $form = new ExportForm(
+            $this->url()->fromRoute(
+                'admin_stock',
+                array(
+                    'action' => 'download'
+                )
+            )
+        );
 
         return new ViewModel(
             array(
-                'data' => $file->getContent(),
+                'form' => $form,
             )
         );
+    }
+
+    public function downloadAction()
+    {
+        $form = new ExportForm('');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $file = new TmpFile();
+                $document = new StockGenerator($this->getEntityManager(), $formData['articles'], $formData['order'], $this->getAcademicYear(), $file);
+                $document->generate();
+
+                $headers = new Headers();
+                $headers->addHeaders(array(
+                    'Content-Disposition' => 'attachment; filename="stock.pdf"',
+                    'Content-type'        => 'application/pdf',
+                ));
+                $this->getResponse()->setHeaders($headers);
+
+                return new ViewModel(
+                    array(
+                        'data' => $file->getContent(),
+                    )
+                );
+            }
+        }
     }
 
     private function _getArticle()

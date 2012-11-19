@@ -25,7 +25,12 @@
                     {{ formElement(element) }}
                 </div>
             {% elseif element.getAttribute('type') == 'radio' %}
-                <div>
+                <div class="row">
+                    <span class="label">
+                        {% if element.isRequired() %}<b>{% endif %}
+                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                        {% if element.isRequired() %}</b>{% endif %}
+                    </span>
                     <div class="field">
                         <div>
                             {{ formElement(element) }}
@@ -44,7 +49,6 @@
                         {{ formElement(element) }}
                     </span>
                     <div class="errors">{{ formElementErrors(element) }}</div>
-                    {{ formLabel.closeTag() }}
                 </div>
             {% endif %}
         {% endfor %}

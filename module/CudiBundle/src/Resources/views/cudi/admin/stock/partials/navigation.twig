@@ -4,7 +4,7 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('admin_stock', 'export') %}
-                <li><a href="#" data-provide="downloadFile" data-url="{{ url('admin_stock', {"action": "export"}) }}">Export</a></li>
+                <li><a{% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock', {"action": "export"}) }}">Export</a></li>
             {% endif %}
             {% if hasAccess('admin_stock_period', 'manage') %}
                 <li><a{% if 'admin_stock_period' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock_period') }}">Periods</a></li>
