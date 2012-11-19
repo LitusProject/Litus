@@ -180,6 +180,11 @@ VTK Cudi
                     'description' => 'The host used for the websocket of the queue',
                 ),
                 array(
+                    'key'         => 'cudi.queue_socket_key',
+                    'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
+                    'description' => 'The key used for the websocket of the queue',
+                ),
+                array(
                     'key'         => 'cudi.prof_start_academic_year',
                     'value'       => '2012-7-15 0:0:0',
                     'description' => 'The start date of the academic year for a prof',

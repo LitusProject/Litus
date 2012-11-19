@@ -45,7 +45,7 @@
 				url: '{{ socketUrl }}',
 				open: function (e) {
 					$('#socket_error').removeClass('in');
-					$.webSocket('send', {name: 'signInQueue', text: 'initialize: {"session": "{{ session.getId() }}" }'});
+					$.webSocket('send', {name: 'signInQueue', text: 'initialize: {"session": "{{ session.getId() }}", "key": "{{ key }}" }'});
 				},
 				message: function (e, data) {
 					if (data.queueNumber) {

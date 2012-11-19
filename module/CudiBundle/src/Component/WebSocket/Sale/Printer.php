@@ -70,7 +70,9 @@ class Printer {
             (object) array(
                 'command' => 'PRINT',
                 'id' => $printers[$printer],
-                'ticket' => $data
+                'ticket' => $data,
+                'key' => $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.queue_socket_key'),
             )
         );
 
