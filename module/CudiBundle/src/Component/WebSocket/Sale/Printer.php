@@ -26,14 +26,14 @@ class Printer {
 
     public static function collectPrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
-        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
         $data->type = 2;
         self::_print($entityManger, $printer, $data);
     }
 
     public static function salePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
-        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles, $prices, $barcodes);
+        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
         $data->type = 3;
         self::_print($entityManger, $printer, $data);
     }
