@@ -11,16 +11,17 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace MailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * This is the entity for a driver.
+ * This is the entity for a list entry.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry")
- * @ORM\Table(name="mail.list_entry")
+ * @ORM\Table(name="mail.list_entries")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
@@ -30,7 +31,6 @@ use Doctrine\ORM\Mapping as ORM,
  */
 abstract class Entry
 {
-
     /**
      * @var The entry's unique identifier
      *
@@ -41,7 +41,7 @@ abstract class Entry
     private $id;
 
     /**
-     * @var MailBundle\Entity\MailingList The list associated with this entry.
+     * @var \MailBundle\Entity\MailingList The list associated with this entry
      *
      * @ORM\ManyToOne(targetEntity="MailBundle\Entity\MailingList", cascade={"persist"})
      * @ORM\JoinColumn(name="list", referencedColumnName="id")
@@ -51,7 +51,7 @@ abstract class Entry
     /**
      * Creates a new list entry for the given list.
      *
-     * @param MailBundle\Entity\MailingList $list The list for this entry.
+     * @param \MailBundle\Entity\MailingList $list The list for this entry
      */
     public function __construct(MailingList $list)
     {
@@ -59,29 +59,32 @@ abstract class Entry
     }
 
     /**
-     * @return The id of this entry.
+     * @return int
      */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * @return MailBundle\Entity\MailingList The list of this entry.
+     * @return \MailBundle\Entity\MailingList
      */
     public function getList()
     {
         return $this->list;
     }
 
+    /**
+     * @return string
+     */
     abstract public function getMailAddress();
 
     /**
-     * @return The first name of this entry.
+     * @return string
      */
     abstract public function getFirstName();
 
     /**
-     * @return The last name of this entry.
+     * @return string
      */
     abstract public function getLastName();
 }

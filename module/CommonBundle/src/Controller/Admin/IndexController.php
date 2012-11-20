@@ -36,10 +36,13 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
         }
 
+        $currentSession = $this->getAuthentication()->getSessionObject();
+
         return new ViewModel(
             array(
                 'profActions' => $profActions,
                 'activeSessions' => $activeSessions,
+                'currentSession' => $currentSession,
                 'versions' => array(
                     'php' => phpversion(),
                     'zf' => \Zend\Version\Version::VERSION,

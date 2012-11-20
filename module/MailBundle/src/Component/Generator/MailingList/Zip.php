@@ -12,18 +12,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Document\Generator;
+namespace CudiBundle\Component\Document\Generator\Order;
 
 use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
-    CudiBundle\Component\Document\Generator\Front as FrontGenerator,
-    CudiBundle\Entity\Stock\Orders\Order,
+    MailBundle\Entity\Entry,
+    MailBundle\Entity\MailList,
     CudiBundle\Entity\Stock\Orders\Item,
     Doctrine\ORM\EntityManager,
     ZipArchive;
 
-class OrderXml
+class Zip
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -31,9 +29,9 @@ class OrderXml
     private $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Stock\Order
+     * @var array The array cont
      */
-    private $_order;
+    private $_lists;
 
     /**
      * Create a Order XML Generator.
@@ -41,9 +39,9 @@ class OrderXml
      * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
      * @param \CudiBundle\Entity\Stock\Order $order The order
      */
-    public function __construct(EntityManager $entityManager, Order $order)
+    public function __construct(EntityManager $entityManager, array $lists)
     {
-        $this->_order = $order;
+        $this->_lists = $lists;
         $this->_entityManager = $entityManager;
     }
 
@@ -54,13 +52,9 @@ class OrderXml
      */
     public function generateArchive(TmpFile $archive)
     {
-        $filePath = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.file_path');
-
         $zip = new ZipArchive();
 
-        foreach($this->_order->getItems() as $item) {
+        foreach($this->_lists as $lists) {
             if (!$item->getArticle()->getMainArticle()->isInternal())
                 continue;
 

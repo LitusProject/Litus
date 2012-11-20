@@ -11,6 +11,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace MailBundle\Entity\Entry;
 
 use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
@@ -19,14 +20,13 @@ use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
     MailBundle\Entity\MailingList;
 
 /**
- * This is the entity for a driver.
+ * This is the entity for a list entry.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry\External")
- * @ORM\Table(name="mail.entry_academic")
+ * @ORM\Table(name="mail.list_entries_academic")
  */
 class Academic extends \MailBundle\Entity\Entry
 {
-
     /**
      * @var CommonBundle\Entity\Users\People\Academic The academic associated with this entry.
      *
@@ -38,8 +38,8 @@ class Academic extends \MailBundle\Entity\Entry
     /**
      * Creates a new list entry for the given list with the given academic.
      *
-     * @param MailBundle\Entity\MailingList $list The list for this entry.
-     * @param CommonBundle\Entity\Users\People\Academic $academic The academic to add.
+     * @param \MailBundle\Entity\MailingList $list The list for this entry.
+     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic to add.
      */
     public function __construct(MailingList $list, AcademicPerson $academic)
     {
@@ -48,14 +48,14 @@ class Academic extends \MailBundle\Entity\Entry
     }
 
     /**
-     * @return The academic associated with this entry.
+     * @return \CommonBundle\Entity\Users\People\Academic
      */
     public function getAcademic() {
         return $this->academic;
     }
 
     /**
-     * @return The mail address of this entry.
+     * @return string
      */
     public function getMailAddress()
     {
@@ -63,7 +63,7 @@ class Academic extends \MailBundle\Entity\Entry
     }
 
     /**
-     * @return The first name of this entry.
+     * @return string
      */
     public function getFirstName()
     {
@@ -71,7 +71,7 @@ class Academic extends \MailBundle\Entity\Entry
     }
 
     /**
-     * @return The last name of this entry.
+     * @return string
      */
     public function getLastName()
     {

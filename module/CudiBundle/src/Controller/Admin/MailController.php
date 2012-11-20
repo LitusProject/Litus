@@ -38,7 +38,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.mail');

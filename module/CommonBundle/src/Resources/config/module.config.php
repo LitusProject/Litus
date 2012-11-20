@@ -162,6 +162,20 @@ return array(
                     ),
                 ),
             ),
+            'admin_session' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/session/:action[/:id][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[a-z0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_session',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'index' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -171,7 +185,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'index',
-                        'action'     => 'index',
+                        'action'     => 'expire',
                     ),
                 ),
             ),
@@ -296,9 +310,6 @@ return array(
             'common_install' => 'CommonBundle\Controller\Admin\InstallController',
             'all_install'    => 'CommonBundle\Controller\Admin\AllInstallController',
 
-            'index'          => 'CommonBundle\Controller\IndexController',
-            'account'        => 'CommonBundle\Controller\AccountController',
-            'auth'           => 'CommonBundle\Controller\AuthController',
             'admin_academic' => 'CommonBundle\Controller\Admin\AcademicController',
             'admin_auth'     => 'CommonBundle\Controller\Admin\AuthController',
             'admin_config'   => 'CommonBundle\Controller\Admin\ConfigController',
@@ -307,6 +318,11 @@ return array(
             'admin_location' => 'CommonBundle\Controller\Admin\LocationController',
             'admin_person'   => 'CommonBundle\Controller\Admin\PersonController',
             'admin_role'     => 'CommonBundle\Controller\Admin\RoleController',
+            'admin_session'  => 'CommonBundle\Controller\Admin\SessionController',
+
+            'index'          => 'CommonBundle\Controller\IndexController',
+            'account'        => 'CommonBundle\Controller\AccountController',
+            'auth'           => 'CommonBundle\Controller\AuthController',
         ),
     ),
     'view_manager' => array(

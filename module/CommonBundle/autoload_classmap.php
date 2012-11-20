@@ -112,6 +112,7 @@ return array(
     'CommonBundle\Controller\Admin\LocationController'                                 => __DIR__ . '/src/Controller/Admin/LocationController.php',
     'CommonBundle\Controller\Admin\PersonController'                                   => __DIR__ . '/src/Controller/Admin/PersonController.php',
     'CommonBundle\Controller\Admin\RoleController'                                     => __DIR__ . '/src/Controller/Admin/RoleController.php',
+    'CommonBundle\Controller\Admin\SessionController'                                  => __DIR__ . '/src/Controller/Admin/SessionController.php',
     'CommonBundle\Controller\AuthController'                                           => __DIR__ . '/src/Controller/AuthController.php',
     'CommonBundle\Controller\IndexController'                                          => __DIR__ . '/src/Controller/IndexController.php',
     'CommonBundle\Entity\Acl\Action'                                                   => __DIR__ . '/src/Entity/Acl/Action.php',

@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Document\Generator;
+namespace CudiBundle\Component\Document\Generator\Order;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
@@ -26,7 +26,7 @@ use CommonBundle\Component\Util\File\TmpFile,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
+class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
      * @var \CudiBundle\Entity\Stock\Order
