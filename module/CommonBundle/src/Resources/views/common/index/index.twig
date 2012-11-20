@@ -15,6 +15,10 @@
 
     {% if bookings is not null %}
         <div class="alert alert-success">
+            <p class="pull-right">
+                <a href="{{ url('booking') }}" style="color:inherit">{{ translate('View Bookings') }}</a>
+            </p>
+
             <p>
                 <b>{{ translate('New bookings have been assigned to you, and you can go and collect them.') }}</b>
             </p>
