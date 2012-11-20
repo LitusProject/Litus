@@ -171,61 +171,65 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('calendar.icalendar_uid_suffix');
 
-        echo 'BEGIN:VCALENDAR' . PHP_EOL;
-        echo 'VERSION:2.0' . PHP_EOL;
-        echo 'X-WR-CALNAME:' . $this->getEntityManager()
+        $result = 'BEGIN:VCALENDAR' . PHP_EOL;
+        $result .= 'VERSION:2.0' . PHP_EOL;
+        $result .= 'X-WR-CALNAME:' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_short_name') . ' Calendar' . PHP_EOL;
-        echo 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
-        echo 'CALSCALE:GREGORIAN' . PHP_EOL;
-        echo 'METHOD:PUBLISH' . PHP_EOL;
-        echo 'X-WR-TIMEZONE:Europe/Brussels' . PHP_EOL;
-        echo 'BEGIN:VTIMEZONE' . PHP_EOL;
-        echo 'TZID:Europe/Brussels' . PHP_EOL;
-        echo 'X-LIC-LOCATION:Europe/Brussels' . PHP_EOL;
-        echo 'BEGIN:DAYLIGHT' . PHP_EOL;
-        echo 'TZOFFSETFROM:+0100' . PHP_EOL;
-        echo 'TZOFFSETTO:+0200' . PHP_EOL;
-        echo 'TZNAME:CEST' . PHP_EOL;
-        echo 'DTSTART:19700329T020000' . PHP_EOL;
-        echo 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU' . PHP_EOL;
-        echo 'END:DAYLIGHT' . PHP_EOL;
-        echo 'BEGIN:STANDARD' . PHP_EOL;
-        echo 'TZOFFSETFROM:+0200' . PHP_EOL;
-        echo 'TZOFFSETTO:+0100' . PHP_EOL;
-        echo 'TZNAME:CET' . PHP_EOL;
-        echo 'DTSTART:19701025T030000' . PHP_EOL;
-        echo 'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU' . PHP_EOL;
-        echo 'END:STANDARD' . PHP_EOL;
-        echo 'END:VTIMEZONE' . PHP_EOL;
+        $result .= 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
+        $result .= 'CALSCALE:GREGORIAN' . PHP_EOL;
+        $result .= 'METHOD:PUBLISH' . PHP_EOL;
+        $result .= 'X-WR-TIMEZONE:Europe/Brussels' . PHP_EOL;
+        $result .= 'BEGIN:VTIMEZONE' . PHP_EOL;
+        $result .= 'TZID:Europe/Brussels' . PHP_EOL;
+        $result .= 'X-LIC-LOCATION:Europe/Brussels' . PHP_EOL;
+        $result .= 'BEGIN:DAYLIGHT' . PHP_EOL;
+        $result .= 'TZOFFSETFROM:+0100' . PHP_EOL;
+        $result .= 'TZOFFSETTO:+0200' . PHP_EOL;
+        $result .= 'TZNAME:CEST' . PHP_EOL;
+        $result .= 'DTSTART:19700329T020000' . PHP_EOL;
+        $result .= 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU' . PHP_EOL;
+        $result .= 'END:DAYLIGHT' . PHP_EOL;
+        $result .= 'BEGIN:STANDARD' . PHP_EOL;
+        $result .= 'TZOFFSETFROM:+0200' . PHP_EOL;
+        $result .= 'TZOFFSETTO:+0100' . PHP_EOL;
+        $result .= 'TZNAME:CET' . PHP_EOL;
+        $result .= 'DTSTART:19701025T030000' . PHP_EOL;
+        $result .= 'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU' . PHP_EOL;
+        $result .= 'END:STANDARD' . PHP_EOL;
+        $result .= 'END:VTIMEZONE' . PHP_EOL;
 
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findAllActive(0);
 
         foreach($events as $event) {
-            echo 'BEGIN:VEVENT' . PHP_EOL;
-            echo 'SUMMARY:' . $event->getTitle($this->getLanguage()) . PHP_EOL;
-            echo 'DTSTART:' . $event->getStartDate()->format('Ymd\THis') . PHP_EOL;
+            $result .= 'BEGIN:VEVENT' . PHP_EOL;
+            $result .= 'SUMMARY:' . $event->getTitle($this->getLanguage()) . PHP_EOL;
+            $result .= 'DTSTART:' . $event->getStartDate()->format('Ymd\THis') . PHP_EOL;
             if (null !== $event->getEndDate())
-                echo 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
-            echo 'TRANSP:OPAQUE' . PHP_EOL;
-            echo 'LOCATION:' . $event->getLocation($this->getLanguage()) . PHP_EOL;
-            echo 'URL:' . $this->url()->fromRoute(
+                $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
+            $result .= 'TRANSP:OPAQUE' . PHP_EOL;
+            $result .= 'LOCATION:' . $event->getLocation($this->getLanguage()) . PHP_EOL;
+            $result .= 'URL:' . $this->url()->fromRoute(
                     'calendar',
                     array(
                         'action' => 'view',
                         'name' => $event->getName(),
                     )
                 ) . PHP_EOL;
-            echo 'CLASS:PUBLIC' . PHP_EOL;
-            echo 'UID:' . $event->getId() . '@' . $suffix . PHP_EOL;
-            echo 'END:VEVENT' . PHP_EOL;
+            $result .= 'CLASS:PUBLIC' . PHP_EOL;
+            $result .= 'UID:' . $event->getId() . '@' . $suffix . PHP_EOL;
+            $result .= 'END:VEVENT' . PHP_EOL;
         }
 
-        echo 'END:VCALENDAR';
+        $result .= 'END:VCALENDAR';
 
-        return new ViewModel();
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
     }
 
     public function _getEvent()
