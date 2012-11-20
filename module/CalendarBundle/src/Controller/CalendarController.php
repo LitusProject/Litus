@@ -162,7 +162,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="vtk.ics"',
+            'Content-Disposition' => 'inline; filename="icalendar.ics"',
             'Content-type' => 'text/calendar',
         ));
         $this->getResponse()->setHeaders($headers);
