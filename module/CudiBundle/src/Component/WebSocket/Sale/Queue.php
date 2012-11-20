@@ -89,7 +89,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->sendQueueToAll();
         } elseif (strpos($data, 'initialize: ') === 0) {
             $data = json_decode(substr($data, strlen('initialize: ')));
-            if (!isset($data->key) || $data->key != $key . ' d') {
+            if (!isset($data->key) || $data->key != $key) {
                 $this->removeUser($user);
                 $now = new DateTime();
                 echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
