@@ -229,6 +229,42 @@ class Shift extends EntityRepository
             ->getResult();
     }
 
+    public function findOneByVolunteer($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
+            ->where(
+                $query->expr()->eq('v.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        return null;
+    }
+
+    public function findOneByResponsible($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.responsibles', 'r')
+            ->where(
+                $query->expr()->eq('r.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        return null;
+    }
+
     public function findOneActiveByVolunteer($id)
     {
         $query = $this->_em->createQueryBuilder();

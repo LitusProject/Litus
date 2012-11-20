@@ -192,12 +192,13 @@ return array(
             'account' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/account[/:action[/code/:code]][/]',
+                    'route' => '[/:language]/account[/:action[/code/:code][/image/:image]][/]',
                     'constraints' => array(
                         'language' => '[a-z]{2}',
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[a-zA-Z0-9_-]*',
                         'code'     => '[a-zA-Z0-9_-]*',
+                        'image'    => '[a-zA-Z0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'account',

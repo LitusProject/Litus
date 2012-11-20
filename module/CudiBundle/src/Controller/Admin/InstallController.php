@@ -49,6 +49,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The path to the PDF generator files',
                 ),
                 array(
+                    'key'         => 'cudi.front_page_cache_dir',
+                    'value'       => 'data/cache/article',
+                    'description' => 'The path to the article front page cache files',
+                ),
+                array(
                     'key'         => 'fop_command',
                     'value'       => '/usr/local/bin/fop',
                     'description' => 'The command to call Apache FOP',
@@ -173,6 +178,11 @@ VTK Cudi
                     'key'         => 'cudi.queue_socket_host',
                     'value'       => '127.0.0.1',
                     'description' => 'The host used for the websocket of the queue',
+                ),
+                array(
+                    'key'         => 'cudi.queue_socket_key',
+                    'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
+                    'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
                     'key'         => 'cudi.prof_start_academic_year',
@@ -344,7 +354,7 @@ VTK Cudi
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
                     ),
                     'admin_stock' => array(
-                        'delta', 'edit', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
+                        'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
                     ),
                     'admin_stock_delivery' => array(
                         'add', 'delete', 'manage', 'supplier', 'typeahead'

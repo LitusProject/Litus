@@ -43,6 +43,7 @@ return array(
     'CommonBundle\Component\Form\Admin\Element\File'                                   => __DIR__ . '/src/Component/Form/Admin/Element/File.php',
     'CommonBundle\Component\Form\Admin\Element\Hidden'                                 => __DIR__ . '/src/Component/Form/Admin/Element/Hidden.php',
     'CommonBundle\Component\Form\Admin\Element\Password'                               => __DIR__ . '/src/Component/Form/Admin/Element/Password.php',
+    'CommonBundle\Component\Form\Admin\Element\Radio'                                  => __DIR__ . '/src/Component/Form/Admin/Element/Radio.php',
     'CommonBundle\Component\Form\Admin\Element\Select'                                 => __DIR__ . '/src/Component/Form/Admin/Element/Select.php',
     'CommonBundle\Component\Form\Admin\Element\Tabs'                                   => __DIR__ . '/src/Component/Form/Admin/Element/Tabs.php',
     'CommonBundle\Component\Form\Admin\Element\Text'                                   => __DIR__ . '/src/Component/Form/Admin/Element/Text.php',

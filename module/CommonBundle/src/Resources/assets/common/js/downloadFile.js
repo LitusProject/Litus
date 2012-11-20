@@ -1,5 +1,5 @@
 (function ($) {
-    $.fn.downloadFile = function (file, completed) {
+    $.fn.downloadFile = function (file) {
         $(this).click(function (e) {
             e.preventDefault();
 
@@ -8,4 +8,10 @@
         });
         return this;
     }
+
+    $(document).ready(function () {
+        $('[data-provide="downloadFile"]').each(function () {console.log($(this).data('url'));
+            $(this).downloadFile($(this).data('url'));
+        });
+    });
 })(jQuery);

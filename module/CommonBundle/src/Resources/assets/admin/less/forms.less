@@ -26,6 +26,11 @@ input, select {
     color: @cText;
 }
 
+input[type=radio] {
+    height: auto;
+    margin-right: 5px;
+}
+
 input {
     padding-left: @inputIndent;
 }
@@ -65,6 +70,13 @@ textarea {
     background: @cWhite url(@iFormsBackground) repeat-x;
     border: 1px solid @cBorder;
     color: @cText;
+}
+
+label {
+    &.radio {
+        display: block;
+        margin-bottom: 4px;
+    }
 }
 
 .gollum-editor {
