@@ -39,6 +39,28 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllByAcademicYearSortBarcode(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.academicYear', ':academicYear'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
+                )
+            )
+            ->setParameter('academicYear', $academicYear->getId())
+            ->orderBy('a.barcode', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findOneByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();

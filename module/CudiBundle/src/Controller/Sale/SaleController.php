@@ -43,6 +43,9 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         return new ViewModel(
             array(
                 'socketUrl' => $this->getSocketUrl(),
+                'key' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.queue_socket_key'),
                 'barcodePrefix' => $barcodePrefix,
                 'payDesks' => $payDesks,
                 'enableCollectScanning' => $enableCollectScanning,

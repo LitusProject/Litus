@@ -4,6 +4,7 @@
         session: 0,
         errorDialog: null,
         barcodePrefix: 0,
+        authKey: '',
         statusTranslate: function () {},
         openSale: function () {},
         closeSale: function () {},
@@ -128,7 +129,7 @@
         		url: options.url,
         		open: function (e) {
         			options.errorDialog.removeClass('in');
-					$.webSocket('send', {name: 'showQueue', text: 'initialize: {"queueType": "shortQueue", "session": "' + options.session + '" }'});
+					$.webSocket('send', {name: 'showQueue', text: 'initialize: {"queueType": "shortQueue", "session": "' + options.session + '", "key": "' + options.authKey + '" }'});
 					if ($this.data('payDesk'))
 					    _setPayDesk($this, $this.data('payDesk'));
                 },

@@ -172,7 +172,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $mapping->setPrintable($formData['printable'])
                     ->getFile()->setDescription($formData['description']);
 

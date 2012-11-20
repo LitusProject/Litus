@@ -79,12 +79,22 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         $this->_entityManager->clear();
 
+        $key = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_socket_key');
+
         if (strpos($data, 'action: ') === 0) {
             $this->_gotAction($user, $data);
         } elseif ($data == 'queueUpdated') {
             $this->sendQueueToAll();
         } elseif (strpos($data, 'initialize: ') === 0) {
             $data = json_decode(substr($data, strlen('initialize: ')));
+            if (!isset($data->key) || $data->key != $key . ' d') {
+                $this->removeUser($user);
+                $now = new DateTime();
+                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
+                return;
+            }
             if (isset($data->session) && is_numeric($data->session))
                 $user->setExtraData('session', $data->session);
             if (isset($data->queueType))
@@ -153,8 +163,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $this->_updateItemStatus($params, 'signed_in');
                 break;
             case 'stopCollecting':
-                if (isset($this->_lockedItems[$params]))
-                    unset($this->_lockedItems[$params]);
+                if (isset($this->_lockedItems[$params])) {echo 'unlock';
+                    unset($this->_lockedItems[$params]);}
                 $this->_updateItemStatus($params, 'collected');
                 break;
             case 'setHold':
@@ -530,8 +540,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->status = $item->getStatus();
             $result->locked = isset($this->_lockedItems[$item->getId()]);
 
-            if ($item->getPayDesk())
+            if ($item->getPayDesk()) {
                 $result->payDesk = $item->getPayDesk()->getName();
+                $result->payDeskId = $item->getPayDesk()->getId();
+            }
             $results[] = $result;
         }
         return $results;
@@ -609,12 +621,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $registration->setPayed();
             $this->_entityManager->flush();
 
-            $price =$this->_entityManager
+            $price = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_price');
-            $articles[] = 'Membership';
-            $prices[] = (string) number_format($price / 100, 2);
-            $barcodes[] = '';
+            $articles[] = array(
+                'title' => 'Membership',
+                'price' => (string) number_format($price / 100, 2),
+                'barcode' => '',
+                'number' => 1,
+            );
             $totalPrice += $price;
         }
 
@@ -658,9 +673,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
                 $booking->getArticle()->setStockValue($booking->getArticle()->getStockValue() - $currentNumber);
 
-                $articles[] = ($currentNumber > 1 ?' (' . $currentNumber . 'x)' : '') . $booking->getArticle()->getMainArticle()->getTitle();
-                $prices[] = (string) number_format($price * $currentNumber / 100, 2);
-                $barcodes[] = substr($booking->getArticle()->getBarcode(), 7);
+                $articles[] = array(
+                    'title' => $booking->getArticle()->getMainArticle()->getTitle(),
+                    'price' => (string) number_format($price / 100, 2),
+                    'barcode' => substr($booking->getArticle()->getBarcode(), 7),
+                    'number' => $currentNumber,
+                );
                 $totalPrice += $price * $currentNumber;
             }
         }
@@ -675,9 +693,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
             $queueItem->getQueueNumber(),
             (string) number_format($totalPrice / 100, 2),
-            $articles,
-            $prices,
-            $barcodes
+            $articles
         );
 
         $this->_entityManager->flush();
@@ -749,8 +765,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findAllOpenByPerson($item->getPerson());
 
         $articles = array();
-        $prices = array();
-        $barcodes = array();
         $totalPrice = 0;
 
         $registration = $this->_entityManager
@@ -765,9 +779,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $price =$this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_price');
-            $articles[] = 'Membership';
-            $prices[] = (string) number_format($price / 100, 2);
-            $barcodes[] = '';
+            $articles[] = array(
+                'title' => 'Membership',
+                'price' => (string) number_format($price / 100, 2),
+                'barcode' => '',
+                'number' => 1,
+            );
             $totalPrice += $price;
         }
 
@@ -775,19 +792,23 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             foreach($bookings as $booking) {
                 if ($booking->getStatus() != 'assigned')
                     continue;
-                $articles[] = ($booking->getNumber() > 1 ?' (' . $booking->getNumber() . 'x)' : '') . $booking->getArticle()->getMainArticle()->getTitle();
-                $prices[] = (string) number_format($booking->getArticle()->getSellPrice() * $booking->getNumber() / 100, 2);
-                $barcodes[] = substr($booking->getArticle()->getBarcode(), 7);
+
+                $articles[] = array(
+                    'title' => $booking->getArticle()->getMainArticle()->getTitle(),
+                    'price' => (string) number_format($booking->getArticle()->getSellPrice() / 100, 2),
+                    'barcode' => substr($booking->getArticle()->getBarcode(), 7),
+                    'number' => $booking->getNumber(),
+                );
                 $totalPrice += $booking->getArticle()->getSellPrice() * $booking->getNumber();
             }
         }
 
-        return array($totalPrice, $articles, $prices, $barcodes);
+        return array($totalPrice, $articles);
     }
 
     private function _printQueueTicket(QueueItem $item, $printer)
     {
-        list($totalPrice, $articles, $prices, $barcodes) = $this->_getPrintInfo($item);
+        list($totalPrice, $articles) = $this->_getPrintInfo($item);
 
         Printer::queuePrint(
             $this->_entityManager,
@@ -799,15 +820,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $item->getId(),
             $item->getQueueNumber(),
             (string) number_format($totalPrice / 100, 2),
-            $articles,
-            $prices,
-            $barcodes
+            $articles
         );
     }
 
     private function _printCollectTicket(QueueItem $item, $printer)
     {
-        list($totalPrice, $articles, $prices, $barcodes) = $this->_getPrintInfo($item);
+        list($totalPrice, $articles) = $this->_getPrintInfo($item);
 
         Printer::collectPrint(
             $this->_entityManager,
@@ -819,9 +838,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $item->getId(),
             $item->getQueueNumber(),
             (string) number_format($totalPrice / 100, 2),
-            $articles,
-            $prices,
-            $barcodes
+            $articles
         );
     }
 }

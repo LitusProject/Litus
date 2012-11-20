@@ -61,17 +61,19 @@ if (isset($opts->p) && isset($opts->t)) {
         'queuenumber' => '3',
         'totalAmount' => '63,00',
         'items' => array(
-            'Fundamentals of Computer Graphics',
-            'De Bijbel',
-        ),
-        'prices' => array(
-            '45,00',
-            '8,00',
-        ),
-        'itemBarcodes' => array(
-            '12345',
-            '54321',
-        ),
+            array(
+                'title' => 'Fundamentals of Computer Graphics',
+                'price' => '45,00',
+                'barcode' => '12345',
+                'number' => '1',
+            ),
+            array(
+                'title' => 'De Bijbel',
+                'price' => '8,00',
+                'barcode' => '54321',
+                'number' => '2',
+            ),
+        )
     );
     switch($opts->t) {
         case 'signin':
@@ -96,7 +98,9 @@ if (isset($opts->p) && isset($opts->t)) {
         (object) array(
             'command' => 'PRINT',
             'id' => $printers[$opts->p],
-            'ticket' => $data
+            'ticket' => $data,
+            'key' => $em->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_socket_key'),
         )
     );
 

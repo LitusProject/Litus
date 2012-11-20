@@ -194,21 +194,26 @@
                 }
             );
 
+        if (options.allowCensor) {
+            controls.append(
+                censorControl = $('<div>', {
+                            'class': 'button-iG censorControl-iG'
+                        }
+                    ).html(options.censorText)
+                    .hide()
+                    .unbind('click.iG')
+                    .bind('click.iG', _censorImage),
+                uncensorControl = $('<div>', {
+                            'class': 'button-iG uncensorControl-iG'
+                        }
+                    ).html(options.uncensorText)
+                    .hide()
+                    .unbind('click.iG')
+                    .bind('click.iG', _uncensorImage)
+            );
+        }
+
         controls.append(
-            censorControl = $('<div>', {
-                        'class': 'button-iG censorControl-iG'
-                    }
-                ).html(options.censorText)
-                .hide()
-                .unbind('click.iG')
-                .bind('click.iG', _censorImage),
-            uncensorControl = $('<div>', {
-                        'class': 'button-iG uncensorControl-iG'
-                    }
-                ).html(options.uncensorText)
-                .hide()
-                .unbind('click.iG')
-                .bind('click.iG', _uncensorImage),
             viewControls = $('<div>', {
                         'class': 'viewControls-iG'
                     }
@@ -221,6 +226,7 @@
                 .unbind('click.iG')
                 .bind('click.iG', _close)
         );
+
 
         viewControls.append(
             previousControl = $('<div>', {
@@ -804,24 +810,28 @@
         var imageGallery = $('#container-iG');
         var options = imageGallery.data('iG').options;
 
-        $.get(options.censorUrl + imageGallery.data('iG').current.data('id'), function (data) {
-            if (data && 'success' == data.status) {
-                imageGallery.find('.censorControl-iG').hide();
-                imageGallery.find('.uncensorControl-iG').show();
-            }
-        }, 'json');
+        if (options.allowCensor) {
+            $.get(options.censorUrl + imageGallery.data('iG').current.data('id'), function (data) {
+                if (data && 'success' == data.status) {
+                    imageGallery.find('.censorControl-iG').hide();
+                    imageGallery.find('.uncensorControl-iG').show();
+                }
+            }, 'json');
+        }
     };
 
     _uncensorImage = function () {
         var imageGallery = $('#container-iG');
         var options = imageGallery.data('iG').options;
 
-        $.get(options.uncensorUrl + imageGallery.data('iG').current.data('id'), function (data) {
-            if (data && 'success' == data.status) {
-                imageGallery.find('.censorControl-iG').show();
-                imageGallery.find('.uncensorControl-iG').hide();
-            }
-        }, 'json');
+        if (options.allowCensor) {
+            $.get(options.uncensorUrl + imageGallery.data('iG').current.data('id'), function (data) {
+                if (data && 'success' == data.status) {
+                    imageGallery.find('.censorControl-iG').show();
+                    imageGallery.find('.uncensorControl-iG').hide();
+                }
+            }, 'json');
+        }
     };
 
     _close = function () {

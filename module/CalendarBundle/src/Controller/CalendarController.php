@@ -158,6 +158,80 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    public function exportAction()
+    {
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="icalendar.ics"',
+            'Content-type' => 'text/calendar',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $suffix = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('calendar.icalendar_uid_suffix');
+
+        $result = 'BEGIN:VCALENDAR' . PHP_EOL;
+        $result .= 'VERSION:2.0' . PHP_EOL;
+        $result .= 'X-WR-CALNAME:' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('union_short_name') . ' Calendar' . PHP_EOL;
+        $result .= 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
+        $result .= 'CALSCALE:GREGORIAN' . PHP_EOL;
+        $result .= 'METHOD:PUBLISH' . PHP_EOL;
+        $result .= 'X-WR-TIMEZONE:Europe/Brussels' . PHP_EOL;
+        $result .= 'BEGIN:VTIMEZONE' . PHP_EOL;
+        $result .= 'TZID:Europe/Brussels' . PHP_EOL;
+        $result .= 'X-LIC-LOCATION:Europe/Brussels' . PHP_EOL;
+        $result .= 'BEGIN:DAYLIGHT' . PHP_EOL;
+        $result .= 'TZOFFSETFROM:+0100' . PHP_EOL;
+        $result .= 'TZOFFSETTO:+0200' . PHP_EOL;
+        $result .= 'TZNAME:CEST' . PHP_EOL;
+        $result .= 'DTSTART:19700329T020000' . PHP_EOL;
+        $result .= 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU' . PHP_EOL;
+        $result .= 'END:DAYLIGHT' . PHP_EOL;
+        $result .= 'BEGIN:STANDARD' . PHP_EOL;
+        $result .= 'TZOFFSETFROM:+0200' . PHP_EOL;
+        $result .= 'TZOFFSETTO:+0100' . PHP_EOL;
+        $result .= 'TZNAME:CET' . PHP_EOL;
+        $result .= 'DTSTART:19701025T030000' . PHP_EOL;
+        $result .= 'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU' . PHP_EOL;
+        $result .= 'END:STANDARD' . PHP_EOL;
+        $result .= 'END:VTIMEZONE' . PHP_EOL;
+
+        $events = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->findAllActive(0);
+
+        foreach($events as $event) {
+            $result .= 'BEGIN:VEVENT' . PHP_EOL;
+            $result .= 'SUMMARY:' . $event->getTitle($this->getLanguage()) . PHP_EOL;
+            $result .= 'DTSTART:' . $event->getStartDate()->format('Ymd\THis') . PHP_EOL;
+            if (null !== $event->getEndDate())
+                $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
+            $result .= 'TRANSP:OPAQUE' . PHP_EOL;
+            $result .= 'LOCATION:' . $event->getLocation($this->getLanguage()) . PHP_EOL;
+            $result .= 'URL:' . $this->url()->fromRoute(
+                    'calendar',
+                    array(
+                        'action' => 'view',
+                        'name' => $event->getName(),
+                    )
+                ) . PHP_EOL;
+            $result .= 'CLASS:PUBLIC' . PHP_EOL;
+            $result .= 'UID:' . $event->getId() . '@' . $suffix . PHP_EOL;
+            $result .= 'END:VEVENT' . PHP_EOL;
+        }
+
+        $result .= 'END:VCALENDAR';
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     public function _getEvent()
     {
         if (null === $this->getParam('name'))
