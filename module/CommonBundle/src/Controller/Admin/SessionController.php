@@ -27,57 +27,25 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        return new ViewModel(
-            array(
-                'bundles' => $bundles,
-            )
-        );
-    }
-
-    private function _getSession()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the session!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'admin_session',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
-            return;
-        }
-
-        $academic = $this->getEntityManager()
+        $session = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Session')
             ->findOneById($this->getParam('id'));
 
-        if (null === $academic) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No session with the given ID was found!'
-                )
-            );
+        $status = 'error';
 
-            $this->redirect()->toRoute(
-                'admin_session',
-                array(
-                    'action' => 'manage'
-                )
-            );
+        if (null !== $session && $session !== $this->getAuthentication()->getSessionObject()) {
+            $session->deactivate();
+            $this->getEntityManager()->flush();
 
-            return;
+            $status = 'success';
         }
 
-        return $academic;
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => $status
+                )
+            )
+        );
     }
 }

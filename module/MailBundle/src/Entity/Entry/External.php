@@ -11,6 +11,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace MailBundle\Entity\Entry;
 
 use Doctrine\ORM\Mapping as ORM,
@@ -18,30 +19,29 @@ use Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList;
 
 /**
- * This is the entity for a driver.
+ * This is the entity for a list entry.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry\External")
- * @ORM\Table(name="mail.entry_external")
+ * @ORM\Table(name="mail.list_entries_external")
  */
 class External extends \MailBundle\Entity\Entry
 {
-
     /**
-     * @var string The first name of this entry.
+     * @var string The first name of this entry
      *
      * @ORM\Column(type="string")
      */
     private $firstName;
 
     /**
-     * @var string The last name of this entry.
+     * @var string The last name of this entry
      *
      * @ORM\Column(type="string")
      */
     private $lastName;
 
     /**
-     * @var string The email address of this entry.
+     * @var string The email address of this entry
      *
      * @ORM\Column(type="string")
      */
@@ -50,21 +50,22 @@ class External extends \MailBundle\Entity\Entry
     /**
      * Creates a new list entry for the given list with the given mail address.
      *
-     * @param MailBundle\Entity\MailingList $list The list for this entry.
-     * @param string $firstName The first name to add.
-     * @param string $lastName The last name to add.
-     * @param string $mail The email address to add.
+     * @param MailBundle\Entity\MailingList $list The list for this entry
+     * @param string $firstName The first name to add
+     * @param string $lastName The last name to add
+     * @param string $mail The email address to add
      */
     public function __construct(MailingList $list, $firstName, $lastName, $mail)
     {
         parent::__construct($list);
+
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->mail = $mail;
     }
 
     /**
-     * @return The first name of this entry.
+     * @return string
      */
     public function getFirstName()
     {
@@ -72,7 +73,7 @@ class External extends \MailBundle\Entity\Entry
     }
 
     /**
-     * @return The last name of this entry.
+     * @return string
      */
     public function getLastName()
     {
@@ -80,7 +81,7 @@ class External extends \MailBundle\Entity\Entry
     }
 
     /**
-     * @return The mail address of this entry.
+     * @return string
      */
     public function getMailAddress()
     {

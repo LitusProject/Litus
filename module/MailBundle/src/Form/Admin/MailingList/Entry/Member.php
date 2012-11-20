@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     Zend\Form\Element\Submit;
 
 /**
- * The form used to add a new Driver
+ * The form used to add a new mailing list entry
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */

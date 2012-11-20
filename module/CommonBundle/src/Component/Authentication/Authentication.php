@@ -108,7 +108,7 @@ class Authentication
     }
 
     /**
-     * Return the Doctrine person object.
+     * Return the person object.
      *
      * @return mixed
      */
@@ -120,5 +120,20 @@ class Authentication
             return null;
 
         return $this->_result->getPersonObject();
+    }
+
+    /**
+     * Return the session object.
+     *
+     * @return mixed
+     */
+    public function getSessionObject()
+    {
+        $this->authenticate();
+
+        if (!isset($this->_result))
+            return null;
+
+        return $this->_result->getSessionObject();
     }
 }

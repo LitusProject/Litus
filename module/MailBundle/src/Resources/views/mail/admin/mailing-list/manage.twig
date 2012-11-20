@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'mail/admin/list/partials/navigation.twig' %}
+    {% include 'mail/admin/mailing-list/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -34,7 +34,7 @@
                         <td>{{ list.getName() }}</td>
                         <td class="actions">
                             {% if hasAccess('admin_mail_list', 'entries') %}
-                                <a href="{{ url('admin_mail_list', {"action": "entries", "id": list.getId()}) }}" class="edit">Edit</a>
+                                <a href="{{ url('admin_mail_list', {"action": "entries", "id": list.getId()}) }}" class="mail_list_entry">Entries</a>
                             {% endif %}
                             {% if hasAccess('admin_mail_list', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ list.getId() }}" data-name="{{ list.getName() }}">Delete</a>

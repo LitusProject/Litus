@@ -115,6 +115,8 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 );
                 $this->_entityManager->persist($newSession);
 
+                $adapterResult->setSessionObject($newSession);
+
                 $this->getStorage()->write($newSession->getId());
                 if ($rememberMe) {
                     $this->_setCookie($newSession->getId(), time() + $this->_expire);
@@ -158,7 +160,8 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     array(
                          'Authentication successful'
                     ),
-                    $session->getPerson()
+                    $session->getPerson(),
+                    $session
                 );
             } else {
                 $this->clearIdentity();
