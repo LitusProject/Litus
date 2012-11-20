@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="page-header">
+        {% if hasAccess('calendar', 'export') %}
+            <div class="pull-right" style="line-height: 50px">
+                <a href="{{ url('calendar', {'action': 'export'}) }}" class="btn"><span class="icon-calendar"></span> {{ translate('Download') }}</a>
+            </div>
+        {% endif %}
         <h1>{{ translate('Calendar') }}</h1>
     </div>
 

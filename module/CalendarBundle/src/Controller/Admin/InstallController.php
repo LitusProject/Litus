@@ -18,6 +18,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => 'data/calendar/posters',
                     'description' => 'The path to the calendar poster files',
                 ),
+                array(
+                    'key'         => 'calendar.icalendar_uid_suffix',
+                    'value'       => 'activity.vtk.be',
+                    'description' => 'The suffix of an icalendar event uid',
+                ),
             )
         );
     }
@@ -31,7 +36,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'editPoster', 'manage', 'old', 'pdf', 'poster'
                     ),
                     'calendar' => array(
-                        'month', 'overview', 'poster', 'view'
+                        'export', 'month', 'overview', 'poster', 'view'
                     ),
                 )
             )

@@ -4,4 +4,5 @@ return array(
     'No events were created yet.' => 'No events were created yet.',
     'Previous' => 'Previous',
     'Next' => 'Next',
+    'Download' => 'Download',
 );
