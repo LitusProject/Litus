@@ -16,8 +16,8 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
-    CudiBundle\Component\Document\Generator\OrderPdf as OrderPdfGenerator,
-    CudiBundle\Component\Document\Generator\OrderXml as OrderXmlGenerator,
+    CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
+    CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
     CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;

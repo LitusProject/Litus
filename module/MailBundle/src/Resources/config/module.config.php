@@ -137,7 +137,7 @@ return array(
             'admin_mail_prof'   => 'MailBundle\Controller\Admin\ProfController',
             'admin_mail_study'  => 'MailBundle\Controller\Admin\StudyController',
             'admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
-            'admin_mail_list'   => 'MailBundle\Controller\Admin\ListController',
+            'admin_mail_list'   => 'MailBundle\Controller\Admin\MailingListController',
         ),
     ),
 );

@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Form\Admin\MailingList\Entry\Member as MemberForm,
     Zend\View\Model\ViewModel;
 
-class ListController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class MailingListController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {

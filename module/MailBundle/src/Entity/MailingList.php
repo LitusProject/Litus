@@ -11,22 +11,22 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace MailBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * This is the entity for a driver.
+ * This is the entity for a list.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList")
- * @ORM\Table(name="mail.list")
+ * @ORM\Table(name="mail.lists")
  */
 class MailingList
 {
-
     /**
-     * @var The list's unique identifier
+     * @var int The list's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -35,7 +35,7 @@ class MailingList
     private $id;
 
     /**
-     * @var string The name of this list.
+     * @var string The name of this list
      *
      * @ORM\Column(type="string")
      */
@@ -44,22 +44,22 @@ class MailingList
     /**
      * Creates a new list with the given name
      *
-     * @param $name The name for this list.
+     * @param $name The name for this list
      */
     public function __construct($name)
     {
-        $this->name = $name;
+        $this->setName($name);
     }
 
     /**
-     * @return The id of this list.
+     * @return int
      */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * @return The name of this list.
+     * @return string
      */
     public function getName()
     {
@@ -67,13 +67,11 @@ class MailingList
     }
 
     /**
-     * Sets the name of this list.
-     *
-     * @param $name The name.
-     * @return This list.
+     * @param string $name The name
+     * @return \MailBundle\Entity\MailingList
      */
     public function setName($name) {
-        $this->name = name;
+        $this->name = strtolower($name);
         return $this;
     }
 }

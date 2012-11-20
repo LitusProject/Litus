@@ -34,21 +34,41 @@
 	    {% endif %}
 
         <h1>Active Sessions</h1>
+
+        <div class="flashmessage success_message session_expire_success hide">
+            <div class="title">Success</div>
+            <div class="content">
+                <p>The session was successfully expired!</p>
+            </div>
+        </div>
+        <div class="flashmessage error_message session_expire_error hide">
+            <div class="title">Error</div>
+            <div class="content">
+                <p>An error occurred while trying to expire the session.</p>
+            </div>
+        </div>
+
         <table>
             <tr>
                 <th>IP</th>
                 <th width="150px">Start Time</th>
                 <th width="150px">Expiration Time</th>
                 <th width="90px">Shibboleth</th>
+                <th width="70px">Action</th>
             </tr>
 
             {% for session in activeSessions %}
-                <tr class="item">
-                    <td>{{ session.getIp() }}</td>
-                    <td>{{ dateLocalized(session.getStartTime(), 'd/M/y HH:mm') }}</td>
-                    <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
-                    <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
-                </tr>
+                    <tr class="item item-{{ session.getId() }}">
+                        <td>{{ session.getIp() }}</td>
+                        <td>{{ dateLocalized(session.getStartTime(), 'd/M/y HH:mm') }}</td>
+                        <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
+                        <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
+                        <td class="actions">
+                            {% if hasAccess('admin_session', 'expire') and session.getId() != currentSession.getId() %}
+                                <a href="#" class="delete" data-id="{{ session.getId() }}">Expire</a></li>
+                            {% endif %}
+                        </td>
+                    </tr>
             {% endfor %}
         </table>
 	</div>
@@ -72,4 +92,36 @@
 	        </div>
 	    </div>
 	</aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(expireSession);
+        });
+
+        function expireSession(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var id = $this.data('id');
+            $.get('{{ url('admin_session', {"action": "expire"})}}' + id, function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.session_expire_success').removeClass('hide');
+                    $('.item-' + id).remove();
+                } else {
+                    errorExpire();
+                }
+
+                setTimeout(function() {
+                    $('.flashmessage').addClass('hide');
+                }, 2000);
+            }, 'json').error(errorExpire);
+        }
+
+        function errorExpire() {
+            $('.flashmessage').addClass('hide');
+            $('.session_expire_error').removeClass('hide');
+        }
+    </script>
 {% endblock %}

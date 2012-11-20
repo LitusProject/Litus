@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'mail/admin/list/partials/navigation.twig' %}
+    {% include 'mail/admin/mailing-list/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -22,9 +22,12 @@
         <h1>List</h1>
         <p>Name: <b>{{ list.getName() }}</b></p>
 
+        <h1>Entries</h1>
+
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(memberForm) }}
         {{ forms.renderForm(externalForm) }}
+
         <br style="clear:both">
 
         <table class="full_width" style="margin-top: 5px;">
