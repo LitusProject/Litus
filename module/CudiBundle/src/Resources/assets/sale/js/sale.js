@@ -133,7 +133,7 @@
 
     function _gotBarcode ($this, value) {
         var found = false;
-        $this.find('.articles tr').each(function () {
+        $this.find('.articles tr:not(.inactive)').each(function () {
             for (var i = 0 ; i < $(this).data('info').barcodes.length ; i++) {
                 if ($(this).data('info').barcodes[i] == value && $(this).data('info').currentNumber < $(this).data('info').number) {
                     found = true;

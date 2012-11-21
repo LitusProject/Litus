@@ -296,17 +296,17 @@
         $this.find('tr:not(.addToQueue)').each(function () {
             if ($(this).data('info').university_identification.indexOf(value) == 0) {
                 if (hideHold && $(this).data('info').status == 'hold') {
-                    $(this).hide();
+                    $(this).hide().addClass('hiddenRow');
                     isHold = true;
                 } else {
-                    $(this).show();
+                    $(this).show().removeClass('hiddenRow');
                 }
             } else {
-                $(this).hide();
+                $(this).hide().addClass('hiddenRow');
             }
         });
 
-        if ($this.find('tr:not(.addToQueue):visible').length == 0 && !isHold) {
+        if ($this.find('tr:not(.addToQueue):not(.hiddenRow)').length == 0 && !isHold) {
             $this.find('.addToQueue').remove();
             $this.append(
                 $('<tr>', {'class': 'addToQueue'}).append(
@@ -337,7 +337,7 @@
     function _updateActions($this) {
         var options = $this.data('showQueueSettings');
 
-        $this.find('tr').each(function() {
+        $this.find('tr:not(.addToQueue)').each(function() {
             _visibilityActions($(this));
         });
 

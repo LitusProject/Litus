@@ -164,7 +164,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $this->_updateItemStatus($params, 'signed_in');
                 break;
             case 'stopCollecting':
-                if (isset($this->_lockedItems[$params])) {echo 'unlock';
+                if (isset($this->_lockedItems[$params])) {
                     unset($this->_lockedItems[$params]);}
                 $this->_updateItemStatus($params, 'collected');
                 break;
