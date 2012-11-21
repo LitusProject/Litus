@@ -123,6 +123,10 @@
                 e.stopPropagation();
         });
 
+        $('#clearUniversityIdentificationFilter').click(function () {
+            $('#universityIdentificationFilter').val('');
+        });
+
         $.webSocket(
             {
                 name: 'showQueue',
