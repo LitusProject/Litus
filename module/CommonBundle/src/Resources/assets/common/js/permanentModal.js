@@ -18,7 +18,7 @@
             		  e.which == 27 && $this.modal('hide');
             		});
             	} else {
-            		$this.find('.close').hide();
+            		$this.find('.modal-header .close').hide();
             		$('.modal-backdrop').unbind('click');
                     $this.off('keyup.dismiss.modal');
             	}

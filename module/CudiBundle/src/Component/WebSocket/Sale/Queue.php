@@ -147,7 +147,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     $this->_entityManager
                         ->getRepository('CudiBundle\Entity\Sales\Session')
                         ->findOneById($user->getExtraData('session')),
-                    $params);
+                    json_decode($params)
+                );
                 $this->sendText($user, $result);
                 break;
             case 'startCollecting':
@@ -193,6 +194,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $user->setExtraData('payDesk', trim($params));
                 break;
         }
+
         if ($action !== 'setPayDesk')
             $this->sendQueueToAll();
     }
@@ -243,15 +245,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * Add a person to the queue
      *
-     * @param string $username
+     * @param string $params
      *
      * @return string
      */
-    private function _addToQueue(Session $session, $username)
+    private function _addToQueue(Session $session, $params)
     {
         $person = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUsername($username);
+            ->findOneByUsername($params->universityIdentification);
 
         if (null == $person) {
             return json_encode(
@@ -292,7 +294,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->flush();
         }
 
-        $this->_printQueueTicket($queueItem, 'signin');
+        if ($params->printTicket)
+            $this->_printQueueTicket($queueItem, 'signin');
 
         return json_encode(
             (object) array(
