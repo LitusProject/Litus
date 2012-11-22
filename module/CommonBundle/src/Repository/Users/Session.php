@@ -40,7 +40,7 @@ class Session extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('s.person', ':person'),
-                    $query->expr()->orX(
+                    $query->expr()->andX(
                         $query->expr()->gt('s.expirationTime', ':expirationTime'),
                         $query->expr()->eq('s.active', 'true')
                     )
