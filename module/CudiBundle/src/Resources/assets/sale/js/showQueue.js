@@ -16,14 +16,14 @@
             _gotBarcode($(this), value);
             return this;
         },
-    	init: function (options) {
-    	    var settings = $.extend(defaults, options);
+        init: function (options) {
+            var settings = $.extend(defaults, options);
 
-    	    $(this).data('showQueueSettings', settings);
+            $(this).data('showQueueSettings', settings);
 
-    	    _init($(this));
+            _init($(this));
 
-    	    return this;
+            return this;
         },
         setPayDesk: function (payDesk) {
             _setPayDesk($(this), payDesk);
@@ -41,13 +41,13 @@
     }
 
     $.fn.showQueue = function (method) {
-    	if (methods[method]) {
-    		return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-    	} else if (typeof method === 'object' || ! method) {
-    		return methods.init.apply(this, arguments);
-    	} else {
-    		$.error('Method ' +  method + ' does not exist on $.showQueue');
-    	}
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || ! method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' +  method + ' does not exist on $.showQueue');
+        }
     };
 
     function _addActions ($this, row) {
@@ -58,38 +58,38 @@
         startCollecting.unbind('click')
             .filter(':not(.disabled)').click(function () {
                 $this.showQueue('updatePayDesk');
-        		_sendToSocket('action: startCollecting ' + $(this).parent().data('servingQueueId'));
-    	});
+                _sendToSocket('action: startCollecting ' + $(this).parent().data('servingQueueId'));
+        });
         cancelCollecting.unbind('click')
             .filter(':not(.disabled)').click(function () {
                 $this.showQueue('updatePayDesk');
-        		_sendToSocket('action: cancelCollecting ' + $(this).parent().data('servingQueueId'));
-    	});
+                _sendToSocket('action: cancelCollecting ' + $(this).parent().data('servingQueueId'));
+        });
         stopCollecting.unbind('click')
             .filter(':not(.disabled)').click(function () {
                 $this.showQueue('updatePayDesk');
-        		_sendToSocket('action: stopCollecting ' + $(this).parent().data('servingQueueId'));
-    	});
+                _sendToSocket('action: stopCollecting ' + $(this).parent().data('servingQueueId'));
+        });
         hold.unbind('click')
             .filter(':not(.disabled)').click(function () {
                 $this.showQueue('updatePayDesk');
-        		_sendToSocket('action: setHold ' + $(this).parent().data('servingQueueId'));
-    	});
+                _sendToSocket('action: setHold ' + $(this).parent().data('servingQueueId'));
+        });
         unhold.unbind('click')
             .filter(':not(.disabled)').click(function () {
                 $this.showQueue('updatePayDesk');
-        		_sendToSocket('action: unsetHold ' + $(this).parent().data('servingQueueId'));
-    	});
+                _sendToSocket('action: unsetHold ' + $(this).parent().data('servingQueueId'));
+        });
         startSelling.unbind('click')
             .filter(':not(.disabled)').click(function () {
                 $this.showQueue('updatePayDesk');
-        		_sendToSocket('action: startSelling ' + $(this).parent().data('servingQueueId'));
-    	});
+                _sendToSocket('action: startSelling ' + $(this).parent().data('servingQueueId'));
+        });
         cancelSelling.unbind('click')
             .filter(':not(.disabled)').click(function () {
                 $this.showQueue('updatePayDesk');
-        		_sendToSocket('action: cancelSelling ' + $(this).parent().data('servingQueueId'));
-    	});
+                _sendToSocket('action: cancelSelling ' + $(this).parent().data('servingQueueId'));
+        });
     }
 
     function _gotBarcode ($this, value) {
@@ -123,15 +123,19 @@
                 e.stopPropagation();
         });
 
+        $('#clearUniversityIdentificationFilter').click(function () {
+            $('#universityIdentificationFilter').val('');
+        });
+
         $.webSocket(
-        	{
-        		name: 'showQueue',
-        		url: options.url,
-        		open: function (e) {
-        			options.errorDialog.removeClass('in');
-					$.webSocket('send', {name: 'showQueue', text: 'initialize: {"queueType": "shortQueue", "session": "' + options.session + '", "key": "' + options.authKey + '" }'});
-					if ($this.data('payDesk'))
-					    _setPayDesk($this, $this.data('payDesk'));
+            {
+                name: 'showQueue',
+                url: options.url,
+                open: function (e) {
+                    options.errorDialog.removeClass('in');
+                    $.webSocket('send', {name: 'showQueue', text: 'initialize: {"queueType": "shortQueue", "session": "' + options.session + '", "key": "' + options.authKey + '" }'});
+                    if ($this.data('payDesk'))
+                        _setPayDesk($this, $this.data('payDesk'));
                 },
                 message: function (e, data) {
                     options.errorDialog.removeClass('in');
@@ -145,34 +149,41 @@
                                 _showQueueItem($this, this);
                         });
 
-                        $this.find('tr').each(function () {
+                        $this.find('tr:not(.addToQueue)').each(function () {
                             if ($.inArray(parseInt($(this).data('info').id, 10), inQueue) < 0)
                                 $(this).remove();
                         });
 
                         _hideItems($this);
-        			} else if(data.sale) {
+                    } else if(data.sale) {
                         $this.showQueue('updatePayDesk');
-        				options.openSale('showQueue', data);
-        			} else if(data.collecting && options.collectScanning) {
+                        options.openSale('showQueue', data);
+                    } else if(data.collecting && options.collectScanning) {
                         $this.showQueue('updatePayDesk');
                         options.openCollecting('showQueue', data);
                     } else if (data.error) {
-                        if (data.error == 'paydesk')
+                        if ('paydesk' == data.error) {
                             $this.showQueue('updatePayDesk');
+                        } else if ('person' == data.error) {
+                            $('#add_queue_error').addClass('in')
+                                .find('.content').html('The person you entered does not exist.');
+                        } else if ('noBookings' == data.error) {
+                            $('#add_queue_error').addClass('in')
+                                .find('.content').html('There are no bookings for you.');
+                        }
                     }
-        		},
-        		error: function (e) {
-        			options.errorDialog.addClass('in');
-        			$this.html('');
-        			options.closeSale();
-        		}
-        	}
+                },
+                error: function (e) {
+                    options.errorDialog.addClass('in');
+                    $this.html('');
+                    options.closeSale();
+                }
+            }
         );
     }
 
     function _sendToSocket (text) {
-    	$.webSocket('send', {name: 'showQueue', text: text});
+        $.webSocket('send', {name: 'showQueue', text: text});
     }
 
     function _setPayDesk ($this, payDesk) {
@@ -183,18 +194,18 @@
     function _showQueueItem ($this, item) {
         var options = $this.data('showQueueSettings');
 
-		var row = $('<tr>', {'id': 'queueItem-' + item.id}).append(
-			$('<td>', {'class': 'number'}).html(item.number),
-			$('<td>', {'class': 'name'}).append(
-			    (item.name ? item.name : 'guest ' + item.id),
-			    ' ',
-			    (item.payDesk ? $('<span>', {class: 'label label-info'}).html(item.payDesk) : '')
-			),
-			$('<td>', {'class': 'status'}).html(options.statusTranslate(item.status)),
-			actions = $('<td>', {'class': 'actions'})
-		).data('info', item);
+        var row = $('<tr>', {'id': 'queueItem-' + item.id}).append(
+            $('<td>', {'class': 'number'}).html(item.number),
+            $('<td>', {'class': 'name'}).append(
+                (item.name ? item.name : 'guest ' + item.id),
+                ' ',
+                (item.payDesk ? $('<span>', {class: 'label label-info'}).html(item.payDesk) : '')
+            ),
+            $('<td>', {'class': 'status'}).html(options.statusTranslate(item.status)),
+            actions = $('<td>', {'class': 'actions'})
+        ).data('info', item);
 
-		actions.data('servingQueueId', item.id);
+        actions.data('servingQueueId', item.id);
 
         actions.append(
             startCollecting = $('<button>', {'class': 'btn btn-success startCollecting'}).html('Print').hide(),
@@ -206,9 +217,9 @@
             unhold = $('<button>', {'class': 'btn btn-warning unsetHold'}).html('Unhold').hide()
         );
 
-		$this.append(row);
+        $this.append(row);
         _addActions($this, row);
-	}
+    }
 
     function _updateQueueItem($this, item) {
         var options = $this.data('showQueueSettings');
@@ -285,23 +296,52 @@
         var value = $('#universityIdentificationFilter').val();
         var hideHold = $('#hideHold').is(':checked');
 
-        $this.find('tr').each(function () {
+        var isHold = false;
+        $this.find('tr:not(.addToQueue)').each(function () {
             if ($(this).data('info').university_identification.indexOf(value) == 0) {
                 if (hideHold && $(this).data('info').status == 'hold') {
-                    $(this).hide();
+                    $(this).hide().addClass('hiddenRow');
+                    isHold = true;
                 } else {
-                    $(this).show();
+                    $(this).show().removeClass('hiddenRow');
                 }
             } else {
-                $(this).hide();
+                $(this).hide().addClass('hiddenRow');
             }
         });
+
+        if ($this.find('tr:not(.addToQueue):not(.hiddenRow)').length == 0 && !isHold) {
+            $this.find('.addToQueue').remove();
+            $this.append(
+                $('<tr>', {'class': 'addToQueue'}).append(
+                    $('<td>', {'class': 'number'}),
+                    $('<td>', {'class': 'name'}).append(
+                        $('<i>').html('<b>' + value + '</b> was not found in the queue.')
+                    ),
+                    $('<td>', {'class': 'status'}),
+                    $('<td>', {'class': 'actions'}).append(
+                        addToQueue = $('<button>', {'class': 'btn btn-success addToQueue'}).html('Add to queue').data('id', value)
+                    )
+                )
+            );
+
+            addToQueue.toggle(value.length == 8)
+                .click(function (e) {
+                    var data = {
+                        universityIdentification: $(this).data('id'),
+                        printTicket: false
+                    };
+                    $.webSocket('send', {name: 'showQueue', text: 'action: addToQueue ' + JSON.stringify(data)});
+            });
+        } else {
+            $this.find('.addToQueue').remove();
+        }
     }
 
     function _updateActions($this) {
         var options = $this.data('showQueueSettings');
 
-        $this.find('tr').each(function() {
+        $this.find('tr:not(.addToQueue)').each(function() {
             _visibilityActions($(this));
         });
 

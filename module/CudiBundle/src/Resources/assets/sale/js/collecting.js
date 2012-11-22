@@ -90,10 +90,11 @@
         $this.find('.articles tr:not(.inactive)').each(function () {
             data.articles[$(this).data('info').id] = $(this).data('info').currentNumber;
         });
-
         $.webSocket('send', {name: settings.socketName, text: 'action: saveCollecting ' + JSON.stringify(data)});
-        $.webSocket('send', {name: settings.socketName, text: 'action: stopCollecting ' + settings.data.collecting.id});
-        _close($this);
+        setTimeout(function () {
+            $.webSocket('send', {name: settings.socketName, text: 'action: stopCollecting ' + settings.data.collecting.id});
+            _close($this);
+        }, 10);
     }
 
     function _createRow (data, translate) {
