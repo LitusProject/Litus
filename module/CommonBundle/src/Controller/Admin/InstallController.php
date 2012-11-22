@@ -176,6 +176,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
+                    'admin_session' => array(
+                        'expire'
+                    ),
                     'account' => array(
                         'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),

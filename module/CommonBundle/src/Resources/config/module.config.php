@@ -185,7 +185,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'index',
-                        'action'     => 'expire',
+                        'action'     => 'index',
                     ),
                 ),
             ),

@@ -47,4 +47,5 @@ return array(
     'The textbooks have been booked!' => 'The textbooks have been booked!',
 
     'New bookings have been assigned to you, and you can go and collect them.' => 'New bookings have been assigned to you, and you can go and collect them.',
+    'View Bookings' => 'View Bookings',
 );

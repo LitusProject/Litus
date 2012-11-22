@@ -17,25 +17,25 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use Doctrine\ORM\EntityManager;
 
 class Printer {
-    public static function queuePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
+    public static function queuePrint(EntityManager $entityManager, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
         $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
         $data->type = 1;
-        self::_print($entityManger, $printer, $data);
+        self::_print($entityManager, $printer, $data);
     }
 
-    public static function collectPrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
+    public static function collectPrint(EntityManager $entityManager, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
         $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
         $data->type = 2;
-        self::_print($entityManger, $printer, $data);
+        self::_print($entityManager, $printer, $data);
     }
 
-    public static function salePrint(EntityManager $entityManger, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
+    public static function salePrint(EntityManager $entityManager, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
     {
         $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
         $data->type = 3;
-        self::_print($entityManger, $printer, $data);
+        self::_print($entityManager, $printer, $data);
     }
 
     private static function _createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
@@ -56,10 +56,10 @@ class Printer {
         );
     }
 
-    private static function _print(EntityManager $entityManger, $printer, $data)
+    private static function _print(EntityManager $entityManager, $printer, $data)
     {
         $printers = unserialize(
-            $entityManger->getRepository('CommonBundle\Entity\General\Config')
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.printers')
         );
 
@@ -79,9 +79,9 @@ class Printer {
         $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
         socket_connect(
             $socket,
-            $entityManger->getRepository('CommonBundle\Entity\General\Config')
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.print_socket_address'),
-            $entityManger->getRepository('CommonBundle\Entity\General\Config')
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.print_socket_port')
         );
         socket_write($socket, $data);

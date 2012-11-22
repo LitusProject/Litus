@@ -46,5 +46,6 @@ return array(
 
     'The textbooks have been booked!' => 'De boeken zijn gereserveerd!',
 
-    'New bookings have been assigned to you, and you can go and collect them.' => 'Er zijn nieuwe reservaties aan je toegewezen, die je mag komen afhalen.'
+    'New bookings have been assigned to you, and you can go and collect them.' => 'Er zijn nieuwe reservaties aan je toegewezen, die je mag komen afhalen.',
+    'View Bookings' => 'Bekijk Reservaties',
 );
