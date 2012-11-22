@@ -212,7 +212,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $new = $saleArticle->duplicate();
 
                 $supplier = $this->getEntityManager()
