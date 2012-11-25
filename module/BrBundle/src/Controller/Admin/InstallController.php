@@ -80,6 +80,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_company_user' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'admin_company_logo' => array(
+                        'manage', 'add', 'delete'
+                    ),
                     'admin_cv_entry' => array(
                         'manage', 'delete',
                     ),
