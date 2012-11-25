@@ -39,6 +39,7 @@ return array(
         ),
         'logistics_index' => array(
             '@common_jquery',
+            '@common_typeahead_remote',
             '@fullcalendar_css',
             '@fullcalendar_js',
             '@bootstrap_css',

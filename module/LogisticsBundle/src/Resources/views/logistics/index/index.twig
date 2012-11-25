@@ -58,18 +58,9 @@
 
     <div id="add_popover_content" class="hide">
         <div  id="add_popover_content_internal">
-            <dl class="dl-horizontal">
-                <dt>Start</dt>
-                <dd><span class="start"></span></dd>
-
-                <dt>End</dt>
-                <dd><span class="end"></span></dd>
-            </dl>
-
             {% if has_access('admin_van_reservation', 'add') %}
-                <hr />
-
-                <a class="btn btn-primary pull-right" href="#">{{ translate('Add') }}</a>
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(form) }}
             {% endif %}
         </div>
     </div>
@@ -81,6 +72,7 @@
         var poppedElement = null;
 
         $(document).ready(function() {
+
             $(".popover-content a.delete").live('click', function() {
                 var dbid = $(this).data('dbid');
                 $.post('{{ url('admin_van_reservation', {"action": "delete"})}}' + dbid, function (data) {
@@ -205,6 +197,7 @@
                     $('#popover_content .driver').text(event.driver);
 
                     element.popover({placement:'right', title:$('#popover_header').html(), content:$('#popover_content').html(), trigger:'manual'});
+
                 },
 
                 eventClick : function(event, jsEvent, view) {
@@ -227,10 +220,8 @@
 
                     showPopover($('.fc-header-title'));
 
-                    $('#add_popover_content_internal .start').text(formatDate(startDate));
-                    $('#add_popover_content_internal .end').text(formatDate(endDate));
-
-                    $("#add_popover_content_internal a").attr("href", '{{ url('admin_van_reservation', {'action': 'add'}) }}start/' + startDate.valueOf() / 1000 + '/end/' + endDate.valueOf() / 1000 + '/return/logistics_index');
+                    $('#add_popover_content_internal .start').val(formatDate(startDate));
+                    $('#add_popover_content_internal .end').val(formatDate(endDate));
                 },
 
                 {% endif %}
