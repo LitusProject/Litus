@@ -14,12 +14,11 @@
 
 namespace LogisticsBundle\Controller;
 
-use LogisticsBundle\Entity\Driver,
+use LogisticsBundle\Form\Bootstrap\VanReservation\Add as AddForm,
+    LogisticsBundle\Entity\Driver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
-    LogisticsBundle\Form\Admin\Driver\Add,
     Zend\View\Model\ViewModel,
-    \DateTime,
-    LogisticsBundle\Form\Admin\Driver\Edit;
+    \DateTime;
 
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -28,7 +27,13 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+
+        return new ViewModel(
+            array(
+            'form' => $form,
+            )
+        );
     }
 
     public function fetchAction()
