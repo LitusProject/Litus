@@ -52,7 +52,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             $driverArray = array(
                 'color' => '#444444',
-                'name' => 'None'
+                'name' => ''
             );
             if (null !== $driver) {
                 $driverArray['color'] = $driver->getColor();
@@ -61,17 +61,13 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             $passenger = $reservation->getPassenger();
 
-            $passengerName = 'None';
+            $passengerName = '';
             if (null !== $passenger)
                 $passengerName = $passenger->getFullname();
 
             $additionalInfo = $reservation->getAdditionalInfo();
-            if ('' == $additionalInfo)
-                $additionalInfo = 'None';
 
             $load = $reservation->getLoad();
-            if ('' == $load)
-                $load = 'None';
 
             $result[] = array (
                 'start' => $reservation->getStartDate()->getTimeStamp(),

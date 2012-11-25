@@ -25,23 +25,23 @@
 
     <div id="popover_content" class="hide">
         <dl class="dl-horizontal">
-            <dt>Start</dt>
-            <dd><span class="start"></span></dd>
+            <dt class="start">Start</dt>
+            <dd class="start start_value"></dd>
 
-            <dt>End</dt>
-            <dd><span class="end"></span></dd>
+            <dt class="end">End</dt>
+            <dd class="end end_value"></dd>
 
-            <dt>Load</dt>
-            <dd><span class="load"></span></dd>
+            <dt class="load">Load</dt>
+            <dd class="load load_value"></dd>
 
-            <dt>Additional Info</dt>
-            <dd><span class="additional"></span></dd>
+            <dt class="additional">Additional Info</dt>
+            <dd class="additional additional_value"></dd>
 
-            <dt>Passenger</dt>
-            <dd><span class="passenger"></span></dd>
+            <dt class="passenger">Passenger</dt>
+            <dd class="passenger passenger_value"></dd>
 
-            <dt>Driver</dt>
-            <dd><span class="driver"></span></dd>
+            <dt class="driver">Driver</dt>
+            <dd class="driver driver_value"></dd>
         </dl>
 
         {% if has_access('admin_van_reservation', 'edit') or has_access('admin_van_reservation', 'delete') %}
@@ -184,19 +184,33 @@
                 eventAfterRender: function(event, element, view) {
                     $('#popover_header .reason').text(event.title);
 
-                    $("#popover_content a.edit").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}' + event.dbid + '/return/logistics_index');
+                    var pop_content = $('#popover_content').clone();
 
-                    $("#popover_content a.delete").attr('data-id', event.id);
-                    $("#popover_content a.delete").attr('data-dbid', event.dbid);
+                    pop_content.find("a.edit").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}' + event.dbid + '/return/logistics_index');
 
-                    $('#popover_content .start').text(formatDate(event.start));
-                    $('#popover_content .end').text(formatDate(event.end));
-                    $('#popover_content .load').text(event.load);
-                    $('#popover_content .passenger').text(event.passenger);
-                    $('#popover_content .additional').text(event.additional);
-                    $('#popover_content .driver').text(event.driver);
+                    pop_content.find("a.delete").attr('data-id', event.id);
+                    pop_content.find("a.delete").attr('data-dbid', event.dbid);
 
-                    element.popover({placement:'right', title:$('#popover_header').html(), content:$('#popover_content').html(), trigger:'manual'});
+                    pop_content.find('.start_value').text(formatDate(event.start));
+                    pop_content.find('.end_value').text(formatDate(event.end));
+                    if (event.load == '')
+                        pop_content.find('.load').remove();
+                    else
+                        pop_content.find('.load_value').text(event.load);
+                    if (event.passenger == '')
+                        pop_content.find('.passenger').remove();
+                    else
+                        pop_content.find('.passenger_value').text(event.passenger);
+                    if (event.additional == '')
+                        pop_content.find('.additional').remove();
+                    else
+                        pop_content.find('.additional_value').text(event.additional);
+                    if (event.driver == '')
+                        pop_content.find('.driver').remove();
+                    else
+                        pop_content.find('.driver_value').text(event.driver);
+
+                    element.popover({placement:'right', title:$('#popover_header').html(), content:pop_content.html(), trigger:'manual'});
 
                 },
 
