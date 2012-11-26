@@ -2,11 +2,11 @@
 
 {% block content %}
     {% if authenticatedPerson is not null %}
-	    <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%supplier%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%supplier%': supplier.getName()}) }}{% endautoescape %}</h2>
-	{% else %}
-	    <div style="text-align: center;">
-	        <img src="/img/litus.png" alt="Litus" />
-	        <h3>{{ translate('Please login to get access to these pages.') }}</h3>
-	    </div>
-	{% endif %}
+        <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%supplier%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%supplier%': supplier.getName()}) }}{% endautoescape %}</h2>
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+        </div>
+    {% endif %}
 {% endblock %}

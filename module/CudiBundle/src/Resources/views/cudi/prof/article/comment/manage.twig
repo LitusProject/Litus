@@ -2,34 +2,34 @@
 
 {% block content %}
     <div class="flashmessage alert alert-error fade" id="comment_removed_error">
-	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translate('Error') }}</div>
-    	<div class="content">
-    		<p>{{ translate('An error occurred while removing the comment.') }}</p>
-    	</div>
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">{{ translate('Error') }}</div>
+        <div class="content">
+            <p>{{ translate('An error occurred while removing the comment.') }}</p>
+        </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="comment_removed_success">
-	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translate('Success') }}</div>
-    	<div class="content">
-    		<p>{{ translate('The comment was succesfully removed.') }}</p>
-    	</div>
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">{{ translate('Success') }}</div>
+        <div class="content">
+            <p>{{ translate('The comment was succesfully removed.') }}</p>
+        </div>
     </div>
 
-	<div class="page-header">
-	    <h2>{{ translate('Comments') }}</h2>
-	</div>
+    <div class="page-header">
+        <h2>{{ translate('Comments') }}</h2>
+    </div>
 
-	<h3>{{ translate('Article') }}</h3>
-	<p>
-	    {{ translate('Title') }}: <b>{{ article.getTitle() }}</b><br />
-	    {{ translate('Authors') }}: <b>{{ article.getAuthors() }}</b><br />
-	    {{ translate('Publisher') }}: <b>{{ article.getPublishers() }}</b><br />
-	    {{ translate('Publish Year') }}: <b>{{ article.getYearPublished() }}</b><br />
-	    {% if article.getISBN() %} {{ translate('ISBN') }}: <b>{{ article.getISBN() }}</b>{% endif %}
-	</p>
+    <h3>{{ translate('Article') }}</h3>
+    <p>
+        {{ translate('Title') }}: <b>{{ article.getTitle() }}</b><br />
+        {{ translate('Authors') }}: <b>{{ article.getAuthors() }}</b><br />
+        {{ translate('Publisher') }}: <b>{{ article.getPublishers() }}</b><br />
+        {{ translate('Publish Year') }}: <b>{{ article.getYearPublished() }}</b><br />
+        {% if article.getISBN() %} {{ translate('ISBN') }}: <b>{{ article.getISBN() }}</b>{% endif %}
+    </p>
 
-	<table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped">
         <tr>
             <th width="120px">{{ translate('Date') }}</th>
             <th width="140px">{{ translate('Person') }}</th>
@@ -42,11 +42,11 @@
                 <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
                 <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
                 <td>{{ mapping.getComment().getSummary(70) }}</td>
-				<td class="actions">
-					<a href="#" class="btn btn-primary view" data-text="{{ mapping.getComment().getText() }}">{{ translate('View') }}</a>
-					{% if mapping.getComment().getPerson().getId() == authenticatedPerson.getId() %}
-					    <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}">{{ translate('Delete') }}</a>
-					{% endif %}
+                <td class="actions">
+                    <a href="#" class="btn btn-primary view" data-text="{{ mapping.getComment().getText() }}">{{ translate('View') }}</a>
+                    {% if mapping.getComment().getPerson().getId() == authenticatedPerson.getId() %}
+                        <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}">{{ translate('Delete') }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
@@ -57,91 +57,91 @@
     <br class="clear" />
 
     <div id="viewComment" class="modal fade">
-    	<div class="modal-header">
-    		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translate('Comment') }}</h3>
-    	</div>
-    	<div class="modal-body">
-    		<pre class="text"></pre>
-    	</div>
-    	<div class="modal-footer">
-    		<button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
-    	</div>
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Comment') }}</h3>
+        </div>
+        <div class="modal-body">
+            <pre class="text"></pre>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
+        </div>
     </div>
 
     <div id="addComment" class="modal fade">
-    	<div class="modal-header">
-    		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translate('Add Comment') }}</h3>
-    	</div>
-    	<div class="modal-body">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Add Comment') }}</h3>
+        </div>
+        <div class="modal-body">
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
-    	</div>
-    	<div class="modal-footer">
-    		<button class="btn btn-success save">{{ translate('Save') }}</button>
-    		<button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
-    	</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success save">{{ translate('Save') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
+        </div>
     </div>
 
     <div id="removeComment" class="modal fade">
-    	<div class="modal-header">
-    		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translate('Remove Comment') }}</h3>
-    	</div>
-    	<div class="modal-body">
-    		{{ translate('Are you sure you want to remove your comment?') }}
-    	</div>
-    	<div class="modal-footer">
-    		<button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-    		<button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
-    	</div>
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Remove Comment') }}</h3>
+        </div>
+        <div class="modal-body">
+            {{ translate('Are you sure you want to remove your comment?') }}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+        </div>
     </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.item .view').click(openViewModal);
-			$('.item .delete').click(openRemoveModal);
-			$('#addComment .save').click(function () {
-			    $('#addComment form').submit();
-			});
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .view').click(openViewModal);
+            $('.item .delete').click(openRemoveModal);
+            $('#addComment .save').click(function () {
+                $('#addComment form').submit();
+            });
+        });
 
-		function openViewModal(e) {
-			var $this = $(this);
+        function openViewModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var viewComment = $('#viewComment');
-			viewComment.find('.text').html($this.data('text'));
-			viewComment.modal();
-		}
+            e.preventDefault();
+            var viewComment = $('#viewComment');
+            viewComment.find('.text').html($this.data('text'));
+            viewComment.modal();
+        }
 
-		function openRemoveModal(e) {
-			var $this = $(this);
+        function openRemoveModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var removeComment = $('#removeComment');
-			removeComment.find('.confirm').unbind('click').click(function () {
-				$.post('{{ url('prof_article_comment', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
-				    if (data && 'success' == data.status) {
-						$('.flashmessage').removeClass('in');
-						$('#comment_removed_success').addClass('in');
-						$this.parent().parent().remove();
-						removeComment.modal('hide');
-					} else {
-					    errorRemove();
-					}
-				}, 'json').error(errorRemove);
-			});
-			removeComment.modal();
-		}
+            e.preventDefault();
+            var removeComment = $('#removeComment');
+            removeComment.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('prof_article_comment', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#comment_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        removeComment.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeComment.modal();
+        }
 
-		function errorRemove() {
-			$('.flashmessage').removeClass('in');
-			$('#comment_removed_error').addClass('in');
-			$('#removeComment').modal('hide');
-		}
-	</script>
+        function errorRemove() {
+            $('.flashmessage').removeClass('in');
+            $('#comment_removed_error').addClass('in');
+            $('#removeComment').modal('hide');
+        }
+    </script>
 {% endblock %}

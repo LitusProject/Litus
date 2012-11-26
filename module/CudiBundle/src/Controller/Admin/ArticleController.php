@@ -15,6 +15,7 @@
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Articles\External,
     CudiBundle\Entity\Articles\Internal,
     CudiBundle\Entity\Articles\History,
@@ -32,17 +33,24 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
+        $academicYear = $this->getAcademicYear();
+
+        if (null !== $this->getParam('field'))
+            $articles = $this->_search($academicYear);
+
+        if (!isset($articles)) {
+            $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article')
-                ->findAll(),
+                ->findAll();
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $articles,
             $this->getParam('page')
         );
 
         foreach($paginator as $item)
             $item->setEntityManager($this->getEntityManager());
-
-        $academicYear = $this->getAcademicYear();
 
         return new ViewModel(
             array(
@@ -176,7 +184,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $history = new History($article);
                 $this->getEntityManager()->persist($history);
 
@@ -267,32 +275,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function searchAction()
     {
-        $this->initAjax();
-
         $academicYear = $this->getAcademicYear();
 
-        switch($this->getParam('field')) {
-            case 'title':
-                $articles = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllByTitle($this->getParam('string'));
-                break;
-            case 'author':
-                $articles = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllByAuthor($this->getParam('string'));
-                break;
-            case 'publisher':
-                $articles = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllByPublisher($this->getParam('string'));
-                break;
-            case 'subject':
-                $articles = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllBySubject($this->getParam('string'), $this->getCurrentAcademicYear());
-                break;
-        }
+        $this->initAjax();
+
+        $articles = $this->_search($academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -320,6 +307,28 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'result' => $result,
             )
         );
+    }
+
+    private function _search(AcademicYear $academicYear)
+    {
+        switch($this->getParam('field')) {
+            case 'title':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article')
+                    ->findAllByTitle($this->getParam('string'));
+            case 'author':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article')
+                    ->findAllByAuthor($this->getParam('string'));
+            case 'publisher':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article')
+                    ->findAllByPublisher($this->getParam('string'));
+            case 'subject':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article')
+                    ->findAllBySubject($this->getParam('string'), $this->getCurrentAcademicYear());
+        }
     }
 
     private function _getArticle()
