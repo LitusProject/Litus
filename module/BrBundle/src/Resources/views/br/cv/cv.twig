@@ -62,12 +62,7 @@
         $(document).ready(function() {
 
             $('.count').each(function() {
-                var label = $('.control-label[for=' + $(this).attr('id') + ']');
-                label.append('<br/>(<span class="count-label"></span>)');
-                updateLabel($(this));
-                $(this).bind("propertychange keyup input paste", function() {
-                    updateLabel($(this));
-                });
+                addLabel($(this));
             });
 
             {% if languageError %}
@@ -104,7 +99,7 @@
                         </label>\
                         <div class="controls">\
                             <div>\
-                                <input type="text" name="lang_name' + i + '" id="lang_name' + i + '" value=""/>\
+                                <input type="text" class"count" data-count=30 name="lang_name' + i + '" id="lang_name' + i + '" value=""/>\
                                 <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">Remove Language</button>\
                             </div>\
                         </div>\
@@ -139,6 +134,8 @@
                     </div>'
                 );
 
+                addLabel($('#lang_name' + i));
+
                 addRemoveButton(i);
 
                 $('#lang_count').val(i + 1);
@@ -158,6 +155,15 @@
             } else {
                 //$("#submit").attr("disabled", "disabled");
             }
+        }
+
+        function addLabel(element) {
+            var label = $('.control-label[for=' + element.attr('id') + ']');
+            label.append('<br/>(<span class="count-label"></span>)');
+            updateLabel(element);
+            element.bind("propertychange keyup input paste", function() {
+                updateLabel($(this));
+            });
         }
 
         function updateLabel(element) {
