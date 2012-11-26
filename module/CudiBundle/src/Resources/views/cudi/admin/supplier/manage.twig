@@ -1,42 +1,42 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/supplier/partials/navigation.twig' %}
+    {% include 'cudi/admin/supplier/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-		<div>
-		    <table class="full_width manage">
-		        <thead>
-		            <tr>
-		                <th>Name</th>
-		                <th width="150px">Phone Number</th>
-		                <th width="200px">City</th>
-		            	<th width="100px">Actions</th>
-		            </tr>
-		        </thead>
+    <div id="controller_action">
+        <div>
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th width="150px">Phone Number</th>
+                        <th width="200px">City</th>
+                        <th width="100px">Actions</th>
+                    </tr>
+                </thead>
 
-		        <tbody>
-		            {% for supplier in paginator %}
-		                <tr>
-		                    <td>{{ supplier.getName() }}</td>
-		                    <td>{{ supplier.getPhoneNumber() }}</td>
-		                    <td>{{ supplier.getAddress().getCity() }}</td>
-		            		<td class="actions">
-		            		    {% if hasAccess('admin_supplier', 'edit') %}
-		            			    <a href="{{ url('admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
-		            			{% endif %}
-		            			{% if hasAccess('admin_supplier_user', 'manage') %}
-		            			    <a href="{{ url('admin_supplier_user', {"action": "manage", "id": supplier.getId()}) }}" class="view">Users</a>
-		            			{% endif %}
-		            		</td>
-		                </tr>
-		            {% endfor %}
-		        </tbody>
-		    </table>
+                <tbody>
+                    {% for supplier in paginator %}
+                        <tr>
+                            <td>{{ supplier.getName() }}</td>
+                            <td>{{ supplier.getPhoneNumber() }}</td>
+                            <td>{{ supplier.getAddress().getCity() }}</td>
+                            <td class="actions">
+                                {% if hasAccess('admin_supplier', 'edit') %}
+                                    <a href="{{ url('admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('admin_supplier_user', 'manage') %}
+                                    <a href="{{ url('admin_supplier_user', {"action": "manage", "id": supplier.getId()}) }}" class="view">Users</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-			{% include 'admin/partials/paginationControl.twig' %}
-		</div>
-	</div>
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
 {% endblock %}

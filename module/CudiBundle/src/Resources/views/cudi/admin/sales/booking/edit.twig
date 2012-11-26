@@ -1,22 +1,22 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
+    {% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
     {% include 'cudi/admin/sales/booking/partials/periods.twig' %}
     <div class="flashmessage success_message full_width mail_send_success hide">
-    	<div class="title">Success</div>
-    	<div class="content">
-    		<p>The mail was successfully send!</p>
-    	</div>
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The mail was successfully send!</p>
+        </div>
     </div>
     <div class="flashmessage error_message full_width mail_send_error hide">
-    	<div class="title">Error</div>
-    	<div class="content">
-    		<p>An error occurred while trying to send a mail.</p>
-    	</div>
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to send a mail.</p>
+        </div>
     </div>
 
     <div id="controller_action">
@@ -57,197 +57,197 @@
             {% endfor %}
         </table>
 
-		{% include 'admin/partials/paginationControl.twig' %}
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <aside>
         {% if hasAccess('admin_cudi_mail', 'send') %}
-        	<div class="sidebox">
-        	    <div class="title">Send Mail</div>
-        	   	<div class="content">
-        	    	<p>
-        	        	<i>Please hit the link below to send a mail to this person!</i>
-        	        </p>
-        	        <p>
-        	           	<a href="#" class="sendMail">&rarr; Send Mail</a>
-        	        </p>
-        	    </div>
-        	</div>
+            <div class="sidebox">
+                <div class="title">Send Mail</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to send a mail to this person!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="sendMail">&rarr; Send Mail</a>
+                    </p>
+                </div>
+            </div>
         {% endif %}
         {% if booking.getStatus() == 'booked' and hasAccess('admin_sales_booking', 'assign') %}
-        	<div class="sidebox">
-        	    <div class="title">Assign Booking</div>
-        	   	<div class="content">
-        	    	<p>
-        	        	<i>Please hit the link below to assign this booking!</i>
-        	        </p>
-        	        <p>
-        	           	<a href="#" class="assign">&rarr; Assign Booking</a>
-        	        </p>
-        	    </div>
-        	</div>
+            <div class="sidebox">
+                <div class="title">Assign Booking</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to assign this booking!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="assign">&rarr; Assign Booking</a>
+                    </p>
+                </div>
+            </div>
         {% endif %}
         {% if booking.getStatus() == 'assigned' and hasAccess('admin_sales_booking', 'unassign') %}
-        	<div class="sidebox">
-        	    <div class="title">Unassign Booking</div>
-        	   	<div class="content">
-        	    	<p>
-        	        	<i>Please hit the link below to unassign this booking!</i>
-        	        </p>
-        	        <p>
-        	           	<a href="#" class="unassign">&rarr; Unassign Booking</a>
-        	        </p>
-        	    </div>
-        	</div>
-    	{% endif %}
-    	{% if booking.getStatus() == 'assigned' and hasAccess('admin_sales_booking', 'expire') %}
-        	<div class="sidebox">
-        	    <div class="title">Expire Booking</div>
-        	   	<div class="content">
-        	    	<p>
-        	        	<i>Please hit the link below to expire this booking!</i>
-        	        </p>
-        	        <p>
-        	           	<a href="#" class="expire">&rarr; Expire Booking</a>
-        	        </p>
-        	    </div>
-        	</div>
+            <div class="sidebox">
+                <div class="title">Unassign Booking</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to unassign this booking!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="unassign">&rarr; Unassign Booking</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if booking.getStatus() == 'assigned' and hasAccess('admin_sales_booking', 'expire') %}
+            <div class="sidebox">
+                <div class="title">Expire Booking</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to expire this booking!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="expire">&rarr; Expire Booking</a>
+                    </p>
+                </div>
+            </div>
         {% endif %}
         {% if booking.getStatus() == 'assigned' and hasAccess('admin_sales_booking', 'extend') %}
-        	<div class="sidebox">
-        	    <div class="title">Extend Booking</div>
-        	   	<div class="content">
-        	    	<p>
-        	        	<i>Please hit the link below to extend this booking!</i>
-        	        </p>
-        	        <p>
-        	           	<a href="#" class="extend">&rarr; Extend Booking</a>
-        	        </p>
-        	    </div>
-        	</div>
+            <div class="sidebox">
+                <div class="title">Extend Booking</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to extend this booking!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="extend">&rarr; Extend Booking</a>
+                    </p>
+                </div>
+            </div>
         {% endif %}
         {% if (booking.getStatus() == 'booked' or booking.getStatus() == 'assigned') and hasAccess('admin_sales_booking', 'delete') %}
-        	<div class="sidebox">
-        	    <div class="title">Remove Booking</div>
-        	   	<div class="content">
-        	    	<p>
-        	        	<i>Please hit the link below to remove this booking!</i>
-        	        </p>
-        	        <p>
-        	           	<a href="#" class="remove">&rarr; Remove Booking</a>
-        	        </p>
-        	    </div>
-        	</div>
+            <div class="sidebox">
+                <div class="title">Remove Booking</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to remove this booking!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="remove">&rarr; Remove Booking</a>
+                    </p>
+                </div>
+            </div>
         {% endif %}
     </aside>
 
     <div class="modal hide fade" id="sendMail">
-    	<div class="modal-header">
-    		<span>Litus Admin</span>
-    		/Send Mail
-    	</div>
-    	<div class="modal-body">
-    		<p>
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Send Mail
+        </div>
+        <div class="modal-body">
+            <p>
                 {% import 'admin/partials/form.twig' as forms %}
                 {{ forms.renderForm(mailForm) }}
                 <br style="clear: both;">
-    		</p>
-    		<div class="footer">
-    			<input type="button" class="send" value="Send">
-    			<input type="button" class="cancel" data-dismiss="modal" value="Cancel">
-    		</div>
-    	</div>
+            </p>
+            <div class="footer">
+                <input type="button" class="send" value="Send">
+                <input type="button" class="cancel" data-dismiss="modal" value="Cancel">
+            </div>
+        </div>
     </div>
     <div class="modal hide fade" id="removeBooking">
-    	<div class="modal-header">
-    		<span>Litus Admin</span>
-    		/Delete Booking
-    	</div>
-    	<div class="modal-body">
-    		<p>
-    			You are about to delete the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-    			Please note that this operation cannot be undone!
-    		</p>
-    		<p>
-    			Are you sure you want to continue?
-    		</p>
-    		<div class="footer">
-    			<input type="button" class="delete" value="Yes">
-    			<input type="button" class="cancel" data-dismiss="modal" value="No">
-    		</div>
-    	</div>
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Booking
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
     </div>
     <div class="modal hide fade" id="assignBooking">
-    	<div class="modal-header">
-    		<span>Litus Admin</span>
-    		/Assign Booking
-    	</div>
-    	<div class="modal-body">
-    		<p>
-    			You are about to assign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-    		</p>
-    		<p>
-    			Are you sure you want to continue?
-    		</p>
-    		<div class="footer">
-    			<input type="button" class="assign" value="Yes">
-    			<input type="button" class="cancel" data-dismiss="modal" value="No">
-    		</div>
-    	</div>
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Assign Booking
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to assign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="assign" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
     </div>
     <div class="modal hide fade" id="unassignBooking">
-    	<div class="modal-header">
-    		<span>Litus Admin</span>
-    		/Unassign Booking
-    	</div>
-    	<div class="modal-body">
-    		<p>
-    			You are about to unassign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-    		</p>
-    		<p>
-    			Are you sure you want to continue?
-    		</p>
-    		<div class="footer">
-    			<input type="button" class="unassign" value="Yes">
-    			<input type="button" class="cancel" data-dismiss="modal" value="No">
-    		</div>
-    	</div>
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Unassign Booking
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to unassign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="unassign" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
     </div>
     <div class="modal hide fade" id="expireBooking">
-    	<div class="modal-header">
-    		<span>Litus Admin</span>
-    		/Expire Booking
-    	</div>
-    	<div class="modal-body">
-    		<p>
-    			You are about to expire the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-    		</p>
-    		<p>
-    			Are you sure you want to continue?
-    		</p>
-    		<div class="footer">
-    			<input type="button" class="expire" value="Yes">
-    			<input type="button" class="cancel" data-dismiss="modal" value="No">
-    		</div>
-    	</div>
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Expire Booking
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to expire the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="expire" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
     </div>
     <div class="modal hide fade" id="extendBooking">
-    	<div class="modal-header">
-    		<span>Litus Admin</span>
-    		/Extend Booking
-    	</div>
-    	<div class="modal-body">
-    		<p>
-    			You are about to extend the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-    		</p>
-    		<p>
-    			Are you sure you want to continue?
-    		</p>
-    		<div class="footer">
-    			<input type="button" class="extend" value="Yes">
-    			<input type="button" class="cancel" data-dismiss="modal" value="No">
-    		</div>
-    	</div>
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Extend Booking
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to extend the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="extend" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -268,90 +268,90 @@
         function openSendMailModal(e) {
             var $this = $(this);
 
-			e.preventDefault();
-			var sendMail = $('#sendMail');
-			sendMail.find('.send').one('click', function () {
-			    sendMail.find('form').ajaxSubmit({
-			        dataType: 'json',
-			        success: function (data) {
-			            if (data.errors) {
-			                $('.flashmessage').addClass('hide');
+            e.preventDefault();
+            var sendMail = $('#sendMail');
+            sendMail.find('.send').one('click', function () {
+                sendMail.find('form').ajaxSubmit({
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.errors) {
+                            $('.flashmessage').addClass('hide');
                             sendMail.find('ul.errors').remove();
-			                for(element in data.errors) {
-			                    var list = $('<ul>', {class: 'errors'})
-			                    for (error in data.errors[element])
-			                        list.append($('<li>').html(data.errors[element][error]));
-			                    sendMail.find('#' + element).parent().after(list);
-			                }
-			            } else {
-			                $('.flashmessage').addClass('hide');
-			                $('.mail_send_success').removeClass('hide');
-			                sendMail.modal('hide');
-			            }
-			        },
-			        error: function () {
-			            $('.flashmessage').addClass('hide');
-			            $('.mail_send_error').removeClass('hide');
-			            sendMail.modal('hide');
-			        },
-			    });
-			});
-			sendMail.modal();
+                            for(element in data.errors) {
+                                var list = $('<ul>', {class: 'errors'})
+                                for (error in data.errors[element])
+                                    list.append($('<li>').html(data.errors[element][error]));
+                                sendMail.find('#' + element).parent().after(list);
+                            }
+                        } else {
+                            $('.flashmessage').addClass('hide');
+                            $('.mail_send_success').removeClass('hide');
+                            sendMail.modal('hide');
+                        }
+                    },
+                    error: function () {
+                        $('.flashmessage').addClass('hide');
+                        $('.mail_send_error').removeClass('hide');
+                        sendMail.modal('hide');
+                    },
+                });
+            });
+            sendMail.modal();
         }
 
         function openRemoveModal(e) {
-			var $this = $(this);
+            var $this = $(this);
 
-			e.preventDefault();
-			var removeBooking = $('#removeBooking');
-			removeBooking.find('.delete').unbind('click').click(function () {
-			    window.location.href = '{{ url('admin_sales_booking', {"action": "delete", "id": booking.getId()})}}';
-			});
-			removeBooking.modal();
-		}
+            e.preventDefault();
+            var removeBooking = $('#removeBooking');
+            removeBooking.find('.delete').unbind('click').click(function () {
+                window.location.href = '{{ url('admin_sales_booking', {"action": "delete", "id": booking.getId()})}}';
+            });
+            removeBooking.modal();
+        }
 
-		function openAssignModal(e) {
-			var $this = $(this);
+        function openAssignModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var assignBooking = $('#assignBooking');
-			assignBooking.find('.assign').unbind('click').click(function () {
-			    window.location.href = '{{ url('admin_sales_booking', {"action": "assign", "id": booking.getId()})}}';
-			});
-			assignBooking.modal();
-		}
+            e.preventDefault();
+            var assignBooking = $('#assignBooking');
+            assignBooking.find('.assign').unbind('click').click(function () {
+                window.location.href = '{{ url('admin_sales_booking', {"action": "assign", "id": booking.getId()})}}';
+            });
+            assignBooking.modal();
+        }
 
-		function openUnassignModal(e) {
-			var $this = $(this);
+        function openUnassignModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var unassignBooking = $('#unassignBooking');
-			unassignBooking.find('.unassign').unbind('click').click(function () {
-			    window.location.href = '{{ url('admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}';
-			});
-			unassignBooking.modal();
-		}
+            e.preventDefault();
+            var unassignBooking = $('#unassignBooking');
+            unassignBooking.find('.unassign').unbind('click').click(function () {
+                window.location.href = '{{ url('admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}';
+            });
+            unassignBooking.modal();
+        }
 
-		function openExpireModal(e) {
-			var $this = $(this);
+        function openExpireModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var expireBooking = $('#expireBooking');
-			expireBooking.find('.expire').unbind('click').click(function () {
-			    window.location.href = '{{ url('admin_sales_booking', {"action": "expire", "id": booking.getId()})}}';
-			});
-			expireBooking.modal();
-		}
+            e.preventDefault();
+            var expireBooking = $('#expireBooking');
+            expireBooking.find('.expire').unbind('click').click(function () {
+                window.location.href = '{{ url('admin_sales_booking', {"action": "expire", "id": booking.getId()})}}';
+            });
+            expireBooking.modal();
+        }
 
-		function openExtendModal(e) {
-			var $this = $(this);
+        function openExtendModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var expireBooking = $('#extendBooking');
-			expireBooking.find('.extend').unbind('click').click(function () {
-			    window.location.href = '{{ url('admin_sales_booking', {"action": "extend", "id": booking.getId()})}}';
-			});
-			expireBooking.modal();
-		}
+            e.preventDefault();
+            var expireBooking = $('#extendBooking');
+            expireBooking.find('.extend').unbind('click').click(function () {
+                window.location.href = '{{ url('admin_sales_booking', {"action": "extend", "id": booking.getId()})}}';
+            });
+            expireBooking.modal();
+        }
     </script>
 {% endblock %}

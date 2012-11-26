@@ -1,40 +1,40 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/sales/financial/partials/navigation.twig' %}
+    {% include 'cudi/admin/sales/financial/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-		<table class="full_width manage">
+    <div id="controller_action">
+        <table class="full_width manage">
 
-		    <tr>
-		        <th>Manager</th>
-				<th width="110px">Start</th>
-				<th width="110px">End</th>
-		        <th width="135px">Theoretical Revenue</th>
-		        <th width="105px">Actual Revenue</th>
-		        <th width="90px">Delta</th>
-				<th width="60px">Action</th>
-		    </tr>
+            <tr>
+                <th>Manager</th>
+                <th width="110px">Start</th>
+                <th width="110px">End</th>
+                <th width="135px">Theoretical Revenue</th>
+                <th width="105px">Actual Revenue</th>
+                <th width="90px">Delta</th>
+                <th width="60px">Action</th>
+            </tr>
 
-		    {% for session in paginator %}
-		        <tr>
-		            <td>{{ session.getManager().getFullName() }}</td>
-		            <td>{{ session.getOpenDate().format('Y-m-d H:i') }} </td>
-		            <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i') }}{% endif %}</td>
-		            <td>&euro; {{ (session.getTheoreticalRevenue()/100)|number_format(2) }}</td>
-		            <td>&euro; {{ (session.getActualRevenue()/100)|number_format(2) }}</td>
-		            <td>&euro; {% if session.getTheoreticalRevenue() - session.getActualRevenue() < 0 %}+{% endif %}{{ ((session.getActualRevenue() - session.getTheoreticalRevenue())/100)|number_format(2) }}</td>
-					<td class="actions">
-					    {% if hasAccess('admin_sales_session', 'edit') %}
-    					    <a href="{{ url("admin_sales_session", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
-    					{% endif %}
-					</td>
-		        </tr>
-		    {% endfor %}
-		</table>
+            {% for session in paginator %}
+                <tr>
+                    <td>{{ session.getManager().getFullName() }}</td>
+                    <td>{{ session.getOpenDate().format('Y-m-d H:i') }} </td>
+                    <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i') }}{% endif %}</td>
+                    <td>&euro; {{ (session.getTheoreticalRevenue()/100)|number_format(2) }}</td>
+                    <td>&euro; {{ (session.getActualRevenue()/100)|number_format(2) }}</td>
+                    <td>&euro; {% if session.getTheoreticalRevenue() - session.getActualRevenue() < 0 %}+{% endif %}{{ ((session.getActualRevenue() - session.getTheoreticalRevenue())/100)|number_format(2) }}</td>
+                    <td class="actions">
+                        {% if hasAccess('admin_sales_session', 'edit') %}
+                            <a href="{{ url("admin_sales_session", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
-		{% include 'admin/partials/paginationControl.twig' %}
-	</div>
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
 {% endblock %}

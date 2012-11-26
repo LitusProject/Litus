@@ -1,127 +1,127 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/sales/article/partials/navigation.twig' %}
+    {% include 'cudi/admin/sales/article/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-		<h1>Article</h1>
+    <div id="controller_action">
+        <h1>Article</h1>
 
-		<p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
-		<p>Author: <b>{{ article.getMainArticle().getAuthors() }}</b></p>
-		<p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
-		<br />
+        <p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+        <p>Author: <b>{{ article.getMainArticle().getAuthors() }}</b></p>
+        <p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
+        <br />
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 
-	<aside>
-		{% if hasAccess('admin_article', 'edit') %}
-	    	<div class="sidebox">
-	    	    <div class="title">Edit Article</div>
-	    	   	<div class="content">
-	    	    	<p>
-	    	        	<i>Please hit the link below to edit the common information of this article!</i>
-	    	        </p>
-	    	        <p>
-	    	           	<a href="{{ url('admin_article', {"action": "edit", "id": article.getMainArticle().getId()}) }}">&rarr; Edit Article</a>
-	    	        </p>
-	    	    </div>
-	    	</div>
-	    {% endif %}
-	    {% if hasAccess('admin_sales_discount', 'manage') %}
-	    	<div class="sidebox">
-	    	    <div class="title">Manage Article Discounts</div>
-	    	   	<div class="content">
-	    	    	<p>
-	    	        	<i>Please hit the link below to manage the discounts of this article!</i>
-	    	        </p>
-	    	        <p>
-	    	           	<a href="{{ url('admin_sales_discount', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Discount</a>
-	    	        </p>
-	    	    </div>
-	    	</div>
-	    {% endif %}
-	    {% if hasAccess('admin_sales_barcode', 'manage') %}
-	    	<div class="sidebox">
-	    	    <div class="title">Manage Article Barcodes</div>
-	    	   	<div class="content">
-	    	    	<p>
-	    	        	<i>Please hit the link below to manage the barcodes of this article!</i>
-	    	        </p>
-	    	        <p>
-	    	           	<a href="{{ url('admin_sales_barcode', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Barcodes</a>
-	    	        </p>
-	    	    </div>
-	    	</div>
-	    {% endif %}
-	    {% if hasAccess('admin_sales_article', 'sellProf') %}
-	    	<div class="sidebox">
-	    	    <div class="title">Sell Prof Version</div>
-	    	   	<div class="content">
-	    	    	<p>
-	    	        	<i>Please hit the link below to sell an article to a prof!</i>
-	    	        </p>
-	    	        <p>
-	    	           	<a href="#" class="sellProfVersion">&rarr; Sell Prof Version</a>
-	    	        </p>
-	    	    </div>
-	    	</div>
-	    {% endif %}
-	    {% if hasAccess('admin_article_file', 'front') and article.getMainArticle().isInternal() %}
-	    	<div class="sidebox">
-	    	    <div class="title">Download Front Page</div>
-	    	   	<div class="content">
-	    	    	<p>
-	    	        	<i>Please hit the link below to download the front page of this article!</i>
-	    	        </p>
-	    	        <p>
-	    	           	<a href="#" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "front", "id": article.getId()}) }}">&rarr; Download Front Page</a>
-	    	        </p>
-	    	    </div>
-	    	</div>
-	    {% endif %}
-	</aside>
+    <aside>
+        {% if hasAccess('admin_article', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Article</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the common information of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article', {"action": "edit", "id": article.getMainArticle().getId()}) }}">&rarr; Edit Article</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_sales_discount', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Article Discounts</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the discounts of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_sales_discount', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Discount</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_sales_barcode', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Article Barcodes</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the barcodes of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_sales_barcode', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Barcodes</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_sales_article', 'sellProf') %}
+            <div class="sidebox">
+                <div class="title">Sell Prof Version</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to sell an article to a prof!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="sellProfVersion">&rarr; Sell Prof Version</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_article_file', 'front') and article.getMainArticle().isInternal() %}
+            <div class="sidebox">
+                <div class="title">Download Front Page</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to download the front page of this article!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "front", "id": article.getId()}) }}">&rarr; Download Front Page</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 
-	<div class="modal hide fade" id="sellProfVersion">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Sell Prof Version
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to sell an article to a prof!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="sell" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="sellProfVersion">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Sell Prof Version
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to sell an article to a prof!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="sell" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-	    $(document).ready(function () {
-	        $('.downloadFile').each(function () {
-	        	$(this).downloadFile($(this).data('file'));
-	        });
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.downloadFile').each(function () {
+                $(this).downloadFile($(this).data('file'));
+            });
 
-	        $('.sellProfVersion').click(openSellProfModal);
+            $('.sellProfVersion').click(openSellProfModal);
 
             {% if article.getMainArticle().isInternal() %}
             var field = $('<span>').css({
                 paddingLeft: '10px',
-	            color: '#999',
+                color: '#999',
                 cursor: 'pointer',
             });
             $('#sell_price').parent().append(field);
-	        field.html('(Calculated: &euro; {{ (precalculatedSellPrice/100)|number_format(2) }})')
+            field.html('(Calculated: &euro; {{ (precalculatedSellPrice/100)|number_format(2) }})')
                 .click(function () {
                     $('#sell_price').val(({{ (precalculatedSellPrice/100)|number_format(2) }}).toFixed(2));
                 });
@@ -138,16 +138,16 @@
                     $('#purchase_price').val(({{ (precalculatedPurchasePrice/100)|number_format(2) }}).toFixed(2));
                 });
             {% endif %}
-	    });
-	    function openSellProfModal(e) {
-			var $this = $(this);
+        });
+        function openSellProfModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var assignAllBooking = $('#sellProfVersion');
-			assignAllBooking.find('.sell').unbind('click').click(function () {
-			    window.location.href = '{{ url('admin_sales_article', {"action": "sellProf", "id": article.getId()})}}';
-			});
-			assignAllBooking.modal();
-		}
-	</script>
+            e.preventDefault();
+            var assignAllBooking = $('#sellProfVersion');
+            assignAllBooking.find('.sell').unbind('click').click(function () {
+                window.location.href = '{{ url('admin_sales_article', {"action": "sellProf", "id": article.getId()})}}';
+            });
+            assignAllBooking.modal();
+        }
+    </script>
 {% endblock %}

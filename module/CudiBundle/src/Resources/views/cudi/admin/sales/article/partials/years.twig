@@ -1,5 +1,5 @@
 <header id="controller_sub_header">
-	<nav id="controller_sub_nav">
+    <nav id="controller_sub_nav">
         <ul id="supplier_nav">
             {% for academicYear in academicYears %}
                 <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("admin_sales_article", {"action": "manage", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>

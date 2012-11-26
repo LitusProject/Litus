@@ -1,35 +1,35 @@
 {% extends 'prof/base.twig' %}
 
 {% block content %}
-	<div class="page-header">
-	    <h2>{{ translate('Subject') }}</h2>
-	</div>
+    <div class="page-header">
+        <h2>{{ translate('Subject') }}</h2>
+    </div>
 
-	<p>
-	    {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
-	    {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
-	    {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
-	    {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b>
-	</p>
+    <p>
+        {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
+        {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
+        {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
+        {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b>
+    </p>
 
     {% import 'site/partials/form.twig' as forms %}
     {{ forms.renderForm(form) }}
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-		    $('#profSearch').typeaheadRemote(
-			    {
-			        source: '{{ url("prof_typeahead", {"language": language.getAbbrev()})}}',
-			    }
-			).change(function (e) {
-			    if ($(this).data('value')) {
-			        $('#profId').val($(this).data('value').id);
-			    } else {
-			        $('#profId').val('');
-			    }
-			});
-		});
-	</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#profSearch').typeaheadRemote(
+                {
+                    source: '{{ url("prof_typeahead", {"language": language.getAbbrev()})}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#profId').val($(this).data('value').id);
+                } else {
+                    $('#profId').val('');
+                }
+            });
+        });
+    </script>
 {% endblock %}
