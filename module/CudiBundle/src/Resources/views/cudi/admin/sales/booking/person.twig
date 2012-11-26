@@ -1,52 +1,52 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
+    {% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	    <br class="clear">
-	    <br class="clear">
+        <br class="clear">
+        <br class="clear">
 
-	    {% if paginator is not null %}
-	        <h1>Person</h1>
-	        <p>Name: <b>{{ person.getFullName() }}</b></p>
-	        <br class="clear">
+        {% if paginator is not null %}
+            <h1>Person</h1>
+            <p>Name: <b>{{ person.getFullName() }}</b></p>
+            <br class="clear">
 
-    		<table class="full_width manage">
-    	        <tr>
-    	            <th>Article</th>
-    	            <th width="40px">&nbsp;</th>
-    	            <th width="120px">Date</th>
-    	            <th width="120px">Expires On</th>
-    	            <th width="80px">Status</th>
+            <table class="full_width manage">
+                <tr>
+                    <th>Article</th>
+                    <th width="40px">&nbsp;</th>
+                    <th width="120px">Date</th>
+                    <th width="120px">Expires On</th>
+                    <th width="80px">Status</th>
                     <th width="55px">Price</th>
-    	            <th width="70px">Actions</th>
-    	        </tr>
+                    <th width="70px">Actions</th>
+                </tr>
 
-    	        {% for booking in paginator %}
-    	            <tr class="item">
-    	                <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
-    	                <td>&times;{{ booking.getNumber() }}</td>
-    	                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
-    	                <td>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</td>
-    	                <td class="status">{{ booking.getStatus()|capitalize }}</td>
+                {% for booking in paginator %}
+                    <tr class="item">
+                        <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
+                        <td>&times;{{ booking.getNumber() }}</td>
+                        <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</td>
+                        <td class="status">{{ booking.getStatus()|capitalize }}</td>
                         <td>&euro; {{ (booking.getArticle().getSellPrice() * booking.getNumber()/100)|number_format(2) }}</td>
-    	                <td class="actions">
-    	                    {% if hasAccess('admin_sales_booking', 'edit') %}
-    	                        <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
-    	                    {% endif %}
-    	                </td>
-    	            </tr>
-    	        {% endfor %}
-    	    </table>
+                        <td class="actions">
+                            {% if hasAccess('admin_sales_booking', 'edit') %}
+                                <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
 
-    		{% include 'admin/partials/paginationControl.twig' %}
-    	{% endif %}
-	</div>
+            {% include 'admin/partials/paginationControl.twig' %}
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block content_script %}

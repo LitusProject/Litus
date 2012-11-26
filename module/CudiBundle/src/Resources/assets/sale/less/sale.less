@@ -1,103 +1,103 @@
 #queueModal {
-	width: @queueModalWidth;
-	margin-left: -@queueModalWidth / 2;
+    width: @queueModalWidth;
+    margin-left: -@queueModalWidth / 2;
 
-	.table {
-		.number {
-			width: 50px;
-		}
+    .table {
+        .number {
+            width: 50px;
+        }
 
-		.name {
-			width: 330px;
-		}
+        .name {
+            width: 330px;
+        }
 
-		.status {
-			width: 120px;
-		}
+        .status {
+            width: 120px;
+        }
 
-		.actions {
-			width: 230px;
+        .actions {
+            width: 230px;
 
-			button {
-				margin-right: 5px;
-			}
-			
-			.hold {
-				float: right;
-				margin-right: 0;
-			}
-		}
+            button {
+                margin-right: 5px;
+            }
 
-		thead {
-			display: block;
-		}
+            .hold {
+                float: right;
+                margin-right: 0;
+            }
+        }
 
-		tbody {
-			max-height: 300px;
-			overflow: auto;
-			display: block;
+        thead {
+            display: block;
+        }
 
-			.actions {
-				padding: 3px 8px;
-			}
-		}
-	}
+        tbody {
+            max-height: 300px;
+            overflow: auto;
+            display: block;
+
+            .actions {
+                padding: 3px 8px;
+            }
+        }
+    }
 }
 
 #sale, #collecting {
-	.table {
-		tbody {
-			.actions {
-				padding: 3px 8px;
+    .table {
+        tbody {
+            .actions {
+                padding: 3px 8px;
 
-				.removeArticle {
-					float: right;
-				}
-			}
+                .removeArticle {
+                    float: right;
+                }
+            }
 
-			tr.inactive {
-				color: @cGray;
-			}
-		}
-	}
+            tr.inactive {
+                color: @cGray;
+            }
+        }
+    }
 
-	.wrapper {
-		margin-bottom: 10px;
+    .wrapper {
+        margin-bottom: 10px;
 
-		.money {
-			font-weight: bold;
-			text-align: right;
+        .money {
+            font-weight: bold;
+            text-align: right;
 
-			.total {
-				font-size: 55px;
-				line-height: 80px;
-			}
-		}
+            .total {
+                font-size: 55px;
+                line-height: 80px;
+            }
+        }
 
-		.customer {
-			.title {
-				margin: 0 0 10px 0;
-			}
+        .customer {
+            .title {
+                margin: 0 0 10px 0;
+            }
 
-			.customerName {
-				margin: 0 0 10px 30px;
-			}
+            .customerName {
+                margin: 0 0 10px 30px;
+            }
 
-			.name {
-				font-size: 30px;
-				line-height: 30px;
-				font-weight: bold;
-			}
+            .name {
+                font-size: 30px;
+                line-height: 30px;
+                font-weight: bold;
+            }
 
-			.actions {
-				margin: 0;
-			}
-		}
+            .actions {
+                margin: 0;
+            }
+        }
 
-		.discounts {
-		    .options {
-		        padding-left:10px;
-		    }
-		}
-	}
+        .discounts {
+            .options {
+                padding-left:10px;
+            }
+        }
+    }
 }
