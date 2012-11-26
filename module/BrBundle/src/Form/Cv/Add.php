@@ -14,7 +14,8 @@
 
 namespace BrBundle\Form\Cv;
 
-use BrBundle\Entity\Cv\Language as CvLanguage,
+use BrBundle\Component\Validator\FieldLength as LengthValidator,
+    BrBundle\Entity\Cv\Language as CvLanguage,
     CommonBundle\Component\Form\Bootstrap\Element\Button,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Hidden,
@@ -146,12 +147,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('computer_skills');
         $field->setLabel('Computer Skills')
             ->setAttribute('rows', 3)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 425)
             ->setAttribute('style', 'resize: none;');
         $capabilities->add($field);
 
         $field = new TextArea('experiences');
         $field->setLabel('Experiences, Projects (e.g. Internship, Holiday Jobs)')
             ->setAttribute('rows', 3)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 425)
             ->setAttribute('style', 'resize: none;');
         $capabilities->add($field);
 
@@ -260,10 +265,42 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $count > 0 && $count <= 5;
     }
 
+    private function _addCountFilters(InputFilter $inputFilter, InputFactory $factory, $parent) {
+        $iterator = $parent->getIterator();
+        foreach ($iterator as $element) {
+            if ($element instanceof \Zend\Form\Fieldset) {
+                $this->_addCountFilters($inputFilter, $factory, $element);
+            } else {
+                if (FALSE !== strpos($element->getAttribute('class'), 'count')) {
+                    $count = $element->getAttribute('data-count');
+                    $inputFilter->add(
+                        $factory->createInput(
+                            array(
+                                'name' => $element->getName(),
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    new LengthValidator(
+                                        $count,
+                                        75
+                                    )
+                                ),
+                            )
+                        )
+                    );
+                }
+            }
+
+        }
+    }
+
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+        $this->_addCountFilters($inputFilter, $factory, $this);
 
         for ($i = 0; $i < $this->data['lang_count']; $i++) {
             if (isset($this->data['lang_name' . $i])) {
