@@ -30,6 +30,7 @@ return array(
     'BrBundle\Component\Document\Pdf\ContractGenerator' => __DIR__ . '/src/Component/Document/Generator/Pdf/Contract.php',
     'Litus\Br\LetterGenerator'                          => __DIR__ . '/src/Component/Document/Generator/Pdf/Letter.php',
     'Litus\Br\InvoiceGenerator'                         => __DIR__ . '/src/Component/Document/Generator/Pdf/Invoice.php',
+    'BrBundle\Component\Validator\FieldLength'          => __DIR__ . '/src/Component/Validator/FieldLength.php',
     'BrBundle\Component\Validator\Logo\Type'            => __DIR__ . '/src/Component/Validator/Logo/TypeValidator.php',
     'BrBundle\Component\Validator\CompanyName'          => __DIR__ . '/src/Component/Validator/CompanyName.php',
     'BrBundle\Component\Controller\CareerController'    => __DIR__ . '/src/Component/Controller/CareerController.php',
