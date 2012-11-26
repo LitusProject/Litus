@@ -40,13 +40,13 @@ return array(
             'admin_academic' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/academic[/:action[/:id][/page/:page][/:field/:string]][/]',
+                    'route' => '/admin/academic[/:action[/:id][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
                         'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+                        'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_academic',
@@ -59,7 +59,7 @@ return array(
                 'options' => array(
                     'route' => '/admin/academic/typeahead[/:string][/]',
                     'constraints' => array(
-                        'string'       => '[%a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_academic',
@@ -72,7 +72,7 @@ return array(
                 'options' => array(
                     'route' => '/admin/person/typeahead[/:string][/]',
                     'constraints' => array(
-                        'string'       => '[%a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_person',

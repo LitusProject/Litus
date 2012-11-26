@@ -16,6 +16,7 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,10 +31,17 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
+        if (null !== $this->getParam('field'))
+            $mappings = $this->_search($academicYear);
+
+        if (!isset($mappings)) {
+            $mappings = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
-                ->findAllByAcademicYear($academicYear),
+                ->findAllByAcademicYear($academicYear);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $mappings,
             $this->getParam('page')
         );
 
@@ -58,13 +66,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        switch($this->getParam('field')) {
-            case 'name':
-                $mappings = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
-                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
-                break;
-        }
+        $mappings = $this->_search($academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -110,6 +112,16 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 'result' => $result,
             )
         );
+    }
+
+    private function _search(AcademicYearEntity $academicYear)
+    {
+        switch($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
+        }
     }
 
     private function _getAcademicYear()

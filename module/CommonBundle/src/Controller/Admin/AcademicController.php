@@ -32,16 +32,27 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CommonBundle\Entity\Users\People\Academic',
-            $this->getParam('page'),
-            array(
-                'canLogin' => 'true'
-            ),
-            array(
-                'username' => 'ASC'
-            )
-        );
+        if (null !== $this->getParam('field')) {
+            $academics = $this->_search();
+            
+            $paginator = $this->paginator()->createFromArray(
+                $academics,
+                $this->getParam('page')
+            );
+        }
+
+        if (!isset($paginator)) {
+            $paginator = $this->paginator()->createFromEntity(
+                'CommonBundle\Entity\Users\People\Academic',
+                $this->getParam('page'),
+                array(
+                    'canLogin' => 'true'
+                ),
+                array(
+                    'username' => 'ASC'
+                )
+            );
+        }
 
         return new ViewModel(
             array(
@@ -335,23 +346,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        switch($this->getParam('field')) {
-            case 'username':
-                $academics = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                    ->findAllByUsername($this->getParam('string'));
-                break;
-            case 'name':
-                $academics = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                    ->findAllByName($this->getParam('string'));
-                break;
-            case 'university_identification':
-                $academics = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                    ->findAllByUniversityIdentification($this->getParam('string'));
-                break;
-        }
+        $academics = $this->_search();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -380,6 +375,24 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 'result' => $result,
             )
         );
+    }
+
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'username':
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByUsername($this->getParam('string'));
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByName($this->getParam('string'));
+            case 'university_identification':
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByUniversityIdentification($this->getParam('string'));
+        }
     }
 
     private function _getAcademic()
