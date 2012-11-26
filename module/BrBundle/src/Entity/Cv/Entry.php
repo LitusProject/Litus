@@ -143,7 +143,7 @@ class Entry
     /**
      * @var string Additional diplomas.
      *
-     * @ORM\Column(name="additional_diplomas", type="string")
+     * @ORM\Column(name="additional_diplomas", type="text")
      */
     private $additionalDiplomas;
 
@@ -171,14 +171,14 @@ class Entry
     /**
      * @var string Computer skills.
      *
-     * @ORM\Column(name="computer_skills", type="string")
+     * @ORM\Column(name="computer_skills", type="text")
      */
     private $computerSkills;
 
     /**
      * @var string Experiences.
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $experiences;
 
@@ -192,7 +192,7 @@ class Entry
     /**
      * @var string Thesis summary.
      *
-     * @ORM\Column(name="thesis_summary", type="string")
+     * @ORM\Column(name="thesis_summary", type="text")
      */
     private $thesisSummary;
 
@@ -220,21 +220,21 @@ class Entry
     /**
      * @var string Career expectations.
      *
-     * @ORM\Column(name="career_expectations", type="string")
+     * @ORM\Column(name="career_expectations", type="text")
      */
     private $careerExpectations;
 
     /**
      * @var string Hobbies.
      *
-     * @ORM\Column(name="hobbies", type="string")
+     * @ORM\Column(name="hobbies", type="text")
      */
     private $hobbies;
 
     /**
      * @var string About me.
      *
-     * @ORM\Column(name="about", type="string")
+     * @ORM\Column(name="about", type="text")
      */
     private $about;
 

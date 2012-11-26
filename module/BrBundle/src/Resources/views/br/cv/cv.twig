@@ -61,6 +61,10 @@
 
         $(document).ready(function() {
 
+            $('.count').each(function() {
+                addLabel($(this));
+            });
+
             {% if languageError %}
                 $('#language_add').after('\
                     <div class="help-block" style="margin-left:221px;">\
@@ -95,7 +99,7 @@
                         </label>\
                         <div class="controls">\
                             <div>\
-                                <input type="text" name="lang_name' + i + '" id="lang_name' + i + '" value=""/>\
+                                <input type="text" class"count" data-count=30 name="lang_name' + i + '" id="lang_name' + i + '" value=""/>\
                                 <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">Remove Language</button>\
                             </div>\
                         </div>\
@@ -130,12 +134,57 @@
                     </div>'
                 );
 
+                addLabel($('#lang_name' + i));
+
                 addRemoveButton(i);
 
                 $('#lang_count').val(i + 1);
             });
 
         });
+
+        function updateButton() {
+            var enabled = true;
+            $('.count').each(function() {
+                var max = $(this).attr('data-count');
+                if (getLength($(this)) > max)
+                    enabled = false;
+            });
+            if (enabled) {
+                $("#submit").removeAttr("disabled");
+            } else {
+                $("#submit").attr("disabled", "disabled");
+            }
+        }
+
+        function addLabel(element) {
+            var label = $('.control-label[for=' + element.attr('id') + ']');
+            label.append('<br/>(<span class="count-label"></span>)');
+            updateLabel(element);
+            element.bind("propertychange keyup input paste", function() {
+                updateLabel($(this));
+            });
+        }
+
+        function updateLabel(element) {
+            var label = $('.control-label[for=' + element.attr('id') + ']');
+            var max = element.attr('data-count');
+            var cnt = max - getLength(element);
+            var el = label.find('.count-label');
+            if (cnt < 0)
+                el.addClass('count-negative');
+            else
+                el.removeClass('count-negative');
+            el.html(cnt);
+            updateButton();
+        }
+
+        function getLength(element) {
+            var val = element.val();
+            val = val.replace(/\r\n|\r|\n/g,Array(76).join(" ")); // Newlines count as 75 characters
+            return val.length;
+        }
+
     </script>
 }
 
