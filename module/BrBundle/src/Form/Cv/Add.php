@@ -111,6 +111,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('additional_diplomas');
         $field->setLabel('Additional Diplomas (e.g. driver\'s license)')
             ->setAttribute('rows', 3)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 150)
             ->setAttribute('style', 'resize: none;');
         $studies->add($field);
 
@@ -119,11 +121,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($erasmus);
 
         $field = new Text('erasmus_period');
-        $field->setLabel('Period');
+        $field->setLabel('Period')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $erasmus->add($field);
 
         $field = new Text('erasmus_location');
-        $field->setLabel('Location');
+        $field->setLabel('Location')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $erasmus->add($field);
 
         $languageCollection = new Collection('languages');
@@ -165,13 +171,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($thesis);
 
         $field = new Text('thesis_title');
-        $field->setLabel('Title');
+        $field->setLabel('Title')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $thesis->add($field);
 
         $field = new TextArea('thesis_summary');
         $field->setLabel('Summary')
             ->setAttribute('rows', 3)
-            ->setAttribute('style', 'resize: none;');
+            ->setAttribute('style', 'resize: none;')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 150);
         $thesis->add($field);
 
         $future = new Collection('future');
@@ -179,21 +189,29 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($future);
 
         $field = new Text('field_of_interest');
-        $field->setLabel('Field Of Interest');
+        $field->setLabel('Field Of Interest')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new Text('mobility_europe');
-        $field->setLabel('Mobility Europe');
+        $field->setLabel('Mobility Europe')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new Text('mobility_world');
-        $field->setLabel('Mobility World');
+        $field->setLabel('Mobility World')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new TextArea('career_expectations');
         $field->setLabel('Career Expectations')
             ->setAttribute('rows', 3)
-            ->setAttribute('style', 'resize: none;');
+            ->setAttribute('style', 'resize: none;')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 200);
         $future->add($field);
 
         $thesis = new Collection('profile');
@@ -203,13 +221,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('hobbies');
         $field->setLabel('Hobbies')
             ->setAttribute('rows', 3)
-            ->setAttribute('style', 'resize: none;');
+            ->setAttribute('style', 'resize: none;')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 300);
         $thesis->add($field);
 
         $field = new TextArea('profile_about');
         $field->setLabel('About Me')
             ->setAttribute('rows', 3)
-            ->setAttribute('style', 'resize: none;');
+            ->setAttribute('style', 'resize: none;')
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 100);
         $thesis->add($field);
 
         $field = new Submit('submit');
@@ -237,7 +259,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 continue;
 
             $field = new Text('lang_name' . $i);
-            $field->setLabel('Language');
+            $field->setLabel('Language')
+                ->setAttribute('class', $field->getAttribute('class') . ' count')
+                ->setAttribute('data-count', 30);
             $languageCollection->add($field);
 
             $field = new Select('lang_oral' . $i);
