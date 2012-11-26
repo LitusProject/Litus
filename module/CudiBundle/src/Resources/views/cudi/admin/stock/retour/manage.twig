@@ -1,46 +1,46 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/stock/partials/navigation.twig' %}
+    {% include 'cudi/admin/stock/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	{% include 'cudi/admin/stock/retour/partials/suppliers.twig' %}
+    {% include 'cudi/admin/stock/retour/partials/suppliers.twig' %}
 
-	<div id="controller_action">
-		<table>
+    <div id="controller_action">
+        <table>
 
-		    <tr>
-		        <th>Name</th>
-				<th width="200px">Actions</th>
-		    </tr>
+            <tr>
+                <th>Name</th>
+                <th width="200px">Actions</th>
+            </tr>
 
-		    {% for supplier in paginator %}
-		        <tr>
-		            <td>{{ supplier.getName() }}</td>
-					<td>
-					    {% if hasAccess('admin_stock_retour', 'supplier') %}
-    						<a href="{{ url('admin_stock_retour', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
-    					{% endif %}
-					</td>
-		        </tr>
-		    {% endfor %}
-		</table>
-	</div>
+            {% for supplier in paginator %}
+                <tr>
+                    <td>{{ supplier.getName() }}</td>
+                    <td>
+                        {% if hasAccess('admin_stock_retour', 'supplier') %}
+                            <a href="{{ url('admin_stock_retour', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
-	<aside>
-    	{% if hasAccess('admin_stock_retour', 'add') %}
-    		<div class="sidebox">
-    	        <div class="title">New Retour</div>
-    	        <div class="content">
-    	            <p>
-    	        		<i>Please hit the link below to add a retour!</i>
-    	            </p>
-    	            <p>
-    	                <a href="{{ url('admin_stock_retour', {"action": "add"}) }}">&rarr; Add Retour</a>
-    	            </p>
-    	        </div>
-    	    </div>
-    	{% endif %}
-	</aside>
+    <aside>
+        {% if hasAccess('admin_stock_retour', 'add') %}
+            <div class="sidebox">
+                <div class="title">New Retour</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a retour!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_stock_retour', {"action": "add"}) }}">&rarr; Add Retour</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}

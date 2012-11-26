@@ -1,44 +1,44 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/article/partials/navigation.twig' %}
+    {% include 'cudi/admin/article/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-		    $('#type').change(function () {
-		        if ($(this).find(':selected').val() == 'common')
-		            $('#subjectSearch, #subjectId').val('');
-		    });
-			$('#internal').click(toggleInternal);
-			toggleInternal();
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#type').change(function () {
+                if ($(this).find(':selected').val() == 'common')
+                    $('#subjectSearch, #subjectId').val('');
+            });
+            $('#internal').click(toggleInternal);
+            toggleInternal();
 
-			$('#subjectSearch').typeaheadRemote(
-			    {
-			        source: '{{ url("admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
-			    }
-			).change(function (e) {
-			    if ($(this).data('value')) {
-			        $('#subjectId').val($(this).data('value').id);
-			    } else {
-			        $('#subjectId').val('');
-			    }
-			});
-		});
+            $('#subjectSearch').typeaheadRemote(
+                {
+                    source: '{{ url("admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#subjectId').val($(this).data('value').id);
+                } else {
+                    $('#subjectId').val('');
+                }
+            });
+        });
 
-		function toggleInternal() {
-			if ($('#internal').is(':checked'))
-				$('#internal_form').show();
-			else
-				$('#internal_form').hide();
-		}
-	</script>
+        function toggleInternal() {
+            if ($('#internal').is(':checked'))
+                $('#internal_form').show();
+            else
+                $('#internal_form').hide();
+        }
+    </script>
 {% endblock %}

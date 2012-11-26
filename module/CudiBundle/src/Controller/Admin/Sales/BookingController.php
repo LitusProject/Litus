@@ -17,6 +17,7 @@ namespace CudiBundle\Controller\Admin\Sales;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Booking,
+    CudiBundle\Entity\Stock\Period,
     CudiBundle\Form\Admin\Mail\Send as MailForm,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Booking\Article as ArticleForm,
@@ -40,10 +41,17 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($activePeriod = $this->_getPeriod()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
+        if (null !== $this->getParam('field'))
+            $bookings = $this->_search($activePeriod);
+
+        if (!isset($bookings)) {
+            $bookings = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
-                ->findAllActiveByPeriod($activePeriod),
+                ->findAllActiveByPeriod($activePeriod);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $bookings,
             $this->getParam('page')
         );
 
@@ -70,10 +78,18 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($activePeriod = $this->_getPeriod()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
+        if (null !== $this->getParam('field'))
+            $bookings = $this->_search($activePeriod);
+
+        if (!isset($bookings)) {
+            $bookings = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
-                ->findAllInactiveByPeriod($activePeriod),
+                ->findAllInactiveByPeriod($activePeriod);
+        }
+
+$this->paginator()->setItemsPerPage(5);
+        $paginator = $this->paginator()->createFromArray(
+            $bookings,
             $this->getParam('page')
         );
 
@@ -434,23 +450,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($activePeriod = $this->_getPeriod()))
             return new ViewModel();
 
-        switch($this->getParam('field')) {
-            case 'person':
-                $bookings = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
-                    ->findAllByPersonNameAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
-                break;
-            case 'article':
-                $bookings = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
-                    ->findAllByArticleAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
-                break;
-            case 'status':
-                $bookings = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
-                    ->findAllByStatusAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
-                break;
-        }
+        $bookings = $this->_search($activePeriod);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -567,6 +567,24 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 'result' => (object) array("status" => "success"),
             )
         );
+    }
+
+    private function _search(Period $activePeriod)
+    {
+        switch($this->getParam('field')) {
+            case 'person':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->findAllByPersonNameAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
+            case 'article':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->findAllByArticleAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
+            case 'status':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->findAllByStatusAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
+        }
     }
 
     private function _getPeriod()

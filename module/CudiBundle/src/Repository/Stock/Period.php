@@ -139,11 +139,12 @@ class Period extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
-            ->innerJoin('a.mainArticle', 'm', Join::WITH,
-                $query->expr()->like($query->expr()->lower('m.title'), ':title')
-            )
+            ->innerJoin('a.mainArticle', 'm')
             ->where(
-                $query->expr()->in('a.id', $this->_findAllArticleIds($period))
+                $query->expr()->andX(
+                    $query->expr()->in('a.id', $this->_findAllArticleIds($period)),
+                    $query->expr()->like($query->expr()->lower('m.title'), ':title')
+                )
             )
             ->setParameter('title', '%'.strtolower($title).'%')
             ->getQuery()
@@ -192,11 +193,12 @@ class Period extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
-            ->innerJoin('a.supplier', 's', Join::WITH,
-                $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
-            )
+            ->innerJoin('a.supplier', 's')
             ->where(
-                $query->expr()->in('a.id', $this->_findAllArticleIds($period))
+                $query->expr()->andX(
+                    $query->expr()->in('a.id', $this->_findAllArticleIds($period)),
+                    $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
+                )
             )
             ->setParameter('supplier', '%'.strtolower($supplier).'%')
             ->getQuery()
