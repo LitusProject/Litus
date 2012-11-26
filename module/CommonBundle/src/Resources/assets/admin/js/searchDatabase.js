@@ -57,8 +57,8 @@
                         method: 'get',
                         dataType: 'json',
                         success: function (e) {
-                            opts.searchDiv.find('.moreResults').toggle(e.length > 1 && opts.searchPage != '');
-                            if (e.length > 1 && opts.searchPage != '')
+                            opts.searchDiv.find('.moreResults').toggle(e.length >= 1 && opts.searchPage != '');
+                            if (e.length >= 1 && opts.searchPage != '')
                                 opts.searchDiv.find('.moreResults a').attr('href', opts.searchPage + opts.searchField.val() + '/' + opts.searchString.val());
 
                             opts.display(e);
