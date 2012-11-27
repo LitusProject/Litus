@@ -107,6 +107,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('admin_article', 'history') %}
+            <div class="sidebox">
+                <div class="title">View History</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the history of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article', {"action": "history", "id": article.getId()}) }}">&rarr; View History</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
     <div class="modal hide fade" id="viewComment">
