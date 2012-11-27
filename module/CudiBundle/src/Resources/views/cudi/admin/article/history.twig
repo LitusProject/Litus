@@ -1,0 +1,149 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/article/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th width="100px">Date</th>
+                <th width="60px">Version</th>
+                <th>Title</th>
+                <th width="200px">Author</th>
+                <th width="50px">Year</th>
+                <th width="60px">Type</th>
+                <th width="70px">Action</th>
+            </tr>
+
+            {% for item in history %}
+                {{ _self.printArticle(item.getPrecursor()) }}
+            {% endfor %}
+            {{ _self.printArticle(current) }}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal hide fade" id="viewArticle">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /View Article
+        </div>
+        <div class="modal-body">
+            <p>
+                <dl>
+                    <dt>Title</dt>
+                    <dd class="title">...</dd>
+                    <dt>Authors</dt>
+                    <dd class="authors">...</dd>
+                    <dt>Publishers</dt>
+                    <dd class="publishers">...</dd>
+                    <dt>Year Published</dt>
+                    <dd class="yearPublished">...</dd>
+                    <dt>ISBN</dt>
+                    <dd class="isbn">...</dd>
+                    <dt>URL</dt>
+                    <dd class="url">...</dd>
+                    <dt>Downloadable</dt>
+                    <dd class="downloadable">...</dd>
+                    <dt>Type</dt>
+                    <dd class="type">...</dd>
+                </dl>
+                <dl class="internal">
+                    <dt>Number Black And White Pages</dt>
+                    <dd class="nbBlackAndWhite">...</dd>
+                    <dt>Number Colored Pages</dt>
+                    <dd class="nbcolored">...</dd>
+                    <dt>Binding</dt>
+                    <dd class="binding">...</dd>
+                    <dt>Official</dt>
+                    <dd class="isOfficial">...</dd>
+                    <dt>Recto Verso</dt>
+                    <dd class="isRectoVerso">...</dd>
+                    <dt>Front Color</dt>
+                    <dd class="frontColor">...</dd>
+                    <dt>Perforated</dt>
+                    <dd class="isPerforated">...</dd>
+                    <dt>Colored</dt>
+                    <dd class="isColored">...</dd>
+                </dl>
+            </p>
+            <div class="footer">
+                <input type="button" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .view').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var viewArticle = $('#viewArticle');
+            viewArticle.find('.title').html($(this).data('title'));
+            viewArticle.find('.authors').html($(this).data('authors'));
+            viewArticle.find('.publishers').html($(this).data('publishers'));
+            viewArticle.find('.yearPublished').html($(this).data('yearpublished'));
+            viewArticle.find('.isbn').html($(this).data('isbn'));
+            viewArticle.find('.url').html($(this).data('url'));
+            viewArticle.find('.downloadable').html($(this).data('downloadable') ? 'Yes' : 'No');
+            viewArticle.find('.type').html($(this).data('type'));
+            if ($(this).data('isinternal')) {
+                viewArticle.find('.internal').show();
+                viewArticle.find('.nbBlackAndWhite').html($(this).data('nbblackandwhite'));
+                viewArticle.find('.nbColored').html($(this).data('nbcolored'));
+                viewArticle.find('.binding').html($(this).data('binding'));
+                viewArticle.find('.isOfficial').html($(this).data('isofficial') ? 'Yes' : 'No');
+                viewArticle.find('.isRectoVerso').html($(this).data('isrectoverso') ? 'Yes' : 'No');
+                viewArticle.find('.frontColor').html($(this).data('frontcolor'));
+                viewArticle.find('.isPerforated').html($(this).data('isperforated') ? 'Yes' : 'No');
+                viewArticle.find('.isColored').html($(this).data('iscolored') ? 'Yes' : 'No');
+            } else {
+                viewArticle.find('.internal').hide();
+            }
+            viewArticle.modal();
+        }
+    </script>
+{% endblock %}
+
+{% macro printArticle(article) %}
+    <tr class="item item-{{ article.getId() }}">
+        <td>{{ article.getTimestamp().format('d/m/Y H:i') }}</td>
+        <td style="text-align:center">{{ article.getVersionNumber() }}</td>
+        <td>{{ article.getTitle() }}</td>
+        <td>{{ article.getAuthors() }}</td>
+        <td>{{ article.getYearPublished() }}</td>
+        <td>{% if article.isInternal() %}Internal{% else %}External{% endif %}</td>
+        <td class="actions">
+            <a href="#"
+                data-title="{{ article.getTitle() }}"
+                data-authors="{{ article.getAuthors() }}"
+                data-publishers="{{ article.getPublishers() }}"
+                data-yearpublished="{{ article.getYearPublished() }}"
+                data-isbn="{{ article.getISBN() }}"
+                data-url="{{ article.getURL() }}"
+                data-downloadable="{{ article.isDownloadable() }}"
+                data-type="{{ article.getType() }}"
+                data-isinternal="{{ article.isInternal() }}"
+                {% if article.isInternal() %}
+                    data-nbblackandwhite="{{ article.getNbBlackAndWhite() }}"
+                    data-nbcolored="{{ article.getNbColored() }}"
+                    data-binding="{{ article.getBinding().getName() }}"
+                    data-isofficial="{{ article.isOfficial() }}"
+                    data-isrectoverso="{{ article.isRectoVerso() }}"
+                    data-frontcolor="{{ article.getFrontColor().getName() }}"
+                    data-isperforated="{{ article.isPerforated() }}"
+                    data-iscolored="{{ article.isColored() }}"
+                {% endif %}
+            class="view">View</a>
+        </td>
+    </tr>
+{% endmacro %}
