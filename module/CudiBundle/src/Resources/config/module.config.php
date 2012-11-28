@@ -88,7 +88,7 @@ return array(
             'admin_sales_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/:field/:string][/page/:page]][/]',
+                    'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
