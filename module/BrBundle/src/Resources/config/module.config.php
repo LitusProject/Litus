@@ -290,6 +290,16 @@ return array(
                 'filename' => __DIR__ . '/../translations/career.nl.php',
                 'locale'   => 'nl'
             ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/cv.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/cv.nl.php',
+                'locale'   => 'nl'
+            ),
         ),
     ),
     'view_manager' => array(
