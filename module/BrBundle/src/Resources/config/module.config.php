@@ -162,7 +162,7 @@ return array(
                     'route' => '[/:language]/career/company/search[/:string][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'     => '[%a-zA-Z0-9_-]*',
+                        'string'   => '[%a-zA-Z0-9:.,_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(

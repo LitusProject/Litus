@@ -16,6 +16,8 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    SyllabusBundle\Entity\Study,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,9 +35,14 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-            ->findAllByStudyAndAcademicYear($study, $academicYear);
+        if (null !== $this->getParam('field'))
+            $mappings = $this->_search($study, $academicYear);
+
+        if (!isset($mappings)) {
+            $mappings = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                ->findAllByStudyAndAcademicYear($study, $academicYear);
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -92,18 +99,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        switch($this->getParam('field')) {
-            case 'name':
-                $subjects = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByNameAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
-                break;
-            case 'code':
-                $subjects = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByCodeAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
-                break;
-        }
+        $subjects = $this->_search($study, $academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -153,6 +149,20 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 'result' => $result,
             )
         );
+    }
+
+    private function _search(Study $study, AcademicYearEntity $academicYear)
+    {
+        switch($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByNameAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
+            case 'code':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByCodeAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
+        }
     }
 
     private function _getStudy()

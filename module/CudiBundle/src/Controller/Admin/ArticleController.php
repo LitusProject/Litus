@@ -273,6 +273,23 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function historyAction()
+    {
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+
+        $history = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Articles\History')
+            ->findByArticle($article);
+
+        return new ViewModel(
+            array(
+                'history' => $history,
+                'current' => $article,
+            )
+        );
+    }
+
     public function searchAction()
     {
         $academicYear = $this->getAcademicYear();

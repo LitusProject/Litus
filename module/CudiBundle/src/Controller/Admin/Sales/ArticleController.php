@@ -20,7 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
     CudiBundle\Entity\Sales\Article as SaleArticle,
-    CudiBundle\Entity\Sales\History,
+    CudiBundle\Entity\Sales\Articles\History,
     CudiBundle\Entity\Sales\SaleItem,
     Zend\View\Model\ViewModel;
 
@@ -313,6 +313,23 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function historyAction()
+    {
+        if (!($article = $this->_getSaleArticle()))
+            return new ViewModel();
+
+        $history = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Articles\History')
+            ->findByArticle($article);
+
+        return new ViewModel(
+            array(
+                'history' => $history,
+                'current' => $article,
             )
         );
     }
