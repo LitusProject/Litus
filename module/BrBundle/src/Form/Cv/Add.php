@@ -133,7 +133,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $erasmus->add($field);
 
         $languageCollection = new Collection('languages');
-        $languageCollection->setLabel('Languages');
+        $languageCollection->setLabel('Languages (max. 5)');
         $this->add($languageCollection);
 
         $field = new Hidden('lang_count');

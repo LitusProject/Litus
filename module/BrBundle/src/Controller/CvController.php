@@ -32,25 +32,25 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function cvAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        $message = null;
+        $messages = array();
         $languageError = null;
 
         if ($person === null) {
-            $message = 'Please log in to add your CV.';
+            $messages = array('Please log in to add your CV.');
         } else {
             if (!($person instanceof Academic)) {
-                $message = 'You must be a student to add your CV.';
+                $messages = array('You must be a student to add your CV.');
             } else {
 
                 $temp = $this->_getBadAccountMessage($person);
-                if ($temp !== null && '' !== $temp)
-                    $message = $temp;
+                if ($temp !== null && !empty($temp))
+                    $messages = $temp;
 
                 $entry = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Cv\Entry')
                     ->findOneByAcademic($person);
                 if ($entry) {
-                    $message = 'You can only fill in the CV Book once.';
+                    $messages = array('You can only fill in the CV Book once.');
                 }
             }
         }
@@ -61,13 +61,13 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getConfigValue('br.cv_book_open');
 
         if (!$open) {
-            $message = 'The CV Book is currently not accepting entries.';
+            $messages = array('The CV Book is currently not accepting entries.');
         }
 
-        if ($message) {
+        if (!empty($messages)) {
             return new ViewModel(
                 array(
-                    'message' => $message,
+                    'messages' => $messages,
                 )
             );
         }
@@ -168,40 +168,62 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     }
 
     private function _getBadAccountMessage(Academic $person) {
-        $message = '';
+        $messages = array();
 
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-        if (empty($studies))
-            $message = $message . '<li>Your Studies</li>';
+        if (empty($studies)) {
+            $messages[] = '<li>';
+            $messages[] = 'Your studies';
+            $messages[] = '</li>';
+        }
 
         $address = $person->getSecondaryAddress();
         if ($address === null || '' == $address->getStreet() || '' == $address->getNumber() 
-                || '' == $address->getPostal() || '' == $address->getCity() || '' == $address->getCountryCode())
-            $message = $message . '<li>Your address</li>';
-
-        if ('' == $person->getFirstName() || '' == $person->getLastName())
-            $message = $message . '<li>Your name</li>';
-
-        if ('' == $person->getPhoneNumber())
-            $message = $message . '<li>Your phone number</li>';
-
-        if ('' == $person->getPersonalEmail())
-            $message = $message . '<li>Your personal email address</li>';
-
-        if ('' == $person->getPhotoPath())
-            $message = $message . '<li>Your photo</li>';
-
-        if (null === $person->getBirthDay())
-            $message = $message . '<li>Your birthday</li>';
-
-        if ($message) {
-            $message = 'The following information in your account is incorrect:<br/><ul>' . $message .
-                '</ul>To add your information to the CV Book, you must complete these. Please click <a href="/account">here</a> to edit your account.';
+                || '' == $address->getPostal() || '' == $address->getCity() || '' == $address->getCountryCode()) {
+            $messages[] = '<li>';
+            $messages[] = 'Your address';
+            $messages[] = '</li>';
         }
 
-        return $message;
+        if ('' == $person->getFirstName() || '' == $person->getLastName()) {
+            $messages[] = '<li>';
+            $messages[] = 'Your name';
+            $messages[] = '</li>';
+        }
+
+        if ('' == $person->getPhoneNumber()) {
+            $messages[] = '<li>';
+            $messages[] = 'Your phone number';
+            $messages[] = '</li>';
+        }
+
+        if ('' == $person->getPersonalEmail()) {
+            $messages[] = '<li>';
+            $messages[] = 'Your personal email address';
+            $messages[] = '</li>';
+        }
+
+        if ('' == $person->getPhotoPath()) {
+            $messages[] = '<li>';
+            $messages[] = 'Your photo';
+            $messages[] = '</li>';
+        }
+
+        if (null === $person->getBirthDay()) {
+            $messages[] = '<li>';
+            $messages[] = 'Your birthday';
+            $messages[] = '</li>';
+        }
+
+        if ($messages) {
+            array_unshift($messages, 'The following information in your account is incomplete:', '<br/><ul>');
+            $messages[] = '</ul>';
+            $messages[] = 'To add your information to the CV Book, you must complete these. Please click <a href="/en/account">here</a> to edit your account.';
+        }
+
+        return $messages;
     }
 }
