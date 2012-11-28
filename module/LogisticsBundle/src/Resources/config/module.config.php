@@ -28,12 +28,10 @@ return array(
 			'admin_driver' => array(
 				'type'    => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-                    'route' => '/admin/driver[/:action[/:id][/page/:page][/:field/:string]][/]',
+                    'route' => '/admin/driver[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
-                        'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'  => '[%a-zA-Z0-9_-]*',
                         'page'    => '[0-9]*',
                     ),
 					'defaults' => array(

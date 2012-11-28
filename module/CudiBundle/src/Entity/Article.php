@@ -282,6 +282,17 @@ abstract class Article
     }
 
     /**
+     * @param \DateTime $timestamp
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setTimestamp(DateTime $timestamp)
+    {
+        $this->timestamp = $timestamp;
+        return $this;
+    }
+
+    /**
      * @return integer
      */
     public function getVersionNumber()

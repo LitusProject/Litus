@@ -8,10 +8,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/LitusProject/ZfcTwig"
         }
     ],
     "require": {
@@ -22,6 +18,6 @@
 
         "EvanDotPro/EdpMarkdown": "dev-master",
         "widmogrod/zf2-assetic-module": "dev-master",
-        "zf-commons/zfc-twig": "dev-fix"
+        "zf-commons/zfc-twig": "dev-refactor"
     }
 }
