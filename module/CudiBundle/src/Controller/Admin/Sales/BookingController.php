@@ -87,7 +87,6 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 ->findAllInactiveByPeriod($activePeriod);
         }
 
-$this->paginator()->setItemsPerPage(5);
         $paginator = $this->paginator()->createFromArray(
             $bookings,
             $this->getParam('page')
