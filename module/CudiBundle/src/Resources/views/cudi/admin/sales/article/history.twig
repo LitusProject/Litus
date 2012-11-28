@@ -1,0 +1,109 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sales/article/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th width="100px">Date</th>
+                <th width="60px">Version</th>
+                <th>Title</th>
+                <th width="170px">Author</th>
+                <th width="100px" class="wider">Barcode</th>
+                <th width="90px">Sell Price</th>
+                <th width="70px">Action</th>
+            </tr>
+
+            {% for item in history %}
+                {{ _self.printArticle(item.getPrecursor()) }}
+            {% endfor %}
+            {{ _self.printArticle(current) }}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal hide fade" id="viewArticle">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /View Article
+        </div>
+        <div class="modal-body">
+            <p>
+                <dl>
+                    <dt>Title</dt>
+                    <dd class="title">...</dd>
+                    <dt>Authors</dt>
+                    <dd class="authors">...</dd>
+                    <dt>Barcode</dt>
+                    <dd class="barcode">...</dd>
+                    <dt>Purchase Price</dt>
+                    <dd class="purchasePrice">...</dd>
+                    <dt>Sell Price</dt>
+                    <dd class="sellPrice">...</dd>
+                    <dt>bookable</dt>
+                    <dd class="bookable">...</dd>
+                    <dt>Unbookable</dt>
+                    <dd class="unbookable">...</dd>
+                    <dt>Can Expire</dt>
+                    <dd class="canExpire">...</dd>
+                    <dt>Supplier</dt>
+                    <dd class="supplierName">...</dd>
+                </dl>
+            </p>
+            <div class="footer">
+                <input type="button" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .view').click(openModal);
+        });
+
+        function openModal(e) {
+            e.preventDefault();
+            var viewArticle = $('#viewArticle');
+            viewArticle.find('.title').html($(this).data('title'));
+            viewArticle.find('.authors').html($(this).data('authors'));
+            viewArticle.find('.barcode').html($(this).data('barcode'));
+            viewArticle.find('.purchasePrice').html('&euro; ' + $(this).data('purchaseprice').toFixed(2));
+            viewArticle.find('.sellPrice').html('&euro; ' + $(this).data('sellprice').toFixed(2));
+            viewArticle.find('.bookable').html($(this).data('bookable') ? 'Yes' : 'No');
+            viewArticle.find('.unbookable').html($(this).data('unbookable') ? 'Yes' : 'No');
+            viewArticle.find('.canExpire').html($(this).data('canexpire') ? 'Yes' : 'No');
+            viewArticle.find('.supplierName').html($(this).data('supplier'));
+            viewArticle.modal();
+        }
+    </script>
+{% endblock %}
+
+{% macro printArticle(article) %}
+    <tr class="item item-{{ article.getId() }}">
+        <td>{{ article.getTimestamp().format('d/m/Y H:i') }}</td>
+        <td style="text-align:center">{{ article.getVersionNumber() }}</td>
+        <td>{{ article.getMainArticle().getTitle() }}</td>
+        <td>{{ article.getMainArticle().getAuthors() }}</td>
+        <td>{{ article.getBarcode() }}</td>
+        <td>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</td>
+        <td class="actions">
+            <a href="#"
+                data-title="{{ article.getMainArticle().getTitle() }}"
+                data-authors="{{ article.getMainArticle().getAuthors() }}"
+                data-barcode="{{ article.getBarcode() }}"
+                data-purchaseprice="{{ (article.getPurchasePrice()/100)|number_format(2) }}"
+                data-sellprice="{{ (article.getSellPrice()/100)|number_format(2) }}"
+                data-bookable="{{ article.isBookable() }}"
+                data-unbookable="{{ article.isUnbookable() }}"
+                data-canexpire="{{ article.canExpire() }}"
+                data-supplier="{{ article.getSupplier().getName() }}"
+            class="view">View</a>
+        </td>
+    </tr>
+{% endmacro %}
