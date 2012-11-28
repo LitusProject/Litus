@@ -12,13 +12,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Sales;
+namespace CudiBundle\Entity\Sales\Articles;
 
 use CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\History")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Articles\History")
  * @ORM\Table(name="cudi.sales_history")
  */
 class History
@@ -59,8 +59,38 @@ class History
         $this->precursor->setVersionNumber($article->getVersionNumber())
             ->setIsHistory(true);
 
+        if ($this->precursor->getTimeStamp() > $article->getTimeStamp()) {
+            $date = $article->getTimeStamp();
+            $article->setTimeStamp($this->precursor->getTimeStamp());
+            $this->precursor->setTimeStamp($date);
+        }
+
         $article->setVersionNumber($article->getVersionNumber()+1);
 
         $this->article = $article;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+
+    /**
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function getPrecursor()
+    {
+        return $this->precursor;
     }
 }

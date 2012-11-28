@@ -336,7 +336,7 @@ VTK Cudi
                         'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
                     ),
                     'admin_sales_article' => array(
-                        'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
+                        'activate', 'add', 'delete', 'edit', 'history', 'manage', 'search', 'sellProf', 'typeahead'
                     ),
                     'admin_sales_barcode' => array(
                         'delete', 'manage'
