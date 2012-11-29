@@ -7,7 +7,9 @@
             </div>
 
             {% if not form %}
-                {{ translate(message) }}
+                {% for message in messages %}
+                    {{ translate(message) }}
+                {% endfor %}
             {% else %}
 
                 {{ translate('The following data from your account will be used in the CV Book:') }}
@@ -95,24 +97,24 @@
                 $('#language_add').before('\
                     <div class="control-group lang_control' + i + '">\
                         <label class="control-label" for="lang_name' + i + '">\
-                            Language\
+                            {{ translate("Language") }}\
                         </label>\
                         <div class="controls">\
                             <div>\
                                 <input type="text" class"count" data-count=30 name="lang_name' + i + '" id="lang_name' + i + '" value=""/>\
-                                <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">Remove Language</button>\
+                                <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">{{ translate("Remove Language") }}</button>\
                             </div>\
                         </div>\
                     </div>\
                     <div class="control-group lang_control' + i + '">\
                         <label class="control-label" for="lang_oral' + i + '">\
-                            Oral Skills\
+                            {{ translate("Oral Skills") }}\
                         </label>\
                         <div class="controls">\
                             <div>\
                                 <select name="lang_oral' + i + '" id="lang_oral' + i + '">\
                                     {% for key,value in oral_skills %}
-                                        <option value="{{key}}">{{value}}</option>\
+                                        <option value="{{key}}">{{ translate(value) }}</option>\
                                     {% endfor %}
                                 </select>\
                             </div>\
@@ -120,13 +122,13 @@
                     </div>\
                     <div class="control-group lang_control' + i + '">\
                         <label class="control-label" for="lang_written' + i + '">\
-                            Written Skills\
+                            {{ translate("Written Skills") }}\
                         </label>\
                         <div class="controls">\
                             <div>\
                                 <select name="lang_written' + i + '" id="lang_written' + i + '">\
                                     {% for key,value in written_skills %}
-                                        <option value="{{key}}">{{value}}</option>\
+                                        <option value="{{key}}">{{ translate(value) }}</option>\
                                     {% endfor %}
                                 </select>\
                             </div>\
