@@ -85,7 +85,7 @@ return array(
             'admin_company_logo' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/company/logo[/:action[/:id]][/]',
+                    'route' => '/admin/company/logos[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-zA-Z0-9_-]*',
