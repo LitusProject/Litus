@@ -8,7 +8,9 @@
 
             {% if not form %}
                 {% for message in messages %}
-                    {{ translate(message) }}
+                {% autoescape false %}
+                    {{ translate(message)|replace({"{{editurl}}" : url('account', {action: 'edit', return: 'cv_index'})}) }}
+                {% endautoescape %}
                 {% endfor %}
             {% else %}
 

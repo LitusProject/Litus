@@ -29,7 +29,7 @@ class Language
      * @var array The possible written skills.
      */
     public static $WRITTEN_SKILLS = array(
-        'none' => 'None',
+        'none' => 'None_skills',
         'active' => 'Active (Writing)',
         'passive' => 'Passive (Reading)',
     );
@@ -38,7 +38,7 @@ class Language
      * @var array The possible oral skills.
      */
     public static $ORAL_SKILLS = array(
-        'none' => 'None',
+        'none' => 'None_skills',
         'active' => 'Active (Speaking)',
         'passive' => 'Passive (Listening)',
     );
