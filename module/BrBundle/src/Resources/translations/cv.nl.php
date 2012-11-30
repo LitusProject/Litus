@@ -30,7 +30,7 @@ return array(
     "Language" => "Taal",
     "Oral Skills" => "Mondeling",
     "Written Skills" => "Geschreven",
-    "None" => "Niet",
+    "None_skills" => "Niet",
     "Add Language" => "Taal Toevoegen",
     "Remove Language" => "Taal Verwijderen",
     "Capabilities" => "Vaardigheden",

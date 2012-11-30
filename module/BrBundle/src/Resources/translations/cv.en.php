@@ -31,7 +31,7 @@ return array(
     "Language" => "Language",
     "Oral Skills" => "Oral Skills",
     "Written Skills" => "Written Skills",
-    "None" => "None",
+    "None_skills" => "None",
     "Add Language" => "Add Language",
     "Remove Language" => "Remove Language",
     "Capabilities" => "Capabilities",
