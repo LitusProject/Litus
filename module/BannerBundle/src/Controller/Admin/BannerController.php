@@ -63,19 +63,19 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
+            $upload = new FileUpload();
+
+            $upload->addValidator(new SizeValidator(array('max' => '10MB')));
+            $upload->addValidator(new ImageValidator());
+            $validator = new ImageSizeValidator();
+            $validator->setMinWidth($this::BANNER_WIDTH)
+                ->setMinHeight($this::BANNER_HEIGHT)
+                ->setMaxWidth($this::BANNER_WIDTH)
+                ->setMaxHeight($this::BANNER_HEIGHT);
+            $upload->addValidator($validator);
+
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                $upload = new FileUpload();
-
-                $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-                $upload->addValidator(new ImageValidator());
-                $validator = new ImageSizeValidator();
-                $validator->setMinWidth($this::BANNER_WIDTH)
-                    ->setMinHeight($this::BANNER_HEIGHT)
-                    ->setMaxWidth($this::BANNER_WIDTH)
-                    ->setMaxHeight($this::BANNER_HEIGHT);
-                $upload->addValidator($validator);
 
                 if ($upload->isValid()) {
 
@@ -120,15 +120,17 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     );
 
                     return new ViewModel();
-                } else {
-                    $dataError = $upload->getMessages();
-                    $error = array();
-
-                    foreach($dataError as $key=>$row)
-                        $error[] = $row;
-
-                    $form->setMessages(array('file'=>$error ));
                 }
+            }
+
+            if (!$upload->isValid()) {
+                $dataError = $upload->getMessages();
+                $error = array();
+
+                foreach($dataError as $key=>$row)
+                    $error[] = $row;
+
+                $form->setMessages(array('file'=>$error ));
             }
         }
 
