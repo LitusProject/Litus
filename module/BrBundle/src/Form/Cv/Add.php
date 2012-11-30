@@ -168,18 +168,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $thesis->setLabel('Thesis');
         $this->add($thesis);
 
-        $field = new Text('thesis_title');
-        $field->setLabel('Title')
-            ->setAttribute('class', $field->getAttribute('class') . ' count')
-            ->setAttribute('data-count', 160);
-        $thesis->add($field);
-
         $field = new TextArea('thesis_summary');
         $field->setLabel('Summary')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
             ->setAttribute('class', $field->getAttribute('class') . ' count')
-            ->setAttribute('data-count', 200);
+            ->setAttribute('data-count', 300);
         $thesis->add($field);
 
         $future = new Collection('future');
@@ -409,18 +403,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $factory->createInput(
                 array(
                     'name' => 'experiences',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'thesis_title',
                     'required' => true,
                     'filters' => array(
                         array('name' => 'StringTrim'),

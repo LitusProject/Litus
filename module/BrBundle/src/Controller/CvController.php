@@ -113,7 +113,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     $formData['erasmus_location'],
                     $formData['computer_skills'],
                     $formData['experiences'],
-                    $formData['thesis_title'],
                     $formData['thesis_summary'],
                     $formData['field_of_interest'],
                     $formData['mobility_europe'],

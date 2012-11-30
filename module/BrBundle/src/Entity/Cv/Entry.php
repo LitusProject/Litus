@@ -183,13 +183,6 @@ class Entry
     private $experiences;
 
     /**
-     * @var string Thesis title.
-     *
-     * @ORM\Column(name="thesis_title", type="string")
-     */
-    private $thesisTitle;
-
-    /**
      * @var string Thesis summary.
      *
      * @ORM\Column(name="thesis_summary", type="text")
@@ -244,7 +237,7 @@ class Entry
      */
     public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, $birthday,
         $sex, $phoneNumber, $email, Address $address, Study $study, $bachelorStart, $bachelorEnd, $masterStart, $masterEnd,
-        $additionalDiplomas, $erasmusPeriod, $erasmusLocation, $computerSkills, $experiences,  $thesisTitle,
+        $additionalDiplomas, $erasmusPeriod, $erasmusLocation, $computerSkills, $experiences,
         $thesisSummary, $futureInterest, $mobilityEurope, $mobilityWorld, $careerExpectations, $hobbies, $about)
     {
         $this->academic = $academic;
@@ -266,7 +259,6 @@ class Entry
         $this->erasmusLocation = $erasmusLocation;
         $this->computerSkills = $computerSkills;
         $this->experiences = $experiences;
-        $this->thesisTitle = $thesisTitle;
         $this->thesisSummary = $thesisSummary;
         $this->futureInterest = $futureInterest;
         $this->mobilityEurope = $mobilityEurope;
@@ -364,11 +356,6 @@ class Entry
     public function getExperiences()
     {
         return $this->experiences;
-    }
-
-    public function getThesisTitle()
-    {
-        return $this->thesisTitle;
     }
 
     public function getThesisSummary()
