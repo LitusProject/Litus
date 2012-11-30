@@ -338,31 +338,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $returnArray = array();
         $sort = array();
         foreach ($groups as $group) {
+            $group->setEntityManager($this->_entityManager);
+            
             $array = (object) array(
                 'name' => $group->getName(),
-                'points' => 0,
+                'points' => $group->getPoints($this->_getAcademicYear()),
             );
-
-            $happyHours = $group->getHappyHours();
-
-            foreach ($group->getMembers() as $member) {
-                foreach ($member->getLaps($this->_entityManager, $this->_getAcademicYear()) as $lap) {
-                    if (null === $lap->getEndTime())
-                        continue;
-
-                    $startTime = $lap->getStartTime()->format('H');
-                    $endTime = $lap->getEndTime()->format('H');
-
-                    $array->points += 1;
-
-                    for ($i = 0; isset($happyHours[$i]); $i++) {
-                        if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                            if ($lap->getLapTime() <= new DateInterval('PT90S'))
-                                $array->points += 1;
-                        }
-                    }
-                }
-            }
 
             $returnArray[] = $array;
             $sort[] = $array->points;
