@@ -73,8 +73,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $years[$year] = $year;
         }
 
-        // TODO: set character limit on EVERY manual field (including languages) + limit nr of lines + limit nr of characters per line (?)
-
         $studies = new Collection('studies');
         $studies->setLabel('Education');
         $this->add($studies);
@@ -173,7 +171,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('thesis_title');
         $field->setLabel('Title')
             ->setAttribute('class', $field->getAttribute('class') . ' count')
-            ->setAttribute('data-count', 50);
+            ->setAttribute('data-count', 160);
         $thesis->add($field);
 
         $field = new TextArea('thesis_summary');
@@ -181,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
             ->setAttribute('class', $field->getAttribute('class') . ' count')
-            ->setAttribute('data-count', 150);
+            ->setAttribute('data-count', 200);
         $thesis->add($field);
 
         $future = new Collection('future');
@@ -223,7 +221,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
             ->setAttribute('class', $field->getAttribute('class') . ' count')
-            ->setAttribute('data-count', 300);
+            ->setAttribute('data-count', 200);
         $thesis->add($field);
 
         $field = new TextArea('profile_about');
@@ -231,7 +229,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
             ->setAttribute('class', $field->getAttribute('class') . ' count')
-            ->setAttribute('data-count', 100);
+            ->setAttribute('data-count', 200);
         $thesis->add($field);
 
         $field = new Submit('submit');
