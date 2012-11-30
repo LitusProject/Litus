@@ -8,8 +8,9 @@
 
             {% if not form %}
                 {% for message in messages %}
-                    {% set m = str_replace('{{editurl}}', url('account', {action: 'edit', return: 'cv_index'}), message) %}
-                    {{ translate(m) }}
+                {% autoescape false %}
+                    {{ translate(message)|replace({"{{editurl}}" : url('account', {action: 'edit', return: 'cv_index'})}) }}
+                {% endautoescape %}
                 {% endfor %}
             {% else %}
 
@@ -37,7 +38,7 @@
                     </dd>
                     <dt>{{ translate('Profile Picture') }}</dt>
                     <dd>
-                        <img width=200 src="{{ url("account", {action: "photo", image: substr(authenticatedPerson.getPhotoPath(), 1)}) }}" alt=""/>
+                        <img width=200 src="/account/photo/image{{ authenticatedPerson.getPhotoPath() }}" alt=""/>
                     </dd>
                 </dl>
 
