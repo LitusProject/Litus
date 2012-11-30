@@ -64,5 +64,5 @@ return array(
     "Your personal email address" => "Je persoonlijke email adres",
     "Your photo" => "Je foto",
     "Your birthday" => "Je verjaardag",
-    "To add your information to the CV Book, you must complete these. Please click <a href=\"/en/account\">here</a> to edit your account." => "Om je CV toe te voegen, moet je deze vervolledigen. Klik <a href=\"/nl/account\">hier</a> om je account te bewerken."
+    "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account." => "Om je CV toe te voegen, moet je deze vervolledigen. Klik <a href=\"{{editurl}}\">hier</a> om je account te bewerken."
 );
