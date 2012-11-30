@@ -8,7 +8,8 @@
 
             {% if not form %}
                 {% for message in messages %}
-                    {{ translate(message) }}
+                    {% set m = str_replace('{{editurl}}', url('account', {action: 'edit', return: 'cv_index'}), message) %}
+                    {{ translate(m) }}
                 {% endfor %}
             {% else %}
 

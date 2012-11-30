@@ -220,7 +220,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if ($messages) {
             array_unshift($messages, 'The following information in your account is incomplete:', '<br/><ul>');
             $messages[] = '</ul>';
-            $messages[] = 'To add your information to the CV Book, you must complete these. Please click <a href="/en/account">here</a> to edit your account.';
+            $messages[] = 'To add your information to the CV Book, you must complete these. Please click <a href="{{editurl}}">here</a> to edit your account.';
         }
 
         return $messages;

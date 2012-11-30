@@ -438,9 +438,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'account'
-                );
+                $this->_doRedirect();
 
                 return new ViewModel();
             }
@@ -818,5 +816,17 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $user;
+    }
+
+    private function _doRedirect() {
+        if (null === $this->getParam('return')) {
+            $this->redirect()->toRoute(
+                'account'
+            );
+        } else {
+            $this->redirect()->toRoute(
+                $this->getParam('return')
+            );
+        }
     }
 }
