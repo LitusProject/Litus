@@ -31,7 +31,7 @@ return array(
     "Language" => "Language",
     "Oral Skills" => "Oral Skills",
     "Written Skills" => "Written Skills",
-    "None" => "None",
+    "None_skills" => "None",
     "Add Language" => "Add Language",
     "Remove Language" => "Remove Language",
     "Capabilities" => "Capabilities",
@@ -65,5 +65,5 @@ return array(
     "Your personal email address" => "Your personal email address",
     "Your photo" => "Your photo",
     "Your birthday" => "Your birthday",
-    "To add your information to the CV Book, you must complete these. Please click <a href=\"/en/account\">here</a> to edit your account." => "To add your information to the CV Book, you must complete these. Please click <a href=\"/en/account\">here</a> to edit your account."
+    "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account." => "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account."
 );
