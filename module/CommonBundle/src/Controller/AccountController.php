@@ -241,10 +241,10 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     } else {
                         $fileName = '';
                         do{
-                            $fileName = '/' . sha1(uniqid());
-                        } while (file_exists($filePath . $fileName));
+                            $fileName = sha1(uniqid());
+                        } while (file_exists($filePath . '/' . $fileName));
                     }
-                    $image->writeImage($filePath . $fileName);
+                    $image->writeImage($filePath . '/' . $fileName);
                     $academic->setPhotoPath($fileName);
                 }
 
@@ -409,7 +409,6 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             }
                         }
                     }
-
                 }
 
                 $academic->activate(
