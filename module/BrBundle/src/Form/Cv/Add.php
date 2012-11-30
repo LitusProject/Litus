@@ -109,6 +109,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('additional_diplomas');
         $field->setLabel('Additional Diplomas (e.g. driver\'s license)')
             ->setAttribute('rows', 3)
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 150)
             ->setAttribute('style', 'resize: none;');
@@ -120,12 +121,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('erasmus_period');
         $field->setLabel('Period')
+            ->setRequired(false)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
         $erasmus->add($field);
 
         $field = new Text('erasmus_location');
         $field->setLabel('Location')
+            ->setRequired(false)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
         $erasmus->add($field);
@@ -151,6 +154,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('computer_skills');
         $field->setLabel('Computer Skills')
             ->setAttribute('rows', 3)
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 425)
             ->setAttribute('style', 'resize: none;');
@@ -159,6 +163,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('experiences');
         $field->setLabel('Experiences, Projects (e.g. Internship, Holiday Jobs)')
             ->setAttribute('rows', 3)
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 425)
             ->setAttribute('style', 'resize: none;');
@@ -172,6 +177,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Summary')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 300);
         $thesis->add($field);
@@ -182,18 +188,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('field_of_interest');
         $field->setLabel('Field Of Interest')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new Text('mobility_europe');
         $field->setLabel('Mobility Europe')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new Text('mobility_world');
         $field->setLabel('Mobility World')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
         $future->add($field);
@@ -202,6 +211,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Career Expectations')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 200);
         $future->add($field);
@@ -214,6 +224,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Hobbies')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 200);
         $thesis->add($field);
@@ -222,6 +233,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('About Me')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 200);
         $thesis->add($field);
@@ -252,6 +264,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
             $field = new Text('lang_name' . $i);
             $field->setLabel('Language')
+                ->setRequired(true)
                 ->setAttribute('class', $field->getAttribute('class') . ' count')
                 ->setAttribute('data-count', 30);
             $languageCollection->add($field);
@@ -293,6 +306,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         $factory->createInput(
                             array(
                                 'name' => $element->getName(),
+                                'required' => $element->getAttribute('required'),
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
                                 ),
@@ -346,150 +360,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'max' => 5,
                             ),
                         ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'additional_diplomas',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'erasmus_period',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'erasmus_location',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'computer_skills',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'experiences',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'thesis_summary',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'field_of_interest',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'mobility_europe',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'mobility_world',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'career_expectations',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'hobbies',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'profile_about',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
                     ),
                 )
             )
