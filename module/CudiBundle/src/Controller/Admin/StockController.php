@@ -78,7 +78,6 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findAllArticlesByPeriod($period, true);
         }
-$this->paginator()->setItemsPerPage(5);
 
         $paginator = $this->paginator()->createFromArray(
             $articles,
