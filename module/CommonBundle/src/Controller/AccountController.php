@@ -139,6 +139,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            print_r($formData);
             $formData['university_identification'] = $this->getParam('identification');
             if ($metaData && $metaData->becomeMember())
                 $formData['become_member'] = true;
@@ -149,7 +150,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
+                $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
