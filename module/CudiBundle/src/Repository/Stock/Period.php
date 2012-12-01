@@ -48,14 +48,16 @@ class Period extends EntityRepository
     private function _findAllArticleIds(PeriodEntity $period)
     {
         $query = $this->_em->createQueryBuilder();
-        $query->select('i')
+        $query->select('a.id')
             ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->innerJoin('i.article', 'a')
             ->innerJoin('i.order', 'o', Join::WITH,
                 $query->expr()->andX(
                     $query->expr()->gt('o.dateOrdered', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
                 )
             )
+            ->groupBy('a.id')
             ->setParameter('startDate', $period->getStartDate());
 
         if (!$period->isOpen())
@@ -66,17 +68,19 @@ class Period extends EntityRepository
 
         $articles = array(0);
         foreach ($resultSet as $item)
-            $articles[$item->getArticle()->getId()] = $item->getArticle()->getId();
+            $articles[$item['id']] = $item['id'];
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('d')
+        $query->select('a.id')
             ->from('CudiBundle\Entity\Stock\Delivery', 'd')
+            ->innerJoin('d.article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('d.timestamp', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('d.timestamp', ':endDate')
                 )
             )
+            ->groupBy('a.id')
             ->setParameter('startDate', $period->getStartDate());
 
         if (!$period->isOpen())
@@ -86,17 +90,19 @@ class Period extends EntityRepository
             ->getResult();
 
         foreach ($resultSet as $item)
-            $articles[$item->getArticle()->getId()] = $item->getArticle()->getId();
+            $articles[$item['id']] = $item['id'];
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('i')
+        $query->select('a.id')
             ->from('CudiBundle\Entity\Sales\SaleItem', 'i')
+            ->innerJoin('i.article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('i.timestamp', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('i.timestamp', ':endDate')
                 )
             )
+            ->groupBy('a.id')
             ->setParameter('startDate', $period->getStartDate());
 
         if (!$period->isOpen())
@@ -106,7 +112,7 @@ class Period extends EntityRepository
             ->getResult();
 
         foreach ($resultSet as $item)
-            $articles[$item->getArticle()->getId()] = $item->getArticle()->getId();
+            $articles[$item['id']] = $item['id'];
 
         return $articles;
     }
