@@ -296,15 +296,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $url = $this->_entityManager
+        $cacheDir = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.run_result_page');
-        $opts = array('http' =>
-            array(
-                'timeout' => 0.5,
-            )
-        );
-        $fileContents = @file_get_contents($url, false, stream_context_create($opts));
+            ->getConfigValue('sport.cache_xml_path');
+
+        $fileContents = @file_get_contents($cacheDir . 'ulyssis.xml');
 
         $resultPage = null;
         if (false !== $fileContents)
@@ -322,6 +318,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'nbLaps' => $teamData[0]->rounds->__toString(),
                 'position' => round($teamData[0]->position->__toString() * 100),
                 'speed' => $teamData[0]->speed_kmh->__toString(),
+                'lapsPerSecond' => $teamData[0]->speed->__toString(),
                 'behind' => $teamData[0]->behind->__toString()
             );
         }
@@ -339,7 +336,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $sort = array();
         foreach ($groups as $group) {
             $group->setEntityManager($this->_entityManager);
-            
+
             $array = (object) array(
                 'name' => $group->getName(),
                 'points' => $group->getPoints($this->_getAcademicYear()),

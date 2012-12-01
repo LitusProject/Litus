@@ -168,11 +168,14 @@
                         'lapTime': lapTime,
                         'position': data.officialResults ? data.officialResults.position : 'N/A',
                         'speed': data.officialResults ? data.officialResults.speed : 'N/A',
+                        'lapsPerSecond': data.officialResults ? data.officialResults.lapsPerSecond : 'N/A',
                     });
                     $('#currentLapTime').html(lap.lapTime);
                     $('#officialSpeed').html(data.officialResults ? data.officialResults.speed : 'N/A');
+
                     if (data.officialResults)
-                        $('#currentLapInfo .bar').css('width', data.officialResults.position + '%');
+                        $('#currentLapInfo .bar').css('width', (data.officialResults.lapsPerSecond * lapTime * 100) + '%');
+                        //$('#currentLapInfo .bar').css('width', data.officialResults.position + '%');
 
                     foundCurrent = true;
                 } else if (lap.state == 'previous') {
@@ -231,8 +234,8 @@
             $('#currentLapInfo').data('lapTime', lapTime);
             $('#currentLapTime').html(Math.floor(lapTime / 60) + ':' + (lapTime % 60 < 10 ? "0" + lapTime % 60 : lapTime % 60));
 
-            if ($('#currentLapInfo').data('position') !== 'N/A')
-                $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('position') / $('#currentLapInfo').data('startSimulationTime') * lapTime) + '%');
+            if ($('#currentLapInfo').data('lapsPerSecond') !== 'N/A')
+                $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('lapsPerSecond') * lapTime * 100) + '%');
         }
     </script>
 
