@@ -43,14 +43,16 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
 
         $volunteersCount = array();
         foreach ($volunteers as $volunteer) {
-            if (!isset($volunteersCount[$volunteer->getPerson()->getId()])) {
-                $volunteersCount[$volunteer->getPerson()->getId()] = array(
-                    'person' => $volunteer->getPerson(),
-                    'count' => 0
-                );
-            }
+            if (!$volunteer->getPerson()->isPraesidium($academicyear))
+                if (!isset($volunteersCount[$volunteer->getPerson()->getId()])) {
+                    $volunteersCount[$volunteer->getPerson()->getId()] = array(
+                        'person' => $volunteer->getPerson(),
+                        'count' => 0
+                    );
+                }
 
-            $volunteersCount[$volunteer->getPerson()->getId()]['count']++;
+                $volunteersCount[$volunteer->getPerson()->getId()]['count']++;
+            }
         }
 
         $rankingCriteria = unserialize(
@@ -62,7 +64,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         $ranking = array();
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             foreach ($volunteersCount as $volunteerCount) {
-                if ($i != count($rankingCriteria)) {
+                if ($i != (count($rankingCriteria) - 1)) {
                     if ($volunteerCount['count'] >= $rankingCriteria[$i]['limit'] && $volunteerCount['count'] < $rankingCriteria[$i+1]['limit'])
                         $ranking[$rankingCriteria[$i]['name']][] = $volunteerCount['person'];
                 } else {
