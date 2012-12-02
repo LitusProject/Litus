@@ -84,15 +84,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if ($showInfo != '1')
             return null;
 
-        $url = $this->getEntityManager()
+        $cacheDir = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.run_result_page');
-        $opts = array('http' =>
-            array(
-                'timeout' => 1,
-            )
-        );
-        $fileContents = @file_get_contents($url, false, stream_context_create($opts));
+            ->getConfigValue('sport.cache_xml_path');
+
+        $fileContents = @file_get_contents($cacheDir . 'ulyssis.xml');
 
         $resultPage = null;
         if (false !== $fileContents)

@@ -12,6 +12,7 @@
                     <th>Name</th>
                     <th width="500px">Runners</th>
                     <th width="100px">Happy Hours</th>
+                    <th width="100px">Points</th>
                 </tr>
             </thead>
 
@@ -29,6 +30,7 @@
                                 {{ happyHour }}{% if not loop.last %},{% endif %}
                             {% endfor %}
                         </td>
+                        <td>{{ group.getPoints(academicYear) }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

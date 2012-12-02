@@ -15,6 +15,8 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+    DateInterval,
+    Doctrine\ORM\EntityManager,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -64,6 +66,11 @@ class Group
      * @ORM\Column(name="happy_hours", type="string")
      */
     private $happyHours;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
@@ -138,5 +145,45 @@ class Group
     {
         $this->happyHours = serialize($happyHours);
         return $this;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPoints(AcademicYear $academicYear)
+    {
+        $points = 0;
+        foreach ($this->getMembers() as $member) {
+            foreach ($member->getLaps($this->_entityManager, $academicYear) as $lap) {
+                if (null === $lap->getEndTime())
+                    continue;
+
+                $startTime = $lap->getStartTime()->format('H');
+                $endTime = $lap->getEndTime()->format('H');
+
+                $points += 1;
+
+                $happyHours = $this->getHappyHours();
+                for ($i = 0; isset($happyHours[$i]); $i++) {
+                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
+                        if ($lap->getLapTime() <= new DateInterval('PT90S'))
+                            $points += 1;
+                    }
+                }
+            }
+        }
+
+        return $points;
     }
 }

@@ -205,7 +205,7 @@
                         {% if hasAccess('admin_publication', 'manage') or hasAccess('admin_mail_bakske', 'send') %}
                             <li>
                                 <div class="subtitle">
-                                    <b>Pulication</b><br />
+                                    <b>Pulications</b><br />
                                     Publications &amp; Editions
                                 </div>
                                 <ul
@@ -227,7 +227,7 @@
                                     Units &amp; Shifts
                                 </div>
                                 <ul
-                                    {% if 'admin_shift' == getParam('controller') or 'admin_shift_counter' == getParam('controller') or 'admin_unit' == getParam('controller') %}
+                                    {% if 'admin_shift' == getParam('controller') or 'admin_shift_counter' == getParam('controller') or 'admin_shift_ranking' == getParam('controller') or 'admin_unit' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
@@ -236,6 +236,9 @@
                                     {% endif %}
                                     {% if hasAccess('admin_shift', 'manage') %}
                                         <li><a href="{{ url('admin_shift') }}">Shifts</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('admin_shift_ranking', 'index') %}
+                                        <li><a href="{{ url('admin_shift_ranking') }}">Ranking</a></li>
                                     {% endif %}
                                     {% if hasAccess('admin_unit', 'manage') %}
                                         <li><a href="{{ url('admin_unit') }}">Units</a></li>
