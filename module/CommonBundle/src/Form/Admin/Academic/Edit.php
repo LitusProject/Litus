@@ -126,7 +126,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         }
 
         $data = array(
-            'birthday' => $academic->getBirthday()->format('d/m/Y'),
+            'birthday' => $academic->getBirthday() ? $academic->getBirthday()->format('d/m/Y') : '',
             'organization_status' => $academic->getOrganizationStatus($academicYear) ? $academic->getOrganizationStatus($academicYear)->getStatus() : null,
             'barcode' => $academic->getBarcode() ? $academic->getBarcode()->getBarcode() : '',
             'university_email' => $universityEmail,
