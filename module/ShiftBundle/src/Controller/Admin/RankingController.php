@@ -37,9 +37,21 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $volunteersCount = $this->getEntityManager()
+        $volunteers = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shifts\Volunteer')
-            ->countAll($academicYear);
+            ->findAllByAcademicYear($academicYear);
+
+        $volunteersCount = array();
+        foreach ($volunteers as $volunteer) {
+            if (!isset($volunteersCount[$volunteer->getId()])) {
+                $volunteersCount[$volunteer->getId()] = array(
+                    'person' => $volunteer->getPerson(),
+                    'count' => 0
+                );
+            }
+
+            $volunteersCount[$volunteer->getId()]['count']++;
+        }
 
         $rankingCriteria = unserialize(
             $this->getEntityManager()
@@ -51,11 +63,11 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             foreach ($volunteersCount as $volunteerCount) {
                 if ($i != count($rankingCriteria)) {
-                    if ($volunteerCount[1] >= $rankingCriteria[$i]['limit'] && $volunteerCount[1] < $rankingCriteria[$i+1]['limit'])
-                        $ranking[$rankingCriteria[$i]['name']][] = $volunteerCount[0]->getPerson();
+                    if ($volunteerCount['count'] >= $rankingCriteria[$i]['limit'] && $volunteerCount['count'] < $rankingCriteria[$i+1]['limit'])
+                        $ranking[$rankingCriteria[$i]['name']][] = $volunteerCount['person'];
                 } else {
-                    if ($volunteerCount[1] >= $rankingCriteria[$i]['limit'])
-                        $ranking[$rankingCriteria[$i]['name']][] = $volunteerCount[0]->getPerson();
+                    if ($volunteerCount['count'] >= $rankingCriteria[$i]['limit'])
+                        $ranking[$rankingCriteria[$i]['name']][] = $volunteerCount['person'];
                 }
             }
         }
