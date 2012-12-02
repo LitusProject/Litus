@@ -9,7 +9,7 @@
             {% if hasAccess('admin_stock_period', 'manage') %}
                 <li><a{% if 'admin_stock_period' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock_period') }}">Periods</a></li>
             {% endif %}
-        	{% if hasAccess('admin_stock_order', 'manage') %}
+            {% if hasAccess('admin_stock_order', 'manage') %}
                 <li><a{% if 'admin_stock_order' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock_order') }}">Orders</a></li>
             {% endif %}
             {% if hasAccess('admin_stock_delivery', 'manage') %}

@@ -2,38 +2,38 @@
 
 {% block content %}
     <div class="row">
-    	<div class="span9 columns">
+        <div class="span9 columns">
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
-    	</div>
-    	<div class="span3 columns">
-    	    {% if hasAccess('prof_article_comment', 'manage') %}
-        	    <h3>{{ translate('Comments') }}</h3>
-        	    <p>{{ translate('View comments on this article and add one.') }}</p>
-        	    <p><a href="{{ url("prof_article_comment", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn">{{ translate('Comments') }}</a></p>
-        	{% endif %}
-    	    {% if hasAccess('prof_file', 'manage') and article.isInternal() %}
-        	    <h3>{{ translate('Files') }}</h3>
-        	    <p>{{ translate('Manage the files of this article.') }}</p>
-        	    <p><a href="{{ url("prof_file", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn">{{ translate('Files') }}</a></p>
-        	{% endif %}
-    	</div>
+        </div>
+        <div class="span3 columns">
+            {% if hasAccess('prof_article_comment', 'manage') %}
+                <h3>{{ translate('Comments') }}</h3>
+                <p>{{ translate('View comments on this article and add one.') }}</p>
+                <p><a href="{{ url("prof_article_comment", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn">{{ translate('Comments') }}</a></p>
+            {% endif %}
+            {% if hasAccess('prof_file', 'manage') and article.isInternal() %}
+                <h3>{{ translate('Files') }}</h3>
+                <p>{{ translate('Manage the files of this article.') }}</p>
+                <p><a href="{{ url("prof_file", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn">{{ translate('Files') }}</a></p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('#internal').click(toggleInternal)
-				.parent().parent().hide();
-			toggleInternal();
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#internal').click(toggleInternal)
+                .parent().parent().hide();
+            toggleInternal();
+        });
 
-		function toggleInternal() {
-			if ($('#internal').is(':checked'))
-				$('#internal_form').show();
-			else
-				$('#internal_form').hide();
-		}
-	</script>
+        function toggleInternal() {
+            if ($('#internal').is(':checked'))
+                $('#internal_form').show();
+            else
+                $('#internal_form').hide();
+        }
+    </script>
 {% endblock %}

@@ -2,41 +2,41 @@
 
 {% block content %}
     <div class="flashmessage alert alert-success fade" id="file_uploaded">
-	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translate('Success') }}</div>
-    	<div class="content">
-    		<p>{{ translate('The file was succesfully uploaded.') }}</p>
-    	</div>
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">{{ translate('Success') }}</div>
+        <div class="content">
+            <p>{{ translate('The file was succesfully uploaded.') }}</p>
+        </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="file_removed_success">
-	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translate('Success') }}</div>
-    	<div class="content">
-    		<p>{{ translate('The file was succesfully removed.') }}</p>
-    	</div>
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">{{ translate('Success') }}</div>
+        <div class="content">
+            <p>{{ translate('The file was succesfully removed.') }}</p>
+        </div>
     </div>
     <div class="flashmessage alert alert-error fade" id="file_removed_error">
-	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translate('Error') }}</div>
-    	<div class="content">
-    		<p>{{ translate('An error occurred while removing the file.') }}</p>
-    	</div>
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">{{ translate('Error') }}</div>
+        <div class="content">
+            <p>{{ translate('An error occurred while removing the file.') }}</p>
+        </div>
     </div>
 
-	<div class="page-header">
-	    <h2>{{ translate('Files') }}</h2>
-	</div>
+    <div class="page-header">
+        <h2>{{ translate('Files') }}</h2>
+    </div>
 
-	<h3>{{ translate('Article') }}</h3>
-	<p>
-	    {{ translate('Title') }}: <b>{{ article.getTitle() }}</b><br />
-	    {{ translate('Authors') }}: <b>{{ article.getAuthors() }}</b><br />
-	    {{ translate('Publisher') }}: <b>{{ article.getPublishers() }}</b><br />
-	    {{ translate('Publish Year') }}: <b>{{ article.getYearPublished() }}</b><br />
-	    {{ translate('ISBN') }}: <b>{{ article.getISBN() }}</b>
-	</p>
+    <h3>{{ translate('Article') }}</h3>
+    <p>
+        {{ translate('Title') }}: <b>{{ article.getTitle() }}</b><br />
+        {{ translate('Authors') }}: <b>{{ article.getAuthors() }}</b><br />
+        {{ translate('Publisher') }}: <b>{{ article.getPublishers() }}</b><br />
+        {{ translate('Publish Year') }}: <b>{{ article.getYearPublished() }}</b><br />
+        {{ translate('ISBN') }}: <b>{{ article.getISBN() }}</b>
+    </p>
 
-	<table class="table table-bordered table-striped" id="articleFiles">
+    <table class="table table-bordered table-striped" id="articleFiles">
         <tr>
             <th width="200px">{{ translate('Name') }}</th>
             <th>{{ translate('Description') }}</th>
@@ -47,13 +47,13 @@
             <tr class="item">
                 <td>{{ mapping.getFile().getName() }}</td>
                 <td>{{ mapping.getFile().getDescription() }}</td>
-				<td class="actions">
-				    {% if hasAccess('prof_file', 'download') %}
-						<a href="#" class="btn btn-info downloadFile" data-file="{{ url('prof_file', {"action": "download", "id": mapping.getId(), "language": language.getAbbrev()}) }}">{{ translate('Download') }}</a>
-					{% endif %}
-					{% if hasAccess('prof_file', 'delete') %}
-	                    <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">{{ translate('Delete') }}</a>
-	                {% endif %}
+                <td class="actions">
+                    {% if hasAccess('prof_file', 'download') %}
+                        <a href="#" class="btn btn-info downloadFile" data-file="{{ url('prof_file', {"action": "download", "id": mapping.getId(), "language": language.getAbbrev()}) }}">{{ translate('Download') }}</a>
+                    {% endif %}
+                    {% if hasAccess('prof_file', 'delete') %}
+                        <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">{{ translate('Delete') }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
@@ -64,133 +64,133 @@
     <br class="clear" />
 
     <div id="addFile" class="modal fade">
-    	<div class="modal-header">
-    		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translate('Add File') }}</h3>
-    	</div>
-    	<div class="modal-body">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Add File') }}</h3>
+        </div>
+        <div class="modal-body">
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
-    	</div>
-    	<div class="modal-footer">
-    		<button class="btn btn-success save">{{ translate('Save') }}</button>
-    		<button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
-    	</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success save">{{ translate('Save') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
+        </div>
     </div>
 
     <div class="modal fade" id="progressModal">
         <div class="modal-header">
-        	<h3>{{ translate('Upload File') }}</h3>
+            <h3>{{ translate('Upload File') }}</h3>
         </div>
-    	<div class="modal-body">
-    		<p>
-    			{{ translate('Your files are being uploaded.') }}
-    		</p>
-    		<p>
-    			<div class="progress progress-striped active">
-    			    <div class="bar" style="width: 100%;"></div>
-    			</div>
-    		</p>
-    	</div>
+        <div class="modal-body">
+            <p>
+                {{ translate('Your files are being uploaded.') }}
+            </p>
+            <p>
+                <div class="progress progress-striped active">
+                    <div class="bar" style="width: 100%;"></div>
+                </div>
+            </p>
+        </div>
     </div>
 
     <div class="modal fade" id="removeFile">
-    	<div class="modal-header">
-    		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translate('Delete File') }}</h3>
-    	</div>
-    	<div class="modal-body">
-    		<p>
-    			{{ translate('You are about to delete the following file') }}: <b class="fileName"></b> (<b class="fileDescription"></b>)!<br />
-    			{{ translate('Please note that this operation cannot be undone!') }}
-    		</p>
-    		<p>
-    			{{ translate('Are you sure you want to continue?') }}
-    		</p>
-    	</div>
-    	<div class="modal-footer">
-    		<button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-    		<button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
-    	</div>
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Delete File') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                {{ translate('You are about to delete the following file') }}: <b class="fileName"></b> (<b class="fileDescription"></b>)!<br />
+                {{ translate('Please note that this operation cannot be undone!') }}
+            </p>
+            <p>
+                {{ translate('Are you sure you want to continue?') }}
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+        </div>
     </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.downloadFile').each(function () {
-				$(this).downloadFile($(this).data('file'));
-			});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.downloadFile').each(function () {
+                $(this).downloadFile($(this).data('file'));
+            });
 
-			$('.item .delete').click(openDeleteModal);
+            $('.item .delete').click(openDeleteModal);
 
-			$('#addFile .save').click(function () {
-			    $('#addFile form').submit();
-			});
+            $('#addFile .save').click(function () {
+                $('#addFile form').submit();
+            });
 
-			$('#uploadFile').formUploadProgress({
-			    url: '{{ url('prof_file', {"action": "progress", "language": language.getAbbrev()}) }}',
-			    name: '{{ uploadProgressId }}',
-			    uploadProgressName: '{{ uploadProgressName }}',
-			    interval: 1000,
-			    onProgress: function (data) {
-			        $('#progressModal').find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
-			    },
-			    onSubmitted: function (data) {
-			        if (data.errors) {
-			            $('#file_uploaded').removeClass('in');
-				        $('#uploadFile').find('ul.errors').remove();
-				        $('#uploadFile').find('.control-group').removeClass('error');
-				        for(element in data.errors) {
-				            var list = $('<ul>', {class: 'errors'})
-				            for (error in data.errors[element])
-				                list.append($('<li>').html(data.errors[element][error]));
-				            $('#uploadFile').find('#' + element).parent().parent().addClass('error').after(list);
-				        }
-				    } else if (data.info) {
+            $('#uploadFile').formUploadProgress({
+                url: '{{ url('prof_file', {"action": "progress", "language": language.getAbbrev()}) }}',
+                name: '{{ uploadProgressId }}',
+                uploadProgressName: '{{ uploadProgressName }}',
+                interval: 1000,
+                onProgress: function (data) {
+                    $('#progressModal').find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+                },
+                onSubmitted: function (data) {
+                    if (data.errors) {
+                        $('#file_uploaded').removeClass('in');
+                        $('#uploadFile').find('ul.errors').remove();
+                        $('#uploadFile').find('.control-group').removeClass('error');
+                        for(element in data.errors) {
+                            var list = $('<ul>', {class: 'errors'})
+                            for (error in data.errors[element])
+                                list.append($('<li>').html(data.errors[element][error]));
+                            $('#uploadFile').find('#' + element).parent().parent().addClass('error').after(list);
+                        }
+                    } else if (data.info) {
                         document.location.reload();
-				    }
-			    },
-			    onSubmit: function () {
-			        $('#file_uploaded').removeClass('in');
-			        var progressModal = $('#progressModal');
-			        $('#addFile').modal('hide');
-			        progressModal.permanentModal('open');
-			    },
-			    onError: function () {
-			        $('#file_uploaded').removeClass('in');
-			        var progressModal = $('#progressModal');
-			        progressModal.permanentModal('hide');
-			    }
-			});
-		});
+                    }
+                },
+                onSubmit: function () {
+                    $('#file_uploaded').removeClass('in');
+                    var progressModal = $('#progressModal');
+                    $('#addFile').modal('hide');
+                    progressModal.permanentModal('open');
+                },
+                onError: function () {
+                    $('#file_uploaded').removeClass('in');
+                    var progressModal = $('#progressModal');
+                    progressModal.permanentModal('hide');
+                }
+            });
+        });
 
-		function openDeleteModal(e) {
-			var $this = $(this);
+        function openDeleteModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var removeFile = $('#removeFile');
-			removeFile.find('.fileName').html($(this).data('name'));
-			removeFile.find('.fileDescription').html($(this).data('description'));
-			removeFile.find('.confirm').unbind('click').click(function () {
-				$.post('{{ url('prof_file', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
-				    if (data && 'success' == data.status) {
-		                $('.flashmessage').removeClass('in');
-						$('#file_removed_success').addClass('in');
-						$this.parent().parent().remove();
-						removeFile.modal('hide');
-					} else {
-					    errorRemove();
-					}
-				}, 'json').error(errorRemove);
-			});
-			removeFile.modal();
-		}
+            e.preventDefault();
+            var removeFile = $('#removeFile');
+            removeFile.find('.fileName').html($(this).data('name'));
+            removeFile.find('.fileDescription').html($(this).data('description'));
+            removeFile.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('prof_file', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#file_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        removeFile.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeFile.modal();
+        }
 
-		function errorRemove() {
-		    $('.flashmessage').removeClass('in');
-			$('#file_removed_error').addClass('in');
-		    $('#removeFile').modal('hide');
-		}
-	</script>
+        function errorRemove() {
+            $('.flashmessage').removeClass('in');
+            $('#file_removed_error').addClass('in');
+            $('#removeFile').modal('hide');
+        }
+    </script>
 {% endblock %}

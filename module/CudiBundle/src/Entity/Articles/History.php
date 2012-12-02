@@ -53,7 +53,7 @@ class History
 
     /**
      * @param \CudiBundle\Entity\Article $article The new version of the article
-     * @param \CudiBundle\Entity\Article $precursor The old version of the article
+     * @param \CudiBundle\Entity\Article|null $precursor The old version of the article
      */
     public function __construct(Article $article, Article $precursor = null)
     {
@@ -62,8 +62,38 @@ class History
         $this->precursor->setVersionNumber($article->getVersionNumber())
             ->setIsHistory(true);
 
+        if ($this->precursor->getTimeStamp() > $article->getTimeStamp()) {
+            $date = $article->getTimeStamp();
+            $article->setTimeStamp($this->precursor->getTimeStamp());
+            $this->precursor->setTimeStamp($date);
+        }
+
         $article->setVersionNumber($article->getVersionNumber()+1);
 
         $this->article = $article;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return \CudiBundle\Entity\Article
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+
+    /**
+     * @return \CudiBundle\Entity\Article
+     */
+    public function getPrecursor()
+    {
+        return $this->precursor;
     }
 }

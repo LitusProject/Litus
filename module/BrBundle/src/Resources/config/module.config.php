@@ -85,7 +85,7 @@ return array(
             'admin_company_logo' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/company/logo[/:action[/:id]][/]',
+                    'route' => '/admin/company/logos[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-zA-Z0-9_-]*',
@@ -162,7 +162,7 @@ return array(
                     'route' => '[/:language]/career/company/search[/:string][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'     => '[%a-zA-Z0-9_-]*',
+                        'string'   => '[%a-zA-Z0-9:.,_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
@@ -290,6 +290,16 @@ return array(
                 'filename' => __DIR__ . '/../translations/career.nl.php',
                 'locale'   => 'nl'
             ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/cv.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/cv.nl.php',
+                'locale'   => 'nl'
+            ),
         ),
     ),
     'view_manager' => array(
@@ -379,6 +389,26 @@ return array(
                         ),
                         'options' => array(
                             'output' => 'career_css.css',
+                        ),
+                    ),
+                    'cv_css' => array(
+                        'assets' => array(
+                            'cv/less/cv.less',
+                        ),
+                        'filters' => array(
+                            'cv_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'cv_css.css',
                         ),
                     ),
                 ),

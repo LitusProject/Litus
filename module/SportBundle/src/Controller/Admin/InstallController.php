@@ -52,6 +52,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => '127.0.0.1',
                     'description' => 'The host used for the websocket of the queue',
                 ),
+                array(
+                    'key'         => 'sport.cache_xml_path',
+                    'value'       => 'data/cache/sport/',
+                    'description' => 'The path to cache the xml',
+                ),
             )
         );
     }

@@ -1,29 +1,29 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/prof/action/partials/navigation.twig' %}
+    {% include 'cudi/admin/prof/action/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('#internal').click(toggleInternal)
-				.parent().parent().hide();
-			toggleInternal();
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#internal').click(toggleInternal)
+                .parent().parent().hide();
+            toggleInternal();
+        });
 
-		function toggleInternal() {
-			if ($('#internal').is(':checked'))
-				$('#internal_form').show();
-			else
-				$('#internal_form').hide();
-		}
-	</script>
+        function toggleInternal() {
+            if ($('#internal').is(':checked'))
+                $('#internal_form').show();
+            else
+                $('#internal_form').hide();
+        }
+    </script>
 {% endblock %}

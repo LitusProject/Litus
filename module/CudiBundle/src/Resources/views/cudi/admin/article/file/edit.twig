@@ -1,35 +1,35 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/article/partials/navigation.twig' %}
+    {% include 'cudi/admin/article/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-		<h1>Article</h1>
+    <div id="controller_action">
+        <h1>Article</h1>
 
-		<p>Title: <b>{{ article.getTitle() }}</b></p>
-		<p>Author: <b>{{ article.getAuthors() }}</b></p>
-		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
-		<br />
+        <p>Title: <b>{{ article.getTitle() }}</b></p>
+        <p>Author: <b>{{ article.getAuthors() }}</b></p>
+        <p>Publisher: <b>{{ article.getPublishers() }}</b></p>
+        <br />
 
-		<h1>File</h1>
-		<p>Name: <b>{{ file.getName() }}</b></p>
-		{% if hasAccess('admin_article_file', 'download') %}
-			<input type="button" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": file.getId()}) }}" value="Download&nbsp;" />
-		{% endif %}
+        <h1>File</h1>
+        <p>Name: <b>{{ file.getName() }}</b></p>
+        {% if hasAccess('admin_article_file', 'download') %}
+            <input type="button" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": file.getId()}) }}" value="Download&nbsp;" />
+        {% endif %}
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.downloadFile').each(function () {
-				$(this).downloadFile($(this).data('file'));
-			});
-		});
-	</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.downloadFile').each(function () {
+                $(this).downloadFile($(this).data('file'));
+            });
+        });
+    </script>
 {% endblock %}

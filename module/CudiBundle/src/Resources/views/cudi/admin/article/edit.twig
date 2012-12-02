@@ -1,152 +1,165 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/article/partials/navigation.twig' %}
+    {% include 'cudi/admin/article/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-		<h1>Article</h1>
+    <div id="controller_action">
+        <h1>Article</h1>
 
-		<p>Title: <b>{{ article.getTitle() }}</b></p>
-		<p>Author: <b>{{ article.getAuthors() }}</b></p>
-		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
-		<br />
+        <p>Title: <b>{{ article.getTitle() }}</b></p>
+        <p>Author: <b>{{ article.getAuthors() }}</b></p>
+        <p>Publisher: <b>{{ article.getPublishers() }}</b></p>
+        <br />
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-		<br class="clear" />
-		<br class="clear" />
+        <br class="clear" />
+        <br class="clear" />
 
-		<h1>Last Comments</h1>
-		<table>
-	        <tr>
-	            <th width="100px">Date</th>
-	            <th width="140px">Person</th>
-	            <th>Summary</th>
-	            <th width="80px">Type</th>
-	            <th width="70px">Action</th>
-	        </tr>
+        <h1>Last Comments</h1>
+        <table>
+            <tr>
+                <th width="100px">Date</th>
+                <th width="140px">Person</th>
+                <th>Summary</th>
+                <th width="80px">Type</th>
+                <th width="70px">Action</th>
+            </tr>
 
-	        {% for mapping in comments %}
-	            <tr class="item item-{{ mapping.getId() }}">
-	                <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
-	                <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
-	                <td>{{ mapping.getComment().getSummary() }}</td>
-	                <td>{{ mapping.getComment().getType()|capitalize }}</td>
-					<td class="actions">
-						<a href="#" class="view viewComment" data-text="{{ mapping.getComment().getText() }}">View</a>
-	                </td>
-	            </tr>
-	        {% endfor %}
-	    </table>
-	</div>
+            {% for mapping in comments %}
+                <tr class="item item-{{ mapping.getId() }}">
+                    <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
+                    <td>{{ mapping.getComment().getSummary() }}</td>
+                    <td>{{ mapping.getComment().getType()|capitalize }}</td>
+                    <td class="actions">
+                        <a href="#" class="view viewComment" data-text="{{ mapping.getComment().getText() }}">View</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
-	<aside>
-	    {% if saleArticle is not null and hasAccess('admin_sales_article', 'edit') %}
-	        <div class="sidebox">
-	            <div class="title">Edit Sale Article</div>
-	           	<div class="content">
-	            	<p>
-	                	<i>Please hit the link below to edit the sale article for this!</i>
-	                </p>
-	                <p>
-	                   	<a href="{{ url('admin_sales_article', {"action": "edit", "id": saleArticle.getId()}) }}">&rarr; Edit Sale Article</a>
-	                </p>
-	            </div>
-	        </div>
-	    {% elseif saleArticle is null and hasAccess('admin_sales_article', 'add') %}
-	        <div class="sidebox">
-	            <div class="title">Create Sale Article</div>
-	           	<div class="content">
-	            	<p>
-	                	<i>Please hit the link below to create a sale article for this!</i>
-	                </p>
-	                <p>
-	                   	<a href="{{ url('admin_sales_article', {"action": "add", "id": article.getId()}) }}">&rarr; Create Sale Article</a>
-	                </p>
-	            </div>
-	        </div>
-	    {% endif %}
-	    {% if hasAccess('admin_article_subject', 'manage') %}
-	    	<div class="sidebox">
-	    	    <div class="title">Manage Subject Mapping</div>
-	    	   	<div class="content">
-	    	    	<p>
-	    	        	<i>Please hit the link below to manage the mapping of this article to subjects!</i>
-	    	        </p>
-	    	        <p>
-	    	           	<a href="{{ url('admin_article_subject', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Mapping</a>
-	    	        </p>
-	    	    </div>
-	    	</div>
-	    {% endif %}
-		{% if article.isInternal() and hasAccess('admin_article_file', 'manage') %}
-			<div class="sidebox">
-		        <div class="title">Manage Files</div>
-		       	<div class="content">
-			    	<p>
-			        	<i>Please hit the link below to manage the files of this article!</i>
-			        </p>
-			        <p>
-			           	<a href="{{ url('admin_article_file', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Files</a>
-			        </p>
-			    </div>
-			</div>
-		{% endif %}
-		{% if hasAccess('admin_article_comment', 'manage') %}
-			<div class="sidebox">
-			    <div class="title">Manage Comments</div>
-			   	<div class="content">
-			    	<p>
-			        	<i>Please hit the link below to manage the comments of this article!</i>
-			        </p>
-			        <p>
-			           	<a href="{{ url('admin_article_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
-			        </p>
-			    </div>
-			</div>
-		{% endif %}
-	</aside>
+    <aside>
+        {% if saleArticle is not null and hasAccess('admin_sales_article', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Sale Article</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the sale article for this!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_sales_article', {"action": "edit", "id": saleArticle.getId()}) }}">&rarr; Edit Sale Article</a>
+                    </p>
+                </div>
+            </div>
+        {% elseif saleArticle is null and hasAccess('admin_sales_article', 'add') %}
+            <div class="sidebox">
+                <div class="title">Create Sale Article</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to create a sale article for this!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_sales_article', {"action": "add", "id": article.getId()}) }}">&rarr; Create Sale Article</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_article_subject', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Subject Mapping</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the mapping of this article to subjects!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article_subject', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Mapping</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if article.isInternal() and hasAccess('admin_article_file', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Files</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the files of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article_file', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Files</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_article_comment', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Comments</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the comments of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_article', 'history') %}
+            <div class="sidebox">
+                <div class="title">View History</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the history of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article', {"action": "history", "id": article.getId()}) }}">&rarr; View History</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 
-	<div class="modal hide fade" id="viewComment">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Article Comment
-		</div>
-		<div class="modal-body">
-			<pre class="text"></pre>
-	        <br style="clear:both" />
-			<div class="footer">
-				<input type="button" data-dismiss="modal" value="Close">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="viewComment">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Article Comment
+        </div>
+        <div class="modal-body">
+            <pre class="text"></pre>
+            <br style="clear:both" />
+            <div class="footer">
+                <input type="button" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('#internal').click(toggleInternal)
-				.parent().parent().hide();
-			toggleInternal();
-			$('.item .viewComment').click(openViewModal);
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#internal').click(toggleInternal)
+                .parent().parent().hide();
+            toggleInternal();
+            $('.item .viewComment').click(openViewModal);
+        });
 
-		function openViewModal(e) {
-			var $this = $(this);
+        function openViewModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var viewComment = $('#viewComment');
-			viewComment.find('.text').html($this.data('text'));
-			viewComment.modal();
-		}
+            e.preventDefault();
+            var viewComment = $('#viewComment');
+            viewComment.find('.text').html($this.data('text'));
+            viewComment.modal();
+        }
 
-		function toggleInternal() {
-			if ($('#internal').is(':checked'))
-				$('#internal_form').show();
-			else
-				$('#internal_form').hide();
-		}
-	</script>
+        function toggleInternal() {
+            if ($('#internal').is(':checked'))
+                $('#internal_form').show();
+            else
+                $('#internal_form').hide();
+        }
+    </script>
 {% endblock %}

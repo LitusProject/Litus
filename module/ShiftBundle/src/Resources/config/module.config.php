@@ -53,7 +53,7 @@ return array(
                         'payed'        => '(true|false)',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'       => '[a-zA-Z][%a-zA-Z0-9_-]*',
+                        'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_shift_counter',

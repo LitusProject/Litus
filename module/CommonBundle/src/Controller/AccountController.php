@@ -139,6 +139,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            print_r($formData);
             $formData['university_identification'] = $this->getParam('identification');
             if ($metaData && $metaData->becomeMember())
                 $formData['become_member'] = true;
@@ -149,7 +150,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
+                $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
@@ -241,10 +242,10 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     } else {
                         $fileName = '';
                         do{
-                            $fileName = '/' . sha1(uniqid());
-                        } while (file_exists($filePath . $fileName));
+                            $fileName = sha1(uniqid());
+                        } while (file_exists($filePath . '/' . $fileName));
                     }
-                    $image->writeImage($filePath . $fileName);
+                    $image->writeImage($filePath . '/' . $fileName);
                     $academic->setPhotoPath($fileName);
                 }
 
@@ -409,7 +410,6 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             }
                         }
                     }
-
                 }
 
                 $academic->activate(
@@ -438,9 +438,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'account'
-                );
+                $this->_doRedirect();
 
                 return new ViewModel();
             }
@@ -818,5 +816,17 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $user;
+    }
+
+    private function _doRedirect() {
+        if (null === $this->getParam('return')) {
+            $this->redirect()->toRoute(
+                'account'
+            );
+        } else {
+            $this->redirect()->toRoute(
+                $this->getParam('return')
+            );
+        }
     }
 }

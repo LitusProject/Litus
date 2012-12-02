@@ -1,24 +1,24 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/supplier/partials/navigation.twig' %}
+    {% include 'cudi/admin/supplier/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-	    <h1>Supplier</h1>
+    <div id="controller_action">
+        <h1>Supplier</h1>
 
-	    <p>Name: <b>{{ supplier.getName() }}</b></p>
-	    <p>Phone Number: <b>{{ supplier.getPhoneNumber() }}</b></p>
-	    <p>Street: <b>{{ supplier.getAddress().getStreet() }} {{ supplier.getAddress().getNumber() }}
+        <p>Name: <b>{{ supplier.getName() }}</b></p>
+        <p>Phone Number: <b>{{ supplier.getPhoneNumber() }}</b></p>
+        <p>Street: <b>{{ supplier.getAddress().getStreet() }} {{ supplier.getAddress().getNumber() }}
             {% if supplier.getAddress().getMailbox() %}
                 / {{ supplier.getAddress().getMailbox() }}
             {% endif %}</b></p>
-	    <p>City: <b>{{ supplier.getAddress().getPostal() }} {{ supplier.getAddress().getCity() }}</b></p>
-	    <p>Country: <b>{{ supplier.getAddress().getCountry() }}</b></p>
-	    <br />
+        <p>City: <b>{{ supplier.getAddress().getPostal() }} {{ supplier.getAddress().getCity() }}</b></p>
+        <p>Country: <b>{{ supplier.getAddress().getCountry() }}</b></p>
+        <br />
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}

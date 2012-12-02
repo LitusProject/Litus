@@ -296,15 +296,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $url = $this->_entityManager
+        $cacheDir = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.run_result_page');
-        $opts = array('http' =>
-            array(
-                'timeout' => 0.5,
-            )
-        );
-        $fileContents = @file_get_contents($url, false, stream_context_create($opts));
+            ->getConfigValue('sport.cache_xml_path');
+
+        $fileContents = @file_get_contents($cacheDir . 'ulyssis.xml');
 
         $resultPage = null;
         if (false !== $fileContents)
@@ -322,6 +318,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'nbLaps' => $teamData[0]->rounds->__toString(),
                 'position' => round($teamData[0]->position->__toString() * 100),
                 'speed' => $teamData[0]->speed_kmh->__toString(),
+                'lapsPerSecond' => $teamData[0]->speed->__toString(),
                 'behind' => $teamData[0]->behind->__toString()
             );
         }
@@ -338,31 +335,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $returnArray = array();
         $sort = array();
         foreach ($groups as $group) {
+            $group->setEntityManager($this->_entityManager);
+
             $array = (object) array(
                 'name' => $group->getName(),
-                'points' => 0,
+                'points' => $group->getPoints($this->_getAcademicYear()),
             );
-
-            $happyHours = $group->getHappyHours();
-
-            foreach ($group->getMembers() as $member) {
-                foreach ($member->getLaps($this->_entityManager, $this->_getAcademicYear()) as $lap) {
-                    if (null === $lap->getEndTime())
-                        continue;
-
-                    $startTime = $lap->getStartTime()->format('H');
-                    $endTime = $lap->getEndTime()->format('H');
-
-                    $array->points += 1;
-
-                    for ($i = 0; isset($happyHours[$i]); $i++) {
-                        if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                            if ($lap->getLapTime() <= new DateInterval('PT90S'))
-                                $array->points += 1;
-                        }
-                    }
-                }
-            }
 
             $returnArray[] = $array;
             $sort[] = $array->points;
