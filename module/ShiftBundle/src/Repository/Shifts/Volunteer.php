@@ -31,10 +31,10 @@ class Volunteer extends EntityRepository
         return null;
     }
 
-    public function countAll(AcademicYear $academicYear)
+    public function findAllByAcademicYear(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('v', $query->expr()->count('v.id'))
+        $resultSet = $query->select('v')
             ->from('ShiftBundle\Entity\Shifts\Volunteer', 'v')
             ->where(
                 $query->expr()->andX(
@@ -42,7 +42,6 @@ class Volunteer extends EntityRepository
                     $query->expr()->lt('v.signupTime', ':endAcademicYear')
                 )
             )
-            ->groupBy('v.id', 'v.person')
             ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
             ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
             ->getQuery()
