@@ -18,11 +18,15 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
+    CommonBundle\Form\Admin\Address\AddPrimary as PrimaryAddressForm,
+    CommonBundle\Form\Admin\Address\Add as AddressForm,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
+    SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
+    Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -40,16 +44,30 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     private $_person = null;
 
     /**
+     * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
-     * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
+     * @param \CommonBundle\Entity\Users\People\Academic $person The person we're going to modify
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Person $person, $name = null)
+    public function __construct(CacheStorage $cache, EntityManager $entityManager, AcademicYear $academicYear, Academic $person, $name = null)
     {
         parent::__construct($entityManager, $person, $name);
 
         $this->_person = $person;
+
+        $field = new Text('birthday');
+        $field->setLabel('Birthday')
+            ->setAttribute('placeholder', 'dd/mm/yyyy');
+        $this->add($field);
+
+        $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
+        $field->setLabel('Primary Address&mdash;Student Room or Home');
+        $this->add($field);
+
+        $field = new AddressForm('secondary_address', 'secondary_address');
+        $field->setLabel('Secondary Address&mdash;Home');
+        $this->add($field);
 
         $collection = new Collection('organization');
         $collection->setLabel('Organization');
@@ -77,6 +95,10 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $collection->setLabel('University');
         $this->add($collection);
 
+        $field = new Text('university_email');
+        $field->setLabel('University E-mail');
+        $collection->add($field);
+
         $field = new Text('university_identification');
         $field->setLabel('Identification');
         $collection->add($field);
@@ -92,20 +114,77 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             ->setAttribute('class', 'academic_edit');
         $this->add($field);
 
-        $this->setData(
-            array(
-                'organization_status' => $person->getOrganizationStatus($academicYear) ? $person->getOrganizationStatus($academicYear)->getStatus() : null,
-                'barcode' => $person->getBarcode() ? $person->getBarcode()->getBarcode() : '',
-                'university_identification' => $person->getUniversityIdentification(),
-                'university_status' => $person->getUniversityStatus($academicYear) ? $person->getUniversityStatus($academicYear)->getStatus() : null,
-            )
+        $this->populateFromAcademic($person, $academicYear);
+    }
+
+    public function populateFromAcademic(Academic $academic, AcademicYear $academicYear)
+    {
+        $universityEmail = $academic->getUniversityEmail();
+
+        if ($universityEmail) {
+            $universityEmail = explode('@', $universityEmail)[0];
+        }
+
+        $data = array(
+            'birthday' => $academic->getBirthday()->format('d/m/Y'),
+            'organization_status' => $academic->getOrganizationStatus($academicYear) ? $academic->getOrganizationStatus($academicYear)->getStatus() : null,
+            'barcode' => $academic->getBarcode() ? $academic->getBarcode()->getBarcode() : '',
+            'university_email' => $universityEmail,
+            'university_identification' => $academic->getUniversityIdentification(),
+            'university_status' => $academic->getUniversityStatus($academicYear) ? $academic->getUniversityStatus($academicYear)->getStatus() : null,
+            'secondary_address_address_street' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getStreet() : '',
+            'secondary_address_address_number' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getNumber() : '',
+            'secondary_address_address_mailbox' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getMailbox() : '',
+            'secondary_address_address_postal' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getPostal() : '',
+            'secondary_address_address_city' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCity() : '',
+            'secondary_address_address_country' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCountryCode() : 'BE',
         );
+
+        if ($academic->getPrimaryAddress()) {
+            $city = $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Address\City')
+                ->findOneByName($academic->getPrimaryAddress()->getCity());
+
+            if (null !== $city) {
+                $data['primary_address_address_city'] = $city->getId();
+
+                $street = $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Address\Street')
+                    ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
+
+                $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
+                $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
+                $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
+            }
+        }
+
+        $this->setData($data);
     }
 
     public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'birthday',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'Date',
+                            'options' => array(
+                                'format' => 'd/m/Y',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
 
         $inputFilter->add(
             $factory->createInput(
@@ -124,6 +203,21 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                             ),
                         ),
                         new BarcodeValidator($this->_entityManager, $this->_person),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'university_email',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new NoAtValidator(),
                     ),
                 )
             )
