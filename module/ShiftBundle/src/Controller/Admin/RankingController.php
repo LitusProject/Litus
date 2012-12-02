@@ -43,8 +43,8 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
 
         $volunteersCount = array();
         foreach ($volunteers as $volunteer) {
-            if (!isset($volunteersCount[$volunteer->getId()])) {
-                $volunteersCount[$volunteer->getId()] = array(
+            if (!isset($volunteersCount[$volunteer->getPerson()->getId()])) {
+                $volunteersCount[$volunteer->getPerson()->getId()] = array(
                     'person' => $volunteer->getPerson(),
                     'count' => 0
                 );
