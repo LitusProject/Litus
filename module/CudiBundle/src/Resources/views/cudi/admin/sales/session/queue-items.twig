@@ -1,12 +1,12 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/sales/session/partials/navigation.twig' %}
+    {% include 'cudi/admin/sales/session/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-	    <table class="full_width manage" id="articleComments">
+    <div id="controller_action">
+        <table class="full_width manage" id="articleComments">
             <tr>
                 <th width="100px">Date</th>
                 <th>Person</th>
@@ -23,44 +23,44 @@
                     <td>{{ item.getStatusReadable() }}</td>
                     <td>{{ item.getPayMethod() }}</td>
                     <td>{% if item.getPayDesk() %}{{ item.getPayDesk().getName() }}{% endif %}</td>
-    				<td class="actions">
+                    <td class="actions">
                         {% if item.getComment() %}
-    					   <a href="#" class="view" data-text="{{ item.getComment() }}">Comment</a>
+                           <a href="#" class="view" data-text="{{ item.getComment() }}">Comment</a>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
         </table>
-	</div>
+    </div>
 
-	<div class="modal hide fade" id="viewComment">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Queue Item Comment
-		</div>
-		<div class="modal-body">
-			<pre class="text"></pre>
-	        <br style="clear:both" />
-			<div class="footer">
-				<input type="button" data-dismiss="modal" value="Close">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="viewComment">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Queue Item Comment
+        </div>
+        <div class="modal-body">
+            <pre class="text"></pre>
+            <br style="clear:both" />
+            <div class="footer">
+                <input type="button" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.item .view').click(openViewModal);
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .view').click(openViewModal);
+        });
 
-		function openViewModal(e) {
-			var $this = $(this);
+        function openViewModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var viewComment = $('#viewComment');
-			viewComment.find('.text').html($this.data('text'));
-			viewComment.modal();
-		}
-	</script>
+            e.preventDefault();
+            var viewComment = $('#viewComment');
+            viewComment.find('.text').html($this.data('text'));
+            viewComment.modal();
+        }
+    </script>
 {% endblock %}

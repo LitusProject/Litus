@@ -62,6 +62,10 @@ class Collection extends \Zend\Form\Element\Collection
             if (!$this->get($key))
                 unset($data[$key]);
         }
+        foreach ($this->byName as $name => $element) {
+            if (!isset($data[$name]))
+                $data[$name] = '';
+        }
         parent::populateValues($data);
     }
 }

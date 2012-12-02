@@ -58,13 +58,13 @@ return array(
             'admin_study' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/study[/:action[/:id][/page/:page][/:academicyear][/:field/:string]][/]',
+                    'route' => '/admin/syllabus/study[/:action[/:id][/:academicyear][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'       => '[a-zA-Z][%a-zA-Z0-9_-]*',
+                        'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                         'page'         => '[0-9]+',
                     ),
                     'defaults' => array(
@@ -96,7 +96,7 @@ return array(
                         'id'           => '[0-9]*',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'       => '[a-zA-Z][%a-zA-Z0-9_-]*',
+                        'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_subject',
@@ -125,7 +125,7 @@ return array(
                     'route' => '/admin/syllabus/subject/typeahead/:academicyear[/:string][/]',
                     'constraints' => array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
-                        'string'       => '[%a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_subject',
@@ -153,7 +153,7 @@ return array(
                 'options' => array(
                     'route' => '/admin/syllabus/prof/typeahead[/:string][/]',
                     'constraints' => array(
-                        'string'  => '[%a-zA-Z0-9_-]*',
+                        'string'  => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_prof',
@@ -167,7 +167,7 @@ return array(
                     'route' => '/syllabus/subject/typeahead/:academicyear[/:string][/]',
                     'constraints' => array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
-                        'string'       => '[%a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'syllabus_subject',

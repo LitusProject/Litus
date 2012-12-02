@@ -112,7 +112,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->findOneByName('student')
                     );
 
-                    $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
+                    $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
                     $academic = new Academic(
                         $this->getParam('identification'),
@@ -186,10 +186,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         } else {
                             $fileName = '';
                             do{
-                                $fileName = '/' . sha1(uniqid());
-                            } while (file_exists($filePath . $fileName));
+                                $fileName = sha1(uniqid());
+                            } while (file_exists($filePath . '/' . $fileName));
                         }
-                        $image->writeImage($filePath . $fileName);
+                        $image->writeImage($filePath . '/' . $fileName);
                         $academic->setPhotoPath($fileName);
                     }
 
@@ -386,7 +386,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
             $form->setData($formData);
 
-            $universityEmail = preg_replace('/[^a-z\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
+            $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
@@ -481,10 +481,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     } else {
                         $fileName = '';
                         do{
-                            $fileName = '/' . sha1(uniqid());
-                        } while (file_exists($filePath . $fileName));
+                            $fileName = sha1(uniqid());
+                        } while (file_exists($filePath . '/' . $fileName));
                     }
-                    $image->writeImage($filePath . $fileName);
+                    $image->writeImage($filePath . '/' . $fileName);
                     $academic->setPhotoPath($fileName);
                 }
 
@@ -495,7 +495,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
 
                 if (null !== $metaData) {
-
                     if (null !== $metaData->getTshirtSize()) {
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
@@ -521,7 +520,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $metaData->setBakskeByMail($formData['bakske']);
                     }
                 } else {
-
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -546,7 +544,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
 
                 if ($metaData->becomeMember()) {
-
                     $hasShirt = false;
                     foreach ($tshirts as $tshirt) {
                         $booking = $this->getEntityManager()
@@ -652,7 +649,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             }
                         }
                     }
-
                 }
 
                 $academic->activate(

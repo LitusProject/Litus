@@ -14,7 +14,8 @@
 
 namespace BrBundle\Form\Cv;
 
-use BrBundle\Entity\Cv\Language as CvLanguage,
+use BrBundle\Component\Validator\FieldLength as LengthValidator,
+    BrBundle\Entity\Cv\Language as CvLanguage,
     CommonBundle\Component\Form\Bootstrap\Element\Button,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Hidden,
@@ -72,8 +73,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $years[$year] = $year;
         }
 
-        // TODO: set character limit on EVERY manual field (including languages) + limit nr of lines + limit nr of characters per line (?)
-
         $studies = new Collection('studies');
         $studies->setLabel('Education');
         $this->add($studies);
@@ -110,6 +109,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('additional_diplomas');
         $field->setLabel('Additional Diplomas (e.g. driver\'s license)')
             ->setAttribute('rows', 3)
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 150)
             ->setAttribute('style', 'resize: none;');
         $studies->add($field);
 
@@ -118,15 +120,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($erasmus);
 
         $field = new Text('erasmus_period');
-        $field->setLabel('Period');
+        $field->setLabel('Period')
+            ->setRequired(false)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $erasmus->add($field);
 
         $field = new Text('erasmus_location');
-        $field->setLabel('Location');
+        $field->setLabel('Location')
+            ->setRequired(false)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $erasmus->add($field);
 
         $languageCollection = new Collection('languages');
-        $languageCollection->setLabel('Languages');
+        $languageCollection->setLabel('Languages (max. 5)');
         $this->add($languageCollection);
 
         $field = new Hidden('lang_count');
@@ -146,12 +154,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('computer_skills');
         $field->setLabel('Computer Skills')
             ->setAttribute('rows', 3)
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 425)
             ->setAttribute('style', 'resize: none;');
         $capabilities->add($field);
 
         $field = new TextArea('experiences');
         $field->setLabel('Experiences, Projects (e.g. Internship, Holiday Jobs)')
             ->setAttribute('rows', 3)
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 425)
             ->setAttribute('style', 'resize: none;');
         $capabilities->add($field);
 
@@ -159,14 +173,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $thesis->setLabel('Thesis');
         $this->add($thesis);
 
-        $field = new Text('thesis_title');
-        $field->setLabel('Title');
-        $thesis->add($field);
-
         $field = new TextArea('thesis_summary');
         $field->setLabel('Summary')
             ->setAttribute('rows', 3)
-            ->setAttribute('style', 'resize: none;');
+            ->setAttribute('style', 'resize: none;')
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 300);
         $thesis->add($field);
 
         $future = new Collection('future');
@@ -174,21 +187,33 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($future);
 
         $field = new Text('field_of_interest');
-        $field->setLabel('Field Of Interest');
+        $field->setLabel('Field Of Interest')
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new Text('mobility_europe');
-        $field->setLabel('Mobility Europe');
+        $field->setLabel('Mobility Europe')
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new Text('mobility_world');
-        $field->setLabel('Mobility World');
+        $field->setLabel('Mobility World')
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new TextArea('career_expectations');
         $field->setLabel('Career Expectations')
             ->setAttribute('rows', 3)
-            ->setAttribute('style', 'resize: none;');
+            ->setAttribute('style', 'resize: none;')
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 200);
         $future->add($field);
 
         $thesis = new Collection('profile');
@@ -198,13 +223,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('hobbies');
         $field->setLabel('Hobbies')
             ->setAttribute('rows', 3)
-            ->setAttribute('style', 'resize: none;');
+            ->setAttribute('style', 'resize: none;')
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 200);
         $thesis->add($field);
 
         $field = new TextArea('profile_about');
         $field->setLabel('About Me')
             ->setAttribute('rows', 3)
-            ->setAttribute('style', 'resize: none;');
+            ->setAttribute('style', 'resize: none;')
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 200);
         $thesis->add($field);
 
         $field = new Submit('submit');
@@ -232,7 +263,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 continue;
 
             $field = new Text('lang_name' . $i);
-            $field->setLabel('Language');
+            $field->setLabel('Language')
+                ->setRequired(true)
+                ->setAttribute('class', $field->getAttribute('class') . ' count')
+                ->setAttribute('data-count', 30);
             $languageCollection->add($field);
 
             $field = new Select('lang_oral' . $i);
@@ -260,10 +294,43 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $count > 0 && $count <= 5;
     }
 
+    private function _addCountFilters(InputFilter $inputFilter, InputFactory $factory, $parent) {
+        $iterator = $parent->getIterator();
+        foreach ($iterator as $element) {
+            if ($element instanceof \Zend\Form\Fieldset) {
+                $this->_addCountFilters($inputFilter, $factory, $element);
+            } else {
+                if (FALSE !== strpos($element->getAttribute('class'), 'count')) {
+                    $count = $element->getAttribute('data-count');
+                    $inputFilter->add(
+                        $factory->createInput(
+                            array(
+                                'name' => $element->getName(),
+                                'required' => $element->getAttribute('required'),
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    new LengthValidator(
+                                        $count,
+                                        75
+                                    )
+                                ),
+                            )
+                        )
+                    );
+                }
+            }
+
+        }
+    }
+
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+        $this->_addCountFilters($inputFilter, $factory, $this);
 
         for ($i = 0; $i < $this->data['lang_count']; $i++) {
             if (isset($this->data['lang_name' . $i])) {
@@ -293,162 +360,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'max' => 5,
                             ),
                         ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'additional_diplomas',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'erasmus_period',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'erasmus_location',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'computer_skills',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'experiences',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'thesis_title',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'thesis_summary',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'field_of_interest',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'mobility_europe',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'mobility_world',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'career_expectations',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'hobbies',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'profile_about',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
                     ),
                 )
             )

@@ -1,35 +1,35 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/sales/financial/partials/navigation.twig' %}
+    {% include 'cudi/admin/sales/financial/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	{% include 'cudi/admin/sales/financial/partials/suppliers.twig' %}
+    {% include 'cudi/admin/sales/financial/partials/suppliers.twig' %}
 
-	<div id="controller_action">
-	    <h1>Retours</h1>
+    <div id="controller_action">
+        <h1>Retours</h1>
 
-	    <table class="full_width">
+        <table class="full_width">
 
-	    	    <tr>
-	    	        <th>Article</th>
-	    	        <th width="170px">Number</th>
-	    	    	<th width="170px">Unit Value</th>
-	    	        <th width="170px">Total Value</th>
-	    	    </tr>
+                <tr>
+                    <th>Article</th>
+                    <th width="170px">Number</th>
+                    <th width="170px">Unit Value</th>
+                    <th width="170px">Total Value</th>
+                </tr>
 
-	    	    {% for retour in paginator %}
-	    	        <tr>
-	    	            <td>{{ retour.getArticle().getMainArticle().getTitle() }}</td>
-	    	            <td>{{ retour.getNumber() }}</td>
-	    	            <td>&euro; {{ (retour.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
-	    	            <td>&euro; {{ (retour.getPrice()/100)|number_format(2) }}</td>
-	    	        </tr>
-	    	    {% endfor %}
-	    	</table>
+                {% for retour in paginator %}
+                    <tr>
+                        <td>{{ retour.getArticle().getMainArticle().getTitle() }}</td>
+                        <td>{{ retour.getNumber() }}</td>
+                        <td>&euro; {{ (retour.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
+                        <td>&euro; {{ (retour.getPrice()/100)|number_format(2) }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
 
-	    	{% include 'admin/partials/paginationControl.twig' %}
-	    </div>
-	</div>
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
 {% endblock %}

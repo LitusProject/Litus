@@ -28,12 +28,12 @@ return array(
             'admin_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/article[/:action[/:id][/page/:page][/:field/:string]][/]',
+                    'route' => '/admin/article[/:action[/:id][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
                         'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'  => '[%a-zA-Z0-9_-]*',
+                        'string'  => '[%a-zA-Z0-9:.,_-]*',
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
@@ -88,13 +88,13 @@ return array(
             'admin_sales_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/article[/:action[/:id][/page/:page][/:academicyear][/:field/:string]][/]',
+                    'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'       => '[%a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                         'page'         => '[0-9]*',
                     ),
                     'defaults' => array(
@@ -109,7 +109,7 @@ return array(
                     'route' => '/admin/sales/article/:academicyear/typeahead[/:string][/]',
                     'constraints' => array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
-                        'string'       => '[%a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_sales_article',
@@ -148,13 +148,13 @@ return array(
             'admin_sales_booking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/page/:page][/:type[/:field/:string]]][/]',
+                    'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/:type[/:field/:string]][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
                         'period'  => '[0-9]*',
                         'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'  => '[%a-zA-Z0-9_-]*',
+                        'string'  => '[%a-zA-Z0-9:.,_-]*',
                         'type'    => '[a-zA-Z][%a-zA-Z0-9_-]*',
                         'page'    => '[0-9]*',
                     ),
@@ -227,12 +227,12 @@ return array(
             'admin_stock' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/stock[/:action[/:id][/page/:page][/:field/:string]][/]',
+                    'route' => '/admin/stock[/:action[/:id][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string' => '[%a-zA-Z0-9._-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
@@ -249,7 +249,7 @@ return array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
                         'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'  => '[%a-zA-Z0-9_-]*',
+                        'string'  => '[%a-zA-Z0-9:.,_-]*',
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
@@ -295,7 +295,7 @@ return array(
                     'route' => '/admin/stock/article/:academicyear/typeahead[/:string][/]',
                     'constraints' => array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
-                        'string'       => '[%a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_stock_delivery',
@@ -470,7 +470,7 @@ return array(
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/subject/typeahead[/:string][/]',
                     'constraints' => array(
-                        'string'   => '[%a-zA-Z0-9_-]*',
+                        'string'   => '[%a-zA-Z0-9:.,_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
@@ -499,7 +499,7 @@ return array(
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/article/typeahead[/:string][/]',
                     'constraints' => array(
-                        'string'   => '[%a-zA-Z0-9_-]*',
+                        'string'   => '[%a-zA-Z0-9:.,_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
@@ -588,7 +588,7 @@ return array(
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/prof/typeahead[/:string][/]',
                     'constraints' => array(
-                        'string'   => '[%a-zA-Z0-9_-]*',
+                        'string'   => '[%a-zA-Z0-9:.,_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(

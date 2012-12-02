@@ -1,46 +1,46 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
+    {% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	{% include 'cudi/admin/sales/booking/partials/periods.twig' %}
+    {% include 'cudi/admin/sales/booking/partials/periods.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-	    $(document).ready(function () {
-	        $('#controller_nav .assignAll').click(openAssignAllModal);
-	        $('#controller_nav .expireAll').click(openExpireAllModal);
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#controller_nav .assignAll').click(openAssignAllModal);
+            $('#controller_nav .expireAll').click(openExpireAllModal);
 
-	        $('#articleSearch').typeaheadRemote(
-	            {
-	                source: '{{ url("admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
-	            }
-	        ).change(function (e) {
-	            if ($(this).data('value')) {
-	                $('#articleId').val($(this).data('value').id);
-	            } else {
-	                $('#articleId').val('');
-	            }
-	        });
-	        $('#personSearch').typeaheadRemote(
-	            {
-	                source: '{{ url("admin_academic_typeahead")}}',
-	            }
-	        ).change(function (e) {
-	            if ($(this).data('value')) {
-	                $('#personId').val($(this).data('value').id);
-	            } else {
-	                $('#personId').val('');
-	            }
-	        });
-	    });
-	</script>
+            $('#articleSearch').typeaheadRemote(
+                {
+                    source: '{{ url("admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#articleId').val($(this).data('value').id);
+                } else {
+                    $('#articleId').val('');
+                }
+            });
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("admin_academic_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+        });
+    </script>
 {% endblock %}

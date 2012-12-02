@@ -147,6 +147,7 @@ return array(
     'CommonBundle\Form\Admin\Academic\Add'                                             => __DIR__ . '/src/Form/Admin/Academic/Add.php',
     'CommonBundle\Form\Admin\Academic\Edit'                                            => __DIR__ . '/src/Form/Admin/Academic/Edit.php',
     'CommonBundle\Form\Admin\Address\Add'                                              => __DIR__ . '/src/Form/Admin/Address/Add.php',
+    'CommonBundle\Form\Admin\Address\AddPrimary'                                       => __DIR__ . '/src/Form/Admin/Address/AddPrimary.php',
     'CommonBundle\Form\Admin\Auth\Login'                                               => __DIR__ . '/src/Form/Admin/Auth/Login.php',
     'CommonBundle\Form\Admin\Config\Edit'                                              => __DIR__ . '/src/Form/Admin/Config/Edit.php',
     'CommonBundle\Form\Admin\Location\Add'                                             => __DIR__ . '/src/Form/Admin/Location/Add.php',

@@ -32,22 +32,22 @@
 </header>
 
 <div class="modal hide fade" id="assignAllBooking">
-	<div class="modal-header">
-		<span>Litus Admin</span>
-		/Assign All Bookings
-	</div>
-	<div class="modal-body">
-		<p>
-			You are about to assign all the possible bookings!
-		</p>
-		<p>
-			Are you sure you want to continue?
-		</p>
-		<div class="footer">
-			<input type="button" class="delete" value="Yes">
-			<input type="button" class="cancel" data-dismiss="modal" value="No">
-		</div>
-	</div>
+    <div class="modal-header">
+        <span>Litus Admin</span>
+        /Assign All Bookings
+    </div>
+    <div class="modal-body">
+        <p>
+            You are about to assign all the possible bookings!
+        </p>
+        <p>
+            Are you sure you want to continue?
+        </p>
+        <div class="footer">
+            <input type="button" class="delete" value="Yes">
+            <input type="button" class="cancel" data-dismiss="modal" value="No">
+        </div>
+    </div>
 </div>
 
 <div class="modal hide fade" id="expireAllBooking">
@@ -70,17 +70,17 @@
 </div>
 
 {% block content_script %}
-	<script type="text/javascript">
-	    function openAssignAllModal(e) {
-			var $this = $(this);
+    <script type="text/javascript">
+        function openAssignAllModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var assignAllBooking = $('#assignAllBooking');
-			assignAllBooking.find('.delete').unbind('click').click(function () {
-			    window.location.href = '{{ url('admin_sales_booking', {"action": "assignAll"})}}';
-			});
-			assignAllBooking.modal();
-		}
+            e.preventDefault();
+            var assignAllBooking = $('#assignAllBooking');
+            assignAllBooking.find('.delete').unbind('click').click(function () {
+                window.location.href = '{{ url('admin_sales_booking', {"action": "assignAll"})}}';
+            });
+            assignAllBooking.modal();
+        }
 
         function openExpireAllModal(e) {
             var $this = $(this);
@@ -92,5 +92,5 @@
             });
             expireAllBooking.modal();
         }
-	</script>
+    </script>
 {% endblock %}

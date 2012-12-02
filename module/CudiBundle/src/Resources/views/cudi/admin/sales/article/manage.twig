@@ -1,185 +1,186 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudi/admin/sales/article/partials/navigation.twig' %}
+    {% include 'cudi/admin/sales/article/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
-	<div class="flashmessage success_message full_width article_removed_success hide">
-		<div class="title">Success</div>
-		<div class="content">
-			<p>The sale article was successfully removed!</p>
-		</div>
-	</div>
-	<div class="flashmessage error_message full_width article_removed_error hide">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while trying to delete a sale article.</p>
-		</div>
-	</div>
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width article_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The sale article was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width article_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a sale article.</p>
+        </div>
+    </div>
 
-	{% include 'cudi/admin/sales/article/partials/years.twig' %}
+    {% include 'cudi/admin/sales/article/partials/years.twig' %}
 
-	<div id="controller_action">
-	    <div id="article_search" style="display:none;">
-	    	<div style="padding:4px;text-align:right">
-	    		Search:
-	    		<select id="searchField">
-	    			<option value="title">Title</option>
-	    			<option value="barcode">Barcode</option>
-	    			<option value="author">Author</option>
-	    			<option value="publisher">Publisher</option>
-	    		</select>
-	    		is
-	    		<input type="text" id="searchString" size="30" />
-	    	</div>
+    <div id="controller_action">
+        <div id="article_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="title">Title</option>
+                    <option value="barcode">Barcode</option>
+                    <option value="author">Author</option>
+                    <option value="publisher">Publisher</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
 
-	    	<table class="full_width manage">
-	        	<tr>
-	            	<th>Title</th>
-	            	<th width="170px">Author</th>
-		            <th width="100px" class="wider">Barcode</th>
-		            <th width="90px">Sell Price</th>
-		            <th width="90px">Stock</th>
-	            	<th width="70px">Action</th>
-	    		</tr>
-	    	</table>
-	    </div>
+            <table class="full_width manage">
+                <tr>
+                    <th>Title</th>
+                    <th width="170px">Author</th>
+                    <th width="100px" class="wider">Barcode</th>
+                    <th width="90px">Sell Price</th>
+                    <th width="90px">Stock</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </table>
+        </div>
 
-		<div id="default_page">
-			<table class="full_width manage">
-		        <tr>
-		            <th>Title</th>
-		            <th width="170px">Author</th>
-		            <th width="100px" class="wider">Barcode</th>
-		            <th width="90px">Sell Price</th>
-		            <th width="90px">Stock</th>
-		            <th width="70px">Action</th>
-		        </tr>
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th>Title</th>
+                    <th width="170px">Author</th>
+                    <th width="100px" class="wider">Barcode</th>
+                    <th width="90px">Sell Price</th>
+                    <th width="90px">Stock</th>
+                    <th width="70px">Action</th>
+                </tr>
 
-		        {% for article in paginator %}
-		            <tr class="item item-{{ article.getId() }}">
-		                <td>{{ article.getMainArticle().getTitle() }}</td>
-		                <td>{{ article.getMainArticle().getAuthors() }}</td>
-		                <td class="wider">{{ article.getBarcode() }}</td>
-		                <td>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</td>
-		                <td>{{ article.getStockValue() }}</td>
-						<td class="actions">
-						    {% if activeAcademicYear.getId() == currentAcademicYear.getId() %}
-    						    {% if hasAccess('admin_sales_article', 'edit') %}
-    		                        <a href="{{ url('admin_sales_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
-    		                    {% endif %}
-    						    {% if hasAccess('admin_sales_article', 'delete') %}
-    		                        <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getMainArticle().getTitle() }}" data-authors="{{ article.getMainArticle().getAuthors() }}">Delete</a>
-    		                    {% endif %}
-    		                {% else %}
-    		                    {% if hasAccess('admin_sales_article', 'activate') %}
-    		                        <a href="{{ url('admin_sales_article', {"action": "activate", "id": article.getId()}) }}" class="edit">Activate</a>
-    		                    {% endif %}
-    		                {% endif %}
-		                </td>
-		            </tr>
-		        {% endfor %}
-		    </table>
+                {% for article in paginator %}
+                    <tr class="item item-{{ article.getId() }}">
+                        <td>{{ article.getMainArticle().getTitle() }}</td>
+                        <td>{{ article.getMainArticle().getAuthors() }}</td>
+                        <td class="wider">{{ article.getBarcode() }}</td>
+                        <td>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</td>
+                        <td>{{ article.getStockValue() }}</td>
+                        <td class="actions">
+                            {% if activeAcademicYear.getId() == currentAcademicYear.getId() %}
+                                {% if hasAccess('admin_sales_article', 'edit') %}
+                                    <a href="{{ url('admin_sales_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('admin_sales_article', 'delete') %}
+                                    <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getMainArticle().getTitle() }}" data-authors="{{ article.getMainArticle().getAuthors() }}">Delete</a>
+                                {% endif %}
+                            {% else %}
+                                {% if hasAccess('admin_sales_article', 'activate') %}
+                                    <a href="{{ url('admin_sales_article', {"action": "activate", "id": article.getId()}) }}" class="edit">Activate</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
 
-			{% include 'admin/partials/paginationControl.twig' %}
-		</div>
-	</div>
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
 
-	<div class="modal hide fade" id="removeArticle">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Delete Sale Article
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following sale article: <b class="articleTitle"></b> of <b class="articleAuthors"></b>!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="removeArticle">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Sale Article
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following sale article: <b class="articleTitle"></b> of <b class="articleAuthors"></b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-		    {% if hasAccess('admin_sales_article', 'search') %}
-		    $.searchDatabase({
-		    	defaultPage: $('#default_page'),
-		    	searchDiv: $('#article_search'),
-		    	searchString: $('#searchString'),
-		    	searchField: $('#searchField'),
-		    	url: '{{ url('admin_sales_article', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
-		    	display: function (data) {
-		    		$('#article_search table').find('tr.item').remove();
-		    		$(data).each(function () {
-		    			$('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
-		    			row.append('<td>' + this.title + '</td>')
-		    				.append('<td>' + this.author + '</td>')
-		    				.append('<td class="wider">' + this.barcode + '</td>')
-		    				.append('<td>&euro; ' + this.sellPrice + '</td>')
-		    				.append('<td>' + this.stockValue + '</td>')
-		    				.append(
-		    					actions = $('<td>', {'class': 'actions'})
-		    				);
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('admin_sales_article', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#article_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('admin_sales_article', {'action': 'manage'}) }}manage/',
+                url: '{{ url('admin_sales_article', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                display: function (data) {
+                    $('#article_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.title + '</td>')
+                            .append('<td>' + this.author + '</td>')
+                            .append('<td class="wider">' + this.barcode + '</td>')
+                            .append('<td>&euro; ' + this.sellPrice + '</td>')
+                            .append('<td>' + this.stockValue + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
 
-		    				{% if hasAccess('admin_sales_article', 'edit') %}
-		    				    actions.append('<a href="{{ url('admin_sales_article', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
-		    				{% endif %}
+                            {% if hasAccess('admin_sales_article', 'edit') %}
+                                actions.append('<a href="{{ url('admin_sales_article', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                            {% endif %}
 
-		    				{% if hasAccess('admin_sales_article', 'delete') %}
-		    					actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
-		    					deleteButton.data({
-		    						id: this.id,
-		    						title: this.title,
-		    						authors: this.author,
-		    					});
-		    				{% endif %}
-		    		});
-		    		$('#article_search .delete').click(openModal);
-		    		$('#article_search table').change();
-		    	},
-		    	clear: function () {
-		    		$('#article_search table').find('tr.item').remove();
-		    	}
-		    });
-		    {% endif %}
-			$('.item .delete').click(openModal);
-		});
+                            {% if hasAccess('admin_sales_article', 'delete') %}
+                                actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                deleteButton.data({
+                                    id: this.id,
+                                    title: this.title,
+                                    authors: this.author,
+                                });
+                            {% endif %}
+                    });
+                    $('#article_search .delete').click(openModal);
+                    $('#article_search table').change();
+                },
+                clear: function () {
+                    $('#article_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+            $('.item .delete').click(openModal);
+        });
 
-		function openModal(e) {
-			var $this = $(this);
+        function openModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var removeArticle = $('#removeArticle');
-			removeArticle.find('.articleTitle').html($(this).data('title'));
-			removeArticle.find('.articleAuthors').html($(this).data('authors'));
-			var id = $this.data('id');
-			removeArticle.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_sales_article', {"action": "delete"})}}' + id, function (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.article_removed_success').removeClass('hide');
-						$('.item-' + id).remove();
-    					removeArticle.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
-				}, 'json').error(errorRemove);
-			});
-			removeArticle.modal();
-		}
+            e.preventDefault();
+            var removeArticle = $('#removeArticle');
+            removeArticle.find('.articleTitle').html($(this).data('title'));
+            removeArticle.find('.articleAuthors').html($(this).data('authors'));
+            var id = $this.data('id');
+            removeArticle.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_sales_article', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.article_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeArticle.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeArticle.modal();
+        }
 
-		function errorRemove() {
-    		$('.flashmessage').addClass('hide');
-    		$('.article_removed_error').removeClass('hide');
-    		$('#removeArticle').modal('hide');
-		}
-	</script>
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.article_removed_error').removeClass('hide');
+            $('#removeArticle').modal('hide');
+        }
+    </script>
 {% endblock %}

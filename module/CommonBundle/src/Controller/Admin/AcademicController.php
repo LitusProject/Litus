@@ -21,6 +21,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     CommonBundle\Form\Admin\Academic\Add as AddForm,
     CommonBundle\Form\Admin\Academic\Edit as EditForm,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -32,16 +33,27 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CommonBundle\Entity\Users\People\Academic',
-            $this->getParam('page'),
-            array(
-                'canLogin' => 'true'
-            ),
-            array(
-                'username' => 'ASC'
-            )
-        );
+        if (null !== $this->getParam('field')) {
+            $academics = $this->_search();
+
+            $paginator = $this->paginator()->createFromArray(
+                $academics,
+                $this->getParam('page')
+            );
+        }
+
+        if (!isset($paginator)) {
+            $paginator = $this->paginator()->createFromEntity(
+                'CommonBundle\Entity\Users\People\Academic',
+                $this->getParam('page'),
+                array(
+                    'canLogin' => 'true'
+                ),
+                array(
+                    'username' => 'ASC'
+                )
+            );
+        }
 
         return new ViewModel(
             array(
@@ -152,7 +164,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
 
         $form = new EditForm(
-            $this->getEntityManager(), $this->getCurrentAcademicYear(), $academic
+            $this->getCache(), $this->getEntityManager(), $this->getCurrentAcademicYear(), $academic
         );
 
         if ($this->getRequest()->isPost()) {
@@ -174,6 +186,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
 
+                $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
+
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
@@ -182,6 +196,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->setUniversityIdentification(
                         ('' == $formData['university_identification'] ? null : $formData['university_identification'])
                     )
+                    ->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    ->setUniversityEmail($universityEmail)
                     ->setRoles($roles);
 
                 if ('' != $formData['organization_status']) {
@@ -218,6 +234,64 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             $academic,
                             $formData['university_status'],
                             $this->getCurrentAcademicYear()
+                        )
+                    );
+                }
+
+                if ($formData['primary_address_address_city'] != 'other') {
+                    $primaryCity = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Address\City')
+                        ->findOneById($formData['primary_address_address_city']);
+                    $primaryPostal = $primaryCity->getPostal();
+                    $primaryCity = $primaryCity->getName();
+                    $primaryStreet = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Address\Street')
+                        ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
+                        ->getName();
+                } else {
+                    $primaryCity = $formData['primary_address_address_city_other'];
+                    $primaryStreet = $formData['primary_address_address_street_other'];
+                    $primaryPostal = $formData['primary_address_address_postal_other'];
+                }
+
+                if (null !== $academic->getPrimaryAddress()) {
+                    $academic->getPrimaryAddress()
+                        ->setStreet($primaryStreet)
+                        ->setNumber($formData['primary_address_address_number'])
+                        ->setMailbox($formData['primary_address_address_mailbox'])
+                        ->setPostal($primaryPostal)
+                        ->setCity($primaryCity)
+                        ->setCountry('BE');
+                } else {
+                    $academic->setPrimaryAddress(
+                        new Address(
+                            $primaryStreet,
+                            $formData['primary_address_address_number'],
+                            $formData['primary_address_address_mailbox'],
+                            $primaryPostal,
+                            $primaryCity,
+                            'BE'
+                        )
+                    );
+                }
+
+                if (null !== $academic->getSecondaryAddress()) {
+                    $academic->getSecondaryAddress()
+                        ->setStreet($formData['secondary_address_address_street'])
+                        ->setNumber($formData['secondary_address_address_number'])
+                        ->setMailbox($formData['secondary_address_address_mailbox'])
+                        ->setPostal($formData['secondary_address_address_postal'])
+                        ->setCity($formData['secondary_address_address_city'])
+                        ->setCountry($formData['secondary_address_address_country']);
+                } else {
+                    $academic->setSecondaryAddress(
+                        new Address(
+                            $formData['secondary_address_address_street'],
+                            $formData['secondary_address_address_number'],
+                            $formData['primary_address_address_mailbox'],
+                            $formData['secondary_address_address_postal'],
+                            $formData['secondary_address_address_city'],
+                            $formData['secondary_address_address_country']
                         )
                     );
                 }
@@ -335,23 +409,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        switch($this->getParam('field')) {
-            case 'username':
-                $academics = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                    ->findAllByUsername($this->getParam('string'));
-                break;
-            case 'name':
-                $academics = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                    ->findAllByName($this->getParam('string'));
-                break;
-            case 'university_identification':
-                $academics = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                    ->findAllByUniversityIdentification($this->getParam('string'));
-                break;
-        }
+        $academics = $this->_search();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -380,6 +438,24 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 'result' => $result,
             )
         );
+    }
+
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'username':
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByUsername($this->getParam('string'));
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByName($this->getParam('string'));
+            case 'university_identification':
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByUniversityIdentification($this->getParam('string'));
+        }
     }
 
     private function _getAcademic()

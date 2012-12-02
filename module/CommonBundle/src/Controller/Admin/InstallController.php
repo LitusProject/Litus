@@ -180,7 +180,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'expire'
                     ),
                     'account' => array(
-                        'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',
                     ),
                     'auth' => array(
                         'login', 'logout', 'shibboleth'
@@ -280,7 +280,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 'student' => array(
                     'actions' => array(
                         'account' => array(
-                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',
                         ),
                     ),
                 ),

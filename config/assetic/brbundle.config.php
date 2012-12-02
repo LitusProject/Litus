@@ -158,6 +158,7 @@ return array(
         ),
         'cv_index' => array(
             '@common_jquery',
+            '@cv_css',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
             '@site_css',

@@ -143,7 +143,7 @@ class Entry
     /**
      * @var string Additional diplomas.
      *
-     * @ORM\Column(name="additional_diplomas", type="string")
+     * @ORM\Column(name="additional_diplomas", type="text")
      */
     private $additionalDiplomas;
 
@@ -171,28 +171,21 @@ class Entry
     /**
      * @var string Computer skills.
      *
-     * @ORM\Column(name="computer_skills", type="string")
+     * @ORM\Column(name="computer_skills", type="text")
      */
     private $computerSkills;
 
     /**
      * @var string Experiences.
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $experiences;
 
     /**
-     * @var string Thesis title.
-     *
-     * @ORM\Column(name="thesis_title", type="string")
-     */
-    private $thesisTitle;
-
-    /**
      * @var string Thesis summary.
      *
-     * @ORM\Column(name="thesis_summary", type="string")
+     * @ORM\Column(name="thesis_summary", type="text")
      */
     private $thesisSummary;
 
@@ -220,21 +213,21 @@ class Entry
     /**
      * @var string Career expectations.
      *
-     * @ORM\Column(name="career_expectations", type="string")
+     * @ORM\Column(name="career_expectations", type="text")
      */
     private $careerExpectations;
 
     /**
      * @var string Hobbies.
      *
-     * @ORM\Column(name="hobbies", type="string")
+     * @ORM\Column(name="hobbies", type="text")
      */
     private $hobbies;
 
     /**
      * @var string About me.
      *
-     * @ORM\Column(name="about", type="string")
+     * @ORM\Column(name="about", type="text")
      */
     private $about;
 
@@ -244,7 +237,7 @@ class Entry
      */
     public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, $birthday,
         $sex, $phoneNumber, $email, Address $address, Study $study, $bachelorStart, $bachelorEnd, $masterStart, $masterEnd,
-        $additionalDiplomas, $erasmusPeriod, $erasmusLocation, $computerSkills, $experiences,  $thesisTitle,
+        $additionalDiplomas, $erasmusPeriod, $erasmusLocation, $computerSkills, $experiences,
         $thesisSummary, $futureInterest, $mobilityEurope, $mobilityWorld, $careerExpectations, $hobbies, $about)
     {
         $this->academic = $academic;
@@ -266,7 +259,6 @@ class Entry
         $this->erasmusLocation = $erasmusLocation;
         $this->computerSkills = $computerSkills;
         $this->experiences = $experiences;
-        $this->thesisTitle = $thesisTitle;
         $this->thesisSummary = $thesisSummary;
         $this->futureInterest = $futureInterest;
         $this->mobilityEurope = $mobilityEurope;
@@ -364,11 +356,6 @@ class Entry
     public function getExperiences()
     {
         return $this->experiences;
-    }
-
-    public function getThesisTitle()
-    {
-        return $this->thesisTitle;
     }
 
     public function getThesisSummary()
