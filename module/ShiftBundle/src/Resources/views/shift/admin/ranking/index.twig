@@ -1,0 +1,28 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'shift/admin/ranking/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        {% for rankingCriterium, volunteers in ranking %}
+            <h1>{{ rankingCriterium|capitalize }}</h1>
+            <table class="full_width">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for volunteer in volunteers %}
+                        <tr class="item">
+                            <td>{{ volunteer.getFullName() }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}
