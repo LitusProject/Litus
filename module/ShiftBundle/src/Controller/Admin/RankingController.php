@@ -50,7 +50,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
                 );
             }
 
-            $volunteersCount[$volunteer->getId()]['count']++;
+            $volunteersCount[$volunteer->getPerson()->getId()]['count']++;
         }
 
         $rankingCriteria = unserialize(
