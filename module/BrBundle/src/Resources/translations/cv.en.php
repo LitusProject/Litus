@@ -40,8 +40,8 @@ return array(
     "Thesis" => "Thesis",
     "Future" => "Future",
     "Field Of Interest" => "Field Of Interest",
-    "Mobility Europe" => "Mobility Europe",
-    "Mobility World" => "Mobility World",
+    "Mobility Europe (Would you be able to travel within Europe? How often?)" => "Mobility Europe (Would you be able to travel within Europe? How often?)",
+    "Mobility World (Would you be able to travel around the world? How often?)" => "Mobility World (Would you be able to travel around the world? How often?)",
     "Career Expectations" => "Career Expectations",
     "Profile" => "Profile",
     "Hobbies" => "Hobbies",
@@ -65,5 +65,11 @@ return array(
     "Your personal email address" => "Your personal email address",
     "Your photo" => "Your photo",
     "Your birthday" => "Your birthday",
-    "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account." => "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account."
+    "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account." => "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account.",
+
+    "Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)" => "Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)",
+    "Grade for the Prior Degree (e.g. 65.48)" => "Grade for the Prior Degree (e.g. 65.48)",
+    "(Provisional) Grade for the Current Degree (e.g. 65.48)" => "(Provisional) Grade for the Current Degree (e.g. 65.48)",
+    "Extra Information (Year Abroad, Born Outside Belgium, ...)" => "Extra Information (Year Abroad, Born Outside Belgium, ...)",
+
 );
