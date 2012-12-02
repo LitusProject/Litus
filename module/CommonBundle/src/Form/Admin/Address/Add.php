@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Fieldset
+class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
 {
     /**
      * @var string
@@ -95,94 +95,82 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
         return $options;
     }
 
-    public function getInputFilter()
+    public function getInputs()
     {
-        $inputFilter = new InputFilter();
         $factory = new InputFactory();
+        $inputs = array();
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_street',
-                    'required' => true,
-                )
+        $inputs[] = $factory->createInput(
+            array(
+                'name'     => $this->_prefix . 'address_street',
+                'required' => true,
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_number',
-                    'required' => true,
-                    'validators' => array(
-                        array(
-                            'name' => 'alnum',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
+        $inputs[] = $factory->createInput(
+            array(
+                'name'     => $this->_prefix . 'address_number',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'alnum',
+                        'options' => array(
+                            'allowWhiteSpace' => true,
                         ),
                     ),
-                )
+                ),
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_mailbox',
-                    'required' => false,
-                    'validators' => array(
-                        array(
-                            'name' => 'alnum',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
-                            'validators' => array(
+        $inputs[] = $factory->createInput(
+            array(
+                'name'     => $this->_prefix . 'address_mailbox',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'alnum',
+                        'options' => array(
+                            'allowWhiteSpace' => true,
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
                                 array(
-                                    'name' => 'StringLength',
-                                    array(
-                                        'max' => 5,
-                                    )
+                                    'max' => 5,
                                 )
                             )
-                        ),
+                        )
                     ),
-                )
+                ),
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_postal',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+        $inputs[] = $factory->createInput(
+            array(
+                'name'     => $this->_prefix . 'address_postal',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'alnum',
                     ),
-                    'validators' => array(
-                        array(
-                            'name' => 'alnum',
-                        ),
-                    ),
-                )
+                ),
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_city',
-                    'required' => true,
-                )
+        $inputs[] = $factory->createInput(
+            array(
+                'name'     => $this->_prefix . 'address_city',
+                'required' => true,
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_country',
-                    'required' => true,
-                )
+        $inputs[] = $factory->createInput(
+            array(
+                'name'     => $this->_prefix . 'address_country',
+                'required' => true,
             )
         );
 
