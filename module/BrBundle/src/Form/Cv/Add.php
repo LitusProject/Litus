@@ -96,7 +96,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $studies->add($field);
 
         $field = new Text('grade');
-        $field->setLabel('Grade for the Current Degree (e.g. 65.48)')
+        $field->setLabel('(Provisional) Grade for the Current Degree (e.g. 65.48)')
             ->setRequired(true);
         $studies->add($field);
 
@@ -221,14 +221,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $future->add($field);
 
         $field = new Text('mobility_europe');
-        $field->setLabel('Mobility Europe')
+        $field->setLabel('Mobility Europe (Would you be able to travel within Europe? How often?)')
             ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new Text('mobility_world');
-        $field->setLabel('Mobility World')
+        $field->setLabel('Mobility World (Would you be able to travel around the world? How often?)')
             ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
