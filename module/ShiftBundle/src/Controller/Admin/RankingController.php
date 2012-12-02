@@ -43,7 +43,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
 
         $volunteersCount = array();
         foreach ($volunteers as $volunteer) {
-            if (!$volunteer->getPerson()->isPraesidium($academicyear))
+            if (!$volunteer->getPerson()->isPraesidium($academicYear)) {
                 if (!isset($volunteersCount[$volunteer->getPerson()->getId()])) {
                     $volunteersCount[$volunteer->getPerson()->getId()] = array(
                         'person' => $volunteer->getPerson(),
