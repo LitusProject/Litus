@@ -228,7 +228,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
                 $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
             }
-
         }
 
         if ($metaData && $metaData->becomeMember()) {

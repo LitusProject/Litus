@@ -61,6 +61,20 @@ return array(
                     ),
                 ),
             ),
+            'admin_shift_ranking' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/shift/ranking[/:action][/:academicyear][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_shift_ranking',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'admin_subscription' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -147,6 +161,7 @@ return array(
             'shift_install'       => 'ShiftBundle\Controller\Admin\InstallController',
             'admin_shift'         => 'ShiftBundle\Controller\Admin\ShiftController',
             'admin_shift_counter' => 'ShiftBundle\Controller\Admin\CounterController',
+            'admin_shift_ranking' => 'ShiftBundle\Controller\Admin\RankingController',
             'admin_subscription'  => 'ShiftBundle\Controller\Admin\SubscriptionController',
             'admin_unit'          => 'ShiftBundle\Controller\Admin\UnitController',
 

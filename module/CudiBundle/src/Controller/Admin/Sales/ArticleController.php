@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\Article as SaleArticle,
     CudiBundle\Entity\Sales\Articles\History,
     CudiBundle\Entity\Sales\SaleItem,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -68,6 +69,34 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         if (!($article = $this->_getArticle()))
             return new ViewModel();
+
+        $article->setEntityManager($this->getEntityManager());
+
+        $currentAcademicYear = $this->getCurrentAcademicYear();
+        $previousAcademicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStart(
+                new DateTime(
+                    str_replace(
+                        '{{ year }}',
+                        $currentAcademicYear->getStartDate()->format('Y') - 1,
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('start_organization_year')
+                    )
+                )
+            );
+        if (null !== $article->getSaleArticle($previousAcademicYear)) {
+            $this->redirect()->toRoute(
+                'admin_sales_article',
+                array(
+                    'action' => 'activate',
+                    'id' => $article->getSaleArticle($previousAcademicYear)->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 

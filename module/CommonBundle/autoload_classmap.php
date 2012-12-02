@@ -37,6 +37,7 @@ return array(
     'CommonBundle\Form\Admin\Role\Edit'                                                => __DIR__ . '/src/Form/Admin/Role/Edit.php',
     'CommonBundle\Form\Admin\Auth\Login'                                               => __DIR__ . '/src/Form/Admin/Auth/Login.php',
     'CommonBundle\Form\Admin\Address\Add'                                              => __DIR__ . '/src/Form/Admin/Address/Add.php',
+    'CommonBundle\Form\Admin\Address\AddPrimary'                                       => __DIR__ . '/src/Form/Admin/Address/AddPrimary.php',
     'CommonBundle\Form\Account\Activate'                                               => __DIR__ . '/src/Form/Account/Activate.php',
     'CommonBundle\Form\Auth\Login'                                                     => __DIR__ . '/src/Form/Auth/Login.php',
     'CommonBundle\Form\Address\Add'                                                    => __DIR__ . '/src/Form/Address/Add.php',
