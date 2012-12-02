@@ -23,6 +23,7 @@ use BrBundle\Component\Validator\FieldLength as LengthValidator,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+    CommonBundle\Component\Validator\Decimal as DecimalValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\People\Academic,
@@ -77,9 +78,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $studies->setLabel('Education');
         $this->add($studies);
 
+        $field = new Text('prior_degree');
+        $field->setLabel('Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)')
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 100);
+        $studies->add($field);
+
+        $field = new Text('prior_grade');
+        $field->setLabel('Grade for the Prior Degree (e.g. 65.48)')
+            ->setRequired(true);
+        $studies->add($field);
+
         $field = new Select('degree');
         $field->setLabel('Primary Degree')
             ->setAttribute('options', $studiesMap);
+        $studies->add($field);
+
+        $field = new Text('grade');
+        $field->setLabel('(Provisional) Grade for the Current Degree (e.g. 65.48)')
+            ->setRequired(true);
         $studies->add($field);
 
         $field = new Select('bachelor_start');
@@ -109,7 +127,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new TextArea('additional_diplomas');
         $field->setLabel('Additional Diplomas (e.g. driver\'s license)')
             ->setAttribute('rows', 3)
-            ->setRequired(true)
+            ->setRequired(false)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 150)
             ->setAttribute('style', 'resize: none;');
@@ -140,6 +158,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Hidden('lang_count');
         $field->setValue(1);
         $this->add($field);
+
+        $field = new TextArea('lang_extra');
+        $field->setLabel('Extra Information (Year Abroad, Born Outside Belgium, ...)')
+            ->setAttribute('rows', 2)
+            ->setRequired(true)
+            ->setAttribute('class', $field->getAttribute('class') . ' count')
+            ->setAttribute('data-count', 130)
+            ->setAttribute('style', 'resize: none;');
+        $languageCollection->add($field);
 
         $field = new Button('language_add');
         $field->setLabel('Add Language')
@@ -194,14 +221,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $future->add($field);
 
         $field = new Text('mobility_europe');
-        $field->setLabel('Mobility Europe')
+        $field->setLabel('Mobility Europe (Would you be able to travel within Europe? How often?)')
             ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
         $future->add($field);
 
         $field = new Text('mobility_world');
-        $field->setLabel('Mobility World')
+        $field->setLabel('Mobility World (Would you be able to travel around the world? How often?)')
             ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 50);
@@ -360,6 +387,34 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'max' => 5,
                             ),
                         ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'prior_grade',
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new DecimalValidator(2),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'grade',
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new DecimalValidator(2),
                     ),
                 )
             )

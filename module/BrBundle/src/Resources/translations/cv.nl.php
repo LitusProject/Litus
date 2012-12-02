@@ -39,8 +39,8 @@ return array(
     "Thesis" => "Thesis",
     "Future" => "Toekomst",
     "Field Of Interest" => "Interessegebied",
-    "Mobility Europe" => "Mobiliteit Europa",
-    "Mobility World" => "Mobiliteit Wereld",
+    "Mobility Europe (Would you be able to travel within Europe? How often?)" => "Mobiliteit Europa (Ben je bereid te reizen binnen Europa? Hoe vaak?)",
+    "Mobility World (Would you be able to travel around the world? How often?)" => "Mobiliteit Wereld (Ben je bereid te reizen buiten Europa? Hoe vaak?)",
     "Career Expectations" => "Verwachtingen Carrière",
     "Profile" => "Profiel",
     "Hobbies" => "Hobbies",
@@ -64,5 +64,11 @@ return array(
     "Your personal email address" => "Je persoonlijke email adres",
     "Your photo" => "Je foto",
     "Your birthday" => "Je verjaardag",
-    "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account." => "Om je CV toe te voegen, moet je deze vervolledigen. Klik <a href=\"{{editurl}}\">hier</a> om je account te bewerken."
+    "To add your information to the CV Book, you must complete these. Please click <a href=\"{{editurl}}\">here</a> to edit your account." => "Om je CV toe te voegen, moet je deze vervolledigen. Klik <a href=\"{{editurl}}\">hier</a> om je account te bewerken.",
+
+    "Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)" => "Vorige Diploma (bv. Bachelor in de Ingenieurswetenschappen, Industrieel Ingenieur, ...)",
+    "Grade for the Prior Degree (e.g. 65.48)" => "Percentage voor het Vorige Diploma (bv. 65.48)",
+    "(Provisional) Grade for the Current Degree (e.g. 65.48)" => "(Voorlopig) Percentage voor het Huidige Diploma (bv. 65.48)",
+    "Extra Information (Year Abroad, Born Outside Belgium, ...)" => "Extra Informatie (Jaar in het Buitenland, Geboren Buiten België, ...)",
+
 );
