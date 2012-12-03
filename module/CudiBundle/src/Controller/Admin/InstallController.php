@@ -300,6 +300,13 @@ VTK Cudi
                     ),
                     'description' => 'The articles assigned at registration',
                 ),
+                array(
+                    'key'         => 'cudi.bookings_closed_exceptions',
+                    'value'       => serialize(
+                        array()
+                    ),
+                    'description' => 'The articles assigned at registration',
+                ),
             )
         );
 
