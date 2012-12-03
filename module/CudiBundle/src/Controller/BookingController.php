@@ -97,6 +97,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_bookings') == '1';
 
+        $bookingsClosedExceptions = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.bookings_closed_exceptions')
+        );
+
         $form = new BookingForm($this->getEntityManager());
 
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
@@ -201,15 +207,18 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $form->addInputsForArticles($articles);
 
-        if($this->getRequest()->isPost() && $enableBookings) {
+        if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
                 foreach ($formData as $formKey => $formValue) {
-                    if (substr($formKey, 0, 8) === 'article-' && $formValue != '' && $formValue != '0') {
-                        $saleArticleId = substr($formKey, 8, strlen($formKey));
+                    $saleArticleId = substr($formKey, 8, strlen($formKey));
 
+                    if (!$bookingsEnabled && !in_array($saleArticleId, $bookingsClosedExceptions))
+                        continue;
+
+                    if (substr($formKey, 0, 8) === 'article-' && $formValue != '' && $formValue != '0') {
                         $saleArticle = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Article')
                             ->findOneById($saleArticleId);
@@ -282,6 +291,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'subjectArticleMap' => $result,
                 'form' => $form,
                 'bookingsEnabled' => $enableBookings,
+                'bookingsClosedExceptions' => $bookingsClosedExceptions
             )
         );
     }
