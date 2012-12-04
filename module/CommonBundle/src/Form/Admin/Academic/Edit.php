@@ -165,15 +165,19 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     {
         $inputFilter = parent::getInputFilter();
 
-        $inputs = $this->get('secondary_address')
-            ->getInputs();
-        foreach($inputs as $input)
-            $inputFilter->add($input);
-
-        $inputs =$this->get('primary_address')
+        if (null !== $this->get('secondary_address')) {
+            $inputs = $this->get('secondary_address')
                 ->getInputs();
-        foreach($inputs as $input)
-            $inputFilter->add($input);
+            foreach($inputs as $input)
+                $inputFilter->add($input);
+        }
+
+        if (null !== $this->get('primary_address')) {
+            $inputs =$this->get('primary_address')
+                    ->getInputs();
+            foreach($inputs as $input)
+                $inputFilter->add($input);
+        }
 
         $factory = new InputFactory();
 

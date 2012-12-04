@@ -46,7 +46,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('placeholder', '+CCAAANNNNNN');
         $this->add($field);
 
-        $this->add(new AddressForm('', 'address'));
+        $field = new AddressForm('address', 'address');
+        $field->setLabel('Address');
+        $this->add($field);
 
         $field = new Text('vat_number');
         $field->setLabel('VAT Number');
@@ -64,12 +66,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name' => $supplier->getName(),
             'phone_number' => $supplier->getPhoneNumber(),
             'vat_number' => $supplier->getVatNumber(),
-            'address_street' => $supplier->getAddress()->getStreet(),
-            'address_number' => $supplier->getAddress()->getNumber(),
-            'address_mailbox' => $supplier->getAddress()->getMailbox(),
-            'address_postal' => $supplier->getAddress()->getPostal(),
-            'address_city' => $supplier->getAddress()->getCity(),
-            'address_country' => $supplier->getAddress()->getCountryCode(),
+            'address_address_street' => $supplier->getAddress()->getStreet(),
+            'address_address_number' => $supplier->getAddress()->getNumber(),
+            'address_address_mailbox' => $supplier->getAddress()->getMailbox(),
+            'address_address_postal' => $supplier->getAddress()->getPostal(),
+            'address_address_city' => $supplier->getAddress()->getCity(),
+            'address_address_country' => $supplier->getAddress()->getCountryCode(),
         );
 
         $this->setData($data);
@@ -77,7 +79,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        $inputFilter = $this->get('address')->getInputFilter();
+        $inputFilter = new InputFilter();
+
+        $inputs = $this->get('address')
+            ->getInputs();
+        foreach($inputs as $input)
+            $inputFilter->add($input);
+
         $factory = new InputFactory();
 
         $inputFilter->add(
