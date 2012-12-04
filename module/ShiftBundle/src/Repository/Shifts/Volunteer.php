@@ -2,7 +2,8 @@
 
 namespace ShiftBundle\Repository\Shifts;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository,
 	ShiftBundle\Entity\Shift;
 
 /**
@@ -28,5 +29,24 @@ class Volunteer extends EntityRepository
         if (isset($resultSet[0]))
             return $resultSet[0];
         return null;
+    }
+
+    public function findAllByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v')
+            ->from('ShiftBundle\Entity\Shifts\Volunteer', 'v')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('v.signupTime', ':startAcademicYear'),
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear')
+                )
+            )
+            ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
     }
 }

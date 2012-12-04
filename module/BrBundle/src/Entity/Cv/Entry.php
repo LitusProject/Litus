@@ -105,12 +105,33 @@ class Entry
     private $address;
 
     /**
+     * @var string The prior study
+     *
+     * @ORM\Column(name="prior_study", type="string")
+     */
+    private $priorStudy;
+
+    /**
+     * @var int The prior grade
+     *
+     * @ORM\Column(name="prior_grade", type="bigint")
+     */
+    private $priorGrade;
+
+    /**
      * @var \DateTime The study of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
      * @ORM\JoinColumn(name="study", referencedColumnName="id")
      */
     private $study;
+
+    /**
+     * @var int The grade of the current study.
+     *
+     * @ORM\Column(name="grade", type="bigint")
+     */
+    private $grade;
 
     /**
      * @var int The user's personal email
@@ -167,6 +188,13 @@ class Entry
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\Cv\Language", mappedBy="entry", cascade={"persist", "remove"})
      */
     private $languages;
+
+    /**
+     * @var string Extra information regarding language knowledge.
+     *
+     * @ORM\Column(name="language_extra", type="text")
+     */
+    private $languageExtra;
 
     /**
      * @var string Computer skills.
@@ -236,9 +264,10 @@ class Entry
      * @param \CommonBundle\Entity\General\AcademicYear $year The current academic year.
      */
     public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, $birthday,
-        $sex, $phoneNumber, $email, Address $address, Study $study, $bachelorStart, $bachelorEnd, $masterStart, $masterEnd,
-        $additionalDiplomas, $erasmusPeriod, $erasmusLocation, $computerSkills, $experiences,
-        $thesisSummary, $futureInterest, $mobilityEurope, $mobilityWorld, $careerExpectations, $hobbies, $about)
+        $sex, $phoneNumber, $email, Address $address, $priorStudy, $priorGrade, Study $study, $grade, $bachelorStart,
+        $bachelorEnd, $masterStart, $masterEnd, $additionalDiplomas, $erasmusPeriod, $erasmusLocation, $languageExtra,
+        $computerSkills, $experiences, $thesisSummary, $futureInterest, $mobilityEurope, $mobilityWorld,
+        $careerExpectations, $hobbies, $about)
     {
         $this->academic = $academic;
         $this->year = $year;
@@ -249,7 +278,10 @@ class Entry
         $this->phoneNumber = $phoneNumber;
         $this->email = $email;
         $this->address = $address;
+        $this->priorStudy = $priorStudy;
+        $this->priorGrade = $priorGrade * 100;
         $this->study = $study;
+        $this->grade = $grade * 100;
         $this->bachelorStart = $bachelorStart;
         $this->bachelorEnd = $bachelorEnd;
         $this->masterStart = $masterStart;
@@ -257,6 +289,7 @@ class Entry
         $this->additionalDiplomas = $additionalDiplomas;
         $this->erasmusPeriod = $erasmusPeriod;
         $this->erasmusLocation = $erasmusLocation;
+        $this->languageExtra = $languageExtra;
         $this->computerSkills = $computerSkills;
         $this->experiences = $experiences;
         $this->thesisSummary = $thesisSummary;
@@ -303,9 +336,24 @@ class Entry
         return $this->address;
     }
 
+    public function getPriorStudy()
+    {
+        return $this->priorStudy;
+    }
+
+    public function getPriorGrade()
+    {
+        return $this->priorGrade;
+    }
+
     public function getStudy()
     {
         return $this->study;
+    }
+
+    public function getGrade()
+    {
+        return $this->grade;
     }
 
     public function getBachelorStart()
@@ -346,6 +394,11 @@ class Entry
     public function getLanguages()
     {
         return $this->languages->toArray();
+    }
+
+    public function getLanguageExtra()
+    {
+        return $this->languageExtra;
     }
 
     public function getComputerSkills()
