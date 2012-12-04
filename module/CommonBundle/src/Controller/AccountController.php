@@ -139,7 +139,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            print_r($formData);
+
             $formData['university_identification'] = $this->getParam('identification');
             if ($metaData && $metaData->becomeMember())
                 $formData['become_member'] = true;

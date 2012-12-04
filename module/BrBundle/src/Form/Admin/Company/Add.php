@@ -118,7 +118,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        $inputFilter = $this->get('address')->getInputFilter();
+        $inputFilter = new InputFilter();
+
+        $inputs = $this->get('address')
+            ->getInputs();
+        foreach($inputs as $input)
+            $inputFilter->add($input);
+
         $factory = new InputFactory();
 
         $inputFilter->add(
