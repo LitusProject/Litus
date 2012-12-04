@@ -164,6 +164,17 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
+
+        $inputs = $this->get('secondary_address')
+            ->getInputs();
+        foreach($inputs as $input)
+            $inputFilter->add($input);
+
+        $inputs =$this->get('primary_address')
+                ->getInputs();
+        foreach($inputs as $input)
+            $inputFilter->add($input);
+
         $factory = new InputFactory();
 
         $inputFilter->add(
