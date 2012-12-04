@@ -29,8 +29,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     SecretaryBundle\Form\Registration\Edit as EditForm,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
-    Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
+    Zend\Validator\File\Size as SizeValidator,
+    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -232,9 +234,14 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path');
 
-                $file = new FileTransfer();
-                if ($file->receive()) {
-                    $image = new Imagick($file->getFileName());
+                $upload = new FileUpload();
+                $upload->addValidator(new SizeValidator(array('max' => '3MB')));
+                $upload->addValidator(new ImageValidator());
+
+                if ($upload->isValid()) {
+                    $upload->receive();
+
+                    $image = new Imagick($upload->getFileName());
                     $image->cropThumbnailImage(320, 240);
 
                     if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {

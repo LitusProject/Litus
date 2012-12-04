@@ -49,6 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
+        $this->setAttribute('id', 'uploadBanner');
         $this->setAttribute('enctype', 'multipart/form-data');
 
         $field = new Text('name');
