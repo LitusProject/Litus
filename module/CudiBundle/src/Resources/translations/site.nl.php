@@ -31,8 +31,7 @@ return array(
     'Booked' => 'Gereserveerd',
     'Assigned' => 'Toegewezen',
     'Remarks' => 'Opmerkingen',
-    'remark' => 'opmerking',
-    'remarks' => 'opmerkingen',
+    'Remark' => 'Opmerking',
 
     'Book Textbooks' => 'Cursussen Reserveren',
     'Book' => 'Reserveer',

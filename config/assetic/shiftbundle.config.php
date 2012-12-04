@@ -34,6 +34,11 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'admin_shift_ranking' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
         'admin_subscription' => array(
             '@common_jquery',
             '@admin_js',

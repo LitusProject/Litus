@@ -31,8 +31,7 @@ return array(
     'Booked' => 'Booked',
     'Assigned' => 'Assigned',
     'Remarks' => 'Remarks',
-    'remark' => 'remark',
-    'remarks' => 'remarks',
+    'Remark' => 'Remark',
 
     'Book Textbooks' => 'Book Textbooks',
     'Book' => 'Book',

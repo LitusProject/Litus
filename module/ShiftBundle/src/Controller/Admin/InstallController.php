@@ -98,6 +98,22 @@ You have been removed from the following shift by an administrator:
                     'value'       => 'data/shift/pdf_generator',
                     'description' => 'The path to the PDF generator files',
                 ),
+                array(
+                    'key'         => 'shift.ranking_criteria',
+                    'value'       => serialize(
+                        array(
+                            array(
+                                'name' => 'silver',
+                                'limit' => '10'
+                            ),
+                            array(
+                                'name' => 'gold',
+                                'limit' => '20'
+                            ),
+                        )
+                    ),
+                    'description' => 'The ranking criteria for volunteers',
+                ),
             )
         );
     }
@@ -115,6 +131,9 @@ You have been removed from the following shift by an administrator:
                     ),
                     'admin_shift_counter' => array(
                         'index', 'payed', 'search', 'view'
+                    ),
+                    'admin_shift_ranking' => array(
+                        'index'
                     ),
                     'admin_subscription' => array(
                         'manage', 'delete',

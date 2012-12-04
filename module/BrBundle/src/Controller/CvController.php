@@ -101,9 +101,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     $person->getPhoneNumber(),
                     $person->getPersonalEmail(),
                     $address,
+                    $formData['prior_degree'],
+                    $formData['prior_grade'],
                     $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\Study')
                         ->findOneById($formData['degree']),
+                    $formData['grade'],
                     $formData['bachelor_start'],
                     $formData['bachelor_end'],
                     $formData['master_start'],
@@ -111,6 +114,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     $formData['additional_diplomas'],
                     $formData['erasmus_period'],
                     $formData['erasmus_location'],
+                    $formData['lang_extra'],
                     $formData['computer_skills'],
                     $formData['experiences'],
                     $formData['thesis_summary'],
