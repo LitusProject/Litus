@@ -12,13 +12,17 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>E-mail</th>
+                        <th width="120px">Count</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {% for volunteer in volunteers %}
                         <tr class="item">
-                            <td>{{ volunteer.getFullName() }}</td>
+                            <td>{{ volunteer['person'].getFullName() }}</td>
+                            <td>{{ volunteer['person'].getEmail() }}</td>
+                            <td>{{ volunteer['shiftCount'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

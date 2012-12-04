@@ -141,15 +141,15 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         $result = array();
         foreach ($people as $person) {
-            $shifts = $this->getEntityManager()
+            $shiftCount = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllByPerson($person, $academicYear);
+                ->countAllByPerson($person, $academicYear);
 
             $item = (object) array();
             $item->id = $person->getId();
             $item->universityIdentification = $person->getUniversityIdentification();
             $item->name = $person->getFullName();
-            $item->count = count($shifts);
+            $item->count = $shiftCount;
             $result[] = $item;
         }
 

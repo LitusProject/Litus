@@ -161,6 +161,16 @@ class Shift extends EntityRepository
         );
     }
 
+    public function countAllByPerson(Person $person, AcademicYear $academicYear = null)
+    {
+        return count(
+            array_merge(
+                $this->findAllByPersonAsReponsible($person, $academicYear),
+                $this->findAllByPersonAsVolunteer($person, $academicYear)
+            )
+        );
+    }
+
     public function findAllByPersonAsReponsible(Person $person, AcademicYear $academicYear = null)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
@@ -197,7 +207,7 @@ class Shift extends EntityRepository
 
     public function findAllByPersonAsVolunteer(Person $person, AcademicYear $academicYear = null)
     {
-                $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v');
