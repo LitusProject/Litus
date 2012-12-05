@@ -91,7 +91,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'index'
                     ),
                     'career_company' => array(
-                        'view', 'overview', 'file', 'search',
+                        'view', 'overview', 'file', 'search', 'logo',
                     ),
                     'career_event' => array(
                         'view', 'overview'

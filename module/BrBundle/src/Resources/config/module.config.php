@@ -144,11 +144,12 @@ return array(
             'career_company' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/company[/:action[/:company]][/]',
+                    'route' => '[/:language]/career/company[/:action[/:company][/id/:id]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'company'     => '[a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
+                        'id'      => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'career_company',

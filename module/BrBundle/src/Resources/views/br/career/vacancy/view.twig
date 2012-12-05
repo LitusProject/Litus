@@ -13,7 +13,7 @@
         {% endif %}
             {% if vacancy.getCompany().getLogo() %}
 
-                    <img src="{{ url('admin_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
+                    <img src="{{ url('career_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
             {% else %}
 
                 <h2><center class="company-name">{{ vacancy.getCompany().getName() }}</center></h2>
