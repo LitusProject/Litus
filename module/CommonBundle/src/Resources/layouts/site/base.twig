@@ -40,7 +40,7 @@
                                 </li>
                             {% endif %}
                         {% endfor %}
-                        {% if hasAccess('gallery', 'overview') %}
+                        {% if hasAccess('gallery', 'overview') or hasAccess('archive', 'overview') %}
                             <li class="dropdown">
                                 <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
                                     {{ translate('Media') }} <span class="caret"></span>
@@ -48,6 +48,9 @@
                                 <ul class="dropdown-menu">
                                     {% if hasAccess('gallery', 'overview') %}
                                         <li><a href="{{ url('gallery', {"action": 'overview'}) }}">{{ translate('Pictures') }}</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('archive', 'overview') %}
+                                        <li><a href="{{ url('archive', {"action": 'overview'}) }}">{{ translate('Publications') }}</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
