@@ -79,7 +79,7 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PublicationTitleValidator($this->_entityManager, $this->_id)
+                        new TitleValidator($this->_entityManager, $this->_id)
                     ),
                 )
             )

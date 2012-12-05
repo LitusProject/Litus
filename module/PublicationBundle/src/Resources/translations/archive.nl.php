@@ -13,6 +13,8 @@
  */
 
 return array(
+    'Publications' => 'Publicaties',
+    
     'Year' => 'Jaar',
     'PDF Editions' => 'PDF Edities',
     'HTML Editions' => 'HTML Edities',

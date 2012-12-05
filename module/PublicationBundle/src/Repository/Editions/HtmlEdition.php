@@ -14,7 +14,6 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class HtmlEdition extends EntityRepository
 {
-
     public function findAllByPublicationAndAcademicYear(PublicationEntity $publication, AcademicYear $academicYear)
 	{
         $query = $this->_em->createQueryBuilder();
