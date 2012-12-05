@@ -95,17 +95,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
         return $options;
     }
 
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-
-        $inputs = $this->getInputs();
-        foreach($inputs as $input)
-            $inputFilter->add($input);
-
-        return $inputFilter;
-    }
-
     public function getInputs()
     {
         $factory = new InputFactory();
@@ -181,7 +170,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_country',
-                'required' => true,
+                'required' => false,
             )
         );
 

@@ -9,4 +9,63 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
 	</div>
+
+    <div class="modal hide fade" id="progressModal">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Upload Banner
+        </div>
+        <div class="modal-body">
+            <p>
+                Your files are being uploaded.
+            </p>
+            <p>
+                <div class="progress progress-striped active">
+                    <div class="bar" style="width: 100%;"></div>
+                </div>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#uploadBanner').formUploadProgress({
+                url: '{{ url('admin_banner', {"action": "progress"}) }}',
+                name: '{{ uploadProgressId }}',
+                uploadProgressName: '{{ uploadProgressName }}',
+                interval: 1000,
+                onProgress: function (data) {
+                    $('#progressModal').find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+                },
+                onSubmitted: function (data) {
+                    if (data.errors) {
+                        $('.flashmessage').addClass('hide');
+                        $('#uploadBanner').find('ul.errors').remove();
+                        for(element in data.errors) {
+                            var list = $('<ul>', {class: 'errors'})
+                            for (error in data.errors[element])
+                                list.append($('<li>').html(data.errors[element][error]));
+                            $('#uploadBanner').find('#' + element).parent().parent().after(list);
+                        }
+                    } else if (data.info) {
+                        window.location.href = '{{ url('admin_banner', {"action": "manage"}) }}';
+                    }
+                    var progressModal = $('#progressModal');
+                    progressModal.permanentModal('hide');
+                },
+                onSubmit: function () {
+                    $('.flashmessage').addClass('hide');
+                    var progressModal = $('#progressModal');
+                    progressModal.permanentModal('open');
+                },
+                onError: function () {
+                    $('.flashmessage').addClass('hide');
+                    var progressModal = $('#progressModal');
+                    progressModal.permanentModal('hide');
+                }
+            });
+        });
+    </script>
 {% endblock %}

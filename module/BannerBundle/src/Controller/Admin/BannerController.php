@@ -58,27 +58,152 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'admin_banner',
+                array(
+                    'action' => 'upload',
+                )
+            )
+        );
 
-        if ($this->getRequest()->isPost()) {
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'uploadProgressName' => ini_get('session.upload_progress.name'),
+                'uploadProgressId' => uniqid(),
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        if (!($banner = $this->_getBanner()))
+            return new ViewModel();
+
+        $form = new EditForm($this->getEntityManager(), $banner);
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'admin_banner',
+                array(
+                    'action' => 'upload',
+                    'id' => $banner->getId(),
+                )
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'uploadProgressName' => ini_get('session.upload_progress.name'),
+                'uploadProgressId' => uniqid(),
+            )
+        );
+    }
+
+    public function uploadAction()
+    {
+        $upload = new FileUpload();
+
+        $upload->addValidator(new SizeValidator(array('max' => '10MB')));
+        $upload->addValidator(new ImageValidator());
+        $validator = new ImageSizeValidator();
+        $validator->setMinWidth($this::BANNER_WIDTH)
+            ->setMinHeight($this::BANNER_HEIGHT)
+            ->setMaxWidth($this::BANNER_WIDTH)
+            ->setMaxHeight($this::BANNER_HEIGHT);
+        $upload->addValidator($validator);
+
+        if (!($banner = $this->_getBanner(false))) {
+            $form = new AddForm($this->getEntityManager());
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $upload = new FileUpload();
-
-            $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-            $upload->addValidator(new ImageValidator());
-            $validator = new ImageSizeValidator();
-            $validator->setMinWidth($this::BANNER_WIDTH)
-                ->setMinHeight($this::BANNER_HEIGHT)
-                ->setMaxWidth($this::BANNER_WIDTH)
-                ->setMaxHeight($this::BANNER_HEIGHT);
-            $upload->addValidator($validator);
-
-            if ($form->isValid()) {
+            if ($form->isValid() && $upload->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                if ($upload->isValid()) {
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('banner.image_path');
 
+                $fileName = '';
+                do{
+                    $fileName = '/' . sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
+
+                $upload->addFilter('Rename', $filePath . $fileName);
+                $upload->receive();
+
+                $banner = new Banner(
+                    $this->getAuthentication()->getPersonObject(),
+                    $formData['name'],
+                    $fileName,
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $formData['active'],
+                    $formData['url']
+                );
+                $this->getEntityManager()->persist($banner);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The banner was successfully added!'
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info' => array(
+                            'info' => (object) array(
+                                'name' => $banner->getName(),
+                            ),
+                        ),
+                    )
+                );
+            } else {
+                $errors = $form->getMessages();
+                $formErrors = array();
+
+                foreach ($form->getElements() as $key => $element) {
+                    if (!isset($errors[$element->getName()]))
+                        continue;
+
+                    $formErrors[$element->getAttribute('id')] = array();
+
+                    foreach ($errors[$element->getName()] as $error) {
+                        $formErrors[$element->getAttribute('id')][] = $error;
+                    }
+                }
+
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form' => array(
+                            'errors' => $formErrors,
+                        ),
+                    )
+                );
+            }
+        } else {
+            $form = new EditForm($this->getEntityManager(), $banner);
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $banner->setName($formData['name'])
+                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    ->setActive($formData['active'])
+                    ->setUrl($formData['url']);
+
+                if ($upload->isValid()) {
                     $filePath = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('banner.image_path');
@@ -91,142 +216,54 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     $upload->addFilter('Rename', $filePath . $fileName);
                     $upload->receive();
 
-                    $banner = new Banner(
-                        $this->getAuthentication()->getPersonObject(),
-                        $formData['name'],
-                        $fileName,
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
-                        $formData['active'],
-                        $formData['url']
-                    );
-                    $this->getEntityManager()->persist($banner);
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Succes',
-                            'The banner was successfully added!'
-                        )
-                    );
-
-                    $this->redirect()->toRoute(
-                        'admin_banner',
-                        array(
-                            'action' => 'manage'
-                        )
-                    );
-
-                    return new ViewModel();
+                    $banner->setImage($fileName);
                 }
-            }
 
-            if (!$upload->isValid()) {
-                $dataError = $upload->getMessages();
-                $error = array();
+                $this->getEntityManager()->flush();
 
-                foreach($dataError as $key=>$row)
-                    $error[] = $row;
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The banner was successfully edited!'
+                    )
+                );
 
-                $form->setMessages(array('file'=>$error ));
-            }
-        }
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info' => array(
+                            'info' => (object) array(
+                                'name' => $banner->getName(),
+                            ),
+                        ),
+                    )
+                );
+            } else {
+                $errors = $form->getMessages();
+                $formErrors = array();
 
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
-    }
+                foreach ($form->getElements() as $key => $element) {
+                    if (!isset($errors[$element->getName()]))
+                        continue;
 
-    public function editAction()
-    {
-        if (!($banner = $this->_getBanner()))
-            return new ViewModel();
+                    $formErrors[$element->getAttribute('id')] = array();
 
-        $form = new EditForm($this->getEntityManager(), $banner);
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $upload = new FileUpload();
-
-                $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-                $upload->addValidator(new ImageValidator());
-                $validator = new ImageSizeValidator();
-                $validator->setMinWidth($this::BANNER_WIDTH)
-                    ->setMinHeight($this::BANNER_HEIGHT)
-                    ->setMaxWidth($this::BANNER_WIDTH)
-                    ->setMaxHeight($this::BANNER_HEIGHT);
-                $upload->addValidator($validator);
-
-                if (!$upload->isUploaded(array('file')) || $upload->isValid()) {
-
-                    $banner->setName($formData['name'])
-                        ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                        ->setActive($formData['active'])
-                        ->setUrl($formData['url']);
-
-                    if ($upload->isUploaded(array('file'))) {
-
-                        $filePath = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('banner.image_path');
-
-                        $fileName = '';
-                        do{
-                            $fileName = '/' . sha1(uniqid());
-                        } while (file_exists($filePath . $fileName));
-
-                        $upload->addFilter('Rename', $filePath . $fileName);
-                        $upload->receive();
-
-                        $banner->setImage($fileName);
+                    foreach ($errors[$element->getName()] as $error) {
+                        $formErrors[$element->getAttribute('id')][] = $error;
                     }
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Succes',
-                            'The banner was successfully edited!'
-                        )
-                    );
-
-                    $this->redirect()->toRoute(
-                        'admin_banner',
-                        array(
-                            'action' => 'manage'
-                        )
-                    );
-
-                    return new ViewModel();
-                } else {
-                    $dataError = $upload->getMessages();
-                    $error = array();
-
-                    foreach($dataError as $key=>$row)
-                        $error[] = $row;
-
-                    $form->setMessages(array('file'=>$error ));
                 }
+
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form' => array(
+                            'errors' => $formErrors,
+                        ),
+                    )
+                );
             }
         }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
     }
 
     public function progressAction()
@@ -260,23 +297,25 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _getBanner()
+    private function _getBanner($redirect = true)
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the banner!'
-                )
-            );
+            if ($redirect) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'No ID was given to identify the banner!'
+                    )
+                );
 
-            $this->redirect()->toRoute(
-                'admin_banner',
-                array(
-                    'action' => 'manage'
-                )
-            );
+                $this->redirect()->toRoute(
+                    'admin_banner',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+            }
 
             return;
         }
@@ -286,20 +325,22 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $banner) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No banner with the given ID was found!'
-                )
-            );
+            if ($redirect) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'No banner with the given ID was found!'
+                    )
+                );
 
-            $this->redirect()->toRoute(
-                'admin_banner',
-                array(
-                    'action' => 'manage'
-                )
-            );
+                $this->redirect()->toRoute(
+                    'admin_banner',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+            }
 
             return;
         }

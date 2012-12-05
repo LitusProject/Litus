@@ -81,12 +81,14 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->persist($company);
 
-                $yearIds = $formData['years'];
                 $years = array();
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                foreach($yearIds as $yearId) {
-                    $years[] = $repository->findOneById($yearId);
+                if (count($formData['years']) > 0) {
+                    $yearIds = $formData['years'];
+                    $repository = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                    foreach($yearIds as $yearId) {
+                        $years[] = $repository->findOneById($yearId);
+                    }
                 }
 
                 $page = new Page(
@@ -155,12 +157,14 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->setCity($formData['address_city'])
                         ->setCountry($formData['address_country']);
 
-                $yearIds = $formData['years'];
                 $years = array();
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                foreach($yearIds as $yearId) {
-                    $years[] = $repository->findOneById($yearId);
+                if (count($formData['years']) > 0) {
+                    $yearIds = $formData['years'];
+                    $repository = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                    foreach($yearIds as $yearId) {
+                        $years[] = $repository->findOneById($yearId);
+                    }
                 }
 
                 $company->getPage()
