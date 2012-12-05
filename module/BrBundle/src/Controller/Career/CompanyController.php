@@ -58,6 +58,33 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
+    public function logoAction()
+    {
+        if (!($company = $this->_getCompanyByLogo()))
+            return new ViewModel();
+
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.logo_path') . '/';
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-type' => mime_content_type($filePath . $company->getLogo()),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath . $company->getLogo(), 'r');
+        $data = fread($handle, filesize($filePath . $company->getLogo()));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+
+
     public function fileAction()
     {
         $filePath = $this->getEntityManager()
@@ -143,6 +170,54 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
                     FlashMessage::ERROR,
                     'Error',
                     'No company with the given name was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_company',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        return $company;
+    }
+
+
+    private function _getCompanyByLogo()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the company!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'career_company',
+                array(
+                    'action' => 'overview'
+                )
+            );
+
+            return;
+        }
+
+        $company = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findOneByLogo($this->getParam('id'));
+
+        if (null === $company) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No company with the given ID was found!'
                 )
             );
 

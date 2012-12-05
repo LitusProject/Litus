@@ -4,7 +4,7 @@
 
     <div class="span2">
         {% if page.getCompany().getLogo() %}
-            <img src="{{ url('admin_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
+            <img src="{{ url('career_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
 
         <hr/>
         {% else %}

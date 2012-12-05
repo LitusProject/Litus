@@ -9,7 +9,7 @@
                     <td width="120">
                         <a href="{{ url('career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
                             {% if vacancy.getCompany().getLogo() %}
-                                    <img width="120" src="{{ url('admin_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
+                                    <img width="120" src="{{ url('career_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
                             {% endif %}
                         </a>
                     </td>
