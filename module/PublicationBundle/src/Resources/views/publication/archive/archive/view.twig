@@ -26,7 +26,7 @@
                     {% for html in htmls %}
                         <li>
                             <center>
-                                <a class="thumbnail span2" style="height: 70px;line-height: 70px" href="{{ url('edition_html', {'action': 'view', 'id': html.getId()}) }}">{{ html.getTitle() }}</a>
+                                <a class="thumbnail span2" style="height: 70px;line-height: 70px" target="_blank" href="{{ url('edition_html', {'action': 'view', 'id': html.getId()}) }}">{{ html.getTitle() }}</a>
                             </center>
                         </li>
                     {% endfor %}
