@@ -40,7 +40,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $this->add(new AddressForm('', 'address'));
+        $field = new AddressForm('', 'address');
+        $field->setLabel('Address');
+        $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -51,6 +53,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
+
+        $inputs = $this->get('address')
+            ->getInputs();
+        foreach($inputs as $input)
+            $inputFilter->add($input);
+
         $factory = new InputFactory();
 
         $inputFilter->add(
