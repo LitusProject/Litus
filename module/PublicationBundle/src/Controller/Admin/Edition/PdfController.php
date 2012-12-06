@@ -15,12 +15,14 @@
 namespace PublicationBundle\Controller\Admin\Edition;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Editions\Pdf as PdfEdition,
     PublicationBundle\Form\Admin\Edition\Pdf\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -57,64 +59,16 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
 
         $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $upload = new FileUpload();
-
-                $upload->addValidator(new SizeValidator(array('max' => '30MB')));
-                $upload->addValidator(new ExtensionValidator('pdf'));
-
-                if ($upload->isValid()) {
-
-                    $edition = new PdfEdition($publication, $this->getCurrentAcademicYear(), $formData['title']);
-
-                    if (!file_exists($edition->getDirectory()))
-                        mkdir($edition->getDirectory(), 0775, true);
-
-                    $upload = new FileUpload();
-
-                    $upload->addFilter('Rename', $edition->getFileName());
-                    $upload->receive();
-
-                    $this->getEntityManager()->persist($edition);
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCES',
-                            'The publication was succesfully created!'
-                        )
-                    );
-
-                    $this->redirect()->toRoute(
-                        'admin_edition_pdf',
-                        array(
-                            'action' => 'manage',
-                            'id' => $publication->getId(),
-                        )
-                    );
-
-                    return new ViewModel();
-
-                } else {
-                    $dataError = $upload->getMessages();
-                    $error = array();
-
-                    foreach($dataError as $key=>$row)
-                        $error[] = $row;
-
-                    $form->setMessages(array('file'=>$error ));
-                }
-
-            }
-        }
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'admin_edition_pdf',
+                array(
+                    'action' => 'upload',
+                    'id' => $publication->getId(),
+                )
+            )
+        );
 
         return new ViewModel(
             array(
@@ -124,6 +78,76 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
                 'uploadProgressId' => uniqid(),
             )
         );
+    }
+
+    public function uploadAction()
+    {
+        if (!($publication = $this->_getPublication()))
+            return new ViewModel();
+
+        $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
+        $formData = $this->getRequest()->getPost();
+        $form->setData($formData);
+
+        $upload = new FileUpload();
+        $upload->addValidator(new SizeValidator(array('max' => '50MB')));
+        $upload->addValidator(new ExtensionValidator('pdf'));
+
+        if ($form->isValid() && $upload->isValid()) {
+            $formData = $form->getFormData($formData);
+            $edition = new PdfEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], DateTime::createFromFormat('d/m/Y', $formData['date']));
+
+            if (!file_exists($edition->getDirectory()))
+                mkdir($edition->getDirectory(), 0775, true);
+
+            $upload->addFilter('Rename', $edition->getFileName());
+            $upload->receive();
+
+            $this->getEntityManager()->persist($edition);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCES',
+                    'The publication was succesfully created!'
+                )
+            );
+
+            return new ViewModel(
+                array(
+                    'status' => 'success',
+                    'info' => array(
+                        'info' => (object) array(
+                            'title' => $edition->getTitle(),
+                        ),
+                    ),
+                )
+            );
+        } else {
+            $errors = $form->getMessages();
+            $formErrors = array();
+
+            foreach ($form->getElements() as $key => $element) {
+                if (!isset($errors[$element->getName()]))
+                    continue;
+
+                $formErrors[$element->getAttribute('id')] = array();
+
+                foreach ($errors[$element->getName()] as $error) {
+                    $formErrors[$element->getAttribute('id')][] = $error;
+                }
+            }
+
+            return new ViewModel(
+                array(
+                    'status' => 'error',
+                    'form' => array(
+                        'errors' => $formErrors,
+                    ),
+                )
+            );
+        }
     }
 
     public function progressAction()
@@ -144,13 +168,38 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
-        unlink($edition->getFileName());
+        if (file_exists($edition->getFileName()))
+            unlink($edition->getFileName());
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    public function viewAction()
+    {
+        if (!($edition = $this->_getEdition()))
+            return new ViewModel();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
+            'Content-type' => 'application/pdf',
+            'Content-Length' => filesize($edition->getFileName()),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($edition->getFileName(), 'r');
+        $data = fread($handle, filesize($edition->getFileName()));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }

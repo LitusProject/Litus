@@ -15,6 +15,7 @@ namespace PublicationBundle\Entity\Editions;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Util\Url,
+    DateTime,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     PublicationBundle\Entity\Publication;
@@ -30,12 +31,14 @@ class Pdf extends \PublicationBundle\Entity\Edition
     /**
      * Creates a new edition with the given title
      *
+     * @param \PublicationBundle\Entity\Publication The publication to which this edition belongs
+     * @param \CommonBundle\Entity\General\AcademicYear
      * @param string $title The title of this edition
-     * @param string $file The file of this edition
+     * @param \DateTime $date The date of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date)
     {
-        parent::__construct($publication, $academicYear, $title);
+        parent::__construct($publication, $academicYear, $title, $date);
     }
 
     private function getBase()
