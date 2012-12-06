@@ -89,7 +89,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         $form->setData($formData);
 
         $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '30MB')));
+        $upload->addValidator(new SizeValidator(array('max' => '50MB')));
         $upload->addValidator(new ExtensionValidator('pdf'));
 
         if ($form->isValid() && $upload->isValid()) {
