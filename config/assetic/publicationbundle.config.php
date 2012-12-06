@@ -56,6 +56,7 @@ return array(
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@archive_css',
         ),
         'edition_html' => array(
         ),

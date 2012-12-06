@@ -15,6 +15,7 @@
 namespace PublicationBundle\Controller\Admin\Edition;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Editions\Pdf as PdfEdition,
     PublicationBundle\Form\Admin\Edition\Pdf\Add as AddForm,
@@ -94,7 +95,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
-            $edition = new PdfEdition($publication, $this->getCurrentAcademicYear(), $formData['title']);
+            $edition = new PdfEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], DateTime::createFromFormat('d/m/Y', $formData['date']));
 
             if (!file_exists($edition->getDirectory()))
                 mkdir($edition->getDirectory(), 0775, true);

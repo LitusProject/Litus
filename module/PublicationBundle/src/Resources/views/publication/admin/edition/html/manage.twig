@@ -25,6 +25,7 @@
             <table class="full_width manage">
                 <tr>
                     <th>Title</th>
+                    <th width="120px">Date</th>
                     <th width="70px">Actions</th>
                 </tr>
 
@@ -32,6 +33,7 @@
 
                     <tr class="item item-{{ edition.getId() }}">
                         <td>{{ edition.getTitle() }}</td>
+                        <td>{{ edition.getDate().format('d/m/Y') }}</td>
                         <td class="actions">
                             {% if hasAccess('edition_html', 'view') %}
                                 <a href="{{ url('edition_html', {'action': 'view','id': edition.getId()}) }}" class="view">View</a>
