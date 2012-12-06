@@ -68,6 +68,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(true);
         $this->add($field);
 
+        $field = new Text('date');
+        $field->setLabel('Date')
+            ->setAttribute('placeholder', 'dd/mm/yyyy')
+            ->setRequired();
+        $this->add($field);
+
         $field = new File('file');
         $field->setLabel('File')
             ->setRequired();
@@ -94,6 +100,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         new TitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'date',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y',
+                            ),
+                        ),
                     ),
                 )
             )

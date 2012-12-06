@@ -15,6 +15,7 @@
 namespace PublicationBundle\Controller\Admin\Edition;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Editions\Html as HtmlEdition,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
@@ -58,87 +59,16 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $upload = new FileUpload();
-
-                $upload->addValidator(new SizeValidator(array('max' => '30MB')));
-                $upload->addValidator(new ExtensionValidator('zip'));
-
-                if ($upload->isValid()) {
-
-                    $edition = new HtmlEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], $formData['html']);
-
-                    if (!file_exists($edition->getImagesDirectory()))
-                        mkdir($edition->getImagesDirectory(), 0775, true);
-
-                    $upload = new FileUpload();
-                    $filename = $upload->getFileName();
-                    $upload->receive();
-
-                    $zip = new ZipArchive;
-
-                    if (TRUE === $zip->open($filename)) {
-                        $zip->extractTo($edition->getImagesDirectory());
-                        $zip->close();
-                    } else {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::ERROR,
-                                'Error',
-                                'Something went wrong while extracting the archive!'
-                            )
-                        );
-
-                        $this->redirect()->toRoute(
-                            'admin_publication',
-                            array(
-                                'action' => 'manage'
-                            )
-                        );
-
-                        return new ViewModel();
-                    }
-
-                    $this->getEntityManager()->persist($edition);
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCES',
-                            'The publication was succesfully created!'
-                        )
-                    );
-
-                    $this->redirect()->toRoute(
-                        'admin_edition_html',
-                        array(
-                            'action' => 'manage',
-                            'id' => $publication->getId(),
-                        )
-                    );
-
-                    return new ViewModel();
-
-                } else {
-                    $dataError = $upload->getMessages();
-                    $error = array();
-
-                    foreach($dataError as $key=>$row)
-                        $error[] = $row;
-
-                    $form->setMessages(array('file'=>$error ));
-                }
-
-            }
-        }
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'admin_edition_html',
+                array(
+                    'action' => 'upload',
+                    'id' => $publication->getId(),
+                )
+            )
+        );
 
         return new ViewModel(
             array(
@@ -148,6 +78,102 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 'uploadProgressId' => uniqid(),
             )
         );
+    }
+
+    public function uploadAction()
+    {
+        if (!($publication = $this->_getPublication()))
+            return new ViewModel();
+
+        $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
+        $formData = $this->getRequest()->getPost();
+        $form->setData($formData);
+
+        $upload = new FileUpload();
+        $upload->addValidator(new SizeValidator(array('max' => '30MB')));
+        $upload->addValidator(new ExtensionValidator('zip'));
+
+        if ($form->isValid() && $upload->isValid()) {
+            $formData = $form->getFormData($formData);
+            $edition = new HtmlEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], $formData['html'], DateTime::createFromFormat('d/m/Y', $formData['date']));
+
+            if (!file_exists($edition->getImagesDirectory()))
+                mkdir($edition->getImagesDirectory(), 0775, true);
+
+            $filename = $upload->getFileName();
+            $upload->receive();
+
+            $zip = new ZipArchive;
+
+            if (true === $zip->open($filename)) {
+                $zip->extractTo($edition->getImagesDirectory());
+                $zip->close();
+            } else {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'Something went wrong while extracting the archive!'
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info' => array(
+                            'info' => (object) array(
+                                'title' => 'error',
+                            ),
+                        ),
+                    )
+                );
+            }
+
+            $this->getEntityManager()->persist($edition);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCES',
+                    'The publication was succesfully created!'
+                )
+            );
+
+            return new ViewModel(
+                array(
+                    'status' => 'success',
+                    'info' => array(
+                        'info' => (object) array(
+                            'title' => $edition->getTitle(),
+                        ),
+                    ),
+                )
+            );
+        } else {
+            $errors = $form->getMessages();
+            $formErrors = array();
+
+            foreach ($form->getElements() as $key => $element) {
+                if (!isset($errors[$element->getName()]))
+                    continue;
+
+                $formErrors[$element->getAttribute('id')] = array();
+
+                foreach ($errors[$element->getName()] as $error) {
+                    $formErrors[$element->getAttribute('id')][] = $error;
+                }
+            }
+
+            return new ViewModel(
+                array(
+                    'status' => 'error',
+                    'form' => array(
+                        'errors' => $formErrors,
+                    ),
+                )
+            );
+        }
     }
 
     public function progressAction()

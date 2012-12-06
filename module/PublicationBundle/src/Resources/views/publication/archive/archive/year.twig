@@ -7,20 +7,15 @@
 
     <div class="row page">
         <div class="span12">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>{{ translate('Year') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for year in years %}
-                        <tr>
-                            <td><a href="{{ url('archive', { 'action': 'view', 'publication': publication.getId(), 'year': year.getId() }) }}">{{ year.getCode() }}</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <ul class="thumbnails">
+                {% for year in years %}
+                    <li>
+                        <center>
+                            <a class="thumbnail span2" style="height: 70px;line-height: 70px" href="{{ url('archive', { 'action': 'view', 'publication': publication.getId(), 'year': year.getId() }) }}">{{ year.getCode() }}</a>
+                        </center>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}

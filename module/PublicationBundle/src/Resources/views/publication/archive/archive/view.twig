@@ -9,38 +9,34 @@
         <div class="span12">
             {% if pdfs %}
                 <h1>{{ translate('PDF Editions') }}</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>{{ translate('Title') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for pdf in pdfs %}
-                            <tr>
-                                <td><a href="/{{ pdf.getUrl() }}">{{ pdf.getTitle() }}</a></td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <ul class="thumbnails">
+                    {% for pdf in pdfs %}
+                        <li>
+                            <center>
+                                <a class="thumbnail span2 archive-item" target="_blank" href="/{{ pdf.getUrl() }}">
+                                    {{ pdf.getTitle() }}<br />
+                                    <span class="date">({{ dateLocalized(pdf.getDate(), 'd MMM Y') }})</span>
+                                </a>
+                            </center>
+                        </li>
+                    {% endfor %}
+                </ul>
             {% endif %}
 
             {% if htmls %}
                 <h1>{{ translate('HTML Editions') }}</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>{{ translate('Title') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for html in htmls %}
-                            <tr>
-                                <td><a href="{{ url('edition_html', {'action': 'view', 'id': html.getId()}) }}">{{ html.getTitle() }}</a></td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <ul class="thumbnails">
+                    {% for html in htmls %}
+                        <li>
+                            <center>
+                                <a class="thumbnail span2 archive-item" target="_blank" href="{{ url('edition_html', {'action': 'view', 'id': html.getId()}) }}">
+                                    {{ html.getTitle() }}<br />
+                                    <span class="date">({{ dateLocalized(html.getDate(), 'd MMM Y') }})</span>
+                                </a>
+                            </center>
+                        </li>
+                    {% endfor %}
+                </ul>
             {% endif %}
         </div>
     </div>

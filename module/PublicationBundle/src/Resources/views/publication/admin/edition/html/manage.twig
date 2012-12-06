@@ -1,133 +1,131 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'publication/admin/edition/html/partials/navigation.twig' %}
+    {% include 'publication/admin/edition/html/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div class="flashmessage success_message full_width edition_removed_success hide">
-		<div class="title">Success</div>
-		<div class="content">
-			<p>The edition was successfully removed!</p>
-		</div>
-	</div>
-	<div class="flashmessage error_message full_width edition_removed_error hide">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while trying to delete an edition.</p>
-		</div>
-	</div>
+    <div class="flashmessage success_message full_width edition_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The edition was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width edition_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete an edition.</p>
+        </div>
+    </div>
 
-	<div id="controller_action">
+    <div id="controller_action">
 
-		<div id="normal_page">
+        <div id="normal_page">
 
-			<table class="full_width manage">
-				<tr>
-					<th>Title</th>
-					<th width="70px">Actions</th>
-				</tr>
+            <table class="full_width manage">
+                <tr>
+                    <th>Title</th>
+                    <th width="120px">Date</th>
+                    <th width="70px">Actions</th>
+                </tr>
 
-				{% for edition in paginator %}
+                {% for edition in paginator %}
 
-					<tr class="item item-{{ edition.getId() }}">
-						<td>{{ edition.getTitle() }}</td>
-						<td class="actions">
-						    {% if hasAccess('edition_html', 'view') %}
-		                        <a href="{{ url('edition_html', {'action': 'view','id': edition.getId()}) }}" class="view">View</a>
-		                    {% endif %}
-						    {% if hasAccess('admin_edition_html', 'delete') %}
-		                        <a href="#" class="delete" data-id="{{ edition.getId() }}" data-title="{{ edition.getTitle() }}" data-publication-title="{{ publication.getTitle() }}">Delete</a>
-		                    {% endif %}
-						</td>
-					</tr>
+                    <tr class="item item-{{ edition.getId() }}">
+                        <td>{{ edition.getTitle() }}</td>
+                        <td>{{ edition.getDate().format('d/m/Y') }}</td>
+                        <td class="actions">
+                            {% if hasAccess('edition_html', 'view') %}
+                                <a href="{{ url('edition_html', {'action': 'view','id': edition.getId()}) }}" class="view">View</a>
+                            {% endif %}
+                            {% if hasAccess('admin_edition_html', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ edition.getId() }}" data-title="{{ edition.getTitle() }}" data-publication-title="{{ publication.getTitle() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
 
-				{% endfor %}
+                {% endfor %}
 
-			</table>
+            </table>
 
-		</div>
+        </div>
 
-		{% include 'admin/partials/paginationControl.twig' %}
+        {% include 'admin/partials/paginationControl.twig' %}
 
     </div>
 
-	<div class="modal hide fade" id="removeEdition">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Delete Edition
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following edition: <b class="editionTitle"></b> of <b class="publicationTitle"></b>!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="removeEdition">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Edition
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following edition: <b class="editionTitle"></b> of <b class="publicationTitle"></b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 
-	<div class="modal hide fade" id="progressModal">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Upload Images
-		</div>
-		<div class="modal-body">
-			<p>
-				Your files are being uploaded.
-			</p>
-			<p>
-				<div class="progress progress-striped active">
-				    <div class="bar" style="width: 100%;"></div>
-				</div>
-			</p>
-		</div>
-	</div>
-
+    <div class="modal hide fade" id="progressModal">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Upload Images
+        </div>
+        <div class="modal-body">
+            <p>
+                Your files are being uploaded.
+            </p>
+            <p>
+                <div class="progress progress-striped active">
+                    <div class="bar" style="width: 100%;"></div>
+                </div>
+            </p>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
 
-		$(document).ready(function () {
+        function openModal(e) {
+            var $this = $(this);
 
-			$('.item .delete').click(openModal);
+            e.preventDefault();
+            var removeEdition = $('#removeEdition');
+            removeEdition.find('.publicationTitle').html($(this).data('publication-title'));
+            removeEdition.find('.editionTitle').html($(this).data('title'));
+            var id = $this.data('id');
+            removeEdition.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_edition_html', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.edition_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeEdition.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeEdition.modal();
+        }
 
-		});
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.edition_removed_error').removeClass('hide');
+            $('#removeEdition').modal('hide');
+        }
 
-		function openModal(e) {
-			var $this = $(this);
-
-			e.preventDefault();
-			var removeEdition = $('#removeEdition');
-			removeEdition.find('.publicationTitle').html($(this).data('publication-title'));
-			removeEdition.find('.editionTitle').html($(this).data('title'));
-			var id = $this.data('id');
-			removeEdition.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_edition_html', {"action": "delete"})}}' + id, function (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.edition_removed_success').removeClass('hide');
-    					$('.item-' + id).remove();
-    					removeEdition.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
-				}, 'json').error(errorRemove);
-			});
-			removeEdition.modal();
-		}
-
-		function errorRemove() {
-    		$('.flashmessage').addClass('hide');
-    		$('.edition_removed_error').removeClass('hide');
-    		$('#removeEdition').modal('hide');
-		}
-
-	</script>
+    </script>
 {% endblock %}

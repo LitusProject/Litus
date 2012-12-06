@@ -14,6 +14,7 @@
 namespace PublicationBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+    DateTime,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     PublicationBundle\Entity\Publication;
@@ -49,7 +50,7 @@ class Edition
     private $title;
 
     /**
-     * @var CommonBundle\Entity\General\AcademicYear
+     * @var \CommonBundle\Entity\General\AcademicYear
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
@@ -65,16 +66,28 @@ class Edition
     private $publication;
 
     /**
+     * @var \DateTime The date of this edition.
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
+    /**
      * Creates a new edition with the given title
      *
+     * @param \PublicationBundle\Entity\Publication The publication to which this edition belongs
+     * @param \CommonBundle\Entity\General\AcademicYear
      * @param string $title The title of this edition
-     * @param string $images The images path of this edition
+     * @param \DateTime $date The date of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date)
     {
+        $date->setTime(0, 0);
+
         $this->publication = $publication;
         $this->academicYear = $academicYear;
         $this->title = $title;
+        $this->date = $date;
     }
 
     public function getId()
@@ -104,5 +117,13 @@ class Edition
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @return \DateTime The date of this edition
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }
