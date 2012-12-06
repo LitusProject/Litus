@@ -15,6 +15,7 @@
 namespace PublicationBundle\Controller\Admin\Edition;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Editions\Html as HtmlEdition,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
@@ -94,7 +95,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
-            $edition = new HtmlEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], $formData['html']);
+            $edition = new HtmlEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], $formData['html'], DateTime::createFromFormat('d/m/Y', $formData['date']));
 
             if (!file_exists($edition->getImagesDirectory()))
                 mkdir($edition->getImagesDirectory(), 0775, true);

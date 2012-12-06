@@ -27,7 +27,7 @@ class HtmlEdition extends EntityRepository
             )
             ->setParameter('publication', $publication)
             ->setParameter('year', $academicYear)
-            ->orderBy('p.title', 'ASC')
+            ->orderBy('p.date', 'ASC')
             ->getQuery()
             ->getResult();
 

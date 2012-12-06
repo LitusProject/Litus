@@ -146,4 +146,33 @@ return array(
             'edition_html'        => 'PublicationBundle\Controller\Edition\HtmlController',
         ),
     ),
+    'assetic_configuration' => array(
+        'modules'      => array(
+            'publicationbundle' => array(
+                'root_path' => __DIR__ . '/../assets',
+                'collections' => array(
+                    'archive_css' => array(
+                        'assets' => array(
+                            'archive/less/archive.less'
+                        ),
+                        'filters' => array(
+                            'archive_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'archive_css.css',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
 );

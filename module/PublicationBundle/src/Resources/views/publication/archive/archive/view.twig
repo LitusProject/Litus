@@ -13,7 +13,10 @@
                     {% for pdf in pdfs %}
                         <li>
                             <center>
-                                <a class="thumbnail span2" style="height: 70px;line-height: 70px" target="_blank" href="/{{ pdf.getUrl() }}">{{ pdf.getTitle() }}</a>
+                                <a class="thumbnail span2 archive-item" target="_blank" href="/{{ pdf.getUrl() }}">
+                                    {{ pdf.getTitle() }}<br />
+                                    <span class="date">({{ dateLocalized(pdf.getDate(), 'd MMM Y') }})</span>
+                                </a>
                             </center>
                         </li>
                     {% endfor %}
@@ -26,7 +29,10 @@
                     {% for html in htmls %}
                         <li>
                             <center>
-                                <a class="thumbnail span2" style="height: 70px;line-height: 70px" target="_blank" href="{{ url('edition_html', {'action': 'view', 'id': html.getId()}) }}">{{ html.getTitle() }}</a>
+                                <a class="thumbnail span2 archive-item" target="_blank" href="{{ url('edition_html', {'action': 'view', 'id': html.getId()}) }}">
+                                    {{ html.getTitle() }}<br />
+                                    <span class="date">({{ dateLocalized(html.getDate(), 'd MMM Y') }})</span>
+                                </a>
                             </center>
                         </li>
                     {% endfor %}
