@@ -176,7 +176,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $repository = $this->getEntityManager()
                    ->getRepository('LogisticsBundle\Entity\Driver');
 
-                $driver = $repository->findOneByIdAndYear($formData['driver'], $this->getCurrentAcademicYear());
+                $driver = $repository->findOneById($formData['driver']);
 
                 $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
