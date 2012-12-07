@@ -160,7 +160,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
         if ($this->get($this->_prefix . 'address_city')->getValue() != 'other') {
             $inputs[] = $factory->createInput(
                 array(
-                    'name'     => $this->_prefix . 'address_street',
+                    'name'     => $this->_prefix . 'address_street_' . $this->get($this->_prefix . 'address_city')->getValue(),
                     'required' => true,
                     'validators' => array(
                         array(
