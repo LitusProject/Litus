@@ -42,7 +42,12 @@
                     </dd>
                 </dl>
 
-                <p><strong>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected.')}}</strong></p>
+                <strong>
+
+                    <p>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected.')}}</p>
+
+                    <p>{{ translate('Note that you can only fill this form once. You are advised to use your mother tongue for your CV.') }}</p>
+                </strong>
 
                 {% import 'site/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}
