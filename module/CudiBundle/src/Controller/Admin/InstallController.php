@@ -150,7 +150,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 The following bookings are assigned to you:
 {{ bookings }}
 
-These reservations will expire after the first sale session after it\'s expiration date.
+These reservations will expire after the first sale session after its expiration date.
 
 Please cancel a reservation if you don\'t need the article, this way we can help other students.
 

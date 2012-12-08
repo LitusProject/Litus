@@ -71,5 +71,6 @@ return array(
     "Grade for the Prior Degree (e.g. 65.48)" => "Grade for the Prior Degree (e.g. 65.48)",
     "(Provisional) Grade for the Current Degree (e.g. 65.48)" => "(Provisional) Grade for the Current Degree (e.g. 65.48)",
     "Extra Information (Year Abroad, Born Outside Belgium, ...)" => "Extra Information (Year Abroad, Born Outside Belgium, ...)",
+    "Note that you can only fill this form once. You are advised to use your mother tongue for your CV." => "Note that you can only fill this form once. You are advised to use your mother tongue for your CV.",
 
 );
