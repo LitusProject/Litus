@@ -34,7 +34,8 @@ class AddDirect extends Add
         $this->remove('article_id');
         $this->remove('article');
         $this->get('add')
-            ->setName('add_delivery');
+            ->setName('add_delivery')
+            ->setAttribute('id', 'add_delivery');
     }
 
     public function getInputFilter()

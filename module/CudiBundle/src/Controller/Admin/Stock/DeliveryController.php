@@ -16,6 +16,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Delivery,
+    CudiBundle\Entity\Stock\Orders\Virtual as VirtualOrder,
     CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -86,7 +87,6 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         $academicYear = $this->getAcademicYear();
 
-
         $prefix = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
@@ -99,10 +99,20 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
             if($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($formData['article_id']);
+
+                if ($formData['add_with_virtual_order']) {
+                    $virtual = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\Orders\Virtual')
+                        ->findNbByPeriodAndArticle($period, $article);
+
+                    $nb = $formData['number'] - ($period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual);
+                    $order = new VirtualOrder($article, $nb);
+                    $this->getEntityManager()->persist($order);
+                }
 
                 $item = new Delivery($article, $formData['number'], $this->getAuthentication()->getPersonObject());
                 $this->getEntityManager()->persist($item);
@@ -185,10 +195,14 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         $result = array();
         foreach($articles as $article) {
+            $virtual = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Orders\Virtual')
+                ->findNbByPeriodAndArticle($period, $article);
+
             $item = (object) array();
             $item->id = $article->getId();
             $item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
-            $item->maximum = $period->getNbOrdered($article) - $period->getNbDelivered($article);
+            $item->maximum = $period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual;
             $result[] = $item;
         }
 

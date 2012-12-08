@@ -61,12 +61,16 @@
         </div>
         <div class="modal-body">
             <p>
-                The given delivery number is higher than the not delivered value ( <b class="maximum"></b> )!
+                The given delivery number is higher than the not delivered value (<b class="maximum"></b>)!
             </p>
             <p>
                 Are you sure you want to continue?
             </p>
+            <p>
+                You can also create a virtual order so the delta of this delivery will not cause these dialogs in the future.
+            </p>
             <div class="footer">
+                <input type="button" class="virtualOrder" value="Create Virtual Order">
                 <input type="button" class="continue" value="Yes">
                 <input type="button" class="cancel" data-dismiss="modal" value="No">
             </div>
@@ -103,6 +107,10 @@
             var overDelivery = $('#overDelivery');
             overDelivery.find('.maximum').html($('#articleSearch').data('value').maximum);
             overDelivery.find('.continue').unbind('click').click(function () {
+                $('#deliveryForm').submit();
+            });
+            overDelivery.find('.virtualOrder').unbind('click').click(function () {
+                $('#addWithVirtualOrder').val('1');
                 $('#deliveryForm').submit();
             });
             overDelivery.modal();

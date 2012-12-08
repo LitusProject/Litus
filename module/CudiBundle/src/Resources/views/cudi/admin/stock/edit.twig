@@ -88,4 +88,54 @@
             </div>
         {% endif %}
     </aside>
+
+    <div class="modal hide fade" id="overDelivery">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delivery Warning
+        </div>
+        <div class="modal-body">
+            <p>
+                The given delivery number is higher than the not delivered value (<b>{{ maxDelivery }}</b>)!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <p>
+                You can also create a virtual order so the delta of this delivery will not cause these dialogs in the future.
+            </p>
+            <div class="footer">
+                <input type="button" class="virtualOrder" value="Create Virtual Order">
+                <input type="button" class="continue" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#add_delivery').click(function (e) {
+                if ($('#delivery_number').val() > {{ maxDelivery }}) {
+                    e.preventDefault();
+                    openModal();
+                }
+            });
+        });
+
+        function openModal() {
+            var $this = $(this);
+
+            var overDelivery = $('#overDelivery');
+            overDelivery.find('.continue').unbind('click').click(function () {
+                $('#deliveryForm').submit();
+            });
+            overDelivery.find('.virtualOrder').unbind('click').click(function () {
+                $('#addWithVirtualOrder').val('1');
+                $('#deliveryForm').submit();
+            });
+            overDelivery.modal();
+        }
+    </script>
 {% endblock %}

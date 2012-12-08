@@ -55,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('number');
         $field->setLabel('Number')
             ->setAttribute('autocomplete', 'off')
-            ->setAttribute('id', 'delivery_number')
+            ->setAttribute('id', 'order_number')
             ->setRequired();
         $this->add($field);
 
