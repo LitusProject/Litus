@@ -27,6 +27,11 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'admin_syllabus_academic' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
         'admin_syllabus_group' => array(
             '@common_jquery',
             '@admin_css',
