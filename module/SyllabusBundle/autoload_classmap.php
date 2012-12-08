@@ -6,6 +6,7 @@ return array(
     'SyllabusBundle\Component\Validator\Subject\Code'           => __DIR__ . '/src/Component/Validator/Subject/Code.php',
     'SyllabusBundle\Component\WebSocket\Syllabus\Update'        => __DIR__ . '/src/Component/WebSocket/Update.php',
     'SyllabusBundle\Component\XMLParser\Study'                  => __DIR__ . '/src/Component/XMLParser/Study.php',
+    'SyllabusBundle\Controller\Admin\AcademicController'        => __DIR__ . '/src/Controller/Admin/AcademicController.php',
     'SyllabusBundle\Controller\Admin\GroupController'           => __DIR__ . '/src/Controller/Admin/GroupController.php',
     'SyllabusBundle\Controller\Admin\InstallController'         => __DIR__ . '/src/Controller/Admin/InstallController.php',
     'SyllabusBundle\Controller\Admin\ProfController'            => __DIR__ . '/src/Controller/Admin/ProfController.php',

@@ -39,6 +39,24 @@ return array(
                     ),
                 ),
             ),
+            'admin_syllabus_academic' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/syllabus/academic[/:action[/:id][/page/:page][/:academicyear][/:field/:string]][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'page'         => '[0-9]+',
+                        'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_syllabus_academic',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'admin_syllabus_group' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -198,15 +216,16 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'syllabus_install'       => 'SyllabusBundle\Controller\Admin\InstallController',
+            'syllabus_install'        => 'SyllabusBundle\Controller\Admin\InstallController',
 
-            'admin_update_syllabus'  => 'SyllabusBundle\Controller\Admin\UpdateController',
-            'admin_syllabus_group'   => 'SyllabusBundle\Controller\Admin\GroupController',
-            'admin_study'            => 'SyllabusBundle\Controller\Admin\StudyController',
-            'admin_subject'          => 'SyllabusBundle\Controller\Admin\SubjectController',
-            'admin_subject_comment'  => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
-            'admin_prof'             => 'SyllabusBundle\Controller\Admin\ProfController',
-            'syllabus_subject'       => 'SyllabusBundle\Controller\SubjectController',
+            'admin_update_syllabus'   => 'SyllabusBundle\Controller\Admin\UpdateController',
+            'admin_syllabus_academic' => 'SyllabusBundle\Controller\Admin\AcademicController',
+            'admin_syllabus_group'    => 'SyllabusBundle\Controller\Admin\GroupController',
+            'admin_study'             => 'SyllabusBundle\Controller\Admin\StudyController',
+            'admin_subject'           => 'SyllabusBundle\Controller\Admin\SubjectController',
+            'admin_subject_comment'   => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
+            'admin_prof'              => 'SyllabusBundle\Controller\Admin\ProfController',
+            'syllabus_subject'        => 'SyllabusBundle\Controller\SubjectController',
         ),
     ),
 );
