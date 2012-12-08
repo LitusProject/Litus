@@ -70,5 +70,6 @@ return array(
     "Grade for the Prior Degree (e.g. 65.48)" => "Percentage voor het Vorige Diploma (bv. 65.48)",
     "(Provisional) Grade for the Current Degree (e.g. 65.48)" => "(Voorlopig) Percentage voor het Huidige Diploma (bv. 65.48)",
     "Extra Information (Year Abroad, Born Outside Belgium, ...)" => "Extra Informatie (Jaar in het Buitenland, Geboren Buiten België, ...)",
+    "Note that you can only fill this form once. You are advised to use your mother tongue for your CV." => "Je kan het formulier slechts één keer invullen. We raden je aan om je moedertaal te gebruiken voor je CV.",
 
 );
