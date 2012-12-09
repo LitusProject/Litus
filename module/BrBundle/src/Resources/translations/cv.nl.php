@@ -14,10 +14,12 @@
 
 return array(
     "CV Book" => "CV Boek",
+    "Edit CV Book" => "CV Boek Aanpassen",
     "Period" => "Periode",
     "The following data from your account will be used in the CV Book:" => "De volgende data uit je account zal gebruikt worden voor het CV Boek:",
+    "The following data from your account will be updated in the CV Book:" => "De volgende data uit je account zal vernieuwd worden in het CV Boek:",
     "Profile Picture" => "Profielfoto",
-    "Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected." => "Gelieve je account data bij te werken indien nodig. De bovenstaande data wordt onmiddellijk verwerkt nadat je het formulier hebt ingevuld. Toekomstige updates zullen dus geen effect meer hebben.",
+    "Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically." => "Gelieve je account data bij te werken indien nodig. De bovenstaande data wordt onmiddellijk verwerkt nadat je het formulier hebt ingevuld. Toekomstige updates zullen dus niet automatisch effect hebben.",
     "Education" => "Opleiding",
     "Primary Degree" => "Afstudeerrichting",
     "Started Bachelor In" => "Bachelor Begonnen In",
@@ -70,6 +72,6 @@ return array(
     "Grade for the Prior Degree (e.g. 65.48)" => "Percentage voor het Vorige Diploma (bv. 65.48)",
     "(Provisional) Grade for the Current Degree (e.g. 65.48)" => "(Voorlopig) Percentage voor het Huidige Diploma (bv. 65.48)",
     "Extra Information (Year Abroad, Born Outside Belgium, ...)" => "Extra Informatie (Jaar in het Buitenland, Geboren Buiten België, ...)",
-    "Note that you can only fill this form once. You are advised to use your mother tongue for your CV." => "Je kan het formulier slechts één keer invullen. We raden je aan om je moedertaal te gebruiken voor je CV.",
+    "You are advised to use your mother tongue for your CV." => "We raden je aan om je moedertaal te gebruiken voor je CV.",
 
 );

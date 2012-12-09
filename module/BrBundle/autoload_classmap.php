@@ -27,6 +27,7 @@ return array(
     'Admin\Form\Contract\Add'                           => __DIR__ . '/src/Form/Admin/Contract/Add.php',
     'Admin\Form\Contract\Edit'                          => __DIR__ . '/src/Form/Admin/Contract/Edit.php',
     'BrBundle\Form\Cv\Add'                              => __DIR__ . '/src/Form/Cv/Add.php',
+    'BrBundle\Form\Cv\Edit'                             => __DIR__ . '/src/Form/Cv/Edit.php',
     'BrBundle\Component\Document\Pdf\ContractGenerator' => __DIR__ . '/src/Component/Document/Generator/Pdf/Contract.php',
     'Litus\Br\LetterGenerator'                          => __DIR__ . '/src/Component/Document/Generator/Pdf/Letter.php',
     'Litus\Br\InvoiceGenerator'                         => __DIR__ . '/src/Component/Document/Generator/Pdf/Invoice.php',
