@@ -1,0 +1,94 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/academic/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <div id="student_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                    <option value="university_identification">University Identification</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="200px">Identification</th>
+                    <th width="200px">E-mail</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th width="200px">Identification</th>
+                        <th width="200px">E-mail</th>
+                        <th width="70px">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for academic in paginator %}
+                        <tr class="item item-{{ academic.getId() }}">
+                            <td>{{ academic.getFullName() }}</td>
+                            <td>{{ academic.getUniversityIdentification() }}
+                            <td>{{ academic.getEmail() }}</td>
+                            <td class="actions">
+                                {% if hasAccess('admin_syllabus_academic', 'edit') %}
+                                    <a href="{{ url('admin_syllabus_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('admin_syllabus_academic', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#student_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('admin_syllabus_academic', {'action': 'manage'}) }}manage/',
+                url: '{{ url('admin_syllabus_academic', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#student_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#student_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.fullName + '</td>')
+                            .append('<td>' + this.universityIdentification + '</td>')
+                            .append('<td>' + this.email + '</td>')
+                            .append(
+                                $('<td>', {'class': 'actions'})
+                                    .append('<a href="{{ url('admin_syllabus_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                );
+                    });
+                    $('#student_search table').change();
+                },
+                clear: function () {
+                    $('#student_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}
