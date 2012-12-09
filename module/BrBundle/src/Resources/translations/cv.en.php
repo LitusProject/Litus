@@ -14,10 +14,12 @@
 
 return array(
     "CV Book" => "CV Book",
+    "Edit CV Book" => "Edit CV Book",
     "Period" => "Period",
     "The following data from your account will be used in the CV Book:" => "The following data from your account will be used in the CV Book:",
+    "The following data from your account will be updated in the CV Book:" => "The following data from your account will be updated in the CV Book:",
     "Profile Picture" => "Profile Picture",
-    "Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected." => "Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected.",
+    "Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically." => "Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.",
 
     "Education" => "Education",
     "Primary Degree" => "Primary Degree",
@@ -71,6 +73,6 @@ return array(
     "Grade for the Prior Degree (e.g. 65.48)" => "Grade for the Prior Degree (e.g. 65.48)",
     "(Provisional) Grade for the Current Degree (e.g. 65.48)" => "(Provisional) Grade for the Current Degree (e.g. 65.48)",
     "Extra Information (Year Abroad, Born Outside Belgium, ...)" => "Extra Information (Year Abroad, Born Outside Belgium, ...)",
-    "Note that you can only fill this form once. You are advised to use your mother tongue for your CV." => "Note that you can only fill this form once. You are advised to use your mother tongue for your CV.",
+    "You are advised to use your mother tongue for your CV." => "You are advised to use your mother tongue for your CV.",
 
 );
