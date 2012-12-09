@@ -104,7 +104,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     ),
 
                     'cv_index' => array(
-                        'cv', 'complete',
+                        'cv', 'edit', 'complete',
                     ),
                 )
             )
