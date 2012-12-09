@@ -19,9 +19,8 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th>Username</th>
-                    <th>Identification</th>
-                    <th width="200px">Name</th>
+                    <th>Name</th>
+                    <th width="200px">Identification</th>
                     <th width="200px">E-mail</th>
                     <th width="70px">Action</th>
                 </tr>
@@ -32,9 +31,8 @@
             <table class="full_width manage">
                 <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Identification</th>
-                        <th width="200px">Name</th>
+                        <th>Name</th>
+                        <th width="200px">Identification</th>
                         <th width="200px">E-mail</th>
                         <th width="70px">Action</th>
                     </tr>
@@ -43,9 +41,8 @@
                 <tbody>
                     {% for academic in paginator %}
                         <tr class="item item-{{ academic.getId() }}">
-                            <td>{{ academic.getUsername() }}</td>
-                            <td>{{ academic.getUniversityIdentification() }}
                             <td>{{ academic.getFullName() }}</td>
+                            <td>{{ academic.getUniversityIdentification() }}
                             <td>{{ academic.getEmail() }}</td>
                             <td class="actions">
                                 {% if hasAccess('admin_syllabus_academic', 'edit') %}
@@ -77,21 +74,14 @@
                     $('#student_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#student_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
-                        row.append('<td>' + this.username + '</td>')
+                        row.append('<td>' + this.fullName + '</td>')
                             .append('<td>' + this.universityIdentification + '</td>')
-                            .append('<td>' + this.fullName + '</td>')
                             .append('<td>' + this.email + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
                                     .append('<a href="{{ url('admin_syllabus_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
-                                    .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
                                 );
-                            deleteButton.data({
-                                id: this.id,
-                                fullname: this.fullName
-                            });
                     });
-                    $('#student_search .delete').click(openModal);
                     $('#student_search table').change();
                 },
                 clear: function () {

@@ -1,128 +1,128 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'syllabus/admin/study/partials/navigation.twig' %}
+    {% include 'syllabus/admin/study/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
-	<div class="flashmessage error_message full_width hide" id="syllabus_update_error">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while updating the syllabus!</p>
-		</div>
-	</div>
-	<div class="flashmessage success_message full_width hide" id="syllabus_update_success">
-		<div class="title">SUCCESS</div>
-		<div class="content">
-			<p>The syllabus was successfully updated.</p>
-		</div>
-	</div>
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage error_message full_width hide" id="syllabus_update_error">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while updating the syllabus!</p>
+        </div>
+    </div>
+    <div class="flashmessage success_message full_width hide" id="syllabus_update_success">
+        <div class="title">SUCCESS</div>
+        <div class="content">
+            <p>The syllabus was successfully updated.</p>
+        </div>
+    </div>
 
-	<div id="controller_action">
-	</div>
+    <div id="controller_action">
+    </div>
 
-	{% if hasAccess('admin_update_syllabus', 'updateNow') %}
-		<aside>
-			<div class="sidebox">
-			    <div class="title">Update Syllabus</div>
-			    <div class="content">
-			        <p>
-			            <i>Please hit the link below to update the syllabus!</i>
-			        </p>
-			    	<p>
-			    		<a href="#" id="updateNow">&rarr; Update Syllabus</a>
-			    	</p>
-			    </div>
-			</div>
-		</aside>
-	{% endif %}
+    {% if hasAccess('admin_update_syllabus', 'updateNow') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Update Syllabus</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to update the syllabus!</i>
+                    </p>
+                    <p>
+                        <a href="#" id="updateNow">&rarr; Update Syllabus</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
 
-	<div class="modal hide fade" id="updateSyllabus">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Update Syllabus
-		</div>
-		<div class="modal-body">
-			<p>
-				<span class="status"></span>
-			</p>
-			<p>
-				<div class="progress progress-striped active">
-				    <div class="bar" style="width: 100%;"></div>
-				</div>
-			</p>
-		</div>
-	</div>
+    <div class="modal hide fade" id="updateSyllabus">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Update Syllabus
+        </div>
+        <div class="modal-body">
+            <p>
+                <span class="status"></span>
+            </p>
+            <p>
+                <div class="progress progress-striped active">
+                    <div class="bar" style="width: 100%;"></div>
+                </div>
+            </p>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$.webSocket(
-			{
-				name: 'updateSyllabus',
-				url: '{{ socketUrl }}',
-				open: function (e) {
-					$('#syllabus_update_error, #syllabus_update_success').addClass('hide');
-				},
-				message: function (e, data) {
-					$('#syllabus_update_error, #syllabus_update_success').addClass('hide');
+    <script type="text/javascript">
+        $.webSocket(
+            {
+                name: 'updateSyllabus',
+                url: '{{ socketUrl }}',
+                open: function (e) {
+                    $('#syllabus_update_error, #syllabus_update_success').addClass('hide');
+                },
+                message: function (e, data) {
+                    $('#syllabus_update_error, #syllabus_update_success').addClass('hide');
 
                     if ('progress' !== data.status.type)
-				        $('#updateSyllabus .status').html(data.status ? translateStatus(data.status) : '');
-				    else
-				        $('#updateSyllabus .bar').width(data.status.extra + '%');
+                        $('#updateSyllabus .status').html(data.status ? translateStatus(data.status) : '');
+                    else
+                        $('#updateSyllabus .bar').width(data.status.extra + '%');
 
-				    if ('done' == data.status.type) {
-				        $('#syllabus_update_success').removeClass('hide');
-		                $('#updateSyllabus').permanentModal('hide');
-				    }
-				},
-				error: function (e) {
-					$('#syllabus_update_success').addClass('hide');
-					$('#syllabus_update_error').removeClass('hide');
-		            $('#updateSyllabus').permanentModal('hide');
-				}
-			}
-		);
-		$(document).ready(function () {
-		    $('#updateNow').click(
-		        function (e) {
-		            e.preventDefault();
-		            $('#updateSyllabus').permanentModal('open');
-		            $.webSocket('send', {name: 'updateSyllabus', text: 'update'});
-		        }
-		    );
-		});
+                    if ('done' == data.status.type) {
+                        $('#syllabus_update_success').removeClass('hide');
+                        $('#updateSyllabus').permanentModal('hide');
+                    }
+                },
+                error: function (e) {
+                    $('#syllabus_update_success').addClass('hide');
+                    $('#syllabus_update_error').removeClass('hide');
+                    $('#updateSyllabus').permanentModal('hide');
+                }
+            }
+        );
+        $(document).ready(function () {
+            $('#updateNow').click(
+                function (e) {
+                    e.preventDefault();
+                    $('#updateSyllabus').permanentModal('open');
+                    $.webSocket('send', {name: 'updateSyllabus', text: 'update'});
+                }
+            );
+        });
 
-		function translateStatus(status) {
-		    var text = '';
-		    switch(status.type) {
-		        case 'done':
-		            text += 'Done';
-		            break;
-		        case 'load_xml':
-		            text += 'Loading XML';
-		            break;
-		        case 'cleanup':
-		            text += 'Cleaning Database';
-		            break;
-		        case 'create_studies':
-		            text += 'Creating Studies';
-		            break;
-		        case 'create_subjects':
-		            text += 'Creating Subjects';
-		            break;
-		        case 'saving_data':
-		            text += 'Saving Data';
-		            break;
-		    }
+        function translateStatus(status) {
+            var text = '';
+            switch(status.type) {
+                case 'done':
+                    text += 'Done';
+                    break;
+                case 'load_xml':
+                    text += 'Loading XML';
+                    break;
+                case 'cleanup':
+                    text += 'Cleaning Database';
+                    break;
+                case 'create_studies':
+                    text += 'Creating Studies';
+                    break;
+                case 'create_subjects':
+                    text += 'Creating Subjects';
+                    break;
+                case 'saving_data':
+                    text += 'Saving Data';
+                    break;
+            }
 
-		    if (! status.extra)
-		        return text;
+            if (! status.extra)
+                return text;
 
-		    var extra = status.extra;
-		    if (extra.length > 70)
-		        extra = extra.substr(0, 70) + '...';
-		    return text + ' (' + extra + ')';
-		}
-	</script>
+            var extra = status.extra;
+            if (extra.length > 70)
+                extra = extra.substr(0, 70) + '...';
+            return text + ' (' + extra + ')';
+        }
+    </script>
 {% endblock %}

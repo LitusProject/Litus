@@ -15,7 +15,6 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class StudyEnrollment extends EntityRepository
 {
-
     public function findAllByStudyAndAcademicYear(Study $study, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
