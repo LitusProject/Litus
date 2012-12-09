@@ -16,6 +16,10 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
+    SecretaryBundle\Entity\Syllabus\StudyEnrollment,
+    SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
+    SyllabusBundle\Form\Admin\Academic\Study\Add as StudyForm,
+    SyllabusBundle\Form\Admin\Academic\Subject\Add as SubjectForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -92,7 +96,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($study = $this->_getStudy()))
+        if (!($study = $this->_getStudyEnrollment()))
             return new ViewModel();
 
         $this->getEntityManager()->remove($study);
@@ -109,7 +113,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubjectEnrollment()))
             return new ViewModel();
 
         $this->getEntityManager()->remove($subject);
@@ -118,6 +122,156 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    public function addStudyAction()
+    {
+        if (!($academic = $this->_getAcademic()))
+            return new ViewModel();
+
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $form = new StudyForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $study = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findOneById($formData['study_id']);
+
+                $enrollment = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                    ->findOneByAcademicAndAcademicYearAndStudy($academic, $academicYear, $study);
+                if (null === $enrollment)
+                    $this->getEntityManager()->persist(new StudyEnrollment($academic, $academicYear, $study));
+
+                $subjects = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByStudyAndAcademicYear($study, $academicYear);
+
+                foreach($subjects as $subject) {
+                    if ($subject->isMandatory()) {
+                        $enrollment = $this->getEntityManager()
+                            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+                            ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $subject->getSubject());
+
+                        if (null === $enrollment)
+                            $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject->getSubject()));
+                    }
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The study was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_syllabus_academic',
+                    array(
+                        'action' => 'edit',
+                        'id' => $academic->getId(),
+                        'academicyear' => $academicYear->getCode(),
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'academicYears' => $academicYears,
+                        'currentAcademicYear' => $academicYear,
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'academic' => $academic,
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'form' => $form,
+            )
+        );
+    }
+
+    public function addSubjectAction()
+    {
+        if (!($academic = $this->_getAcademic()))
+            return new ViewModel();
+
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $form = new SubjectForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $subject = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Subject')
+                    ->findOneById($formData['subject_id']);
+
+                $enrollment = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+                    ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $subject);
+
+                if (null === $enrollment)
+                    $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject));
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The subject was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_syllabus_academic',
+                    array(
+                        'action' => 'edit',
+                        'id' => $academic->getId(),
+                        'academicyear' => $academicYear->getCode(),
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'academicYears' => $academicYears,
+                        'currentAcademicYear' => $academicYear,
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'academic' => $academic,
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'form' => $form,
             )
         );
     }
@@ -218,7 +372,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         return $academic;
     }
 
-    private function _getStudy()
+    private function _getStudyEnrollment()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -265,7 +419,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         return $study;
     }
 
-    private function _getSubject()
+    private function _getSubjectEnrollment()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(

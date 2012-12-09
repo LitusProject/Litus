@@ -1,0 +1,38 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/academic/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/academic/partials/years.twig' %}
+
+    <div id="controller_action">
+        <h1>Academic</h1>
+        <p>Name: <b>{{ academic.getFullName() }}</b></p>
+        <p>University Identification: <b>{{ academic.getUniversityIdentification() }}</b></p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br style="clear:both">
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#studySearch').typeaheadRemote(
+                {
+                    source: '{{ url('admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
+                    items: 30,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#studyId').val($(this).data('value').id);
+                } else {
+                    $('#studyId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -52,4 +52,29 @@ class StudyEnrollment extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findOneByAcademicAndAcademicYearAndStudy(Academic $academic, AcademicYear $academicYear, Study $study)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.academic', ':academic'),
+                    $query->expr()->eq('s.academicYear', ':academicYear'),
+                    $query->expr()->eq('s.study', ':study')
+                )
+            )
+            ->setParameter('academic', $academic)
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('study', $study)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }
