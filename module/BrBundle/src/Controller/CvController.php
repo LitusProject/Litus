@@ -17,6 +17,7 @@ namespace BrBundle\Controller;
 use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Entity\Cv\Language as CvLanguage,
     BrBundle\Form\Cv\Add as AddForm,
+    BrBundle\Form\Cv\Edit as EditForm,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -50,7 +51,13 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ->getRepository('BrBundle\Entity\Cv\Entry')
                     ->findOneByAcademic($person);
                 if ($entry) {
-                    $messages = array('You can only fill in the CV Book once.');
+                    $messages = array('');
+                    $this->redirect()->toRoute(
+                        'cv_index',
+                        array(
+                            'action' => 'edit',
+                        )
+                    );
                 }
             }
         }
@@ -164,6 +171,156 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             )
         );
     }
+
+    public function editAction()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+        $messages = array();
+        $languageError = null;
+
+        if ($person === null) {
+            $messages = array('Please log in to edit your CV.');
+        } else {
+            if (!($person instanceof Academic)) {
+                $messages = array('You must be a student to edit your CV.');
+            } else {
+
+                $temp = $this->_getBadAccountMessage($person);
+                if ($temp !== null && !empty($temp))
+                    $messages = $temp;
+
+                $entry = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Cv\Entry')
+                    ->findOneByAcademic($person);
+                if (!$entry) {
+                    $messages = array('');
+                    $this->redirect()->toRoute(
+                        'cv_index',
+                        array(
+                            'action' => 'cv',
+                        )
+                    );
+                }
+            }
+        }
+
+        $open = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_book_open');
+
+        if (!$open) {
+            $messages = array('The CV Book is currently not accepting entries.');
+        }
+
+        if (!empty($messages)) {
+            return new ViewModel(
+                array(
+                    'messages' => $messages,
+                )
+            );
+        }
+
+        $form = new EditForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
+
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->getPost();
+            $formData = $form->addLanguages($formData);
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+
+                $address = new Address(
+                    $person->getSecondaryAddress()->getStreet(),
+                    $person->getSecondaryAddress()->getNumber(),
+                    $person->getSecondaryAddress()->getMailbox(),
+                    $person->getSecondaryAddress()->getPostal(),
+                    $person->getSecondaryAddress()->getCity(),
+                    $person->getSecondaryAddress()->getCountryCode()
+                );
+
+                $entry
+                    ->setFirstName($person->getFirstName())
+                    ->setLastName($person->getLastName())
+                    ->setBirthday($person->getBirthDay())
+                    ->setSex($person->getSex())
+                    ->setPhoneNumber($person->getPhoneNumber())
+                    ->setEmail($person->getPersonalEmail())
+                    ->setAddress($address)
+                    ->setPriorStudy($formData['prior_degree'])
+                    ->setPriorGrade($formData['prior_grade'] * 100)
+                    ->setStudy($this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Study')
+                        ->findOneById($formData['degree']))
+                    ->setGrade($formData['grade'] * 100)
+                    ->setBachelorStart($formData['bachelor_start'])
+                    ->setBachelorEnd($formData['bachelor_end'])
+                    ->setMasterStart($formData['master_start'])
+                    ->setMasterEnd($formData['master_end'])
+                    ->setAdditionalDiplomas($formData['additional_diplomas'])
+                    ->setErasmusPeriod($formData['erasmus_period'])
+                    ->setErasmusLocation($formData['erasmus_location'])
+                    ->setLanguageExtra($formData['lang_extra'])
+                    ->setComputerSkills($formData['computer_skills'])
+                    ->setExperiences($formData['experiences'])
+                    ->setThesisSummary($formData['thesis_summary'])
+                    ->setFutureInterest($formData['field_of_interest'])
+                    ->setMobilityEurope($formData['mobility_europe'])
+                    ->setMobilityWorld($formData['mobility_world'])
+                    ->setCareerExpectations($formData['career_expectations'])
+                    ->setHobbies($formData['hobbies'])
+                    ->setAbout($formData['profile_about']);
+
+                // Clear all previous languages
+                $languages = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Cv\Language')
+                    ->findByEntry($entry);
+
+                foreach($languages as $language) {
+                    $this->getEntityManager()->remove($language);
+                }
+
+                for ($i = 0; $i < $formData['lang_count']; $i++) {
+                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i])
+                        continue;
+
+                    $language = new CvLanguage($entry, $formData['lang_name' . $i],
+                        $formData['lang_oral' . $i],
+                        $formData['lang_written' . $i]);
+
+                    $this->getEntityManager()->persist($language);
+                }
+
+                $this->getEntityManager()->persist($entry);
+                $this->getEntityManager()->flush();
+
+                $this->redirect()->toRoute(
+                    'cv_index',
+                    array(
+                        'action' => 'complete',
+                    )
+                );
+
+                return new ViewModel();
+            } else {
+                if (!$form->isValidLanguages($formData)) {
+                    $languageError = 'The number of languages must be between 1 and 5';
+                }
+            }
+        } else {
+            $form->populateFromEntry($entry);
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'languageError' => $languageError,
+                'oral_skills' => CvLanguage::$ORAL_SKILLS,
+                'written_skills' => CvLanguage::$WRITTEN_SKILLS,
+            )
+        );
+    }
+
 
     public function completeAction()
     {

@@ -15,6 +15,7 @@
 namespace BrBundle\Form\Cv;
 
 use BrBundle\Component\Validator\FieldLength as LengthValidator,
+    BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Entity\Cv\Language as CvLanguage,
     CommonBundle\Component\Form\Bootstrap\Element\Button,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
@@ -276,6 +277,47 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'lang_name0' => '',
             )
         );
+    }
+
+    public function populateFromEntry(CvEntry $entry) {
+
+        $formData = array(
+            'prior_degree' => $entry->getPriorStudy(),
+            'prior_grade' => $entry->getPriorGrade() / 100,
+            'degree' => $entry->getStudy()->getId(),
+            'grade' => $entry->getGrade() / 100,
+            'bachelor_start' => $entry->getBachelorStart(),
+            'bachelor_end' => $entry->getBachelorEnd(),
+            'master_start' => $entry->getMasterStart(),
+            'master_end' => $entry->getMasterEnd(),
+            'additional_diplomas' => $entry->getAdditionalDiplomas(),
+            'erasmus_period' => $entry->getErasmusPeriod(),
+            'erasmus_location' => $entry->getErasmusLocation(),
+            'lang_extra' => $entry->getLanguageExtra(),
+            'computer_skills' => $entry->getComputerSkills(),
+            'experiences' => $entry->getExperiences(),
+            'thesis_summary' => $entry->getThesisSummary(),
+            'field_of_interest' => $entry->getFutureInterest(),
+            'mobility_europe' => $entry->getMobilityEurope(),
+            'mobility_world' => $entry->getMobilityWorld(),
+            'career_expectations' => $entry->getCareerExpectations(),
+            'hobbies' => $entry->getHobbies(),
+            'profile_about' => $entry->getAbout(),
+            'lang_count' => count($entry->getLanguages()),
+        );
+
+        $i = 0;
+        foreach ($entry->getLanguages() as $language) {
+
+            $formData['lang_name' . $i] = $language->getName();
+            $formData['lang_oral' . $i] = $language->getOralSkillCode();
+            $formData['lang_written' . $i] = $language->getWrittenSkillCode();
+
+            $i++;
+        }
+
+        $formData = $this->addLanguages($formData);
+        $this->setData($formData);
     }
 
     public function addLanguages($formData)
