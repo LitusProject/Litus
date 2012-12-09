@@ -159,6 +159,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_prof' => array(
                         'add', 'delete', 'typeahead'
                     ),
+                    'admin_syllabus_academic' => array(
+                        'addStudy', 'addSubject', 'deleteStudy', 'deleteSubject', 'edit', 'manage', 'search'
+                    ),
                     'admin_syllabus_group' => array(
                         'add', 'deleteStudy', 'edit', 'manage', 'studies'
                     ),
