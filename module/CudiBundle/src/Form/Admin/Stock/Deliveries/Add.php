@@ -39,6 +39,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'deliveryForm');
 
+        $field = new Hidden('add_with_virtual_order');
+        $field->setAttribute('id', 'addWithVirtualOrder');
+        $this->add($field);
+
         $field = new Hidden('article_id');
         $field->setAttribute('id', 'articleId');
         $this->add($field);

@@ -25,6 +25,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Stock\Periods\Values\Delta,
+    CudiBundle\Entity\Stock\Orders\Virtual as VirtualOrder,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -173,6 +174,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         $orderForm = new OrderForm($this->getEntityManager());
         $stockForm = new StockForm($article);
 
+        $virtual = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Orders\Virtual')
+            ->findNbByPeriodAndArticle($period, $article);
+        $maxDelivery = $period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual;
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
@@ -253,10 +259,17 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
                     return new ViewModel();
                 }
-            } elseif (isset($formData['add_delivery'])) {
+            } else {
                 $deliveryForm->setData($formData);
+
                 if ($deliveryForm->isValid()) {
                     $formData = $deliveryForm->getFormData($formData);
+
+                    if ($formData['add_with_virtual_order']) {
+                        $nb = $formData['number'] - ($period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual);
+                        $order = new VirtualOrder($article, $nb);
+                        $this->getEntityManager()->persist($order);
+                    }
 
                     $delivery = new Delivery($article, $formData['number'], $this->getAuthentication()->getPersonObject());
                     $this->getEntityManager()->persist($delivery);
@@ -290,6 +303,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 'deliveryForm' => $deliveryForm,
                 'orderForm' => $orderForm,
                 'stockForm' => $stockForm,
+                'maxDelivery' => $maxDelivery,
             )
         );
     }
