@@ -24,6 +24,8 @@ return array(
     'SyllabusBundle\Entity\Subject\Comment'                     => __DIR__ . '/src/Entity/Subject/Comment.php',
     'SyllabusBundle\Entity\Subject'                             => __DIR__ . '/src/Entity/Subject.php',
     'SyllabusBundle\Entity\SubjectProfMap'                      => __DIR__ . '/src/Entity/SubjectProfMap.php',
+    'SyllabusBundle\Form\Admin\Academic\Study\Add'              => __DIR__ . '/src/Form/Admin/Academic/Study/Add.php',
+    'SyllabusBundle\Form\Admin\Academic\Subject\Add'            => __DIR__ . '/src/Form/Admin/Academic/Subject/Add.php',
     'SyllabusBundle\Form\Admin\Group\Add'                       => __DIR__ . '/src/Form/Admin/Group/Add.php',
     'SyllabusBundle\Form\Admin\Group\Edit'                      => __DIR__ . '/src/Form/Admin/Group/Edit.php',
     'SyllabusBundle\Form\Admin\Group\Study\Add'                 => __DIR__ . '/src/Form/Admin/Group/Study/Add.php',

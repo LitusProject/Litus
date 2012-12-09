@@ -4,7 +4,8 @@ namespace SecretaryBundle\Repository\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\People\Academic,
-    Doctrine\ORM\EntityRepository;
+    Doctrine\ORM\EntityRepository,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * SubjectEnrollment
@@ -31,5 +32,30 @@ class SubjectEnrollment extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    public function findOneByAcademicAndAcademicYearAndSubject(Academic $academic, AcademicYear $academicYear, Subject $subject)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SecretaryBundle\Entity\Syllabus\SubjectEnrollment', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.academic', ':academic'),
+                    $query->expr()->eq('s.academicYear', ':academicYear'),
+                    $query->expr()->eq('s.subject', ':subject')
+                )
+            )
+            ->setParameter('academic', $academic)
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('subject', $subject)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
     }
 }
