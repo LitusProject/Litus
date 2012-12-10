@@ -228,6 +228,14 @@ class Booking
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getSaleDate()
+    {
+        return $this->saleDate;
+    }
+
+    /**
      * @param string $status
      *
      * @return \CudiBundle\Entity\Sales\Booking
