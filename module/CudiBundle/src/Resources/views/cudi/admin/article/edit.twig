@@ -43,6 +43,19 @@
     </div>
 
     <aside>
+        {% if hasAccess('admin_article', 'duplicate') %}
+            <div class="sidebox">
+                <div class="title">Create Duplicate</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to create a duplicate of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article', {"action": "duplicate", "id": article.getId()}) }}">&rarr; Create Duplicate</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
         {% if saleArticle is not null and hasAccess('admin_sales_article', 'edit') %}
             <div class="sidebox">
                 <div class="title">Edit Sale Article</div>

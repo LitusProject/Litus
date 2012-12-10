@@ -86,6 +86,7 @@ return array(
     'CudiBundle\Entity\Users\People\Supplier'                       => __DIR__ . '/src/Entity/Users/People/Supplier.php',
     'CudiBundle\Form\Admin\Article\Add'                             => __DIR__ . '/src/Form/Admin/Article/Add.php',
     'CudiBundle\Form\Admin\Article\Comment\Add'                     => __DIR__ . '/src/Form/Admin/Article/Comment/Add.php',
+    'CudiBundle\Form\Admin\Article\Duplicate'                       => __DIR__ . '/src/Form/Admin/Article/Duplicate.php',
     'CudiBundle\Form\Admin\Article\Edit'                            => __DIR__ . '/src/Form/Admin/Article/Edit.php',
     'CudiBundle\Form\Admin\Article\File\Add'                        => __DIR__ . '/src/Form/Admin/Article/File/Add.php',
     'CudiBundle\Form\Admin\Article\File\Edit'                       => __DIR__ . '/src/Form/Admin/Article/File/Edit.php',
