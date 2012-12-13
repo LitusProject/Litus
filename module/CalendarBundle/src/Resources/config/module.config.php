@@ -57,6 +57,19 @@ return array(
                     ),
                 ),
             ),
+            'calendar_export' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/calendar/export/calendar.ics',
+                    'constraints' => array(
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'calendar',
+                        'action'     => 'export',
+                    ),
+                ),
+            ),
         ),
     ),
     'translator' => array(
