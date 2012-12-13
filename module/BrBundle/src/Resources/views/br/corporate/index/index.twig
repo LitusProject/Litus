@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if authenticatedPerson is not null %}
-        <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%company%': company.getName()}) }}{% endautoescape %}</h2>
+        <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%company%': authenticatedPerson.getCompany().getName()}) }}{% endautoescape %}</h2>
     {% else %}
         <div style="text-align: center;">
             <img src="/img/litus.png" alt="Litus" />

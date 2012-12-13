@@ -283,6 +283,16 @@ return array(
         'translation_files' => array(
             array(
                 'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/corporate.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/corporate.nl.php',
+                'locale'   => 'nl'
+            ),
+            array(
+                'type'     => 'phparray',
                 'filename' => __DIR__ . '/../translations/career.en.php',
                 'locale'   => 'en'
             ),
