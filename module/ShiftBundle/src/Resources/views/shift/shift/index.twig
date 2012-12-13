@@ -55,7 +55,7 @@
             <h2>
                 {% if hasAccess('shift', 'export') %}
                     <div class="pull-right visible-desktop">
-                        <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn"><span class="icon-calendar"></span> {{ translate('Download') }}</a>
+                        <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
                     </div>
                 {% endif %}
 
