@@ -52,8 +52,17 @@
 
         </span>
         <span class="span8">
-            <h2>{{ translate('My Shifts') }}</h2>
-                {{ _self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
+            <h2>
+                {% if hasAccess('shift', 'export') %}
+                    <div class="pull-right visible-desktop">
+                        <a href="{{ url('shift', {'action' : 'export', 'token' : token.getHash() }) }}" class="btn"><span class="icon-calendar"></span> {{ translate('Download') }}</a>
+                    </div>
+                {% endif %}
+
+                {{ translate('My Shifts') }}
+            </h2>
+
+            {{ _self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
 
             <h2>{{ resultString }}</h2>
             {% if searchResults is not null %}
