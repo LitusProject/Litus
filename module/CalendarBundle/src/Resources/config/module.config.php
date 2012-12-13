@@ -60,7 +60,7 @@ return array(
             'calendar_export' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/calendar/export/calendar.ics',
+                    'route' => '[/:language]/calendar/export/ical.ics',
                     'constraints' => array(
                         'language' => '[a-z]{2}',
                     ),
