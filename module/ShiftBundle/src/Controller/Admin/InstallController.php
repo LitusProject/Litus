@@ -139,7 +139,7 @@ You have been removed from the following shift by an administrator:
                         'manage', 'delete',
                     ),
                     'shift' => array(
-                        'index', 'responsible', 'signout', 'volunteer'
+                        'export', 'index', 'responsible', 'signout', 'volunteer'
                     ),
                 ),
             )
@@ -154,7 +154,7 @@ You have been removed from the following shift by an administrator:
                     ),
                     'actions' => array(
                         'shift' => array(
-                            'index', 'responsible', 'signout', 'volunteer'
+                            'export', 'index', 'responsible', 'signout', 'volunteer'
                         ),
                     ),
                 ),
