@@ -18,11 +18,13 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     DateTime,
     DateInterval,
+    ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shifts\Responsible,
     ShiftBundle\Entity\Shifts\Volunteer,
     ShiftBundle\Form\Shift\Search\Date as DateSearchForm,
     ShiftBundle\Form\Shift\Search\Event as EventSearchForm,
     ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
+    Zend\Http\Headers,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -64,6 +66,18 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+
+        $token = $this->getDocumentManager()
+            ->getRepository('ShiftBundle\Document\Token')
+            ->findOneByPerson($this->getAuthentication()->getPersonObject());
+
+        if (null === $token) {
+            $token = new Token(
+                $this->getAuthentication()->getPersonObject()
+            );
+            $this->getDocumentManager()->persist($token);
+            $this->getDocumentManager()->flush();
+        }
 
         $searchResults = null;
         if ($this->getRequest()->isPost()) {
@@ -193,6 +207,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'unitSearchForm' => $unitSearchForm,
                 'dateSearchForm' => $dateSearchForm,
                 'myShifts' => $myShifts,
+                'token' => $token,
                 'searchResults' => $searchResults,
                 'entityManager' => $this->getEntityManager()
             )
@@ -353,6 +368,78 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     'status' => 'success',
                     'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
                 )
+            )
+        );
+    }
+
+    public function exportAction()
+    {
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="icalendar.ics"',
+            'Content-type' => 'text/calendar',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $suffix = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('calendar.icalendar_uid_suffix');
+
+        $result = 'BEGIN:VCALENDAR' . PHP_EOL;
+        $result .= 'VERSION:2.0' . PHP_EOL;
+        $result .= 'X-WR-CALNAME:' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('union_short_name') . ' My Shift Calendar' . PHP_EOL;
+        $result .= 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
+        $result .= 'CALSCALE:GREGORIAN' . PHP_EOL;
+        $result .= 'METHOD:PUBLISH' . PHP_EOL;
+        $result .= 'X-WR-TIMEZONE:Europe/Brussels' . PHP_EOL;
+        $result .= 'BEGIN:VTIMEZONE' . PHP_EOL;
+        $result .= 'TZID:Europe/Brussels' . PHP_EOL;
+        $result .= 'X-LIC-LOCATION:Europe/Brussels' . PHP_EOL;
+        $result .= 'BEGIN:DAYLIGHT' . PHP_EOL;
+        $result .= 'TZOFFSETFROM:+0100' . PHP_EOL;
+        $result .= 'TZOFFSETTO:+0200' . PHP_EOL;
+        $result .= 'TZNAME:CEST' . PHP_EOL;
+        $result .= 'DTSTART:19700329T020000' . PHP_EOL;
+        $result .= 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU' . PHP_EOL;
+        $result .= 'END:DAYLIGHT' . PHP_EOL;
+        $result .= 'BEGIN:STANDARD' . PHP_EOL;
+        $result .= 'TZOFFSETFROM:+0200' . PHP_EOL;
+        $result .= 'TZOFFSETTO:+0100' . PHP_EOL;
+        $result .= 'TZNAME:CET' . PHP_EOL;
+        $result .= 'DTSTART:19701025T030000' . PHP_EOL;
+        $result .= 'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU' . PHP_EOL;
+        $result .= 'END:STANDARD' . PHP_EOL;
+        $result .= 'END:VTIMEZONE' . PHP_EOL;
+
+        if (null !== $this->getParam('token')) {
+            $token = $this->getDocumentManager()
+                ->getRepository('ShiftBundle\Document\Token')
+                ->findOneByHash($this->getParam('token'));
+
+            $shifts = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActiveByPerson($token->getPerson($this->getEntityManager()));
+
+            foreach($shifts as $shift) {
+                $result .= 'BEGIN:VEVENT' . PHP_EOL;
+                $result .= 'SUMMARY:' . $shift->getName() . PHP_EOL;
+                $result .= 'DTSTART:' . $shift->getStartDate()->format('Ymd\THis') . PHP_EOL;
+                $result .= 'DTEND:' . $shift->getEndDate()->format('Ymd\THis') . PHP_EOL;
+                $result .= 'TRANSP:OPAQUE' . PHP_EOL;
+                $result .= 'LOCATION:' . $shift->getLocation()->getName() . PHP_EOL;
+                $result .= 'CLASS:PUBLIC' . PHP_EOL;
+                $result .= 'UID:' . $shift->getId() . '@' . $suffix . PHP_EOL;
+                $result .= 'END:VEVENT' . PHP_EOL;
+            }
+        }
+
+        $result .= 'END:VCALENDAR';
+
+        return new ViewModel(
+            array(
+                'result' => $result,
             )
         );
     }

@@ -10,6 +10,7 @@ return array(
     'ShiftBundle\Controller\Admin\SubscriptionController' => __DIR__ . '/src/Controller/Admin/SubscriptionController.php',
     'ShiftBundle\Controller\Admin\UnitController'         => __DIR__ . '/src/Controller/Admin/UnitController.php',
     'ShiftBundle\Controller\ShiftController'              => __DIR__ . '/src/Controller/ShiftController.php',
+    'ShiftBundle\Document\Token'                          => __DIR__ . '/src/Document/Token.php',
     'ShiftBundle\Entity\Shift'                            => __DIR__ . '/src/Entity/Shift.php',
     'ShiftBundle\Entity\Shifts\Responsible'               => __DIR__ . '/src/Entity/Shifts/Responsible.php',
     'ShiftBundle\Entity\Shifts\Volunteer'                 => __DIR__ . '/src/Entity/Shifts/Volunteer.php',
@@ -25,5 +26,6 @@ return array(
     'ShiftBundle\Repository\Shift'                        => __DIR__ . '/src/Repository/Shift.php',
     'ShiftBundle\Repository\Shifts\Responsible'           => __DIR__ . '/src/Repository/Shifts/Responsible.php',
     'ShiftBundle\Repository\Shifts\Volunteer'             => __DIR__ . '/src/Repository/Shifts/Volunteer.php',
+    'ShiftBundle\Repository\Token'                        => __DIR__ . '/src/Repository/Token.php',
     'ShiftBundle\Repository\Unit'                         => __DIR__ . '/src/Repository/Unit.php',
 );
