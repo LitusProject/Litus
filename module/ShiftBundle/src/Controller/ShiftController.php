@@ -71,8 +71,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('ShiftBundle\Document\Token')
             ->findOneByPerson($this->getAuthentication()->getPersonObject());
 
-            var_dump($token);
-
         if (null === $token) {
             $token = new Token(
                 $this->getAuthentication()->getPersonObject()
@@ -422,7 +420,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
             $shifts = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActiveByPerson($token->getPerson());
+                ->findAllActiveByPerson($token->getPerson($this->getEntityManager()));
 
             foreach($shifts as $shift) {
                 $result .= 'BEGIN:VEVENT' . PHP_EOL;
