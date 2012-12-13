@@ -82,6 +82,6 @@ class Token
     public function getPerson(EntityManager $entityManager)
     {
         return $entityManager->getRepository('CommonBundle\Entity\Users\Person')
-            ->findOneById($this->creationPerson);
+            ->findOneById($this->person);
     }
 }
