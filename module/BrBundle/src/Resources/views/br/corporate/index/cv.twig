@@ -2,6 +2,19 @@
 
 {% block content %}
 
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="subnav nav-collapse">
+                <ul class="nav">
+                    {% for year in authenticatedPerson.getCompany().getCvBookYears() %}
+                        <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a href="{{ url('corporate_index', {"action": "cv", "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
     {% for entry in entries %}
         {{ entry.getFirstName() }}
     {% endfor %}

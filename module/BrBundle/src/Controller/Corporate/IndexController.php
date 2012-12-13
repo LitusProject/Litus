@@ -31,7 +31,7 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
 
     public function cvAction()
     {
-        $academicYear = $this->getCurrentAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $entries = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
@@ -39,6 +39,7 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
+                'academicYear' => $academicYear,
                 'entries' => $entries,
             )
         );

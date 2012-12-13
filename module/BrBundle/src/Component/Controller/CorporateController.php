@@ -16,8 +16,11 @@ namespace BrBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Form\Auth\Login as LoginForm,
-    Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent,
+    DateInterval,
+    DateTime;
 
 /**
  * We extend the CommonBundle controller.
@@ -59,6 +62,71 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
 
         $e->setResult($result);
         return $result;
+    }
+
+    /**
+     * Returns the current academic year.
+     *
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    protected function getAcademicYear()
+    {
+        if (null === $this->getParam('academicyear')) {
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+
+            $next = clone $start;
+            $next->add(new DateInterval('P1Y'));
+            if ($next <= new DateTime())
+                $start = $next;
+        } else {
+            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
+
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+        }
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStart($start);
+
+        if (null === $academicYear) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No academic year was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_study',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $academicYear;
     }
 
     /**
