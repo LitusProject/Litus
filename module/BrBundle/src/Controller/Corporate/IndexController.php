@@ -28,4 +28,19 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
     {
         return new ViewModel();
     }
+
+    public function cvAction()
+    {
+        $academicYear = $this->getCurrentAcademicYear();
+
+        $entries = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findAllByAcademicYear($academicYear);
+
+        return new ViewModel(
+            array(
+                'entries' => $entries,
+            )
+        );
+    }
 }

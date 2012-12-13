@@ -82,6 +82,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Select('cvbook');
+        $field->setLabel('CV Book')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $yearnames);
+        $this->add($field);
+
         $page = new Collection('page_collection');
         $page->setLabel('Page')
             ->setAttribute('id', 'page_form');

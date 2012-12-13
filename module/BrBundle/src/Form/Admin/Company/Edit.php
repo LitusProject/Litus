@@ -63,6 +63,13 @@ class Edit extends Add
             $yearids[] = $year->getId();
         }
 
+        $years = $company->getCvBookYears();
+
+        $cvyearids = array();
+        foreach($years as $year) {
+            $cvyearids[] = $year->getId();
+        }
+
         $formData =  array(
             'company_name' => $company->getName(),
             'sector' => $company->getSectorCode(),
@@ -75,6 +82,7 @@ class Edit extends Add
             'address_city' => $company->getAddress()->getCity(),
             'address_country' => $company->getAddress()->getCountryCode(),
             'years' => $yearids,
+            'cvbook' => $cvyearids,
         );
 
         $formData['summary'] = $company->getPage()->getSummary();

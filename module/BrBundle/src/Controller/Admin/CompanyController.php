@@ -82,6 +82,18 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->persist($company);
 
                 $years = array();
+                if (count($formData['cvbook']) > 0) {
+                    $yearIds = $formData['cvbook'];
+                    $repository = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                    foreach($yearIds as $yearId) {
+                        $years[] = $repository->findOneById($yearId);
+                    }
+                }
+
+                $company->setCvBookYears($years);
+
+                $years = array();
                 if (count($formData['years']) > 0) {
                     $yearIds = $formData['years'];
                     $repository = $this->getEntityManager()
@@ -156,6 +168,18 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->setPostal($formData['address_postal'])
                         ->setCity($formData['address_city'])
                         ->setCountry($formData['address_country']);
+
+                $years = array();
+                if (count($formData['cvbook']) > 0) {
+                    $yearIds = $formData['cvbook'];
+                    $repository = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                    foreach($yearIds as $yearId) {
+                        $years[] = $repository->findOneById($yearId);
+                    }
+                }
+
+                $company->setCvBookYears($years);
 
                 $years = array();
                 if (count($formData['years']) > 0) {

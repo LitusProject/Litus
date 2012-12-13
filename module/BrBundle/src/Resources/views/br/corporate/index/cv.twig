@@ -1,0 +1,9 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+
+    {% for entry in entries %}
+        {{ entry.getFirstName() }}
+    {% endfor %}
+
+{% endblock %}

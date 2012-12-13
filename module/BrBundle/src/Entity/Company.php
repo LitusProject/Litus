@@ -95,6 +95,17 @@ class Company
     private $active;
 
     /**
+     * @var \CommonBundle\Entity\General\AcademicYear The years of which this company has access to the CV Book.
+     *
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
+     * @ORM\JoinTable(name="br.companies_cvbooks",
+     *      joinColumns={@ORM\JoinColumn(name="company", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="year", referencedColumnName="id")}
+     * )
+     */
+    private $cvBookYears;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", mappedBy="company")
@@ -144,6 +155,7 @@ class Company
         $this->contacts = new ArrayCollection();
 
         $this->active = true;
+        $this->cvBookYears = new ArrayCollection();
     }
 
     /**
@@ -347,4 +359,23 @@ class Company
     {
         return $this->slug;
     }
+
+    /**
+     * Retrieves the years for which this company has bought the cv book.
+     *
+     * @return array The years in which this company has bought the cv book.
+     */
+    public function getCvBookYears() {
+        return $this->cvBookYears->toArray();
+    }
+
+    /**
+     * @param array $years Sets the years in which company has bought the cv book.
+     * @return \LogisticsBundle\Entity\Driver This
+     */
+    public function setCvBookYears(array $years) {
+        $this->cvBookYears = new ArrayCollection($years);
+        return $this;
+    }
+
 }
