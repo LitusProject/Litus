@@ -132,7 +132,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                             $formData['address_city'],
                             $formData['address_country']
                         )
-                    );
+                    )
+                    ->setLatitude($formData['latitude'])
+                    ->setLongitude($formData['longitude']);
 
                 $this->getEntityManager()->flush();
 

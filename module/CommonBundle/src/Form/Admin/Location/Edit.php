@@ -14,9 +14,11 @@
 
 namespace CommonBundle\Form\Admin\Location;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+use CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\General\Location,
     Doctrine\ORM\EntityManager,
+    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -33,6 +35,20 @@ class Edit extends \CommonBundle\Form\Admin\Location\Add
     public function __construct(Location $location, $name = null)
     {
         parent::__construct($name);
+
+        $geographical = new Collection('greographical');
+        $geographical->setLabel('Geographical');
+        $this->add($geographical);
+
+        $field = new Text('latitude');
+        $field->setLabel('Latitude')
+            ->setRequired();
+        $geographical->add($field);
+
+        $field = new Text('longitude');
+        $field->setLabel('Longitude')
+            ->setRequired();
+        $geographical->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Save')
@@ -51,9 +67,46 @@ class Edit extends \CommonBundle\Form\Admin\Location\Add
             'address_mailbox' => $location->getAddress()->getMailbox(),
             'address_postal' => $location->getAddress()->getPostal(),
             'address_city' => $location->getAddress()->getCity(),
-            'address_country' => $location->getAddress()->getCountryCode()
+            'address_country' => $location->getAddress()->getCountryCode(),
+            'latitude' => $location->getLatitude(),
+            'longitude' => $location->getLongitude(),
         );
 
         $this->setData($data);
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = parent::getInputFilter();
+
+        $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'latitude',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'longitude',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }
