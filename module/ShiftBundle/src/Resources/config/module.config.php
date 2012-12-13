@@ -109,16 +109,29 @@ return array(
             'shift' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/shift[/:action[/:id][/token/:token]][/]',
+                    'route' => '[/:language]/shift[/:action[/:id][]][/]',
                     'constraints' => array(
                         'language' => '[a-z]{2}',
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
-                        'token'    => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'shift',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'shift_export' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/shift/export/:token/ical.ics',
+                    'constraints' => array(
+                        'language' => '[a-z]{2}',
+                        'token'    => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'shift',
+                        'action'     => 'export',
                     ),
                 ),
             ),
