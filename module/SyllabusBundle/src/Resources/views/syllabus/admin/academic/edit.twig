@@ -92,7 +92,7 @@
                         <i>Please hit the link below to add a study!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_syllabus_academic', {'action': 'addStudy', 'id': academic.getId()}) }}">&rarr; Add Study</a>
+                        <a href="{{ url('admin_syllabus_academic', {'action': 'addStudy', 'id': academic.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Study</a>
                     </p>
                 </div>
             </div>
@@ -108,7 +108,7 @@
                         <i>Please hit the link below to add a subject!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_syllabus_academic', {'action': 'addSubject', 'id': academic.getId()}) }}">&rarr; Add Subject</a>
+                        <a href="{{ url('admin_syllabus_academic', {'action': 'addSubject', 'id': academic.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Subject</a>
                     </p>
                 </div>
             </div>

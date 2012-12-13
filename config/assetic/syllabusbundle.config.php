@@ -31,6 +31,7 @@ return array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@common_typeahead_remote',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),

@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Form\Admin\Article\Add as AddForm,
     CudiBundle\Form\Admin\Article\Edit as EditForm,
+    CudiBundle\Form\Admin\Article\Duplicate as DuplicateForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -188,7 +189,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $history = new History($article);
                 $this->getEntityManager()->persist($history);
 
-                   $article->setTitle($formData['title'])
+                $article->setTitle($formData['title'])
                     ->setAuthors($formData['author'])
                     ->setPublishers($formData['publisher'])
                     ->setYearPublished($formData['year_published'])
@@ -322,6 +323,104 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function duplicateAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+
+        $form = new DuplicateForm($this->getEntityManager(), $article);
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if ($formData['internal']) {
+                    $binding = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->findOneById($formData['binding']);
+
+                    $frontColor = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+                        ->findOneById($formData['front_color']);
+
+                    $new = new Internal(
+                        $formData['title'],
+                        $formData['author'],
+                        $formData['publisher'],
+                        $formData['year_published'],
+                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['url'],
+                        $article->getType(),
+                        $formData['downloadable'],
+                        $formData['same_as_previous_year'],
+                        $formData['nb_black_and_white'],
+                        $formData['nb_colored'],
+                        $binding,
+                        $formData['official'],
+                        $formData['rectoverso'],
+                        $frontColor,
+                        $formData['perforated'],
+                        $formData['colored']
+                    );
+                } else {
+                    $new = new External(
+                        $formData['title'],
+                        $formData['author'],
+                        $formData['publisher'],
+                        $formData['year_published'],
+                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['url'],
+                        $article->getType(),
+                        $formData['downloadable'],
+                        $formData['same_as_previous_year']
+                    );
+                }
+
+                $this->getEntityManager()->persist($new);
+
+                $mappings = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                    ->findAllByArticleAndAcademicYear($article, $academicYear);
+
+                foreach($mappings as $mapping) {
+                    $this->getEntityManager()->persist(new SubjectMap($new, $mapping->getSubject(), $academicYear, $mapping->isMandatory()));
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The new version of the article was successfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_article',
+                    array(
+                        'action' => 'edit',
+                        'id' => $article->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'article' => $article,
             )
         );
     }
