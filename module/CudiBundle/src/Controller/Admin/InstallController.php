@@ -325,7 +325,7 @@ VTK Cudi
             array(
                 'cudibundle' => array(
                     'admin_article' => array(
-                        'add', 'delete', 'edit', 'history', 'manage', 'search'
+                        'add', 'delete', 'duplicate', 'edit', 'history', 'manage', 'search'
                     ),
                     'admin_article_comment' => array(
                         'delete', 'manage'

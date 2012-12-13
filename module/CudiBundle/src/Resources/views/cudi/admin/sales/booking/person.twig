@@ -20,8 +20,9 @@
                 <tr>
                     <th>Article</th>
                     <th width="40px">&nbsp;</th>
-                    <th width="120px">Date</th>
-                    <th width="120px">Expires On</th>
+                    <th width="100px">Date</th>
+                    <th width="100px" class="wider">Expires On</th>
+                    <th width="100px" class="wider">Sold On</th>
                     <th width="80px">Status</th>
                     <th width="55px">Price</th>
                     <th width="70px">Actions</th>
@@ -32,7 +33,8 @@
                         <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
                         <td>&times;{{ booking.getNumber() }}</td>
                         <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
-                        <td>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</td>
+                        <td class="wider">{% if booking.getStatus() != 'sold' %}{{ booking.getExpirationDate().format('d/m/Y H:i') }}{% endif %}</td>
+                        <td class="wider">{% if booking.getStatus() == 'sold' %}{{ booking.getSaleDate().format('d/m/Y H:i') }}{% endif %}</td>
                         <td class="status">{{ booking.getStatus()|capitalize }}</td>
                         <td>&euro; {{ (booking.getArticle().getSellPrice() * booking.getNumber()/100)|number_format(2) }}</td>
                         <td class="actions">
