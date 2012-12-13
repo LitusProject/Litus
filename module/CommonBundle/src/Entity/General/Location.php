@@ -143,11 +143,31 @@ class Location
     }
 
     /**
+     * @param string $latitude
+     * @return CommonBundle\Entity\General\Location
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getLongitude()
     {
         return $this->longitude;
+    }
+
+    /**
+     * @param string $longitude
+     * @return CommonBundle\Entity\General\Location
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+        return $this;
     }
 
     /**
@@ -164,11 +184,6 @@ class Location
     public function deactivate()
     {
         $this->active = false;
-    }
-
-    public function getImage()
-    {
-        return 'http://maps.googleapis.com/maps/api/staticmap?center=&zoom=14&size=260x100&sensor=false';
     }
 
     /**
