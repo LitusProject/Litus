@@ -79,7 +79,9 @@ return array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
             '@bootstrap_js_alert',
+            '@bootstrap_js_custom_collapse',
             '@corporate_css',
         ),
         'career_index' => array(

@@ -3,7 +3,8 @@
 namespace BrBundle\Repository\Cv;
 
 use Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear;
+    CommonBundle\Entity\General\AcademicYear,
+    SyllabusBundle\Entity\Study;
 
 /**
  * Entry
@@ -20,6 +21,46 @@ class Entry extends EntityRepository
             ->where(
                 $query->expr()->eq('e.year', ':year')
             )
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllStudies() {
+        $query = $this->_em->createQueryBuilder();
+        $subQuery = $this->_em->createQueryBuilder();
+
+        $subQuery->select('e')
+            ->from('BrBundle\Entity\Cv\Entry', 'e');
+
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->where(
+                $query->expr()->exists(
+                    $subQuery->getDql()
+                )
+            )
+            ->orderBy('s.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByStudyAndAcademicYear(Study $study, AcademicYear $year) {
+        $query = $this->_em->createQueryBuilder();
+
+        $resultSet = $query->select('e')
+            ->from('BrBundle\Entity\Cv\Entry', 'e')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('e.study', ':study'),
+                    $query->expr()->eq('e.year', ':year')
+                )
+            )
+            ->setParameter('study', $study)
             ->setParameter('year', $year)
             ->getQuery()
             ->getResult();
