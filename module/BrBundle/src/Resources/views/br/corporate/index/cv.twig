@@ -14,9 +14,54 @@
         </div>
     </div>
 
+    <div class="accordion" id="accordion" data-collapse-type="manual">
 
-    {% for entry in entries %}
-        {{ entry.getFirstName() }}
-    {% endfor %}
+        {% for study in studies %}
+
+
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#body-study-{{ study.study.getId() }}">
+                        {{ study.study.getFullTitle() }}
+                    </a>
+                </div>
+                <div id="body-study-{{ study.study.getId() }}" class="accordion-body collapse">
+                    <div class="accordion-inner">
+
+                        <div class="accordion" id="accordion-study-{{ study.study.getId() }}" data-collapse-type="manual">
+
+                            {% for entry in study.entries %}
+
+                                <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-study-{{ study.study.getId() }}" href="#body-entry-{{ entry.getId() }}">
+                                            {{ entry.getFirstName() }} {{ entry.getLastName() }}
+                                        </a>
+                                    </div>
+                                    <div id="body-entry-{{ entry.getId() }}" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+
+                                            <div class="accordion" id="accordion" data-collapse-type="manual">
+
+                                                A CV
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
 
 {% endblock %}

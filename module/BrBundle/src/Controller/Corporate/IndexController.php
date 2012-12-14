@@ -33,14 +33,29 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
     {
         $academicYear = $this->getAcademicYear();
 
-        $entries = $this->getEntityManager()
+        $studies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllByAcademicYear($academicYear);
+            ->findAllStudies();
+
+        $result = array();
+        foreach ($studies as $study) {
+
+            $entries = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Cv\Entry')
+                ->findAllByStudyAndAcademicYear($study, $academicYear);
+
+            if (count($entries) > 0) {
+                $result[] = array(
+                    'study' => $study,
+                    'entries' => $entries,
+                );
+            }
+        }
 
         return new ViewModel(
             array(
                 'academicYear' => $academicYear,
-                'entries' => $entries,
+                'studies' => $result,
             )
         );
     }
