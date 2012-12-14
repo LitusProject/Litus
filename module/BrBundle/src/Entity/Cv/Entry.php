@@ -910,17 +910,6 @@ class Entry
     }
 
     /**
-     * Changes the id of this cv entry to the given value.
-     *
-     * @param id The new value
-     * @return BrBundle\Entity\Cv\Entry this
-     */
-    public function setId($id) {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * Retrieves the academic of this entry.
      *
      * @return academic
