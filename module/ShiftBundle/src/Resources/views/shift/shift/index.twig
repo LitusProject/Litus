@@ -59,7 +59,7 @@
         </span>
         <span class="span8">
             <h2>
-                {% if hasAccess('shift', 'export') %}
+                {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
                     <div class="pull-right visible-desktop">
                         <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
                     </div>
