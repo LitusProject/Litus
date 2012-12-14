@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="page-header">
+        {% if hasAccess('news', 'feed') %}
+            <div class="pull-right" style="line-height: 50px">
+                <a href="{{ url('news', {'action': 'feed'}) }}" class="btn"><span class="icon-inbox"></span> {{ translate('RSS') }}</a>
+            </div>
+        {% endif %}
         <h2>{{ translate('News') }}</h2>
     </div>
 

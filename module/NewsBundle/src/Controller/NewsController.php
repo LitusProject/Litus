@@ -14,7 +14,10 @@
 
 namespace NewsBundle\Controller;
 
-use DateTime,
+use CommonBundle\Component\Util\Xml\Object as XmlObject,
+    DateTime,
+    IntlDateFormatter,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -53,6 +56,141 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'news' => $news,
+            )
+        );
+    }
+
+    public function feedAction()
+    {
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-type' => 'application/rss+xml',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $config = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
+
+        $description = '';
+        $descriptions = unserialize($config->getConfigValue('newsbundle.rss_description'));
+        if (isset($descriptions[$this->getLanguage()->getAbbrev()]))
+            $description = $descriptions[$this->getLanguage()->getAbbrev()];
+        else
+            $description = $descriptions[\Locale::getDefault()];
+
+        $data = array(
+            new XmlObject(
+                'title',
+                array(),
+                $config->getConfigValue('newsbundle.rss_title')
+            ),
+            new XmlObject(
+                'description',
+                array(),
+                $description
+            ),
+            new XmlObject(
+                'language',
+                array(),
+                $this->getLanguage()->getAbbrev()
+            ),
+            new XmlObject(
+                'link',
+                array(),
+                $_SERVER['SERVER_NAME'] . $this->url()->fromRoute(
+                    'news',
+                    array(
+                        'feed',
+                    )
+                )
+            ),
+            new XmlObject(
+                'image',
+                array(),
+                array(
+                    new XmlObject(
+                        'title',
+                        array(),
+                        $config->getConfigValue('newsbundle.rss_title')
+                    ),
+                    new XmlObject(
+                        'url',
+                        array(),
+                        $_SERVER['SERVER_NAME'] . $config->getConfigValue('newsbundle.rss_image_link')
+                    ),
+                    new XmlObject(
+                        'link',
+                        array(),
+                        $_SERVER['SERVER_NAME']
+                    ),
+                )
+            ),
+        );
+
+        $formatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'E, d MMMM yyyy H:mm:ss'
+        );
+
+        $news = $this->getEntityManager()
+            ->getRepository('NewsBundle\Entity\Nodes\News')
+            ->findAll(100);
+
+        foreach($news as $item) {
+            $data[] = new XmlObject(
+                'item',
+                array(),
+                array(
+                    new XmlObject(
+                        'title',
+                        array(),
+                        $item->getTitle($this->getLanguage())
+                    ),
+                    new XmlObject(
+                        'description',
+                        array(),
+                        $item->getSummary(200, $this->getLanguage())
+                    ),
+                    new XmlObject(
+                        'link',
+                        array(),
+                        $this->url()->fromRoute(
+                            'news',
+                            array(
+                                'action' => 'view',
+                                'name' => $item->getName($this->getLanguage()),
+                            )
+                        )
+                    ),
+                    new XmlObject(
+                        'guid',
+                        array(),
+                        $item->getName($this->getLanguage())
+                    ),
+                    new XmlObject(
+                        'pubdate',
+                        array(),
+                        $formatter->format($item->getCreationTime())
+                    ),
+                )
+            );
+        }
+
+
+        $feed = new XmlObject(
+            'channel',
+            array(),
+            $data
+        );
+
+        return new ViewModel(
+            array(
+                'header' => '<?xml version="1.0" encoding="ISO-8859-1"?>
+<rss version="2.0">',
+                'feed' => $feed,
             )
         );
     }
