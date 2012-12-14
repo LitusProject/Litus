@@ -157,7 +157,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new XmlObject(
                         'link',
                         array(),
-                        $this->url()->fromRoute(
+                        $_SERVER['SERVER_NAME'] . $this->url()->fromRoute(
                             'news',
                             array(
                                 'action' => 'view',
