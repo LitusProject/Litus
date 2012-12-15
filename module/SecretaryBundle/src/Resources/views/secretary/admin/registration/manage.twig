@@ -25,7 +25,7 @@
                     <th width="120px">Date</th>
                     <th width="120px">Payed</th>
                     <th width="120px">Barcode</th>
-                    <th width="120px">Action</th>
+                    <th width="70px">Action</th>
                 </tr>
             </table>
         </div>
@@ -54,6 +54,9 @@
 
                         {% if hasAccess('admin_secretary_registration', 'barcode') %}
                             actions.append('<a href="{{ url('admin_secretary_registration', {"action": "barcode"}) }}' + this.id +'" class="edit">Barcode</a>');
+                        {% endif %}
+                        {% if hasAccess('admin_secretary_registration', 'edit') %}
+                            actions.append('<a href="{{ url('admin_secretary_registration', {"action": "edit"}) }}' + this.id +'" class="edit">Edit</a>');
                         {% endif %}
                     });
                     $('#registration_search table').change();
