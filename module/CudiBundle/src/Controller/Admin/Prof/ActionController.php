@@ -310,7 +310,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $action->getEntity()
                     ->setPrintable($formData['printable'])
                     ->getFile()->setDescription($formData['description']);
