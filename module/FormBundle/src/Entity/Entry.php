@@ -51,7 +51,7 @@ class Entry
     /**
      * @var string The value of this field.
      *
-     * @ORM\Column(name="value", type="string", nullable=true)
+     * @ORM\Column(name="value", type="text", nullable=true)
      */
     private $value;
 
