@@ -103,6 +103,13 @@ class QueueItem
     private $payMethod;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The sold items
+     *
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\SaleItem", mappedBy="queueItem")
+     */
+    private $saleItems;
+
+    /**
      * @var array The possible states of a queue item
      */
     private static $POSSIBLE_STATUSES = array(
@@ -306,5 +313,13 @@ class QueueItem
         if (!self::isValidPayMethod($this->payMethod))
             return '';
         return self::$POSSIBLE_PAY_METHODS[$this->payMethod];
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getSaleItems()
+    {
+        return $this->saleItems;
     }
 }
