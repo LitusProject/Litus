@@ -189,6 +189,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 }
             }
 
+            if (sizeof($upload->getMessages()) > 0)
+                $formErrors['file'] = $upload->getMessages();
+
             return new ViewModel(
                 array(
                     'status' => 'error',
