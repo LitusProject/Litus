@@ -24,7 +24,33 @@ use CommonBundle\Entity\General\Language;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
+    protected function initConfig()
+    {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'newsbundle.rss_title',
+                    'value'       => 'Vlaamse Technische Kring Leuven',
+                    'description' => 'The title of the RSS feed',
+                ),
+                array(
+                    'key'         => 'newsbundle.rss_description',
+                    'value'       => serialize(
+                        array(
+                            'nl' => 'RSS feed van Vlaamse Technische Kring Leuven',
+                            'en' => 'RSS feed of Vlaamse Technische Kring Leuven',
+                        )
+                    ),
+                    'description' => 'The description of the RSS feed',
+                ),
+                array(
+                    'key'         => 'newsbundle.rss_image_link',
+                    'value'       => '/_site/img/logo.png',
+                    'description' => 'The image of the RSS feed',
+                ),
+            )
+        );
+    }
 
     protected function initAcl()
     {
@@ -35,7 +61,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'news' => array(
-                        'overview', 'view'
+                        'feed', 'overview', 'view'
                     ),
                 ),
             )
