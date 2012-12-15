@@ -138,8 +138,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                         continue;
 
                     $language = new CvLanguage($entry, $formData['lang_name' . $i],
-                        $formData['lang_oral' . $i],
-                        $formData['lang_written' . $i]);
+                        $formData['lang_written' . $i],
+                        $formData['lang_oral' . $i]);
 
                     $this->getEntityManager()->persist($language);
                 }
@@ -285,8 +285,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                         continue;
 
                     $language = new CvLanguage($entry, $formData['lang_name' . $i],
-                        $formData['lang_oral' . $i],
-                        $formData['lang_written' . $i]);
+                        $formData['lang_written' . $i],
+                        $formData['lang_oral' . $i]);
 
                     $this->getEntityManager()->persist($language);
                 }
