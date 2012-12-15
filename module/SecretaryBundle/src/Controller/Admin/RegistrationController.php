@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateInterval,
     DateTime,
     SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
+    SecretaryBundle\Form\Admin\Registration\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -101,6 +102,75 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     'admin_secretary_registration',
                     array(
                         'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'registration' => $registration,
+                'activeAcademicYear' => $registration->getAcademicYear(),
+                'academicYears' => $academicYears,
+                'form' => $form,
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        if (!($registration = $this->_getRegistration()))
+            return new ViewModel();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $metaData = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
+
+        $form = new EditForm($this->getEntityManager(), $registration, $metaData);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $registration->setPayed($formData['payed']);
+
+                if (null === $metaData) {
+                    $metaData = new MetaData(
+                        $registration->getAcademic(),
+                        $registration->getAcademicYear(),
+                        false,
+                        $formData['irreeel'],
+                        $formData['bakske'],
+                        $formData['tshirt_size']
+                    );
+                } else {
+                    $metaData->setReceiveIrReeelAtCudi($formData['irreeel'])
+                        ->setBakskeByMail($formData['bakske'])
+                        ->setTshirtSize($formData['tshirt_size']);
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The registration was successfully edited!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_secretary_registration',
+                    array(
+                        'action' => 'edit',
+                        'id' => $registration->getId(),
                     )
                 );
 

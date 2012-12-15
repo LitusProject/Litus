@@ -75,7 +75,7 @@ class SaleItem
     /**
      * @var \CudiBundle\Entity\Sales\QueueItem The queue item belonging to the sale item
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\QueueItem")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\QueueItem", inversedBy="saleItems")
      * @ORM\JoinColumn(name="queue_item", referencedColumnName="id")
      */
     private $queueItem;

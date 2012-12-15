@@ -134,12 +134,14 @@ class Registration
     }
 
     /**
+     * @param boolean $payed
+     *
      * @return \SecretaryBundle\Entity\Registration
      */
-    public function setPayed()
+    public function setPayed($payed = true)
     {
-        $this->payed = true;
-        $this->payedTimestamp = new DateTime();
+        $this->payed = $payed;
+        $this->payedTimestamp = $payed ? new DateTime() : null;
         return $this;
     }
 }

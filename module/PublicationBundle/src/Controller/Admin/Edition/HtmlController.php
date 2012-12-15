@@ -165,6 +165,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
 
+            if (sizeof($upload->getMessages()) > 0)
+                $formErrors['file'] = $upload->getMessages();
+
             return new ViewModel(
                 array(
                     'status' => 'error',

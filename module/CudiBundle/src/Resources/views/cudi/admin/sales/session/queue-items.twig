@@ -25,7 +25,10 @@
                     <td>{% if item.getPayDesk() %}{{ item.getPayDesk().getName() }}{% endif %}</td>
                     <td class="actions">
                         {% if item.getComment() %}
-                           <a href="#" class="view" data-text="{{ item.getComment() }}">Comment</a>
+                           <a href="#" class="view comments" data-text="{{ item.getComment() }}">Comment</a>
+                        {% endif %}
+                        {% if item.getStatus() == 'sold' %}
+                            <a href="#" class="view saleItems" data-name="{{ item.getPerson().getFullName() }}" data-items='[{% for saleItem in item.getSaleItems() %}{"article": "{{ saleItem.getArticle().getMainArticle().getTitle()}}", "number": "{{ saleItem.getNumber() }}", "soldPrice": "{{ (saleItem.getPrice()/100)|number_format(2) }}", "sellPrice": "{{ (saleItem.getArticle().getSellPrice()/100)|number_format(2)}}" },{% endfor %}{}]'>Items</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -46,21 +49,70 @@
             </div>
         </div>
     </div>
+
+    <div class="modal hide fade" id="viewItems">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Queue Item Sale
+        </div>
+        <div class="modal-body">
+            <p><b class="name"></b> purchased the following items:<p>
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th width="60px">Number</th>
+                        <th width="80px">Sold Price</th>
+                        <th width="80px">Sell Price</th>
+                    </tr>
+                </thead>
+                <tbody class="items"></tbody>
+            </table>
+            <br style="clear:both" />
+            <div class="footer">
+                <input type="button" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.item .view').click(openViewModal);
+            $('.item .comments').click(openCommentsModal);
+            $('.item .saleItems').click(openSaleItemsModal);
         });
 
-        function openViewModal(e) {
+        function openCommentsModal(e) {
             var $this = $(this);
 
             e.preventDefault();
             var viewComment = $('#viewComment');
             viewComment.find('.text').html($this.data('text'));
             viewComment.modal();
+        }
+
+        function openSaleItemsModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var viewItems = $('#viewItems');
+            viewItems.find('.name').html($this.data('name'));
+            viewItems.find('.items').html('');
+            $($this.data('items')).each(function () {
+                if (this.article == undefined)
+                    return;
+                viewItems.find('.items').append(
+                    $('<tr>').append(
+                        $('<td>').html(this.article),
+                        $('<td>').html(this.number),
+                        $('<td>').html('&euro; ' + this.soldPrice),
+                        $('<td>').html('&euro; ' + this.sellPrice)
+                    )
+                );
+            });
+            //viewItems.find('.items')
+            viewItems.modal();
         }
     </script>
 {% endblock %}
