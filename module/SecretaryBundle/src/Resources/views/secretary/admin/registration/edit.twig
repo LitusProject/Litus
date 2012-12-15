@@ -1,0 +1,16 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'secretary/admin/registration/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        <p>Name: <b>{{ registration.getAcademic().getFullName() }}</b></p>
+        <p>University Identification: <b>{{ registration.getAcademic().getUniversityIdentification() }}</b></p>
+        <p>Date: <b>{{ registration.getTimestamp().format('d/m/Y H:i') }}</b></p>
+        <br>
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
