@@ -61,12 +61,12 @@ Click here to activate it again: http://litus/account/activate/code/{{ code }}',
 
 An account for you was created on VTK with username {{ username }}.
 Click here to activate it: http://litus/account/activate/code/{{ code }}',
-                    'description' => 'The email sent when an account is deactivated',
+                    'description' => 'The email sent when an account is activated',
                 ),
                 array(
                     'key'         => 'common.account_activated_subject',
                     'value'       => 'Account Created',
-                    'description' => 'The mail subject when an account is deactivated',
+                    'description' => 'The mail subject when an account is activated',
                 ),
                 array(
                     'key'         => 'system_mail_address',
