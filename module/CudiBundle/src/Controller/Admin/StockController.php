@@ -42,14 +42,15 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $academicYear = $this->getAcademicYear();
+        $semester = $this->_getSemester();
 
         if (null !== $this->getParam('field'))
-            $articles = $this->_search($academicYear);
+            $articles = $this->_search($academicYear, $semester);
 
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Article')
-                ->findAllByAcademicYear($academicYear);
+                ->findAllByAcademicYear($academicYear, $semester);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -59,6 +60,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'currentSemester' => $semester,
                 'period' => $period,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
@@ -99,7 +101,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
 
-        $articles = $this->_search($this->getAcademicYear());
+        $semester = $this->_getSemester();
+
+        $articles = $this->_search($this->getAcademicYear(), $semester);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -382,21 +386,21 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
-    private function _search(AcademicYear $academicYear)
+    private function _search(AcademicYear $academicYear, $semester = 0)
     {
         switch($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
-                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
+                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'barcode':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
-                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear);
+                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'supplier':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
-                    ->findAllBySupplierStringAndAcademicYear($this->getParam('string'), $academicYear);
+                    ->findAllBySupplierStringAndAcademicYear($this->getParam('string'), $academicYear, $semester);
         }
     }
 
@@ -463,5 +467,14 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
 
         return $item;
+    }
+
+    private function _getSemester()
+    {
+        $semester = $this->getParam('semester');
+
+        if ($semester == 1 || $semester == 2)
+            return $semester;
+        return 0;
     }
 }
