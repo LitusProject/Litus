@@ -17,8 +17,10 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
  */
 class Article extends EntityRepository
 {
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYear(AcademicYear $academicYear, $semester = 0)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
@@ -28,7 +30,8 @@ class Article extends EntityRepository
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false')
+                    $query->expr()->eq('m.isProf', 'false'),
+                    $semester != 0 ? $query->expr()->in('m.id', $articles) : '1=1'
                 )
             )
             ->setParameter('academicYear', $academicYear->getId())
@@ -183,8 +186,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear)
+    public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear, $semester = 0)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
@@ -194,7 +199,8 @@ class Article extends EntityRepository
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false')
+                    $query->expr()->eq('m.isProf', 'false'),
+                    $semester != 0 ? $query->expr()->in('m.id', $articles) : '1=1'
                 )
             )
             ->setParameter('title', '%'.strtolower($title).'%')
@@ -254,8 +260,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear)
+    public function findAllByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear, $semester = 0)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
@@ -266,7 +274,8 @@ class Article extends EntityRepository
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false')
+                    $query->expr()->eq('m.isProf', 'false'),
+                    $semester != 0 ? $query->expr()->in('m.id', $articles) : '1=1'
                 )
             )
             ->setParameter('barcode', '%'.$barcode.'%')
@@ -278,8 +287,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear)
+    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear, $semester = 0)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
@@ -292,7 +303,8 @@ class Article extends EntityRepository
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false')
+                    $query->expr()->eq('m.isProf', 'false'),
+                    $semester != 0 ? $query->expr()->in('m.id', $articles) : '1=1'
                 )
             )
             ->setParameter('supplier', '%' . strtolower($supplier) . '%')
@@ -354,5 +366,62 @@ class Article extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    private function _getArticleIdsBySemester(AcademicYear $academicYear, $semester = 0)
+    {
+        if ($semester != 0) {
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('a.id')
+                ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+                ->innerJoin('m.article', 'a')
+                ->innerJoin('m.subject', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->orX(
+                            $query->expr()->eq('s.semester', '0'),
+                            $query->expr()->eq('s.semester', ':semester')
+                        ),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('semester', $semester)
+                ->setParameter('academicYear', $academicYear->getId())
+                ->getQuery()
+                ->getResult();
+
+            $articles = array(0);
+            foreach ($resultSet as $item)
+                $articles[$item['id']] = $item['id'];
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('a.id')
+                ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+                ->innerJoin('m.article', 'a')
+                ->where(
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+                ->setParameter('academicYear', $academicYear->getId())
+                ->getQuery()
+                ->getResult();
+
+            $noSubject = array(0);
+            foreach ($resultSet as $item)
+                $noSubject[$item['id']] = $item['id'];
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('a.id')
+                ->from('CudiBundle\Entity\Article', 'a')
+                ->where(
+                    $query->expr()->notIn('a.id', $noSubject)
+                )
+                ->getQuery()
+                ->getResult();
+
+            foreach ($resultSet as $item)
+                $articles[$item['id']] = $item['id'];
+
+            return $articles;
+        }
     }
 }
