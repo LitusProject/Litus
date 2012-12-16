@@ -1,1 +1,40 @@
-{% extends 'br/admin/company/user/add.twig' %}
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/company/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Company</h1>
+
+        <p>Name: <b>{{ user.getCompany().getName() }}</b></p>
+        <p>Street: <b>{{ user.getCompany().getAddress().getStreet() }} {{ user.getCompany().getAddress().getNumber() }}
+            {% if user.getCompany().getAddress().getMailbox() %}
+                / {{ user.getCompany().getAddress().getMailbox() }}
+            {% endif %}</b></p>
+        <p>City: <b>{{ user.getCompany().getAddress().getPostal() }} {{ user.getCompany().getAddress().getCity() }}</b></p>
+        <p>Country: <b>{{ user.getCompany().getAddress().getCountry() }}</b></p>
+        <br />
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
+    </div>
+
+    {% if hasAccess('admin_company_user', 'activate') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Send Activation</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to send an activation code to the person!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_company_user', {"action": "activate", "id": user.getId()}) }}">&rarr; Send Activation</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+{% endblock %}
