@@ -78,7 +78,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'admin_company_user' => array(
-                        'add', 'delete', 'edit', 'manage'
+                        'add', 'delete', 'edit', 'manage', 'activate'
                     ),
                     'admin_company_logo' => array(
                         'manage', 'add', 'delete'
