@@ -3,6 +3,8 @@
 {% block content %}
     {% include 'cudi/admin/stock/partials/navigation.twig' %}
 
+    {% include 'cudi/admin/stock/partials/semester.twig' %}
+
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
@@ -77,8 +79,8 @@
                 searchDiv: $('#stock_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_stock', {'action': 'manage'}) }}manage/',
-                url: '{{ url('admin_stock', {'action': 'search'}) }}',
+                searchPage: '{{ url('admin_stock', {'action': 'manage', 'semester': currentSemester}) }}',
+                url: '{{ url('admin_stock', {'action': 'search', 'semester': currentSemester}) }}',
                 display: function (data) {
                     $('#stock_search table').find('tr.item').remove();
                     $(data).each(function () {
