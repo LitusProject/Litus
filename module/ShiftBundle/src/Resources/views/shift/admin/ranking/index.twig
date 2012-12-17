@@ -23,7 +23,7 @@
                         <tr class="item">
                             <td>{{ volunteer['person'].getFullName() }}</td>
                             <td>{{ volunteer['person'].getEmail() }}</td>
-                            <td>{{ volunteer['person'].getAddress().getStreet() }} {{ volunteer['person'].getAddress().getNumber() }}/{{ volunteer['person'].getAddress().getPostal() }}, {{ volunteer['person'].getAddress().getPostal() }} {{ volunteer['person'].getAddress().getCity() }}, {{ volunteer['person'].getAddress().getCountry() }}</td>
+                            <td>{{ volunteer['person'].getSecondaryAddress().getStreet() }} {{ volunteer['person'].getSecondaryAddress().getNumber() }}/{{ volunteer['person'].getSecondaryAddress().getPostal() }}, {{ volunteer['person'].getSecondaryAddress().getPostal() }} {{ volunteer['person'].getSecondaryAddress().getCity() }}, {{ volunteer['person'].getSecondaryAddress().getCountry() }}</td>
                             <td>{{ volunteer['shiftCount'] }}</td>
                         </tr>
                     {% endfor %}
