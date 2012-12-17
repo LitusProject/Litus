@@ -37,11 +37,11 @@
     </div>
 
     <div style="text-align:right;">
-        <select id="searchtype" name="searchtype">
-            <option value="text">By Name</option>
+        <select style="margin-bottom:0px" id="searchtype" name="searchtype">
             <option value="grade">By Minimum Grade</option>
+            <option value="text">By Name</option>
         </select>
-        <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
+        <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Minimum Grade (e.g. 80)') }}">
     </div>
 
     {% block cvcontent %} {% endblock %}
@@ -65,17 +65,30 @@
                 $this.data("timer", setTimeout(function(){
                     $this.removeData("timer");
 
-                    // Do your stuff after 2 seconds of last user input
-                    if ($('#searchtype').val() == 'text')
-                        performSearch($('#searchbox').val());
-                    else {
-                        var min = $('#searchbox').val();
-                        filterGrade(min, 100);
-                    }
+                    refresh();
 
                 }, delay));
             });
+
+            $('#searchtype').change(function() {
+                $('#searchbox').val('');
+                if ($('#searchtype').val() == 'text')
+                    $('#searchbox').attr('placeholder', "{{ translate('Search') }}");
+                else
+                    $('#searchbox').attr('placeholder', "{{ translate('Minimum Grade (e.g. 80)') }}");
+                refresh();
+            });
         });
+
+        function refresh() {
+            // Do your stuff after 2 seconds of last user input
+            if ($('#searchtype').val() == 'text')
+                performSearch($('#searchbox').val());
+            else {
+                var min = $('#searchbox').val();
+                filterGrade(min, 100);
+            }
+        }
 
         function performSearch(text) {
             $.post('{{ url('corporate_cv', {"action": "search"})}}string/' + text, function (data) {
@@ -105,6 +118,9 @@
 
         function errorSearch() {
             $('.search_error').show();
+            setTimeout(function() {
+                $('.search_error').fadeOut('fast');
+            }, 2000);
         }
 
     </script>
