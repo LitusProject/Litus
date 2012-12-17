@@ -161,11 +161,11 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     private function _filterString($entries, $string) {
         $result = array();
+        $words = preg_split('/[\s,]+/', $string);
         foreach ($entries as $entry) {
-            $words = preg_split('/[\s,]+/', $string);
             $matches = true;
             foreach ($words as $word) {
-                if (!(preg_match('/.*' . $word . '.*/', $entry->getLastName()) || preg_match('/.*' . $word . '.*/', $entry->getFirstName()))) {
+                if (!(preg_match('/.*' . $word . '.*/i', $entry->getLastName()) || preg_match('/.*' . $word . '.*/i', $entry->getFirstName()))) {
                     $matches = false;
                     break;
                 }

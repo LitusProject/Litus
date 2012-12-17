@@ -1,23 +1,6 @@
-{% extends 'corporate/base.twig' %}
+{% extends 'corporate/partials/cv.twig' %}
 
-{% block content %}
-
-    {% include 'corporate/partials/cv_navbar.twig' %}
-
-    <div class="flashmessage alert alert-error full_width search_error hide">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to perform the search.</p>
-        </div>
-    </div>
-
-    <div style="text-align:right;">
-        <select id="searchtype" name="searchtype">
-            <option value="text">By Name</option>
-            <option value="grade">By Grade</option>
-        </select>
-        <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
-    </div>
+{% block cvcontent %}
 
     <div class="accordion" id="accordion" data-collapse-type="manual">
 
@@ -68,68 +51,5 @@
         {% endfor %}
 
     </div>
-
-{% endblock %}
-
-{% block content_script %}
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.entry-toggle').click(function() {
-                var element = $(this).parent().parent().find('.profile-picture');
-                element.attr('src', element.attr('data-url'));
-            });
-
-            $('#searchbox').bind("input propertychange", function(){
-                var $this = $(this);
-                var delay = 200; // delay after last input
-
-                clearTimeout($this.data("timer"));
-                $this.data("timer", setTimeout(function(){
-                    $this.removeData("timer");
-
-                    // Do your stuff after 2 seconds of last user input
-                    if ($('#searchtype').val() == 'text')
-                        performSearch($('#searchbox').val());
-                    else {
-                        var min = $('#searchbox').val();
-                        filterGrade(min, 100);
-                    }
-
-                }, delay));
-            });
-        });
-
-        function performSearch(text) {
-            $.post('{{ url('corporate_cv', {"action": "search"})}}string/' + text, function (data) {
-                $('.accordion-group-entry').hide();
-                $('.accordion-group-study').show();
-                $.each(data, function(index, element) {
-
-                    $('#accordion-group-' + element).show();
-
-                });
-                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
-            }, 'json').error(errorSearch);
-        }
-
-        function filterGrade(min, max) {
-            $.post('{{ url('corporate_cv', {"action": "search"})}}min/' + min + '/max/' + max, function (data) {
-                $('.accordion-group-entry').hide();
-                $('.accordion-group-study').show();
-                $.each(data, function(index, element) {
-
-                    $('#accordion-group-' + element).show();
-
-                });
-                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
-            }, 'json').error(errorSearch);
-        }
-
-        function errorSearch() {
-            $('.search_error').show();
-        }
-
-    </script>
 
 {% endblock %}
