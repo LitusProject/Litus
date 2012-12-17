@@ -65,5 +65,6 @@ return array(
     'BrBundle\Controller\Career\EventController'        => __DIR__ . '/src/Controller/Career/EventController.php',
     'BrBundle\Controller\Corporate\IndexController'     => __DIR__ . '/src/Controller/Corporate/IndexController.php',
     'BrBundle\Controller\Corporate\AuthController'      => __DIR__ . '/src/Controller/Corporate/AuthController.php',
+    'BrBundle\Controller\Corporate\CvController'        => __DIR__ . '/src/Controller/Corporate/CvController.php',
     'BrBundle\Controller\CvController'                  => __DIR__ . '/src/Controller/CvController.php',
 );
