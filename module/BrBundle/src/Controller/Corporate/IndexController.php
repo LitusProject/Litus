@@ -15,6 +15,7 @@
 namespace BrBundle\Controller\Corporate;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -65,6 +66,30 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
             array(
                 'academicYear' => $academicYear,
                 'studies' => $result,
+            )
+        );
+    }
+
+    public function cvPhotoAction() {
+        $imagePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.profile_path') . '/' . $this->getParam('image');
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
+            'Content-type' => mime_content_type($imagePath),
+            'Content-Length' => filesize($imagePath),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($imagePath, 'r');
+        $data = fread($handle, filesize($imagePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }
