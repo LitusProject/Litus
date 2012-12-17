@@ -14,7 +14,8 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -29,6 +30,70 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     public function groupedAction()
     {
         $academicYear = $this->getAcademicYear();
+
+        $result = $this->_getGrouped($academicYear);
+
+        return new ViewModel(
+            array(
+                'academicYear' => $academicYear,
+                'studies' => $result,
+            )
+        );
+    }
+
+    public function listAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $entries = $this->_getList($academicYear);
+
+        return new ViewModel(
+            array(
+                'academicYear' => $academicYear,
+                'entries' => $entries,
+            )
+        );
+    }
+
+    public function searchAction()
+    {
+        // $this->initAjax();
+
+        $academicYear = $this->getAcademicYear();
+
+        $filters = array();
+
+        if (null !== $this->getParam('string'))
+            $filters['string'] = $this->getParam('string');
+
+        if (null !== $this->getParam('min') || null !== $this->getParam('max')) {
+            $filters['grade'] = array();
+            if (null !== $this->getParam('min'))
+                $filters['grade']['min'] = $this->getParam('min');
+            else
+                $filters['grade']['min'] = 0;
+            if (null !== $this->getParam('max'))
+                $filters['grade']['max'] = $this->getParam('max');
+            else
+                $filters['grade']['max'] = 100;
+        }
+
+        $type = $this->getParam('type');
+
+        $filtered = $this->_doFilter($this->_getList($academicYear), $filters);
+        $result = array();
+        foreach ($filtered as $entry) {
+            $result[] = $entry->getId();
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _getGrouped(AcademicYear $academicYear) {
 
         $groups = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Group')
@@ -71,28 +136,58 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         }
 
-        return new ViewModel(
-            array(
-                'academicYear' => $academicYear,
-                'studies' => $result,
-            )
-        );
+        return $result;
     }
 
-    public function listAction()
+    private function _getList(AcademicYear $academicYear)
     {
-        $academicYear = $this->getAcademicYear();
-
-        $entries = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findAllByAcademicYear($academicYear);
+    }
 
-        return new ViewModel(
-            array(
-                'academicYear' => $academicYear,
-                'entries' => $entries,
-            )
-        );
+    private function _doFilter($entries, $filters) {
+
+        if (isset($filters['string'])) {
+            $entries = $this->_filterString($entries, $filters['string']);
+        }
+
+        if (isset($filters['grade'])) {
+            $entries = $this->_filterGrade($entries, $filters['grade']);
+        }
+
+        return $entries;
+    }
+
+    private function _filterString($entries, $string) {
+        $result = array();
+        foreach ($entries as $entry) {
+            $words = preg_split('/[\s,]+/', $string);
+            $matches = true;
+            foreach ($words as $word) {
+                if (!(preg_match('/.*' . $word . '.*/', $entry->getLastName()) || preg_match('/.*' . $word . '.*/', $entry->getFirstName()))) {
+                    $matches = false;
+                    break;
+                }
+            }
+            if ($matches)
+                $result[] = $entry;
+        }
+
+        return $result;
+    }
+
+    private function _filterGrade($entries, $grade) {
+        $result = array();
+        $min = $grade['min'];
+        $max = $grade['max'];
+        foreach ($entries as $entry) {
+            if ($entry->getGrade() > $min && $entry->getGrade() < $max) {
+                $result[] = $entry;
+            }
+        }
+
+        return $result;
     }
 
     public function cvPhotoAction() {
