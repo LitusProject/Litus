@@ -41,11 +41,20 @@ class Group
     private $name;
 
     /**
-     * @param string $name
+     * @var boolean Whether to use this group in the cv book or not.
+     *
+     * @ORM\Column(name="cv_book", type="boolean")
      */
-    public function __construct($name)
+    private $cvBook;
+
+    /**
+     * @param string $name
+     * @param boolean $cvBook
+     */
+    public function __construct($name, $cvBook)
     {
         $this->name = $name;
+        $this->cvBook = $cvBook;
     }
 
     /**
@@ -71,6 +80,24 @@ class Group
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCvBook()
+    {
+        return $this->cvBook;
+    }
+
+    /**
+     * @param boolean $cvBook
+     * @return \SyllabusBundle\Entity\Group
+     */
+    public function setCvBook($cvBook)
+    {
+        $this->cvBook = $cvBook;
         return $this;
     }
 

@@ -15,6 +15,7 @@
 namespace SyllabusBundle\Form\Admin\Group;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Group\Name as NameValidator,
     SyllabusBundle\Entity\Group,
@@ -50,6 +51,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Checkbox('cvbook');
+        $field->setLabel('Show In CV Book');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'add');
@@ -61,6 +66,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->setData(
             array(
                 'name' => $group->getName(),
+                'cvbook' => $group->getCvBook(),
             )
         );
     }
