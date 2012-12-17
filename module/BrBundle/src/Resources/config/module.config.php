@@ -259,7 +259,7 @@ return array(
                         'language' => '[a-z]{2}',
                         'image'    => '[a-zA-Z0-9]*',
                         'type'     => '[a-zA-Z]*',
-                        'string'   => '[a-zA-Z0-9_\s]*',
+                        'string'   => '[%a-zA-Z0-9:.,_-]*',
                         'min'      => '[0-9]*',
                         'max'      => '[0-9]*',
                     ),
