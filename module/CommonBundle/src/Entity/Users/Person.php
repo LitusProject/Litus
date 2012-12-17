@@ -389,6 +389,7 @@ abstract class Person
      */
     public function setPhoneNumber($phoneNumber = null)
     {
+        $phoneNumber = str_replace(' ', '', $phoneNumber);
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
