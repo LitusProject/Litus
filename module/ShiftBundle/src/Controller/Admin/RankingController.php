@@ -45,8 +45,12 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($volunteers as $volunteer) {
             if (!$volunteer->getPerson()->isPraesidium($academicYear)) {
                 if (!isset($volunteersCount[$volunteer->getPerson()->getId()])) {
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->findOneById($volunteer->getPerson()->getId());
+
                     $volunteersCount[$volunteer->getPerson()->getId()] = array(
-                        'person' => $volunteer->getPerson(),
+                        'person' => $person,
                         'count' => 0
                     );
                 }
