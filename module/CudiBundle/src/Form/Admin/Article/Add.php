@@ -272,7 +272,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'year',
+                    'name'     => 'year_published',
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
