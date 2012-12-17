@@ -21,7 +21,7 @@
                         <a href="{{ url("corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                     </li>
                 {% endif %}
-                {% if hasAccess('corporate_cv', 'cv') and authenticatedPerson != null and authenticatedPerson.getCompany().getCvBookYears()|length > 0 %}
+                {% if (hasAccess('corporate_cv', 'grouped') or hasAccess('corporate_cv', 'list')) and authenticatedPerson != null and authenticatedPerson.getCompany().getCvBookYears()|length > 0 %}
                     <li {% if 'corporate_cv' == getParam('controller') %} class="active" {% endif %}>
                         <a href="{{ url("corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">{{ translate('CV Book') }}</a>
                     </li>
