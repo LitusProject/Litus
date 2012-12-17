@@ -111,7 +111,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'login', 'logout',
                     ),
                     'corporate_index' => array(
-                        'index', 'cv',
+                        'index', 'cv', 'cvPhoto',
                     ),
                 )
             )
