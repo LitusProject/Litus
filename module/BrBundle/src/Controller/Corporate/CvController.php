@@ -26,7 +26,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class CvController extends \BrBundle\Component\Controller\CorporateController
 {
 
-    public function cvAction()
+    public function groupedAction()
     {
         $academicYear = $this->getAcademicYear();
 
@@ -75,6 +75,22 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             array(
                 'academicYear' => $academicYear,
                 'studies' => $result,
+            )
+        );
+    }
+
+    public function listAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $entries = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findAllByAcademicYear($academicYear);
+
+        return new ViewModel(
+            array(
+                'academicYear' => $academicYear,
+                'entries' => $entries,
             )
         );
     }

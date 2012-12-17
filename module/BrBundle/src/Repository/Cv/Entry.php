@@ -23,6 +23,7 @@ class Entry extends EntityRepository
                 $query->expr()->eq('e.year', ':year')
             )
             ->setParameter('year', $year)
+            ->orderBy('e.lastName', 'ASC')
             ->getQuery()
             ->getResult();
 

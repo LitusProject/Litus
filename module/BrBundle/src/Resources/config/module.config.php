@@ -252,7 +252,7 @@ return array(
             'corporate_cv' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/corporate[/:action[/image/:image][/:academicyear]][/]',
+                    'route' => '[/:language]/corporate/cv[/:action[/image/:image][/:academicyear]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
