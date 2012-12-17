@@ -40,16 +40,25 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
         $result = array();
         foreach ($studies as $study) {
 
+            $parent = $study;
+            while ($parent->getParent() !== null)
+                $parent = $parent->getParent();
+
             $entries = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Cv\Entry')
                 ->findAllByStudyAndAcademicYear($study, $academicYear);
 
             if (count($entries) > 0) {
-                $result[] = array(
-                    'study' => $study,
-                    'entries' => $entries,
-                );
+                if (!isset($result[$parent->getId()])) {
+                    $result[$parent->getId()] = array(
+                        'study' => $parent,
+                        'entries' => $entries,
+                    );
+                } else {
+                    $result[$parent->getId()]['entries'] = array_merge($result[$parent->getId()]['entries'], $entries);
+                }
             }
+
         }
 
         return new ViewModel(
