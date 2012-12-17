@@ -34,6 +34,7 @@ class Group extends EntityRepository
             ->where(
                 $query->expr()->eq('d.cvBook', 'true')
             )
+            ->orderBy('d.name', 'ASC')
             ->getQuery()
             ->getResult();
 
