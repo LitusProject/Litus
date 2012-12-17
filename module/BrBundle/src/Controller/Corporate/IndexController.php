@@ -34,30 +34,57 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
     {
         $academicYear = $this->getAcademicYear();
 
-        $studies = $this->getEntityManager()
+        $groups = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Group')
+            ->findAllCvBook();
+
+        $studies = array();
+        $result = array();
+        foreach ($groups as $group) {
+
+            $entries = array();
+            $studyMaps = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                ->findAllByGroupAndAcademicYear($group, $academicYear);
+
+            foreach ($studyMaps as $studyMap) {
+                $study = $studyMap->getStudy();
+                $studies[] = $study->getId();
+
+                $entries = array_merge($entries, $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Cv\Entry')
+                    ->findAllByStudyAndAcademicYear($study, $academicYear));
+            }
+
+            $result[] = array(
+                'id' => 'group-' . $group->getId(),
+                'name' => $group->getName(),
+                'entries' => $entries,
+            );
+        }
+
+        // Add all studies that are not in a group.
+        $cvStudies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findAllStudies();
 
-        $result = array();
-        foreach ($studies as $study) {
+        foreach ($cvStudies as $study) {
 
-            $parent = $study;
-            while ($parent->getParent() !== null)
-                $parent = $parent->getParent();
+            if (in_array($study->getId(), $studies))
+                continue;
+
+            $studies[] = $study->getId();
 
             $entries = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Cv\Entry')
                 ->findAllByStudyAndAcademicYear($study, $academicYear);
 
             if (count($entries) > 0) {
-                if (!isset($result[$parent->getId()])) {
-                    $result[$parent->getId()] = array(
-                        'study' => $parent,
-                        'entries' => $entries,
-                    );
-                } else {
-                    $result[$parent->getId()]['entries'] = array_merge($result[$parent->getId()]['entries'], $entries);
-                }
+                $result[] = array(
+                    'id' => 'study-' . $study->getId(),
+                    'name' => $study->getFullTitle(),
+                    'entries' => $entries,
+                );
             }
 
         }

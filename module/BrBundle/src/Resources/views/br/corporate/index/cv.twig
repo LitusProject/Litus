@@ -21,20 +21,20 @@
 
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#body-study-{{ study.study.getId() }}">
-                        {{ study.study.getFullTitle() }}
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#body-study-{{ study.id }}">
+                        {{ study.name }}
                     </a>
                 </div>
-                <div id="body-study-{{ study.study.getId() }}" class="accordion-body collapse">
+                <div id="body-study-{{ study.id }}" class="accordion-body collapse">
                     <div class="accordion-inner">
 
-                        <div class="accordion" id="accordion-study-{{ study.study.getId() }}" data-collapse-type="manual">
+                        <div class="accordion" id="accordion-study-{{ study.id }}" data-collapse-type="manual">
 
                             {% for entry in study.entries %}
 
                                 <div class="accordion-group">
                                     <div class="accordion-heading">
-                                        <a class="accordion-toggle entry-toggle" data-toggle="collapse" data-parent="#accordion-study-{{ study.study.getId() }}" href="#body-entry-{{ entry.getId() }}">
+                                        <a class="accordion-toggle entry-toggle" data-toggle="collapse" data-parent="#accordion-study-{{ study.id }}" href="#body-entry-{{ entry.getId() }}">
                                             {{ entry.getFirstName() }} {{ entry.getLastName() }}
                                         </a>
                                     </div>

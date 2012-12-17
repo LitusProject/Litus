@@ -26,6 +26,20 @@ class Group extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllCvBook()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('d')
+            ->from('SyllabusBundle\Entity\Group', 'd')
+            ->where(
+                $query->expr()->eq('d.cvBook', 'true')
+            )
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findNbStudentsByGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
     {
         $studies = $this->_em

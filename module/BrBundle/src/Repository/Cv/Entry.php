@@ -33,7 +33,10 @@ class Entry extends EntityRepository
         $subQuery = $this->_em->createQueryBuilder();
 
         $subQuery->select('e')
-            ->from('BrBundle\Entity\Cv\Entry', 'e');
+            ->from('BrBundle\Entity\Cv\Entry', 'e')
+            ->where(
+                $subQuery->expr()->eq('e.study', 's')
+            );
 
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
