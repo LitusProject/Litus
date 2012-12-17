@@ -24,6 +24,7 @@ class Entry extends EntityRepository
             )
             ->setParameter('year', $year)
             ->orderBy('e.lastName', 'ASC')
+            ->addOrderBy('e.firstName', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -99,6 +100,7 @@ class Entry extends EntityRepository
             ->setParameter('group', $group)
             ->setParameter('year', $year)
             ->orderBy('e.lastName', 'ASC')
+            ->addOrderBy('e.firstName', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -119,6 +121,7 @@ class Entry extends EntityRepository
             ->setParameter('study', $study)
             ->setParameter('year', $year)
             ->orderBy('e.lastName', 'ASC')
+            ->addOrderBy('e.firstName', 'ASC')
             ->getQuery()
             ->getResult();
 
