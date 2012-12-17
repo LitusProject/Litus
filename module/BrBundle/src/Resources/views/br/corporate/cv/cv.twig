@@ -7,7 +7,7 @@
             <div class="subnav nav-collapse">
                 <ul class="nav">
                     {% for year in authenticatedPerson.getCompany().getCvBookYears() %}
-                        <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a href="{{ url('corporate_index', {"action": "cv", "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a></li>
+                        <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a href="{{ url('corporate_cv', {"action": "cv", "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -84,7 +84,7 @@
         </div>
 
         <div class="span2">
-            <img class="profile-picture" data-url="{{ url('corporate_index', {'action':'cvPhoto', 'image': entry.getAcademic().getPhotoPath()}) }}" src="#" alt=""/>
+            <img class="profile-picture" data-url="{{ url('corporate_cv', {'action':'cvPhoto', 'image': entry.getAcademic().getPhotoPath()}) }}" src="#" alt=""/>
         </div>
     </div>
 

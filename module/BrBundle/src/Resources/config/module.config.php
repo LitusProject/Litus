@@ -236,10 +236,9 @@ return array(
             'corporate_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/corporate[/:action[/image/:image][/:academicyear]][/]',
+                    'route' => '[/:language]/corporate[/:action][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'session'  => '[0-9]*',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'language' => '[a-z]{2}',
                         'image'    => '[a-zA-Z0-9]*',
@@ -247,6 +246,22 @@ return array(
                     'defaults' => array(
                         'controller' => 'corporate_index',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'corporate_cv' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/corporate[/:action[/image/:image][/:academicyear]][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'language' => '[a-z]{2}',
+                        'image'    => '[a-zA-Z0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'corporate_cv',
+                        'action'     => 'grouped',
                     ),
                 ),
             ),
@@ -348,6 +363,7 @@ return array(
             'admin_section'            => 'BrBundle\Controller\Admin\SectionController',
 
             'corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
+            'corporate_cv'             => 'BrBundle\Controller\Corporate\CvController',
             'corporate_auth'           => 'BrBundle\Controller\Corporate\AuthController',
 
             'career_index'             => 'BrBundle\Controller\Career\IndexController',
