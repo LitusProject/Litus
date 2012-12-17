@@ -23,7 +23,13 @@
                         <tr class="item">
                             <td>{{ volunteer['person'].getFullName() }}</td>
                             <td>{{ volunteer['person'].getEmail() }}</td>
-                            <td>{{ volunteer['person'].getSecondaryAddress().getStreet() }} {{ volunteer['person'].getSecondaryAddress().getNumber() }}/{{ volunteer['person'].getSecondaryAddress().getPostal() }}, {{ volunteer['person'].getSecondaryAddress().getPostal() }} {{ volunteer['person'].getSecondaryAddress().getCity() }}, {{ volunteer['person'].getSecondaryAddress().getCountry() }}</td>
+                            <td>
+                                {% if volunteer['person'].getSecondaryAddress() is not null %}
+                                    {{ volunteer['person'].getSecondaryAddress().getStreet() }} {{ volunteer['person'].getSecondaryAddress().getNumber() }} {% if '' != volunteer['person'].getSecondaryAddress().getMailbox() %}/{{ volunteer['person'].getSecondaryAddress().getMailbox() }}{% endif %}, {{ volunteer['person'].getSecondaryAddress().getPostal() }} {{ volunteer['person'].getSecondaryAddress().getCity() }}, {{ volunteer['person'].getSecondaryAddress().getCountry() }}
+                                {% else %}
+                                    {{ volunteer['person'].getPrimaryAddress().getStreet() }} {{ volunteer['person'].getPrimaryAddress().getNumber() }} {% if '' != volunteer['person'].getPrimaryAddress().getMailbox() %}/{{ volunteer['person'].getPrimaryAddress().getMailbox() }}{% endif %}, {{ volunteer['person'].getPrimaryAddress().getPostal() }} {{ volunteer['person'].getPrimaryAddress().getCity() }}, {{ volunteer['person'].getPrimaryAddress().getCountry() }}
+                                {% endif %}
+                            </td>
                             <td>{{ volunteer['shiftCount'] }}</td>
                         </tr>
                     {% endfor %}
