@@ -38,23 +38,12 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findAllCvBook();
 
-        $studies = array();
         $result = array();
         foreach ($groups as $group) {
 
-            $entries = array();
-            $studyMaps = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            $entries = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Cv\Entry')
                 ->findAllByGroupAndAcademicYear($group, $academicYear);
-
-            foreach ($studyMaps as $studyMap) {
-                $study = $studyMap->getStudy();
-                $studies[] = $study->getId();
-
-                $entries = array_merge($entries, $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Cv\Entry')
-                    ->findAllByStudyAndAcademicYear($study, $academicYear));
-            }
 
             $result[] = array(
                 'id' => 'group-' . $group->getId(),
@@ -63,17 +52,12 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
             );
         }
 
-        // Add all studies that are not in a group.
+        // Add all studies that are not in a cv book group.
         $cvStudies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllStudies();
+            ->findAllUngroupedStudies();
 
         foreach ($cvStudies as $study) {
-
-            if (in_array($study->getId(), $studies))
-                continue;
-
-            $studies[] = $study->getId();
 
             $entries = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Cv\Entry')
