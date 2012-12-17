@@ -45,11 +45,13 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
                 ->getRepository('BrBundle\Entity\Cv\Entry')
                 ->findAllByGroupAndAcademicYear($group, $academicYear);
 
-            $result[] = array(
-                'id' => 'group-' . $group->getId(),
-                'name' => $group->getName(),
-                'entries' => $entries,
-            );
+            if (count($entries) > 0) {
+                $result[] = array(
+                    'id' => 'group-' . $group->getId(),
+                    'name' => $group->getName(),
+                    'entries' => $entries,
+                );
+            }
         }
 
         // Add all studies that are not in a cv book group.
