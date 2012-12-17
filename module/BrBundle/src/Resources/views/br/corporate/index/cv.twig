@@ -34,16 +34,16 @@
 
                                 <div class="accordion-group">
                                     <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-study-{{ study.study.getId() }}" href="#body-entry-{{ entry.getId() }}">
+                                        <a class="accordion-toggle entry-toggle" data-toggle="collapse" data-parent="#accordion-study-{{ study.study.getId() }}" href="#body-entry-{{ entry.getId() }}">
                                             {{ entry.getFirstName() }} {{ entry.getLastName() }}
                                         </a>
                                     </div>
                                     <div id="body-entry-{{ entry.getId() }}" class="accordion-body collapse">
                                         <div class="accordion-inner">
 
-                                            <div class="accordion" id="accordion" data-collapse-type="manual">
+                                            <div class="accordion" data-collapse-type="manual">
 
-                                                A CV
+                                                {{ _self.displayEntry(entry) }}
 
                                             </div>
 
@@ -63,5 +63,195 @@
 
     </div>
 
+{% endblock %}
+
+{% macro displayEntry(entry) %}
+    <div class="basic-info row-fluid">
+        <div class="span5">
+            <b>{{ entry.getFirstName() }} {{ entry.getLastName() }}</b><br>
+            {{ entry.getEmail() }}<br>
+            {{ entry.getPhoneNumber() }}
+        </div>
+        <div class="span5">
+            <address>
+                {{ entry.getAddress().getStreet() }} {{ entry.getAddress().getNumber() }}
+                    {% if entry.getAddress().getMailbox() %}
+                        / {{ entry.getAddress().getMailbox() }}
+                    {% endif %}<br>
+                {{ entry.getAddress().getPostal() }} {{ entry.getAddress().getCity() }}<br>
+                {{ entry.getAddress().getCountry() }}
+            </address>
+        </div>
+
+        <div class="span2">
+            <img class="profile-picture" data-url="{{ url('corporate_index', {'action':'cvPhoto', 'image': entry.getAcademic().getPhotoPath()}) }}" src="#" alt=""/>
+        </div>
+    </div>
+
+    <div class="section study-info">
+
+        <div class="section-header">{{ translate('Studies') }}</div>
+
+        <div class="section-content">
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td width="500px">{{ entry.getStudy().getFullTitle() }}</td>
+                        <td width="100px">{{ entry.getMasterStart() }} &mdash; {{  entry.getMasterEnd() }}</td>
+                        <td width="100px">{{ entry.getGrade() / 100 }}%</td>
+                    </tr>
+                    <tr>
+                        <td>{{ entry.getPriorStudy() }}</td>
+                        <td>{{ entry.getBachelorStart() }} &mdash; {{  entry.getBachelorEnd() }}</td>
+                        <td>{{ entry.getPriorGrade() / 100 }}%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {% if entry.getAdditionalDiplomas() %}<div class="subsection"><span class="subsection-header"> {{ translate('Additional Diplomas') }} </span> <br> {{ entry.getAdditionalDiplomas()|nl2br }} </div>{% endif %}
+
+        </div>
+
+    </div>
+
+    {% if entry.getErasmusLocation() or entry.getErasmusPeriod() %}
+    <div class="section erasmus-info">
+
+        <div class="section-header">{{ translate('Erasmus') }}</div>
+
+        <div class="section-content">
+
+            {{ entry.getErasmusLocation() }} &mdash; {{ entry.getErasmusPeriod() }}
+
+        </div>
+
+    </div>
+    {% endif %}
+
+    <div class="section language-info">
+
+        <div class="section-header" style="margin-bottom:-28px;">{{ translate('Languages') }}</div>
+
+        <div class="section-content">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="500px"></th>
+                        <th width="150px">{{ translate('Oral Skills') }}</th>
+                        <th width="150px">{{ translate('Written Skills') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for language in entry.getLanguages() %}
+                    <tr>
+                        <td>{{ language.getName() }}</td>
+                        <td>{{ translate(language.getOralSkill()) }}</td>
+                        <td>{{ translate(language.getWrittenSkill()) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="subsection"><span class="subsection-header">{{ translate('Additional Info') }}</span> <br> {{ entry.getLanguageExtra()|nl2br }} </div>
+
+        </div>
+
+    </div>
+
+    <div class="section thesis-info">
+
+        <div class="section-header">{{ translate('Capabilities') }}</div>
+
+        <div class="section-content">
+
+            <div class="subsection"><span class="subsection-header">{{ translate('Computer Skills')|nl2br }}</span> <br> {{ entry.getComputerSkills()|nl2br }} </div>
+
+            <div class="subsection"><span class="subsection-header">{{ translate('Experiences')|nl2br }}</span> <br> {{ entry.getExperiences() }} </div>
+
+        </div>
+
+    </div>
+
+    <div class="section thesis-info">
+
+        <div class="section-header">{{ translate('Thesis') }}</div>
+
+        <div class="section-content">
+
+            {{ entry.getThesisSummary()|nl2br }}
+
+        </div>
+
+    </div>
+
+    <div class="section career-info">
+
+        <div class="section-header">{{ translate('Career') }}</div>
+
+        <div class="section-content">
+
+            <div class="subsection"><span class="subsection-header">{{ translate('Future Interest') }}</span> <br> {{ entry.getFutureInterest() }} </div>
+
+            <div class="subsection"><span class="subsection-header">{{ translate('Mobility in Europe') }}</span> <br> {{ entry.getMobilityEurope() }} </div>
+
+            <div class="subsection"><span class="subsection-header">{{ translate('Mobility in the World') }}</span> <br> {{ entry.getMobilityWorld() }} </div>
+
+            <div class="subsection"><span class="subsection-header">{{ translate('Career Expectations')|nl2br }}</span> <br> {{ entry.getCareerExpectations() }} </div>
+
+        </div>
+
+    </div>
+
+    <div class="section personal-info">
+
+        <div class="section-header">{{ translate('Personal') }}</div>
+
+        <div class="section-content">
+
+            <div class="subsection"><span class="subsection-header">{{ translate('Hobbies')|nl2br }}</span> <br> {{ entry.getHobbies() }} </div>
+
+            <div class="subsection"><span class="subsection-header">{{ translate('About Myself')|nl2br }}</span> <br> {{ entry.getAbout() }} </div>
+
+        </div>
+
+    </div>
+
+{% endmacro %}
+
+{% block content_script %}
+
+    <style type="text/css">
+
+        .section {
+            margin-top: 20px;
+        }
+
+        .subsection {
+            margin-top: 10px;
+        }
+
+        .section-header {
+            font-weight: bold;
+        }
+
+        .subsection-header {
+            font-style: italic;
+        }
+
+        .section-content {
+            margin-left: 10px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.entry-toggle').click(function() {
+                var element = $(this).parent().parent().find('.profile-picture');
+                element.attr('src', element.attr('data-url'));
+            });
+        });
+    </script>
 
 {% endblock %}

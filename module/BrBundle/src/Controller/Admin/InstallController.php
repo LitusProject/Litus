@@ -78,7 +78,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'admin_company_user' => array(
-                        'add', 'delete', 'edit', 'manage'
+                        'add', 'delete', 'edit', 'manage', 'activate'
                     ),
                     'admin_company_logo' => array(
                         'manage', 'add', 'delete'
@@ -105,6 +105,13 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 
                     'cv_index' => array(
                         'cv', 'edit', 'complete',
+                    ),
+
+                    'corporate_auth' => array(
+                        'login', 'logout',
+                    ),
+                    'corporate_index' => array(
+                        'index', 'cv', 'cvPhoto',
                     ),
                 )
             )

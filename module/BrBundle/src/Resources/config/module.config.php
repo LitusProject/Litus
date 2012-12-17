@@ -236,12 +236,13 @@ return array(
             'corporate_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/corporate[/:action[[/:academicyear]]][/]',
+                    'route' => '[/:language]/corporate[/:action[/image/:image][/:academicyear]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'language' => '[a-z]{2}',
+                        'image'    => '[a-zA-Z0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'corporate_index',

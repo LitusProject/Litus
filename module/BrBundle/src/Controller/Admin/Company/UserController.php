@@ -158,10 +158,42 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'company' => $user->getCompany(),
+                'user' => $user,
                 'form' => $form,
             )
         );
+    }
+
+    public function activateAction()
+    {
+        if (!($user = $this->_getUser()))
+            return new ViewModel();
+
+        $user->activate(
+            $this->getEntityManager(),
+            $this->getMailTransport(),
+            false
+        );
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Succes',
+                'The user was successfully activated!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'admin_company_user',
+            array(
+                'action' => 'edit',
+                'id' => $user->getId(),
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function deleteAction()
