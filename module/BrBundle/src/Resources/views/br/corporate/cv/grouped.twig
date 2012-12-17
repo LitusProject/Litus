@@ -4,12 +4,23 @@
 
     {% include 'corporate/partials/cv_navbar.twig' %}
 
+    <div class="flashmessage alert alert-error full_width search_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to perform the search.</p>
+        </div>
+    </div>
+
+    <div style="text-align:right;">
+        <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
+    </div>
+
     <div class="accordion" id="accordion" data-collapse-type="manual">
 
         {% for study in studies %}
 
 
-            <div class="accordion-group">
+            <div class="accordion-group accordion-group-study">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#body-study-{{ study.id }}">
                         {{ study.name }}
@@ -22,7 +33,7 @@
 
                             {% for entry in study.entries %}
 
-                                <div class="accordion-group">
+                                <div class="accordion-group accordion-group-entry" id="accordion-group-{{ entry.getId() }}">
                                     <div class="accordion-heading">
                                         <a class="accordion-toggle entry-toggle" data-toggle="collapse" data-parent="#accordion-study-{{ study.id }}" href="#body-entry-{{ entry.getId() }}">
                                             {{ entry.getFirstName() }} {{ entry.getLastName() }}
@@ -64,7 +75,39 @@
                 var element = $(this).parent().parent().find('.profile-picture');
                 element.attr('src', element.attr('data-url'));
             });
+
+            $('#searchbox').bind("input propertychange", function(){
+                var $this = $(this);
+                var delay = 200; // delay after last input
+
+                clearTimeout($this.data("timer"));
+                $this.data("timer", setTimeout(function(){
+                    $this.removeData("timer");
+
+                    // Do your stuff after 2 seconds of last user input
+                    performSearch($('#searchbox').val());
+
+                }, delay));
+            });
         });
+
+        function performSearch(text) {
+            $.post('{{ url('corporate_cv', {"action": "search"})}}string/' + text, function (data) {
+                $('.accordion-group-entry').hide();
+                $('.accordion-group-study').show();
+                $.each(data, function(index, element) {
+
+                    $('#accordion-group-' + element).show();
+
+                });
+                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
+            }, 'json').error(errorSearch);
+        }
+
+        function errorSearch() {
+            $('.search_error').show();
+        }
+
     </script>
 
 {% endblock %}
