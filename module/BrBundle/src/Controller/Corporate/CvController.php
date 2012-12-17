@@ -179,10 +179,10 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     private function _filterGrade($entries, $grade) {
         $result = array();
-        $min = $grade['min'];
-        $max = $grade['max'];
+        $min = $grade['min'] * 100;
+        $max = $grade['max'] * 100;
         foreach ($entries as $entry) {
-            if ($entry->getGrade() > $min && $entry->getGrade() < $max) {
+            if ($entry->getGrade() >= $min && $entry->getGrade() <= $max) {
                 $result[] = $entry;
             }
         }
