@@ -531,16 +531,17 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignmentsAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Log')
-                ->findByType('booking_assignments'),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'CudiBundle\Entity\Log\Sales\Assignments',
+            $this->getParam('page'),
+            array(),
+            array('timestamp' => 'DESC')
         );
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -550,7 +551,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($log = $this->_getLog()))
             return new ViewModel();
 
-        $ids = unserialize($log->getText());
+        $ids = $log->getAssigments();
         foreach($ids as $id) {
             $booking = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
@@ -751,7 +752,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $log = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Log')
+            ->getRepository('CudiBundle\Entity\Log\Sales\Assignments')
             ->findOneById($this->getParam('id'));
 
         if (null === $log) {
