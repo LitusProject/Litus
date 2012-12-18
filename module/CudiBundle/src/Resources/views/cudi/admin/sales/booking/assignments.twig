@@ -30,7 +30,7 @@
                 <tr class="item item-{{ log.getId() }}">
                     <td>{{ log.getPerson().getFullName() }}</td>
                     <td>{{ log.getTimestamp().format('d/m/Y H:i') }}</td>
-                    <td>{{ log.getSizeOfArray() }}</td>
+                    <td>{{ log.getNumber() }}</td>
                     <td class="actions">
                         {% if hasAccess('admin_sales_booking', 'undo') %}
                             <a href="#" class="delete" data-id="{{ log.getId() }}" data-date="{{ log.getTimestamp().format('d/m/Y H:i') }}">Undo</a>
