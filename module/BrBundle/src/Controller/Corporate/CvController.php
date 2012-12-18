@@ -29,7 +29,25 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function groupedAction()
     {
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null) {
+            return new ViewModel(
+                array(
+                    'message' => 'Please log in to view the cv book.',
+                )
+            );
+        }
+
         $academicYear = $this->getAcademicYear();
+
+        if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
+            return new ViewModel(
+                array(
+                    'message' => 'You don\'t have access to the CVs of this year.',
+                )
+            );
+        }
 
         $result = $this->_getGrouped($academicYear);
 
@@ -43,7 +61,25 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function listAction()
     {
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null) {
+            return new ViewModel(
+                array(
+                    'message' => 'Please log in to view the cv book.',
+                )
+            );
+        }
+
         $academicYear = $this->getAcademicYear();
+
+        if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
+            return new ViewModel(
+                array(
+                    'message' => 'You don\'t have access to the CVs of this year.',
+                )
+            );
+        }
 
         $entries = $this->_getList($academicYear);
 
@@ -57,9 +93,27 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function searchAction()
     {
-        // $this->initAjax();
+        $this->initAjax();
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null) {
+            return new ViewModel(
+                array(
+                    'message' => 'Please log in to view the cv book.',
+                )
+            );
+        }
 
         $academicYear = $this->getAcademicYear();
+
+        if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
+            return new ViewModel(
+                array(
+                    'message' => 'You don\'t have access to the CVs of this year.',
+                )
+            );
+        }
 
         $filters = array();
 
