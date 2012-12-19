@@ -26,8 +26,8 @@ use CommonBundle\Entity\General\AcademicYear,
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
  *      "external"="CudiBundle\Entity\Articles\External",
- *      "internal"="CudiBundle\Entity\Articles\Internal"}
- * )
+ *      "internal"="CudiBundle\Entity\Articles\Internal"
+ * })
  */
 abstract class Article
 {

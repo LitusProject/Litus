@@ -1,15 +1,12 @@
-{% extends 'corporate/base.twig' %}
+{% extends 'corporate/partials/cv.twig' %}
 
-{% block content %}
-
-    {% include 'corporate/partials/cv_navbar.twig' %}
+{% block cvcontent %}
 
     <div class="accordion" id="accordion" data-collapse-type="manual">
 
         {% for study in studies %}
 
-
-            <div class="accordion-group">
+            <div class="accordion-group accordion-group-study">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#body-study-{{ study.id }}">
                         {{ study.name }}
@@ -22,7 +19,7 @@
 
                             {% for entry in study.entries %}
 
-                                <div class="accordion-group">
+                                <div class="accordion-group accordion-group-entry" id="accordion-group-{{ entry.getId() }}">
                                     <div class="accordion-heading">
                                         <a class="accordion-toggle entry-toggle" data-toggle="collapse" data-parent="#accordion-study-{{ study.id }}" href="#body-entry-{{ entry.getId() }}">
                                             {{ entry.getFirstName() }} {{ entry.getLastName() }}
@@ -53,18 +50,5 @@
         {% endfor %}
 
     </div>
-
-{% endblock %}
-
-{% block content_script %}
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.entry-toggle').click(function() {
-                var element = $(this).parent().parent().find('.profile-picture');
-                element.attr('src', element.attr('data-url'));
-            });
-        });
-    </script>
 
 {% endblock %}

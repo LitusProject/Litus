@@ -5,7 +5,7 @@ namespace CudiBundle\Repository\Sales;
 use CommonBundle\Entity\Users\Person,
     Exception,
     CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Log,
+    CudiBundle\Entity\Log\Sales\Assignments as LogAssignments,
     CudiBundle\Entity\Sales\Article as ArticleEntity,
     CudiBundle\Entity\Sales\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
@@ -33,7 +33,7 @@ class Booking extends EntityRepository
                         $query->expr()->eq('b.status', '\'booked\''),
                         $query->expr()->eq('b.status', '\'assigned\'')
                     ),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -57,7 +57,7 @@ class Booking extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -82,7 +82,7 @@ class Booking extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.article', ':article'),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -112,7 +112,7 @@ class Booking extends EntityRepository
                             $query->expr()->eq('b.status', '\'assigned\'')
                         )
                     ),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -154,7 +154,7 @@ class Booking extends EntityRepository
                             )
                         )
                     ),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate'),
                     $query->expr()->orX(
                         $query->expr()->like(
@@ -215,7 +215,7 @@ class Booking extends EntityRepository
                             )
                         )
                     ),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate'),
                     $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
@@ -260,7 +260,7 @@ class Booking extends EntityRepository
                         )
                     ),
                     $query->expr()->like($query->expr()->lower('b.status'), ':status'),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -270,6 +270,36 @@ class Booking extends EntityRepository
 
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllBooked(Period $period = null)
+    {
+        if (null == $period) {
+            $period = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period')
+                ->findOneActive();
+        }
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.status', '\'booked\''),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate());
+
+            if (!$period->isOpen())
+                $query->setParameter('endDate', $period->getEndDate());
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery()
@@ -290,7 +320,7 @@ class Booking extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.status', '\'booked\''),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -319,7 +349,7 @@ class Booking extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->eq('b.article', ':article'),
                     $query->expr()->eq('b.status', '\'booked\''),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -349,7 +379,7 @@ class Booking extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->eq('b.status', '\'assigned\''),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -379,7 +409,7 @@ class Booking extends EntityRepository
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->eq('b.article', ':article'),
                     $query->expr()->eq('b.status', '\'assigned\''),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -413,7 +443,7 @@ class Booking extends EntityRepository
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->eq('b.article', ':article'),
                     $query->expr()->eq('b.status', '\'sold\''),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -451,7 +481,7 @@ class Booking extends EntityRepository
                         $query->expr()->eq('b.status', '\'assigned\''),
                         $query->expr()->eq('b.status', '\'booked\'')
                     ),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -488,7 +518,7 @@ class Booking extends EntityRepository
                     $query->expr()->neq('b.status', '\'sold\''),
                     $query->expr()->neq('b.status', '\'expired\''),
                     $query->expr()->neq('b.status', '\'canceled\''),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -519,7 +549,7 @@ class Booking extends EntityRepository
             ->where($query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->eq('b.status', '\'sold\''),
-                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
@@ -659,7 +689,7 @@ class Booking extends EntityRepository
         }
 
         if ($counter > 0)
-            $this->getEntityManager()->persist(new Log($person, 'booking_assignments', serialize($idsAssigned)));
+            $this->getEntityManager()->persist(new LogAssignments($person, $idsAssigned));
 
         $this->getEntityManager()->flush();
 
