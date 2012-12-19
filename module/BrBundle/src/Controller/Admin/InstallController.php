@@ -114,7 +114,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'index',
                     ),
                     'corporate_cv' => array(
-                        'grouped', 'list', 'cvPhoto',
+                        'grouped', 'list', 'search', 'cvPhoto',
                     ),
                 )
             )

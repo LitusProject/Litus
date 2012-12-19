@@ -21,6 +21,11 @@ use CommonBundle\Entity\Users\Person,
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log")
  * @ORM\Table(name="cudi.log")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "sales_assignments"="CudiBundle\Entity\Log\Sales\Assignments"
+ * })
  */
 class Log
 {
@@ -49,13 +54,6 @@ class Log
     private $person;
 
     /**
-     * @var string The type of the log
-     *
-     * @ORM\Column(type="string")
-     */
-    private $type;
-
-    /**
      * @var string The text of the log
      *
      * @ORM\Column(type="text")
@@ -64,13 +62,11 @@ class Log
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
-     * @param string $type
      * @param string $text
      */
-    public function __construct(Person $person, $type, $text)
+    public function __construct(Person $person, $text)
     {
         $this->person = $person;
-        $this->type = $type;
         $this->text = $text;
         $this->timestamp = new DateTime();
     }
@@ -102,24 +98,8 @@ class Log
     /**
      * @return string
      */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return string
-     */
     public function getText()
     {
         return $this->text;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getSizeOfArray()
-    {
-        return count(unserialize($this->text));
     }
 }

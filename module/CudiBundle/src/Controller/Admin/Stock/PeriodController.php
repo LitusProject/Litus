@@ -58,6 +58,14 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             $previous->setEntityManager($this->getEntityManager());
             $previous->close();
 
+            $bookings = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findAllBooked($previous);
+
+            foreach($bookings as $booking) {
+                $booking->setStatus('booked', $this->getEntityManager());
+            }
+
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findAllArticlesByPeriod($previous);

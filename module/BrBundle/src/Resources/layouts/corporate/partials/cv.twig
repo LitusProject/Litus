@@ -1,0 +1,136 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+
+    {% if message %}
+
+        {{ translate(message) }}
+
+    {% else %}
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="subnav nav-collapse">
+                <ul class="nav">
+                    {% for year in authenticatedPerson.getCompany().getCvBookYears() %}
+                        <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a href="{{ url('corporate_cv', {"action": getParam("action"), "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="subnav nav-collapse">
+                <ul class="nav">
+                    {% if hasAccess('corporate_cv', 'grouped') %}
+                        <li {% if getParam("action") == "grouped" %}class="active"{% endif %}><a href="{{ url('corporate_cv', {"action": "grouped", "academicyear": getParam('year')}) }}">{{ translate('By Study') }}</a></li>
+                    {% endif %}
+                    {% if hasAccess('corporate_cv', 'list') %}
+                        <li {% if getParam("action") == "list" %}class="active"{% endif %}><a href="{{ url('corporate_cv', {"action": "list", "academicyear": getParam('year')}) }}">{{ translate('Alphabetically') }}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-error full_width search_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to perform the search.</p>
+        </div>
+    </div>
+
+    <div style="text-align:right;">
+        <select style="margin-bottom:0px" id="searchtype" name="searchtype">
+            <option value="text">By Name</option>
+            <option value="grade">By Minimum Grade</option>
+        </select>
+        <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
+    </div>
+
+    {% block cvcontent %} {% endblock %}
+
+    {% endif %}
+
+{% endblock %}
+
+{% block content_script %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.entry-toggle').click(function() {
+                var element = $(this).parent().parent().find('.profile-picture');
+                element.attr('src', element.attr('data-url'));
+            });
+
+            $('#searchbox').bind("input propertychange", function(){
+                var $this = $(this);
+                var delay = 200; // delay after last input
+
+                clearTimeout($this.data("timer"));
+                $this.data("timer", setTimeout(function(){
+                    $this.removeData("timer");
+
+                    refresh();
+
+                }, delay));
+            });
+
+            $('#searchtype').change(function() {
+                $('#searchbox').val('');
+                if ($('#searchtype').val() == 'text')
+                    $('#searchbox').attr('placeholder', "{{ translate('Search') }}");
+                else
+                    $('#searchbox').attr('placeholder', "{{ translate('Minimum Grade (e.g. 80)') }}");
+                refresh();
+            });
+        });
+
+        function refresh() {
+            // Do your stuff after 2 seconds of last user input
+            if ($('#searchtype').val() == 'text')
+                performSearch($('#searchbox').val());
+            else {
+                var min = $('#searchbox').val();
+                filterGrade(min, 100);
+            }
+        }
+
+        function performSearch(text) {
+            $.post('{{ url('corporate_cv', {"action": "search"})}}string/' + text, function (data) {
+                $('.accordion-group-entry').hide();
+                $('.accordion-group-study').show();
+                $.each(data, function(index, element) {
+
+                    $('#accordion-group-' + element).show();
+
+                });
+                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
+            }, 'json').error(errorSearch);
+        }
+
+        function filterGrade(min, max) {
+            $.post('{{ url('corporate_cv', {"action": "search"})}}min/' + min + '/max/' + max, function (data) {
+                $('.accordion-group-entry').hide();
+                $('.accordion-group-study').show();
+                $.each(data, function(index, element) {
+
+                    $('#accordion-group-' + element).show();
+
+                });
+                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
+            }, 'json').error(errorSearch);
+        }
+
+        function errorSearch() {
+            $('.search_error').show();
+            setTimeout(function() {
+                $('.search_error').fadeOut('fast');
+            }, 2000);
+        }
+
+    </script>
+
+{% endblock %}
