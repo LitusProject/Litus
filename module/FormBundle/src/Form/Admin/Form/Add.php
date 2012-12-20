@@ -105,6 +105,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $field->setLabel('Total Max Entries');
         $this->add($field);
 
+        $field = new Checkbox('non_members');
+        $field->setLabel('Allow Entry Without Login (First and Last name fields will be created automatically)');
+        $this->add($field);
+
         $field = new Checkbox('multiple');
         $field->setLabel('Multiple Entries / Person Allowed');
         $this->add($field);
