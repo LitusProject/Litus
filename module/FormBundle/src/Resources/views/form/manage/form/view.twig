@@ -44,7 +44,7 @@
 		    	<tr class="item item-{{ entry.getId() }}">
                     <td>{{ entry.getId() }}</td>
     				<td>
-                        {{ entry.getPersonInfo().getFullName() }}
+                        {{ entry.getPersonInfo().getFullName() }}{% if entry.isGuestEntry() %} (Guest){% endif %}
                     </td>
     				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
 

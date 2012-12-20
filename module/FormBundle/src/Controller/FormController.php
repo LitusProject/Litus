@@ -168,7 +168,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $this->getMailTransport()->send($mail);
                 }
 
-
                 $this->redirect()->toRoute(
                     'form_view',
                     array
