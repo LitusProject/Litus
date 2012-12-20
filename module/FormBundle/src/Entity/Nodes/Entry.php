@@ -124,10 +124,15 @@ class Entry
      */
     public function getPersonInfo()
     {
-        if ($this->creationPerson !== null)
+        if (!$this->isGuestEntry())
             return $this->creationPerson;
         else
             return $this->guestInfo;
+    }
+
+    public function isGuestEntry()
+    {
+        return $this->creationPerson === null;
     }
 
     /**
