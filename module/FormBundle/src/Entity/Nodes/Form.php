@@ -311,8 +311,8 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     public function getCompletedMailBody(Entry $entry) {
         $body = $this->getMailBody();
         $body = str_replace('%id%', $entry->getId(), $body);
-        $body = str_replace('%first_name%', $entry->getCreationPerson()->getFirstName(), $body);
-        $body = str_replace('%last_name%', $entry->getCreationPerson()->getLastName(), $body);
+        $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
+        $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
         return $body;
     }
 
