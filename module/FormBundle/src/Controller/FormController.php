@@ -162,7 +162,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         ->setFrom($mailAddress, $mailName)
                         ->setSubject($formSpecification->getMailSubject());
 
-                    $mail->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
+                    $mail->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
                     if ('development' != getenv('APPLICATION_ENV'))
                         $this->getMailTransport()->send($mail);
