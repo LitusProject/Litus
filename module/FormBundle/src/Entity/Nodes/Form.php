@@ -55,6 +55,13 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     private $multiple;
 
     /**
+     * @var boolean Indicates whether submitters can be non members.
+     *
+     * @ORM\Column(name="non_member", type="boolean")
+     */
+    private $nonMember;
+
+    /**
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field", mappedBy="form")
      *
      * @ORM\OrderBy({"order" = "ASC"})
@@ -119,12 +126,13 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      * @param string $mailSubject The subject of the mail.
      * @param string $mailBody The body of the mail.
      */
-    public function __construct($person, $startDate, $endDate, $active, $max, $multiple, $mail, $mailSubject, $mailBody)
+    public function __construct($person, $startDate, $endDate, $active, $max, $multiple, $nonMember, $mail, $mailSubject, $mailBody)
     {
         parent::__construct($person);
 
         $this->max = $max;
         $this->multiple = $multiple;
+        $this->nonMember = $nonMember;
         $this->fields = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->startDate = $startDate;
@@ -167,6 +175,23 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      */
     public function isMultiple() {
         return $this->multiple;
+    }
+
+    /**
+     * @param boolean $nonMember
+     *
+     * @return \FormBundle\Entity\Nodes\Form
+     */
+    public function setNonMember($nonMember) {
+        $this->nonMember = $nonMember;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNonMember() {
+        return $this->nonMember;
     }
 
     /**

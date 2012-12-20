@@ -17,6 +17,7 @@ namespace FormBundle\Controller;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     FormBundle\Entity\Nodes\Form,
+    FormBundle\Entity\Nodes\GuestInfo,
     FormBundle\Entity\Nodes\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\SpecifiedForm,
@@ -72,7 +73,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $person = $this->getAuthentication()->getPersonObject();
 
-        if ($person === null) {
+        if ($person === null && !$formSpecification->isNonMember()) {
             $message = 'Please log in to view this form.';
 
             return new ViewModel(
@@ -81,7 +82,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'specification' => $formSpecification,
                 )
             );
-        } else {
+        } else if ($person !== null) {
             $entriesCount = count($this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Nodes\Entry')
                 ->findAllByFormAndPerson($formSpecification, $person));
@@ -107,7 +108,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification);
+        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
 
         if ($this->getRequest()->isPost()) {
 
@@ -117,7 +118,18 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $formEntry = new FormEntry($person, $formSpecification);
+                $guestInfo = null;
+                // Create non-member entry
+                if ($person === null) {
+                    $guestInfo = new GuestInfo(
+                        $formData['first_name'],
+                        $formData['last_name'],
+                        $formData['email']
+                    );
+                    $this->getEntityManager()->persist($guestInfo);
+                }
+
+                $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
 
                 $this->getEntityManager()->persist($formEntry);
                 $this->getEntityManager()->flush();
@@ -150,7 +162,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         ->setFrom($mailAddress, $mailName)
                         ->setSubject($formSpecification->getMailSubject());
 
-                    $mail->addTo($person->getEmail(), $person->getFullName());
+                    $mail->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
 
                     if ('development' != getenv('APPLICATION_ENV'))
                         $this->getMailTransport()->send($mail);
