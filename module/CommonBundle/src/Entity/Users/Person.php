@@ -605,7 +605,7 @@ abstract class Person
      *
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true)
+    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $subjectConfig = 'common.account_activated_subject')
     {
         if ($onlyShibboleth) {
             $this->canlogin = true;
@@ -623,11 +623,11 @@ abstract class Person
 
             $message = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.account_activated_mail');
+                ->getConfigValue($messageConfig);
 
             $subject = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.account_activated_subject');
+                ->getConfigValue($subjectConfig);
 
             $mailAddress = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
