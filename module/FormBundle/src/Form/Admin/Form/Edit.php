@@ -54,6 +54,7 @@ class Edit extends Add
             'active'       => $form->isActive(),
             'max'          => $form->getMax(),
             'multiple'     => $form->isMultiple(),
+            'non_members'  => $form->isNonMember(),
             'mail'         => $form->hasMail(),
             'mail_subject' => $form->getMailSubject(),
             'mail_body'    => $form->getMailBody(),

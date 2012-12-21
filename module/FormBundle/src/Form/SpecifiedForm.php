@@ -18,6 +18,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\Users\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Fields\Checkbox as CheckboxField,
     FormBundle\Entity\Fields\String as StringField,
@@ -46,9 +47,27 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Language $language, Form $form, $name = null)
+    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, $name = null)
     {
         parent::__construct($name);
+
+        // Create guest fields
+        if ($person === null) {
+            $field = new Text('first_name');
+            $field->setLabel('First Name')
+                ->setRequired(true);
+            $this->add($field);
+
+            $field = new Text('last_name');
+            $field->setLabel('Last Name')
+                ->setRequired(true);
+            $this->add($field);
+
+            $field = new Text('email');
+            $field->setLabel('Email Address')
+                ->setRequired(true);
+            $this->add($field);
+        }
 
         $this->_form = $form;
 
