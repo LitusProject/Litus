@@ -48,6 +48,23 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'Whether the CV Book is currently open for entries or not',
                 ),
                 array(
+                    'key'         => 'br.account_activated_mail',
+                    'value'       => 'Dear {{ name }},
+
+A corporate account for you was created on VTK with username {{ username }}.
+Click here to activate it: http://litus/account/activate/code/{{ code }}
+You can use this account to view the CV Book at http://litus/corporate
+
+With best regards,
+The VTK Corporate Team',
+                    'description' => 'The email sent when an account is activated',
+                ),
+                array(
+                    'key'         => 'br.account_activated_subject',
+                    'value'       => 'VTK Corporate Account',
+                    'description' => 'The mail subject when an account is activated',
+                ),
+                array(
                     'key'         => 'br.cv_default_languages',
                     'value'       => serialize(
                         array(

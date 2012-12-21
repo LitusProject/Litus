@@ -43,7 +43,9 @@
 		    {% for entry in entries %}
 		    	<tr class="item item-{{ entry.getId() }}">
                     <td>{{ entry.getId() }}</td>
-    				<td>{{ entry.getCreationPerson().getFullName() }}</td>
+    				<td>
+                        {{ entry.getPersonInfo().getFullName() }}{% if entry.isGuestEntry() %} (Guest){% endif %}
+                    </td>
     				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
 
 	    			{% for field in fields %}
@@ -53,7 +55,7 @@
     				{% if canedit %}
     					<td>
 							<a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">{{ translate("Edit") }}</a>
-							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getCreationPerson().getFullName()}} >{{ translate("Delete") }}</a>
+							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
     					</td>
     				{% endif %}
 
