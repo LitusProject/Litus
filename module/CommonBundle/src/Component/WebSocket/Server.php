@@ -145,11 +145,7 @@ class Server
             }
         }
 
-        try {
-            socket_close($socket);
-        } catch (\Exception $e) {
-
-        }
+        @socket_close($socket);
 
         foreach($this->_sockets as $key => $value) {
             if ($value == $socket)

@@ -70,14 +70,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByAbbrev('en');
 
         $this->getTranslator()->setCache($this->getCache());
-        $this->getTranslator()->setLocale($this->getLanguage()->getAbbrev());
+        $this->getTranslator()->setLocale($language->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
-
-        if ($this->getAuthentication()->isAuthenticated()) {
-            $this->getAuthentication()->getPersonObject()->setLanguage($language);
-            $this->getEntityManager()->flush();
-        }
     }
 
     /**
