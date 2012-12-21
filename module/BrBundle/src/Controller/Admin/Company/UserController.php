@@ -174,7 +174,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             $this->getMailTransport(),
             false,
             'br.account_activated_mail',
-            'br.account_activated_subject'
+            'br.account_activated_subject',
+            86400*30
         );
 
         $this->getEntityManager()->flush();

@@ -605,7 +605,7 @@ abstract class Person
      *
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $subjectConfig = 'common.account_activated_subject')
+    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $subjectConfig = 'common.account_activated_subject', $time = 86400)
     {
         if ($onlyShibboleth) {
             $this->canlogin = true;
@@ -617,7 +617,7 @@ abstract class Person
                     ->findOneByCode($code);
             } while(isset($found));
 
-            $code = new Code($code, 86400);
+            $code = new Code($code, $time);
             $entityManager->persist($code);
             $this->setCode($code);
 
