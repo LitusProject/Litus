@@ -233,6 +233,14 @@ abstract class Person
     }
 
     /**
+     * @return boolean true if and only if this user has an active account
+     */
+    public function hasCredential()
+    {
+        return null !== $this->credential;
+    }
+
+    /**
      * @return string
      */
     public function getCredential()
