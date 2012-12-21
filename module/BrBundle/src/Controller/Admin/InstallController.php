@@ -41,7 +41,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'key'         => 'br.public_logo_path',
                     'value'       => '_br/img',
                     'description' => 'The path to the public company logo files',
-                ),Leuven
+                ),
                 array(
                     'key'         => 'br.cv_book_open',
                     'value'       => '0',
