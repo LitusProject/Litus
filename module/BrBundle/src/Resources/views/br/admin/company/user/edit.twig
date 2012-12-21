@@ -15,6 +15,7 @@
             {% endif %}</b></p>
         <p>City: <b>{{ user.getCompany().getAddress().getPostal() }} {{ user.getCompany().getAddress().getCity() }}</b></p>
         <p>Country: <b>{{ user.getCompany().getAddress().getCountry() }}</b></p>
+        <p>Activated: <b>{% if user.hasCredential() %}Yes{% else %}No{% endif %}</b></p>
         <br />
 
         {% import 'admin/partials/form.twig' as forms %}
