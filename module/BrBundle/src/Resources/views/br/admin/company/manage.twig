@@ -47,7 +47,7 @@
                                     <li><a href="#" class="delete" data-id="{{ company.getId() }}" data-name="{{ company.getName() }}">Delete</a></li>
                                 {% endif %}
                                 {% if hasAccess('admin_company_user', 'manage') %}
-                                    <a href="{{ url('admin_company_user', {"action": "manage", "id": company.getId()}) }}" class="view">Users</a>
+                                    <a href="{{ url('admin_company_user', {"action": "manage", "id": company.getId()}) }}" class="corporate_user">Users</a>
                                 {% endif %}
                             </ul>
                         </td>
