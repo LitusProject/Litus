@@ -122,13 +122,17 @@
                                     </a>
                                 </li>
                                 <li class="divider"></li>
+                                {% if hasAccess('booking', 'view') or hasAccess('shift', 'index') %}
                                 <li>
-                                    <a href="{{ url('booking') }}">{{ translate('My Bookings') }}</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
+                                    {% if hasAccess('booking', 'view') %}
+                                        <a href="{{ url('booking') }}">{{ translate('My Bookings') }}</a>
+                                    {% endif %}
+                                    {% if hasAccess('shift', 'index') %}
+                                        <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
+                                    {% endif %}
                                 </li>
                                 <li class="divider"></li>
+                                {% endif %}
                                 <li>
                                     <a href="{{ url("auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                                 </li>
