@@ -64,10 +64,18 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
+                                        {% if hasAccess('account', 'index') %}
                                         <a href="{{ url('account') }}">
+                                        {% else %}
+                                            <div style="padding: 3px 20px;">
+                                        {% endif %}
                                             <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                            <small class="metadata"><em>{{ authenticatedPerson.getUniversityIdentification() }}</em></small>
+                                            <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
+                                        {% if hasAccess('account', 'index') %}
                                         </a>
+                                        {% else %}
+                                            </div>
+                                        {% endif %}
                                     </li>
                                     <li class="divider"></li>
                                     {% if hasAccess('booking', 'view') or hasAccess('shift', 'index') %}
@@ -116,10 +124,18 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
+                                    {% if hasAccess('account', 'index') %}
                                     <a href="{{ url('account') }}">
+                                    {% else %}
+                                        <div style="padding: 3px 20px;">
+                                    {% endif %}
                                         <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
                                         <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
+                                    {% if hasAccess('account', 'index') %}
                                     </a>
+                                    {% else %}
+                                        </div>
+                                    {% endif %}
                                 </li>
                                 <li class="divider"></li>
                                 {% if hasAccess('booking', 'view') or hasAccess('shift', 'index') %}
