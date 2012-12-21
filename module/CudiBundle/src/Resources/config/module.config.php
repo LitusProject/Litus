@@ -374,6 +374,35 @@ return array(
                     ),
                 ),
             ),
+            'sale2_queue' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cudi/queue2[[/:action]/:session][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'session' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'sale2_queue',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'sale2_sale' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cudi/sale2[/:action[/:session[/:id]]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'session' => '[0-9]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'sale2_sale',
+                        'action'     => 'sale',
+                    ),
+                ),
+            ),
             'supplier_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -694,6 +723,8 @@ return array(
 
             'sale_sale'             => 'CudiBundle\Controller\Sale\SaleController',
             'sale_queue'            => 'CudiBundle\Controller\Sale\QueueController',
+            'sale2_sale'            => 'CudiBundle\Controller\Sale2\SaleController',
+            'sale2_queue'           => 'CudiBundle\Controller\Sale2\QueueController',
 
             'supplier_index'        => 'CudiBundle\Controller\Supplier\IndexController',
             'supplier_article'      => 'CudiBundle\Controller\Supplier\ArticleController',
