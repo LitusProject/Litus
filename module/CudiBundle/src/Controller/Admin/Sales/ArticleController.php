@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Article\Activate as ActivateForm,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
+    CudiBundle\Entity\Log\Sales\ProfVersion as ProfVersionLog,
     CudiBundle\Entity\Sales\Article as SaleArticle,
     CudiBundle\Entity\Sales\Articles\History,
     CudiBundle\Entity\Sales\SaleItem,
@@ -376,6 +377,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
         );
         $this->getEntityManager()->persist($saleItem);
+
+        $this->getEntityManager()->persist(new ProfVersionLog($this->getAuthentication()->getPersonObject(), $saleArticle));
 
         $saleArticle->setStockValue($saleArticle->getStockValue() - 1);
 
