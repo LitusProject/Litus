@@ -28,6 +28,39 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        if (null !== $this->getParam('field'))
+            $subjects = $this->_search($academicYear);
+
+        if (!isset($subjects)) {
+            $subjects = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                ->findAllByAcademicYear($academicYear);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $subjects,
+            $this->getParam('page')
+        );
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function editAction()
+    {
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
 
@@ -57,6 +90,39 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        $subjects = $this->_search($academicYear);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($subjects, $numResults);
+
+        $result = array();
+        foreach($subjects as $subject) {
+            $item = (object) array();
+            $item->id = $subject->getId();
+            $item->name = $subject->getName();
+            $item->code = $subject->getCode();
+            $item->semester = $subject->getSemester();
+            $item->credits = $subject->getCredits();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     public function typeaheadAction()
     {
         if (!($academicYear = $this->_getAcademicYear()))
@@ -79,6 +145,20 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 'result' => $result,
             )
         );
+    }
+
+    private function _search(AcademicYearEntity $academicYear)
+    {
+        switch($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByNameAndAcademicYear($this->getParam('string'), $academicYear);
+            case 'code':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByCodeAndAcademicYear($this->getParam('string'), $academicYear);
+        }
     }
 
     private function _getSubject()

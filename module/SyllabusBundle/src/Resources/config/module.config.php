@@ -108,11 +108,14 @@ return array(
             'admin_subject' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/subject[/:action[/:id][/:academicyear]][/]',
+                    'route' => '/admin/syllabus/subject[/:action[/:id][/:academicyear][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                        'page'         => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_subject',
