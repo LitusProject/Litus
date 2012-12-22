@@ -33,6 +33,34 @@
     	    </table>
 	    {% endif %}
 
+        {% if hasAccess('admin_subject_comment', 'manage') and subjectComments|length > 0 %}
+            <h1>Last Subject Comments</h1>
+            <table class="manage">
+                <tr>
+                    <th width="100px">Date</th>
+                    <th width="140px">Person</th>
+                    <th>Summary</th>
+                    <th width="70px">Action</th>
+                </tr>
+
+                {% for comment in subjectComments %}
+                    <tr class="item item-{{ comment.getId() }}">
+                        <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ comment.getPerson().getFullName() }}</td>
+                        <td>{{ comment.getSummary() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('admin_subject', 'subject') %}
+                                <a href="{{ url('admin_subject', {'action': 'manage', 'id': comment.getSubject().getId()}) }}" class="view">View Subject</a>
+                            {% endif %}
+                            {% if hasAccess('admin_subject_comment', 'manage') %}
+                                <a href="{{ url('admin_subject_comment', {'action': 'manage', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
         <h1>Active Sessions</h1>
 
         <div class="flashmessage success_message session_expire_success hide three_quarter_width">
