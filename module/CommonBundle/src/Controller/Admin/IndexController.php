@@ -29,6 +29,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllUncompleted(10);
 
+        $subjectComments = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+            ->findLast(10);
+
         $activeSessions = array();
         if ($this->getAuthentication()->isAuthenticated()) {
             $activeSessions = $this->getEntityManager()
@@ -41,6 +45,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'profActions' => $profActions,
+                'subjectComments' => $subjectComments,
                 'activeSessions' => $activeSessions,
                 'currentSession' => $currentSession,
                 'versions' => array(

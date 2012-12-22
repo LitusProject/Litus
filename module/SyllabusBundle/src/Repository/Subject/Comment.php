@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class Comment extends EntityRepository
 {
+    public function findLast($nb = 10)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
+            ->orderBy('c.date', 'ASC')
+            ->setMaxResults($nb)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }
