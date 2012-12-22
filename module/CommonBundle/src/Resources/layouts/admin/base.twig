@@ -341,6 +341,9 @@
                                     {% if hasAccess('admin_study', 'manage') %}
                                         <li><a href="{{ url('admin_study') }}">Studies</a></li>
                                     {% endif %}
+                                    {% if hasAccess('admin_subject', 'manage') %}
+                                        <li><a href="{{ url('admin_subject') }}">Subjects</a></li>
+                                    {% endif %}
                                     {% if hasAccess('admin_update_syllabus', 'index') %}
                                         <li><a href="{{ url('admin_update_syllabus') }}">Update</a></li>
                                     {% endif %}

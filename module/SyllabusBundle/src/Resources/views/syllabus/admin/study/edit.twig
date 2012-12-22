@@ -60,8 +60,8 @@
                         <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
                         <td>{{ mapping.getSubject().getNbEnrollment(currentAcademicYear) }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_subject', 'subject') %}
-                                <a href="{{ url('admin_subject', {"action": "manage", "id": mapping.getSubject().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
+                            {% if hasAccess('admin_subject', 'edit') %}
+                                <a href="{{ url('admin_subject', {"action": "edit", "id": mapping.getSubject().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -91,10 +91,10 @@
                             .append('<td>' + this.semester + '</td>')
                             .append('<td>' + this.credits + '</td>')
                             .append('<td>' + (this.mandatory ? 'yes' : 'no') + '</td>')
-                            .append('<td>' + this.credits + '</td>')
+                            .append('<td>' + this.students + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
-                        {% if hasAccess('admin_subject', 'subject') %}
-                            actions.append('<a href="{{ url('admin_subject') }}manage/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+                        {% if hasAccess('admin_subject', 'edit') %}
+                            actions.append('<a href="{{ url('admin_subject') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
                         {% endif %}
                     });
                     $('#subject_search table').change();

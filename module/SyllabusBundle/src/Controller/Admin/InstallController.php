@@ -169,7 +169,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'edit', 'manage', 'search', 'searchSubject', 'typeahead'
                     ),
                     'admin_subject' => array(
-                        'manage', 'typeahead'
+                        'edit', 'manage', 'search', 'typeahead'
                     ),
                     'admin_subject_comment' => array(
                         'delete', 'manage'
