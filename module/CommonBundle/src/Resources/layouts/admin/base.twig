@@ -321,14 +321,14 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_syllabus_academic', 'manage') or hasAccess('admin_syllabus_group', 'manage') or hasAccess('admin_study', 'manage') or hasAccess('admin_update_syllabus', 'update') %}
+                        {% if hasAccess('admin_syllabus_academic', 'manage') or hasAccess('admin_syllabus_group', 'manage') or hasAccess('admin_study', 'manage') or hasAccess('admin_update_syllabus', 'update') or hasAccess('admin_subject', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Syllabus</b><br />
                                     Groups &amp; Studies &amp; Subjects
                                 </div>
                                 <ul
-                                    {% if 'admin_syllabus_academic' == getParam('controller') or 'admin_study' == getParam('controller') or 'admin_subject' == getParam('controller') or 'admin_update_syllabus' == getParam('controller') or 'admin_prof' == getParam('controller') %}
+                                    {% if 'admin_syllabus_academic' == getParam('controller') or 'admin_study' == getParam('controller') or 'admin_subject' == getParam('controller') or 'admin_subject_comment' == getParam('controller') or 'admin_update_syllabus' == getParam('controller') or 'admin_prof' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >

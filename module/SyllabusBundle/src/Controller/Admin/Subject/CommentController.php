@@ -29,6 +29,32 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+                ->findAllByAcademicYear($academicYear),
+            $this->getParam('page')
+        );
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function subjectAction()
+    {
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
 
@@ -196,5 +222,40 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         return $comment;
+    }
+
+    private function _getAcademicYear()
+    {
+        if (null === $this->getParam('academicyear')) {
+            $start = AcademicYear::getStartOfAcademicYear();
+        } else {
+            $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
+        $start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($start);
+
+        if (null === $academicYear) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No academic year was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_subject_comment',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $academicYear;
     }
 }
