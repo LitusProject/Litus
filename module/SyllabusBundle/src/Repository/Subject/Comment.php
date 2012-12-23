@@ -2,7 +2,8 @@
 
 namespace SyllabusBundle\Repository\Subject;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Comment
@@ -19,6 +20,36 @@ class Comment extends EntityRepository
             ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
             ->orderBy('c.date', 'DESC')
             ->setMaxResults($nb)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s.id')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->eq('m.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0 => 0);
+        foreach($resultSet as $item)
+            $ids[$item['id']] = $item['id'];
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
+            ->where(
+                $query->expr()->in('c.subject', $ids)
+            )
+            ->orderBy('c.date', 'DESC')
             ->getQuery()
             ->getResult();
 

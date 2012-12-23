@@ -53,7 +53,7 @@
                                 <a href="{{ url('admin_subject', {'action': 'edit', 'id': comment.getSubject().getId()}) }}" class="view">View Subject</a>
                             {% endif %}
                             {% if hasAccess('admin_subject_comment', 'manage') %}
-                                <a href="{{ url('admin_subject_comment', {'action': 'manage', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
+                                <a href="{{ url('admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
                             {% endif %}
                         </td>
                     </tr>
