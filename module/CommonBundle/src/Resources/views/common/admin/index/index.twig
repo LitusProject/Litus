@@ -52,7 +52,7 @@
                             {% if hasAccess('admin_subject', 'edit') %}
                                 <a href="{{ url('admin_subject', {'action': 'edit', 'id': comment.getSubject().getId()}) }}" class="view">View Subject</a>
                             {% endif %}
-                            {% if hasAccess('admin_subject_comment', 'manage') %}
+                            {% if hasAccess('admin_subject_comment', 'subject') %}
                                 <a href="{{ url('admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
                             {% endif %}
                         </td>
