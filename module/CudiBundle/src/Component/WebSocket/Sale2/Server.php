@@ -34,8 +34,6 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * @param Doctrine\ORM\EntityManager $entityManager
-     * @param string $address The url for the websocket master socket
-     * @param integer $port The port to listen on
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -88,6 +86,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     $user->setExtraData('session', $command->session);
                 if (isset($command->queueType))
                     $user->setExtraData('queueType', $command->queueType);
+                if (isset($command->paydesk)) {
+                    $user->setExtraData('paydesk', $command->paydesk);
+                    echo $command->paydesk;
+                }
                 $this->sendQueue($user);
                 break;
         }
