@@ -803,6 +803,11 @@ return array(
                             'sale/js/*.js',
                         ),
                     ),
+                    'sale2_js' => array(
+                        'assets' => array(
+                            'sale2/js/*.js',
+                        ),
+                    ),
                     'prof_css' => array(
                         'assets' => array(
                             'prof/less/base.less',

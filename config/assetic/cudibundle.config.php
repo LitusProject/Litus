@@ -184,8 +184,13 @@ return array(
         'sale2_sale' => array(
             '@common_jquery',
             '@bootstrap_css',
+            '@sale2_js',
             '@sale_css',
             '@common_typeahead_remote',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_permanent_modal',
+            '@common_socket',
         ),
         'sale2_queue' => array(
             '@common_jquery',
