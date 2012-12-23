@@ -25,7 +25,7 @@
                     <td>{{ comment.getType()|capitalize }}</td>
                     <td class="actions">
                         <a href="#" class="view" data-text="{{ comment.getText() }}">View</a>
-                        {% if hasAccess('admin_subject_comment', 'manage') %}
+                        {% if hasAccess('admin_subject_comment', 'subject') %}
                             <a href="{{ url('admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
                         {% endif %}
                     </td>
