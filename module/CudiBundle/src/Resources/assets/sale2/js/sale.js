@@ -1,3 +1,5 @@
+var currentView = 'selectPaydesk';
+
 (function ($) {
     var defaults = {
         socketName: 'saleApp',
@@ -15,6 +17,7 @@
 
     var currentModal = null;
     var firstAction = true;
+    var queue = null;
 
     var methods = {
         init : function (options) {
@@ -40,6 +43,8 @@
     function _init($this) {
         var settings = $this.data('saleSettings');
 
+        queue = $.queue();
+
         $.webSocket({
             name: settings.socketName,
             url: settings.socketUrl,
@@ -50,7 +55,9 @@
                 firstAction = false;
             },
             message: function (e, data) {
-
+                if (data.queue) {
+                    queue.queue('updateQueue', data.queue);
+                }
             },
             error: function (e) {
                 firstAction = false;
@@ -92,6 +99,9 @@
                 })
             });
             modal.permanentModal('hide');
+
+            queue.queue('show');
+            currentModal = queue;
         });
 
         $this.append(modal);
@@ -115,4 +125,4 @@
             ).addClass('in')
         );
     }
-})(jQuery)
+})(jQuery);
