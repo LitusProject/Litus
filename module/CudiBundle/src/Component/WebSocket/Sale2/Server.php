@@ -171,6 +171,18 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             case 'startCollecting':
                 $this->_startCollecting($user, $command->id);
                 break;
+            case 'cancelCollecting':
+                $this->_cancelCollecting($user, $command->id);
+                break;
+            case 'stopCollecting':
+                $this->_stopCollecting($user, $command->id);
+                break;
+            case 'startSelling':
+                $this->_startSelling($user, $command->id);
+                break;
+            case 'cancelSelling':
+                $this->_cancelSelling($user, $command->id);
+                break;
             case 'hold':
                 $this->_hold($command->id);
                 break;
@@ -232,8 +244,31 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     private function _startCollecting(User $user, $id)
     {
-        $this->_queue->startCollecting($user, $id);
-        // TODO: send data back if needed to start collecting
+        $result = $this->_queue->startCollecting($user, $id);
+        if ($result)
+            $this->sendText($user, $result);
+
+        // TODO: print ticket
+    }
+
+    private function _stopCollecting(User $user, $id)
+    {
+        $this->_queue->stopCollecting($id);
+    }
+
+    private function _cancelCollecting(User $user, $id)
+    {
+        $this->_queue->cancelCollecting($id);
+    }
+
+    private function _startSelling(User $user, $id)
+    {
+        $this->_queue->startSelling($user, $id);
+    }
+
+    private function _cancelSelling(User $user, $id)
+    {
+        $this->_queue->cancelSelling($id);
     }
 
     private function _hold($id)

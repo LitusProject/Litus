@@ -65,4 +65,16 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
     {
         return $this->_user;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($this->_id);
+
+        return ($item->getStatus() == 'collecting' || $item->getStatus() == 'selling');
+    }
 }
