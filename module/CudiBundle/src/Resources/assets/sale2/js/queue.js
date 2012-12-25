@@ -18,8 +18,15 @@
         tHideHold: 'Hide Hold',
         tUndoLastSelling: 'Undo Last Selling - F6',
         tPrintNext: 'Print Next - F7',
+        tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
+        tAddToQueue: 'Add to queue',
+
         translateStatus: function (status) {return status},
+        sendToSocket: function (text) {},
     };
+
+    var lastPrinted = 0;
+    var lastSold = 0;
 
     var methods = {
         init : function (options) {
@@ -38,6 +45,11 @@
         },
         updateQueue : function (data) {
             _updateQueue($(this), data);
+            return this;
+        },
+        setLastSold : function (data) {
+            lastSold = data;
+            $(this).find('.undoLastSelling').toggle(lastSold > 0);
             return this;
         }
     };
@@ -94,11 +106,11 @@
                     hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
                     settings.tHideHold
                 ),
-                $('<button>', {'class': 'btn btn-danger hide'}).append(
+                undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling'}).append(
                     $('<i>', {'class': 'icon-arrow-left icon-white'}),
                     settings.tUndoLastSelling
                 ),
-                $('<button>', {'class': 'btn btn-success'}).append(
+                printNext = $('<button>', {'class': 'btn btn-success'}).append(
                     $('<i>', {'class': 'icon-print icon-white'}),
                     settings.tPrintNext
                 )
@@ -116,13 +128,74 @@
 
         clearFilter.click(function () {
             filterText.val('');
+            filterText.trigger('keyup');
         });
 
         filterText.keyup(function () {
-            // check length
+            var filter = $(this).val().toLowerCase();
+            var pattern = new RegExp(/[a-z][0-9]{7}/);
+
+            if (pattern.test(filter)) {
+                var found = false;
+                $this.find('tbody tr').each(function () {
+                    if ($(this).data('info').university_identification.toLowerCase().indexOf(filter) == 0)
+                        found = true;
+                    return !found;
+                });
+
+                if (!found) {
+                    $this.find('tbody').append(
+                        $('<tr>', {'id': 'addToQueue'}).append(
+                            $('<td>', {'style': 'width: ' + settings.widthNum + 'px'}),
+                            $('<td>', {'style': 'width: ' + settings.widthName + 'px'}).html(
+                                settings.tNotFoundInQueue.replace('{{ name }}', filter)
+                            ),
+                            $('<td>', {'style': 'width: ' + settings.widthStatus + 'px'}),
+                            $('<td>', {'style': 'width: ' + settings.widthActions + 'px'}).css('padding', '3px 8px').append(
+                                $('<button>', {'class': 'btn btn-success'}).html(settings.tAddToQueue).data('id', filter).click(function () {
+                                    settings.sendToSocket(
+                                        JSON.stringify({
+                                            'command': 'action',
+                                            'action': 'addToQueue',
+                                            'universityIdentification': filter,
+                                        })
+                                    );
+                                })
+                            )
+                        )
+                    );
+                } else {
+                    $this.find('tbody #addToQueue').remove();
+                }
+            } else {
+                $this.find('tbody #addToQueue').remove();
+            }
+
             $this.find('tbody tr').each(function () {
                 _toggleVisibility($this, $(this));
             });
+        });
+
+        printNext.click(function () {
+            $this.find('tbody tr').each(function () {
+                if ($(this).data('info').status == 'signed_in' && $(this).data('info').id > lastPrinted) {
+                    lastPrinted = $(this).data('info').id;
+                    $(this).find('.startCollecting').click();
+                }
+            });
+        });
+
+        undoLastSelling.click(function () {
+            if (lastSold > 0) {
+                settings.sendToSocket(
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'undoLastSelling',
+                        'id': lastSold,
+                    })
+                );
+            }
+            $(this).hide();
         });
     }
 
@@ -195,6 +268,7 @@
     }
 
     function _updateItem(settings, row, data) {
+        data.status = 'signed_in';
         row.find('.number').html(data.number);
         row.find('.name').html('').append(
             data.name,
@@ -232,43 +306,85 @@
         startCollecting.click(function () {
             if ($(this).is('.disabled'))
                 return;
-            alert('start collecting');
+            settings.sendToSocket(
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'startCollecting',
+                    'id': $(this).closest('tr').data('info').id,
+                })
+            );
         });
 
         stopCollecting.click(function () {
             if ($(this).is('.disabled'))
                 return;
-            alert('stop collecting');
+            settings.sendToSocket(
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'stopCollecting',
+                    'id': $(this).closest('tr').data('info').id,
+                })
+            );
         });
 
         cancelCollecting.click(function () {
             if ($(this).is('.disabled'))
                 return;
-            alert('cancel collecting');
+            settings.sendToSocket(
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'cancelCollecting',
+                    'id': $(this).closest('tr').data('info').id,
+                })
+            );
         });
 
         startSelling.click(function () {
             if ($(this).is('.disabled'))
                 return;
-            alert('start selling');
+            settings.sendToSocket(
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'startSelling',
+                    'id': $(this).closest('tr').data('info').id,
+                })
+            );
         });
 
         cancelSelling.click(function () {
             if ($(this).is('.disabled'))
                 return;
-            alert('cancel selling');
+            settings.sendToSocket(
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'cancelSelling',
+                    'id': $(this).closest('tr').data('info').id,
+                })
+            );
         });
 
         hold.click(function () {
             if ($(this).is('.disabled'))
                 return;
-            alert('hold');
+            settings.sendToSocket(
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'hold',
+                    'id': $(this).closest('tr').data('info').id,
+                })
+            );
         });
 
         unhold.click(function () {
             if ($(this).is('.disabled'))
                 return;
-            alert('unhold');
+            settings.sendToSocket(
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'unhold',
+                    'id': $(this).closest('tr').data('info').id,
+                })
+            );
         });
 
         return row;
@@ -281,11 +397,13 @@
 
         var filter = $this.find('.filterText').val().toLowerCase();
         if (filter.length > 0) {
-            console.log(row.data('info'));
             show = false;
             if (row.data('info').name.toLowerCase().indexOf(filter) >= 0 || row.data('info').university_identification.toLowerCase().indexOf(filter) >= 0)
                 show = true
         }
+
+        if (show)
+            $this.find('tbody #addToQueue').remove();
 
         row.toggle(show);
     }
