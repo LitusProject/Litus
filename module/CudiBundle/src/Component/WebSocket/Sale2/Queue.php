@@ -176,7 +176,72 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $item->setStatus('collecting');
         $this->_entityManager->flush();
 
+        $enableCollectScanning = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
+        if ($enableCollectScanning !== '1')
+            return;
+
         $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
+
+        // TODO: return collect info
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function stopCollecting($id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('collected');
+        $this->_entityManager->flush();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cancelCollecting($id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('signed_in');
+        $this->_entityManager->flush();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function startSelling(User $user, $id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('selling');
+        $this->_entityManager->flush();
+
+        $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
+
+        // TODO: return sale info
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cancelSelling($id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('collected');
+        $this->_entityManager->flush();
     }
 
     /**
@@ -228,7 +293,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->university_identification = $item->getPerson()->getUniversityIdentification();
             $result->status = $item->getStatus();
-            $result->locked = isset($this->_queueItems[$item->getId()]);
+            $result->locked = isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : false;
 
             if ($item->getPayDesk()) {
                 $result->payDesk = $item->getPayDesk()->getName();
