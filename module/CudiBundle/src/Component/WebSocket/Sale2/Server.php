@@ -86,10 +86,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     $user->setExtraData('session', $command->session);
                 if (isset($command->queueType))
                     $user->setExtraData('queueType', $command->queueType);
-                if (isset($command->paydesk)) {
+                if (isset($command->paydesk))
                     $user->setExtraData('paydesk', $command->paydesk);
-                    echo $command->paydesk;
-                }
                 $this->sendQueue($user);
                 break;
         }
@@ -129,7 +127,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->findOneById($user->getExtraData('session'));
 
         $queue = new Queue($session, $this->_entityManager);
-
+echo $user->getExtraData('queueType');
         switch ($user->getExtraData('queueType')) {
             case 'queue':
                 $this->sendText($user, $queue->getJsonQueue());
