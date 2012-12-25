@@ -145,7 +145,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ),
                 array(
                     'key'         => 'common.piwik_api_url',
-                    'value'       => 'https://analytics.vtk.be/',
+                    'value'       => 'http://analytics.vtk.be/',
                     'description' => 'The URL to the Piwik installation',
                 ),
                 array(
