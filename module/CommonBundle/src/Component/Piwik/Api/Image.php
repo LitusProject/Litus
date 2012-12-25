@@ -70,9 +70,8 @@ class Image
      */
     private function _getImage()
     {
-        $client = new Client($this->_url);
-        $client->setParameterGet($this->_parameters);
-
-        return $client->send()->getBody();
+        return file_get_contents(
+            $this->_url . (substr($this->_url, -1) == '/' ? '?' : '/?') . http_build_query($this->_parameters)
+        );
     }
 }
