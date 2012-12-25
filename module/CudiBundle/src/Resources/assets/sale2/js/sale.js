@@ -13,9 +13,9 @@ var currentView = 'selectPaydesk';
         tErrorSocket: 'An error occurred while loading the queue.',
 
         paydesks: [],
+        translateStatus: function (status) {return status},
     };
 
-    var currentModal = null;
     var firstAction = true;
     var queue = null;
 
@@ -43,7 +43,12 @@ var currentView = 'selectPaydesk';
     function _init($this) {
         var settings = $this.data('saleSettings');
 
-        queue = $.queue();
+        queue = $.queue({
+            translateStatus: settings.translateStatus,
+            sendToSocket: function (command) {
+                $.webSocket('send', {name: settings.socketName, text: command});
+            },
+        });
 
         $.webSocket({
             name: settings.socketName,
@@ -101,22 +106,19 @@ var currentView = 'selectPaydesk';
             modal.permanentModal('hide');
 
             queue.queue('show');
-            currentModal = queue;
         });
 
         $this.append(modal);
         modal.permanentModal();
         $('.modal, .modal-backdrop').addClass('fade');
-        currentModal = modal;
     }
 
     function _socketError($this) {
         var settings = $this.data('saleSettings');
 
-        if (currentModal) {
-            $('.modal, .modal-backdrop').removeClass('fade');
-            currentModal.modal('hide');
-        }
+        $('.modal, .modal-backdrop').removeClass('fade');
+        $('.modal').modal('hide');
+        $('.modal-backdrop').remove();
 
         $this.html('').append(
             $('<div>', {'class': 'flashmessage alert alert-error fade'}).append(
