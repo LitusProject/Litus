@@ -43,6 +43,11 @@
             $(this).permanentModal({closable: !permantent});
             return this;
         },
+        hide : function (options) {
+            currentView = 'queue';
+            $(this).permanentModal('hide');
+            return this;
+        },
         updateQueue : function (data) {
             _updateQueue($(this), data);
             return this;
@@ -268,7 +273,6 @@
     }
 
     function _updateItem(settings, row, data) {
-        data.status = 'signed_in';
         row.find('.number').html(data.number);
         row.find('.name').html('').append(
             data.name,
