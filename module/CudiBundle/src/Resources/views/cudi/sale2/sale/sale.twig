@@ -16,7 +16,21 @@
                     {% for paydesk in paydesks %}
                         {'name': '{{ paydesk.getName() }}', 'code': '{{ paydesk.getCode() }}'},
                     {% endfor %}
-                ]
+                ],
+                translateStatus: function (status) {
+                    switch (status) {
+                        case 'signed_in':
+                            return 'Signed In';
+                        case 'collecting':
+                            return 'Collecting';
+                        case 'collected':
+                            return 'Collected';
+                        case 'selling':
+                            return 'Selling';
+                        case 'hold':
+                            return 'Hold';
+                    }
+                },
             });
         });
     </script>

@@ -17,6 +17,7 @@ return array(
     'CudiBundle\Component\WebSocket\Sale\Printer'                   => __DIR__ . '/src/Component/WebSocket/Sale/Printer.php',
     'CudiBundle\Component\WebSocket\Sale\Queue'                     => __DIR__ . '/src/Component/WebSocket/Sale/Queue.php',
     'CudiBundle\Component\WebSocket\Sale2\Queue'                    => __DIR__ . '/src/Component/WebSocket/Sale2/Queue.php',
+    'CudiBundle\Component\WebSocket\Sale2\QueueItem'                => __DIR__ . '/src/Component/WebSocket/Sale2/QueueItem.php',
     'CudiBundle\Component\WebSocket\Sale2\Server'                   => __DIR__ . '/src/Component/WebSocket/Sale2/Server.php',
     'CudiBundle\Controller\Admin\Article\CommentController'         => __DIR__ . '/src/Controller/Admin/Article/CommentController.php',
     'CudiBundle\Controller\Admin\Article\FileController'            => __DIR__ . '/src/Controller/Admin/Article/FileController.php',
