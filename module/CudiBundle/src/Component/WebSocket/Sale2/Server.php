@@ -127,7 +127,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->findOneById($user->getExtraData('session'));
 
         $queue = new Queue($session, $this->_entityManager);
-echo $user->getExtraData('queueType');
+
         switch ($user->getExtraData('queueType')) {
             case 'queue':
                 $this->sendText($user, $queue->getJsonQueue());
@@ -165,7 +165,7 @@ echo $user->getExtraData('queueType');
         $queue = new Queue($session, $this->_entityManager);
 
         switch ($command->action) {
-            case 'addToQueue':
+            case 'signIn':
                 $this->sendText($user, $queue->addPerson($command->universityIdentification));
                 // TODO: print ticket
                 break;
