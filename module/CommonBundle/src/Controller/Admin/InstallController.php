@@ -143,6 +143,21 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'value'       => '0',
                     'description' => 'Show sport information on homepage',
                 ),
+                array(
+                    'key'         => 'common.piwik_api_url',
+                    'value'       => 'https://analytics.vtk.be/',
+                    'description' => 'The URL to the Piwik installation',
+                ),
+                array(
+                    'key'         => 'common.piwik_token_auth',
+                    'value'       => 'd41d8cd98f00b204e9800998ecf8427e',
+                    'description' => 'The Piwik authentication token',
+                ),
+                array(
+                    'key'         => 'common.piwik_id_site',
+                    'value'       => '1',
+                    'description' => 'The Piwik ID of the site that should be queried',
+                ),
             )
         );
     }

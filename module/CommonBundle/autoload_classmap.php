@@ -71,6 +71,8 @@ return array(
     'CommonBundle\Component\I18n\Translator'                                           => __DIR__ . '/src/Component/I18n/Translator.php',
     'CommonBundle\Component\I18n\TranslatorServiceFactory'                             => __DIR__ . '/src/Component/I18n/TranslatorServiceFactory.php',
     'CommonBundle\Component\Mvc\View\Http\InjectTemplateListener'                      => __DIR__ . '/src/Component/Mvc/View/Http/InjectTemplateListener.php',
+    'CommonBundle\Component\Piwik\Analytics'                                           => __DIR__ . '/src/Component/Piwik/Analytics.php',
+    'CommonBundle\Component\Piwik\Api\Image'                                           => __DIR__ . '/src/Component/Piwik/Api/Image.php',
     'CommonBundle\Component\Util\AcademicYear'                                         => __DIR__ . '/src/Component/Util/AcademicYear.php',
     'CommonBundle\Component\Util\Exception\InvalidArgumentException'                   => __DIR__ . '/src/Component/Util/Exception/InvalidArgumentException.php',
     'CommonBundle\Component\Util\File\Exception\FailedToOpenException'                 => __DIR__ . '/src/Component/Util/File/Exception/FailedToOpenException.php',
