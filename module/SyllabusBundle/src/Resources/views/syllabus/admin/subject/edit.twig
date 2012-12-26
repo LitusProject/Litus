@@ -88,7 +88,7 @@
 			    </div>
 			</div>
 		{% endif %}
-		{% if hasAccess('admin_subject_comment', 'manage') %}
+		{% if hasAccess('admin_subject_comment', 'subject') %}
 			<div class="sidebox">
 			    <div class="title">View Comments</div>
 			    <div class="content">
@@ -96,7 +96,7 @@
 			            <i>Please hit the link below to view the comments to this subject!</i>
 			        </p>
 			    	<p>
-			    		<a href="{{ url("admin_subject_comment", {"action": "manage", "id": subject.getId()}) }}">&rarr; View Comments</a>
+			    		<a href="{{ url("admin_subject_comment", {"action": "subject", "id": subject.getId()}) }}">&rarr; View Comments</a>
 			    	</p>
 			    </div>
 			</div>

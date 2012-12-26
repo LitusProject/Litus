@@ -28,14 +28,17 @@ use CommonBundle\Component\Util\AcademicYear,
 class Server extends \CommonBundle\Component\WebSocket\Server
 {
     /**
-     * @var Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     private $_entityManager;
 
     /**
+     * @var \CudiBundle\Component\Websocket\Sale2\Queue
+     */
+    private $_queue;
+
+    /**
      * @param Doctrine\ORM\EntityManager $entityManager
-     * @param string $address The url for the websocket master socket
-     * @param integer $port The port to listen on
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -49,6 +52,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         parent::__construct($address, $port);
 
         $this->_entityManager = $entityManager;
+        $this->_queue = new Queue($entityManager);
     }
 
     /**
@@ -88,6 +92,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     $user->setExtraData('session', $command->session);
                 if (isset($command->queueType))
                     $user->setExtraData('queueType', $command->queueType);
+                if (isset($command->paydesk))
+                    $user->setExtraData('paydesk', $command->paydesk);
                 $this->sendQueue($user);
                 break;
         }
@@ -102,12 +108,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
-        /*foreach($this->_lockedItems as $key => $value) {
-            if ($user == $value) {
-                unset($this->_lockedItems[$key]);
-                break;
-            }
-        }*/
+        $this->_queue->unlockByUser($user);
         parent::onClose($user, $statusCode, $reason);
         $this->sendQueueToAll();
     }
@@ -126,14 +127,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($user->getExtraData('session'));
 
-        $queue = new Queue($session, $this->_entityManager);
-
         switch ($user->getExtraData('queueType')) {
             case 'queue':
-                $this->sendText($user, $queue->getJsonQueue());
+                $this->sendText($user, $this->_queue->getJsonQueue($session));
                 break;
             case 'queueList':
-                $this->sendText($user, $queue->getJsonQueueList());
+                $this->sendText($user, $this->_queue->getJsonQueueList($session));
                 break;
         }
     }
@@ -162,14 +161,37 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($user->getExtraData('session'));
 
-        $queue = new Queue($session, $this->_entityManager);
-
         switch ($command->action) {
+            case 'signIn':
+                $this->_signIn($user, $command->universityIdentification);
+                break;
             case 'addToQueue':
-                $this->sendText($user, $queue->addPerson($command->universityIdentification));
-                // TODO: print ticket
+                $this->_addToQueue($user, $command->universityIdentification);
+                break;
+            case 'startCollecting':
+                $this->_startCollecting($user, $command->id);
+                break;
+            case 'cancelCollecting':
+                $this->_cancelCollecting($user, $command->id);
+                break;
+            case 'stopCollecting':
+                $this->_stopCollecting($user, $command->id);
+                break;
+            case 'startSelling':
+                $this->_startSelling($user, $command->id);
+                break;
+            case 'cancelSelling':
+                $this->_cancelSelling($user, $command->id);
+                break;
+            case 'hold':
+                $this->_hold($command->id);
+                break;
+            case 'unhold':
+                $this->_unhold($command->id);
                 break;
         }
+
+        $this->sendQueueToAll();
     }
 
     /**
@@ -199,5 +221,63 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         }
 
         return $academicYear;
+    }
+
+    private function _signIn(User $user, $universityIdentification)
+    {
+        $session = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->findOneById($user->getExtraData('session'));
+
+        $this->sendText($user, $this->_queue->addPerson($session, $universityIdentification));
+        // TODO: print ticket
+    }
+
+    private function _addToQueue(User $user, $universityIdentification)
+    {
+        $session = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->findOneById($user->getExtraData('session'));
+
+        $this->_queue->addPerson($session, $universityIdentification);
+    }
+
+    private function _startCollecting(User $user, $id)
+    {
+        $result = $this->_queue->startCollecting($user, $id);
+        if ($result)
+            $this->sendText($user, $result);
+
+        // TODO: print ticket
+    }
+
+    private function _stopCollecting(User $user, $id)
+    {
+        $this->_queue->stopCollecting($id);
+    }
+
+    private function _cancelCollecting(User $user, $id)
+    {
+        $this->_queue->cancelCollecting($id);
+    }
+
+    private function _startSelling(User $user, $id)
+    {
+        $this->_queue->startSelling($user, $id);
+    }
+
+    private function _cancelSelling(User $user, $id)
+    {
+        $this->_queue->cancelSelling($id);
+    }
+
+    private function _hold($id)
+    {
+        $this->_queue->setHold($id);
+    }
+
+    private function _unhold($id)
+    {
+        $this->_queue->setUnhold($id);
     }
 }

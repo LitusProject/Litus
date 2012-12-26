@@ -33,7 +33,7 @@
                     <address>
                         <strong>{{ translate('Primary Address&mdash;Student Room or Home') }}</strong><br>
                         {{ academic.getPrimaryAddress().getStreet() }} {{ academic.getPrimaryAddress().getNumber() }}
-                            {% if academic.getPrimaryAddress().getMailbox() %}
+                            {% if academic.getPrimaryAddress().getMailbox() is not null %}
                                 / {{ academic.getPrimaryAddress().getMailbox() }}
                             {% endif %}<br>
                         {{ academic.getPrimaryAddress().getPostal() }} {{ academic.getPrimaryAddress().getCity() }}<br>
@@ -45,7 +45,7 @@
                         <strong>{{ translate('Secondary Address&mdash;Home') }}</strong><br>
                         {{ academic.getSecondaryAddress().getStreet() }} {{ academic.getSecondaryAddress().getNumber() }}
                             {% if academic.getSecondaryAddress().getMailbox() %}
-                                / {{ academic.getSecondaryAddress().getMailbox() }}
+                                / {{ academic.getSecondaryAddress().getMailbox() is not null }}
                             {% endif %}<br>
                         {{ academic.getSecondaryAddress().getPostal() }} {{ academic.getSecondaryAddress().getCity() }}<br>
                         {{ academic.getSecondaryAddress().getCountry() }}

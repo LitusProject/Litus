@@ -15,6 +15,7 @@
 namespace CudiBundle\Controller\Sale2;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Sales\Returned as ReturnedLog,
     CudiBundle\Entity\Sales\QueueItem,
     CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
     Zend\View\Model\ViewModel;
@@ -36,7 +37,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        $payDesks = $this->getEntityManager()
+        $paydesks = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
 
@@ -47,7 +48,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
                 'barcodePrefix' => $barcodePrefix,
-                'payDesks' => $payDesks,
+                'paydesks' => $paydesks,
                 'enableCollectScanning' => $enableCollectScanning,
             )
         );
@@ -100,6 +101,8 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     }
 
                     $article->setStockValue($article->getStockValue() + 1);
+
+                    $this->getEntityManager()->persist(new ReturnedLog($this->getAuthentication()->getPersonObject(), $article));
 
                     $this->getEntityManager()->flush();
 

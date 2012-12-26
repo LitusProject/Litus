@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="study">Subjects</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('admin_subject_comment', 'manage') %}
+                <li><a {% if 'admin_subject_comment' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_subject_comment') }}">Comments</a></li>
+            {% endif %}
+            {% if hasAccess('admin_subject', 'manage') %}
+                <li><a {% if 'admin_subject' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_subject') }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

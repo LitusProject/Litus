@@ -210,9 +210,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
         // StaticMap View Helper
         $renderer->getHelperPluginManager()->setInvokableClass(
-            'staticMapUrl', 'CommonBundle\Component\View\Helper\StaticMapUrl'
+            'staticMap', 'CommonBundle\Component\View\Helper\StaticMap'
         );
-        $renderer->plugin('staticMapUrl')
+        $renderer->plugin('staticMap')
             ->setEntityManager($this->getEntityManager());
 
         // Hide Email Helper

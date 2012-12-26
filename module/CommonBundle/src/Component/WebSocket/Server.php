@@ -252,7 +252,7 @@ class Server
 
         $header = chr(0x81);
 
-        if ($len >= 125) {
+        if ($len >= 126) {
             $header .= chr(126) . pack('n', $len);
         } else {
             $header .= chr($len);
@@ -275,7 +275,7 @@ class Server
 
         $header = chr(0x81);
 
-        if ($len >= 125) {
+        if ($len >= 126) {
             $header .= chr(126) . pack('n', $len);
         } else {
             $header .= chr($len);

@@ -1,138 +1,69 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'syllabus/admin/study/partials/navigation.twig' %}
+    {% include 'syllabus/admin/subject/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
-	<div class="flashmessage success_message full_width comment_removed_success hide">
-		<div class="title">Success</div>
-		<div class="content">
-			<p>The comment was successfully removed!</p>
-		</div>
-	</div>
-	<div class="flashmessage error_message full_width comment_removed_error hide">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while trying to delete an comment.</p>
-		</div>
-	</div>
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-		<h1>Subject</h1>
+    {% include 'syllabus/admin/subject/comment/partials/years.twig' %}
 
-		<p>Code: <b>{{ subject.getCode() }}</b></p>
-		<p>Name: <b>{{ subject.getName() }}</b></p>
-		<p>Semester: <b>{{ subject.getSemester() }}</b></p>
-		<p>Credits: <b>{{ subject.getCredits() }}</b></p>
-		<br />
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th width="100px">Date</th>
+                <th width="140px">Person</th>
+                <th>Summary</th>
+                <th width="80px">Type</th>
+                <th width="70px">Action</th>
+            </tr>
 
-        {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
-		<br style="clear:both"/>
+            {% for comment in paginator %}
+                <tr class="item item-{{ comment.getId() }}">
+                    <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ comment.getPerson().getFullName() }}</td>
+                    <td>{{ comment.getSummary() }}</td>
+                    <td>{{ comment.getType()|capitalize }}</td>
+                    <td class="actions">
+                        <a href="#" class="view" data-text="{{ comment.getText() }}">View</a>
+                        {% if hasAccess('admin_subject_comment', 'subject') %}
+                            <a href="{{ url('admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
-		<table class="full_width manage" id="subjectComments">
-	        <tr>
-	            <th width="100px">Date</th>
-	            <th width="140px">Person</th>
-	            <th>Summary</th>
-	            <th width="80px">Type</th>
-	            <th width="70px">Action</th>
-	        </tr>
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
 
-	        {% for comment in comments %}
-	            <tr class="item item-{{ comment.getId() }}">
-	                <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
-	                <td>{{ comment.getPerson().getFullName() }}</td>
-	                <td>{{ comment.getSummary() }}</td>
-	                <td>{{ comment.getType()|capitalize }}</td>
-					<td class="actions">
-						<a href="#" class="view" data-text="{{ comment.getText() }}">View</a>
-						{% if hasAccess('admin_subject_comment', 'delete') %}
-						    <a href="#" class="delete" data-id="{{ comment.getId() }}" data-author="{{ comment.getPerson().getFullName() }}">Delete</a>
-						{% endif %}
-	                </td>
-	            </tr>
-	        {% endfor %}
-	    </table>
-	</div>
-
-	<div class="modal hide fade" id="viewComment">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Subject Comment
-		</div>
-		<div class="modal-body">
-			<pre class="text"></pre>
-	        <br style="clear:both" />
-			<div class="footer">
-				<input type="button" data-dismiss="modal" value="Close">
-			</div>
-		</div>
-	</div>
-
-	<div class="modal hide fade" id="removeComment">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Comment Delete
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the comment of <b class="author"></b>!<br />
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="viewComment">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Subject Comment
+        </div>
+        <div class="modal-body">
+            <pre class="text"></pre>
+            <br style="clear:both" />
+            <div class="footer">
+                <input type="button" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.item .view').click(openViewModal);
-			$('.item .delete').click(openRemoveModal);
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .view').click(openViewModal);
+        });
 
-		function openViewModal(e) {
-			var $this = $(this);
+        function openViewModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var viewComment = $('#viewComment');
-			viewComment.find('.text').html($this.data('text'));
-			viewComment.modal();
-		}
-
-		function openRemoveModal(e) {
-			var $this = $(this);
-
-			e.preventDefault();
-			var removeComment = $('#removeComment');
-			removeComment.find('.author').html($(this).data('author'));
-			var id = $this.data('id');
-			removeComment.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_subject_comment', {"action": "delete"})}}' + id, function (data) {
-				    if (data && 'success' == data.status) {
-						$('.flashmessage').addClass('hide');
-						$('.comment_removed_success').removeClass('hide');
-						$('.item-' + id).remove();
-						removeComment.modal('hide');
-					} else {
-					    errorRemove();
-					}
-				}, 'json').error(errorRemove);
-			});
-			removeComment.modal();
-		}
-
-		function errorRemove() {
-			$('.flashmessage').addClass('hide');
-			$('.comment_removed_error').removeClass('hide');
-			$('#removeComment').modal('hide');
-		}
-	</script>
+            e.preventDefault();
+            var viewComment = $('#viewComment');
+            viewComment.find('.text').html($this.data('text'));
+            viewComment.modal();
+        }
+    </script>
 {% endblock %}

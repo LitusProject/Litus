@@ -15,9 +15,10 @@
 namespace CudiBundle\Component\WebSocket\Sale2;
 
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CudiBundle\Entity\Sales\Session,
-    CudiBundle\Entity\Sales\QueueItem,
+    CudiBundle\Entity\Sales\QueueItem as EntityQueueItem,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -28,29 +29,29 @@ use CommonBundle\Component\Util\AcademicYear,
 class Queue extends \CommonBundle\Component\WebSocket\Server
 {
     /**
-     * @var \CudiBundle\Entity\Sales\Session The sale session
-     */
-    private $_session;
-
-    /**
      * @var Doctrine\ORM\EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Session $session The sale session
+     * @var array Array with active queue items (selling or collecting)
+     */
+    private $_queueItems;
+
+    /**
      * @param Doctrine\ORM\EntityManager $entityManager
      */
-    public function __construct(Session $session, EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->_session = $session;
         $this->_entityManager = $entityManager;
     }
 
     /**
+     * @param \CudiBundle\Entity\Sales\Session $session The sale session
+     *
      * @return string
      */
-    public function getJsonQueue()
+    public function getJsonQueue(Session $session)
     {
         $repository = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem');
@@ -59,16 +60,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             (object) array(
                 'queue' => array(
                     'selling' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($this->_session, 'selling')
+                        $repository->findAllByStatus($session, 'selling')
                     ),
                     'collected' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($this->_session, 'collected')
+                        $repository->findAllByStatus($session, 'collected')
                     ),
                     'collecting' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($this->_session, 'collecting')
+                        $repository->findAllByStatus($session, 'collecting')
                     ),
                     'signed_in' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($this->_session, 'signed_in')
+                        $repository->findAllByStatus($session, 'signed_in')
                     ),
                 )
             )
@@ -76,27 +77,30 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * @param \CudiBundle\Entity\Sales\Session $session The sale session
+     *
      * @return string
      */
-    public function getJsonQueueList()
+    public function getJsonQueueList(Session $session)
     {
         return json_encode(
             (object) array(
                 'queue' => $this->_createJsonQueue(
                     $this->_entityManager
                         ->getRepository('CudiBundle\Entity\Sales\QueueItem')
-                        ->findAllBySession($this->_session)
+                        ->findAllBySession($session)
                 )
             )
         );
     }
 
     /**
+     * @param \CudiBundle\Entity\Sales\Session $session The sale session
      * @param string $universityIdentification
      *
      * @return string
      */
-    public function addPerson($universityIdentification)
+    public function addPerson(Session $session, $universityIdentification)
     {
         $person = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
@@ -132,10 +136,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $queueItem = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
-            ->findOneByPersonNotSold($this->_session, $person);
+            ->findOneByPersonNotSold($session, $person);
 
         if (null == $queueItem) {
-            $queueItem = new QueueItem($this->_entityManager, $person, $this->_session);
+            $queueItem = new EntityQueueItem($this->_entityManager, $person, $session);
 
             $this->_entityManager->persist($queueItem);
             $this->_entityManager->flush();
@@ -146,6 +150,130 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'queueNumber' => $queueItem->getQueueNumber(),
             )
         );
+    }
+
+    /**
+     * @param \CommonBundle\Component\WebSocket\User $user
+     */
+    public function unlockByUser(User $user)
+    {
+        foreach($this->_queueItems as $item) {
+            if ($item->getUser() == $user)
+                unset($this->_queueItems[$item->getId()]);
+        }
+    }
+
+    /**
+     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param integer $id
+     */
+    public function startCollecting(User $user, $id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('collecting');
+        $this->_entityManager->flush();
+
+        $enableCollectScanning = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
+        if ($enableCollectScanning !== '1')
+            return;
+
+        $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
+
+        // TODO: return collect info
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function stopCollecting($id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('collected');
+        $this->_entityManager->flush();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cancelCollecting($id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('signed_in');
+        $this->_entityManager->flush();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function startSelling(User $user, $id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('selling');
+        $this->_entityManager->flush();
+
+        $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
+
+        // TODO: return sale info
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cancelSelling($id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('collected');
+        $this->_entityManager->flush();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setHold($id)
+    {
+        if (isset($this->_queueItems[$id]))
+            unset($this->_queueItems[$id]);
+
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('hold');
+        $this->_entityManager->flush();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setUnhold($id)
+    {
+        if (isset($this->_queueItems[$id]))
+            unset($this->_queueItems[$id]);
+
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setStatus('signed_in');
+        $this->_entityManager->flush();
     }
 
     /**
@@ -165,7 +293,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->university_identification = $item->getPerson()->getUniversityIdentification();
             $result->status = $item->getStatus();
-            //$result->locked = isset($this->_lockedItems[$item->getId()]);
+            $result->locked = isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : false;
 
             if ($item->getPayDesk()) {
                 $result->payDesk = $item->getPayDesk()->getName();

@@ -166,13 +166,13 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'deleteStudy', 'edit', 'manage', 'studies'
                     ),
                     'admin_study' => array(
-                        'manage', 'search', 'typeahead'
+                        'edit', 'manage', 'search', 'searchSubject', 'typeahead'
                     ),
                     'admin_subject' => array(
-                        'manage', 'search', 'subject', 'typeahead'
+                        'edit', 'manage', 'search', 'typeahead'
                     ),
                     'admin_subject_comment' => array(
-                        'delete', 'manage'
+                        'delete', 'manage', 'subject'
                     ),
                     'admin_update_syllabus' => array(
                         'index', 'updateNow'

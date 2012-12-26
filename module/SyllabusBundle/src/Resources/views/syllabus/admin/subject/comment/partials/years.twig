@@ -1,0 +1,9 @@
+<header id="controller_sub_header">
+    <nav id="controller_sub_nav">
+        <ul id="supplier_nav">
+            {% for academicYear in academicYears %}
+                <li><a {% if academicYear.getCode() == currentAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("admin_subject_comment", {"action": "manage", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</header>
