@@ -64,7 +64,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     {
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-type' => 'application/rss+xml',
+            'Content-Type' => 'application/rss+xml',
         ));
         $this->getResponse()->setHeaders($headers);
 

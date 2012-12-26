@@ -66,28 +66,27 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Checkbox('irreeel');
-        $field->setLabel('I want to receive my Ir.Reëel at CuDi')
+        $field->setLabel('Ir.Reëel at CuDi')
             ->setValue($metaData->receiveIrReeelAtCudi());
         $this->add($field);
 
         $field = new Checkbox('bakske');
-        $field->setLabel('I want to receive \'t Bakske by e-mail')
+        $field->setLabel('Bakske by E-mail')
             ->setValue($metaData->bakskeByMail());
         $this->add($field);
 
         $field = new Select('tshirt_size');
         $field->setLabel('T-shirt Size')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-small')
             ->setAttribute(
                 'options',
-                MetaData::$POSSIBLE_TSHIRT_SIZES
+                MetaData::$possibleSizes
             )
             ->setValue($metaData->getTshirtSize());
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'secretary');
+            ->setAttribute('class', 'secretary_edit');
         $this->add($field);
     }
 
