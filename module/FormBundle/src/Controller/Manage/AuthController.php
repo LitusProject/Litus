@@ -57,7 +57,7 @@ class AuthController extends \FormBundle\Component\Controller\FormController
                         new FlashMessage(
                             FlashMessage::ERROR,
                             'ERROR',
-                            'You could not be logged in!'
+                            'The given username and password did not match. Please try again.'
                         )
                     );
                 }

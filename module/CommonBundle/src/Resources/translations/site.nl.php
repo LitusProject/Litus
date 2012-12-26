@@ -45,7 +45,7 @@ return array(
     'Login' => 'Aanmelden',
 
     'You have been successfully logged in!' => 'Je bent succesvol aangemeld!',
-    'You could not be logged in!' => 'Je kon niet aangemeld worden!',
+    'The given username and password did not match. Please try again.' => 'De gebruikersnaam en het wachtwoord komen niet overeen. Probeer het nog een keer.',
     'You have been successfully logged out!' => 'Je bent succesvol afgemeld!',
 
     'Activate' => 'Activeren',

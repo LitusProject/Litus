@@ -57,7 +57,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                         new FlashMessage(
                             FlashMessage::ERROR,
                             'ERROR',
-                            'You could not be logged in!'
+                            'The given username and password did not match. Please try again.'
                         )
                     );
                 }
