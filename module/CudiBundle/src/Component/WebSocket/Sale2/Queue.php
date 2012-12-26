@@ -44,6 +44,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function __construct(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+        $this->_queueItems = array();
     }
 
     /**
