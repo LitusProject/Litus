@@ -15,6 +15,7 @@
 namespace CudiBundle\Controller\Sale2;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Sales\Returned as ReturnedLog,
     CudiBundle\Entity\Sales\QueueItem,
     CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
     Zend\View\Model\ViewModel;
@@ -100,6 +101,8 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     }
 
                     $article->setStockValue($article->getStockValue() + 1);
+
+                    $this->getEntityManager()->persist(new ReturnedLog($this->getAuthentication()->getPersonObject(), $article));
 
                     $this->getEntityManager()->flush();
 
