@@ -57,7 +57,7 @@ class Academic extends \MailBundle\Entity\Entry
     /**
      * @return string
      */
-    public function getMailAddress()
+    public function getEmailAddress()
     {
         return $this->academic->getEmail();
     }

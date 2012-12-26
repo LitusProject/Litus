@@ -53,25 +53,21 @@ class Zip
         $zip = new ZipArchive();
         $now = new DateTime();
 
-        $file = new TmpFile();
-        $file->appendContent($now->format('YmdHi'));
-
         $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-        $zip->addFile($file->getFilename(), 'TIME');
+        $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
 
         foreach($this->_lists as $list) {
-            $file = new TmpFile();
-
             $entries = $this->_entityManager
                 ->getRepository('MailBundle\Entity\Entry')
                 ->findByList($list);
 
+            $entriesString = '';
             foreach ($entries as $entry)
-                $file->appendContent($entry->getMailAddress() . PHP_EOL);
+                $entriesString .= $entry->getEmailAddress() . PHP_EOL;
 
             $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-            $zip->addFile($file->getFilename(), $list->getName());
+            $zip->addFromString($list->getName(), $entriesString);
             $zip->close();
         }
     }
