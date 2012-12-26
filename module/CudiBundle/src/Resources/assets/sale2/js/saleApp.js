@@ -19,12 +19,14 @@ var currentView = 'selectPaydesk';
 
     var firstAction = true;
     var queue = null;
+    var collect = null;
+    var sale = null;
 
     var methods = {
         init : function (options) {
             var settings = $.extend(defaults, options);
             var $this = $(this);
-            $(this).data('saleSettings', settings);
+            $(this).data('saleAppSettings', settings);
 
             _init($this);
             return this;
@@ -42,7 +44,7 @@ var currentView = 'selectPaydesk';
     };
 
     function _init($this) {
-        var settings = $this.data('saleSettings');
+        var settings = $this.data('saleAppSettings');
 
         queue = $.queue({
             barcodePrefix: settings.barcodePrefix,
@@ -50,6 +52,10 @@ var currentView = 'selectPaydesk';
             sendToSocket: function (command) {
                 $.webSocket('send', {name: settings.socketName, text: command});
             },
+        });
+
+        collect = $this.collect({
+
         });
 
         $('body').barcodeControl({
@@ -71,6 +77,9 @@ var currentView = 'selectPaydesk';
             message: function (e, data) {
                 if (data.queue) {
                     queue.queue('updateQueue', data.queue);
+                } else if (data.collect) {
+                    queue.queue('hide');
+                    collect.collect('show', data.collect);
                 }
             },
             error: function (e) {
@@ -82,7 +91,7 @@ var currentView = 'selectPaydesk';
     }
 
     function _selectPaydesk($this) {
-        var settings = $this.data('saleSettings');
+        var settings = $this.data('saleAppSettings');
 
         var modal = $('<div>', {'class': 'modal ' + (firstAction ? '' : 'fade')}).append(
             $('<div>', {'class': 'modal-header'}).append(
@@ -117,13 +126,13 @@ var currentView = 'selectPaydesk';
             queue.queue('show');
         });
 
-        $this.append(modal);
+        $('body').append(modal);
         modal.permanentModal();
         $('.modal, .modal-backdrop').addClass('fade');
     }
 
     function _socketError($this) {
-        var settings = $this.data('saleSettings');
+        var settings = $this.data('saleAppSettings');
 
         $('.modal, .modal-backdrop').removeClass('fade');
         $('.modal').modal('hide');
