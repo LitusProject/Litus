@@ -1,10 +1,13 @@
 (function ($) {
     var defaults = {
         tCurrentCustomer: 'Current Customer',
-        tComment: 'Comment',
+        tComments: 'Comments',
         tQueue: 'Queue - F8',
         tConclude: 'Finish - F9',
         tCancel: 'Cancel - F10',
+        saveComment: function (id, comment) {},
+        showQueue: function () {},
+        cancel: function (id) {},
     };
 
     var methods = {
@@ -20,7 +23,11 @@
         },
         show : function (data) {
             currentView = 'collect';
-            _show($(this), data);
+            $(this).saleInterface('show', data);
+            return this;
+        },
+        hide : function (data) {
+            $(this).saleInterface('hide');
             return this;
         },
     };
@@ -37,11 +44,5 @@
 
     function _init($this) {
         var settings = $this.data('collectSettings');
-    }
-
-    function _show($this, data) {
-        var settings = $this.data('collectSettings');
-
-        $this.saleInterface('show', data);
     }
 })(jQuery);

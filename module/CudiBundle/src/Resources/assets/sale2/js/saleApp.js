@@ -55,7 +55,30 @@ var currentView = 'selectPaydesk';
         });
 
         collect = $this.collect({
-
+            saveComment: function (id, comment) {
+                $.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'saveComment',
+                        'id': id,
+                        'comment': comment,
+                    })
+                });
+            },
+            showQueue: function () {
+                queue.queue('show', {permanent: false});
+            },
+            cancel: function (id) {
+                $.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'cancelCollecting',
+                        'id': id,
+                    })
+                });
+                collect.collect('hide');
+                queue.queue('show');
+            },
         });
 
         $('body').barcodeControl({
