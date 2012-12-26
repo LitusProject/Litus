@@ -11,6 +11,7 @@
                 socketUrl: '{{ socketUrl }}',
                 sessionId: {{ session.getId() }},
                 authKey: '{{ key }}',
+                barcodePrefix: {{ barcodePrefix }},
 
                 paydesks: [
                     {% for paydesk in paydesks %}

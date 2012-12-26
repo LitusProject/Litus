@@ -185,7 +185,7 @@ return array(
             '@common_jquery',
             '@bootstrap_css',
             '@sale2_js',
-            '@sale_css',
+            '@sale2_css',
             '@common_typeahead_remote',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
@@ -195,7 +195,7 @@ return array(
         'sale2_queue' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@sale_css',
+            '@sale2_css',
             '@queue_js',
             '@bootstrap_js_alert',
             '@common_socket',

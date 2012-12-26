@@ -1,11 +1,6 @@
 (function ($) {
     var defaults = {
-        width: 800,
-        widthNum: 50,
-        widthName: 330,
-        widthStatus: 120,
-        widthActions: 230,
-        height: 300,
+        barcodePrefix: 0,
 
         tQueueTitle: 'Queue',
         tUniversityIdentification: 'University Identification',
@@ -56,7 +51,11 @@
             lastSold = data;
             $(this).find('.undoLastSelling').toggle(lastSold > 0);
             return this;
-        }
+        },
+        gotBarcode : function (barcode) {
+            _gotBarcode($(this), barcode);
+            return this;
+        },
     };
 
     $.fn.queue = function (method) {
@@ -76,7 +75,7 @@
     function _init($this) {
         var settings = $this.data('queueSettings');
 
-        $this.addClass('modal fade').html('').append(
+        $this.addClass('modal fade queueModal').html('').append(
             $('<div>', {'class': 'modal-header'}).append(
                 $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide')}),
                 $('<div>', {'class': 'form-search'}).append(
@@ -93,17 +92,13 @@
                 $('<table>', {'class': 'table table-striped table-bordered'}).append(
                     $('<thead>').append(
                         $('<tr>').append(
-                            $('<th>', {'style': 'width: ' + settings.widthNum + 'px'}).html('Num'),
-                            $('<th>', {'style': 'width: ' + settings.widthName + 'px'}).html('Name'),
-                            $('<th>', {'style': 'width: ' + settings.widthStatus + 'px'}).html('Status'),
-                            $('<th>', {'style': 'width: ' + settings.widthActions + 'px'}).html('Action')
+                            $('<th>', {'class': 'number'}).html('Num'),
+                            $('<th>', {'class': 'name'}).html('Name'),
+                            $('<th>', {'class': 'status'}).html('Status'),
+                            $('<th>', {'class': 'actions'}).html('Action')
                         )
-                    ).css('display', 'block'),
-                    $('<tbody>').css({
-                        'display': 'block',
-                        'max-height': settings.height + 'px',
-                        'overflow': 'auto',
-                    })
+                    ),
+                    $('<tbody>')
                 )
             ),
             $('<div>', {'class': 'modal-footer'}).append(
@@ -111,19 +106,16 @@
                     hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
                     settings.tHideHold
                 ),
-                undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling'}).append(
+                undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling', 'data-key': '117'}).append(
                     $('<i>', {'class': 'icon-arrow-left icon-white'}),
                     settings.tUndoLastSelling
                 ),
-                printNext = $('<button>', {'class': 'btn btn-success'}).append(
+                printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
                     $('<i>', {'class': 'icon-print icon-white'}),
                     settings.tPrintNext
                 )
             )
-        ).css({
-            'width': settings.width + 'px',
-            'margin-left': - settings.width / 2 + 'px',
-        });
+        );
 
         hideHold.change(function () {
             $this.find('tbody tr').each(function () {
@@ -151,12 +143,12 @@
                 if (!found) {
                     $this.find('tbody').append(
                         $('<tr>', {'id': 'addToQueue'}).append(
-                            $('<td>', {'style': 'width: ' + settings.widthNum + 'px'}),
-                            $('<td>', {'style': 'width: ' + settings.widthName + 'px'}).html(
+                            $('<td>', {'class': 'number'}),
+                            $('<td>', {'class': 'name'}).html(
                                 settings.tNotFoundInQueue.replace('{{ name }}', filter)
                             ),
-                            $('<td>', {'style': 'width: ' + settings.widthStatus + 'px'}),
-                            $('<td>', {'style': 'width: ' + settings.widthActions + 'px'}).css('padding', '3px 8px').append(
+                            $('<td>', {'class': 'status'}),
+                            $('<td>', {'class': 'actions'}).append(
                                 $('<button>', {'class': 'btn btn-success'}).html(settings.tAddToQueue).data('id', filter).click(function () {
                                     settings.sendToSocket(
                                         JSON.stringify({
@@ -182,6 +174,7 @@
         });
 
         printNext.click(function () {
+            alert('next');
             $this.find('tbody tr').each(function () {
                 if ($(this).data('info').status == 'signed_in' && $(this).data('info').id > lastPrinted) {
                     lastPrinted = $(this).data('info').id;
@@ -285,10 +278,10 @@
 
     function _createItem(settings, data) {
         var row = $('<tr>', {'id': 'item-' + data.id}).append(
-            $('<td>', {'class': 'number', 'style': 'width: ' + settings.widthNum + 'px'}),
-            $('<td>', {'class': 'name', 'style': 'width: ' + settings.widthName + 'px'}),
-            $('<td>', {'class': 'status', 'style': 'width: ' + settings.widthStatus + 'px'}),
-            $('<td>', {'style': 'width: ' + settings.widthActions + 'px'}).css('padding', '3px 8px').append(
+            $('<td>', {'class': 'number'}),
+            $('<td>', {'class': 'name'}),
+            $('<td>', {'class': 'status'}),
+            $('<td>', {'class': 'actions'}).append(
                 startCollecting = $('<button>', {'class': 'btn btn-success startCollecting'}).html(settings.tPrint).hide(),
                 stopCollecting = $('<button>', {'class': 'btn btn-success stopCollecting'}).html(settings.tDone).hide(),
                 cancelCollecting = $('<button>', {'class': 'btn btn-danger cancelCollecting'}).html(settings.tCancel).hide(),
@@ -300,12 +293,6 @@
         );
 
         _updateItem(settings, row, data);
-
-        row.find('button').css('margin-right', '5px');
-        hold.css({
-            'float': 'right',
-            'margin-right': 0,
-        });
 
         startCollecting.click(function () {
             if ($(this).is('.disabled'))
@@ -410,5 +397,23 @@
             $this.find('tbody #addToQueue').remove();
 
         row.toggle(show);
+    }
+
+    function _gotBarcode($this, barcode) {
+        var settings = $this.data('queueSettings');
+        barcode = barcode - settings.barcodePrefix;
+
+        $this.find('tbody tr:visible').each(function () {
+            if ($(this).data('info').id == barcode) {
+                switch ($(this).data('info').status) {
+                    case 'collecting':
+                        $(this).find('.stopCollecting').click();
+                        break;
+                    case 'collected':
+                        $(this).find('.startSelling').click();
+                        break;
+                }
+            }
+        });
     }
 })(jQuery);
