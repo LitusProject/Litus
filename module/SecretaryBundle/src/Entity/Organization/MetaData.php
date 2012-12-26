@@ -83,7 +83,7 @@ class MetaData
     /**
      * @var array The possible T-shirt sizes
      */
-    public static $POSSIBLE_TSHIRT_SIZES = array(
+    public static $possibleSizes = array(
         'M_S' => 'S - Male',
         'M_M' => 'M - Male',
         'M_L' => 'L - Male',
@@ -121,7 +121,7 @@ class MetaData
      */
     public static function isValidTshirtSize($size)
     {
-        return $size == null || array_key_exists($size, self::$POSSIBLE_TSHIRT_SIZES);
+        return $size == null || array_key_exists($size, self::$possibleSizes);
     }
 
     /**

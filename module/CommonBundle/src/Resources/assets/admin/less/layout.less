@@ -286,7 +286,9 @@ h1 {
         float: left;
 
         img {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            margin-left: 5px;
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10;
+            .box-shadow(0 0 5px 2px #7F7C7C);
         }
 
 	    .form {

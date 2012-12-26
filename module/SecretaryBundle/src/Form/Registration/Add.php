@@ -174,7 +174,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('class', $field->getAttribute('class') . ' input-small')
             ->setAttribute(
                 'options',
-                MetaData::$POSSIBLE_TSHIRT_SIZES
+                MetaData::$possibleSizes
             );
         $organization->add($field);
 

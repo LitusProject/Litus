@@ -191,7 +191,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
-            'Content-type' => 'application/pdf',
+            'Content-Type' => 'application/pdf',
             'Content-Length' => filesize($edition->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);

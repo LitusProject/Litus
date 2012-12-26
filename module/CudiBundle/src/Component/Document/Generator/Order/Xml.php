@@ -66,7 +66,7 @@ class Xml
 
             $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
             $xmlFile = new TmpFile();
-            $this->generateXml($item, $xmlFile);
+            $this->_generateXml($item, $xmlFile);
 
             $file = new TmpFile();
             $document = new FrontGenerator($this->_entityManager, $item->getArticle(), $file);
@@ -86,7 +86,7 @@ class Xml
         }
     }
 
-    private function generateXml(Item $item, TmpFile $tmpFile)
+    private function _generateXml(Item $item, TmpFile $tmpFile)
     {
         $configs = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config');

@@ -377,7 +377,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-type' => 'text/calendar',
+            'Content-Type' => 'text/calendar',
         ));
         $this->getResponse()->setHeaders($headers);
 
