@@ -7,7 +7,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#saleContainer').sale({
+            $('#saleContainer').saleApp({
                 socketUrl: '{{ socketUrl }}',
                 sessionId: {{ session.getId() }},
                 authKey: '{{ key }}',
