@@ -33,7 +33,7 @@
                     <address>
                         <strong>{{ translate('Primary Address&mdash;Student Room or Home') }}</strong><br>
                         {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}
-                            {% if authenticatedPerson.getPrimaryAddress().getMailbox() %}
+                            {% if authenticatedPerson.getPrimaryAddress().getMailbox() is not null %}
                                 / {{ authenticatedPerson.getPrimaryAddress().getMailbox() }}
                             {% endif %}<br>
                         {{ authenticatedPerson.getPrimaryAddress().getPostal() }} {{ authenticatedPerson.getPrimaryAddress().getCity() }}<br>
@@ -44,7 +44,7 @@
                     <address>
                         <strong>{{ translate('Secondary Address&mdash;Home') }}</strong><br>
                         {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
-                            {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
+                            {% if authenticatedPerson.getSecondaryAddress().getMailbox() is not null %}
                                 / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}
                             {% endif %}<br>
                         {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br>
