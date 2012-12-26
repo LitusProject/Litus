@@ -93,6 +93,14 @@
                                         <li class="divider"></li>
                                     {% endif %}
 
+                                    {% if hasAccess('admin_index', 'index') %}
+                                        <li>
+                                            <a href="{{ url('admin_index') }}">{{ translate('Admin') }}</a>
+                                        </li>
+
+                                        <li class="divider"></li>
+                                    {% endif %}
+
                                     <li>
                                         <a href="{{ url("auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                                     </li>
@@ -143,20 +151,22 @@
                                 </li>
                                 <li class="divider"></li>
                                 {% if hasAccess('booking', 'view') or hasAccess('shift', 'index') %}
-                                <li>
-                                    {% if hasAccess('booking', 'view') %}
-                                        <a href="{{ url('booking') }}">{{ translate('My Bookings') }}</a>
-                                    {% endif %}
-                                    {% if hasAccess('shift', 'index') %}
-                                        <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
-                                    {% endif %}
-                                </li>
-                                <li class="divider"></li>
+                                    <li>
+                                        {% if hasAccess('booking', 'view') %}
+                                            <a href="{{ url('booking') }}">{{ translate('My Bookings') }}</a>
+                                        {% endif %}
+                                        {% if hasAccess('shift', 'index') %}
+                                            <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
+                                        {% endif %}
+                                    </li>
+
+                                    <li class="divider"></li>
                                 {% endif %}
                                 {% if hasAccess('admin_index', 'index') %}
                                     <li>
                                         <a href="{{ url('admin_index') }}">{{ translate('Admin') }}</a>
                                     </li>
+                                    
                                     <li class="divider"></li>
                                 {% endif %}
                                 <li>
