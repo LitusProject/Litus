@@ -86,7 +86,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'secretary');
+            ->setAttribute('class', 'secretary_edit');
         $this->add($field);
     }
 
