@@ -43,3 +43,90 @@
         }
     }
 }
+
+
+.saleScreen {
+    .table {
+        .barcode {
+            width: 110px;
+        }
+
+        .status {
+            width: 110px;
+        }
+
+        .number {
+            width: 50px;
+        }
+
+        .price {
+            width: 100px;
+        }
+
+        .actions {
+            width: 150px;
+        }
+
+        tbody {
+            .actions {
+                padding: 3px 8px;
+
+                .removeArticle {
+                    float: right;
+                }
+            }
+
+            tr.inactive {
+                color: @cGray;
+            }
+        }
+    }
+
+    .wrapper {
+        margin-bottom: 10px;
+
+        .money {
+            font-weight: bold;
+            text-align: right;
+
+            .total {
+                font-size: 55px;
+                line-height: 80px;
+            }
+        }
+
+        .customer {
+            .title {
+                margin: 0 0 10px 0;
+            }
+
+            .customerName {
+                margin: 0 0 10px 30px;
+            }
+
+            .name {
+                font-size: 30px;
+                line-height: 30px;
+                font-weight: bold;
+            }
+
+            .actions {
+                margin: 0;
+
+                button {
+                    margin-right: 5px;
+
+                    i {
+                        margin-right: 3px;
+                    }
+                }
+            }
+        }
+
+        .discounts {
+            .options {
+                padding-left:10px;
+            }
+        }
+    }
+}

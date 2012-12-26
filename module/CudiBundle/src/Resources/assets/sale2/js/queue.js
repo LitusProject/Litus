@@ -39,7 +39,6 @@
             return this;
         },
         hide : function (options) {
-            currentView = 'queue';
             $(this).permanentModal('hide');
             return this;
         },
@@ -64,7 +63,7 @@
         } else if (typeof method === 'object' || ! method) {
             return methods.init.apply(this, arguments);
         } else {
-            $.error('Method ' +  method + ' does not exist on $.sale');
+            $.error('Method ' +  method + ' does not exist on $.queue');
         }
     };
 
@@ -228,7 +227,7 @@
 
         switch (data.status) {
             case 'signed_in':
-                if (currentView == 'sale' || currentView == 'collecting') {
+                if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
                     row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
                 } else {
@@ -241,7 +240,7 @@
                 row.find('.startCollecting, .startSelling, .cancelSelling, .unhold').hide();
                 break;
             case 'collected':
-                if (currentView == 'sale' || currentView == 'collecting') {
+                if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
                     row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
                 } else {

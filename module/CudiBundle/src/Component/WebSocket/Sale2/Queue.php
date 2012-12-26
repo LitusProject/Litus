@@ -186,7 +186,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
-        // TODO: return collect info
+        return $this->_queueItems[$id]->getCollectInfo();
     }
 
     /**
