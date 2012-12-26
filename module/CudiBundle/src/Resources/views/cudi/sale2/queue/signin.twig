@@ -89,9 +89,8 @@
             $.webSocket('send', {name: 'signInQueue', text:
                 JSON.stringify({
                     'command': 'action',
-                    'action': 'addToQueue',
+                    'action': 'signIn',
                     'universityIdentification': $('#username').val(),
-                    'printTicket': true
                 })
             });
         }

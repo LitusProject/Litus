@@ -14,7 +14,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use CommonBundle\Component\Piwik\Analytics,
+    Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -25,9 +26,34 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
+        $piwik = null;
+        if ('development' != getenv('APPLICATION_ENV')) {
+            $analytics = new Analytics(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.piwik_api_url'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.piwik_token_auth'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.piwik_id_site')
+            );
+
+            $piwik = array(
+                'uniqueVisitors' => $analytics->getUniqueVisitors(),
+                'liveCounters' => $analytics->getLiveCounters(),
+                'visitsSummary' => $analytics->getVisitsSummary()
+            );
+        }
+
         $profActions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllUncompleted(10);
+
+        $subjectComments = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+            ->findLast(10);
 
         $activeSessions = array();
         if ($this->getAuthentication()->isAuthenticated()) {
@@ -41,8 +67,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'profActions' => $profActions,
+                'subjectComments' => $subjectComments,
                 'activeSessions' => $activeSessions,
                 'currentSession' => $currentSession,
+                'piwik' => $piwik,
                 'versions' => array(
                     'php' => phpversion(),
                     'zf' => \Zend\Version\Version::VERSION,

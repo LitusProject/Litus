@@ -1,5 +1,38 @@
 {% extends 'sale2/base.twig' %}
 
 {% block content %}
+    <div id="saleContainer"></div>
+{% endblock %}
 
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#saleContainer').sale({
+                socketUrl: '{{ socketUrl }}',
+                sessionId: {{ session.getId() }},
+                authKey: '{{ key }}',
+                barcodePrefix: {{ barcodePrefix }},
+
+                paydesks: [
+                    {% for paydesk in paydesks %}
+                        {'name': '{{ paydesk.getName() }}', 'code': '{{ paydesk.getCode() }}'},
+                    {% endfor %}
+                ],
+                translateStatus: function (status) {
+                    switch (status) {
+                        case 'signed_in':
+                            return 'Signed In';
+                        case 'collecting':
+                            return 'Collecting';
+                        case 'collected':
+                            return 'Collected';
+                        case 'selling':
+                            return 'Selling';
+                        case 'hold':
+                            return 'Hold';
+                    }
+                },
+            });
+        });
+    </script>
 {% endblock %}

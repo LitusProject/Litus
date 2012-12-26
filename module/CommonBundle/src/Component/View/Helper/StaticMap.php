@@ -23,7 +23,7 @@ use CommonBundle\Entity\General\Location,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class StaticMapUrl extends \Zend\View\Helper\AbstractHelper
+class StaticMap extends \Zend\View\Helper\AbstractHelper
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

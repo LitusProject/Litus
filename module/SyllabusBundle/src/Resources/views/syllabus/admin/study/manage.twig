@@ -40,8 +40,8 @@
                         <td>{{ mapping.getStudy().getFullTitle() }}</td>
                         <td>{{ mapping.getStudy().getPhase() }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_subject', 'manage') %}
-                                <a href="{{ url('admin_subject', {"id": mapping.getStudy().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
+                            {% if hasAccess('admin_study', 'edit') %}
+                                <a href="{{ url('admin_study', {'action': 'edit', 'id': mapping.getStudy().getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="view">View</a>
                             {% endif %}
                         </td>
                     </tr>

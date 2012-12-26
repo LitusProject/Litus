@@ -1,13 +1,20 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'syllabus/admin/subject/partials/navigation.twig' %}
+    {% include 'syllabus/admin/study/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
     {% include 'syllabus/admin/study/partials/years.twig' %}
 
     <div id="controller_action">
+        <h1>Study</h1>
+
+        <p>Title: <b>{{ study.getFullTitle() }}</b></p>
+        <p>Phase: <b>{{ study.getPhase() }}</b></p>
+        <p>Language: <b>{{ study.getLanguage() }}</b></p>
+        <br />
+
         <div id="subject_search" style="display:none;">
             <div style="padding:4px;text-align:right">
                 Search:
@@ -25,6 +32,8 @@
                     <th>Name</th>
                     <th width="70px">Semester</th>
                     <th width="60px">Credits</th>
+                    <th width="80px">Mandatory</th>
+                    <th width="70px">Students</th>
                     <th width="70px">Actions</th>
                 </tr>
             </table>
@@ -37,25 +46,27 @@
                     <th>Name</th>
                     <th width="70px">Semester</th>
                     <th width="60px">Credits</th>
+                    <th width="80px">Mandatory</th>
+                    <th width="70px">Students</th>
                     <th width="70px">Actions</th>
                 </tr>
 
-                {% for subject in paginator %}
+                {% for mapping in mappings %}
                     <tr class="item">
-                        <td>{{ subject.getCode() }}</td>
-                        <td>{{ subject.getName() }}</td>
-                        <td>{{ subject.getSemester() }}</td>
-                        <td>{{ subject.getCredits() }}</td>
+                        <td>{{ mapping.getSubject().getCode() }}</td>
+                        <td>{{ mapping.getSubject().getName() }}</td>
+                        <td>{{ mapping.getSubject().getSemester() }}</td>
+                        <td>{{ mapping.getSubject().getCredits() }}</td>
+                        <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
+                        <td>{{ mapping.getSubject().getNbEnrollment(currentAcademicYear) }}</td>
                         <td class="actions">
                             {% if hasAccess('admin_subject', 'edit') %}
-                                <a href="{{ url('admin_subject', {"action": "edit", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
+                                <a href="{{ url('admin_subject', {"action": "edit", "id": mapping.getSubject().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
                             {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
             </table>
-
-            {% include 'admin/partials/paginationControl.twig' %}
         </div>
     </div>
 {% endblock %}
@@ -69,8 +80,8 @@
                 searchDiv: $('#subject_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_subject', {'action': 'manage', 'academicyear': currentAcademicYear.getCode()}) }}',
-                url: '{{ url('admin_subject', {'action': 'search', 'academicyear': currentAcademicYear.getCode()}) }}',
+                searchPage: '{{ url('admin_study', {'action': 'edit', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
+                url: '{{ url('admin_study', {'action': 'searchSubject', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#subject_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -79,6 +90,8 @@
                             .append('<td>' + this.name + '</td>')
                             .append('<td>' + this.semester + '</td>')
                             .append('<td>' + this.credits + '</td>')
+                            .append('<td>' + (this.mandatory ? 'yes' : 'no') + '</td>')
+                            .append('<td>' + this.students + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
                         {% if hasAccess('admin_subject', 'edit') %}
                             actions.append('<a href="{{ url('admin_subject') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')

@@ -768,6 +768,26 @@ return array(
                             'output' => 'sale_css.css',
                         ),
                     ),
+                    'sale2_css' => array(
+                        'assets' => array(
+                            'sale2/less/base.less',
+                        ),
+                        'filters' => array(
+                            'sale2_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'sale_css.css',
+                        ),
+                    ),
                     'supplier_css' => array(
                         'assets' => array(
                             'supplier/less/base.less',
@@ -801,6 +821,11 @@ return array(
                     'sale_js' => array(
                         'assets' => array(
                             'sale/js/*.js',
+                        ),
+                    ),
+                    'sale2_js' => array(
+                        'assets' => array(
+                            'sale2/js/*.js',
                         ),
                     ),
                     'prof_css' => array(

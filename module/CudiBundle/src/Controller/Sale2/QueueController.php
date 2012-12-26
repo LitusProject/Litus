@@ -22,7 +22,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 /**
  * QueueController
  *
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class QueueController extends \CudiBundle\Component\Controller\SaleController

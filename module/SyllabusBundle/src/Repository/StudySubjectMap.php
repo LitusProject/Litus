@@ -65,7 +65,7 @@ class StudySubjectMap extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByCodeAndStudy($code, StudyEntity $study, AcademicYear $academicYear)
+    public function findAllByCodeAndStudyAndAcademicYear($code, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
         foreach($study->getParents() as $parent) {
@@ -86,6 +86,104 @@ class StudySubjectMap extends EntityRepository
             )
             ->setParameter('code', '%' . strtolower($code) . '%')
             ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s.id')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->eq('m.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0 => 0);
+        foreach($resultSet as $item)
+            $ids[$item['id']] = $item['id'];
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->in('s.id', $ids)
+            )
+            ->orderBy('s.code', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByNameAndAcademicYear($name, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s.id')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0 => 0);
+        foreach($resultSet as $item)
+            $ids[$item['id']] = $item['id'];
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->in('s.id', $ids)
+            )
+            ->orderBy('s.code', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByCodeAndAcademicYear($code, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s.id')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.code'), ':code'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('code', '%' . strtolower($code) . '%')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0 => 0);
+        foreach($resultSet as $item)
+            $ids[$item['id']] = $item['id'];
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->in('s.id', $ids)
+            )
+            ->orderBy('s.code', 'ASC')
             ->getQuery()
             ->getResult();
 

@@ -8,6 +8,11 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
+        {% if piwik is not null %}
+            <h1>Visits Summary</h1>
+            <img src="{{ piwik['visitsSummary'].getDataUri(1000, 200) }}" alt="Visits Summary" />
+        {% endif %}
+
         {% if hasAccess('admin_prof_action', 'manage') and profActions|length > 0 %}
             <h1>Last Prof Actions</h1>
     	    <table>
@@ -32,6 +37,34 @@
     	        {% endfor %}
     	    </table>
 	    {% endif %}
+
+        {% if hasAccess('admin_subject_comment', 'manage') and subjectComments|length > 0 %}
+            <h1>Last Subject Comments</h1>
+            <table class="manage">
+                <tr>
+                    <th width="100px">Date</th>
+                    <th width="140px">Person</th>
+                    <th>Summary</th>
+                    <th width="70px">Action</th>
+                </tr>
+
+                {% for comment in subjectComments %}
+                    <tr class="item item-{{ comment.getId() }}">
+                        <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ comment.getPerson().getFullName() }}</td>
+                        <td>{{ comment.getSummary() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('admin_subject', 'edit') %}
+                                <a href="{{ url('admin_subject', {'action': 'edit', 'id': comment.getSubject().getId()}) }}" class="view">View Subject</a>
+                            {% endif %}
+                            {% if hasAccess('admin_subject_comment', 'subject') %}
+                                <a href="{{ url('admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
 
         <h1>Active Sessions</h1>
 
@@ -74,6 +107,20 @@
 	</div>
 
 	<aside>
+        {% if piwik is not null %}
+            <div class="sidebox">
+                <div class="title">Piwik</div>
+                <div class="content">
+                    <p>
+                        We had <b>{{ piwik['uniqueVisitors'] }}</b> unique visitor{% if piwik['uniqueVisitors'] != 1 %}s{% endif %} in the last week.
+                    </p>
+                    <p>
+                        During the past half hour, we had <b>{{ piwik['liveCounters']['visits'] }}</b> visit{% if piwik['liveCounters']['visits'] != 1 %}s{% endif %} and <b>{{ piwik['liveCounters']['actions'] }}</b> action{% if piwik['liveCounters']['actions'] != 1 %}s{% endif %} were performed.
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
 		<div class="sidebox">
 	        <div class="title">Versions</div>
 	        <div class="content">
