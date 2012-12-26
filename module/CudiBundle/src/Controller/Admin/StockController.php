@@ -373,7 +373,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 $headers = new Headers();
                 $headers->addHeaders(array(
                     'Content-Disposition' => 'attachment; filename="stock.pdf"',
-                    'Content-type'        => 'application/pdf',
+                    'Content-Type'        => 'application/pdf',
                 ));
                 $this->getResponse()->setHeaders($headers);
 

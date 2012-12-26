@@ -69,7 +69,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-type' => mime_content_type($filePath . $company->getLogo()),
+            'Content-Type' => mime_content_type($filePath . $company->getLogo()),
         ));
         $this->getResponse()->setHeaders($headers);
 
@@ -99,7 +99,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
-            'Content-type' => mime_content_type($filePath),
+            'Content-Type' => mime_content_type($filePath),
             'Content-Length' => filesize($filePath),
         ));
         $this->getResponse()->setHeaders($headers);
