@@ -149,6 +149,12 @@
                                 </li>
                                 <li class="divider"></li>
                                 {% endif %}
+                                {% if hasAccess('admin_index', 'index') %}
+                                    <li>
+                                        <a href="{{ url('admin_index') }}">{{ translate('Admin') }}</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                {% endif %}
                                 <li>
                                     <a href="{{ url("auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                                 </li>

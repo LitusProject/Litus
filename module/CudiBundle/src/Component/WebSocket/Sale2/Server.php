@@ -49,7 +49,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_socket_port');
 
-        parent::__construct($address, $port);
+        parent::__construct($address, $port-100);
 
         $this->_entityManager = $entityManager;
         $this->_queue = new Queue($entityManager);
