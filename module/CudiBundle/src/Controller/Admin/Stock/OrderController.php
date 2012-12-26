@@ -221,7 +221,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="order.pdf"',
-            'Content-type'        => 'application/pdf',
+            'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
 
@@ -248,7 +248,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition'        => 'attachment; filename="order.zip"',
-            'Content-type'               => 'application/zip',
+            'Content-Type'               => 'application/zip',
             'Content-Length'             => filesize($archive->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);

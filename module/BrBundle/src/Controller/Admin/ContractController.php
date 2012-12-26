@@ -35,7 +35,7 @@ class ContractController extends \Litus\Controller\Action
             'pdf',
             array(
                  'headers' => array(
-                     'Content-type' => 'application/pdf',
+                     'Content-Type' => 'application/pdf',
                      'Pragma' => 'public',
                      'Cache-Control' => 'private, max-age=0, must-revalidate'
                  )
