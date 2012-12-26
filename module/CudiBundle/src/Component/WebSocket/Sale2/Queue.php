@@ -181,8 +181,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if ($enableCollectScanning !== '1')
-            return;
+        //if ($enableCollectScanning !== '1')
+        //    return;
 
         $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 

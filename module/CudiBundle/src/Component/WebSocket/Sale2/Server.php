@@ -189,6 +189,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             case 'unhold':
                 $this->_unhold($command->id);
                 break;
+            case 'saveComment':
+                $this->_saveComment($command->id, $command->comment);
+                break;
         }
 
         $this->sendQueueToAll();
@@ -279,5 +282,15 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _unhold($id)
     {
         $this->_queue->setUnhold($id);
+    }
+
+    private function _saveComment($id, $comment)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setComment($comment);
+        $this->_entityManager->flush();
     }
 }

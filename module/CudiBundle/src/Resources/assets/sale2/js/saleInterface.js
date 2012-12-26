@@ -4,7 +4,7 @@
         discounts: [],
 
         tCurrentCustomer: 'Current Customer',
-        tComment: 'Comment',
+        tComments: 'Comments',
         tQueue: 'Queue - F8',
         tConclude: 'Finish - F9',
         tCancel: 'Cancel - F10',
@@ -14,6 +14,11 @@
         tNumber: 'Number',
         tPrice: 'Price',
         tActions: 'Actions',
+        tClose: 'Close',
+        tSave: 'Save',
+        saveComment: function (id, comment) {},
+        showQueue: function () {},
+        cancel: function (id) {},
     };
 
     var firstAction = true;
@@ -29,9 +34,16 @@
             return this;
         },
         show : function (data) {
+            $(this).data('data', data);
             _show($(this), data);
             return this;
-        }
+        },
+        hide : function () {
+            $(this).html('');
+            $(this).removeData('saleInterfaceSettings');
+            $(this).removeData('data');
+            return this;
+        },
     };
 
     $.fn.saleInterface = function (method) {
@@ -62,11 +74,11 @@
                             $('<span>', {'class': 'university_identification'}).html('(' + data.person.universityIdentification + ')')
                         ),
                         $('<div>', {'class': 'row actions'}).append(
-                            $('<button>', {'class': 'btn btn-info'}).append(
+                            editComment = $('<button>', {'class': 'btn btn-info'}).append(
                                 $('<i>', {'class': 'icon-comment icon-white'}),
-                                settings.tComment
+                                settings.tComments
                             ),
-                            $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
+                            showQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
                                 $('<i>', {'class': 'icon-eye-open icon-white'}),
                                 settings.tQueue
                             ),
@@ -74,7 +86,7 @@
                                 $('<i>', {'class': 'icon-ok-circle icon-white'}),
                                 settings.tConclude
                             ),
-                            $('<button>', {'class': 'btn btn-danger', 'data-key': 121}).append(
+                            cancel = $('<button>', {'class': 'btn btn-danger', 'data-key': 121}).append(
                                 $('<i>', {'class': 'icon-remove icon-white'}),
                                 settings.tCancel
                             )
@@ -125,5 +137,53 @@
                 )
             );
         }
+
+        editComment.click(function () {
+            _editComment($this);
+        });
+
+        showQueue.click(function () {
+            settings.showQueue();
+        });
+
+        cancel.click(function () {
+            settings.cancel(data.id);
+        });
+    }
+
+    function _editComment($this) {
+        var settings = $this.data('saleInterfaceSettings');
+
+        $('body').append(
+            modal = $('<div>', {'class': 'modal fade'}).append(
+                $('<div>', {'class': 'modal-header'}).append(
+                    $('<a>', {'class': 'close'}).html('&times;').click(function () {
+                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                            $(this).remove();
+                        });
+                    }),
+                    $('<h3>').html(settings.tComments)
+                ),
+                $('<div>', {'class': 'modal-body'}).append(
+                    $('<textarea>', {'style': 'width: 97%', 'rows': 10}).val($this.data('data').comment)
+                ),
+                $('<div>', {'class': 'modal-footer'}).append(
+                    $('<button>', {'class': 'btn btn-primary'}).html(settings.tSave).click(function () {
+                        $this.data('data').comment = $(this).closest('.modal').find('textarea').val();
+                        settings.saveComment($this.data('data').id, $this.data('data').comment);
+                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                            $(this).remove();
+                        });
+                    }),
+                    $('<button>', {'class': 'btn'}).html(settings.tClose).click(function () {
+                        $(this).closest('.modal').modal('hide').on('hidden', function () {
+                            $(this).remove();
+                        });
+                    })
+                )
+            )
+        );
+
+        modal.modal();
     }
 })(jQuery);
