@@ -76,7 +76,7 @@ abstract class Entry
     /**
      * @return string
      */
-    abstract public function getMailAddress();
+    abstract public function getEmailAddress();
 
     /**
      * @return string

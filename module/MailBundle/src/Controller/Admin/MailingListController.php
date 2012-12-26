@@ -95,7 +95,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            if (isset($formData['firstname'])) {
+            if (isset($formData['first_name'], $formData['last_name'], $formData['email'])) {
                 $externalForm->setData($formData);
                 $form = $externalForm;
             } else {
@@ -106,13 +106,33 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                if (isset($formData['firstname'])) {
-                    $entry = new ExternalEntry(
-                        $list,
-                        $formData['firstname'],
-                        $formData['lastname'],
-                        $formData['email']
-                    );
+                $entry = null;
+                if (isset($formData['first_name'], $formData['last_name'], $formData['email'])) {
+                    $repositoryCheck = $this->getEntityManager()
+                        ->getRepository('MailBundle\Entity\Entry\External')
+                        ->findOneBy(
+                            array(
+                                'list' => $list,
+                                'email' => $formData['email']
+                            )
+                        );
+
+                    if (null !== $repositoryCheck) {
+                        $this->flashMessenger()->addMessage(
+                            new FlashMessage(
+                                FlashMessage::ERROR,
+                                'SUCCES',
+                                'This external address already has been subscribed to this list!'
+                            )
+                        );
+                    } else {
+                        $entry = new ExternalEntry(
+                            $list,
+                            $formData['first_name'],
+                            $formData['last_name'],
+                            $formData['email']
+                        );
+                    }
                 } else {
                     if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                         $academic = $this->getEntityManager()
@@ -123,19 +143,41 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                             ->getRepository('CommonBundle\Entity\Users\People\Academic')
                             ->findOneById($formData['person_id']);
                     }
-                    $entry = new AcademicEntry($list, $academic);
+
+                    $repositoryCheck = $this->getEntityManager()
+                        ->getRepository('MailBundle\Entity\Entry\Academic')
+                        ->findOneBy(
+                            array(
+                                'list' => $list,
+                                'academic' => $academic
+                            )
+                        );
+
+                    if (null !== $repositoryCheck) {
+                        $this->flashMessenger()->addMessage(
+                            new FlashMessage(
+                                FlashMessage::ERROR,
+                                'SUCCES',
+                                'This member already has been subscribed to this list!'
+                            )
+                        );
+                    } else {
+                        $entry = new AcademicEntry($list, $academic);
+                    }
                 }
 
-                $this->getEntityManager()->persist($entry);
-                $this->getEntityManager()->flush();
+                if (null !== $entry) {
+                    $this->getEntityManager()->persist($entry);
+                    $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCES',
-                        'The list was succesfully created!'
-                    )
-                );
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCES',
+                            'The entry was succesfully created!'
+                        )
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'admin_mail_list',

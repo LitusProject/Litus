@@ -48,12 +48,12 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         $external->setLabel('Add External Address');
         $this->add($external);
 
-        $field = new Text('firstname');
+        $field = new Text('first_name');
         $field->setLabel('First Name')
             ->setRequired(true);
         $external->add($field);
 
-        $field = new Text('lastname');
+        $field = new Text('last_name');
         $field->setLabel('Last Name')
             ->setRequired(true);
         $external->add($field);
@@ -77,7 +77,7 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name' => 'firstname',
+                    'name' => 'first_name',
                     'required' => true,
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -89,7 +89,7 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name' => 'lastname',
+                    'name' => 'last_name',
                     'required' => true,
                     'filters' => array(
                         array('name' => 'StringTrim'),
