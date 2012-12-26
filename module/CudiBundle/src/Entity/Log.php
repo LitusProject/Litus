@@ -25,7 +25,8 @@ use CommonBundle\Entity\Users\Person,
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
  *      "sales_assignments"="CudiBundle\Entity\Log\Sales\Assignments",
- *      "sales_prof_version"="CudiBundle\Entity\Log\Sales\ProfVersion"
+ *      "sales_prof_version"="CudiBundle\Entity\Log\Sales\ProfVersion",
+ *      "sales_return"="CudiBundle\Entity\Log\Sales\Returned"
  * })
  */
 class Log
