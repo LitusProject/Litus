@@ -10,7 +10,7 @@
 	<div id="controller_action">
         {% if piwik is not null %}
             <h1>Visits Summary</h1>
-            <img src="{{ piwik['visitsSummary'].getDataUri(1000, 150) }}" alt="Visits Summary" class="" />
+            <img src="{{ piwik['visitsSummary'].getDataUri(1000, 200) }}" alt="Visits Summary" class="" />
         {% endif %}
 
         {% if hasAccess('admin_prof_action', 'manage') and profActions|length > 0 %}
@@ -115,7 +115,7 @@
                         We had <b>{{ piwik['uniqueVisitors'] }}</b> unique visitor{% if piwik['uniqueVisitors'] != 1 %}s{% endif %} in the last week.
                     </p>
                     <p>
-                        During the last half hour, we had <b>{{ piwik['liveCounters']['visits'] }}</b> visit{% if piwik['liveCounters']['visits'] != 1 %}s{% endif %} and <b>{{ piwik['liveCounters']['actions'] }}</b> action{% if piwik['liveCounters']['actions'] != 1 %}s{% endif %} were performed.
+                        During the past half hour, we had <b>{{ piwik['liveCounters']['visits'] }}</b> visit{% if piwik['liveCounters']['visits'] != 1 %}s{% endif %} and <b>{{ piwik['liveCounters']['actions'] }}</b> action{% if piwik['liveCounters']['actions'] != 1 %}s{% endif %} were performed.
                     </p>
                 </div>
             </div>
