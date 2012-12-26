@@ -14,13 +14,7 @@
 
 namespace BannerBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
-    BannerBundle\Entity\Nodes\Banner,
-    BannerBundle\Form\Admin\Banner\Add as AddForm,
-    BannerBundle\Form\Admin\Banner\Edit as EditForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Http\Headers,
+use Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
