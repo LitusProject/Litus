@@ -84,4 +84,21 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
             )
         );
     }
+
+    /**
+     * Returns the WebSocket URL.
+     *
+     * @return string
+     */
+    protected function getSocketUrl()
+    {
+        $address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_socket_remote_host');
+        $port = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_socket_port')-100;
+
+        return 'ws://' . $address . ':' . $port;
+    }
 }
