@@ -95,8 +95,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
         $this->add($field);
 
         $field = new Text($prefix . 'address_mailbox');
-        $field->setLabel('Mailbox')
-            ->setRequired();
+        $field->setLabel('Mailbox');
         $this->add($field);
     }
 
