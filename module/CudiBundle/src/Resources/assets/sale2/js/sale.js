@@ -6,6 +6,7 @@ var currentView = 'selectPaydesk';
         socketUrl: '',
         sessionId: 0,
         authKey: '',
+        barcodePrefix: 0,
 
         tPaydeskSelectTitle: 'Select Paydesk',
         tPaydeskChoose: 'Choose',
@@ -44,10 +45,18 @@ var currentView = 'selectPaydesk';
         var settings = $this.data('saleSettings');
 
         queue = $.queue({
+            barcodePrefix: settings.barcodePrefix,
             translateStatus: settings.translateStatus,
             sendToSocket: function (command) {
                 $.webSocket('send', {name: settings.socketName, text: command});
             },
+        });
+
+        $('body').barcodeControl({
+            onBarcode: function (barcode) {
+                if (currentView == 'queue')
+                    queue.queue('gotBarcode', barcode);
+            }
         });
 
         $.webSocket({
