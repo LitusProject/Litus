@@ -5,15 +5,21 @@
         tQueue: 'Queue - F8',
         tConclude: 'Finish - F9',
         tCancel: 'Cancel - F10',
+
         saveComment: function (id, comment) {},
         showQueue: function () {},
+        finish: function (id, articles) {},
         cancel: function (id) {},
+        translateStatus: function (status) {return status},
     };
 
     var methods = {
         init : function (options) {
             var settings = $.extend(defaults, options);
-            $(this).saleInterface($.extend({isSell: false}, settings));
+            $(this).saleInterface($.extend({
+                isSell: false,
+                conclude: settings.finish,
+            }, settings));
 
             var $this = $(this);
             $(this).data('collectSettings', settings);

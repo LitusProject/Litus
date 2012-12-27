@@ -138,6 +138,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
         );
     }
 
+    /**
+     * @param array
+     */
+    public function setCollectedArticles($articles)
+    {
+        $this->_articles = $articles;
+    }
+
     private function _getArticles()
     {
         $item = $this->_entityManager
@@ -156,6 +164,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
 
             $result = array(
                 'id' => $booking->getId(),
+                'articleId' => $booking->getArticle()->getId(),
                 'price' => $booking->getArticle()->getSellPrice(),
                 'title' => $booking->getArticle()->getMainArticle()->getTitle(),
                 'barcode' => $booking->getArticle()->getBarcode(),
@@ -163,7 +172,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 'author' => $booking->getArticle()->getMainArticle()->getAuthors(),
                 'number' => $booking->getNumber(),
                 'status' => $booking->getStatus(),
-                'collected' => 0,
+                'collected' => isset($this->_articles->{$booking->getArticle()->getId()}) ? $this->_articles->{$booking->getArticle()->getId()} : 0,
                 'discounts' => array(),
             );
 

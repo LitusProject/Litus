@@ -181,8 +181,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        //if ($enableCollectScanning !== '1')
-        //    return;
+        if ($enableCollectScanning !== '1')
+            return;
 
         $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
@@ -192,7 +192,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * @param integer $id
      */
-    public function stopCollecting($id)
+    public function stopCollecting($id, $articles = null)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
@@ -200,6 +200,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $item->setStatus('collected');
         $this->_entityManager->flush();
+
+        $enableCollectScanning = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
+        if ($enableCollectScanning !== '1' || !isset($this->_queueItems[$id]) || null == $articles)
+            return;
+
+        $this->_queueItems[$id]->setCollectedArticles($articles);
     }
 
     /**
