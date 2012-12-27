@@ -215,7 +215,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 foreach ($formData as $formKey => $formValue) {
                     $saleArticleId = substr($formKey, 8, strlen($formKey));
 
-                    if (!$bookingsEnabled && !in_array($saleArticleId, $bookingsClosedExceptions))
+                    if (!$enableBookings && !in_array($saleArticleId, $bookingsClosedExceptions))
                         continue;
 
                     if (substr($formKey, 0, 8) === 'article-' && $formValue != '' && $formValue != '0') {
