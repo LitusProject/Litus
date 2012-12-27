@@ -82,6 +82,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                     $upload->receive();
 
                     $image = new Imagick($upload->getFileName());
+                    unlink($upload->getFileName());
                     $image->setImageFormat('png');
                     $image->scaleImage(1000, 100, true);
 

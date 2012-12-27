@@ -318,6 +318,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $file->receive();
 
                 $image = new Imagick($file->getFileName());
+                unlink($file->getFileName());
                 $image->thumbnailImage(320, 320, true);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {

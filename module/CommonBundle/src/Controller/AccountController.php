@@ -242,6 +242,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     $upload->receive();
 
                     $image = new Imagick($upload->getFileName());
+                    unlink($upload->getFileName());
                     $image->cropThumbnailImage(320, 240);
 
                     if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
