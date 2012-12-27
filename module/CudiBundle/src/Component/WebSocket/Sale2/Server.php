@@ -175,7 +175,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->_cancelCollecting($user, $command->id);
                 break;
             case 'stopCollecting':
-                $this->_stopCollecting($user, $command->id);
+                $this->_stopCollecting($user, $command->id, isset($command->articles) ? $command->articles : null);
                 break;
             case 'startSelling':
                 $this->_startSelling($user, $command->id);
@@ -254,9 +254,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         // TODO: print ticket
     }
 
-    private function _stopCollecting(User $user, $id)
+    private function _stopCollecting(User $user, $id, $articles = null)
     {
-        $this->_queue->stopCollecting($id);
+        $this->_queue->stopCollecting($id, $articles);
     }
 
     private function _cancelCollecting(User $user, $id)

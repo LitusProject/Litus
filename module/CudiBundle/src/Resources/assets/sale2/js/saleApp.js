@@ -79,6 +79,19 @@ var currentView = 'selectPaydesk';
                 collect.collect('hide');
                 queue.queue('show');
             },
+            finish: function (id, articles) {
+                $.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'stopCollecting',
+                        'id': id,
+                        'articles': articles,
+                    })
+                });
+                collect.collect('hide');
+                queue.queue('show');
+            },
+            translateStatus: settings.translateStatus,
         });
 
         $('body').barcodeControl({

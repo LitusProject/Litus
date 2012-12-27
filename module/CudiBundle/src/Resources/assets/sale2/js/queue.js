@@ -33,9 +33,9 @@
             return this;
         },
         show : function (options) {
-            currentView = 'queue';
-            var permantent = options == undefined || options.permanent == undefined ? true : options.permanent;
-            $(this).permanentModal({closable: !permantent});
+            var permanent = options == undefined || options.permanent == undefined ? true : options.permanent;
+            currentView = permanent ? 'queue' : currentView;
+            $(this).permanentModal({closable: !permanent});
             return this;
         },
         hide : function (options) {
