@@ -261,7 +261,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             )
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toRoute(
+            'admin_sales_booking',
+            array(
+                'action' => 'manage'
+            )
+        );
 
         return new ViewModel();
     }
