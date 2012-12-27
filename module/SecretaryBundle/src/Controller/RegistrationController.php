@@ -186,6 +186,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $upload->receive();
 
                         $image = new Imagick($upload->getFileName());
+                        unlink($upload->getFileName());
                         $image->cropThumbnailImage(320, 240);
 
                         if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
@@ -486,6 +487,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $upload->receive();
 
                     $image = new Imagick($upload->getFileName());
+                    unlink($upload->getFileName());
                     $image->cropThumbnailImage(320, 240);
 
                     if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
