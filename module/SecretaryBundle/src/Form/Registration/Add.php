@@ -101,7 +101,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $personal->add($field);
 
         $field = new File('profile');
-        $field->setLabel('Profile Image');
+        $field->setLabel('Profile Image')
+            ->setAttribute('data-type', 'image');
         $personal->add($field);
 
         $field = new Text('phone_number');

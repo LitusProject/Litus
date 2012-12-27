@@ -20,6 +20,62 @@
                         <li><a href="{{ tab }}" data-toggle="tab">{{ translate(language) }}</a></li>
                     {% endfor %}
                 </ul>
+            {% elseif element.getAttribute('type') == 'file' %}
+                {% if element.getAttribute('data-type') == 'image' %}
+                    <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                        {{ formLabel().openTag(element) }}
+                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                        {{ formLabel().closeTag() }}
+                        <div class="controls">
+                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                <div class="input-append">
+                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px;">
+                                        <img src="http://www.placehold.it/50x50/EFEFEF/AAAAAA" />
+                                    </div>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px;"></div>
+                                    <span class="btn btn-file">
+                                        <span class="fileupload-new">{{ translate('Select Image') }}</span>
+                                        <span class="fileupload-exists">{{ translate('Change Image') }}</span>
+                                        {{ formElement(element) }}
+                                    </span>
+                                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">{{ translate('Remove') }}</a>
+                              </div>
+                            </div>
+                            {% if element.getMessages()|length > 0 %}
+                                <div class="help-inline">
+                                    {{ formElementErrors(element) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                        {{ formLabel().openTag(element) }}
+                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                        {{ formLabel().closeTag() }}
+                        <div class="controls">
+                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                <div class="input-append">
+                                    <div class="uneditable-input span3">
+                                        <i class="icon-file fileupload-exists"></i>
+                                        <span class="fileupload-preview"></span>
+                                    </div>
+                                    <span class="btn btn-file">
+                                        <span class="fileupload-new">{{ translate('Select File') }}</span>
+                                        <span class="fileupload-exists">{{ translate('Change File') }}</span>
+                                        {{ formElement(element) }}
+                                    </span>
+                                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">{{ translate('Remove') }}</a>
+                              </div>
+                            </div>
+                            {% if element.getMessages()|length > 0 %}
+                                <div class="help-inline">
+                                    {{ formElementErrors(element) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
             {% elseif element.getAttribute('type') == 'checkbox' %}
                 <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
                     <div class="controls">
