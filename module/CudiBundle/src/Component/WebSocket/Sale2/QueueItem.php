@@ -157,31 +157,69 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->findAllOpenByPerson($item->getPerson());
 
         $results = array();
+        $bookedArticles = array();
         foreach($bookings as $booking) {
             $barcodes = array($booking->getArticle()->getBarcode());
             foreach($booking->getArticle()->getAdditionalBarcodes() as $barcode)
                 $barcodes[] = $barcode->getBarcode();
 
-            $result = array(
-                'id' => $booking->getId(),
-                'articleId' => $booking->getArticle()->getId(),
-                'price' => $booking->getArticle()->getSellPrice(),
-                'title' => $booking->getArticle()->getMainArticle()->getTitle(),
-                'barcode' => $booking->getArticle()->getBarcode(),
-                'barcodes' => $barcodes,
-                'author' => $booking->getArticle()->getMainArticle()->getAuthors(),
-                'number' => $booking->getNumber(),
-                'status' => $booking->getStatus(),
-                'collected' => isset($this->_articles->{$booking->getArticle()->getId()}) ? $this->_articles->{$booking->getArticle()->getId()} : 0,
-                'discounts' => array(),
-            );
+            $bookedArticles[] = $booking->getArticle()->getId();
 
-            foreach($booking->getArticle()->getDiscounts() as $discount)
-                $result->discounts[$discount->getType()] = $discount->apply($booking->getArticle()->getSellPrice());
-            $results[] = $result;
+            if (isset($results[$booking->getStatus() . '_' . $booking->getArticle()->getId()])) {
+                $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()]['number'] += $booking->getNumber();
+            } else {
+                $result = array(
+                    'id' => $booking->getId(),
+                    'articleId' => $booking->getArticle()->getId(),
+                    'price' => $booking->getArticle()->getSellPrice(),
+                    'title' => $booking->getArticle()->getMainArticle()->getTitle(),
+                    'barcode' => $booking->getArticle()->getBarcode(),
+                    'barcodes' => $barcodes,
+                    'author' => $booking->getArticle()->getMainArticle()->getAuthors(),
+                    'number' => $booking->getNumber(),
+                    'status' => $booking->getStatus(),
+                    'collected' => isset($this->_articles->{$booking->getArticle()->getId()}) ? $this->_articles->{$booking->getArticle()->getId()} : 0,
+                    'discounts' => array(),
+                );
+
+                foreach($booking->getArticle()->getDiscounts() as $discount)
+                    $result->discounts[$discount->getType()] = $discount->apply($booking->getArticle()->getSellPrice());
+
+                $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()] = $result;
+            }
         }
 
-        return $results;
+        foreach($this->_articles as $id => $number) {
+            if (!in_array($id, $bookedArticles) && $number > 0) {
+                $article = $this->_entityManager
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findOneById($id);
+
+                $barcodes = array($article->getBarcode());
+                foreach($article->getAdditionalBarcodes() as $barcode)
+                    $barcodes[] = $barcode->getBarcode();
+
+                $result = array(
+                    'id' => $booking->getId(),
+                    'articleId' => $article->getId(),
+                    'price' => $article->getSellPrice(),
+                    'title' => $article->getMainArticle()->getTitle(),
+                    'barcode' => $article->getBarcode(),
+                    'barcodes' => $barcodes,
+                    'author' => $article->getMainArticle()->getAuthors(),
+                    'number' => 1,
+                    'status' => 'assigned',
+                    'collected' => $number,
+                    'discounts' => array(),
+                );
+
+                foreach($article->getDiscounts() as $discount)
+                    $result->discounts[$discount->getType()] = $discount->apply($article->getSellPrice());
+                $results['assigned_' . $article->getId()] = $result;
+            }
+        }
+
+        return array_values($results);
     }
 
     /**

@@ -92,12 +92,24 @@ var currentView = 'selectPaydesk';
                 queue.queue('show');
             },
             translateStatus: settings.translateStatus,
+            addArticle: function (id, barcode) {
+                $.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'addArticle',
+                        'id': id,
+                        'barcode': barcode,
+                    })
+                });
+            },
         });
 
         $('body').barcodeControl({
             onBarcode: function (barcode) {
                 if (currentView == 'queue')
                     queue.queue('gotBarcode', barcode);
+                else if (currentView == 'collect')
+                    collect.collect('gotBarcode', barcode);
             }
         });
 
@@ -116,6 +128,9 @@ var currentView = 'selectPaydesk';
                 } else if (data.collect) {
                     queue.queue('hide');
                     collect.collect('show', data.collect);
+                } else if (data.addArticle) {
+                    if (currentView == 'collect')
+                        collect.collect('addArticle', data.addArticle);
                 }
             },
             error: function (e) {

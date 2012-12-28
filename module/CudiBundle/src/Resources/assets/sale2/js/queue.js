@@ -11,8 +11,8 @@
         tHold: 'Hold',
         tUnhold: 'Unhold',
         tHideHold: 'Hide Hold',
-        tUndoLastSelling: 'Undo Last Selling - F6',
-        tPrintNext: 'Print Next - F7',
+        tUndoLastSelling: 'Undo Last Selling',
+        tPrintNext: 'Print Next',
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
         tAddToQueue: 'Add to queue',
 
@@ -107,11 +107,11 @@
                 ),
                 undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling', 'data-key': '117'}).append(
                     $('<i>', {'class': 'icon-arrow-left icon-white'}),
-                    settings.tUndoLastSelling
+                    settings.tUndoLastSelling + ' - F6'
                 ),
                 printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
                     $('<i>', {'class': 'icon-print icon-white'}),
-                    settings.tPrintNext
+                    settings.tPrintNext + ' - F7'
                 )
             )
         );

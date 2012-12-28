@@ -5,9 +5,9 @@
 
         tCurrentCustomer: 'Current Customer',
         tComments: 'Comments',
-        tQueue: 'Queue - F8',
-        tConclude: 'Finish - F9',
-        tCancel: 'Cancel - F10',
+        tQueue: 'Queue',
+        tConclude: 'Finish',
+        tCancel: 'Cancel',
         tBarcode: 'Barcode',
         tTitle: 'Title',
         tStatus: 'Status',
@@ -18,12 +18,15 @@
         tSave: 'Save',
         tAdd: 'Add',
         tRemove: 'Remove',
+        tAddArticle: 'Add Article',
+        tBarcode: 'Barcode',
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
         conclude: function (id, articles) {},
         cancel: function (id) {},
         translateStatus: function (status) {return status},
+        addArticle: function (id, barcode) {},
     };
 
     var firstAction = true;
@@ -46,6 +49,14 @@
             $(this).removeData('data');
             return this;
         },
+        gotBarcode : function (barcode) {
+            _gotBarcode($(this), barcode);
+            return this;
+        },
+        addArticle : function (data) {
+            _addExtraArticle($(this), data);
+            return this;
+        }
     };
 
     $.fn.saleInterface = function (method) {
@@ -78,16 +89,22 @@
                             ),
                             showQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
                                 $('<i>', {'class': 'icon-eye-open icon-white'}),
-                                settings.tQueue
+                                settings.tQueue + ' - F8'
                             ),
                             conclude = $('<button>', {'class': 'btn btn-success', 'data-key': 120}).append(
                                 $('<i>', {'class': 'icon-ok-circle icon-white'}),
-                                settings.tConclude
+                                settings.tConclude + ' - F9'
                             ),
                             cancel = $('<button>', {'class': 'btn btn-danger', 'data-key': 121}).append(
                                 $('<i>', {'class': 'icon-remove icon-white'}),
-                                settings.tCancel
+                                settings.tCancel + ' - F10'
                             )
+                        )
+                    ),
+                    $('<div>', {'class': 'span12'}).append(
+                        addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 118}).append(
+                            $('<i>', {'class': 'icon-plus-sign icon-white'}),
+                            settings.tAddArticle + ' - F7'
                         )
                     )
                 ),
@@ -135,6 +152,10 @@
                 )
             );
         }
+
+        addArticle.click(function () {
+            _addArticleModal($this);
+        });
 
         editComment.click(function () {
             _editComment($this);
@@ -200,35 +221,38 @@
         var tbody = $this.find('tbody');
 
         $(articles).each(function () {
-            this.currentNumber = this.collected;
-            tbody.append(
-                row = $('<tr>', {'class': 'article', 'id': 'article-' + this.id}).append(
-                    $('<td>').append(this.barcode),
-                    $('<td>').append(this.title),
-                    $('<td>').append(settings.translateStatus(this.status)),
-                    $('<td>').append(
-                        $('<span>', {class: 'currentNumber'}).html(this.collected),
-                        '/' + this.number
-                    ),
-                    $('<td class="price">').append('&euro;' + (0).toFixed(2)),
-                    actions = $('<td>', {class: 'actions'})
-                ).data('info', this)
-            );
-
-            if ("booked" == this.status) {
-                row.addClass('inactive');
-            } else {
-                actions.append(
-                    $('<button>', {class: 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
-                        _addArticle($this, $(this).closest('tr').data('info').id);
-                    }).hide(),
-                    $('<button>', {class: 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
-                        _removeArticle($this, $(this).closest('tr').data('info').id);
-                    }).hide()
-                );
-                _updateRow($this, row);
-            }
+            tbody.append(_addArticleRow($this, settings, this));
         });
+    }
+
+    function _addArticleRow($this, settings, data) {
+        data.currentNumber = data.collected;
+        row = $('<tr>', {'class': 'article', 'id': 'article-' + data.articleId}).append(
+            $('<td>').append(data.barcode),
+            $('<td>').append(data.title),
+            $('<td>').append(settings.translateStatus(data.status)),
+            $('<td>').append(
+                $('<span>', {class: 'currentNumber'}).html(data.collected),
+                '/' + data.number
+            ),
+            $('<td class="price">').append('&euro;' + (0).toFixed(2)),
+            actions = $('<td>', {class: 'actions'})
+        ).data('info', data)
+
+        if ("booked" == data.status) {
+            row.addClass('inactive');
+        } else {
+            actions.append(
+                $('<button>', {class: 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
+                    _addArticle($this, $(this).closest('tr').data('info').articleId);
+                }).hide(),
+                $('<button>', {class: 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
+                    _removeArticle($this, $(this).closest('tr').data('info').articleId);
+                }).hide()
+            );
+            _updateRow($this, row);
+        }
+        return row;
     }
 
     function _keyControls($this, e) {
@@ -300,8 +324,68 @@
 
         var articles = {};
         $this.find('tbody tr:not(.inactive)').each(function () {
-            articles[$(this).data('info').articleId] = $(this).data('info').currentNumber;
+            if (articles[$(this).data('info').articleId] == undefined)
+                articles[$(this).data('info').articleId] = 0;
+            articles[$(this).data('info').articleId] += $(this).data('info').currentNumber;
         });
         settings.conclude($this.data('data').id, articles);
+    }
+
+    function _gotBarcode($this, barcode) {
+        $this.find('tbody tr:not(.inactive)').each(function () {
+            if ($(this).data('info').barcode == barcode) {
+                $(this).find('.addArticle').click();
+                return false;
+            }
+        });
+    }
+
+    function _addArticleModal($this) {
+        var settings = $this.data('saleInterfaceSettings');
+
+        $('body').append(
+            modal = $('<div>', {'class': 'modal fade'}).append(
+                $('<div>', {'class': 'modal-header'}).append(
+                    $('<a>', {'class': 'close'}).html('&times;').click(function () {
+                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                            $(this).remove();
+                        });
+                    }),
+                    $('<h3>').html(settings.tAddArticle)
+                ),
+                $('<div>', {'class': 'modal-body'}).append(
+                    $('<div>', {'class': 'form-horizontal'}).append(
+                        $('<div>', {'class': 'control-group'}).append(
+                            $('<label>', {'class': 'control-label', 'for': 'articleBarcode'}).html(settings.tBarcode),
+                            $('<div>', {'class': 'controls'}).append(
+                                $('<input>', {'type': 'text', 'id': 'articleBarcode', 'placeholder': settings.tBarcode})
+                            )
+                        )
+                    )
+                ),
+                $('<div>', {'class': 'modal-footer'}).append(
+                    $('<button>', {'class': 'btn btn-primary'}).html(settings.tAdd).click(function () {
+                        settings.addArticle($this.data('data').id, $(this).closest('.modal').find('input').val());
+                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                            $(this).remove();
+                        });
+                    }),
+                    $('<button>', {'class': 'btn'}).html(settings.tClose).click(function () {
+                        $(this).closest('.modal').modal('hide').on('hidden', function () {
+                            $(this).remove();
+                        });
+                    })
+                )
+            )
+        );
+
+        modal.modal();
+        modal.find('input').focus();
+    }
+
+    function _addExtraArticle($this, data) {
+        var settings = $this.data('saleInterfaceSettings');
+
+        $this.find('tbody').prepend(_addArticleRow($this, settings, data));
     }
 })(jQuery);
