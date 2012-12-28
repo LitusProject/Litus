@@ -13,15 +13,16 @@
  */
 
 /**
- * Syllabus websocket updater
+ * The socket server for the syllabus update.
  *
  * Usage:
  * --run|-r       Run the websocket
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
-// Setup autoloading
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');

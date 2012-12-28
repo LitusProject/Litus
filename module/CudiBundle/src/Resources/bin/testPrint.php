@@ -13,23 +13,24 @@
  */
 
 /**
- * The socket server for the sale queue
+ * Test the printer service.
  *
  * Usage:
  * --run|-r      Run the socket
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
-// Setup autoloading
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 $rules = array(
-    'printer|p-s' => 'Printer name',
-    'ticket|t-s' => 'Ticket type',
+    'printer|p-s' => 'Printer Name',
+    'ticket|t-s' => 'Ticket Type',
 );
 
 try {
