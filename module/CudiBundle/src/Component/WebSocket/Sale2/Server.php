@@ -276,7 +276,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     private function _startSelling(User $user, $id)
     {
-        $this->_queue->startSelling($user, $id);
+        $this->sendText($user, $this->_queue->startSelling($user, $id));
     }
 
     private function _cancelSelling(User $user, $id)

@@ -17,20 +17,17 @@
     var methods = {
         init : function (options) {
             var settings = $.extend(defaults, options);
-            $(this).saleInterface($.extend({
-                isSell: false,
-                conclude: settings.finish,
-            }, settings));
+            settings.isSell = false;
+            settings.conclude = settings.finish;
 
             var $this = $(this);
             $(this).data('collectSettings', settings);
 
-            _init($this);
             return this;
         },
         show : function (data) {
             currentView = 'collect';
-            $(this).saleInterface('show', data);
+            $(this).saleInterface('show', $(this).data('collectSettings'), data);
             return this;
         },
         hide : function (data) {
@@ -56,8 +53,4 @@
             $.error('Method ' +  method + ' does not exist on $.collect');
         }
     };
-
-    function _init($this) {
-        var settings = $this.data('collectSettings');
-    }
 })(jQuery);

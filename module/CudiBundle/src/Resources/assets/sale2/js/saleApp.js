@@ -14,6 +14,7 @@ var currentView = 'selectPaydesk';
         tErrorSocket: 'An error occurred while loading the queue.',
 
         paydesks: [],
+        discounts: [],
         translateStatus: function (status) {return status},
     };
 
@@ -104,12 +105,66 @@ var currentView = 'selectPaydesk';
             },
         });
 
+        sale = $this.sale({
+            settings.discounts,
+            saveComment: function (id, comment) {
+                $.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'saveComment',
+                        'id': id,
+                        'comment': comment,
+                    })
+                });
+            },
+            showQueue: function () {
+                queue.queue('show', {permanent: false});
+            },
+            cancel: function (id) {
+                $.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'cancelSelling',
+                        'id': id,
+                    })
+                });
+                sale.sale('hide');
+                queue.queue('show');
+            },
+            finish: function (id, articles) {
+                alert(id);
+                /*$.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'concludeSelling',
+                        'id': id,
+                        'articles': articles,
+                    })
+                });*/
+                sale.sale('hide');
+                queue.queue('show');
+            },
+            translateStatus: settings.translateStatus,
+            addArticle: function (id, barcode) {
+                $.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'addArticle',
+                        'id': id,
+                        'barcode': barcode,
+                    })
+                });
+            },
+        });
+
         $('body').barcodeControl({
             onBarcode: function (barcode) {
                 if (currentView == 'queue')
                     queue.queue('gotBarcode', barcode);
                 else if (currentView == 'collect')
                     collect.collect('gotBarcode', barcode);
+                else if (currentView == 'sale')
+                    sale.sale('gotBarcode', barcode);
             }
         });
 
@@ -128,9 +183,14 @@ var currentView = 'selectPaydesk';
                 } else if (data.collect) {
                     queue.queue('hide');
                     collect.collect('show', data.collect);
+                } else if (data.sale) {
+                    queue.queue('hide');
+                    sale.sale('show', data.sale);
                 } else if (data.addArticle) {
                     if (currentView == 'collect')
                         collect.collect('addArticle', data.addArticle);
+                    if (currentView == 'sale')
+                        sale.sale('addArticle', data.addArticle);
                 }
             },
             error: function (e) {
