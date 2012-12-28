@@ -123,7 +123,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
 
         return json_encode(
             array(
-                'collect' => array(
+                'sale' => array(
                     'id' => $item->getId(),
                     'comment' => $item->getComment(),
                     'person' => array(

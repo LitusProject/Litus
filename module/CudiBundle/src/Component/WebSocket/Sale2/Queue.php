@@ -231,9 +231,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $item->setStatus('selling');
         $this->_entityManager->flush();
 
-        $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
+        if (!isset($this->_queueItems[$id]))
+            $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
-        // TODO: return sale info
+        return $this->_queueItems[$id]->getSaleInfo();
     }
 
     /**
