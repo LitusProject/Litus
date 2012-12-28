@@ -33,13 +33,12 @@
     var queue = null;
 
     var methods = {
-        init : function (options) {
-            var settings = $.extend(defaults, options);
-            $(this).data('saleInterfaceSettings', settings);
-
+        init : function () {
             return this;
         },
-        show : function (data) {
+        show : function (options, data) {
+            $(this).data('saleInterfaceSettings', $.extend(defaults, options));
+
             $(this).data('data', data);
             _show($(this), data);
             return this;
