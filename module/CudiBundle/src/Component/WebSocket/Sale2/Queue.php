@@ -119,15 +119,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findAllAssignedByPerson($person);
 
-        $registration = $this->_entityManager
-            ->getRepository('SecretaryBundle\Entity\Registration')
-            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
-
-        $metaData = $this->_entityManager
-            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
-
-        if (empty($bookings) && !(null !== $registration && !$registration->hasPayed() && $metaData->becomeMember())) {
+        if (empty($bookings)) {
             return json_encode(
                 (object) array(
                     'error' => 'noBookings',
@@ -143,6 +135,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $queueItem = new EntityQueueItem($this->_entityManager, $person, $session);
 
             $this->_entityManager->persist($queueItem);
+            $this->_entityManager->flush();
+        } elseif ($queueItem->getStatus() == 'hold') {
+            $queueItem->setStatus('signed_in');
             $this->_entityManager->flush();
         }
 
@@ -284,6 +279,64 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $item->setStatus('signed_in');
         $this->_entityManager->flush();
+    }
+
+    /**
+     * @param integer $id
+     * @param integer $barcode
+     */
+    public function addArticle($id, $barcode)
+    {
+        if (!isset($this->_queueItems[$id])) {
+            return json_encode(
+                array(
+                    'addArticle' => array(
+                        'error' => 'no_queue_item',
+                    ),
+                )
+            );
+        }
+
+        $article = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneByBarcode($barcode);
+
+        if (!isset($article)) {
+            return json_encode(
+                array(
+                    'addArticle' => array(
+                        'error' => 'no_article',
+                    ),
+                )
+            );
+        }
+
+        $barcodes = array($article->getBarcode());
+        foreach($article->getAdditionalBarcodes() as $barcode)
+            $barcodes[] = $barcode->getBarcode();
+
+        $result = array(
+            'id' => 0,
+            'articleId' => $article->getId(),
+            'price' => $article->getSellPrice(),
+            'title' => $article->getMainArticle()->getTitle(),
+            'barcode' => $article->getBarcode(),
+            'barcodes' => $barcodes,
+            'author' => $article->getMainArticle()->getAuthors(),
+            'number' => 1,
+            'status' => 'assigned',
+            'collected' => 0,
+            'discounts' => array(),
+        );
+
+        foreach($article->getDiscounts() as $discount)
+            $result->discounts[$discount->getType()] = $discount->apply($article->getSellPrice());
+
+        return json_encode(
+            array(
+                'addArticle' => $result,
+            )
+        );
     }
 
     /**

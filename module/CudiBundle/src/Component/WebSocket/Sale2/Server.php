@@ -164,37 +164,47 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         switch ($command->action) {
             case 'signIn':
                 $this->_signIn($user, $command->universityIdentification);
+                $this->sendQueueToAll();
                 break;
             case 'addToQueue':
                 $this->_addToQueue($user, $command->universityIdentification);
+                $this->sendQueueToAll();
                 break;
             case 'startCollecting':
                 $this->_startCollecting($user, $command->id);
+                $this->sendQueueToAll();
                 break;
             case 'cancelCollecting':
                 $this->_cancelCollecting($user, $command->id);
+                $this->sendQueueToAll();
                 break;
             case 'stopCollecting':
                 $this->_stopCollecting($user, $command->id, isset($command->articles) ? $command->articles : null);
+                $this->sendQueueToAll();
                 break;
             case 'startSelling':
                 $this->_startSelling($user, $command->id);
+                $this->sendQueueToAll();
                 break;
             case 'cancelSelling':
                 $this->_cancelSelling($user, $command->id);
+                $this->sendQueueToAll();
                 break;
             case 'hold':
                 $this->_hold($command->id);
+                $this->sendQueueToAll();
                 break;
             case 'unhold':
                 $this->_unhold($command->id);
+                $this->sendQueueToAll();
                 break;
             case 'saveComment':
                 $this->_saveComment($command->id, $command->comment);
                 break;
+            case 'addArticle':
+                $this->_addArticle($user, $command->id, $command->barcode);
+                break;
         }
-
-        $this->sendQueueToAll();
     }
 
     /**
@@ -292,5 +302,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         $item->setComment($comment);
         $this->_entityManager->flush();
+    }
+
+    private function _addArticle(User $user, $id, $barcode)
+    {
+        $result = $this->_queue->addArticle($id, $barcode);
+        if ($result)
+            $this->sendText($user, $result);
     }
 }

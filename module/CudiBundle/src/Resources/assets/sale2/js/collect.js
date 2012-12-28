@@ -2,15 +2,16 @@
     var defaults = {
         tCurrentCustomer: 'Current Customer',
         tComments: 'Comments',
-        tQueue: 'Queue - F8',
-        tConclude: 'Finish - F9',
-        tCancel: 'Cancel - F10',
+        tQueue: 'Queue',
+        tConclude: 'Finish',
+        tCancel: 'Cancel',
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
         finish: function (id, articles) {},
         cancel: function (id) {},
         translateStatus: function (status) {return status},
+        addArticle: function (id, barcode) {},
     };
 
     var methods = {
@@ -34,6 +35,14 @@
         },
         hide : function (data) {
             $(this).saleInterface('hide');
+            return this;
+        },
+        gotBarcode : function (barcode) {
+            $(this).saleInterface('gotBarcode', barcode);
+            return this;
+        },
+        addArticle : function (data) {
+            $(this).saleInterface('addArticle', data);
             return this;
         },
     };
