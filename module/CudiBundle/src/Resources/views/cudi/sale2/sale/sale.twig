@@ -18,6 +18,10 @@
                         {'name': '{{ paydesk.getName() }}', 'code': '{{ paydesk.getCode() }}'},
                     {% endfor %}
                 ],
+                discounts: [
+                    {'type': 'acco', 'name': 'Acco'},
+                    {'type': 'member', 'name': 'Member'},
+                ],
                 translateStatus: function (status) {
                     switch (status) {
                         case 'signed_in':

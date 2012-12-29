@@ -74,7 +74,7 @@
         $this.append(
             $('<div>', {'class': 'saleScreen'}).append(
                 wrapper = $('<div>', {'class': 'row wrapper'}).append(
-                    $('<div>', {'class': 'span7 customer'}).append(
+                    customer = $('<div>', {'class': 'span7 customer'}).append(
                         $('<div>', {'class': 'row title'}).html(settings.tCurrentCustomer),
                         $('<div>', {'class': 'row customerName'}).append(
                             $('<span>', {'class': 'name'}).html(data.person.name),
@@ -124,10 +124,14 @@
         );
 
         if (settings.isSell) {
-            wrapper.append(
+            customer.after(
                 $('<div>', {'class': 'span2 discounts'}).append(
                     'Discounts:',
-                    options = $('<div>', {'class': 'options'}).append(
+                    options = $('<div>', {'class': 'options'})
+                ),
+                $('<div>', {'class': 'span3 money'}).append(
+                    $('<div>', {'class': 'total'}).append(
+                        '&euro; 0.00'
                     )
                 )
             );
@@ -135,21 +139,13 @@
             $(settings.discounts).each(function () {
                 options.append(
                     $('<p>').append(
-                        $('<label>', {'class': 'radio'}).append(
-                            $('<input>', {'type': 'radio', 'name': 'discounts', 'value': this.type}),
+                        $('<label>', {'class': 'checkbox'}).append(
+                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}),
                             ' ' + this.name
                         )
                     )
                 )
             });
-
-            wrapper.append(
-                $('<div>', {'class': 'span3 money'}).append(
-                    $('<div>', {'class': 'total'}).append(
-                        '&euro; 0.00'
-                    )
-                )
-            );
         }
 
         addArticle.click(function () {

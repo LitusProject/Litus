@@ -164,7 +164,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         switch ($command->action) {
             case 'signIn':
                 $this->_signIn($user, $command->universityIdentification);
-                $this->sendQueueToAll();
+                if (rand(1, floor($this->_queue->getNumberSignedIn()/15)+1) == 1) // Send queue random if length(signed_in) > 15
+                    $this->sendQueueToAll();
                 break;
             case 'addToQueue':
                 $this->_addToQueue($user, $command->universityIdentification);

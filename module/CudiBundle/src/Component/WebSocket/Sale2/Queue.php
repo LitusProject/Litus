@@ -48,6 +48,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * @return integer
+     */
+    public function getNumberSignedIn()
+    {
+        return count(
+            $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                ->findAllByStatus($session, 'signed_in')
+        );
+    }
+
+    /**
      * @param \CudiBundle\Entity\Sales\Session $session The sale session
      *
      * @return string

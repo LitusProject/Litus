@@ -29,7 +29,6 @@
         },
         show : function (data) {
             currentView = 'sale';
-            console.log(data);
             $(this).saleInterface('show', $(this).data('saleSettings'), data);
             return this;
         },
