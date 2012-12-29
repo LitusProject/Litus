@@ -183,7 +183,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
 
                 foreach($booking->getArticle()->getDiscounts() as $discount)
-                    $result->discounts[$discount->getType()] = $discount->apply($booking->getArticle()->getSellPrice());
+                    $result['discounts'][] = array('type' => $discount->getType(), 'value' => $discount->apply($booking->getArticle()->getSellPrice()));
 
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()] = $result;
             }
@@ -214,7 +214,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
 
                 foreach($article->getDiscounts() as $discount)
-                    $result->discounts[$discount->getType()] = $discount->apply($article->getSellPrice());
+                    $result['discounts'][] = array('type' => $discount->getType(), 'value' => $discount->apply($article->getSellPrice()));
                 $results['assigned_' . $article->getId()] = $result;
             }
         }

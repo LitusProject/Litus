@@ -343,7 +343,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         );
 
         foreach($article->getDiscounts() as $discount)
-            $result->discounts[$discount->getType()] = $discount->apply($article->getSellPrice());
+            $result['discounts'][] = array('type' => $discount->getType(), 'value' => $discount->apply($article->getSellPrice()));
 
         return json_encode(
             array(
@@ -361,10 +361,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function _createJsonQueue($items)
     {
+        $prefix = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_item_barcode_prefix');
+
         $results = array();
         foreach($items as $item) {
             $result = (object) array();
             $result->id = $item->getId();
+            $result->barcode = $prefix + $item->getId();
             $result->number = $item->getQueueNumber();
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->university_identification = $item->getPerson()->getUniversityIdentification();
