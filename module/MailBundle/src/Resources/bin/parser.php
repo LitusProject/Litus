@@ -25,4 +25,12 @@ include 'init_autoloader.php';
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
-$parser = new MailBundle\Component\Parser\Message($mesage);
+$stdinStream = fopen('php://stdin', 'r');
+$message = '';
+while (!feof($stdinStream)) {
+    $line = fread($stdinStream, 1024);
+    $message .= $line;
+}
+fclose($stdinStream);
+
+$parser = new MailBundle\Component\Parser\Message($message);

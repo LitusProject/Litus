@@ -29,14 +29,19 @@ class Message
      */
     private $_mailParse;
 
+    /**
+     * @var string The message string that should be parsed
+     */
     private $_message = '';
 
+    /**
+     * @var array The different parts of the message
+     */
     private $_parts = array();
 
-    private $_body = array();
-
-    private $_attachments = array();
-
+    /**
+     * @param string $message The message string that should be parsed
+     */
     public function  __construct($message)
     {
         $this->_message = $message;
@@ -47,11 +52,22 @@ class Message
         $this->_parse();
     }
 
+    /**
+     * Retrieve the message's headers.
+     * 
+     * @return string
+     */
     public function getHeaders()
     {
         return $this->_getPartHeaders($this->_parts[1]);
     }
 
+    /**
+     * Retrieve a specific header.
+     * 
+     * @param string $name The header's name
+     * @return string
+     */
     public function getHeader($name) {
         $headers = $this->_getPartHeaders($this->_parts[1]);
         
@@ -62,39 +78,48 @@ class Message
         return $header;
     }
 
+    /**
+     * Returns the message's subject.
+     * 
+     * @return string
+     */
     public function getSubject()
     {
         return $this->getHeader('subject');
     }
 
-    public function getBody($type = 'html')
+    /**
+     * Retrieves all text/plain and text/html parts from the message.
+     * 
+     * @return array
+     */
+    public function getBody()
     {
         $bodyTypes = array(
             'text' => 'text/plain',
             'html' => 'text/html'
         );
 
-        $body = '';
-        if (in_array($type, array_keys($bodyTypes))) {
-            foreach($this->_parts as $part) {
-                if ($this->_getPartContentType($part) == $bodyTypes[$type]) {
-                    $headers = $this->_getPartHeaders($part);
+        $body = array();
+        foreach($this->_parts as $part) {
+            if (in_array($this->_getPartContentType($part), $bodyTypes)) {
+                $headers = $this->_getPartHeaders($part);
 
-                    $body = $this->_decode(
-                        $this->_getPartBody($part),
-                        array_key_exists('content-transfer-encoding', $headers) ? $headers['content-transfer-encoding'] : ''
-                    );
-
-                    break;
-                }
+                $body[] = $this->_decode(
+                    $this->_getPartBody($part),
+                    array_key_exists('content-transfer-encoding', $headers) ? $headers['content-transfer-encoding'] : ''
+                );
             }
-        } else {
-            throw new Exception\InvalidArgumentException('Type can either be text or html');
         }
 
         return $body;
     }
 
+    /**
+     * Returns an array with the message's attachments.
+     * 
+     * @return array
+     */
     public function getAttachments()
     {
         $contentDispositions = array(
@@ -123,6 +148,11 @@ class Message
         return $attachments;
     }
 
+    /**
+     * Parse the message into its parts.
+     * 
+     * @return void
+     */
     private function _parse()
     {
         $structure = mailparse_msg_get_structure($this->_mailParse);
@@ -143,6 +173,12 @@ class Message
         return $headers;
     }
 
+    /**
+     * Find the content-type of a part.
+     * 
+     * @param array $part The part we want to query
+     * @return string
+     */
     private function _getPartContentType($part)
     {
         $contentType = '';
@@ -155,6 +191,12 @@ class Message
         return $contentType;
     }
 
+    /**
+     * Find the content-disposition of a part.
+     * 
+     * @param array $part The part we want to query
+     * @return string
+     */
     private function _getPartContentDisposition($part)
     {
         $contentDisposition = '';
@@ -164,6 +206,12 @@ class Message
         return $contentDisposition;
     }
 
+    /**
+     * Retrieve a part's body.
+     * 
+     * @param array $part The part we want to query
+     * @return string
+     */
     private function _getPartBody($part)
     {
         return substr(
@@ -173,6 +221,13 @@ class Message
         );
     }
 
+    /**
+     * Decode the given string.
+     * 
+     * @param string $encodedString The encoded string
+     * @param string $encodingType  The encoding type
+     * @return string
+     */
     private function _decode($encodedString, $encodingType)
     {
         if (strtolower($encodingType) == 'base64') {

@@ -21,12 +21,26 @@ namespace MailBundle\Component\Parser;
  */
 class Attachment
 {
+    /**
+     * @var string The filename of the attachment
+     */
     private $_filename = '';
 
+    /**
+     * @var string The attachment's content-type
+     */
     private $_contentType = '';
 
+    /**
+     * @var string The binary data of the attachment
+     */
     private $_data = '';
 
+    /**
+     * @param string $filename The filename of the attachment
+     * @param string $contentType The attachment's content-type
+     * @param string $data The binary data of the attachment
+     */
     public function __construct($filename, $contentType, $data)
     {
         $this->_filename = $filename;
@@ -34,16 +48,25 @@ class Attachment
         $this->_data = $data;
     }
 
+    /**
+     * @return string
+     */
     public function getFilename()
     {
         return $this->_filename;
     }
 
+    /**
+     * @return string
+     */
     public function getContentType()
     {
         return $this->_contentType;
     }
 
+    /**
+     * @return string
+     */
     public function getData()
     {
         return $this->_data;
