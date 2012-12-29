@@ -106,7 +106,7 @@ var currentView = 'selectPaydesk';
         });
 
         sale = $this.sale({
-            settings.discounts,
+            discounts: settings.discounts,
             saveComment: function (id, comment) {
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
