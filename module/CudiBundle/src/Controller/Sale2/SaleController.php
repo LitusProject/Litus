@@ -29,10 +29,6 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 {
     public function saleAction()
     {
-        $barcodePrefix = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_item_barcode_prefix');
-
         $enableCollectScanning = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
@@ -47,7 +43,6 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
-                'barcodePrefix' => $barcodePrefix,
                 'paydesks' => $paydesks,
                 'enableCollectScanning' => $enableCollectScanning,
             )
