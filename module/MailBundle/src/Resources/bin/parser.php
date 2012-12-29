@@ -24,3 +24,5 @@ include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
+
+$parser = new MailBundle\Component\Parser\Message($mesage);

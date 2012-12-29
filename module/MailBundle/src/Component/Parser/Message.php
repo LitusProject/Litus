@@ -14,278 +14,173 @@
 
 namespace MailBundle\Component\Parser;
 
+use MailBundle\Component\Parser\Attachment;
+
 /**
- * Checks whether a mailing list name is unique or not. This class is originally from:
- * {@link https://github.com/plancake/official-library-php-email-parser}.
+ * Parse a raw e-mail and create a useful object. Partially adapted from
+ * {@link http://php-mime-mail-parser.googlecode.com}.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Message
 {
-    const PLAINTEXT = 1;
-    const HTML = 2;
-
     /**
-     * @var boolean
+     * @var resource The MailParse resource
      */
-    private $_isImapExtensionAvailable = false;
+    private $_mailParse;
 
-    /**
-     *
-     * @var string
-     */
-    private $_emailRawContent = '';
+    private $_message = '';
 
-    /**
-     *
-     * @var array
-     */
-    protected $_rawFields = array();
+    private $_parts = array();
 
-    /**
-     *
-     * @var array
-     */
-    protected $_rawBodyLines = array();
+    private $_body = array();
 
-    /**
-     *
-     * @param string $_emailRawContent
-     */
-    public function  __construct($_emailRawContent) {
-        $this->_emailRawContent = $_emailRawContent;
+    private $_attachments = array();
 
-        $this->_extractHeadersAndRawBody();
+    public function  __construct($message)
+    {
+        $this->_message = $message;
 
-        if (function_exists('imap_open'))
-            $this->_isImapExtensionAvailable = true;
+        $this->_mailParse = mailparse_msg_create();
+        mailparse_msg_parse($this->_mailParse, $message);
+
+        $this->_parse();
     }
 
-    /**
-     *
-     * @return string (in UTF-8 format)
-     * @throws Exception if a subject header is not found
-     */
+    public function getHeaders()
+    {
+        return $this->_getPartHeaders($this->_parts[1]);
+    }
+
+    public function getHeader($name) {
+        $headers = $this->_getPartHeaders($this->_parts[1]);
+        
+        $header = '';
+        if (isset($headers[$name]))
+            $header = $headers[$name];
+
+        return $header;
+    }
+
     public function getSubject()
     {
-        if (!isset($this->_rawFields['subject']))
-            throw new Exception\RuntimeException('Couldn\'t find the subject of the email');
+        return $this->getHeader('subject');
+    }
 
-        $subject = '';
-        if ($this->_isImapExtensionAvailable) {
-            foreach (imap_mime_header_decode($this->_rawFields['subject']) as $h) {
-                $charset = ($h->charset == 'default') ? 'US-ASCII' : $h->charset;
-                $subject .=  iconv($charset, "UTF-8//TRANSLIT", $h->text);
+    public function getBody($type = 'html')
+    {
+        $bodyTypes = array(
+            'text' => 'text/plain',
+            'html' => 'text/html'
+        );
+
+        $body = '';
+        if (in_array($type, array_keys($bodyTypes))) {
+            foreach($this->_parts as $part) {
+                if ($this->_getPartContentType($part) == $bodyTypes[$type]) {
+                    $headers = $this->_getPartHeaders($part);
+
+                    $body = $this->_decode(
+                        $this->_getPartBody($part),
+                        array_key_exists('content-transfer-encoding', $headers) ? $headers['content-transfer-encoding'] : ''
+                    );
+
+                    break;
+                }
             }
         } else {
-            $subject = utf8_encode(iconv_mime_decode($this->_rawFields['subject']));
-        }
-
-        return $subject;
-    }
-
-    /**
-     *
-     * @return array
-     */
-    public function getCc()
-    {
-        if (!isset($this->_rawFields['cc']))
-            return array();
-
-        return explode(',', $this->_rawFields['cc']);
-    }
-
-    /**
-     *
-     * @return array
-     * @throws Exception if a to header is not found or if there are no recipient
-     */
-    public function getTo()
-    {
-        if ( (!isset($this->_rawFields['to'])) || (!count($this->_rawFields['to'])))
-            throw new Exception\RuntimeException('Couldn\'t find the recipients of the email');
-
-        return explode(',', $this->_rawFields['to']);
-    }
-
-    /**
-     * Return a string with the message body, UTF-8 encoded.
-     *
-     * Example of an e-mail body:
-     *
-     *   --0016e65b5ec22721580487cb20fd
-     *   Content-Type: text/plain; charset=ISO-8859-1
-     *
-     *   Hi all. I am new to Android development.
-     *   Please help me.
-     *
-     *   --
-     *   My signature
-     *
-     *   email: myemail@gmail.com
-     *   web: http://www.example.com
-     *
-     *   --0016e65b5ec22721580487cb20fd
-     *   Content-Type: text/html; charset=ISO-8859-1
-     *
-     * @param integer $returnType The MIME type used to return the body
-     * @return string
-     */
-    public function getBody($returnType = self::PLAINTEXT)
-    {
-        $body = '';
-        $detectedContentType = false;
-        $contentTransferEncoding = null;
-        $charset = 'ASCII';
-        $waitingForContentStart = true;
-
-        $contentTypeRegex = $returnType == self::HTML ? '/^Content-Type: ?text\/html/i' : '/^Content-Type: ?text\/plain/i';
-
-        preg_match_all('!boundary=(.*)$!mi', $this->_emailRawContent, $matches);
-        $boundaries = $matches[1];
-        foreach($boundaries as $i => $v)
-            $boundaries[$i] = str_replace(array("'", '"'), '', $v);
-
-        foreach ($this->_rawBodyLines as $line) {
-            if (!$detectedContentType) {
-                if (preg_match($contentTypeRegex, $line, $matches))
-                    $detectedContentType = true;
-
-                if (preg_match('/charset=(.*)/i', $line, $matches))
-                    $charset = strtoupper(trim($matches[1], '"'));
-            } elseif ($detectedContentType && $waitingForContentStart) {
-                if (preg_match('/charset=(.*)/i', $line, $matches))
-                    $charset = strtoupper(trim($matches[1], '"'));
-
-                if ($contentTransferEncoding == null && preg_match('/^Content-Transfer-Encoding: ?(.*)/i', $line, $matches))
-                    $contentTransferEncoding = $matches[1];
-
-                if ($this->_isNewLine($line))
-                    $waitingForContentStart = false;
-            } else {
-                if (is_array($boundaries)) {
-                    if (in_array(substr($line, 2), $boundaries))
-                        break;
-                }
-
-                $body .= $line . "\n";
-            }
-        }
-
-        if (!$detectedContentType)
-            $body = implode("\n", $this->_rawBodyLines);
-
-        $body = preg_replace('/((\r?\n)*)$/', '', $body);
-
-        if ($contentTransferEncoding == 'base64')
-            $body = base64_decode($body);
-        elseif ($contentTransferEncoding == 'quoted-printable')
-            $body = quoted_printable_decode($body);
-
-        if ('UTF-8' != $charset) {
-            $charset = str_replace("FORMAT=FLOWED", "", $charset);
-
-            $body = iconv($charset, 'UTF-8//TRANSLIT', $body);
-
-            if (false === $body)
-                $body = utf8_encode($body);
+            throw new Exception\InvalidArgumentException('Type can either be text or html');
         }
 
         return $body;
     }
 
-    /**
-     * Return the body in plaintext.
-     *
-     * @return string
-     */
-    public function getPlainBody()
+    public function getAttachments()
     {
-        return $this->getBody(self::PLAINTEXT);
-    }
+        $contentDispositions = array(
+            'attachment',
+            'inline'
+        );
 
-    /**
-     * Return the body in HTML.
-     *
-     * @return string
-     */
-    public function getHtmlBody()
-    {
-        return $this->getBody(self::HTML);
-    }
+        $attachments = array();
+        foreach($this->_parts as $part) {
+            $contentDisposition = $this->_getPartContentDisposition($part);
 
-    /**
-     * Return the header with the given name.
-     *
-     * @param string $headerName The header we want to retrieve
-     * @return string
-     */
-    public function getHeader($headerName)
-    {
-        $headerName = strtolower($headerName);
+            if (in_array($contentDisposition, $contentDispositions) && isset($part['disposition-filename'])) {
+                $attachmentData = $this->_decode(
+                    $this->_getPartBody($part),
+                    (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
+                );
 
-        if (isset($this->_rawFields[$headerName]))
-            return $this->_rawFields[$headerName];
-
-        return '';
-    }
-
-    /**
-     * Extract the headers and body from the message string.
-     *
-     * @return void
-     */
-    private function _extractHeadersAndRawBody()
-    {
-        $lines = preg_split("/(\r?\n|\r)/", $this->_emailRawContent);
-
-        $currentHeader = '';
-
-        $i = 0;
-        foreach ($lines as $line) {
-            if ($this->_isNewLine($line)) {
-                $this->_rawBodyLines = array_slice($lines, $i);
-                break;
+                $attachments[] = new Attachment(
+                    $part['disposition-filename'],
+                    $this->_getPartContentType($part),
+                    $attachmentData
+                );
             }
+        }
 
-            if ($this->_isLineStartingWithPrintableChar($line)) {
-                preg_match('/([^:]+): ?(.*)$/', $line, $matches);
-                $newHeader = strtolower($matches[1]);
-                $value = $matches[2];
-                $this->_rawFields[$newHeader] = $value;
-                $currentHeader = $newHeader;
-            } else {
-                if ($currentHeader)
-                    $this->_rawFields[$currentHeader] .= substr($line, 1);
-            }
+        return $attachments;
+    }
 
-            $i++;
+    private function _parse()
+    {
+        $structure = mailparse_msg_get_structure($this->_mailParse);
+
+        $this->_parts = array();
+        foreach($structure as $nbPart) {
+            $part = mailparse_msg_get_part($this->_mailParse, $nbPart);
+            $this->_parts[$nbPart] = mailparse_msg_get_part_data($part);
         }
     }
 
-    /**
-     * Check whether or not the given line is a newline.
-     *
-     * @param string $line The line we want to check
-     * @return boolean
-     */
-    private function _isNewLine($line)
+    private function _getPartHeaders($part)
     {
-        $line = str_replace("\r", '', $line);
-        $line = str_replace("\n", '', $line);
+        $headers = array();
+        if (isset($part['headers']))
+            $headers = $part['headers'];
 
-        return (strlen($line) == 0);
+        return $headers;
     }
 
-    /**
-     * Check whether or not the given line starts with a character that can be printed.
-     *
-     * @param string $line The line we want to check
-     * @return boolean
-     */
-    private function _isLineStartingWithPrintableChar($line)
+    private function _getPartContentType($part)
     {
-        return preg_match('/^[A-Za-z]/', $line);
+        $contentType = '';
+        if (isset($part['content-type'])) {
+            $contentType = $part['content-type'];
+            if (false !== strpos($contentType, ';'))
+                $contentType = substr($contentType, 0, strpos($contentType, ';'));
+        }
+
+        return $contentType;
+    }
+
+    private function _getPartContentDisposition($part)
+    {
+        $contentDisposition = '';
+        if (isset($part['content-disposition']))
+            $contentDisposition = $part['content-disposition'];
+
+        return $contentDisposition;
+    }
+
+    private function _getPartBody($part)
+    {
+        return substr(
+            $this->_message,
+            $part['starting-pos-body'],
+            ($part['ending-pos-body'] - $part['starting-pos-body'])
+        );
+    }
+
+    private function _decode($encodedString, $encodingType)
+    {
+        if (strtolower($encodingType) == 'base64') {
+            return base64_decode($encodedString);
+        } elseif (strtolower($encodingType) == 'quoted-printable') {
+             return quoted_printable_decode($encodedString);
+        } else {
+            return $encodedString;
+        }
     }
 }
