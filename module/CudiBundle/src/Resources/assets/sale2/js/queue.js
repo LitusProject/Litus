@@ -1,7 +1,5 @@
 (function ($) {
     var defaults = {
-        barcodePrefix: 0,
-
         tQueueTitle: 'Queue',
         tUniversityIdentification: 'University Identification',
         tPrint: 'Print',
@@ -400,10 +398,9 @@
 
     function _gotBarcode($this, barcode) {
         var settings = $this.data('queueSettings');
-        barcode = barcode - settings.barcodePrefix;
 
         $this.find('tbody tr:visible').each(function () {
-            if ($(this).data('info').id == barcode) {
+            if ($(this).data('info').barcode == barcode) {
                 switch ($(this).data('info').status) {
                     case 'collecting':
                         $(this).find('.stopCollecting').click();
