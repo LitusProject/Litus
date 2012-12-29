@@ -137,10 +137,17 @@
             );
 
             $(settings.discounts).each(function () {
+                var checked = false;
+
+                if ('member' == this.type && data.person.member)
+                    checked = true;
+
                 options.append(
                     $('<p>').append(
                         $('<label>', {'class': 'checkbox'}).append(
-                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}),
+                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).change(function () {
+                                _updatePrice($this);
+                            }),
                             ' ' + this.name
                         )
                     )
@@ -222,6 +229,13 @@
 
     function _addArticleRow($this, settings, data) {
         data.currentNumber = data.collected;
+
+        var bestPrice = data.price;
+        $(data.discounts).each(function () {
+            if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
+                bestPrice = this.value < bestPrice ? this.value : bestPrice;
+        });
+
         row = $('<tr>', {'class': 'article', 'id': 'article-' + data.articleId}).append(
             $('<td>').append(data.barcode),
             $('<td>').append(data.title),
@@ -230,7 +244,7 @@
                 $('<span>', {class: 'currentNumber'}).html(data.collected),
                 '/' + data.number
             ),
-            $('<td class="price">').append('&euro;' + (0).toFixed(2)),
+            $('<td class="price">').append('&euro; ' + (bestPrice/100).toFixed(2)),
             actions = $('<td>', {class: 'actions'})
         ).data('info', data)
 
@@ -247,6 +261,7 @@
             );
             _updateRow($this, row);
         }
+
         return row;
     }
 
@@ -283,6 +298,7 @@
     }
 
     function _addArticle($this, id) {
+        var settings = $this.data('saleInterfaceSettings');
         var row = $this.find('#article-' + id);
 
         if (row.data('info').currentNumber < row.data('info').number) {
@@ -292,9 +308,13 @@
         } else {
             row.addClass('error').removeClass('success');
         }
+
+        if (settings.isSell)
+            _updatePrice($this);
     }
 
     function _removeArticle($this, id) {
+        var settings = $this.data('saleInterfaceSettings');
         var row = $this.find('#article-' + id);
 
         if (row.data('info').currentNumber > 0) {
@@ -304,6 +324,9 @@
         } else {
             row.addClass('error').removeClass('success');
         }
+
+        if (settings.isSell)
+            _updatePrice($this);
     }
 
     function _updateRow($this, row) {
@@ -382,5 +405,20 @@
         var settings = $this.data('saleInterfaceSettings');
 
         $this.find('tbody').prepend(_addArticleRow($this, settings, data));
+    }
+
+    function _updatePrice($this) {
+        var total = 0;
+        $this.find('tbody tr:not(.inactive)').each(function () {
+            var bestPrice = $(this).data('info').price;
+            $($(this).data('info').discounts).each(function () {
+                if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
+                    bestPrice = this.value < bestPrice ? this.value : bestPrice;
+            });
+            $(this).find('.price').html('&euro; ' + (bestPrice / 100).toFixed(2));
+            total += $(this).data('info').currentNumber * bestPrice;
+        });
+
+        $this.find('.money .total').html('&euro; ' + (total / 100).toFixed(2));
     }
 })(jQuery);
