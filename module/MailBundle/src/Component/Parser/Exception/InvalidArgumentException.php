@@ -19,6 +19,6 @@ namespace MailBundle\Component\Parser\Exception;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class RuntimeException extends \RuntimeException
+class InvalidArgumentException extends \InvalidArgumentException
 {
 }

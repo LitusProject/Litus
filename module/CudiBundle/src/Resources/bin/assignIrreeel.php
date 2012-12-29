@@ -31,8 +31,8 @@ $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default
 $mt = $application->getServiceManager()->get('mail_transport');
 
 $rules = array(
-    'article|a' => 'Article',
-    'flush|f' => 'Flush',
+    'article|a-s' => 'Article',
+    'flush|f'     => 'Flush',
 );
 
 try {
