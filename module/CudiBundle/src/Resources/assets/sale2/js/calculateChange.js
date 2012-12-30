@@ -6,11 +6,11 @@
     };
 
     var methods = {
-        clear: function () {
+        clear : function () {
             _clear($(this));
             return this;
         },
-        init: function (options) {
+        init : function (options) {
             var settings = $.extend(defaults, options);
             options.value = 0;
             var $this = $(this);
@@ -20,7 +20,7 @@
 
             return this;
         },
-        destroy: function () {
+        destroy : function () {
             $(this).unbind('keydown.calculateChange');
             $(this).removeData('calculateChange');
             return this;

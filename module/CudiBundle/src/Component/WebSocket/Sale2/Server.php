@@ -191,6 +191,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->_cancelSelling($user, $command->id);
                 $this->sendQueueToAll();
                 break;
+            case 'concludeSelling':
+                $this->_concludeSelling($user, $command->id, $command->articles, $command->discounts, $command->payMethod);
+                $this->sendQueueToAll();
+                break;
             case 'hold':
                 $this->_hold($command->id);
                 $this->sendQueueToAll();
@@ -283,6 +287,13 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _cancelSelling(User $user, $id)
     {
         $this->_queue->cancelSelling($id);
+    }
+
+    private function _concludeSelling(User $user, $id, $articles, $discounts, $payMethod)
+    {
+        $this->_queue->concludeSelling($id, $articles, $discounts, $payMethod);
+        
+        // TODO: print ticket
     }
 
     private function _hold($id)

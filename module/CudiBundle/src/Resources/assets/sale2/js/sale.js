@@ -20,7 +20,7 @@
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
-        finish: function (id, articles) {},
+        finish: function (id, articles, discounts, payMethod) {},
         cancel: function (id) {},
         translateStatus: function (status) {return status},
         addArticle: function (id, barcode) {},
@@ -116,7 +116,7 @@
                 ),
                 $('<div>', {'class': 'modal-footer'}).append(
                     $('<button>', {'class': 'btn btn-success', 'data-key': '122'}).html(settings.tSell + ' - F11').click(function () {
-                        settings.finish(id, articles);
+                        settings.finish(id, articles, $this.saleInterface('getSelectedDiscounts'), method.find(' button.active').data('method'));
                         $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
                             payed.calculateChange('destroy');
                             $(this).remove();

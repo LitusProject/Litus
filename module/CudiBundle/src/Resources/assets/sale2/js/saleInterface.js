@@ -58,6 +58,15 @@
         },
         getTotalPrice : function () {
             return _updatePrice($(this));
+        },
+        getSelectedDiscounts : function () {
+            var discounts = [];
+            var $this = $(this);
+            $($(this).data('saleInterfaceSettings').discounts).each(function () {
+                if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
+                    discounts.push(this.type);
+            });
+            return discounts;
         }
     };
 

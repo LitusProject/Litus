@@ -34,6 +34,12 @@
             var permanent = options == undefined || options.permanent == undefined ? true : options.permanent;
             currentView = permanent ? 'queue' : currentView;
             $(this).permanentModal({closable: !permanent});
+
+            var $this = $(this);
+
+            $(this).find('tbody tr').each(function () {
+                _showActions($this, $(this));
+            });
             return this;
         },
         hide : function (options) {
