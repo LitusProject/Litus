@@ -112,6 +112,16 @@ return array(
     ),
     'doctrine' => array(
         'driver' => array(
+            'odm_default' => array(
+                'drivers' => array(
+                    'MailBundle\Document' => 'odm_annotation_driver'
+                ),
+            ),
+            'odm_annotation_driver' => array(
+                'paths' => array(
+                    'mailbundle' => __DIR__ . '/../../Document',
+                ),
+            ),
             'orm_default' => array(
                 'drivers' => array(
                     'MailBundle\Entity' => 'orm_annotation_driver'
