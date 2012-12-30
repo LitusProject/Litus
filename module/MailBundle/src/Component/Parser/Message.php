@@ -104,10 +104,14 @@ class Message
         foreach($this->_parts as $part) {
             if (in_array($this->_getPartContentType($part), $bodyTypes)) {
                 $headers = $this->_getPartHeaders($part);
-
-                $body[] = $this->_decode(
+                $content = $this->_decode(
                     $this->_getPartBody($part),
                     array_key_exists('content-transfer-encoding', $headers) ? $headers['content-transfer-encoding'] : ''
+                );
+
+                $body[] = array(
+                    'type' => array_search($this->_getPartContentType($part), $bodyTypes),
+                    'content' => $content
                 );
             }
         }
