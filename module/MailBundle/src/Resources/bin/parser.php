@@ -86,7 +86,7 @@ if (isset($opts->r)) {
                     $newMessage = new MailBundle\Document\Message(
                         $body['type'],
                         substr($parser->getSubject(), 7),
-                        utf8_encode($body['content']),
+                        $body['content'],
                         $attachments
                     );
 
