@@ -292,7 +292,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _concludeSelling(User $user, $id, $articles, $discounts, $payMethod)
     {
         $this->_queue->concludeSelling($id, $articles, $discounts, $payMethod);
-        
+
         // TODO: print ticket
     }
 
