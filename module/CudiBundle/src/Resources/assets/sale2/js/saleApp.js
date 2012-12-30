@@ -129,16 +129,17 @@ var currentView = 'selectPaydesk';
                 sale.sale('hide');
                 queue.queue('show');
             },
-            finish: function (id, articles) {
-                alert(id);
-                /*$.webSocket('send', {name: settings.socketName, text:
+            finish: function (id, articles, discounts, payMethod) {
+                $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
                         'action': 'concludeSelling',
                         'id': id,
                         'articles': articles,
+                        'discounts': discounts,
+                        'payMethod': payMethod,
                     })
-                });*/
+                });
                 sale.sale('hide');
                 queue.queue('show');
             },
