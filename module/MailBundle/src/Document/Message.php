@@ -80,9 +80,10 @@ class Message
         $this->creationTime = new DateTime();
         
         $this->type = $type;
-        $this->subject = $subject;
-        $this->body = $body;
         $this->attachments = new ArrayCollection($attachments);
+
+        $this->setSubject($subject);
+        $this->setBody($body);
     }
 
     /**
@@ -124,7 +125,7 @@ class Message
      */
     public function getSubject()
     {
-        return $this->subject;
+        return utf8_decode($this->subject);
     }
 
     /**
@@ -133,7 +134,7 @@ class Message
      */
     public function setSubject($subject)
     {
-        $this->subject = $subject;
+        $this->subject = utf8_encode($subject);
         return $this;
     }
 
@@ -142,7 +143,7 @@ class Message
      */
     public function getBody()
     {
-        return $this->body;
+        return utf8_decode($this->body);
     }
 
     /**
@@ -151,7 +152,7 @@ class Message
      */
     public function setBody($body)
     {
-        $this->body = $body;
+        $this->body = utf8_encode($body);
         return $this;
     }
 
