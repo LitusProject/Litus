@@ -131,22 +131,45 @@ class Message
             'inline'
         );
 
+        $headers = array(
+            'content-id'
+        );
+
         $attachments = array();
         foreach($this->_parts as $part) {
             $contentDisposition = $this->_getPartContentDisposition($part);
 
+            $attachment = null;
             if (in_array($contentDisposition, $contentDispositions) && isset($part['disposition-filename'])) {
                 $attachmentData = $this->_decode(
                     $this->_getPartBody($part),
                     (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
                 );
 
-                $attachments[] = new Attachment(
+                $attachment = new Attachment(
                     $part['disposition-filename'],
                     $this->_getPartContentType($part),
                     $attachmentData
                 );
+            } else {
+                foreach ($headers as $header) {
+                    if (isset($this->_getPartHeaders($part)[$header])) {
+                        $attachmentData = $this->_decode(
+                            $this->_getPartBody($part),
+                            (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
+                        );
+
+                        $attachment = new Attachment(
+                            $this->_getPartHeaders($part)[$header],
+                            $this->_getPartContentType($part),
+                            $attachmentData
+                        );
+                    }
+                }
             }
+
+            if (null !== $attachment)
+                $attachments[] = $attachment;
         }
 
         return $attachments;
