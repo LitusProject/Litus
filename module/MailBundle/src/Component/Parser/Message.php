@@ -158,9 +158,13 @@ class Message
                             $this->_getPartBody($part),
                             (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
                         );
-
+                        
+                        $filename = $this->_getPartHeaders($part)[$header];
+                        if (substr($filename), 1, 1) == '<' && substr($filename), -1) == '>')
+                            $filename = substr($filename, 2, (strlen($filename) - 1));
+                        
                         $attachment = new Attachment(
-                            $this->_getPartHeaders($part)[$header],
+                            $filename,
                             $this->_getPartContentType($part),
                             $attachmentData
                         );
