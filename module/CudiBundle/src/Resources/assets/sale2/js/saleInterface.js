@@ -55,6 +55,9 @@
         addArticle : function (data) {
             _addExtraArticle($(this), data);
             return this;
+        },
+        getTotalPrice : function () {
+            return _updatePrice($(this));
         }
     };
 
@@ -420,5 +423,7 @@
         });
 
         $this.find('.money .total').html('&euro; ' + (total / 100).toFixed(2));
+
+        return total;
     }
 })(jQuery);
