@@ -16,7 +16,7 @@
  * The socket server for the syllabus update.
  *
  * Usage:
- * --run|-r       Run the websocket
+ * --run|-r       Run the Socket
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

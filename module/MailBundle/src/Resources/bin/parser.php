@@ -15,6 +15,9 @@
 /**
  * Parser for received e-mail messages.
  *
+ * Usage:
+ * --run|-r      Run the Parser
+ * 
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 
@@ -28,61 +31,75 @@ $dm = $application->getServiceManager()->get('doctrine.documentmanager.odm_defau
 if ('production' == getenv('APPLICATION_ENV'))
     $amon = $application->getServiceManager()->get('amon');
 
-$stdinStream = fopen('php://stdin', 'r');
-$message = '';
-while (!feof($stdinStream)) {
-    $line = fread($stdinStream, 1024);
-    $message .= $line;
-}
-fclose($stdinStream);
-
-$parser = new MailBundle\Component\Parser\Message($message);
-$commands = array(
-    '001' => 'Store the incoming mail and its attachments...'
+$rules = array(
+    'run|r' => 'Run the Parser',
 );
 
-$command = substr($parser->getSubject(), 2, 3);
-if (in_array($command, array_keys($commands))) {
-    switch ($command) {
-        case '001':
-            $attachments = array();
-            foreach ($parser->getAttachments() as $attachment) {
-                $attachments[] = new MailBundle\Document\Messages\Attachment(
-                    $attachment->getFilename(),
-                    $attachment->getContentType(),
-                    $attachment->getData()
-                );
-            }
+try {
+    $opts = new Zend\Console\Getopt($rules);
+    $opts->parse();
+} catch (Zend\Console\Getopt\Exception $e) {
+    echo $e->getUsageMessage();
+    exit(2);
+}
 
-            $newMessage = new MailBundle\Document\Message(
-                substr($parser->getSubject(), 7),
-                $parser->getBody()[0],
-                $attachments
-            );
+if (isset($opts->r)) {
+    $stdinStream = fopen('php://stdin', 'r');
+    $message = '';
+    while (!feof($stdinStream)) {
+        $line = fread($stdinStream, 1024);
+        $message .= $line;
+    }
+    fclose($stdinStream);
 
-            $dm->persist($newMessage);
-            $dm->flush();
+    $parser = new MailBundle\Component\Parser\Message($message);
+    $commands = array(
+        '001' => 'Store the incoming mail and its attachments...'
+    );
 
-            if ('production' == getenv('APPLICATION_ENV')) {
-                $amon->sendLog(
-                    'Storing an incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
-                    array(
-                        'MailBundle',
-                        'parser.php'
-                    )
+    $command = substr($parser->getSubject(), 2, 3);
+    if (in_array($command, array_keys($commands))) {
+        switch ($command) {
+            case '001':
+                $attachments = array();
+                foreach ($parser->getAttachments() as $attachment) {
+                    $attachments[] = new MailBundle\Document\Messages\Attachment(
+                        $attachment->getFilename(),
+                        $attachment->getContentType(),
+                        $attachment->getData()
+                    );
+                }
+
+                $newMessage = new MailBundle\Document\Message(
+                    substr($parser->getSubject(), 7),
+                    $parser->getBody()[0],
+                    $attachments
                 );
-            }
-        break;
-        default:
-            if ('production' == getenv('APPLICATION_ENV')) {
-                $amon->sendLog(
-                    'The command specified in the subject line (' . $command . ') was not valid',
-                    array(
-                        'MailBundle',
-                        'parser.php'
-                    )
-                );
-            }
-        break;
+
+                $dm->persist($newMessage);
+                $dm->flush();
+
+                if ('production' == getenv('APPLICATION_ENV')) {
+                    $amon->sendLog(
+                        'Storing an incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
+                        array(
+                            'MailBundle',
+                            'parser.php'
+                        )
+                    );
+                }
+            break;
+            default:
+                if ('production' == getenv('APPLICATION_ENV')) {
+                    $amon->sendLog(
+                        'The command specified in the subject line (' . $command . ') was not valid',
+                        array(
+                            'MailBundle',
+                            'parser.php'
+                        )
+                    );
+                }
+            break;
+        }
     }
 }

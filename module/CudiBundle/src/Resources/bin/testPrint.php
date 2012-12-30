@@ -16,7 +16,7 @@
  * Test the printer service.
  *
  * Usage:
- * --run|-r      Run the socket
+ * --run|-r      Run the Socket
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
