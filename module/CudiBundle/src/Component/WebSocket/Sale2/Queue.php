@@ -268,14 +268,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($id);
 
+        $this->_queueItems[$id]->conclude($articles, $discounts);
+
         if (isset($this->_queueItems[$id]))
             unset($this->_queueItems[$id]);
 
-        // TODO: create sale items
-
         $item->setStatus('sold')
             ->setPayMethod($payMethod);
-        // TODO: $this->_entityManager->flush();
+        $this->_entityManager->flush();
     }
 
     /**
