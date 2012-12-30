@@ -19,6 +19,7 @@ function backgroundTask() {
 for i in {1..50}
 do
     backgroundTask "php bin/CudiBundle/queue.php --run"
+    backgroundTask "php bin/CudiBundle/queue2.php --run"
     backgroundTask "php bin/SportBundle/run.php --run"
     backgroundTask "php bin/SyllabusBundle/update.php --run"
 
