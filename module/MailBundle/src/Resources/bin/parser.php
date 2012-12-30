@@ -88,6 +88,8 @@ if (isset($opts->r)) {
                         )
                     );
                 }
+
+                echo 'Storing an incoming message with subject "' . substr($parser->getSubject(), 7) . '"';
             break;
             default:
                 if ('production' == getenv('APPLICATION_ENV')) {
@@ -99,6 +101,8 @@ if (isset($opts->r)) {
                         )
                     );
                 }
+
+                echo 'The command specified in the subject line (' . $command . ') was not valid';
             break;
         }
     }
