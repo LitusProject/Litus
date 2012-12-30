@@ -17,6 +17,8 @@
  *
  * Usage:
  * --run|-r      Cache XML
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
