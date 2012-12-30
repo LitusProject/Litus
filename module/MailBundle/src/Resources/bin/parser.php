@@ -17,7 +17,7 @@
  *
  * Usage:
  * --run|-r      Run the Parser
- * 
+ *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 
@@ -70,9 +70,21 @@ if (isset($opts->r)) {
                     );
                 }
 
+                $body = '';
+                if (count($parser->getBody()) > 1) {
+                    foreach ($parser->getBody() as $itBody) {
+                        if ('html' == $itBody['type']) {
+                            $body = $itBody['content'];
+                            break;
+                        }
+                    }
+                } else {
+                    $body = $parser->getBody()[0]['content'];
+                }
+
                 $newMessage = new MailBundle\Document\Message(
                     substr($parser->getSubject(), 7),
-                    $parser->getBody()[0],
+                    utf8_encode($body),
                     $attachments
                 );
 
@@ -88,8 +100,6 @@ if (isset($opts->r)) {
                         )
                     );
                 }
-
-                echo 'Storing an incoming message with subject "' . substr($parser->getSubject(), 7) . '"';
             break;
             default:
                 if ('production' == getenv('APPLICATION_ENV')) {
@@ -101,8 +111,6 @@ if (isset($opts->r)) {
                         )
                     );
                 }
-
-                echo 'The command specified in the subject line (' . $command . ') was not valid';
             break;
         }
     }
