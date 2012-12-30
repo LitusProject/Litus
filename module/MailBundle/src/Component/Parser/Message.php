@@ -14,7 +14,7 @@
 
 namespace MailBundle\Component\Parser;
 
-use MailBundle\Component\Parser\Attachment;
+use MailBundle\Component\Parser\Message\Attachment;
 
 /**
  * Parse a raw e-mail and create a useful object. Partially adapted from
