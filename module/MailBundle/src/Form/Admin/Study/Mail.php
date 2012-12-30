@@ -34,7 +34,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($studies, $groups, $name = null)
+    public function __construct($studies, $groups, $storedMessages, $name = null)
     {
         parent::__construct($name);
 
@@ -43,22 +43,28 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->setAttribute('accept-charset', 'utf-8');
 
         $studyNames = array();
-        foreach($studies as $study) {
+        foreach($studies as $study)
             $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
-        }
 
         $groupNames = array();
-        foreach($groups as $group) {
+        foreach($groups as $group)
             $groupNames[$group->getId()] = $group->getName();
+
+        $storedMessagesTitles = array(
+            '' => ''
+        );
+        foreach ($storedMessages as $storedMessage)
+            $storedMessagesTitles[$storedMessage->getId()] = '(' . $storedMessage->getCreationTime()->format('d/m/Y') . ') ' . $storedMessage->getSubject();
+
+        if (0 != count($studyNames)) {
+            $field = new Select('studies');
+            $field->setLabel('Studies')
+                ->setAttribute('multiple', true)
+                ->setAttribute('options', $studyNames);
+            $this->add($field);
         }
 
-        $field = new Select('studies');
-        $field->setLabel('Studies')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $studyNames);
-        $this->add($field);
-
-        if ($groupNames) {
+        if (0 != count($groupNames)) {
             $field = new Select('groups');
             $field->setLabel('Groups')
                 ->setAttribute('multiple', true)
@@ -67,7 +73,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $field = new Checkbox('test');
-        $field->setLabel('Test mail');
+        $field->setLabel('Test Mail');
         $this->add($field);
 
         $field = new Checkbox('html');
@@ -85,20 +91,25 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('style', 'width: 400px;');
         $this->add($field);
 
+        if (0 != count($storedMessages)) {
+            $field = new Select('stored_message');
+            $field->setLabel('Stored Message')
+                ->setAttribute('options', $storedMessagesTitles);
+            $this->add($field);
+        }
+
         $field = new Text('subject');
         $field->setLabel('Subject')
-            ->setAttribute('style', 'width: 400px;')
-            ->setRequired();
+            ->setAttribute('style', 'width: 400px;');
         $this->add($field);
 
         $field = new Textarea('message');
         $field->setLabel('Message')
-            ->setAttribute('style', 'width: 500px;height: 200px;')
-            ->setRequired();
+            ->setAttribute('style', 'width: 500px; height: 200px;');
         $this->add($field);
 
-        $field = new File('file[]'); // Must be file[] to allow multiple upload using zend file transfer
-        $field->setLabel('File')
+        $field = new File('file[]');
+        $field->setLabel('Attachments')
             ->setAttribute('multiple', 'multiple')
             ->setRequired();
         $this->add($field);
@@ -118,7 +129,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'subject',
-                    'required' => true,
+                    'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -130,7 +141,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'message',
-                    'required' => true,
+                    'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),

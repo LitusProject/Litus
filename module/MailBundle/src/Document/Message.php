@@ -44,6 +44,11 @@ class Message
     private $creationTime;
 
     /**
+     * @var string The type of this message
+     */
+    private $type;
+
+    /**
      * @var string The subject of this message
      *
      * @ODM\Field(type="string")
@@ -51,11 +56,11 @@ class Message
     private $subject;
 
     /**
-     * @var string The message string
+     * @var string The body string
      *
      * @ODM\Field(type="string")
      */
-    private $message;
+    private $body;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The attachemnts for this message
@@ -65,15 +70,18 @@ class Message
     private $attachments;
 
     /**
-     * @param string $message
+     * @param string $type
+     * @param string $subject
+     * @param string $body
      * @param array $attachments
      */
-    public function __construct($subject, $message, array $attachments = array())
+    public function __construct($type, $subject, $body, array $attachments = array())
     {
         $this->creationTime = new DateTime();
         
+        $this->type = $type;
         $this->subject = $subject;
-        $this->message = $message;
+        $this->body = $body;
         $this->attachments = new ArrayCollection($attachments);
     }
 
@@ -91,6 +99,24 @@ class Message
     public function getCreationTime()
     {
         return $this->creationTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return \MailBundle\Document\Message
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
     }
 
     /**
@@ -114,18 +140,18 @@ class Message
     /**
      * @return string
      */
-    public function getMessage()
+    public function getBody()
     {
-        return $this->message;
+        return $this->body;
     }
 
     /**
      * @param string $message
      * @return \MailBundle\Document\Message
      */
-    public function setMessage($message)
+    public function setBody($body)
     {
-        $this->message = $message;
+        $this->body = $body;
         return $this;
     }
 
