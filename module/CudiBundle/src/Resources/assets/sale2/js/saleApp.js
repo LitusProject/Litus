@@ -129,16 +129,17 @@ var currentView = 'selectPaydesk';
                 sale.sale('hide');
                 queue.queue('show');
             },
-            finish: function (id, articles) {
-                alert(id);
-                /*$.webSocket('send', {name: settings.socketName, text:
+            finish: function (id, articles, discounts, payMethod) {
+                $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
                         'action': 'concludeSelling',
                         'id': id,
                         'articles': articles,
+                        'discounts': discounts,
+                        'payMethod': payMethod,
                     })
-                });*/
+                });
                 sale.sale('hide');
                 queue.queue('show');
             },
@@ -178,10 +179,10 @@ var currentView = 'selectPaydesk';
             message: function (e, data) {
                 if (data.queue) {
                     queue.queue('updateQueue', data.queue);
-                } else if (data.collect) {
+                } else if (data.collect && currentView != 'collect') {
                     queue.queue('hide');
                     collect.collect('show', data.collect);
-                } else if (data.sale) {
+                } else if (data.sale && currentView != 'sale') {
                     queue.queue('hide');
                     sale.sale('show', data.sale);
                 } else if (data.addArticle) {

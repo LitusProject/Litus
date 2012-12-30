@@ -17,6 +17,8 @@ namespace CudiBundle\Component\WebSocket\Sale2;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CudiBundle\Entity\Sales\Booking,
+    CudiBundle\Entity\Sales\SaleItem,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -144,6 +146,106 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
     public function setCollectedArticles($articles)
     {
         $this->_articles = $articles;
+    }
+
+    /**
+     * @param array $articles
+     * @param array $discounts
+     * @return array
+     */
+    public function conclude($articles, $discounts)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($this->_id);
+
+        $bookings = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllOpenByPerson($item->getPerson());
+
+        $soldArticles = array();
+
+        foreach($bookings as $booking) {
+            if (!isset($articles->{$booking->getArticle()->getId()}) || $articles->{$booking->getArticle()->getId()} == 0)
+                continue;
+
+            if ($articles->{$booking->getArticle()->getId()} < $booking->getNumber()) {
+                $remainder = new Booking(
+                    $this->_entityManager,
+                    $booking->getPerson(),
+                    $booking->getArticle(),
+                    'assigned',
+                    $booking->getNumber() - $articles->{$booking->getArticle()->getId()}
+                );
+                $this->_entityManager->persist($remainder);
+                $booking->setNumber($articles->{$booking->getArticle()->getId()})
+                    ->setStatus('sold', $this->_entityManager);
+            } else {
+                $articles->{$booking->getArticle()->getId()} -= $booking->getNumber();
+                $booking->setStatus('sold', $this->_entityManager);
+            }
+
+            if (isset($soldArticles[$booking->getArticle()->getId()])) {
+                $soldArticles[$booking->getArticle()->getId()]['number'] += $booking->getNumber();
+            } else {
+                $soldArticles[$booking->getArticle()->getId()] = array(
+                    'article' => $booking->getArticle(),
+                    'number' => $booking->getNumber(),
+                );
+            }
+        }
+
+        foreach($articles as $id => $number) {
+            if ($number <= 0)
+                continue;
+
+            $article = $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->findOneById($id);
+
+            $booking = new Booking(
+                $this->_entityManager,
+                $item->getPerson(),
+                $article,
+                'sold',
+                $number
+            );
+            $this->_entityManager->persist($booking);
+
+            if (isset($soldArticles[$booking->getArticle()->getId()])) {
+                $soldArticles[$booking->getArticle()->getId()]['number'] += $booking->getNumber();
+            } else {
+                $soldArticles[$booking->getArticle()->getId()] = array(
+                    'article' => $booking->getArticle(),
+                    'number' => $booking->getNumber(),
+                );
+            }
+        }
+
+        foreach($soldArticles as $soldArticle) {
+            $price = $soldArticle['article']->getSellPrice();
+            foreach($soldArticle['article']->getDiscounts() as $discount) {
+                if (in_array($discount->getType(), $discounts)) {
+                    if ($discount->getType() == 'member' && !$item->getPerson()->isMember($this->_getCurrentAcademicYear()))
+                        continue;
+                    $price = $discount->apply($soldArticle['article']->getSellPrice());
+                }
+            }
+
+            $saleItem = new SaleItem(
+                $soldArticle['article'],
+                $soldArticle['number'],
+                $price * $soldArticle['number'] / 100,
+                $item
+            );
+            $this->_entityManager->persist($saleItem);
+
+            $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $soldArticle['number']);
+        }
+
+        $this->_entityManager->flush();
+
+        return $soldArticles;
     }
 
     private function _getArticles()
