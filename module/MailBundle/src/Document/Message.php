@@ -45,6 +45,8 @@ class Message
 
     /**
      * @var string The type of this message
+     *
+     * @ODM\Field(type="string")
      */
     private $type;
 
