@@ -70,35 +70,38 @@ if (isset($opts->r)) {
                     );
                 }
 
-                $body = '';
+                $body = null;
                 if (count($parser->getBody()) > 1) {
                     foreach ($parser->getBody() as $itBody) {
                         if ('html' == $itBody['type']) {
-                            $body = $itBody['content'];
+                            $body = $itBody;
                             break;
                         }
                     }
                 } else {
-                    $body = $parser->getBody()[0]['content'];
+                    $body = $parser->getBody()[0];
                 }
 
-                $newMessage = new MailBundle\Document\Message(
-                    substr($parser->getSubject(), 7),
-                    utf8_encode($body),
-                    $attachments
-                );
-
-                $dm->persist($newMessage);
-                $dm->flush();
-
-                if ('production' == getenv('APPLICATION_ENV')) {
-                    $amon->sendLog(
-                        'Storing an incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
-                        array(
-                            'MailBundle',
-                            'parser.php'
-                        )
+                if (null !== $body) {
+                    $newMessage = new MailBundle\Document\Message(
+                        $body['type'],
+                        substr($parser->getSubject(), 7),
+                        utf8_encode($body['content']),
+                        $attachments
                     );
+
+                    $dm->persist($newMessage);
+                    $dm->flush();
+
+                    if ('production' == getenv('APPLICATION_ENV')) {
+                        $amon->sendLog(
+                            'Storing an incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
+                            array(
+                                'MailBundle',
+                                'parser.php'
+                            )
+                        );
+                    }
                 }
             break;
             default:
