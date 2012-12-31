@@ -154,6 +154,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $part->filename = $file['name'];
                         $part->encoding = Mime::ENCODING_BASE64;
 
+                        unlink($file['tmp_name']);
+
                         $message->addPart($part);
                     }
 
