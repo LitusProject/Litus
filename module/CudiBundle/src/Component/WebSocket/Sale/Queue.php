@@ -50,7 +50,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * @return integer
      */
-    public function getNumberSignedIn()
+    public function getNumberSignedIn(Session $session)
     {
         return count(
             $this->_entityManager
@@ -153,11 +153,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->flush();
         }
 
-        return json_encode(
-            (object) array(
-                'queueNumber' => $queueItem->getQueueNumber(),
-            )
-        );
+        return $queueItem;
     }
 
     /**
@@ -166,8 +162,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function unlockByUser(User $user)
     {
         foreach($this->_queueItems as $item) {
-            if ($item->getUser() == $user)
-                unset($this->_queueItems[$item->getId()]);
+            if ($item->getUser() == $user) {
+                $item = $this->_entityManager
+                    ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                    ->findOneById($item->getId());
+
+                if ($item->getStatus() == 'collecting') {
+                    $item->setStatus('signed_in');
+                } elseif ($item->getStatus() == 'selling') {
+                    $item->setStatus('collected');
+                }
+                $this->_entityManager->flush();
+            }
         }
     }
 
@@ -262,20 +268,30 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $this->_entityManager->flush();
     }
 
+    /**
+     * @param integer $id
+     * @param array $articles
+     * @param array $discounts
+     * @param string $payMethod
+     * @return array
+     */
     public function concludeSelling($id, $articles, $discounts, $payMethod)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($id);
 
-        $this->_queueItems[$id]->conclude($articles, $discounts);
+        $saleItems = $this->_queueItems[$id]->conclude($articles, $discounts);
 
         if (isset($this->_queueItems[$id]))
             unset($this->_queueItems[$id]);
 
         $item->setStatus('sold')
             ->setPayMethod($payMethod);
+
         $this->_entityManager->flush();
+
+        return $saleItems;
     }
 
     /**

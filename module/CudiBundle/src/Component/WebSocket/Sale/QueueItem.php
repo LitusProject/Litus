@@ -89,6 +89,16 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * @return \CudiBundle\Entity\Sales\QueueItem
+     */
+    public function getItem()
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($this->_id);
+    }
+
+    /**
      * @return string
      */
     public function getCollectInfo()
@@ -222,6 +232,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             }
         }
 
+        $saleItems = array();
         foreach($soldArticles as $soldArticle) {
             $price = $soldArticle['article']->getSellPrice();
             foreach($soldArticle['article']->getDiscounts() as $discount) {
@@ -239,13 +250,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $item
             );
             $this->_entityManager->persist($saleItem);
-
+            $saleItems[] = $saleItem;
+            
             $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $soldArticle['number']);
         }
 
         $this->_entityManager->flush();
 
-        return $soldArticles;
+        return $saleItems;
     }
 
     private function _getArticles()
