@@ -15,6 +15,7 @@
 namespace MailBundle\Form\Admin\Study;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
@@ -92,27 +93,39 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         if (0 != count($storedMessages)) {
+            $collection = new Collection('select_message');
+            $collection->setLabel('Select Message');
+            $this->add($collection);
+
             $field = new Select('stored_message');
             $field->setLabel('Stored Message')
                 ->setAttribute('options', $storedMessagesTitles);
-            $this->add($field);
+            $collection->add($field);
+        }
+
+        if (0 != count($storedMessages)) {
+            $collection = new Collection('compose_message');
+            $collection->setLabel('Compose Message');
+            $this->add($collection);
+        } else {
+            $collection = $this;
         }
 
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttribute('style', 'width: 400px;');
-        $this->add($field);
+        $collection->add($field);
 
         $field = new Textarea('message');
         $field->setLabel('Message')
             ->setAttribute('style', 'width: 500px; height: 200px;');
-        $this->add($field);
+        $collection->add($field);
 
         $field = new File('file[]');
         $field->setLabel('Attachments')
             ->setAttribute('multiple', 'multiple')
             ->setRequired();
-        $this->add($field);
+        $collection->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Send')
