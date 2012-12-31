@@ -41,6 +41,6 @@ try {
 }
 
 if (isset($opts->r)) {
-    $queue = new \CudiBundle\Component\WebSocket\Sale\Queue($em);
+    $queue = new \CudiBundle\Component\WebSocket\Sale\Server($em);
     $queue->process();
 }

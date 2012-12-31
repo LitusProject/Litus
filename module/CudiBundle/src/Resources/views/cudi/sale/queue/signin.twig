@@ -47,7 +47,13 @@
                 url: '{{ socketUrl }}',
                 open: function (e) {
                     $('#socket_error').removeClass('in');
-                    $.webSocket('send', {name: 'signInQueue', text: 'initialize: {"session": "{{ session.getId() }}", "key": "{{ key }}" }'});
+                    $.webSocket('send', {name: 'signInQueue', text:
+                        JSON.stringify({
+                            'command': 'initialize',
+                            'session': '{{ session.getId() }}',
+                            'key': '{{ key }}'
+                        })
+                    });
                 },
                 message: function (e, data) {
                     if (data.queueNumber) {
@@ -80,11 +86,13 @@
         );
 
         function signIn() {
-            var data = {
-                universityIdentification: $('#username').val(),
-                printTicket: true
-            };
-            $.webSocket('send', {name: 'signInQueue', text: 'action: addToQueue ' + JSON.stringify(data)});
+            $.webSocket('send', {name: 'signInQueue', text:
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'signIn',
+                    'universityIdentification': $('#username').val(),
+                })
+            });
         }
     </script>
 {% endblock %}

@@ -130,6 +130,7 @@ var currentView = 'selectPaydesk';
                 queue.queue('show');
             },
             finish: function (id, articles, discounts, payMethod) {
+                queue.queue('setLastSold', id);
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',

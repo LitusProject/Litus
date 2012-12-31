@@ -1,6 +1,12 @@
-#queueModal {
+.queueModal {
     width: @queueModalWidth;
     margin-left: -@queueModalWidth / 2;
+
+    .form-search {
+        .pull-right {
+            margin-right: 10px;
+        }
+    }
 
     .table {
         .number {
@@ -44,8 +50,29 @@
     }
 }
 
-#sale, #collecting {
+
+.saleScreen {
     .table {
+        .barcode {
+            width: 110px;
+        }
+
+        .status {
+            width: 110px;
+        }
+
+        .number {
+            width: 50px;
+        }
+
+        .price {
+            width: 100px;
+        }
+
+        .actions {
+            width: 150px;
+        }
+
         tbody {
             .actions {
                 padding: 3px 8px;
@@ -91,6 +118,10 @@
 
             .actions {
                 margin: 0;
+
+                button {
+                    margin-right: 5px;
+                }
             }
         }
 
@@ -99,5 +130,11 @@
                 padding-left:10px;
             }
         }
+    }
+}
+
+button {
+    i {
+        margin-right: 3px;
     }
 }
