@@ -192,6 +192,8 @@
         $(document).bind('keydown.sale', function  (e) {
             _keyControls($this, e);
         });
+
+        _updatePrice($this);
     }
 
     function _editComment($this) {

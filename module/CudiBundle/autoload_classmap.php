@@ -14,6 +14,7 @@ return array(
     'CudiBundle\Component\Validator\Sales\Article\Barcodes\Exists'  => __DIR__ . '/src/Component/Validator/Sales/Article/Barcodes/Exists.php',
     'CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique'  => __DIR__ . '/src/Component/Validator/Sales/Article/Barcodes/Unique.php',
     'CudiBundle\Component\Validator\Sales\Article\Discounts\Exists' => __DIR__ . '/src/Component/Validator/Sales/Article/Discounts/Exists.php',
+    'CudiBundle\Component\WebSocket\Sale\Printer'                   => __DIR__ . '/src/Component/WebSocket/Sale/Printer.php',
     'CudiBundle\Component\WebSocket\Sale\Queue'                     => __DIR__ . '/src/Component/WebSocket/Sale/Queue.php',
     'CudiBundle\Component\WebSocket\Sale\QueueItem'                 => __DIR__ . '/src/Component/WebSocket/Sale/QueueItem.php',
     'CudiBundle\Component\WebSocket\Sale\Server'                    => __DIR__ . '/src/Component/WebSocket/Sale/Server.php',

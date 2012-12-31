@@ -164,7 +164,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         switch ($command->action) {
             case 'signIn':
                 $this->_signIn($user, $command->universityIdentification);
-                if (rand(1, floor($this->_queue->getNumberSignedIn()/15)+1) == 1) // Send queue random if length(signed_in) > 15
+                if (rand(1, floor($this->_queue->getNumberSignedIn($session)/15)+1) == 1) // Send queue random if length(signed_in) > 15
                     $this->sendQueueToAll();
                 break;
             case 'addToQueue':
@@ -251,8 +251,29 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($user->getExtraData('session'));
 
-        $this->sendText($user, $this->_queue->addPerson($session, $universityIdentification));
-        // TODO: print ticket
+        $item = $this->_queue->addPerson($session, $universityIdentification);
+
+        if (is_string($item)) {
+            $this->sendText($user, $item);
+        } else {
+            $this->sendText(
+                $user,
+                json_encode(
+                    (object) array(
+                        'queueNumber' => $item->getQueueNumber(),
+                    )
+                )
+            );
+
+            Printer::signInTicket(
+                $this->_entityManager,
+                'signin',
+                $item,
+                $this->_entityManager
+                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->findAllAssignedByPerson($item->getPerson())
+            );
+        }
     }
 
     private function _addToQueue(User $user, $universityIdentification)
@@ -270,7 +291,18 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         if ($result)
             $this->sendText($user, $result);
 
-        // TODO: print ticket
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        Printer::collectTicket(
+            $this->_entityManager,
+            $user->getExtraData('paydesk'),
+            $item,
+            $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findAllAssignedByPerson($item->getPerson())
+        );
     }
 
     private function _stopCollecting(User $user, $id, $articles = null)
@@ -295,9 +327,18 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     private function _concludeSelling(User $user, $id, $articles, $discounts, $payMethod)
     {
-        $this->_queue->concludeSelling($id, $articles, $discounts, $payMethod);
+        $saleItems = $this->_queue->concludeSelling($id, $articles, $discounts, $payMethod);
 
-        // TODO: print ticket
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        Printer::saleTicket(
+            $this->_entityManager,
+            $user->getExtraData('paydesk'),
+            $item,
+            $saleItems
+        );
     }
 
     private function _hold($id)
