@@ -160,7 +160,7 @@ class Message
                         );
                         
                         $filename = $this->_getPartHeaders($part)[$header];
-                        if (substr($filename, 1, 1) == '<' && substr($filename, -1) == '>')
+                        if (substr($filename, 0, 1) == '<' && substr($filename, -1) == '>')
                             $filename = substr($filename, 2, (strlen($filename) - 1));
                         
                         $attachment = new Attachment(
