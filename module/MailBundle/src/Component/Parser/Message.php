@@ -14,7 +14,7 @@
 
 namespace MailBundle\Component\Parser;
 
-use MailBundle\Component\Parser\Attachment;
+use MailBundle\Component\Parser\Message\Attachment;
 
 /**
  * Parse a raw e-mail and create a useful object. Partially adapted from
@@ -104,10 +104,14 @@ class Message
         foreach($this->_parts as $part) {
             if (in_array($this->_getPartContentType($part), $bodyTypes)) {
                 $headers = $this->_getPartHeaders($part);
-
-                $body[] = $this->_decode(
+                $content = $this->_decode(
                     $this->_getPartBody($part),
                     array_key_exists('content-transfer-encoding', $headers) ? $headers['content-transfer-encoding'] : ''
+                );
+
+                $body[] = array(
+                    'type' => array_search($this->_getPartContentType($part), $bodyTypes),
+                    'content' => $content
                 );
             }
         }
@@ -127,22 +131,49 @@ class Message
             'inline'
         );
 
+        $headers = array(
+            'content-id'
+        );
+
         $attachments = array();
         foreach($this->_parts as $part) {
             $contentDisposition = $this->_getPartContentDisposition($part);
 
+            $attachment = null;
             if (in_array($contentDisposition, $contentDispositions) && isset($part['disposition-filename'])) {
                 $attachmentData = $this->_decode(
                     $this->_getPartBody($part),
                     (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
                 );
 
-                $attachments[] = new Attachment(
+                $attachment = new Attachment(
                     $part['disposition-filename'],
                     $this->_getPartContentType($part),
                     $attachmentData
                 );
+            } else {
+                foreach ($headers as $header) {
+                    if (isset($this->_getPartHeaders($part)[$header])) {
+                        $attachmentData = $this->_decode(
+                            $this->_getPartBody($part),
+                            (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
+                        );
+                        
+                        $filename = $this->_getPartHeaders($part)[$header];
+                        if (substr($filename, 0, 1) == '<' && substr($filename, -1) == '>')
+                            $filename = substr($filename, 1, (strlen($filename) - 2));
+                        
+                        $attachment = new Attachment(
+                            $filename,
+                            $this->_getPartContentType($part),
+                            $attachmentData
+                        );
+                    }
+                }
             }
+
+            if (null !== $attachment)
+                $attachments[] = $attachment;
         }
 
         return $attachments;

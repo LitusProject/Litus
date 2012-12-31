@@ -23,7 +23,7 @@ use CommonBundle\Entity\Users\Person,
  * an iCal file even when nobody is logged in.
  *
  * @ODM\Document(
- *     collection="tokens",
+ *     collection="shiftbundle_tokens",
  *     repositoryClass="ShiftBundle\Repository\Token"
  * )
  */

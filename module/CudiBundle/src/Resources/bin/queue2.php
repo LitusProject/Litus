@@ -16,7 +16,7 @@
  * The socket server for the sale queue.
  *
  * Usage:
- * --run|-r      Run the socket
+ * --run|-r      Run the Socket
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

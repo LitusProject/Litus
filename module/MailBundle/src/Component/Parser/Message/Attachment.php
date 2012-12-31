@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Component\Parser;
+namespace MailBundle\Component\Parser\Message;
 
 /**
  * Represents an e-mail attachment.
