@@ -191,7 +191,7 @@
                 settings.sendToSocket(
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'undoLastSelling',
+                        'action': 'undoSelling',
                         'id': lastSold,
                     })
                 );

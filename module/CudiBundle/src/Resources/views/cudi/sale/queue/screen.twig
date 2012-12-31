@@ -48,7 +48,7 @@
             <p>An error occurred while loading the queue.</p>
         </div>
     </div>
-    
+
     <div class="row">
         <table style="width: 100%">
             <tr>
@@ -113,9 +113,9 @@
 
     <footer>
         <p class="companies">
-            {#% for logo in logos %}
+            {% for logo in logos %}
                 <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
-            {% endfor %#}
+            {% endfor %}
         </p>
     </footer>
 </div>
@@ -130,7 +130,14 @@
                 url: '{{ socketUrl }}',
                 open: function (e) {
                     $('#loading_queue_error').removeClass('in');
-                    $.webSocket('send', {name: 'overviewQueue', text: 'initialize: {"queueType": "fullQueue", "session": "{{ session.getId() }}", "key": "{{ key }}" }'});
+                    $.webSocket('send', {name: 'overviewQueue', text:
+                        JSON.stringify({
+                            'command': 'initialize',
+                            'queueType': 'queue',
+                            'session': '{{ session.getId() }}',
+                            'key': '{{ key }}'
+                        })
+                    });
                 },
                 message: function (e, data) {
                     $('#loading_queue_error').removeClass('in');

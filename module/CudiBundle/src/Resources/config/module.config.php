@@ -370,35 +370,6 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'sale_sale',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'sale2_queue' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/cudi/queue2[[/:action]/:session][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'session' => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'sale2_queue',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'sale2_sale' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/cudi/sale2[/:action[/:session[/:id]]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'session' => '[0-9]*',
-                        'id'      => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'sale2_sale',
                         'action'     => 'sale',
                     ),
                 ),
@@ -723,8 +694,6 @@ return array(
 
             'sale_sale'             => 'CudiBundle\Controller\Sale\SaleController',
             'sale_queue'            => 'CudiBundle\Controller\Sale\QueueController',
-            'sale2_sale'            => 'CudiBundle\Controller\Sale2\SaleController',
-            'sale2_queue'           => 'CudiBundle\Controller\Sale2\QueueController',
 
             'supplier_index'        => 'CudiBundle\Controller\Supplier\IndexController',
             'supplier_article'      => 'CudiBundle\Controller\Supplier\ArticleController',
@@ -754,26 +723,6 @@ return array(
                         ),
                         'filters' => array(
                             'sale_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
-                            ),
-                        ),
-                        'options' => array(
-                            'output' => 'sale_css.css',
-                        ),
-                    ),
-                    'sale2_css' => array(
-                        'assets' => array(
-                            'sale2/less/base.less',
-                        ),
-                        'filters' => array(
-                            'sale2_less' => array(
                                 'name' => 'Assetic\Filter\LessFilter',
                                 'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
@@ -821,11 +770,6 @@ return array(
                     'sale_js' => array(
                         'assets' => array(
                             'sale/js/*.js',
-                        ),
-                    ),
-                    'sale2_js' => array(
-                        'assets' => array(
-                            'sale2/js/*.js',
                         ),
                     ),
                     'prof_css' => array(

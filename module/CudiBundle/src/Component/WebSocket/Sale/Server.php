@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\WebSocket\Sale2;
+namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
@@ -49,7 +49,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_socket_port');
 
-        parent::__construct($address, $port-100);
+        parent::__construct($address, $port);
 
         $this->_entityManager = $entityManager;
         $this->_queue = new Queue($entityManager);
@@ -209,6 +209,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             case 'addArticle':
                 $this->_addArticle($user, $command->id, $command->barcode);
                 break;
+            case 'undoSelling':
+                $this->_undoSelling($command->id);
+                $this->sendQueueToAll();
+                break;
         }
     }
 
@@ -321,5 +325,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         $result = $this->_queue->addArticle($id, $barcode);
         if ($result)
             $this->sendText($user, $result);
+    }
+
+    private function _undoSelling($id)
+    {
+        $this->_queue->undoSelling($id);
     }
 }

@@ -22,7 +22,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 /**
  * QueueController
  *
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class QueueController extends \CudiBundle\Component\Controller\SaleController
@@ -41,13 +40,13 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
     public function screenAction()
     {
-        /*$logos = $this->getEntityManager()
+        $logos = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Logo')
             ->findAllByType('cudi');
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');*/
+            ->getConfigValue('br.public_logo_path');
 
         $payDesks = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
@@ -65,8 +64,8 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
                 'payDesks' => $payDesks,
-                //'logos' => $logos,
-                //'logoPath' => $logoPath,
+                'logos' => $logos,
+                'logoPath' => $logoPath,
             )
         );
     }
