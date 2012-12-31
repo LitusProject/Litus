@@ -22,7 +22,6 @@
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
-// Setup autoloading
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');

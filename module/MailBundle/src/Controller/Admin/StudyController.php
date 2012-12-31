@@ -46,7 +46,11 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findAll();
 
-        $form = new MailForm($studies, $groups);
+        $storedMessages = $this->getDocumentManager()
+            ->getRepository('MailBundle\Document\Message')
+            ->findAll();
+
+        $form = new MailForm($studies, $groups, $storedMessages);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -115,56 +119,106 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         }
                     }
 
-                    $body = $formData['message'];
-
-                    $part = new Part($body);
-                    if ($formData['html'])
-                        $part->type = Mime::TYPE_HTML;
-                    else
-                        $part->type = Mime::TYPE_TEXT;
-                    $part->charset='utf-8';
-                    $message = new MimeMessage();
-                    $message->addPart($part);
-
-                    $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
-
-                    if ($formData['test']) {
-                        $body = '<br/>This email would have been sent to:<br/>';
-                        foreach($enrollments as $enrollment)
-                            $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
-
-                        foreach($bccs as $bcc)
-                            $body = $body . $bcc . '<br/>';
+                    if ('' == $formData['stored_message']) {
+                        $body = $formData['message'];
 
                         $part = new Part($body);
-                        $part->type = Mime::TYPE_HTML;
+
+                        $part->type = Mime::TYPE_TEXT;
+                        if ($formData['html'])
+                            $part->type = Mime::TYPE_HTML;
+
+                        $part->charset = 'utf-8';
+                        $message = new MimeMessage();
                         $message->addPart($part);
-                    }
 
-                    $upload->receive();
+                        $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
 
-                    foreach ($upload->getFileInfo() as $file) {
-                        if ($file['size'] === NULL)
-                            continue;
+                        if ($formData['test']) {
+                            $body = '<br/>This email would have been sent to:<br/>';
+                            foreach($enrollments as $enrollment)
+                                $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
 
-                        $part = new Part(fopen($file['tmp_name'], 'r'));
-                        $part->type = $file['type'];
-                        $part->id = $file['name'];
-                        $part->disposition = 'attachment';
-                        $part->filename = $file['name'];
-                        $part->encoding = Mime::ENCODING_BASE64;
+                            foreach($bccs as $bcc)
+                                $body = $body . $bcc . '<br/>';
 
-                        unlink($file['tmp_name']);
+                            $part = new Part($body);
+                            $part->type = Mime::TYPE_HTML;
+                            $message->addPart($part);
+                        }
 
+                        $upload->receive();
+
+                        foreach ($upload->getFileInfo() as $file) {
+                            if ($file['size'] === NULL)
+                                continue;
+
+                            $part = new Part(fopen($file['tmp_name'], 'r'));
+                            $part->type = $file['type'];
+                            $part->id = $file['name'];
+                            $part->disposition = 'attachment';
+                            $part->filename = $file['name'];
+                            $part->encoding = Mime::ENCODING_BASE64;
+
+                            $message->addPart($part);
+                        }
+
+                        $mail = new Message();
+                        $mail->setBody($message)
+                            ->setFrom($formData['from'])
+                            ->setSubject($formData['subject']);
+
+                        $mail->addTo($formData['from']);
+                    } else {
+                        $storedMessage = $this->getDocumentManager()
+                            ->getRepository('MailBundle\Document\Message')
+                            ->findOneById($formData['stored_message']);
+
+                        $body = $storedMessage->getBody();
+
+                        $part = new Part($body);
+
+                        $part->type = Mime::TYPE_TEXT;
+                        if ($storedMessage->getType() == 'html')
+                            $part->type = Mime::TYPE_HTML;
+                            
+                        $part->charset = 'utf-8';
+                        $message = new MimeMessage();
                         $message->addPart($part);
+
+                        $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
+
+                        if ($formData['test']) {
+                            $body = '<br/>This email would have been sent to:<br/>';
+                            foreach($enrollments as $enrollment)
+                                $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
+
+                            foreach($bccs as $bcc)
+                                $body = $body . $bcc . '<br/>';
+
+                            $part = new Part($body);
+                            $part->type = Mime::TYPE_HTML;
+                            $message->addPart($part);
+                        }
+
+                        foreach ($storedMessage->getAttachments() as $attachment) {
+                            $part = new Part($attachment->getData());
+                            $part->type = $attachment->getContentType();
+                            $part->id = $attachment->getFilename();
+                            $part->disposition = 'attachment';
+                            $part->filename = $attachment->getFilename();
+                            $part->encoding = Mime::ENCODING_BASE64;
+
+                            $message->addPart($part);
+                        }
+
+                        $mail = new Message();
+                        $mail->setBody($message)
+                            ->setFrom($formData['from'])
+                            ->setSubject($formData['subject']);
+
+                        $mail->addTo($formData['from']);
                     }
-
-                    $mail = new Message();
-                    $mail->setBody($message)
-                        ->setFrom($formData['from'])
-                        ->setSubject($formData['subject']);
-
-                    $mail->addTo($formData['from']);
 
                     if (!$formData['test']) {
                         foreach($enrollments as $enrollment)

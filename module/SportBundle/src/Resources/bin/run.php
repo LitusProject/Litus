@@ -16,7 +16,9 @@
  * The socket server for the run queue.
  *
  * Usage:
- * --run|-r      Run the socket
+ * --run|-r      Run the Socket
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));

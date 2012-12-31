@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Person,
  * This entity stores a slug, and the URL it should redirect to.
  *
  * @ODM\Document(
- *     collection="slugs",
+ *     collection="onbundle_slugs",
  *     repositoryClass="OnBundle\Repository\Slug"
  * )
  */

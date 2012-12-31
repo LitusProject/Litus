@@ -15,6 +15,9 @@
 /**
  * Parser for received e-mail messages.
  *
+ * Usage:
+ * --run|-r      Run the Parser
+ *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 
@@ -23,14 +26,95 @@ chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
-$em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
+$dm = $application->getServiceManager()->get('doctrine.documentmanager.odm_default');
 
-$stdinStream = fopen('php://stdin', 'r');
-$message = '';
-while (!feof($stdinStream)) {
-    $line = fread($stdinStream, 1024);
-    $message .= $line;
+if ('production' == getenv('APPLICATION_ENV'))
+    $amon = $application->getServiceManager()->get('amon');
+
+$rules = array(
+    'run|r' => 'Run the Parser',
+);
+
+try {
+    $opts = new Zend\Console\Getopt($rules);
+    $opts->parse();
+} catch (Zend\Console\Getopt\Exception $e) {
+    echo $e->getUsageMessage();
+    exit(2);
 }
-fclose($stdinStream);
 
-$parser = new MailBundle\Component\Parser\Message($message);
+if (isset($opts->r)) {
+    $stdinStream = fopen('php://stdin', 'r');
+    $message = '';
+    while (!feof($stdinStream)) {
+        $line = fread($stdinStream, 1024);
+        $message .= $line;
+    }
+    fclose($stdinStream);
+
+    $parser = new MailBundle\Component\Parser\Message($message);
+    $commands = array(
+        '001' => 'Store the incoming mail and its attachments...'
+    );
+
+    $command = substr($parser->getSubject(), 2, 3);
+    if (in_array($command, array_keys($commands))) {
+        switch ($command) {
+            case '001':
+                $attachments = array();
+                foreach ($parser->getAttachments() as $attachment) {
+                    $attachments[] = new MailBundle\Document\Messages\Attachment(
+                        $attachment->getFilename(),
+                        $attachment->getContentType(),
+                        $attachment->getData()
+                    );
+                }
+
+                $body = null;
+                if (count($parser->getBody()) > 1) {
+                    foreach ($parser->getBody() as $itBody) {
+                        if ('html' == $itBody['type']) {
+                            $body = $itBody;
+                            break;
+                        }
+                    }
+                } else {
+                    $body = $parser->getBody()[0];
+                }
+
+                if (null !== $body) {
+                    $newMessage = new MailBundle\Document\Message(
+                        $body['type'],
+                        substr($parser->getSubject(), 7),
+                        $body['content'],
+                        $attachments
+                    );
+
+                    $dm->persist($newMessage);
+                    $dm->flush();
+
+                    if ('production' == getenv('APPLICATION_ENV')) {
+                        $amon->sendLog(
+                            'Storing an incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
+                            array(
+                                'MailBundle',
+                                'parser.php'
+                            )
+                        );
+                    }
+                }
+            break;
+            default:
+                if ('production' == getenv('APPLICATION_ENV')) {
+                    $amon->sendLog(
+                        'The command specified in the subject line (' . $command . ') was not valid',
+                        array(
+                            'MailBundle',
+                            'parser.php'
+                        )
+                    );
+                }
+            break;
+        }
+    }
+}
