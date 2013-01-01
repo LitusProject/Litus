@@ -14,7 +14,8 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use CommonBundle\Entity\General\AcademicYear,
+use BrBundle\Entity\Cv\Util,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -49,7 +50,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             );
         }
 
-        $result = $this->_getGrouped($academicYear);
+        $result = Util::getGrouped($this->getEntityManager(), $academicYear);
 
         return new ViewModel(
             array(
@@ -145,52 +146,6 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 'result' => $result,
             )
         );
-    }
-
-    private function _getGrouped(AcademicYear $academicYear) {
-
-        $groups = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group')
-            ->findAllCvBook();
-
-        $result = array();
-        foreach ($groups as $group) {
-
-            $entries = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Cv\Entry')
-                ->findAllByGroupAndAcademicYear($group, $academicYear);
-
-            if (count($entries) > 0) {
-                $result[] = array(
-                    'id' => 'group-' . $group->getId(),
-                    'name' => $group->getName(),
-                    'entries' => $entries,
-                );
-            }
-        }
-
-        // Add all studies that are not in a cv book group.
-        $cvStudies = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllUngroupedStudies();
-
-        foreach ($cvStudies as $study) {
-
-            $entries = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Cv\Entry')
-                ->findAllByStudyAndAcademicYear($study, $academicYear);
-
-            if (count($entries) > 0) {
-                $result[] = array(
-                    'id' => 'study-' . $study->getId(),
-                    'name' => $study->getFullTitle(),
-                    'entries' => $entries,
-                );
-            }
-
-        }
-
-        return $result;
     }
 
     private function _getList(AcademicYear $academicYear)

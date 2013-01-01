@@ -44,6 +44,7 @@ return array(
     'BrBundle\Entity\Company\Logo'                      => __DIR__ . '/src/Entity/Company/Logo.php',
     'BrBundle\Entity\Company'                           => __DIR__ . '/src/Entity/Company.php',
     'BrBundle\Entity\Cv\Entry'                          => __DIR__ . '/src/Entity/Cv/Entry.php',
+    'BrBundle\Entity\Cv\Util'                           => __DIR__ . '/src/Entity/Cv/Util.php',
     'BrBundle\Entity\Cv\Language'                       => __DIR__ . '/src/Entity/Cv/Language.php',
     'BrBundle\Entity\Users\People\Corporate'            => __DIR__ . '/src/Entity/Users/People/Corporate.php',
     'BrBundle\Entity\Users\Statuses\Corporate'          => __DIR__ . '/src/Entity/Users/Statuses/Corporate.php',
