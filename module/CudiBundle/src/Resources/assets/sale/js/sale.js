@@ -1,36 +1,61 @@
 (function ($) {
     var defaults = {
-        socketName: 'showQueue',
-        modal: null,
-        data: {},
-        statusTranslate: function () {}
+        tCurrentCustomer: 'Current Customer',
+        tComments: 'Comments',
+        tQueue: 'Queue',
+        tConclude: 'Conclude',
+        tCancel: 'Cancel',
+        tConfirmSelling: 'Confirm Selling',
+        tSell: 'Sell',
+        tClose: 'Close',
+        tConfirmText: 'Do you want to confirm the selling? After this it cannot be undone.',
+        tCalculateChange: 'Calculate change:',
+        tPayed: 'Payed:',
+        tChange: 'Change:',
+        tPayMethod: 'Pay Method:',
+        tCash: 'Cash',
+        tBank: 'Bank',
+
+        discounts: [],
+
+        saveComment: function (id, comment) {},
+        showQueue: function () {},
+        finish: function (id, articles, discounts, payMethod) {},
+        cancel: function (id) {},
+        translateStatus: function (status) {return status},
+        addArticle: function (id, barcode) {},
     };
 
     var methods = {
-        cancel: function () {
-            _cancel($(this));
-            return this;
-        },
-        close : function () {
-            _close($(this));
-            return this;
-        },
-        conclude : function () {
-            _conclude($(this));
-            return this;
-        },
-        gotBarcode : function (value) {
-            _gotBarcode($(this), value);
-            return this;
-        },
         init : function (options) {
             var settings = $.extend(defaults, options);
+            settings.isSell = true;
+            settings.conclude = function (id, articles) {
+                _finish($this, id, articles);
+            };
+
             var $this = $(this);
             $(this).data('saleSettings', settings);
 
-            _init($this);
             return this;
-        }
+        },
+        show : function (data) {
+            currentView = 'sale';
+            $(this).saleInterface('show', $(this).data('saleSettings'), data);
+            return this;
+        },
+        hide : function (data) {
+            $(this).saleInterface('hide');
+            return this;
+        },
+        gotBarcode : function (barcode) {
+            $(this).saleInterface('gotBarcode', barcode);
+            return this;
+        },
+        addArticle : function (data) {
+            $(this).saleInterface('addArticle', data);
+            return this;
+        },
     };
 
     $.fn.sale = function (method) {
@@ -43,264 +68,74 @@
         }
     };
 
-    function _addActions ($this) {
-        var articles = $this.find('.articles tr');
-
-        articles.find('.addArticle').click(function () {
-            var row = $(this).parent().parent();
-            var info = row.data('info');
-
-            if (info.currentNumber < info.number)
-                _setArticleNumber($this, row, info.currentNumber + 1);
-        });
-
-        articles.find('.removeArticle').click(function () {
-            var row = $(this).parent().parent();
-            var currentNumber = row.data('info').currentNumber;
-            _setArticleNumber($this, row, currentNumber > 0 ? currentNumber -1 : 0);
-        });
-    }
-
-    function _cancel ($this) {
-        var settings = $this.data('saleSettings');
-        $.webSocket('send', {name: settings.socketName, text: 'action: cancelSelling ' + settings.data.sale.id});
-        _close($this);
-    }
-
-    function _close ($this) {
+    function _finish($this, id, articles) {
         var settings = $this.data('saleSettings');
 
-        $this.find('.name').html('&nbsp;');
-        $this.find('#totalMoney').html('0.00').data('value', 0);
-        $this.find('.articles').html('');
-
-        if (settings == undefined)
-            return;
-
-        $this.hide();
-        settings.modal.permanentModal('open', {closable: false});
-        $('#queueList').showQueue('updateActions');
-        $this.removeData('saleSettings');
-    }
-
-    function _conclude ($this) {
-        var settings = $this.data('saleSettings');
-        var data = {
-            id: settings.data.sale.id,
-            payMethod: $this.find('#payMethod button.active').data('method'),
-            discount: $this.find('.discounts input:checked').data('type'),
-            articles: {}
-        };
-        $this.find('.articles tr:not(.inactive)').each(function () {
-            data.articles[$(this).data('info').id] = $(this).data('info').currentNumber;
-        });
-
-        $.webSocket('send', {name: settings.socketName, text: 'action: concludeSelling ' + JSON.stringify(data)});
-        settings.modal.find('#undoLastSelling').show().unbind('click').click(function () {
-            _undoSelling(settings.socketName, data.id);
-        });
-        _close($this);
-    }
-
-    function _createRow (data, translate) {
-        data.currentNumber = 0;
-        var row = $('<tr>', {'class': 'article', 'id': 'article-' + data.id})
-            .append(
-                $('<td>').append(data.barcode),
-                $('<td>').append(data.title),
-                $('<td>').append(translate(data.status)),
-                $('<td>').append(
-                    $('<span>', {class: 'currentNumber'}).html('0'),
-                    '/' + data.number
+        $('body').append(
+            modal = $('<div>', {'class': 'modal fade'}).append(
+                $('<div>', {'class': 'modal-header'}).append(
+                    $('<a>', {'class': 'close'}).html('&times;').click(function () {
+                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                            $(this).remove();
+                        });
+                    }),
+                    $('<h3>').html(settings.tConfirmSelling)
                 ),
-                $('<td class="price">').append('&euro;' + (0).toFixed(2)),
-                actions = $('<td>', {class: 'actions'})
-            );
+                $('<div>', {'class': 'modal-body'}).append(
+                    $('<p>').html(settings.tConfirmText),
+                    $('<h4>').html(settings.tCalculateChange),
+                    $('<form>', {'class': 'form-horizontal'}).append(
+                        $('<div>', {'class': 'control-group'}).append(
+                            $('<label>', {'class': 'control-label', 'for': 'payedMoney'}).html(settings.tPayed),
+                            $('<div>', {'class': 'controls'}).append(
+                                $('<div>', {'class': 'input-prepend'}).append(
+                                    $('<span>', {'class': 'add-on'}).html('&euro;'),
+                                    payed = $('<input>', {'class': 'input-large', 'id': 'payedMoney', 'type': 'text'}).val('0.00')
+                                )
+                            )
+                        ),
+                        $('<div>', {'class': 'control-group'}).append(
+                            $('<label>', {'class': 'control-label'}).html(settings.tChange),
+                            $('<div>', {'class': 'controls'}).append(
+                                $('<div>', {'class': 'input-prepend'}).append(
+                                    $('<span>', {'class': 'add-on'}).html('&euro;'),
+                                    change = $('<input>', {'class': 'input-large uneditable-input', 'type': 'text'}).val('0.00')
+                                )
+                            )
+                        ),
+                        $('<div>', {'class': 'control-group'}).append(
+                            $('<label>', {'class': 'control-label'}).html(settings.tPayMethod),
+                            $('<div>', {'class': 'controls'}).append(
+                                method = $('<div>', {'class': 'btn-group', 'data-toggle': 'buttons-radio'}).append(
+                                    $('<button>', {'class': 'btn active', 'type': 'button', 'data-key': '114', 'data-method': 'cash'}).html(settings.tCash + ' - F3'),
+                                    $('<button>', {'class': 'btn', 'type': 'button', 'data-key': '115', 'data-method': 'bank'}).html(settings.tBank + ' - F4')
+                                )
+                            )
+                        )
+                    )
+                ),
+                $('<div>', {'class': 'modal-footer'}).append(
+                    $('<button>', {'class': 'btn btn-success', 'data-key': '122'}).html(settings.tSell + ' - F11').click(function () {
+                        settings.finish(id, articles, $this.saleInterface('getSelectedDiscounts'), method.find(' button.active').data('method'));
+                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                            payed.calculateChange('destroy');
+                            $(this).remove();
+                        });
+                    }),
+                    $('<button>', {'class': 'btn'}).html(settings.tClose).click(function () {
+                        $(this).closest('.modal').modal('hide').on('hidden', function () {
+                            $(this).remove();
+                        });
+                    })
+                )
+            )
+        );
 
-        if ("booked" == data.status) {
-            row.addClass('inactive');
-        } else {
-            actions.append(
-                $('<button>', {class: 'btn btn-success addArticle'}).html('Add'),
-                $('<button>', {class: 'btn btn-danger hide removeArticle'}).html('Remove')
-            );
-        }
-
-        row.data('info', data);
-
-        return row;
-    }
-
-    function _gotBarcode ($this, value) {
-        var found = false;
-        $this.find('.articles tr:not(.inactive)').each(function () {
-            for (var i = 0 ; i < $(this).data('info').barcodes.length ; i++) {
-                if ($(this).data('info').barcodes[i] == value && $(this).data('info').currentNumber < $(this).data('info').number) {
-                    found = true;
-                    $(this).find('.addArticle').click();
-                    $(this).removeClass('error').addClass('success');
-                    return false;
-                } else if ($(this).data('info').barcodes[i] == value) {
-                    $(this).removeClass('success').addClass('error');
-                }
-            }
-        });
-        if (!found)
-            $this.find('#barcodeFailure').addClass('in');
-    }
-
-    function _init ($this) {
-        var settings = $this.data('saleSettings');
-
-        settings.modal.permanentModal('hide');
-        $this.find('.cancelSelling, .concludeSelling, .showQueue').removeAttr('data-dismiss');
-
-        $this.find('.cancelSelling').unbind('click').click(function () {
-            $this.find('#modalCancelSelling').modal();
-            $this.find('#modalCancelSelling .confirmCancel').click(function () {
-                $this.find('#modalCancelSelling').modal('hide');
-                $this.sale('cancel');
-            });
-        });
-
-        $this.find('#modalConcludeSelling').off('shown').on('shown', function () {
-            $(this).find('#payedMoney').focus();
-        });
-
-        $this.find('.discounts input').unbind('change').change(function () {
-            _updatePrices($this);
-        });
-
-        $this.find('.concludeSelling').unbind('click').click(function () {
-            $this.find('#modalConcludeSelling').modal()
-                .find('#payedMoney').calculateChange({
-                    changeField: $this.find('#modalConcludeSelling #changeMoney'),
-                    totalMoney: $this.find('#totalMoney').data('value')
-                }).focus();
-            $this.find('#modalConcludeSelling .confirmConclude').unbind('click').click(function () {
-                $this.find('#modalConcludeSelling').modal('hide');
-                $this.sale('conclude');
-            });
-        });
-
-        $this.find('.customer .name').html(settings.data.sale.person.name);
-        $this.find('.customer .university_identification').html(settings.data.sale.person.university_identification);
-        if (settings.data.sale.person.member) {
-            $this.find('.discounts #discount_member').attr('checked', true);
-        } else {
-            $this.find('.discounts #discount_member').prop('disabled', true);
-            $this.find('.discounts #discount_none').attr('checked', true);
-        }
-        $this.find('#totalMoney').html('0.00').data('value', 0);
-
-        var articles = $this.find('.articles');
-        articles.html('');
-
-        $(settings.data.sale.articles).each(function () {
-            if (this.id == 'membership') {
-                $this.find('.discounts #discount_member').prop('disabled', false);
-                $this.find('.discounts #discount_member').attr('checked', true);
-            }
-            articles.append(_createRow(this, settings.statusTranslate));
-        });
-
-        _updatePrices($this);
-        _addActions($this);
-
-        $(settings.data.sale.articles).each(function () {
-            for (var i = 0 ; i < this.collected ; i++)
-                $('#article-' + this.id + ' .addArticle').click();
-        });
-
-        $(document).bind('keydown.sale', function  (e) {
-            _keyControls($this, e);
+        modal.modal();
+        payed.focus();
+        payed.calculateChange({
+            changeField: change,
+            totalMoney: $this.saleInterface('getTotalPrice'),
         });
     }
-
-    function _keyControls($this, e) {
-        var activeRow = $this.find('tr.article.info:first');
-
-        if (e.which == 40) { // arrow up
-            e.preventDefault();
-
-            if (activeRow.length == 0) {
-                $this.find('tr.article:not(.inactive):first').addClass('info');
-            } else {
-                activeRow.removeClass('info');
-                activeRow.next('.article:not(.inactive)').addClass('info');
-            }
-        } else if (e.which == 38) { // arrow down
-            e.preventDefault();
-
-            if (activeRow.length == 0) {
-                $this.find('tr.article:not(.inactive):last').addClass('info');
-            } else {
-                activeRow.removeClass('info');
-                activeRow.prev('.article:not(.inactive)').addClass('info');
-            }
-        } else if (e.which == 187) { // plus
-            e.preventDefault();
-
-            if (activeRow.data('info').currentNumber < activeRow.data('info').number) {
-                activeRow.find('.addArticle').click();
-                activeRow.removeClass('success').addClass('success');
-            } else {
-                activeRow.removeClass('success').addClass('error');
-            }
-        } else if (e.which == 189) { // minus
-            e.preventDefault();
-
-            if (activeRow.data('info').currentNumber > 0) {
-                activeRow.find('.removeArticle').click();
-                activeRow.removeClass('error').addClass('success');
-            } else {
-                activeRow.removeClass('success').addClass('error');
-            }
-        }
-    }
-
-    function _setArticleNumber ($this, article, number) {
-        var info = article.data('info');
-        article.data('info').currentNumber = number;
-        article.find('.currentNumber').html(number);
-
-        number == info.number ?
-            article.find('.addArticle').addClass('hide'):
-            article.find('.addArticle').removeClass('hide');
-
-        0 == number ?
-            article.find('.removeArticle').addClass('hide'):
-            article.find('.removeArticle').removeClass('hide');
-
-        _updateTotalPrice($this);
-    }
-
-    function _undoSelling (socketName, id) {
-        $(document).find('#undoLastSelling').hide();
-
-        var data = {
-            id: id,
-        };
-        $.webSocket('send', {name: socketName, text: 'action: undoSelling ' + JSON.stringify(data)});
-    }
-
-    function _updatePrices ($this) {
-        var type = $this.find('.discounts input:checked').data('type');
-        $this.find('.articles tr').each(function () {
-            var data = $(this).data('info');
-            price = data.discounts[type] !== undefined ? data.discounts[type] : data.price;
-            $(this).find('.price').html('&euro; ' + (price / 100).toFixed(2));
-            $(this).data('info').currentPrice = price;
-        });
-        _updateTotalPrice($this);
-    }
-
-    function _updateTotalPrice ($this) {
-        var total = 0;
-        $this.find('.articles').find('tr:not(.inactive)').each(function () {
-            var data = $(this).data('info');
-            total += data.currentNumber * data.currentPrice;
-        });
-        $this.find('#totalMoney').html((total / 100).toFixed(2)).data('value', total).change();
-    }
-}) (jQuery);
+})(jQuery);

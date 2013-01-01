@@ -88,7 +88,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
-            'Content-type' => 'application/octet-stream',
+            'Content-Type' => 'application/octet-stream',
             'Content-Length' => filesize($filePath . $file->getPath()),
         ));
         $this->getResponse()->setHeaders($headers);

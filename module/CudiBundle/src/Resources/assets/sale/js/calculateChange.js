@@ -3,21 +3,16 @@
         clearTime: 5000,
         changeField: null,
         totalMoney: 0,
-        timer: null,
-        value: 0,
     };
 
     var methods = {
-        clear: function () {
+        clear : function () {
             _clear($(this));
             return this;
         },
-        clearBuffer: function () {
-            _clearBuffer($(this));
-            return this;
-        },
-        init: function (options) {
+        init : function (options) {
             var settings = $.extend(defaults, options);
+            options.value = 0;
             var $this = $(this);
 
             $(this).data('calculateChange', settings);
@@ -25,10 +20,11 @@
 
             return this;
         },
-        update: function () {
-            _update($(this));
+        destroy : function () {
+            $(this).unbind('keydown.calculateChange');
+            $(this).removeData('calculateChange');
             return this;
-        },
+        }
     };
 
     $.fn.calculateChange = function (method) {
@@ -71,15 +67,15 @@
     function _init ($this) {
         _clear($this);
 
-        $this.unbind('keydown').bind('keydown', function (e) {
+        $this.unbind('keydown.calculateChange').bind('keydown.calculateChange', function (e) {
             e.preventDefault();
 
-            if (e.keyCode == 67) {
+            if (e.keyCode == 67 || e.keyCode == 8) { // c or backspace
                 _clear($this);
                 return;
             }
 
-            if (! _isNumericKey(e.keyCode))
+            if (!_isNumericKey(e.keyCode))
                 return;
 
             $this.data('calculateChange').value = $this.data('calculateChange').value * 10 + _getNumericValue(e.keyCode);
@@ -104,7 +100,7 @@
         $this.val((data.value / 100).toFixed(2));
 
         data.value == 0 ?
-            data.changeField.html((0).toFixed(2)):
-            data.changeField.html(((data.value - data.totalMoney) / 100 ).toFixed(2));
+            data.changeField.val((0).toFixed(2)):
+            data.changeField.val(((data.value - data.totalMoney) / 100 ).toFixed(2));
     }
 }) (jQuery);

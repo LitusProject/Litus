@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\WebSocket\Sale2;
+namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
@@ -164,34 +164,56 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         switch ($command->action) {
             case 'signIn':
                 $this->_signIn($user, $command->universityIdentification);
+                if (rand(1, floor($this->_queue->getNumberSignedIn($session)/15)+1) == 1) // Send queue random if length(signed_in) > 15
+                    $this->sendQueueToAll();
                 break;
             case 'addToQueue':
                 $this->_addToQueue($user, $command->universityIdentification);
+                $this->sendQueueToAll();
                 break;
             case 'startCollecting':
                 $this->_startCollecting($user, $command->id);
+                $this->sendQueueToAll();
                 break;
             case 'cancelCollecting':
                 $this->_cancelCollecting($user, $command->id);
+                $this->sendQueueToAll();
                 break;
             case 'stopCollecting':
-                $this->_stopCollecting($user, $command->id);
+                $this->_stopCollecting($user, $command->id, isset($command->articles) ? $command->articles : null);
+                $this->sendQueueToAll();
                 break;
             case 'startSelling':
                 $this->_startSelling($user, $command->id);
+                $this->sendQueueToAll();
                 break;
             case 'cancelSelling':
                 $this->_cancelSelling($user, $command->id);
+                $this->sendQueueToAll();
+                break;
+            case 'concludeSelling':
+                $this->_concludeSelling($user, $command->id, $command->articles, $command->discounts, $command->payMethod);
+                $this->sendQueueToAll();
                 break;
             case 'hold':
                 $this->_hold($command->id);
+                $this->sendQueueToAll();
                 break;
             case 'unhold':
                 $this->_unhold($command->id);
+                $this->sendQueueToAll();
+                break;
+            case 'saveComment':
+                $this->_saveComment($command->id, $command->comment);
+                break;
+            case 'addArticle':
+                $this->_addArticle($user, $command->id, $command->barcode);
+                break;
+            case 'undoSelling':
+                $this->_undoSelling($command->id);
+                $this->sendQueueToAll();
                 break;
         }
-
-        $this->sendQueueToAll();
     }
 
     /**
@@ -229,8 +251,29 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($user->getExtraData('session'));
 
-        $this->sendText($user, $this->_queue->addPerson($session, $universityIdentification));
-        // TODO: print ticket
+        $item = $this->_queue->addPerson($session, $universityIdentification);
+
+        if (is_string($item)) {
+            $this->sendText($user, $item);
+        } else {
+            $this->sendText(
+                $user,
+                json_encode(
+                    (object) array(
+                        'queueNumber' => $item->getQueueNumber(),
+                    )
+                )
+            );
+
+            Printer::signInTicket(
+                $this->_entityManager,
+                'signin',
+                $item,
+                $this->_entityManager
+                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->findAllAssignedByPerson($item->getPerson())
+            );
+        }
     }
 
     private function _addToQueue(User $user, $universityIdentification)
@@ -248,12 +291,23 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         if ($result)
             $this->sendText($user, $result);
 
-        // TODO: print ticket
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        Printer::collectTicket(
+            $this->_entityManager,
+            $user->getExtraData('paydesk'),
+            $item,
+            $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findAllAssignedByPerson($item->getPerson())
+        );
     }
 
-    private function _stopCollecting(User $user, $id)
+    private function _stopCollecting(User $user, $id, $articles = null)
     {
-        $this->_queue->stopCollecting($id);
+        $this->_queue->stopCollecting($id, $articles);
     }
 
     private function _cancelCollecting(User $user, $id)
@@ -263,12 +317,28 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     private function _startSelling(User $user, $id)
     {
-        $this->_queue->startSelling($user, $id);
+        $this->sendText($user, $this->_queue->startSelling($user, $id));
     }
 
     private function _cancelSelling(User $user, $id)
     {
         $this->_queue->cancelSelling($id);
+    }
+
+    private function _concludeSelling(User $user, $id, $articles, $discounts, $payMethod)
+    {
+        $saleItems = $this->_queue->concludeSelling($id, $articles, $discounts, $payMethod);
+
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        Printer::saleTicket(
+            $this->_entityManager,
+            $user->getExtraData('paydesk'),
+            $item,
+            $saleItems
+        );
     }
 
     private function _hold($id)
@@ -279,5 +349,27 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _unhold($id)
     {
         $this->_queue->setUnhold($id);
+    }
+
+    private function _saveComment($id, $comment)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $item->setComment($comment);
+        $this->_entityManager->flush();
+    }
+
+    private function _addArticle(User $user, $id, $barcode)
+    {
+        $result = $this->_queue->addArticle($id, $barcode);
+        if ($result)
+            $this->sendText($user, $result);
+    }
+
+    private function _undoSelling($id)
+    {
+        $this->_queue->undoSelling($id);
     }
 }

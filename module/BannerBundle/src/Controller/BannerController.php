@@ -14,13 +14,7 @@
 
 namespace BannerBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
-    BannerBundle\Entity\Nodes\Banner,
-    BannerBundle\Form\Admin\Banner\Add as AddForm,
-    BannerBundle\Form\Admin\Banner\Edit as EditForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Http\Headers,
+use Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,7 +35,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
-            'Content-type' => mime_content_type($imagePath),
+            'Content-Type' => mime_content_type($imagePath),
             'Content-Length' => filesize($imagePath),
         ));
         $this->getResponse()->setHeaders($headers);

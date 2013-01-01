@@ -69,7 +69,14 @@
                 url: '{{ socketUrl }}',
                 open: function (e) {
                     $('#loading_queue_error').removeClass('in');
-                    $.webSocket('send', {name: 'overviewQueue', text: 'initialize: {"queueType": "fullQueue", "session": "{{ session.getId() }}", "key": "{{ key }}" }'});
+                    $.webSocket('send', {name: 'overviewQueue', text:
+                        JSON.stringify({
+                            'command': 'initialize',
+                            'queueType': 'queue',
+                            'session': '{{ session.getId() }}',
+                            'key': '{{ key }}'
+                        })
+                    });
                 },
                 message: function (e, data) {
                     $('#loading_queue_error').removeClass('in');

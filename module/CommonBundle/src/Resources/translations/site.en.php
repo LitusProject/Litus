@@ -65,4 +65,10 @@ return array(
     'We have run already %laps% laps and we are the first team.' => 'We have run already %laps% laps and we are the first team.',
     'We have run already %laps% laps and we are %behind% laps behind the first team.' => 'We have run already %laps% laps and we are %behind% laps behind the first team.',
     'Current Runner:' => 'Current Runner:',
+
+    'Select File' => 'Select File',
+    'Change File' => 'Change File',
+    'Select Image' => 'Select Image',
+    'Change Image' => 'Change Image',
+    'Remove' => 'Remove',
 );

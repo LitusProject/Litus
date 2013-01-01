@@ -13,7 +13,7 @@
  */
 
 /**
- * Garbage collector for sessions
+ * Garbage collector for sessions.
  *
  * Usage:
  * --all|-a        Run Garbage Collection
@@ -22,7 +22,6 @@
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
-// Setup autoloading
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
@@ -52,6 +51,22 @@ if (isset($opts->a) || isset($opts->se)) {
         $em->remove($session);
 
     echo 'Removed ' . count($sessions) . ' expired sessions' . PHP_EOL;
+
+    $em->flush();
+
+    unset($session, $sessions);
+}
+
+if (isset($opts->a) || isset($opts->sh)) {
+    echo 'Running Shibboleth GC...' . PHP_EOL;
+
+    $sessions = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+        ->findAllExpired();
+
+    foreach($sessions as $session)
+        $em->remove($session);
+
+    echo 'Removed ' . count($sessions) . ' expired Shibboleth codes' . PHP_EOL;
 
     $em->flush();
 

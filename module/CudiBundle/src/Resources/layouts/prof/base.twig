@@ -102,7 +102,7 @@
 	<footer>
 	    Litus Prof | Code by <a href="http://litus.cc">Litus</a>
 
-		{% if 'development' == environment %}
+		{% if 'production' != environment %}
 		    <span class="development_information">
 		    	Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
 		    </span>

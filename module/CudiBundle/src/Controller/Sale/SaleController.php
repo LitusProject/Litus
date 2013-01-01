@@ -15,6 +15,7 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Sales\Returned as ReturnedLog,
     CudiBundle\Entity\Sales\QueueItem,
     CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
     Zend\View\Model\ViewModel;
@@ -28,15 +29,11 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 {
     public function saleAction()
     {
-        $barcodePrefix = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_item_barcode_prefix');
-
         $enableCollectScanning = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        $payDesks = $this->getEntityManager()
+        $paydesks = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
 
@@ -46,26 +43,8 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
-                'barcodePrefix' => $barcodePrefix,
-                'payDesks' => $payDesks,
+                'paydesks' => $paydesks,
                 'enableCollectScanning' => $enableCollectScanning,
-            )
-        );
-    }
-
-    public function saveCommentAction()
-    {
-        if (!($queueItem = $this->_getQueueItem()))
-            return new ViewModel();
-
-
-        $formData = $this->getRequest()->getPost();
-        $queueItem->setComment($formData['comment']);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array("status" => "success"),
             )
         );
     }
@@ -118,6 +97,8 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
                     $article->setStockValue($article->getStockValue() + 1);
 
+                    $this->getEntityManager()->persist(new ReturnedLog($this->getAuthentication()->getPersonObject(), $article));
+
                     $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->addMessage(
@@ -154,52 +135,5 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 'form' => $form,
             )
         );
-    }
-
-    private function _getQueueItem()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the queue item!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'sale_sale',
-                array(
-                    'action' => 'sale'
-                )
-            );
-
-            return;
-        }
-
-        $queueItem = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $queueItem) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No queue item with the given ID was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'sale_sale',
-                array(
-                    'action' => 'sale'
-                )
-            );
-
-            return;
-        }
-
-        return $queueItem;
     }
 }

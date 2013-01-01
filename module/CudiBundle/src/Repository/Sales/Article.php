@@ -117,26 +117,7 @@ class Article extends EntityRepository
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($start);
 
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.barcode', ':barcode'),
-                    $query->expr()->eq('a.academicYear', ':academicYear')
-                )
-            )
-            ->setParameter('barcode', $barcode)
-            ->setParameter('academicYear', $academicYear->getId())
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $this->findOneByBarcodeAndAcademicYear($barcode, $academicYear);
     }
 
     public function findOneByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear)
@@ -159,6 +140,13 @@ class Article extends EntityRepository
 
         if (isset($resultSet[0]))
             return $resultSet[0];
+
+        $barcode = $this->_em
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
+            ->findOneByBarcodeAndAcademicYear($barcode, $academicYear);
+
+        if (isset($barcode))
+            return $barcode->getArticle();
 
         return null;
     }

@@ -80,7 +80,6 @@ class TmpFile
     public function appendContent($content)
     {
         $this->_checkOpen();
-
         fwrite($this->_fileHandler, $content);
     }
 
@@ -92,7 +91,6 @@ class TmpFile
     public function getFilename()
     {
         $this->_checkOpen();
-
         return $this->_filename;
     }
 

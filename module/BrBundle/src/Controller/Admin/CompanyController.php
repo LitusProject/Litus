@@ -318,6 +318,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $file->receive();
 
                 $image = new Imagick($file->getFileName());
+                unlink($file->getFileName());
                 $image->thumbnailImage(320, 320, true);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {
@@ -372,7 +373,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         $headers = new Headers();
         $headers->addHeaders(array(
-        	'Content-type' => mime_content_type($filePath . $company->getLogo()),
+        	'Content-Type' => mime_content_type($filePath . $company->getLogo()),
         ));
         $this->getResponse()->setHeaders($headers);
 

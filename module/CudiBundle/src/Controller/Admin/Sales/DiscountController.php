@@ -39,14 +39,15 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $discount = new Discount($article);
 
                 if ($formData['template'] == 0) {
                     $discount->setDiscount(
                         $formData['value'],
                         $formData['method'],
-                        $formData['type']
+                        $formData['type'],
+                        $formData['rounding']
                     );
                 } else {
                     $template = $this->getEntityManager()

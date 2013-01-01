@@ -101,7 +101,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $personal->add($field);
 
         $field = new File('profile');
-        $field->setLabel('Profile Image');
+        $field->setLabel('Profile Image')
+            ->setAttribute('data-type', 'image');
         $personal->add($field);
 
         $field = new Text('phone_number');
@@ -174,7 +175,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('class', $field->getAttribute('class') . ' input-small')
             ->setAttribute(
                 'options',
-                MetaData::$POSSIBLE_TSHIRT_SIZES
+                MetaData::$possibleSizes
             );
         $organization->add($field);
 
