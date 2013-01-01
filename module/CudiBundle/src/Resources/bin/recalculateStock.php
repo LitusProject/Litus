@@ -13,22 +13,23 @@
  */
 
 /**
- * The script to update the stock
+ * Update the stock.
  *
  * Usage:
- * --run|-r      Run the update script
+ * --run|-r      Recalculate Stock
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
-// Setup autoloading
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $entityManager = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 $rules = array(
-    'run|r' => 'Run the update script',
+    'run|r' => 'Recalculate Stock',
 );
 
 try {

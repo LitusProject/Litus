@@ -14,46 +14,114 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use Doctrine\ORM\EntityManager;
+use CudiBundle\Entity\Sales\QueueItem as EntityQueueItem,
+    Doctrine\ORM\EntityManager;
 
-class Printer {
-    public static function queuePrint(EntityManager $entityManager, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
+class Printer
+{
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param string $printer
+     * @param CudiBundle\Entity\Sales\QueueItem $queueItem
+     * @param array $bookings
+     */
+    public static function signInTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
-        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
-        $data->type = 1;
-        self::_print($entityManager, $printer, $data);
-    }
-
-    public static function collectPrint(EntityManager $entityManager, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
-    {
-        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
-        $data->type = 2;
-        self::_print($entityManager, $printer, $data);
-    }
-
-    public static function salePrint(EntityManager $entityManager, $printer, $identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
-    {
-        $data = self::_createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles);
-        $data->type = 3;
-        self::_print($entityManager, $printer, $data);
-    }
-
-    private static function _createData($identification, $fullName, $barcode, $queueNumber, $totalPrice, $articles)
-    {
-        $sort = array();
-        foreach($articles as $article) {
-            $sort[] = $article['barcode'];
+        $articles = array();
+        $totalPrice = 0;
+        foreach($bookings as $booking) {
+            $articles[] = array(
+                'title' => $booking->getArticle()->getMainArticle()->getTitle(),
+                'price' => (string) number_format($booking->getArticle()->getSellPrice() / 100, 2),
+                'barcode' => substr($booking->getArticle()->getBarcode(), 7),
+                'number' => $booking->getNumber(),
+            );
+            $totalPrice += $booking->getArticle()->getSellPrice() * $booking->getNumber();
         }
-        array_multisort($articles, $sort);
 
-        return (object) array(
-            'id' => $identification,
-            'barcode' => $barcode,
-            'name' => $fullName,
-            'queuenumber' => $queueNumber,
-            'totalAmount' => $totalPrice,
+        $data = array(
+            'id' => $queueItem->getPerson()->getUniversityIdentification(),
+            'barcode' => (int) $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
+            'name' => $queueItem->getPerson()->getFullName(),
+            'queuenumber' => $queueItem->getQueueNumber(),
+            'totalAmount' => (string) number_format($totalPrice / 100, 2),
             'items' => $articles,
+            'type' => 1,
         );
+
+        self::_print($entityManager, $printer, $data);
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param string $printer
+     * @param CudiBundle\Entity\Sales\QueueItem $queueItem
+     * @param array $bookings
+     */
+    public static function collectTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
+    {
+        $articles = array();
+        $totalPrice = 0;
+        foreach($bookings as $booking) {
+            $articles[] = array(
+                'title' => $booking->getArticle()->getMainArticle()->getTitle(),
+                'price' => (string) number_format($booking->getArticle()->getSellPrice() / 100, 2),
+                'barcode' => substr($booking->getArticle()->getBarcode(), 7),
+                'number' => $booking->getNumber(),
+            );
+            $totalPrice += $booking->getArticle()->getSellPrice() * $booking->getNumber();
+        }
+
+        $data = array(
+            'id' => $queueItem->getPerson()->getUniversityIdentification(),
+            'barcode' => (int) $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
+            'name' => $queueItem->getPerson()->getFullName(),
+            'queuenumber' => $queueItem->getQueueNumber(),
+            'totalAmount' => (string) number_format($totalPrice / 100, 2),
+            'items' => $articles,
+            'type' => 2,
+        );
+
+        self::_print($entityManager, $printer, $data);
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param string $printer
+     * @param CudiBundle\Entity\Sales\QueueItem $queueItem
+     * @param array $saleItems
+     */
+    public static function saleTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $saleItems)
+    {
+        $articles = array();
+        $totalPrice = 0;
+        foreach($saleItems as $saleItem) {
+            $articles[] = array(
+                'title' => $saleItem->getArticle()->getMainArticle()->getTitle(),
+                'price' => (string) number_format($saleItem->getPrice() / 100, 2),
+                'barcode' => substr($saleItem->getArticle()->getBarcode(), 7),
+                'number' => $saleItem->getNumber(),
+            );
+            $totalPrice += $saleItem->getPrice() * $saleItem->getNumber();
+        }
+
+        $data = array(
+            'id' => $queueItem->getPerson()->getUniversityIdentification(),
+            'barcode' => (int) $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
+            'name' => $queueItem->getPerson()->getFullName(),
+            'queuenumber' => $queueItem->getQueueNumber(),
+            'totalAmount' => (string) number_format($totalPrice / 100, 2),
+            'items' => $articles,
+            'type' => 3,
+        );
+
+        self::_print($entityManager, $printer, $data);
     }
 
     private static function _print(EntityManager $entityManager, $printer, $data)

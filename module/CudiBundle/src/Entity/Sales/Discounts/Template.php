@@ -61,16 +61,25 @@ class Template
     private $type;
 
     /**
+     * @var string The type of rounding
+     *
+     * @ORM\Column(type="string")
+     */
+    private $rounding;
+
+    /**
      * @param integer The value of the discount
      * @param string The method of the discount
      * @param string The type of the discount
+     * @param string The type of the rounding
      */
-    public function __construct($name, $value, $method, $type)
+    public function __construct($name, $value, $method, $type, $rounding)
     {
         $this->name = $name;
         $this->value = $value * 100;
         $this->method = $method;
         $this->type = $type;
+        $this->rounding = $rounding;
     }
 
     /**
@@ -110,6 +119,14 @@ class Template
      */
     public function getType()
     {
-        return $this->type;
+        return Discount::$POSSIBLE_TYPES[$this->type];
+    }
+
+    /**
+     * @return string
+     */
+    public function getRounding()
+    {
+        return Discount::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];
     }
 }

@@ -41,11 +41,11 @@ class External extends \MailBundle\Entity\Entry
     private $lastName;
 
     /**
-     * @var string The email address of this entry
+     * @var string The e-mail address of this entry
      *
      * @ORM\Column(type="string")
      */
-    private $mail;
+    private $email;
 
     /**
      * Creates a new list entry for the given list with the given mail address.
@@ -53,15 +53,15 @@ class External extends \MailBundle\Entity\Entry
      * @param MailBundle\Entity\MailingList $list The list for this entry
      * @param string $firstName The first name to add
      * @param string $lastName The last name to add
-     * @param string $mail The email address to add
+     * @param string $email The e-mail address to add
      */
-    public function __construct(MailingList $list, $firstName, $lastName, $mail)
+    public function __construct(MailingList $list, $firstName, $lastName, $email)
     {
         parent::__construct($list);
 
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->mail = $mail;
+        $this->email = $email;
     }
 
     /**
@@ -83,8 +83,8 @@ class External extends \MailBundle\Entity\Entry
     /**
      * @return string
      */
-    public function getMailAddress()
+    public function getEmailAddress()
     {
-        return $this->mail;
+        return $this->email;
     }
 }

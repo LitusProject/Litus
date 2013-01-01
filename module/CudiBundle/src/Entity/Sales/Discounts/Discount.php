@@ -62,6 +62,13 @@ class Discount
     private $type;
 
     /**
+     * @var string The type of rounding
+     *
+     * @ORM\Column(type="string")
+     */
+    private $rounding;
+
+    /**
      * @var \CudiBundle\Entity\Sales\Article The article of the discount
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
@@ -72,15 +79,59 @@ class Discount
     /**
      * @var array The possible types of a discount
      */
-    private static $POSSIBLE_TYPES = array(
-        'member', 'acco'
+    public static $POSSIBLE_TYPES = array(
+        'member' => 'Member',
+        'acco' => 'Acco',
     );
 
     /**
      * @var array The possible methods of a discount
      */
-    private static $POSSIBLE_METHODS = array(
-        'percentage', 'fixed', 'override'
+    public static $POSSIBLE_METHODS = array(
+        'percentage' => 'Percentage',
+        'fixed' => 'Fixed',
+        'override' => 'Override',
+    );
+
+    /**
+     * @var array The possible methods of rounding
+     */
+    public static $POSSIBLE_ROUNDINGS = array(
+        'none' => array(
+            'name' => 'None',
+            'value' => '1',
+            'type' => 'up',
+        ),
+        '0.05_up' => array(
+            'name' => '0.05 (up)',
+            'value' => '5',
+            'type' => 'up',
+        ),
+        '0.05_down' => array(
+            'name' => '0.05 (down)',
+            'value' => '5',
+            'type' => 'down',
+        ),
+        '0.10_up' => array(
+            'name' => '0.10 (up)',
+            'value' => '10',
+            'type' => 'up',
+        ),
+        '0.10_down' => array(
+            'name' => '0.10 (down)',
+            'value' => '10',
+            'type' => 'down',
+        ),
+        '0.50_up' => array(
+            'name' => '0.50 (up)',
+            'value' => '50',
+            'type' => 'up',
+        ),
+        '0.50_down' => array(
+            'name' => '0.50 (down)',
+            'value' => '50',
+            'type' => 'down',
+        ),
     );
 
     /**
@@ -111,10 +162,11 @@ class Discount
      * @param integer The value of the discount
      * @param string The method of the discount
      * @param string The type of the discount
+     * @param string The type of the rounding
      *
      * @return \CudiBundle\Entity\Sales\Discounts\Discount
      */
-    public function setDiscount($value, $method, $type)
+    public function setDiscount($value, $method, $type, $rounding)
     {
         if (!self::isValidDiscountType($type))
             throw new \InvalidArgumentException('The discount type is not valid.');
@@ -122,10 +174,14 @@ class Discount
         if (!self::isValidDiscountMethod($method))
             throw new \InvalidArgumentException('The discount method is not valid.');
 
+        if (!self::isValidRoundingType($rounding))
+            throw new \InvalidArgumentException('The rounding type is not valid.');
+
         $this->template = null;
         $this->value = $value * 100;
         $this->method = $method;
         $this->type = $type;
+        $this->rounding = $rounding;
         return $this;
     }
 
@@ -134,7 +190,7 @@ class Discount
      */
     public static function isValidDiscountType($type)
     {
-        return in_array($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$POSSIBLE_TYPES);
     }
 
     /**
@@ -142,7 +198,15 @@ class Discount
      */
     public static function isValidDiscountMethod($method)
     {
-        return in_array($method, self::$POSSIBLE_METHODS);
+        return array_key_exists($method, self::$POSSIBLE_METHODS);
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function isValidRoundingType($rounding)
+    {
+        return array_key_exists($rounding, self::$POSSIBLE_ROUNDINGS);
     }
 
     /**
@@ -188,7 +252,7 @@ class Discount
     {
         if (!isset($this->type))
             return $this->template->getType();
-        return $this->type;
+        return self::$POSSIBLE_TYPES[$this->type];
     }
 
     /**
@@ -200,19 +264,43 @@ class Discount
     }
 
     /**
+     * @return string
+     */
+    public function getRounding()
+    {
+        if (!isset($this->rounding) && isset($this->template))
+            return $this->template->getRounding();
+        else if (isset($this->rounding))
+            return self::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];
+    }
+
+    /**
      * @param integer $price
      *
      * @return integer
      */
     public function apply($price)
     {
+        $value = 0;
         switch ($this->getMethod()) {
             case 'percentage':
-                return round($price * (10000 - $this->getValue()) / 10000);
+                $value = round($price * (10000 - $this->getValue()) / 10000);
             case 'fixed':
-                return $price - $this->getValue();
+                $value = $price - $this->getValue();
             case 'override':
-                return $this->getValue();
+                $value = $this->getValue();
         }
+
+        if ($this->rounding) {
+            $rounding = self::$POSSIBLE_ROUNDINGS[$this->rounding];
+
+            if ($rounding['type'] == 'up') {
+                $value = ceil($value/$rounding['value'])*$rounding['value'];
+            } else {
+                $value = floor($value/$rounding['value'])*$rounding['value'];
+            }
+        }
+
+        return $value;
     }
 }

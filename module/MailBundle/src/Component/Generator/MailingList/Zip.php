@@ -12,12 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Document\Generator\Order;
+namespace MailBundle\Component\Generator\MailingList;
 
 use CommonBundle\Component\Util\File\TmpFile,
-    MailBundle\Entity\Entry,
-    MailBundle\Entity\MailList,
-    CudiBundle\Entity\Stock\Orders\Item,
+    DateTime,
     Doctrine\ORM\EntityManager,
     ZipArchive;
 
@@ -29,7 +27,7 @@ class Zip
     private $_entityManager = null;
 
     /**
-     * @var array The array cont
+     * @var array The array containing the mailinglists
      */
     private $_lists;
 
@@ -37,7 +35,7 @@ class Zip
      * Create a Order XML Generator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
-     * @param \CudiBundle\Entity\Stock\Order $order The order
+     * @param arrays $lists The array containing the mailinglists
      */
     public function __construct(EntityManager $entityManager, array $lists)
     {
@@ -53,237 +51,24 @@ class Zip
     public function generateArchive(TmpFile $archive)
     {
         $zip = new ZipArchive();
+        $now = new DateTime();
 
-        foreach($this->_lists as $lists) {
-            if (!$item->getArticle()->getMainArticle()->isInternal())
-                continue;
+        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+        $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
+        $zip->close();
+
+        foreach($this->_lists as $list) {
+            $entries = $this->_entityManager
+                ->getRepository('MailBundle\Entity\Entry')
+                ->findByList($list);
+
+            $entriesString = '';
+            foreach ($entries as $entry)
+                $entriesString .= $entry->getEmailAddress() . PHP_EOL;
 
             $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-            $xmlFile = new TmpFile();
-            $this->generateXml($item, $xmlFile);
-
-            $file = new TmpFile();
-            $document = new FrontGenerator($this->_entityManager, $item->getArticle(), $file);
-            $document->generate();
-
-            $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
-
-            $mappings = $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Files\Mapping')
-                ->findAllPrintableByArticle($item->getArticle()->getMainArticle());
-
-            $zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
-            foreach($mappings as $mapping)
-                $zip->addFile($filePath . $mapping->getFile()->getPath(), $mapping->getFile()->getName());
-
+            $zip->addFromString($list->getName(), $entriesString);
             $zip->close();
         }
-    }
-
-    private function generateXml(Item $item, TmpFile $tmpFile)
-    {
-        $configs = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config');
-
-        $xml = new Generator($tmpFile);
-
-        $num = 1;
-
-        $attachments = array(
-            new Object(
-                'Attachment',
-                array(
-                    'AttachmentKey' => 'File' . $num++,
-                    'FileName' => 'front_' . $item->getArticle()->getId() . '.pdf',
-                ),
-                null
-            )
-        );
-
-        $mappings = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Files\Mapping')
-            ->findAllByArticle($item->getArticle()->getMainArticle());
-        foreach($mappings as $mapping) {
-            $attachments[] = new Object(
-                'Attachment',
-                array(
-                    'AttachmentKey' => 'File' . $num++,
-                    'FileName' => $mapping->getFile()->getName()
-                ),
-                null
-            );
-        }
-
-        switch($item->getArticle()->getMainArticle()->getBinding()->getCode()) {
-            case 'glued':
-                $binding = 'Ingelijmd';
-                break;
-            case 'stapled':
-                $binding = 'Geniet';
-                break;
-            default:
-                $binding = 'Los en ingepakt in krimpfolie';
-                break;
-        }
-
-        $itemValues = array(
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'titel'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        $item->getArticle()->getMainArticle()->getTitle()
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'aantal'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        (string) $item->getNumber()
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'barcode'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        (string) $item->getArticle()->getBarcode()
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'afwerking'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        $binding
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'kleur'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        $item->getArticle()->getMainArticle()->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'zijde'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        (string) $item->getArticle()->getMainArticle()->isRectoVerso() ? 'Recto-Verso' : 'Recto'
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'TypeDrukOpdracht'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        'Cursus'
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'DatumOpdrachtKlaar'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        $this->_order->getDeliveryDate()->format('d/m/Y')
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'Referentie'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        (string) 'cursus vtk'
-                    )
-                )
-            ),
-            new Object(
-                'ItemValue',
-                array(
-                    'ItemKey' => 'Opmerking'
-                ),
-                array(
-                    new Object(
-                        'LastUsedValue',
-                        null,
-                        ''
-                    )
-                )
-            )
-        );
-
-        $xml->append(
-            new Object(
-                'Document',
-                null,
-                array(
-                    new Object(
-                        'Job',
-                        array(
-                            'JobID' => 'vtk-' . $this->_order->getDateOrdered()->format('YmdHi')
-                        ),
-                        array(
-                            new Object(
-                                'Attachments',
-                                null,
-                                $attachments
-                            ),
-                            new Object(
-                                'ItemValues',
-                                null,
-                                $itemValues
-                            )
-                        )
-                    )
-                )
-            )
-        );
     }
 }

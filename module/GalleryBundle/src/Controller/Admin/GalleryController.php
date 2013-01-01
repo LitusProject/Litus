@@ -267,6 +267,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $image = new Imagick($upload->getFileName());
 
             $exif = exif_read_data($upload->getFileName());
+            unlink($upload->getFileName());
 
             switch($exif['Orientation']) {
                 case 1: // nothing

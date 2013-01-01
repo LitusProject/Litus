@@ -13,15 +13,17 @@
  */
 
 /**
- * The socket server for the sale queue
+ * Assign an Ir.Reëel to all users who receive one at CuDi.
  *
  * Usage:
- * --run|-r      Run the socket
+ * --article|-r     Article
+ * --flush|-f       Flush
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
-// Setup autoloading
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
@@ -30,7 +32,7 @@ $mt = $application->getServiceManager()->get('mail_transport');
 
 $rules = array(
     'article|a-s' => 'Article',
-    'flush|f' => 'Flush',
+    'flush|f'     => 'Flush',
 );
 
 try {

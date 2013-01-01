@@ -13,22 +13,23 @@
  */
 
 /**
- * The script to cache the xml of Ulyssis
+ * Cache the xml of Ulyssis.
  *
  * Usage:
- * --run|-r      Run the script
+ * --run|-r      Cache XML
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
-// Setup autoloading
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 $rules = array(
-    'run|r' => 'Run the script',
+    'run|r' => 'Cache XML',
 );
 
 try {

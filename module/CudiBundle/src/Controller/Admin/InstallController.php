@@ -412,7 +412,7 @@ VTK Cudi
                         'overview', 'screen', 'signin'
                     ),
                     'sale_sale' => array(
-                        'return', 'sale', 'saveComment'
+                        'return', 'sale'
                     ),
                     'supplier_article' => array(
                         'manage'

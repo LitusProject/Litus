@@ -1,7 +1,5 @@
 (function ($) {
     var defaults = {
-        barcodePrefix: 0,
-
         tQueueTitle: 'Queue',
         tUniversityIdentification: 'University Identification',
         tPrint: 'Print',
@@ -11,8 +9,8 @@
         tHold: 'Hold',
         tUnhold: 'Unhold',
         tHideHold: 'Hide Hold',
-        tUndoLastSelling: 'Undo Last Selling - F6',
-        tPrintNext: 'Print Next - F7',
+        tUndoLastSelling: 'Undo Last Selling',
+        tPrintNext: 'Print Next',
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
         tAddToQueue: 'Add to queue',
 
@@ -33,13 +31,18 @@
             return this;
         },
         show : function (options) {
-            currentView = 'queue';
-            var permantent = options == undefined || options.permanent == undefined ? true : options.permanent;
-            $(this).permanentModal({closable: !permantent});
+            var permanent = options == undefined || options.permanent == undefined ? true : options.permanent;
+            currentView = permanent ? 'queue' : currentView;
+            $(this).permanentModal({closable: !permanent});
+
+            var $this = $(this);
+
+            $(this).find('tbody tr').each(function () {
+                _showActions($this, $(this));
+            });
             return this;
         },
         hide : function (options) {
-            currentView = 'queue';
             $(this).permanentModal('hide');
             return this;
         },
@@ -64,7 +67,7 @@
         } else if (typeof method === 'object' || ! method) {
             return methods.init.apply(this, arguments);
         } else {
-            $.error('Method ' +  method + ' does not exist on $.sale');
+            $.error('Method ' +  method + ' does not exist on $.queue');
         }
     };
 
@@ -108,11 +111,11 @@
                 ),
                 undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling', 'data-key': '117'}).append(
                     $('<i>', {'class': 'icon-arrow-left icon-white'}),
-                    settings.tUndoLastSelling
+                    settings.tUndoLastSelling + ' - F6'
                 ),
                 printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
                     $('<i>', {'class': 'icon-print icon-white'}),
-                    settings.tPrintNext
+                    settings.tPrintNext + ' - F7'
                 )
             )
         );
@@ -188,7 +191,7 @@
                 settings.sendToSocket(
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'undoLastSelling',
+                        'action': 'undoSelling',
                         'id': lastSold,
                     })
                 );
@@ -228,7 +231,7 @@
 
         switch (data.status) {
             case 'signed_in':
-                if (currentView == 'sale' || currentView == 'collecting') {
+                if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
                     row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
                 } else {
@@ -241,7 +244,7 @@
                 row.find('.startCollecting, .startSelling, .cancelSelling, .unhold').hide();
                 break;
             case 'collected':
-                if (currentView == 'sale' || currentView == 'collecting') {
+                if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
                     row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
                 } else {
@@ -401,10 +404,9 @@
 
     function _gotBarcode($this, barcode) {
         var settings = $this.data('queueSettings');
-        barcode = barcode - settings.barcodePrefix;
 
         $this.find('tbody tr:visible').each(function () {
-            if ($(this).data('info').id == barcode) {
+            if ($(this).data('info').barcode == barcode) {
                 switch ($(this).data('info').status) {
                     case 'collecting':
                         $(this).find('.stopCollecting').click();

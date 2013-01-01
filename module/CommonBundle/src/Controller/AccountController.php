@@ -242,6 +242,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     $upload->receive();
 
                     $image = new Imagick($upload->getFileName());
+                    unlink($upload->getFileName());
                     $image->cropThumbnailImage(320, 240);
 
                     if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
@@ -768,7 +769,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
-            'Content-type' => mime_content_type($imagePath),
+            'Content-Type' => mime_content_type($imagePath),
             'Content-Length' => filesize($imagePath),
         ));
         $this->getResponse()->setHeaders($headers);

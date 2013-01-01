@@ -378,6 +378,7 @@ return array(
                     'common_jquery' => array(
                         'assets'  => array(
                             'common/js/jquery-1.7.2.min.js',
+                            'common/js/bootstrap-fileupload.min.js',
                         ),
                     ),
                     'common_jqueryui' => array(

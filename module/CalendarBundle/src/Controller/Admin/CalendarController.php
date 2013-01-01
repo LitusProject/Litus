@@ -303,7 +303,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-type' => mime_content_type($filePath . $event->getPoster()),
+            'Content-Type' => mime_content_type($filePath . $event->getPoster()),
         ));
         $this->getResponse()->setHeaders($headers);
 
@@ -334,7 +334,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="shift_list.pdf"',
-            'Content-type'        => 'application/pdf',
+            'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
 

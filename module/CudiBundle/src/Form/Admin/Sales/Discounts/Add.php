@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Component\Validator\Sales\Article\Discounts\Exists as DiscountValidator,
     CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sales\Discounts\Discount,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -77,6 +78,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field = new Hidden('template_' . $template->getId() . '_type');
             $field->setValue($template->getType());
             $this->add($field);
+
+            $field = new Hidden('template_' . $template->getId() . '_rounding');
+            $field->setValue($template->getRounding());
+            $this->add($field);
         }
 
         $field = new Text('value');
@@ -88,7 +93,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('method');
         $field->setAttribute('id', 'discount_template_method')
             ->setLabel('Method')
-            ->setAttribute('options', array('percentage' => 'Percentage', 'fixed' => 'Fixed', 'override' => 'Override'))
+            ->setAttribute('options', Discount::$POSSIBLE_METHODS)
             ->setRequired();
         $this->add($field);
 
@@ -96,7 +101,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setAttribute('id', 'discount_template_type')
             ->setLabel('Type')
             ->setRequired()
-            ->setAttribute('options', array('member' => 'Member', 'acco' => 'Acco'));
+            ->setAttribute('options', Discount::$POSSIBLE_TYPES);
+        $this->add($field);
+
+        $field = new Select('rounding');
+        $field->setAttribute('id', 'discount_template_rounding')
+            ->setLabel('Rounding')
+            ->setRequired()
+            ->setAttribute('options', $this->_getRoundings());
         $this->add($field);
 
         $field = new Submit('submit');
@@ -115,6 +127,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $templateOptions[$template->getId()] = $template->getName();
 
         return $templateOptions;
+    }
+
+    private function _getRoundings()
+    {
+        $roundings = array();
+        foreach(Discount::$POSSIBLE_ROUNDINGS as $key => $rounding)
+            $roundings[$key] = $rounding['name'];
+
+        return $roundings;
     }
 
     public function getInputFilter()
