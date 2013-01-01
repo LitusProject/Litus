@@ -15,6 +15,9 @@
 namespace BrBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile,
+    BrBundle\Component\Document\Pdf\CvBook as CvBookGenerator,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
