@@ -18,7 +18,8 @@ use BrBundle\Entity\Cv,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CommonBundle\Entity\General\AcademicYear;
+    CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Generates the CV Book for one academic year.
@@ -57,11 +58,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $this->_year = $year;
     }
 
-    protected function _generateXml(TmpFile $tmpFile)
+    protected function generateXml(TmpFile $tmpFile)
     {
-        $xml = new XmlGenerator($tmpFile);
-
-        $configs = $this->_getConfigRepository();
+        $xml = new Generator($tmpFile);
 
         // Generate the xml
         $entries = $this->getEntityManager()
@@ -70,13 +69,13 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
 
         // TODO: this is dummy xml
         $xml->append(
-            new XmlObject(
+            new Object(
                 'xmlname',
                 array(
                     'paramname' => 'paramvalue',
                 ),
                 array(
-                    new XmlObject(
+                    new Object(
                         'child',
                         array(
                             'childparam' => 'value',

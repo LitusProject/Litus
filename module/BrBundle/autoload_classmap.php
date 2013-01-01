@@ -29,6 +29,7 @@ return array(
     'BrBundle\Form\Cv\Add'                              => __DIR__ . '/src/Form/Cv/Add.php',
     'BrBundle\Form\Cv\Edit'                             => __DIR__ . '/src/Form/Cv/Edit.php',
     'BrBundle\Component\Document\Pdf\ContractGenerator' => __DIR__ . '/src/Component/Document/Generator/Pdf/Contract.php',
+    'BrBundle\Component\Document\Pdf\CvBook'            => __DIR__ . '/src/Component/Document/Generator/Pdf/CvBook.php',
     'Litus\Br\LetterGenerator'                          => __DIR__ . '/src/Component/Document/Generator/Pdf/Letter.php',
     'Litus\Br\InvoiceGenerator'                         => __DIR__ . '/src/Component/Document/Generator/Pdf/Invoice.php',
     'BrBundle\Component\Validator\FieldLength'          => __DIR__ . '/src/Component/Validator/FieldLength.php',
