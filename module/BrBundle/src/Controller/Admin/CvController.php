@@ -50,6 +50,31 @@ class CvController extends \BrBundle\Component\Controller\CvController
         );
     }
 
+    public function exportAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $file = new TmpFile();
+        $year = $this->getAcademicYear();
+
+        $document = new CvBookGenerator($this->getEntityManager(), $year, $file);
+
+        $document->generate();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="cvbook-' . $year->getCode(true) . '.pdf"',
+            'Content-type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
     public function deleteAction()
     {
         $this->initAjax();

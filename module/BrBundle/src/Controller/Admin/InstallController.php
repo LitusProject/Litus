@@ -43,6 +43,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The path to the public company logo files',
                 ),
                 array(
+                    'key'         => 'br.pdf_generator_path',
+                    'value'       => 'data/br/pdf_generator',
+                    'description' => 'The path to the PDF generator files',
+                ),
+                array(
                     'key'         => 'br.cv_book_open',
                     'value'       => '0',
                     'description' => 'Whether the CV Book is currently open for entries or not',
