@@ -14,7 +14,7 @@
     <xsl:output method="xml" indent="yes"/>
 
     <xsl:template match="cvbook">
-        <fo:root font-size="10pt" line-height="1.4" font-family="Helvetica">
+        <fo:root font-size="10pt" line-height="1.4" font-family="Helvetica" text-align="justify">
             <fo:layout-master-set>
                 <fo:simple-page-master master-name="page-master" page-height="297mm" page-width="210mm" margin-top="8mm" margin-bottom="10mm" margin-left="13mm" margin-right="13mm">
                     <fo:region-body margin-bottom="8mm"/>
