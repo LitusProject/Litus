@@ -28,7 +28,7 @@ return array(
             'admin_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/article[/:action[/:id][/:field/:string][/page/:page]][/]',
+                    'route' => '/admin/article[/:action[/:id][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',

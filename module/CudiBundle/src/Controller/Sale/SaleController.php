@@ -29,13 +29,16 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 {
     public function saleAction()
     {
-        $enableCollectScanning = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_collect_scanning');
-
         $paydesks = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
+
+        $membershipArticle = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneById($this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+            );
 
         return new ViewModel(
             array(
@@ -44,7 +47,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
                 'paydesks' => $paydesks,
-                'enableCollectScanning' => $enableCollectScanning,
+                'membershipArticle' => $membershipArticle,
             )
         );
     }

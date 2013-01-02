@@ -312,7 +312,33 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     $this->getEntityManager()->persist($metaData);
                 }
 
+                $membershipArticle = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findOneById($this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('secretary.membership_article')
+                    );
+
                 if ($metaData->becomeMember()) {
+                    $booking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                            $membershipArticle,
+                            $academic
+                        );
+                    if (null === $booking) {
+                        $booking = new Booking(
+                            $this->getEntityManager(),
+                            $academic,
+                            $membershipArticle,
+                            'assigned',
+                            1,
+                            true
+                        );
+
+                        $this->getEntityManager()->persist($booking);
+                    }
+
                     $hasShirt = false;
                     foreach ($tshirts as $tshirt) {
                         $booking = $this->getEntityManager()
@@ -418,6 +444,16 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             }
                         }
                     }
+                } else {
+                    $booking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                            $membershipArticle,
+                            $academic
+                        );
+
+                    if (null === $booking)
+                        $this->getEntityManager()->remove($booking);
                 }
 
                 $academic->activate(

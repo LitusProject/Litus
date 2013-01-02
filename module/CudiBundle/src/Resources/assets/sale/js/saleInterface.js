@@ -2,6 +2,7 @@
     var defaults = {
         isSell: true,
         discounts: [],
+        membershipArticle: 0,
 
         tCurrentCustomer: 'Current Customer',
         tComments: 'Comments',
@@ -149,15 +150,13 @@
             );
 
             $(settings.discounts).each(function () {
-                var checked = false;
-
-                if ('member' == this.type && data.person.member)
-                    checked = true;
+                var checked = ('member' == this.type && data.person.member);
+                var disabled = ('member' == this.type && !data.person.member);
 
                 options.append(
                     $('<p>').append(
                         $('<label>', {'class': 'checkbox'}).append(
-                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).change(function () {
+                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).prop('disabled', disabled).change(function () {
                                 _updatePrice($this);
                             }),
                             ' ' + this.name
@@ -323,6 +322,9 @@
             row.addClass('error').removeClass('success');
         }
 
+        if (id == settings.membershipArticle)
+            $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
+
         if (settings.isSell)
             _updatePrice($this);
     }
@@ -338,6 +340,9 @@
         } else {
             row.addClass('error').removeClass('success');
         }
+
+        if (id == settings.membershipArticle)
+            $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);
 
         if (settings.isSell)
             _updatePrice($this);
@@ -424,7 +429,7 @@
     function _updatePrice($this) {
         var total = 0;
         $this.find('tbody tr:not(.inactive)').each(function () {
-            var bestPrice = $(this).data('info').price;
+            var bestPrice = parseInt($(this).data('info').price, 10);
             $($(this).data('info').discounts).each(function () {
                 if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
                     bestPrice = this.value < bestPrice ? this.value : bestPrice;

@@ -4,6 +4,7 @@ namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
     CudiBundle\Entity\Sales\Session as SessionEntity,
+    DateTime,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -50,25 +51,6 @@ class Session extends EntityRepository
         if (null === $resultSet)
             $resultSet = 0;
 
-        $query = $this->_em->createQueryBuilder();
-        $members = $query->select('COUNT(r.id)')
-            ->from('SecretaryBundle\Entity\Registration', 'r')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->gte('r.payedTimestamp', ':startTime'),
-                    $query->expr()->lte('r.payedTimestamp', ':endTime'),
-                    $query->expr()->eq('r.payed', 'true')
-                )
-            )
-            ->setParameter('startTime', $session->getOpenDate())
-            ->setParameter('endTime', $session->getCloseDate())
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        $resultSet += $members * $this->_em
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.membership_price');
-
         return $resultSet;
     }
 
@@ -79,6 +61,28 @@ class Session extends EntityRepository
             ->from('CudiBundle\Entity\Sales\Session', 's')
             ->setMaxResults(1)
             ->orderBy('s.openDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
+    public function findOnebyDate(DateTime $date)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('CudiBundle\Entity\Sales\Session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->lte('s.openDate', ':now'),
+                    $query->expr()->gte('s.closeDate', ':now')
+                )
+            )
+            ->setMaxResults(1)
+            ->setParameter('now', $date)
             ->getQuery()
             ->getResult();
 
