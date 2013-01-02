@@ -14,16 +14,18 @@
             <xsl:call-template name="basicinfo"/>
         </fo:block>
 
-        <xsl:apply-templates select="section"/>
+        <fo:block padding-top="-5mm">
+            <xsl:apply-templates select="section"/>
+        </fo:block>
     </xsl:template>
 
     <xsl:template name="basicinfo">
 
         <fo:table margin-left="-3.5mm">
 
-            <fo:table-column column-width="67mm"/>
-            <fo:table-column column-width="67mm"/>
-            <fo:table-column column-width="30mm"/>
+            <fo:table-column column-width="65mm"/>
+            <fo:table-column column-width="70mm"/>
+            <fo:table-column column-width="25mm"/>
 
             <fo:table-body>
                 <fo:table-row>
@@ -85,7 +87,7 @@
 
     <!-- The picture column -->
     <xsl:template name="picture">
-        <fo:external-graphic content-width="30mm">
+        <fo:external-graphic content-width="25mm">
             <xsl:attribute name="src">
                 <xsl:value-of select="@img"/>
             </xsl:attribute>
@@ -181,10 +183,9 @@
     </xsl:template>
 
     <xsl:template match="cv/section">
-        <fo:block margin-top="3mm">
+        <fo:block margin-top="2mm">
             <!-- Section title -->
             <fo:inline font-weight="bold"><xsl:value-of select="@title"/></fo:inline>
-
 
             <fo:block margin-left="2mm">
                 <!-- Special subsections -->
