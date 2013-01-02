@@ -84,6 +84,11 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     }
 
     private function _generateCv(Entry $cv) {
+
+        $picturePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.profile_path');
+
         return new Object(
             'cv',
             array(
@@ -92,7 +97,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 'lastname'  => $cv->getLastName(),
                 'email'     => $cv->getEmail(),
                 'phone'     => $cv->getPhoneNumber(),
-                'img'       => $cv->getAcademic()->getPhotoPath(),
+                'img'       => $picturePath . '/' . $cv->getAcademic()->getPhotoPath(),
             ),
             $this->_getSections($cv)
         );
