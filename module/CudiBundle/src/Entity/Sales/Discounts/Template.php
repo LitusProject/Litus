@@ -125,6 +125,14 @@ class Template
     /**
      * @return string
      */
+    public function getRawType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
     public function getRounding()
     {
         return Discount::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];

@@ -162,7 +162,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function unlockByUser(User $user)
     {
         foreach($this->_queueItems as $item) {
-            if ($item->getUser() == $user) {
+            if ($item->getUser()->getSocket() == $user->getSocket()) {
                 $item = $this->_entityManager
                     ->getRepository('CudiBundle\Entity\Sales\QueueItem')
                     ->findOneById($item->getId());
@@ -251,6 +251,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         if (!isset($this->_queueItems[$id]))
             $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
+        else
+            $this->_queueItems[$id]->setUser($user);
 
         return $this->_queueItems[$id]->getSaleInfo();
     }
@@ -375,7 +377,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         );
 
         foreach($article->getDiscounts() as $discount)
-            $result['discounts'][] = array('type' => $discount->getType(), 'value' => $discount->apply($article->getSellPrice()));
+            $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($article->getSellPrice()));
 
         return json_encode(
             array(

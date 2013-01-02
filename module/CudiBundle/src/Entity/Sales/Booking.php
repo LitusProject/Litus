@@ -193,6 +193,17 @@ class Booking
     }
 
     /**
+     * @param \DateTime $bookDate
+     *
+     * @return \CudiBundle\Entity\Sales\Booking
+     */
+    public function setBookDate(DateTime $bookDate)
+    {
+        $this->bookDate = $bookDate;
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getBookDate()
@@ -225,6 +236,17 @@ class Booking
     public function getExpirationDate()
     {
         return $this->expirationDate;
+    }
+
+    /**
+     * @param \DateTime $saleDate
+     *
+     * @return \CudiBundle\Entity\Sales\Booking
+     */
+    public function setSaleDate(DateTime $saleDate)
+    {
+        $this->saleDate = $saleDate;
+        return $this;
     }
 
     /**

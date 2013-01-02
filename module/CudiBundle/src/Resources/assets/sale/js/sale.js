@@ -17,6 +17,7 @@
         tBank: 'Bank',
 
         discounts: [],
+        membershipArticle: 0,
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
