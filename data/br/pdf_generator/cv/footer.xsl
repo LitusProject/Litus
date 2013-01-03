@@ -10,28 +10,41 @@
 >
 
     <xsl:template name="footer-even">
-        <fo:block font-size="12pt" font-family="sans-serif" padding-before="0.5mm"
-                border-before-color="black" border-before-style="solid" border-before-width="0.15mm">
+        <fo:block padding-top="{$footer-top-padding}mm"
+            border-top-color="black"
+            border-top-style="solid"
+            border-top-width="0.15mm">
+
             <fo:table table-layout="fixed">
-                <fo:table-column column-width="64mm"/>
-                <fo:table-column column-width="34mm"/>
-                <fo:table-column column-width="47mm"/>
-                <fo:table-column column-width="17mm"/>
+                <!-- Section title -->
+                <fo:table-column column-width="{$footer-text-width}mm"/>
+
+                <!-- Page number -->
+                <fo:table-column column-width="{$page-width}mm - 2 * {$margin-x}mm - 2 * {$footer-text-width}mm"/>
+
+                <!-- Padding column -->
+                <fo:table-column column-width="{$footer-text-width}mm - {$logo-width}mm - {$logo-text-margin}mm - {$logo-text-width}mm"/>
+                <!-- Logo and generic title -->
+                <fo:table-column column-width="{$logo-width}mm + {$logo-text-margin}mm"/>
+                <fo:table-column column-width="{$logo-text-width}mm"/>
                 <fo:table-body>
                     <fo:table-row>
-                        <fo:table-cell padding-left="1mm">
-                            <fo:block text-align="left" padding-before="1.9mm">
+                        <fo:table-cell>
+                            <fo:block text-align="left" padding-top="{$footer-text-top-padding}mm">
                                 <fo:retrieve-marker retrieve-class-name="footer-text" retrieve-boundary="document"/>
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block text-align="center" padding-before="1.9mm">
+                            <fo:block text-align="center" padding-top="{$footer-text-top-padding}mm">
                                 <fo:page-number/>
                             </fo:block>
                         </fo:table-cell>
-                        <fo:table-cell padding-right="2mm">
-                            <fo:block text-align="right" padding-right="1mm">
-                                <fo:external-graphic content-width="8.9mm">
+                        <fo:table-cell>
+                            <fo:block/>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block text-align="left">
+                                <fo:external-graphic content-width="{$logo-width}mm">
                                     <xsl:attribute name="src">
                                         <xsl:value-of select="/cvbook/@logo"/>
                                     </xsl:attribute>
@@ -39,7 +52,7 @@
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block text-align="right" padding-before="1.9mm">
+                            <fo:block text-align="left" padding-top="{$footer-text-top-padding}mm">
                                 CV-Boek
                             </fo:block>
                         </fo:table-cell>
@@ -50,18 +63,28 @@
     </xsl:template>
 
     <xsl:template name="footer-odd">
-        <fo:block font-size="12pt" font-family="sans-serif" padding-before="0.5mm"
-                border-before-color="black" border-before-style="solid" border-before-width="0.15mm">
+        <fo:block padding-top="{$footer-top-padding}mm"
+            border-top-color="black"
+            border-top-style="solid"
+            border-top-width="0.15mm">
+
             <fo:table table-layout="fixed">
-                <fo:table-column column-width="11mm"/>
-                <fo:table-column column-width="53mm"/>
-                <fo:table-column column-width="34mm"/>
-                <fo:table-column column-width="64mm"/>
+                <!-- Logo and generic title -->
+                <fo:table-column column-width="{$logo-width}mm + {$logo-text-margin}mm"/>
+                <fo:table-column column-width="{$logo-text-width}mm"/>
+                <!-- Padding column -->
+                <fo:table-column column-width="{$footer-text-width}mm - {$logo-width}mm - {$logo-text-margin}mm - {$logo-text-width}mm"/>
+
+                <!-- Page number -->
+                <fo:table-column column-width="{$page-width}mm - 2 * {$margin-x}mm - 2 * {$footer-text-width}mm"/>
+
+                <!-- Section title -->
+                <fo:table-column column-width="{$footer-text-width}mm"/>
                 <fo:table-body>
                     <fo:table-row>
-                        <fo:table-cell padding-left="1mm">
+                        <fo:table-cell>
                             <fo:block>
-                                <fo:external-graphic content-width="8.9mm">
+                                <fo:external-graphic content-width="{$logo-width}mm">
                                     <xsl:attribute name="src">
                                         <xsl:value-of select="/cvbook/@logo"/>
                                     </xsl:attribute>
@@ -69,17 +92,20 @@
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block text-align="left" padding-before="1.9mm">
+                            <fo:block text-align="left" padding-top="{$footer-text-top-padding}mm">
                                 CV-Boek
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block text-align="center" padding-before="1.9mm">
+                            <fo:block/>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block text-align="center" padding-top="{$footer-text-top-padding}mm">
                                 <fo:page-number/>
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block text-align="right" padding-before="1.9mm">
+                            <fo:block text-align="right" padding-top="{$footer-text-top-padding}mm">
                                 <fo:retrieve-marker retrieve-class-name="footer-text" retrieve-boundary="document"/>
                             </fo:block>
                         </fo:table-cell>

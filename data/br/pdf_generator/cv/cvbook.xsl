@@ -32,8 +32,8 @@
                     margin-left="{$margin-x}mm"
                     margin-right="{$margin-x}mm">
 
-                    <fo:region-body margin-bottom="8mm"/>
-                    <fo:region-after region-name="footer-even" extent="8mm"/>
+                    <fo:region-body margin-bottom="{$footer-height}mm"/>
+                    <fo:region-after region-name="footer-even" extent="{$footer-height}mm"/>
 
                 </fo:simple-page-master>
 
@@ -46,8 +46,8 @@
                     margin-left="{$margin-x}mm"
                     margin-right="{$margin-x}mm">
 
-                    <fo:region-body margin-bottom="8mm"/>
-                    <fo:region-after region-name="footer-odd" extent="8mm"/>
+                    <fo:region-body margin-bottom="{$footer-height}mm"/>
+                    <fo:region-after region-name="footer-odd" extent="{$footer-height}mm"/>
 
                 </fo:simple-page-master>
 
