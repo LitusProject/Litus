@@ -38,7 +38,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findOneByArticleAndAcademicYear($article, $this->getAcademicYear());
+            ->findOneByArticle($article);
 
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Files\Mapping')

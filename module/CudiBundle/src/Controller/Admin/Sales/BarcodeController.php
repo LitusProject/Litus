@@ -31,7 +31,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($article = $this->_getSaleArticle()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -66,7 +66,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 
         $barcodes = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
-            ->findAllByArticle($article, $this->getCurrentAcademicYear());
+            ->findAllByArticle($article);
 
         return new ViewModel(
             array(
