@@ -28,13 +28,11 @@ class Article extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
                     $query->expr()->eq('m.isProf', 'false'),
-                    $semester != 0 ? $query->expr()->in('m.id', $articles) : '1=1'
+                    $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
@@ -44,6 +42,8 @@ class Article extends EntityRepository
 
     public function findAllByAcademicYearSortBarcode(AcademicYear $academicYear)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
@@ -51,12 +51,11 @@ class Article extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false')
+                    $query->expr()->eq('m.isProf', 'false'),
+                    $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('a.barcode', 'ASC')
             ->getQuery()
             ->getResult();
@@ -64,7 +63,7 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear)
+    public function findOneByArticle(ArticleEntity $article)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -72,12 +71,10 @@ class Article extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.mainArticle', ':article'),
-                    $query->expr()->eq('a.academicYear', ':academicYear')
+                    $query->expr()->eq('a.mainArticle', ':article')
                 )
             )
             ->setParameter('article', $article->getId())
-            ->setParameter('academicYear', $academicYear->getId())
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
@@ -110,30 +107,19 @@ class Article extends EntityRepository
 
     public function findOneByBarcode($barcode)
     {
-        $start = AcademicYearUtil::getStartOfAcademicYear();
-        $start->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($start);
-
-        return $this->findOneByBarcodeAndAcademicYear($barcode, $academicYear);
-    }
-
-    public function findOneByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear)
-    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('a.barcode', ':barcode'),
-                    $query->expr()->eq('a.academicYear', ':academicYear')
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
                 )
             )
             ->setParameter('barcode', $barcode)
-            ->setParameter('academicYear', $academicYear->getId())
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
@@ -143,7 +129,7 @@ class Article extends EntityRepository
 
         $barcode = $this->_em
             ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
-            ->findOneByBarcodeAndAcademicYear($barcode, $academicYear);
+            ->findOneByBarcode($barcode);
 
         if (isset($barcode))
             return $barcode->getArticle();
@@ -153,20 +139,22 @@ class Article extends EntityRepository
 
     public function findAllByTypeAndAcademicYear($type, AcademicYear $academicYear)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
         ->from('CudiBundle\Entity\Sales\Article', 'a')
         ->innerJoin('a.mainArticle', 'm')
-        ->where($query->expr()->andX(
-            $query->expr()->eq('m.type', ':type'),
-            $query->expr()->eq('a.isHistory', 'false'),
-            $query->expr()->eq('a.academicYear', ':academicYear'),
-            $query->expr()->eq('m.isHistory', 'false'),
-            $query->expr()->eq('m.isProf', 'false')
-        )
+        ->where(
+            $query->expr()->andX(
+                $query->expr()->eq('m.type', ':type'),
+                $query->expr()->eq('a.isHistory', 'false'),
+                $query->expr()->eq('m.isHistory', 'false'),
+                $query->expr()->eq('m.isProf', 'false'),
+                $query->expr()->in('m.id', $articles)
+            )
         )
         ->setParameter('type', $type)
-        ->setParameter('academicYear', $academicYear->getId())
         ->orderBy('m.title', 'ASC')
         ->getQuery()
         ->getResult();
@@ -185,14 +173,12 @@ class Article extends EntityRepository
             ->where($query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.title'), ':title'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
                     $query->expr()->eq('m.isProf', 'false'),
-                    $semester != 0 ? $query->expr()->in('m.id', $articles) : '1=1'
+                    $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('title', '%'.strtolower($title).'%')
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
@@ -200,8 +186,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear)
+    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear, $semester = 0)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
@@ -210,13 +198,12 @@ class Article extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.authors'), ':author'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false')
+                    $query->expr()->eq('m.isProf', 'false'),
+                    $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('author', '%'.strtolower($author).'%')
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
@@ -224,8 +211,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear)
+    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear, $semester = 0)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
@@ -234,13 +223,12 @@ class Article extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false')
+                    $query->expr()->eq('m.isProf', 'false'),
+                    $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('publisher', '%'.strtolower($publisher).'%')
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
@@ -260,14 +248,12 @@ class Article extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
                     $query->expr()->eq('m.isProf', 'false'),
-                    $semester != 0 ? $query->expr()->in('m.id', $articles) : '1=1'
+                    $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('barcode', '%'.$barcode.'%')
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
@@ -289,14 +275,12 @@ class Article extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
                     $query->expr()->eq('m.isProf', 'false'),
-                    $semester != 0 ? $query->expr()->in('m.id', $articles) : '1=1'
+                    $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('supplier', '%' . strtolower($supplier) . '%')
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
@@ -304,7 +288,7 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllBySupplierAndAcademicYear(Supplier $supplier, AcademicYear $academicYear)
+    public function findAllBySupplier(Supplier $supplier)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -314,13 +298,11 @@ class Article extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->eq('a.supplier', ':supplier'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
                     $query->expr()->eq('m.isProf', 'false')
                 )
             )
             ->setParameter('supplier', $supplier->getId())
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
@@ -330,6 +312,8 @@ class Article extends EntityRepository
 
     public function findAllByTitleAndAcademicYearTypeAhead($title, AcademicYear $academicYear)
     {
+        $articles = $this->_getArticleIdsBySemester($academicYear);
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
@@ -337,18 +321,17 @@ class Article extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
                     $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->orX(
                         $query->expr()->like($query->expr()->lower('m.title'), ':title'),
                         $query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode')
-                    )
+                    ),
+                    $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('title', '%'.strtolower($title).'%')
             ->setParameter('barcode', strtolower($title).'%')
-            ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
@@ -358,7 +341,19 @@ class Article extends EntityRepository
 
     private function _getArticleIdsBySemester(AcademicYear $academicYear, $semester = 0)
     {
-        if ($semester != 0) {
+        $query = $this->_em->createQueryBuilder();
+        if ($semester == 0) {
+            $resultSet = $query->select('a.id')
+                ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+                ->innerJoin('m.article', 'a')
+                ->innerJoin('m.subject', 's')
+                ->where(
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+                ->setParameter('academicYear', $academicYear->getId())
+                ->getQuery()
+                ->getResult();
+        } else {
             $query = $this->_em->createQueryBuilder();
             $resultSet = $query->select('a.id')
                 ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
@@ -377,39 +372,24 @@ class Article extends EntityRepository
                 ->setParameter('academicYear', $academicYear->getId())
                 ->getQuery()
                 ->getResult();
-
-            $articles = array(0);
-            foreach ($resultSet as $item)
-                $articles[$item['id']] = $item['id'];
-
-            $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('a.id')
-                ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
-                ->innerJoin('m.article', 'a')
-                ->where(
-                    $query->expr()->eq('m.academicYear', ':academicYear')
-                )
-                ->setParameter('academicYear', $academicYear->getId())
-                ->getQuery()
-                ->getResult();
-
-            $noSubject = array(0);
-            foreach ($resultSet as $item)
-                $noSubject[$item['id']] = $item['id'];
-
-            $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('a.id')
-                ->from('CudiBundle\Entity\Article', 'a')
-                ->where(
-                    $query->expr()->notIn('a.id', $noSubject)
-                )
-                ->getQuery()
-                ->getResult();
-
-            foreach ($resultSet as $item)
-                $articles[$item['id']] = $item['id'];
-
-            return $articles;
         }
+
+        $articles = array(0);
+        foreach ($resultSet as $item)
+            $articles[$item['id']] = $item['id'];
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a.id')
+            ->from('CudiBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->eq('a.type', '\'common\'')
+            )
+            ->getQuery()
+            ->getResult();
+
+        foreach ($resultSet as $item)
+            $articles[$item['id']] = $item['id'];
+
+        return $articles;
     }
 }

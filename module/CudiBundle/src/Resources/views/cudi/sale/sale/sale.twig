@@ -11,6 +11,7 @@
                 socketUrl: '{{ socketUrl }}',
                 sessionId: {{ session.getId() }},
                 authKey: '{{ key }}',
+                membershipArticle: {{ membershipArticle.getId() }},
 
                 paydesks: [
                     {% for paydesk in paydesks %}

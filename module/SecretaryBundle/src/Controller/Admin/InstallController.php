@@ -34,9 +34,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'Flag whether the registration module is enabled or not',
                 ),
                 array(
-                    'key'         => 'secretary.membership_price',
-                    'value'       => '1000',
-                    'description' => 'The price for the membership (multiplied by 100)',
+                    'key'         => 'secretary.membership_article',
+                    'value'       => '427',
+                    'description' => 'The article for the membership',
                 ),
                 array(
                     'key'         => 'secretary.terms_and_conditions_nl',

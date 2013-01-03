@@ -14,8 +14,7 @@
 
 namespace CudiBundle\Entity\Sales;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Article as MainArticle,
+use CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sales\Articles\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
     DateTime,
@@ -103,14 +102,6 @@ class Article
     private $canExpire;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the article
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
-     */
-    private $academicYear;
-
-    /**
      * @var integer The version number of this article
      *
      * @ORM\Column(name="version_number", type="smallint", nullable=true)
@@ -155,7 +146,7 @@ class Article
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of the article
      * @param boolean $canExpire Flag whether the aritcle can expire
      */
-    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire, AcademicYear $academicYear)
+    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire)
     {
         $this->setMainArticle($mainArticle)
             ->setBarcode($barcode)
@@ -166,8 +157,7 @@ class Article
             ->setSupplier($supplier)
             ->setCanExpire($canExpire)
             ->setVersionNumber(1)
-            ->setIsHistory(false)
-            ->setAcademicYear($academicYear);
+            ->setIsHistory(false);
         $this->discounts = new ArrayCollection();
         $this->additionalBarcodes = new ArrayCollection();
         $this->timestamp = new DateTime();
@@ -350,25 +340,6 @@ class Article
     public function setCanExpire($canExpire)
     {
         $this->canExpire = $canExpire;
-        return $this;
-    }
-
-    /**
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    public function getAcademicYear()
-    {
-        return $this->academicYear;
-    }
-
-    /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     *
-     * @return \CudiBundle\Entity\Sales\Article
-     */
-    public function setAcademicYear(AcademicYear $academicYear)
-    {
-        $this->academicYear = $academicYear;
         return $this;
     }
 

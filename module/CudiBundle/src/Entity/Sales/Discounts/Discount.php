@@ -256,6 +256,16 @@ class Discount
     }
 
     /**
+     * @return string
+     */
+    public function getRawType()
+    {
+        if (!isset($this->type))
+            return $this->template->getRawType();
+        return $this->type;
+    }
+
+    /**
      * @return \CudiBundle\Entity\Sales\Articl
      */
     public function getArticle()
@@ -285,10 +295,13 @@ class Discount
         switch ($this->getMethod()) {
             case 'percentage':
                 $value = round($price * (10000 - $this->getValue()) / 10000);
+                break;
             case 'fixed':
                 $value = $price - $this->getValue();
+                break;
             case 'override':
                 $value = $this->getValue();
+                break;
         }
 
         if ($this->rounding) {
