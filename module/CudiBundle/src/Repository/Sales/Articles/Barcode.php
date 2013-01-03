@@ -2,9 +2,7 @@
 
 namespace CudiBundle\Repository\Sales\Articles;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Barcode
@@ -14,22 +12,22 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Barcode extends EntityRepository
 {
-    public function findOneByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear)
+    public function findOneByBarcode($barcode)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
-            ->innerJoin('b.article', 'a', Join::WITH,
+            ->innerJoin('b.article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('b.barcode', ':barcode'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear')
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
                 )
             )
-            ->where(
-                $query->expr()->eq('b.barcode', ':barcode')
-            )
             ->setParameter('barcode', $barcode)
-            ->setParameter('academicYear', $academicYear->getId())
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
@@ -40,21 +38,22 @@ class Barcode extends EntityRepository
         return null;
     }
 
-    public function findAllByArticle($article, AcademicYear $academicYear) {
+    public function findAllByArticle($article)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
-            ->innerJoin('b.article', 'a', Join::WITH,
+            ->innerJoin('b.article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('b.article', ':article'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.academicYear', ':academicYear')
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
                 )
             )
-            ->where(
-                $query->expr()->eq('b.article', ':article')
-            )
             ->setParameter('article', $article)
-            ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
 

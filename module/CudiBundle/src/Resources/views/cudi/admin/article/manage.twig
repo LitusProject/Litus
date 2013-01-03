@@ -59,9 +59,9 @@
                         <td>{{ article.getYearPublished() }}</td>
                         <td>{% if article.isInternal() %}Internal{% else %}External{% endif %}</td>
                         <td class="actions">
-                            {% if article.getSaleArticle(currentAcademicYear) is not null and hasAccess('admin_sales_article', 'edit') %}
-                                <a href="{{ url('admin_sales_article', {"action": "edit", "id": article.getSaleArticle(currentAcademicYear).getId()}) }}" class="article">Sale Article</a>
-                            {% elseif article.getSaleArticle(currentAcademicYear) is null and hasAccess('admin_sales_article', 'add') %}
+                            {% if article.getSaleArticle() is not null and hasAccess('admin_sales_article', 'edit') %}
+                                <a href="{{ url('admin_sales_article', {"action": "edit", "id": article.getSaleArticle().getId()}) }}" class="article">Sale Article</a>
+                            {% elseif article.getSaleArticle() is null and hasAccess('admin_sales_article', 'add') %}
                                 <a href="{{ url('admin_sales_article', {"action": "add", "id": article.getId()}) }}" class="article">Sale Article</a>
                             {% endif %}
                             {% if hasAccess('admin_article', 'edit') %}

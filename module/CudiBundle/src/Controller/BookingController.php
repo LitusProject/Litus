@@ -152,7 +152,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($subjectMaps as $subjectMap) {
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
-                    ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
+                    ->findOneByArticle($subjectMap->getArticle());
 
                 if ($article !== null) {
                     $comments = $this->getEntityManager()

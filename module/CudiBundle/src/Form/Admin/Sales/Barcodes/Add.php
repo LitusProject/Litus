@@ -15,7 +15,6 @@
 namespace CudiBundle\Form\Admin\Sales\Barcodes;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Entity\General\AcademicYear as AcademicYear,
     CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager,
@@ -36,21 +35,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
-     */
-    protected $_academicYear;
-
-    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $name = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-        $this->_academicYear = $academicYear;
 
         $field = new Text('barcode');
         $field->setLabel('Barcode')
@@ -94,7 +86,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'useChecksum' => false,
                             ),
                         ),
-                        new UniqueBarcodeValidator($this->_entityManager, $this->_academicYear),
+                        new UniqueBarcodeValidator($this->_entityManager),
                     ),
                 )
             )

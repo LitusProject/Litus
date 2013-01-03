@@ -451,15 +451,13 @@ abstract class Article
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     *
      * @return \CudiBundle\Entity\Sales\Article
      */
-    public function getSaleArticle(AcademicYear $academicYear)
+    public function getSaleArticle()
     {
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findOneByArticleAndAcademicYear($this, $academicYear);
+            ->findOneByArticle($this);
     }
 
     /**
