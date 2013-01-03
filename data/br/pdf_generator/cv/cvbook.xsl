@@ -9,15 +9,18 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
 >
 
-    <xsl:import href="cv.xsl"/>
+    <xsl:import href="config.xsl"/>
+    <xsl:import href="cvgroup.xsl"/>
+    <xsl:import href="toc.xsl"/>
+    <xsl:import href="index.xsl"/>
 
     <xsl:output method="xml" indent="yes"/>
 
     <xsl:template match="cvbook">
-        <fo:root font-size="10pt" line-height="1.4" font-family="Helvetica" text-align="justify">
+        <fo:root font-size="{$font-size}pt" line-height="{$line-height}" font-family="Helvetica" text-align="justify">
             <fo:layout-master-set>
-                <fo:simple-page-master master-name="page-master" page-height="297mm" page-width="210mm" margin-top="8mm" margin-bottom="10mm" margin-left="13mm" margin-right="13mm">
-                    <fo:region-body margin-bottom="8mm"/>
+                <fo:simple-page-master master-name="page-master" page-height="{$page-height}mm" page-width="{$page-width}mm" margin-top="{$margin-y}mm" margin-bottom="{$margin-y}mm" margin-left="{$margin-x}mm" margin-right="{$margin-x}mm">
+                    <fo:region-body/>
                 </fo:simple-page-master>
 
                 <fo:page-sequence-master master-name="document">
@@ -33,11 +36,12 @@
             <fo:page-sequence master-reference="document">
                 <fo:flow flow-name="xsl-region-body">
 
-                    <fo:block margin-left="20px" margin-right="20px">
-                        <fo:block text-align="left">
-                            <xsl:apply-templates/>
-                        </fo:block>
-                    </fo:block>
+                    <xsl:call-template name="toc"/>
+
+                    <xsl:apply-templates/>
+
+                    <xsl:call-template name="index"/>
+
                 </fo:flow>
             </fo:page-sequence>
         </fo:root>
