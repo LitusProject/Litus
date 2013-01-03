@@ -22,6 +22,11 @@
                 <xsl:value-of select="@name"/>
             </xsl:attribute>
 
+            <!-- Set a marker: change the footer text to the group's name -->
+            <fo:marker marker-class-name="footer-text">
+                <xsl:value-of select="@name"/>
+            </fo:marker>
+
             <!-- Terribly complex construct to vertically center something -->
             <fo:table table-layout="fixed" width="100%">
                 <fo:table-column column-width="proportional-column-width(1)"/>

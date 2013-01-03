@@ -14,6 +14,12 @@
     <!-- The table of contents -->
     <xsl:template name="toc">
         <fo:block break-before="page">
+
+            <!-- Set a marker: change the footer text -->
+            <fo:marker marker-class-name="footer-text">
+                Inhoudstafel
+            </fo:marker>
+
             <xsl:for-each select="/cvbook/cvgroup">
                 <fo:block>
                     <xsl:value-of select="@name"/> -
