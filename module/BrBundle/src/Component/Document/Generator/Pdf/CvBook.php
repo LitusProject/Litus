@@ -67,23 +67,38 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $data = Util::getGrouped($this->_entityManager, $this->_year);
 
         // Process each cv
-        $cvs = array();
+        $groups = array();
         foreach ($data as $studyData) {
-            foreach ($studyData['entries'] as $entry) {
-                $cvs[] = $this->_generateCv($entry);
-            }
+            $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
         }
 
         $xml->append(
             new Object(
                 'cvbook',
                 null,
-                $cvs
+                $groups
             )
         );
     }
 
-    private function _generateCv(Entry $cv) {
+    private function _generateGroup($groupName, $entries)
+    {
+        $cvs = array();
+        foreach ($entries as $entry) {
+            $cvs[] = $this->_generateCv($entry);
+        }
+
+        return new Object(
+            'cvgroup',
+            array(
+                'name' => $groupName,
+            ),
+            $cvs
+        );
+    }
+
+    private function _generateCv(Entry $cv)
+    {
 
         $picturePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -194,7 +209,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => 'Languages',
+                'title' => 'Talen',
             ),
             array(
                 new Object(
@@ -205,7 +220,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => 'Additional Info',
+                        'title' => 'Bijkomende Informatie',
                     ),
                     array(
                         new Object(
@@ -222,13 +237,13 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => 'Capabilities',
+                'title' => 'Vaardigheden',
             ),
             array(
                 new Object(
                     'subsection',
                     array(
-                        'title' => 'Computer Skills',
+                        'title' => 'Computervaardigheden',
                     ),
                     new Object(
                         'content',
@@ -239,7 +254,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => 'Experiences',
+                        'title' => 'Ervaringen',
                     ),
                     new Object(
                         'content',
@@ -269,13 +284,13 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => 'Career',
+                'title' => 'Carrière',
             ),
             array(
                 new Object(
                     'subsection',
                     array(
-                        'title' => 'Future Interest',
+                        'title' => 'Toekomstige Interesse',
                     ),
                     new Object(
                         'content',
@@ -286,7 +301,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => 'Mobility in Europe',
+                        'title' => 'Mobiliteit in Europa',
                     ),
                     new Object(
                         'content',
@@ -297,7 +312,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => 'Mobility in the World',
+                        'title' => 'Mobiliteit in de Wereld',
                     ),
                     new Object(
                         'content',
@@ -308,7 +323,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => 'Career Expectations',
+                        'title' => 'Carrièreverwachtingen',
                     ),
                     new Object(
                         'content',
@@ -323,7 +338,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => 'Personal',
+                'title' => 'Persoonlijk',
             ),
             array(
                 new Object(
@@ -340,7 +355,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => 'About Myself',
+                        'title' => 'Over Mijzelf',
                     ),
                     new Object(
                         'content',

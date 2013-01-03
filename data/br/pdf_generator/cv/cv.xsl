@@ -9,8 +9,15 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
 >
 
+    <xsl:import href="config.xsl"/>
+
     <xsl:template match="cv">
         <fo:block break-before="page">
+
+            <xsl:attribute name="id">
+                <xsl:value-of select="@id"/>
+            </xsl:attribute>
+
             <xsl:call-template name="basicinfo"/>
         </fo:block>
 
@@ -21,14 +28,14 @@
 
     <xsl:template name="basicinfo">
 
-        <fo:table margin-left="-3.5mm">
+        <fo:table>
 
             <fo:table-column column-width="65mm"/>
             <fo:table-column column-width="70mm"/>
             <fo:table-column column-width="25mm"/>
 
             <fo:table-body>
-                <fo:table-row>
+                <fo:table-row height="0.75*{$picture-width}mm">
                     <fo:table-cell>
                         <!-- First column of the basic info (name, email, phone) -->
                         <fo:block>
@@ -87,7 +94,7 @@
 
     <!-- The picture column -->
     <xsl:template name="picture">
-        <fo:external-graphic content-width="25mm">
+        <fo:external-graphic content-width="{$picture-width}mm">
             <xsl:attribute name="src">
                 <xsl:value-of select="@img"/>
             </xsl:attribute>
@@ -98,7 +105,7 @@
     <xsl:template match="sec-special-studies">
         <fo:block>
 
-            <fo:table margin-left="-3mm" margin-right="0mm">
+            <fo:table margin-right="0mm">
 
                 <fo:table-column column-width="115mm"/>
                 <fo:table-column column-width="35mm"/>
@@ -133,7 +140,7 @@
         <fo:block>
 
             <!-- Move the table header to the title height (line height * font size) -->
-            <fo:table margin-left="-3mm" margin-top="-1.5*10pt">
+            <fo:table margin-top="-{$line-height}*{$font-size}pt">
 
                 <fo:table-column column-width="80mm"/>
                 <fo:table-column column-width="50mm"/>
@@ -183,11 +190,11 @@
     </xsl:template>
 
     <xsl:template match="cv/section">
-        <fo:block margin-top="2mm">
+        <fo:block margin-top="{$section-top}mm">
             <!-- Section title -->
             <fo:inline font-weight="bold"><xsl:value-of select="@title"/></fo:inline>
 
-            <fo:block margin-left="2mm">
+            <fo:block margin-left="{$section-content-left}mm">
                 <!-- Special subsections -->
                 <xsl:apply-templates select="*[starts-with(name(), 'sec-special-')]"/>
 
@@ -204,7 +211,7 @@
     <!-- A generic subsection -->
     <xsl:template match="subsection">
 
-            <fo:block margin-top="1mm">
+            <fo:block margin-top="{$subsection-top}mm">
                 <!-- Subsection title -->
                 <fo:inline font-style="italic"><xsl:value-of select="@title"/></fo:inline>
 
