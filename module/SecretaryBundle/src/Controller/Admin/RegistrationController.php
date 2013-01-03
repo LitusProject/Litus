@@ -141,6 +141,37 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 $registration->setPayed($formData['payed']);
 
+                $membershipArticle = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findOneById($this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('secretary.membership_article')
+                    );
+
+                if ($registration->hasPayed()) {
+                    $booking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                            $membershipArticle,
+                            $registration->getAcademic()
+                        );
+
+                    if (null === $booking) {
+                        $booking = new Booking(
+                            $this->getEntityManager(),
+                            $registration->getAcademic(),
+                            $membershipArticle,
+                            'assigned',
+                            1,
+                            true
+                        );
+
+                        $this->getEntityManager()->persist($booking);
+                    }
+
+                    $booking->setStatus('sold', $this->getEntityManager());
+                }
+
                 if (null === $metaData) {
                     $metaData = new MetaData(
                         $registration->getAcademic(),

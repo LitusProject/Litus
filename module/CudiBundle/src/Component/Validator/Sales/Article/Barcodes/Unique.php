@@ -14,8 +14,7 @@
 
 namespace CudiBundle\Component\Validator\Sales\Article\Barcodes;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given article barcode against the database to check whether it is unique or not.
@@ -30,11 +29,6 @@ class Unique extends \Zend\Validator\AbstractValidator
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-
-    /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academicyear instance
-     */
-    private $_academicYear = null;
 
     /**
      * @var mixed The ids to be ignored
@@ -54,16 +48,14 @@ class Unique extends \Zend\Validator\AbstractValidator
      * Create a new Unique Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param mixed $ignoreIds The ids to be ignored
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $ignoreIds = array(), $opts = null)
+    public function __construct(EntityManager $entityManager, $ignoreIds = array(), $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_academicYear = $academicYear;
         $this->_ignoreIds = $ignoreIds;
     }
 
@@ -87,7 +79,7 @@ class Unique extends \Zend\Validator\AbstractValidator
 
         $article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findOneByBarcodeAndAcademicYear($value, $this->_academicYear);
+            ->findOneByBarcode($value);
 
         if (!(null === $article || in_array($article->getId(), $this->_ignoreIds))) {
             $this->error(self::NOT_VALID);
@@ -96,7 +88,7 @@ class Unique extends \Zend\Validator\AbstractValidator
 
         $barcode = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
-            ->findOneByBarcodeAndAcademicYear($value, $this->_academicYear);
+            ->findOneByBarcode($value);
 
         if (null === $barcode)
             return true;

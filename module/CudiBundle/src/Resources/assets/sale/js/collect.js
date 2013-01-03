@@ -6,6 +6,8 @@
         tConclude: 'Finish',
         tCancel: 'Cancel',
 
+        membershipArticle: 0,
+
         saveComment: function (id, comment) {},
         showQueue: function () {},
         finish: function (id, articles) {},

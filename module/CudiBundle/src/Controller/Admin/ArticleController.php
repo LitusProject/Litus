@@ -241,7 +241,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findOneByArticleAndAcademicYear($article, $this->getAcademicYear());
+            ->findOneByArticle($article);
 
         $comments = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')

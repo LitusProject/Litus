@@ -69,6 +69,15 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * @param \CommonBundle\Component\WebSocket\User $user
+     */
+    public function setUser(User $user)
+    {
+        $this->_user = $user;
+        return $this;
+    }
+
+    /**
      * @return \CommonBundle\Component\WebSocket\User
      */
     public function getUser()
@@ -142,7 +151,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                         'id' => $item->getPerson()->getId(),
                         'name' => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
-                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'member' => false,// $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
                     ),
                     'articles' => $this->_getArticles(),
                 )
@@ -251,7 +260,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             );
             $this->_entityManager->persist($saleItem);
             $saleItems[] = $saleItem;
-            
+
             $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $soldArticle['number']);
         }
 
@@ -285,7 +294,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $result = array(
                     'id' => $booking->getId(),
                     'articleId' => $booking->getArticle()->getId(),
-                    'price' => $booking->getArticle()->getSellPrice(),
+                    'price' => (int) $booking->getArticle()->getSellPrice(),
                     'title' => $booking->getArticle()->getMainArticle()->getTitle(),
                     'barcode' => $booking->getArticle()->getBarcode(),
                     'barcodes' => $barcodes,
@@ -297,7 +306,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
 
                 foreach($booking->getArticle()->getDiscounts() as $discount)
-                    $result['discounts'][] = array('type' => $discount->getType(), 'value' => $discount->apply($booking->getArticle()->getSellPrice()));
+                    $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($booking->getArticle()->getSellPrice()));
 
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()] = $result;
             }
@@ -328,7 +337,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
 
                 foreach($article->getDiscounts() as $discount)
-                    $result['discounts'][] = array('type' => $discount->getType(), 'value' => $discount->apply($article->getSellPrice()));
+                    $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($article->getSellPrice()));
                 $results['assigned_' . $article->getId()] = $result;
             }
         }

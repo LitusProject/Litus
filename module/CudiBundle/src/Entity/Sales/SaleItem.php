@@ -113,6 +113,17 @@ class SaleItem
     }
 
     /**
+     * @param \DateTime $timestamp
+     *
+     * @return \CudiBundle\Entity\Sales\Booking
+     */
+    public function setTimestamp(DateTime $timestamp)
+    {
+        $this->timestamp = $timestamp;
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getTimestamp()
