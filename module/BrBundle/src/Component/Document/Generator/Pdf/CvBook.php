@@ -72,10 +72,16 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
         }
 
+        $logoPath = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('union_logo');
+
         $xml->append(
             new Object(
                 'cvbook',
-                null,
+                array(
+                    'logo' => $logoPath,
+                ),
                 $groups
             )
         );

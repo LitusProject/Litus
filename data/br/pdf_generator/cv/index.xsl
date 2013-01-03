@@ -14,6 +14,12 @@
     <!-- The table of contents -->
     <xsl:template name="index">
         <fo:block break-before="page">
+
+            <!-- Set a marker: change the footer text -->
+            <fo:marker marker-class-name="footer-text">
+                Alfabetische Index
+            </fo:marker>
+
             <xsl:for-each select="/cvbook/cvgroup/cv">
 
                 <xsl:sort select="@lastname"/>
