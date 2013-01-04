@@ -64,17 +64,11 @@
                         <td>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</td>
                         <td>{{ article.getStockValue() }}</td>
                         <td class="actions">
-                            {% if activeAcademicYear.getId() == currentAcademicYear.getId() %}
-                                {% if hasAccess('admin_sales_article', 'edit') %}
-                                    <a href="{{ url('admin_sales_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
-                                {% endif %}
-                                {% if hasAccess('admin_sales_article', 'delete') %}
-                                    <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getMainArticle().getTitle() }}" data-authors="{{ article.getMainArticle().getAuthors() }}">Delete</a>
-                                {% endif %}
-                            {% else %}
-                                {% if hasAccess('admin_sales_article', 'activate') %}
-                                    <a href="{{ url('admin_sales_article', {"action": "activate", "id": article.getId()}) }}" class="edit">Activate</a>
-                                {% endif %}
+                            {% if hasAccess('admin_sales_article', 'edit') %}
+                                <a href="{{ url('admin_sales_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('admin_sales_article', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getMainArticle().getTitle() }}" data-authors="{{ article.getMainArticle().getAuthors() }}">Delete</a>
                             {% endif %}
                         </td>
                     </tr>

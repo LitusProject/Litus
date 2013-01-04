@@ -16,7 +16,6 @@ namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Form\Admin\Sales\Article\Activate as ActivateForm,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
     CudiBundle\Entity\Log\Sales\ProfVersion as ProfVersionLog,
@@ -228,70 +227,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             array(
                 'form' => $form,
                 'article' => $saleArticle,
-                'precalculatedSellPrice' => $precalculatedSellPrice,
-                'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
-            )
-        );
-    }
-
-    public function activateAction()
-    {
-        if (!($saleArticle = $this->_getSaleArticle()))
-            return new ViewModel();
-
-        $form = new ActivateForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
-
-        $precalculatedSellPrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculateSellPrice($this->getEntityManager()) : 0;
-        $precalculatedPurchasePrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculatePurchasePrice($this->getEntityManager()) : 0;
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $new = $saleArticle->duplicate();
-
-                $supplier = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Supplier')
-                    ->findOneById($formData['supplier']);
-
-                $new->setBarcode($formData['barcode'])
-                    ->setPurchasePrice($formData['purchase_price'])
-                    ->setSellPrice($formData['sell_price'])
-                    ->setIsBookable($formData['bookable'])
-                    ->setIsUnbookable($formData['unbookable'])
-                    ->setSupplier($supplier)
-                    ->setCanExpire($formData['can_expire'])
-                    ->setAcademicYear($this->getCurrentAcademicYear());
-
-                $this->getEntityManager()->persist($new);
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The sale article was successfully activated for this academic year!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'admin_sales_article',
-                    array(
-                        'action' => 'manage'
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-                'article' => $saleArticle->getMainArticle(),
                 'precalculatedSellPrice' => $precalculatedSellPrice,
                 'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
             )
