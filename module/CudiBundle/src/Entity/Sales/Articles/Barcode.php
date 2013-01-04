@@ -19,7 +19,7 @@ use CudiBundle\Entity\Sales\Article as Article,
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Articles\Barcode")
- * @ORM\Table(name="cudi.sales_articles_barocodes")
+ * @ORM\Table(name="cudi.sales_articles_barcodes")
  */
 class Barcode
 {
@@ -48,13 +48,22 @@ class Barcode
     private $article;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article The article of the discount
-     * @param integer $barcode  The barcode of the article
+     * @var boolean Flag whether this is the main barcode
+     *
+     * @ORM\Column(type="boolean", nullable=true)
      */
-    public function __construct(Article $article, $barcode)
+    private $main;
+
+    /**
+     * @param \CudiBundle\Entity\Sales\Article The article of the discount
+     * @param integer $barcode The barcode of the article
+     * @param boolean $main Flag whether this is the main barcode
+     */
+    public function __construct(Article $article, $barcode, $main = false)
     {
         $this->article = $article;
         $this->barcode = $barcode;
+        $this->main = $main;
     }
 
     /**
@@ -90,5 +99,13 @@ class Barcode
     public function getArticle()
     {
         return $this->article;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMain()
+    {
+        return $this->main;
     }
 }
