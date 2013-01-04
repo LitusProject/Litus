@@ -33,14 +33,16 @@
         <table class="full_width manage" id="articleBarcodes">
             <tr>
                 <th>Barcode</th>
+                <th width="150px">Main</th>
                 <th width="100px">Actions</th>
             </tr>
 
             {% for barcode in barcodes %}
                 <tr class="item item-{{ barcode.getId() }}">
                     <td>{{ barcode.getBarcode() }}</td>
+                    <td>{% if barcode.isMain() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_sales_barcode', 'delete') %}
+                        {% if hasAccess('admin_sales_barcode', 'delete') and not barcode.isMain() %}
                             <a href="#" class="delete" data-id="{{ barcode.getId() }}" data-barcode="{{ barcode.getBarcode() }}">Delete</a>
                         {% endif %}
                     </td>

@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Component\Validator\Sales\Article\Barcodes;
 
-use Doctrine\ORM\EntityManager;
+use CudiBundle\Entity\Sales\Article,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given article barcode against the database to check whether it is unique or not.
@@ -31,9 +32,9 @@ class Unique extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var mixed The ids to be ignored
+     * @var \CudiBundle\Entity\Sales\Article The sale article to be ignored
      */
-    private $_ignoreIds = array();
+    private $_saleArticle = array();
 
     /**
      * Error messages
@@ -48,15 +49,15 @@ class Unique extends \Zend\Validator\AbstractValidator
      * Create a new Unique Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $ignoreIds The ids to be ignored
+     * @param \CudiBundle\Entity\Sales\Article $saleArticle The sale article to be ignored
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, $ignoreIds = array(), $opts = null)
+    public function __construct(EntityManager $entityManager, Article $saleArticle = null, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_ignoreIds = $ignoreIds;
+        $this->_saleArticle = $saleArticle;
     }
 
 
@@ -77,20 +78,20 @@ class Unique extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $article = $this->_entityManager
+        /*$article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByBarcode($value);
 
-        if (!(null === $article || in_array($article->getId(), $this->_ignoreIds))) {
+        if (!(null === $article || $article == $this->_saleArticle)) {
             $this->error(self::NOT_VALID);
             return false;
-        }
+        }*/
 
         $barcode = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
             ->findOneByBarcode($value);
 
-        if (null === $barcode)
+        if (null === $barcode || $barcode->getArticle() == $this->_saleArticle)
             return true;
 
         $this->error(self::NOT_VALID);

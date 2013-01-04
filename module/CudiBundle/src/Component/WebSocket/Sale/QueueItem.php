@@ -282,8 +282,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
         $results = array();
         $bookedArticles = array();
         foreach($bookings as $booking) {
-            $barcodes = array($booking->getArticle()->getBarcode());
-            foreach($booking->getArticle()->getAdditionalBarcodes() as $barcode)
+            $barcodes = array();
+            foreach($booking->getArticle()->getBarcodes() as $barcode)
                 $barcodes[] = $barcode->getBarcode();
 
             $bookedArticles[] = $booking->getArticle()->getId();
@@ -318,8 +318,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($id);
 
-                $barcodes = array($article->getBarcode());
-                foreach($article->getAdditionalBarcodes() as $barcode)
+                $barcodes = array();
+                foreach($article->getBarcodes() as $barcode)
                     $barcodes[] = $barcode->getBarcode();
 
                 $result = array(

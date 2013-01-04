@@ -164,7 +164,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($saleArticle = $this->_getSaleArticle()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
+        $form = new EditForm($this->getEntityManager(), $saleArticle);
 
         $precalculatedSellPrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculateSellPrice($this->getEntityManager()) : 0;
         $precalculatedPurchasePrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculatePurchasePrice($this->getEntityManager()) : 0;

@@ -358,8 +358,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
-        $barcodes = array($article->getBarcode());
-        foreach($article->getAdditionalBarcodes() as $barcode)
+        $barcodes = array();
+        foreach($article->getBarcodes() as $barcode)
             $barcodes[] = $barcode->getBarcode();
 
         $result = array(
