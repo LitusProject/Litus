@@ -102,6 +102,13 @@ class Article
     private $versionNumber;
 
     /**
+     * @var integer The barcode of the article
+     *
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $barcode;
+
+    /**
      * @var integer The current number in stock
      *
      * @ORM\Column(name="stock_value", type="bigint")
