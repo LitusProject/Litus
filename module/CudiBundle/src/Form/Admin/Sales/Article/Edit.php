@@ -15,7 +15,6 @@
 namespace CudiBundle\Form\Admin\Sales\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Entity\General\AcademicYear as AcademicYear,
     CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager,
@@ -37,13 +36,12 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \CudiBundle\Entity\Sales\Article $article
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Article $article, $name = null)
+    public function __construct(EntityManager $entityManager, Article $article, $name = null)
     {
-        parent::__construct($entityManager, $academicYear, $name);
+        parent::__construct($entityManager, $name);
 
         $this->_article = $article;
 
@@ -79,7 +77,7 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
                                 'useChecksum' => false,
                             ),
                         ),
-                        new UniqueBarcodeValidator($this->_entityManager, $this->_academicYear, array($this->_article->getId())),
+                        new UniqueBarcodeValidator($this->_entityManager, $this->_article),
                     ),
                 )
             )

@@ -42,7 +42,7 @@ class Barcode
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the discount
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article", inversedBy="barcodes")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
@@ -50,7 +50,7 @@ class Barcode
     /**
      * @var boolean Flag whether this is the main barcode
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
     private $main;
 
@@ -85,7 +85,7 @@ class Barcode
     /**
      * @param integer $barcode
      *
-     * @return \CudiBundle\Entity\Article
+     * @return \CudiBundle\Entity\Sales\Articles\Barcode
      */
     public function setBarcode($barcode)
     {
@@ -94,7 +94,7 @@ class Barcode
     }
 
     /**
-     * @return \CudiBundle\Entity\Sales\Articl
+     * @return \CudiBundle\Entity\Sales\Articles\Barcode
      */
     public function getArticle()
     {
@@ -107,5 +107,16 @@ class Barcode
     public function isMain()
     {
         return $this->main;
+    }
+
+    /**
+     * @param boolean $main
+     *
+     * @return \CudiBundle\Entity\Sales\Articles\Barcode
+     */
+    public function setIsMain($main)
+    {
+        $this->main = $main;
+        return $this;
     }
 }
