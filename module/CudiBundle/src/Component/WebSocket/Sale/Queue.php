@@ -344,6 +344,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
         $article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByBarcode($barcode);
@@ -358,8 +362,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
-        $barcodes = array($article->getBarcode());
-        foreach($article->getAdditionalBarcodes() as $barcode)
+        $barcodes = array();
+        foreach($article->getBarcodes() as $barcode)
             $barcodes[] = $barcode->getBarcode();
 
         $result = array(
@@ -376,8 +380,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             'discounts' => array(),
         );
 
-        foreach($article->getDiscounts() as $discount)
-            $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($article->getSellPrice()));
+        foreach($article->getDiscounts() as $discount) {
+            if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager))
+                $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($article->getSellPrice()));
+        }
 
         return json_encode(
             array(

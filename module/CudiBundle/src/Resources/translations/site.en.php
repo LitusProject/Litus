@@ -47,4 +47,8 @@ return array(
 
     'New bookings have been assigned to you, and you can go and collect them.' => 'New bookings have been assigned to you, and you can go and collect them.',
     'View Bookings' => 'View Bookings',
+
+    'Discounts' => 'Discounts',
+    'Member' => 'Member',
+    'Acco' => 'Acco',
 );

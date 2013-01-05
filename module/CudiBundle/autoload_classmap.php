@@ -88,6 +88,7 @@ return array(
     'CudiBundle\Entity\Stock\Periods\Values\Start'                  => __DIR__ . '/src/Entity/Stock/Periods/Values/Start.php',
     'CudiBundle\Entity\Stock\Retour'                                => __DIR__ . '/src/Entity/Stock/Retour.php',
     'CudiBundle\Entity\Supplier'                                    => __DIR__ . '/src/Entity/Supplier.php',
+    'CudiBundle\Entity\Users\People\Sale\Acco'                      => __DIR__ . '/src/Entity/Users/People/Sale/Acco.php',
     'CudiBundle\Entity\Users\People\Supplier'                       => __DIR__ . '/src/Entity/Users/People/Supplier.php',
     'CudiBundle\Form\Admin\Article\Add'                             => __DIR__ . '/src/Form/Admin/Article/Add.php',
     'CudiBundle\Form\Admin\Article\Comment\Add'                     => __DIR__ . '/src/Form/Admin/Article/Comment/Add.php',
@@ -99,7 +100,6 @@ return array(
     'CudiBundle\Form\Admin\Mail\Send'                               => __DIR__ . '/src/Form/Admin/Mail/Send.php',
     'CudiBundle\Form\Admin\Prof\Article\Confirm'                    => __DIR__ . '/src/Form/Admin/Prof/Article/Confirm.php',
     'CudiBundle\Form\Admin\Prof\File\Confirm'                       => __DIR__ . '/src/Form/Admin/Prof/File/Confirm.php',
-    'CudiBundle\Form\Admin\Sales\Article\Activate'                  => __DIR__ . '/src/Form/Admin/Sales/Article/Activate.php',
     'CudiBundle\Form\Admin\Sales\Article\Add'                       => __DIR__ . '/src/Form/Admin/Sales/Article/Add.php',
     'CudiBundle\Form\Admin\Sales\Article\Edit'                      => __DIR__ . '/src/Form/Admin/Sales/Article/Edit.php',
     'CudiBundle\Form\Admin\Sales\Barcodes\Add'                      => __DIR__ . '/src/Form/Admin/Sales/Barcodes/Add.php',
@@ -167,5 +167,6 @@ return array(
     'CudiBundle\Repository\Stock\Periods\Values\Start'              => __DIR__ . '/src/Repository/Stock/Periods/Values/Start.php',
     'CudiBundle\Repository\Stock\Retour'                            => __DIR__ . '/src/Repository/Stock/Retour.php',
     'CudiBundle\Repository\Supplier'                                => __DIR__ . '/src/Repository/Supplier.php',
+    'CudiBundle\Repository\Users\People\Sale\Acco'                  => __DIR__ . '/src/Repository/Users/People/Sale/Acco.php',
     'CudiBundle\Repository\Users\People\Supplier'                   => __DIR__ . '/src/Repository/Users/People/Supplier.php',
 );

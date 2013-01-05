@@ -40,7 +40,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $article->addAdditionalBarcode(new Barcode($article, $formData['barcode']));
+                $article->addBarcode(new Barcode($article, $formData['barcode']));
 
                 $this->getEntityManager()->flush();
 
@@ -81,7 +81,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($barcode = $this->_getBarcode()))
+        if (!($barcode = $this->_getBarcode()) || $barcode->isMain())
             return new ViewModel();
 
         $this->getEntityManager()->remove($barcode);

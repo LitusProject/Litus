@@ -14,7 +14,9 @@
 
 namespace CudiBundle\Entity\Sales\Discounts;
 
-use CudiBundle\Entity\Sales\Article as Article,
+use CommonBundle\Entity\Users\Person,
+    CudiBundle\Entity\Sales\Article as Article,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -64,9 +66,16 @@ class Discount
     /**
      * @var string The type of rounding
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $rounding;
+
+    /**
+     * @var boolean Apply the discount only once
+     *
+     * @ORM\Column(name="apply_once", type="boolean", nullable=true)
+     */
+    private $applyOnce;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the discount
@@ -159,14 +168,15 @@ class Discount
     /**
      * @throws \InvalidArgumentException
      *
-     * @param integer The value of the discount
-     * @param string The method of the discount
-     * @param string The type of the discount
-     * @param string The type of the rounding
+     * @param integer $value The value of the discount
+     * @param string $method The method of the discount
+     * @param string $type The type of the discount
+     * @param string $rounding The type of the rounding
+     * @param boolean $applyOnce Apply the discount only once
      *
      * @return \CudiBundle\Entity\Sales\Discounts\Discount
      */
-    public function setDiscount($value, $method, $type, $rounding)
+    public function setDiscount($value, $method, $type, $rounding, $applyOnce)
     {
         if (!self::isValidDiscountType($type))
             throw new \InvalidArgumentException('The discount type is not valid.');
@@ -182,6 +192,7 @@ class Discount
         $this->method = $method;
         $this->type = $type;
         $this->rounding = $rounding;
+        $this->applyOnce = $applyOnce;
         return $this;
     }
 
@@ -230,7 +241,7 @@ class Discount
      */
     public function getValue()
     {
-        if (!isset($this->value))
+        if (!isset($this->value) && isset($this->template))
             return $this->template->getValue();
         return $this->value;
     }
@@ -240,7 +251,7 @@ class Discount
      */
     public function getMethod()
     {
-        if (!isset($this->method))
+        if (!isset($this->method) && isset($this->template))
             return $this->template->getMethod();
         return $this->method;
     }
@@ -250,7 +261,7 @@ class Discount
      */
     public function getType()
     {
-        if (!isset($this->type))
+        if (!isset($this->type) && isset($this->template))
             return $this->template->getType();
         return self::$POSSIBLE_TYPES[$this->type];
     }
@@ -260,7 +271,7 @@ class Discount
      */
     public function getRawType()
     {
-        if (!isset($this->type))
+        if (!isset($this->type) && isset($this->template))
             return $this->template->getRawType();
         return $this->type;
     }
@@ -282,6 +293,16 @@ class Discount
             return $this->template->getRounding();
         else if (isset($this->rounding))
             return self::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];
+    }
+
+    /**
+     * @return boolean
+     */
+    public function applyOnce()
+    {
+        if (!isset($this->applyOnce) && isset($this->template))
+            return $this->template->applyOnce();
+        return $this->applyOnce;
     }
 
     /**
@@ -315,5 +336,11 @@ class Discount
         }
 
         return $value;
+    }
+
+    public function alreadyApplied(Article $article, Person $person, EntityManager $entityManager)
+    {
+        return $entityManager->getRepository('CudiBundle\Entity\Sales\SaleItem')
+            ->findOneByArticleAndPersonAndDiscountType($article, $person, $this->getRawType()) != null;
     }
 }

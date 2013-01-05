@@ -32,9 +32,19 @@
                         <tr class="item item-{{ booking.getId() }} {% if 'assigned' == booking.getStatus() %} succes {% endif %}">
                             <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
                             <td class="hidden-phone">{{ booking.getArticle().getMainArticle().getAuthors() }}</td>
-                            <td>&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</td>
+                            <td>
+                                {% if booking.getArticle().getDiscounts()|length > 0 %}
+                                    <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
+                                    {% for discount in booking.getArticle().getDiscounts() %}
+                                        <span class='badge badge-info'>{{ translate(discount.getType()) }}</span> &euro; {{ (discount.apply(booking.getArticle().getSellPrice())/100)|number_format(2) }}<br/>
+                                    {% endfor %}
+                                " data-placement="right" style="cursor: pointer">&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</span>
+                                {% else %}
+                                    <span>&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</span>
+                                {% endif %}
+                            </td>
                             <td>{{ booking.getNumber() }}</td>
-                            <td class="hidden-phone">{{ dateLocalized(booking.getExpirationDate(), 'E dd/MM/y') }}</td>
+                            <td class="hidden-phone">{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</td>
                             <td class="hidden-phone">{{ translate(booking.getStatus()) }}</td>
                             <td class="visible-phone">{% if booking.getStatus() == 'assigned' %}&times;{% endif %}</td>
                             <td class="hidden-phone">
@@ -84,6 +94,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover'});
             $('.item .cancel').click(openModal);
         });
 

@@ -28,7 +28,7 @@
                            <a href="#" class="view comments" data-text="{{ item.getComment() }}">Comment</a>
                         {% endif %}
                         {% if item.getStatus() == 'sold' %}
-                            <a href="#" class="view saleItems" data-name="{{ item.getPerson().getFullName() }}" data-items='[{% for saleItem in item.getSaleItems() %}{"article": "{{ saleItem.getArticle().getMainArticle().getTitle()}}", "number": "{{ saleItem.getNumber() }}", "soldPrice": "{{ (saleItem.getPrice()/100)|number_format(2) }}", "sellPrice": "{{ (saleItem.getArticle().getSellPrice()/100)|number_format(2)}}" },{% endfor %}{}]'>Items</a>
+                            <a href="#" class="view saleItems" data-name="{{ item.getPerson().getFullName() }}" data-items='[{% for saleItem in item.getSaleItems() %}{"article": "{{ saleItem.getArticle().getMainArticle().getTitle()}}", "number": "{{ saleItem.getNumber() }}", "soldPrice": "{{ (saleItem.getPrice()/100)|number_format(2) }}", "sellPrice": "{{ (saleItem.getArticle().getSellPrice()/100)|number_format(2)}}", "discountType": "{{ saleItem.getDiscountType() }}" },{% endfor %}{}]'>Items</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -64,6 +64,7 @@
                         <th width="60px">Number</th>
                         <th width="80px">Sold Price</th>
                         <th width="80px">Sell Price</th>
+                        <th width="80px">Discount</th>
                     </tr>
                 </thead>
                 <tbody class="items"></tbody>
@@ -107,11 +108,11 @@
                         $('<td>').html(this.article),
                         $('<td>').html(this.number),
                         $('<td>').html('&euro; ' + this.soldPrice),
-                        $('<td>').html('&euro; ' + this.sellPrice)
+                        $('<td>').html('&euro; ' + this.sellPrice),
+                        $('<td>').html(this.discountType)
                     )
                 );
             });
-            //viewItems.find('.items')
             viewItems.modal();
         }
     </script>
