@@ -20,22 +20,49 @@
                 Alfabetische Index
             </fo:marker>
 
-            <xsl:for-each select="/cvbook/cvgroup/cv">
+            <!-- Title -->
+            <fo:block
+                line-height="{$title-line-height}"
+                font-size="{$title-font-size}pt">
 
-                <xsl:sort select="@lastname"/>
-                <xsl:sort select="@firstname"/>
+                Alfabetische Index
 
-                <fo:block>
-                    <xsl:value-of select="@firstname"/><xsl:text> </xsl:text><xsl:value-of select="@lastname"/> -
+            </fo:block>
 
-                    <fo:page-number-citation>
-                        <xsl:attribute name="ref-id">
-                            <xsl:value-of select="@id"/>
-                        </xsl:attribute>
-                    </fo:page-number-citation>
+            <fo:table table-layout="fixed" width="100%">
+                <fo:table-column column-width="80%"/>
+                <fo:table-column column-width="20%"/>
 
-                </fo:block>
-            </xsl:for-each>
+                <fo:table-body>
+
+                    <xsl:for-each select="/cvbook/cvgroup/cv">
+
+                        <xsl:sort select="@lastname"/>
+                        <xsl:sort select="@firstname"/>
+
+                        <fo:table-row>
+                            <fo:table-cell>
+
+                                <fo:block>
+                                    <xsl:value-of select="@firstname"/><xsl:text> </xsl:text><xsl:value-of select="@lastname"/>
+                                </fo:block>
+
+                            </fo:table-cell>
+
+                            <fo:table-cell>
+                                <fo:block>
+                                    <fo:page-number-citation>
+                                        <xsl:attribute name="ref-id">
+                                            <xsl:value-of select="@id"/>
+                                        </xsl:attribute>
+                                    </fo:page-number-citation>
+                                </fo:block>
+                            </fo:table-cell>
+
+                        </fo:table-row>
+                    </xsl:for-each>
+                </fo:table-body>
+            </fo:table>
         </fo:block>
     </xsl:template>
 
