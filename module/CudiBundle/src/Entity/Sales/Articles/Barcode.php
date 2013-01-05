@@ -19,7 +19,7 @@ use CudiBundle\Entity\Sales\Article as Article,
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Articles\Barcode")
- * @ORM\Table(name="cudi.sales_articles_barocodes")
+ * @ORM\Table(name="cudi.sales_articles_barcodes")
  */
 class Barcode
 {
@@ -42,19 +42,28 @@ class Barcode
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the discount
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article", inversedBy="barcodes")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article The article of the discount
-     * @param integer $barcode  The barcode of the article
+     * @var boolean Flag whether this is the main barcode
+     *
+     * @ORM\Column(type="boolean")
      */
-    public function __construct(Article $article, $barcode)
+    private $main;
+
+    /**
+     * @param \CudiBundle\Entity\Sales\Article The article of the discount
+     * @param integer $barcode The barcode of the article
+     * @param boolean $main Flag whether this is the main barcode
+     */
+    public function __construct(Article $article, $barcode, $main = false)
     {
         $this->article = $article;
         $this->barcode = $barcode;
+        $this->main = $main;
     }
 
     /**
@@ -76,7 +85,7 @@ class Barcode
     /**
      * @param integer $barcode
      *
-     * @return \CudiBundle\Entity\Article
+     * @return \CudiBundle\Entity\Sales\Articles\Barcode
      */
     public function setBarcode($barcode)
     {
@@ -85,10 +94,29 @@ class Barcode
     }
 
     /**
-     * @return \CudiBundle\Entity\Sales\Articl
+     * @return \CudiBundle\Entity\Sales\Articles\Barcode
      */
     public function getArticle()
     {
         return $this->article;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMain()
+    {
+        return $this->main;
+    }
+
+    /**
+     * @param boolean $main
+     *
+     * @return \CudiBundle\Entity\Sales\Articles\Barcode
+     */
+    public function setIsMain($main)
+    {
+        $this->main = $main;
+        return $this;
     }
 }

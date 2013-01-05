@@ -47,7 +47,8 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                         $formData['value'],
                         $formData['method'],
                         $formData['type'],
-                        $formData['rounding']
+                        $formData['rounding'],
+                        $formData['apply_once']
                     );
                 } else {
                     $template = $this->getEntityManager()

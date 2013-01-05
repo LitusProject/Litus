@@ -150,7 +150,7 @@
             );
 
             $(settings.discounts).each(function () {
-                var checked = ('member' == this.type && data.person.member);
+                var checked = ('member' == this.type && data.person.member) || ('acco' == this.type && data.person.acco);
                 var disabled = ('member' == this.type && !data.person.member);
 
                 options.append(

@@ -399,7 +399,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     foreach ($registrationArticles as $registrationArticle) {
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
-                            ->findOneSoldByArticleAndPerson(
+                            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                                 $this->getEntityManager()
                                     ->getRepository('CudiBundle\Entity\Sales\Article')
                                     ->findOneById($registrationArticle),
@@ -407,19 +407,6 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             );
 
                         // Already got this article, continue
-                        if (null !== $booking)
-                            continue;
-
-                        $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sales\Booking')
-                            ->findOneAssignedByArticleAndPerson(
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sales\Article')
-                                    ->findOneById($registrationArticle),
-                                $academic
-                            );
-
-                        // Already booked this article, continue
                         if (null !== $booking)
                             continue;
 
@@ -433,7 +420,9 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             1,
                             true
                         );
-                        $this->getEntityManager()->persist($booking);
+                        echo 'create new';
+                        exit;
+                        //$this->getEntityManager()->persist($booking);
 
                         if ($enableAssignment == '1') {
                             $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());

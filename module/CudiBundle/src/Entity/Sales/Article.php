@@ -52,13 +52,6 @@ class Article
     private $mainArticle;
 
     /**
-     * @var integer The barcode of the article
-     *
-     * @ORM\Column(type="bigint")
-     */
-    private $barcode;
-
-    /**
      * @var integer The purchase price of the article
      *
      * @ORM\Column(name="purchase_price", type="bigint")
@@ -130,11 +123,11 @@ class Article
     private $discounts;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The additional barcodes of the article
+     * @var \Doctrine\Common\Collections\ArrayCollection The barcodes of the article
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Articles\Barcode", mappedBy="article", cascade={"persist", "remove"})
      */
-    private $additionalBarcodes;
+    private $barcodes;
 
     /**
      * @param \CudiBundle\Entity\Article $mainArticle The main article of this sale article
@@ -148,6 +141,9 @@ class Article
      */
     public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire)
     {
+        $this->discounts = new ArrayCollection();
+        $this->barcodes = new ArrayCollection();
+
         $this->setMainArticle($mainArticle)
             ->setBarcode($barcode)
             ->setPurchasePrice($purchasePrice)
@@ -158,8 +154,6 @@ class Article
             ->setCanExpire($canExpire)
             ->setVersionNumber(1)
             ->setIsHistory(false);
-        $this->discounts = new ArrayCollection();
-        $this->additionalBarcodes = new ArrayCollection();
         $this->timestamp = new DateTime();
         $this->stockValue = 0;
     }
@@ -215,7 +209,10 @@ class Article
      */
     public function getBarcode()
     {
-        return $this->barcode;
+        foreach($this->barcodes as $barcode) {
+            if ($barcode->isMain())
+                return $barcode->getBarcode();
+        }
     }
 
     /**
@@ -225,7 +222,25 @@ class Article
      */
     public function setBarcode($barcode)
     {
-        $this->barcode = $barcode;
+        $main = null;
+        $found = null;
+        foreach($this->barcodes as $object) {
+            if ($object->isMain())
+                $main = $object;
+            if ($object->getBarcode() == $barcode)
+                $found = $object;
+        }
+
+        if (!(null !== $main && $main->getBarcode() == $barcode)) {
+            if ($main)
+                $main->setIsMain(false);
+
+            if ($found)
+                $found->setIsMain(true);
+            else
+                $this->addBarcode(new Barcode($this, $barcode, true));
+        }
+
         return $this;
     }
 
@@ -424,18 +439,18 @@ class Article
      *
      * @return \CudiBundle\Entity\Sales\Article
      */
-    public function addAdditionalBarcode(Barcode $barcode)
+    public function addBarcode(Barcode $barcode)
     {
-        $this->additionalBarcodes->add($barcode);
+        $this->barcodes->add($barcode);
         return $this;
     }
 
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getAdditionalBarcodes()
+    public function getBarcodes()
     {
-        return $this->additionalBarcodes;
+        return $this->barcodes;
     }
 
     /**
@@ -451,11 +466,10 @@ class Article
             $this->isBookable(),
             $this->isUnbookable(),
             $this->getSupplier(),
-            $this->canExpire(),
-            $this->getAcademicYear()
+            $this->canExpire()
         );
-        foreach($this->additionalBarcodes as $barcode)
-            $article->addAdditionalBarcode(new Barcode($article, $barcode->getBarcode()));
+        foreach($this->barcodes as $barcode)
+            $article->addBarcode(new Barcode($article, $barcode->getBarcode()));
 
         return $article;
     }

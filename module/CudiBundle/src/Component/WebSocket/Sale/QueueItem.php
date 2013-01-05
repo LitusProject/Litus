@@ -19,6 +19,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Entity\Sales\SaleItem,
+    CudiBundle\Entity\Users\People\Sale\Acco as AccoCard,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -116,6 +117,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($this->_id);
 
+        $acco = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Users\People\Sale\Acco')
+            ->findOneByPerson($item->getPerson());
+
         return json_encode(
             array(
                 'collect' => array(
@@ -126,6 +131,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                         'name' => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
                         'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'acco' => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
                     'articles' => $this->_getArticles(),
                 )
@@ -142,6 +148,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($this->_id);
 
+        $acco = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Users\People\Sale\Acco')
+            ->findOneByPerson($item->getPerson());
+
         return json_encode(
             array(
                 'sale' => array(
@@ -151,7 +161,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                         'id' => $item->getPerson()->getId(),
                         'name' => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
-                        'member' => false,// $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'acco' => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
                     'articles' => $this->_getArticles(),
                 )
@@ -244,11 +255,18 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
         $saleItems = array();
         foreach($soldArticles as $soldArticle) {
             $price = $soldArticle['article']->getSellPrice();
+            $discountType = null;
             foreach($soldArticle['article']->getDiscounts() as $discount) {
-                if (in_array($discount->getType(), $discounts)) {
+                if (in_array($discount->getRawType(), $discounts)) {
                     if ($discount->getType() == 'member' && !$item->getPerson()->isMember($this->_getCurrentAcademicYear()))
                         continue;
-                    $price = $discount->apply($soldArticle['article']->getSellPrice());
+                    if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager))
+                        continue;
+                    $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
+                    if ($newPrice < $price) {
+                        $price = $newPrice;
+                        $discountType = $discount->getRawType();
+                    }
                 }
             }
 
@@ -256,12 +274,29 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $soldArticle['article'],
                 $soldArticle['number'],
                 $price * $soldArticle['number'] / 100,
-                $item
+                $item,
+                $discountType
             );
             $this->_entityManager->persist($saleItem);
             $saleItems[] = $saleItem;
 
             $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $soldArticle['number']);
+        }
+
+        $hasAccoCard = false;
+        foreach($discounts as $discount) {
+            $hasAccoCard = ($discount == 'acco');
+            if ($hasAccoCard)
+                break;
+        }
+        $acco = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Users\People\Sale\Acco')
+            ->findOneByPerson($item->getPerson());
+
+        if (isset($acco)) {
+            $acco->setHasAccoCard($hasAccoCard);
+        } else {
+            $this->_entityManager->persist(new AccoCard($item->getPerson(), $hasAccoCard));
         }
 
         $this->_entityManager->flush();
@@ -282,8 +317,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
         $results = array();
         $bookedArticles = array();
         foreach($bookings as $booking) {
-            $barcodes = array($booking->getArticle()->getBarcode());
-            foreach($booking->getArticle()->getAdditionalBarcodes() as $barcode)
+            $barcodes = array();
+            foreach($booking->getArticle()->getBarcodes() as $barcode)
                 $barcodes[] = $barcode->getBarcode();
 
             $bookedArticles[] = $booking->getArticle()->getId();
@@ -305,8 +340,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'discounts' => array(),
                 );
 
-                foreach($booking->getArticle()->getDiscounts() as $discount)
-                    $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($booking->getArticle()->getSellPrice()));
+                foreach($booking->getArticle()->getDiscounts() as $discount) {
+                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager))
+                        $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($booking->getArticle()->getSellPrice()));
+                }
 
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()] = $result;
             }
@@ -318,8 +355,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($id);
 
-                $barcodes = array($article->getBarcode());
-                foreach($article->getAdditionalBarcodes() as $barcode)
+                $barcodes = array();
+                foreach($article->getBarcodes() as $barcode)
                     $barcodes[] = $barcode->getBarcode();
 
                 $result = array(
@@ -336,8 +373,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'discounts' => array(),
                 );
 
-                foreach($article->getDiscounts() as $discount)
-                    $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($article->getSellPrice()));
+                foreach($article->getDiscounts() as $discount) {
+                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager))
+                        $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($article->getSellPrice()));
+                }
                 $results['assigned_' . $article->getId()] = $result;
             }
         }

@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Form\Admin\Sales\Discounts;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
@@ -82,6 +83,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field = new Hidden('template_' . $template->getId() . '_rounding');
             $field->setValue($template->getRounding());
             $this->add($field);
+
+            $field = new Hidden('template_' . $template->getId() . '_apply_once');
+            $field->setValue($template->applyOnce() ? '1' : '0');
+            $this->add($field);
         }
 
         $field = new Text('value');
@@ -109,6 +114,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setLabel('Rounding')
             ->setRequired()
             ->setAttribute('options', $this->_getRoundings());
+        $this->add($field);
+
+        $field = new Checkbox('apply_once');
+        $field->setAttribute('id', 'discount_template_apply_once')
+            ->setLabel('Apply Once');
         $this->add($field);
 
         $field = new Submit('submit');

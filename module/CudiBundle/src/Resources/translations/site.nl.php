@@ -47,4 +47,8 @@ return array(
 
     'New bookings have been assigned to you, and you can go and collect them.' => 'Er zijn nieuwe reservaties aan je toegewezen, die je mag komen afhalen.',
     'View Bookings' => 'Bekijk Reservaties',
+
+    'Discounts' => 'Kortingen',
+    'Member' => 'Lid',
+    'Acco' => 'Acco',
 );
