@@ -19,6 +19,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Entity\Sales\SaleItem,
+    CudiBundle\Entity\Users\People\Sale\Acco as AccoCard,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -116,6 +117,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($this->_id);
 
+        $acco = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Users\People\Sale\Acco')
+            ->findOneByPerson($item->getPerson());
+
         return json_encode(
             array(
                 'collect' => array(
@@ -126,6 +131,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                         'name' => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
                         'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'acco' => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
                     'articles' => $this->_getArticles(),
                 )
@@ -142,6 +148,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($this->_id);
 
+        $acco = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Users\People\Sale\Acco')
+            ->findOneByPerson($item->getPerson());
+
         return json_encode(
             array(
                 'sale' => array(
@@ -151,7 +161,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                         'id' => $item->getPerson()->getId(),
                         'name' => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
-                        'member' => false,// $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'acco' => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
                     'articles' => $this->_getArticles(),
                 )
@@ -262,6 +273,22 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             $saleItems[] = $saleItem;
 
             $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $soldArticle['number']);
+        }
+
+        $hasAccoCard = false;
+        foreach($discounts as $discount) {
+            $hasAccoCard = ($discount == 'acco');
+            if ($hasAccoCard)
+                break;
+        }
+        $acco = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Users\People\Sale\Acco')
+            ->findOneByPerson($item->getPerson());
+
+        if (isset($acco)) {
+            $acco->setHasAccoCard($hasAccoCard);
+        } else {
+            $this->_entityManager->persist(new AccoCard($item->getPerson(), $hasAccoCard));
         }
 
         $this->_entityManager->flush();
