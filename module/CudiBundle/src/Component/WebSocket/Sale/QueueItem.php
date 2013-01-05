@@ -255,11 +255,18 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
         $saleItems = array();
         foreach($soldArticles as $soldArticle) {
             $price = $soldArticle['article']->getSellPrice();
+            $discountType = null;
             foreach($soldArticle['article']->getDiscounts() as $discount) {
-                if (in_array($discount->getType(), $discounts)) {
+                if (in_array($discount->getRawType(), $discounts)) {
                     if ($discount->getType() == 'member' && !$item->getPerson()->isMember($this->_getCurrentAcademicYear()))
                         continue;
-                    $price = $discount->apply($soldArticle['article']->getSellPrice());
+                    if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager))
+                        continue;
+                    $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
+                    if ($newPrice < $price) {
+                        $price = $newPrice;
+                        $discountType = $discount->getRawType();
+                    }
                 }
             }
 
@@ -267,7 +274,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $soldArticle['article'],
                 $soldArticle['number'],
                 $price * $soldArticle['number'] / 100,
-                $item
+                $item,
+                $discountType
             );
             $this->_entityManager->persist($saleItem);
             $saleItems[] = $saleItem;
@@ -332,8 +340,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'discounts' => array(),
                 );
 
-                foreach($booking->getArticle()->getDiscounts() as $discount)
-                    $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($booking->getArticle()->getSellPrice()));
+                foreach($booking->getArticle()->getDiscounts() as $discount) {
+                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager))
+                        $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($booking->getArticle()->getSellPrice()));
+                }
 
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()] = $result;
             }
@@ -363,8 +373,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'discounts' => array(),
                 );
 
-                foreach($article->getDiscounts() as $discount)
-                    $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($article->getSellPrice()));
+                foreach($article->getDiscounts() as $discount) {
+                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager))
+                        $result['discounts'][] = array('type' => $discount->getRawType(), 'value' => $discount->apply($article->getSellPrice()));
+                }
                 $results['assigned_' . $article->getId()] = $result;
             }
         }

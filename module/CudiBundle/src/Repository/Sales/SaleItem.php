@@ -20,11 +20,12 @@ class SaleItem extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sales\SaleItem', 'i')
-            ->innerJoin('i.queueItem', 'q', Join::WITH,
-                $query->expr()->eq('q.person', ':person')
-            )
+            ->innerJoin('i.queueItem', 'q')
             ->where(
-                   $query->expr()->eq('i.article', ':article')
+                $query->expr()->andX(
+                    $query->expr()->eq('q.person', ':person'),
+                    $query->expr()->eq('i.article', ':article')
+                )
             )
             ->setParameter('person', $person->getId())
             ->setParameter('article', $article->getId())
@@ -34,5 +35,33 @@ class SaleItem extends EntityRepository
 
         if (isset($resultSet[0]))
             return $resultSet[0];
+
+        return null;
+    }
+
+    public function findOneByArticleAndPersonAndDiscountType(ArticleEntity $article, Person $person, $discountType)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sales\SaleItem', 'i')
+            ->innerJoin('i.queueItem', 'q')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('q.person', ':person'),
+                    $query->expr()->eq('i.article', ':article'),
+                    $query->expr()->eq('i.discountType', ':discountType')
+                )
+            )
+            ->setParameter('person', $person->getId())
+            ->setParameter('article', $article->getId())
+            ->setParameter('discountType', $discountType)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
     }
 }
