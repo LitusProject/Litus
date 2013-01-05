@@ -36,6 +36,7 @@
                 <th>Type</th>
                 <th width="200px">Value</th>
                 <th width="150px">Rounding</th>
+                <th width="100px">Apply Once</th>
                 <th width="100px">Actions</th>
             </tr>
 
@@ -45,6 +46,7 @@
                     <td>{{ discount.getType() }}</td>
                     <td>{% if discount.getMethod() == 'percentage' %}-{{ (discount.getValue()/100)|number_format(2) }}%{% elseif discount.getMethod() == 'fixed' %}- &euro; {{ (discount.getValue()/100)|number_format(2) }}{% else %}&euro; {{ (discount.getValue()/100)|number_format(2) }}{% endif %}</td>
                     <td>{{ discount.getRounding() }}</td>
+                    <td>{% if discount.applyOnce() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('admin_sales_discount', 'delete') %}
                             <a href="#" class="delete" data-id="{{ discount.getId() }}" data-type="{{ discount.getType()|capitalize }}" data-discount="{% if discount.getMethod() == 'percentage' %}-{{ (discount.getValue()/100)|number_format(2) }}%{% elseif discount.getMethod() == 'fixed' %}- &euro; {{ (discount.getValue()/100)|number_format(2) }}{% else %}&euro; {{ (discount.getValue()/100)|number_format(2) }}{% endif %}">Delete</a>
@@ -84,11 +86,17 @@
             $('#discount_template').change(function () {
                 var template = $(this).find('option:selected').attr('value');
                 if (template == 0) {
-                    $('#discount_template_value, #discount_template_type, #discount_template_method').val('').prop('disabled', false);
+                    $('#discount_template_value').val('').prop('disabled', false);
+                    $('#discount_template_type').val('member').prop('disabled', false);
+                    $('#discount_template_method').val('percentage').prop('disabled', false);
+                    $('#discount_template_rounding').val('none').prop('disabled', false);
+                    $('#discount_template_apply_once').prop('checked', false).prop('disabled', false)
                 } else {
                     $('#discount_template_value').val($('#template_' + template + '_value').val()).prop('disabled', true);
                     $('#discount_template_type').val($('#template_' + template + '_type').val()).prop('disabled', true);
                     $('#discount_template_method').val($('#template_' + template + '_method').val()).prop('disabled', true);
+                    $('#discount_template_rounding').val($('#template_' + template + '_rounding').val()).prop('disabled', true);
+                    $('#discount_template_apply_once').prop('checked', $('#template_' + template + '_apply_once').val() == 1).prop('disabled', true);
                 }
             });
         });

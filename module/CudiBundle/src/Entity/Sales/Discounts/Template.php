@@ -68,18 +68,28 @@ class Template
     private $rounding;
 
     /**
-     * @param integer The value of the discount
-     * @param string The method of the discount
-     * @param string The type of the discount
-     * @param string The type of the rounding
+     * @var boolean Apply the discount only once
+     *
+     * @ORM\Column(name="apply_once", type="boolean")
      */
-    public function __construct($name, $value, $method, $type, $rounding)
+    private $applyOnce;
+
+    /**
+     * @param string $name The name of the discount
+     * @param integer $value The value of the discount
+     * @param string $method The method of the discount
+     * @param string $type The type of the discount
+     * @param string $rounding The type of the rounding
+     * @param boolean $applyOnce Apply the discount only once
+     */
+    public function __construct($name, $value, $method, $type, $rounding, $applyOnce)
     {
         $this->name = $name;
         $this->value = $value * 100;
         $this->method = $method;
         $this->type = $type;
         $this->rounding = $rounding;
+        $this->applyOnce = $applyOnce;
     }
 
     /**
@@ -136,5 +146,13 @@ class Template
     public function getRounding()
     {
         return Discount::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];
+    }
+
+    /**
+     * @return boolean
+     */
+    public function applyOnce()
+    {
+        return $this->applyOnce;
     }
 }

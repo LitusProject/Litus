@@ -305,8 +305,9 @@ class Article extends EntityRepository
         $articles = $this->_getArticleIdsBySemester($academicYear);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
+            ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -315,7 +316,7 @@ class Article extends EntityRepository
                     $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->orX(
                         $query->expr()->like($query->expr()->lower('m.title'), ':title'),
-                        $query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode')
+                        $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
                     ),
                     $query->expr()->in('m.id', $articles)
                 )
@@ -326,7 +327,11 @@ class Article extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        return $resultSet;
+        $articles = array();
+        foreach($resultSet as $barcode)
+            $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
+
+        return $articles;
     }
 
     private function _getArticleIdsBySemester(AcademicYear $academicYear, $semester = 0)

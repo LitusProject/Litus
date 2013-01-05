@@ -15,6 +15,7 @@
 namespace CudiBundle\Entity\Sales;
 
 use CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sales\Discounts\Discount,
     CudiBundle\Entity\Sales\QueueItem,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -81,13 +82,21 @@ class SaleItem
     private $queueItem;
 
     /**
+     * @var string The type of discount given
+     *
+     * @ORM\Column(name="discount_type", type="string", nullable=true)
+     */
+    private $discountType;
+
+    /**
      * @param \CudiBundle\Entity\Sales\Article $article
      * @param integer $number
      * @param integer $price
      * @param \CudiBundle\Entity\Sales\QueueItem|null $queueItem
+     * @param string $discountType
      * @param \Doctrine\ORM\EntityManager|null $entityManager
      */
-    public function __construct(Article $article, $number, $price, QueueItem $queueItem = null, EntityManager $entityManager = null)
+    public function __construct(Article $article, $number, $price, QueueItem $queueItem = null, $discountType = null, EntityManager $entityManager = null)
     {
         if (null == $queueItem) {
             if (null == $entityManager)
@@ -98,10 +107,12 @@ class SaleItem
             $this->queueItem = $queueItem;
             $this->session = $queueItem->getSession();
         }
+
         $this->article = $article;
         $this->number = $number;
         $this->price = $price * 100;
         $this->timestamp = new DateTime();
+        $this->discountType = $discountType;
     }
 
     /**
@@ -189,5 +200,14 @@ class SaleItem
     public function getPerson()
     {
         return $this->queueItem->getPerson();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDiscountType()
+    {
+        if (isset(Discount::$POSSIBLE_TYPES[$this->discountType]))
+            return Discount::$POSSIBLE_TYPES[$this->discountType];
     }
 }
