@@ -429,13 +429,48 @@
     function _updatePrice($this) {
         var total = 0;
         $this.find('tbody tr:not(.inactive)').each(function () {
-            var bestPrice = parseInt($(this).data('info').price, 10);
-            $($(this).data('info').discounts).each(function () {
-                if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
-                    bestPrice = this.value < bestPrice ? this.value : bestPrice;
-            });
-            $(this).find('.price').html('&euro; ' + (bestPrice / 100).toFixed(2));
-            total += $(this).data('info').currentNumber * bestPrice;
+            var number = $(this).data('info').currentNumber;
+            var appliedOnce = false;
+            $(this).find('.price').html('');
+
+            if (number == 0) {
+                var bestPrice = parseInt($(this).data('info').price, 10);
+                $($(this).data('info').discounts).each(function () {
+                    if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
+                        bestPrice = this.value < bestPrice ? this.value : bestPrice;
+                });
+                $(this).find('.price').append(
+                    $('<div>').html('&euro; ' + (bestPrice / 100).toFixed(2))
+                );
+            }
+
+            while(number > 0) {
+                var bestPrice = parseInt($(this).data('info').price, 10);
+                var discount = null;
+                $($(this).data('info').discounts).each(function () {
+                    if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0) {
+                        if ((this.applyOnce && !appliedOnce) || !this.applyOnce) {
+                            bestPrice = this.value < bestPrice ? this.value : bestPrice;
+                            discount = this;
+                            appliedOnce = true;
+                        }
+                    }
+                });
+
+                if (discount != undefined && discount.applyOnce) {
+                    $(this).find('.price').append(
+                        $('<div>').html('&euro; ' + (bestPrice / 100).toFixed(2) + ' (1x)')
+                    );
+                    total += 1 * bestPrice;
+                    number -= 1;
+                } else {
+                    $(this).find('.price').append(
+                        $('<div>').html('&euro; ' + (bestPrice / 100).toFixed(2) + ' (' + number + 'x)')
+                    );
+                    total += number * bestPrice;
+                    number = 0;
+                }
+            }
         });
 
         $this.find('.money .total').html('&euro; ' + (total / 100).toFixed(2));
