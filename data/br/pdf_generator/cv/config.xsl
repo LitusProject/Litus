@@ -28,6 +28,7 @@
 
     <!-- The width of the profile picture -->
     <xsl:variable name="picture-width"              select="25"/>
+    <xsl:variable name="picture-ratio"              select="0.75"/>
 
     <!-- The font size -->
     <xsl:variable name="font-size"                  select="10"/>
