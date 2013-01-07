@@ -104,6 +104,15 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function populateFromEntry(Entry $entry) {
         $formData = array();
+
+        if ($entry->isGuestEntry()) {
+            $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
+            $formData['last_name'] = $entry->getGuestInfo()->getLastName();
+            $formData['email'] = $entry->getGuestInfo()->getEmail();
+        } else {
+            $formData['first_name'] = "bla";
+        }
+
         foreach ($entry->getFieldEntries() as $fieldEntry) {
             $formData['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
         }

@@ -35,7 +35,7 @@
             <fo:table-column column-width="25mm"/>
 
             <fo:table-body>
-                <fo:table-row height="0.75*{$picture-width}mm">
+                <fo:table-row height="{$picture-ratio}*{$picture-width}mm">
                     <fo:table-cell>
                         <!-- First column of the basic info (name, email, phone) -->
                         <fo:block>
@@ -103,7 +103,7 @@
 
     <!-- The studies table -->
     <xsl:template match="sec-special-studies">
-        <fo:block>
+        <fo:block text-align="left">
 
             <fo:table margin-right="0mm">
 
