@@ -75,4 +75,14 @@ return array(
     "Extra Information (Year Abroad, Born Outside Belgium, ...)" => "Extra Information (Year Abroad, Born Outside Belgium, ...)",
     "You are advised to use your mother tongue for your CV." => "You are advised to use your mother tongue for your CV.",
 
+    "Additional Diplomas" => "Additional Diplomas",
+    "Experiences" => "Experiences",
+    "Additional Info" => "Additional Info",
+    "Career" => "Career",
+    "Languages" => "Languages",
+    "Future Interest" => "Future Interest",
+    "Mobility in Europe" => "Mobility in Europe",
+    "Mobility in the World" => "Mobility in the World",
+    "About Myself" => "About Myself",
+
 );

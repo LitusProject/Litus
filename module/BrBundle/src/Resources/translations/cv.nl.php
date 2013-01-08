@@ -74,4 +74,14 @@ return array(
     "Extra Information (Year Abroad, Born Outside Belgium, ...)" => "Extra Informatie (Jaar in het Buitenland, Geboren Buiten België, ...)",
     "You are advised to use your mother tongue for your CV." => "We raden je aan om je moedertaal te gebruiken voor je CV.",
 
+    "Additional Diplomas" => "Extra Diploma's",
+    "Experiences" => "Ervaringen",
+    "Additional Info" => "Extra Info",
+    "Career" => "Carrière",
+    "Languages" => "Talen",
+    "Future Interest" => "Toekomstig Interessegebied",
+    "Mobility in Europe" => "Mobiliteit in Europa",
+    "Mobility in the World" => "Mobiliteit in de Wereld",
+    "About Myself" => "Over Mijzelf",
+
 );
