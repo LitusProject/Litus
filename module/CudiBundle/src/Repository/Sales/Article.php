@@ -155,7 +155,8 @@ class Article extends EntityRepository
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
-            ->where($query->expr()->andX(
+            ->where(
+                $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.title'), ':title'),
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('m.isHistory', 'false'),
@@ -189,6 +190,34 @@ class Article extends EntityRepository
                 )
             )
             ->setParameter('author', '%'.strtolower($author).'%')
+            ->orderBy('m.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByTitleOrAuthorAndAcademicYear($string, AcademicYear $academicYear)
+    {
+        $articles = $this->_getArticleIdsBySemester($academicYear, 0);
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like($query->expr()->lower('m.title'), ':string'),
+                        $query->expr()->like($query->expr()->lower('m.authors'), ':string')
+                    ),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false'),
+                    $query->expr()->in('m.id', $articles)
+                )
+            )
+            ->setParameter('string', '%'.strtolower($string).'%')
             ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();

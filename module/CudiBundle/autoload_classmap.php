@@ -123,6 +123,7 @@ return array(
     'CudiBundle\Form\Admin\Supplier\User\Add'                       => __DIR__ . '/src/Form/Admin/Supplier/User/Add.php',
     'CudiBundle\Form\Admin\Supplier\User\Edit'                      => __DIR__ . '/src/Form/Admin/Supplier/User/Edit.php',
     'CudiBundle\Form\Booking\Booking'                               => __DIR__ . '/src/Form/Booking/Booking.php',
+    'CudiBundle\Form\Booking\Search'                                => __DIR__ . '/src/Form/Booking/Search.php',
     'CudiBundle\Form\Prof\Article\Add'                              => __DIR__ . '/src/Form/Prof/Article/Add.php',
     'CudiBundle\Form\Prof\Article\Edit'                             => __DIR__ . '/src/Form/Prof/Article/Edit.php',
     'CudiBundle\Form\Prof\Comment\Add'                              => __DIR__ . '/src/Form/Prof/Comment/Add.php',

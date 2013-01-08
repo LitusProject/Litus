@@ -604,7 +604,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
-                        'id'       => '[0-9]*',
+                        'id'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'booking',
