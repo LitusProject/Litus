@@ -12,105 +12,142 @@
             {% if authenticatedPerson == null %}
                 {{ translate('Please log in to book textbooks.') }}
             {% else %}
+                {% if hasAccess('booking', 'search') %}
+                    <div class="row">
+                        <div class="pull-right">
+                            <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+                        </div>
+                    </div>
 
-            {% autoescape false %}
-            {{ form().openTag(form) }}
+                    <div id="searchArticlesPage" style="display: none">
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(searchForm) }}
 
-                <table class="table bookings">
-
-                    <thead>
-                        <tr>
-                            <th>{{ translate('Title') }}</th>
-                            <th class="hidden-phone">{{ translate('Authors') }}</th>
-                            <th class="span2">{{ translate('Price / Piece') }}</th>
-                            <th class="span1 hidden-phone">{{ translate('Mandatory') }}</th>
-                            <th class="span1">#</th>
-                            <th class="span1 hidden-phone" style="text-align: center">{{ translate('Booked') }}</th>
-                            <th class="span1 hidden-phone">{{ translate('Remarks') }}</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                    {% for subjectArticle in subjectArticleMap %}
-                        <tr class="spacer">
-                            <td colspan="7"></td>
-                        </tr>
-
-                        <tr class="course-title">
-                            <td colspan="7">
-                                {% if null == subjectArticle['subject'] %}
-                                    {{ translate('General') }}
-                                {% else %}
-                                    {{ subjectArticle['subject'].getCode() }} - {{ subjectArticle['subject'].getName() }}
-                                {% endif %}
-                            </td>
-                        </tr>
-
-                        {% for map in subjectArticle['articles'] %}
-                            <tr {% if map['sold'] > 0 %}class="success"{% endif %}>
-                                <td>{{ map['article'].getMainArticle().getTitle() }}</td>
-                                <td class="hidden-phone">{{ map['article'].getMainArticle().getAuthors() }}</td>
-                                <td>
-                                    {% if map['article'].getDiscounts()|length > 0 %}
-                                        <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
-                                        {% for discount in map['article'].getDiscounts() %}
-                                            <span class='badge badge-info'>{{ translate(discount.getType()) }}</span> &euro; {{ (discount.apply(map['article'].getSellPrice())/100)|number_format(2) }}<br/>
-                                        {% endfor %}
-                                    " data-placement="right" style="cursor: pointer">&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
-                                    {% else %}
-                                        <span>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
-                                    {% endif %}
-                                </td>
-                                <td class="hidden-phone">{{ map['mandatory'] ? 'X' : '' }}</td>
-                                <td>
-                                    {% if map['article'].isBookable() and (bookingsEnabled or map['article'].getId() in bookingsClosedExceptions) %}
-                                        {% set name = 'article-' ~ map['article'].getId() %}
-                                        {% set element = form.get(name) %}
-                                        {{ formElement(element) }}
-                                    {% else %}
-                                        <span class="label label-info hidden-phone">{{ translate('Not Bookable') }}</span>
-                                    {% endif %}
-                                </td>
-                                <td class="hidden-phone" style="text-align: center">{{ map['booked'] }}</td>
-                                <td class="hidden-phone">
-                                    {% if map['comments']|length > 0 %}
-                                        <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
-
-                                        {% for comment in map['comments'] %}
-                                            <span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText() }}<br/>
-                                        {% endfor %}
-
-                                        " data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('Remarks') : translate('Remark') }}</a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-
-                            {% if element.getMessages()|length > 0  and map['article'].isBookable() %}
+                        <table class="table bookings">
+                            <thead>
                                 <tr>
-                                    <td colspan="7"  style="border-top-width:0px;">
-                                        <div class="help-inline pull-right">
-                                            {{ formElementErrors(element) }}
-                                        </div>
-                                    </td>
+                                    <th>{{ translate('Title') }}</th>
+                                    <th class="hidden-phone">{{ translate('Authors') }}</th>
+                                    <th class="span2">{{ translate('Price / Piece') }}</th>
+                                    <th class="span1">#</th>
+                                    <th class="span1 hidden-phone" style="text-align: center">{{ translate('Booked') }}</th>
+                                    <th class="span1 hidden-phone">{{ translate('Remarks') }}</th>
                                 </tr>
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
+                            </thead>
+                            <tbody>
+                                <tr class="spacer">
+                                    <td colspan="7"></td>
+                                </tr>
+                                <tr class="course-title">
+                                    <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    </tbody>
-
-                </table>
-
-                <a class="btn pull-left" href="{{ url('booking', {'action' : 'view', "language" : language.getAbbrev()}) }}">{{ translate('Back') }}</a>
-
-                {% if form.get('submit') %}
-                    {{ formElement(form.get('submit')) }}
+                        <a class="btn pull-left" href="{{ url('booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                        <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
+                    </div>
                 {% endif %}
 
-            {{ form().closeTag() }}
+                <div id="viewArticlesPage">
+                    {% autoescape false %}
+                    {{ form().openTag(form) }}
 
-            {% endautoescape %}
+                        <table class="table bookings">
+                            <thead>
+                                <tr>
+                                    <th>{{ translate('Title') }}</th>
+                                    <th class="hidden-phone">{{ translate('Authors') }}</th>
+                                    <th class="span2">{{ translate('Price / Piece') }}</th>
+                                    <th class="span1 hidden-phone">{{ translate('Mandatory') }}</th>
+                                    <th class="span1">#</th>
+                                    <th class="span1 hidden-phone" style="text-align: center">{{ translate('Booked') }}</th>
+                                    <th class="span1 hidden-phone">{{ translate('Remarks') }}</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                            {% for subjectArticle in subjectArticleMap %}
+                                <tr class="spacer">
+                                    <td colspan="7"></td>
+                                </tr>
+
+                                <tr class="course-title">
+                                    <td colspan="7">
+                                        {% if null == subjectArticle['subject'] %}
+                                            {{ translate('General') }}
+                                        {% else %}
+                                            {{ subjectArticle['subject'].getCode() }} - {{ subjectArticle['subject'].getName() }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                                {% for map in subjectArticle['articles'] %}
+                                    <tr {% if map['sold'] > 0 %}class="success"{% endif %}>
+                                        <td>{{ map['article'].getMainArticle().getTitle() }}</td>
+                                        <td class="hidden-phone">{{ map['article'].getMainArticle().getAuthors() }}</td>
+                                        <td>
+                                            {% if map['article'].getDiscounts()|length > 0 %}
+                                                <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
+                                                {% for discount in map['article'].getDiscounts() %}
+                                                    <span class='badge badge-info'>{{ translate(discount.getType()) }}</span> &euro; {{ (discount.apply(map['article'].getSellPrice())/100)|number_format(2) }}<br/>
+                                                {% endfor %}
+                                            " data-placement="right" style="cursor: pointer">&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
+                                            {% else %}
+                                                <span>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="hidden-phone">{{ map['mandatory'] ? 'X' : '' }}</td>
+                                        <td>
+                                            {% if map['article'].isBookable() and (bookingsEnabled or map['article'].getId() in bookingsClosedExceptions) %}
+                                                {% set name = 'article-' ~ map['article'].getId() %}
+                                                {% set element = form.get(name) %}
+                                                {{ formElement(element) }}
+                                            {% else %}
+                                                <span class="label label-info hidden-phone">{{ translate('Not Bookable') }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="hidden-phone" style="text-align: center">{{ map['booked'] }}</td>
+                                        <td class="hidden-phone">
+                                            {% if map['comments']|length > 0 %}
+                                                <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
+
+                                                {% for comment in map['comments'] %}
+                                                    <span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText() }}<br/>
+                                                {% endfor %}
+
+                                                " data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('Remarks') : translate('Remark') }}</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+
+                                    {% if element.getMessages()|length > 0  and map['article'].isBookable() %}
+                                        <tr>
+                                            <td colspan="7"  style="border-top-width:0px;">
+                                                <div class="help-inline pull-right">
+                                                    {{ formElementErrors(element) }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                        <a class="btn pull-left" href="{{ url('booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+
+                        {% if form.get('submit') %}
+                            {{ formElement(form.get('submit')) }}
+                        {% endif %}
+
+                    {{ form().closeTag() }}
+
+                    {% endautoescape %}
+                </div>
             {% endif %}
         </div>
     </div>
@@ -127,6 +164,127 @@
                         $(this).remove();
                 });
             });
+
+            {% if hasAccess('booking', 'search') %}
+            $('#searchArticles').click(function (e) {
+                e.preventDefault();
+                var view = $(this).data('view') == undefined ? 'view' : $(this).data('view');
+
+                if (view == 'view') {
+                    $('#viewArticlesPage').hide();
+                    $('#searchArticlesPage').show();
+                    $('#search_string').focus();
+                    $(this).html('{{ translate('Stop Search') }}').data('view', 'search');
+                } else {
+                    $('#viewArticlesPage').show();
+                    $('#searchArticlesPage').hide();
+                    $(this).html('{{ translate('Search') }}').data('view', 'view');
+                }
+            });
+            $('#search_string').bind('keyup', function () {
+                var $this = $(this);
+                clearTimeout($(this).data('timeout'));
+                $(this).data('timeout', setTimeout(function () {
+                    if ('' == $this.val() || $this.val().length < 3) {
+                        $('#searchArticlesPage tbody').html('').append(
+                            $('<tr>', {'class': 'spacer'}).append(
+                                $('<td>', {'colspan': 6})
+                            ),
+                            $('<tr>', {'class': 'course-title'}).append(
+                                $('<td>', {'colspan': 6}).append(
+                                    $('<i>').append('{{ translate('No Articles Found') }}')
+                                )
+                            )
+                        );
+                        return;
+                    }
+
+                    $.ajax({
+                        url: '{{ url('booking', {'action': 'search'}) }}' + $this.val(),
+                        method: 'get',
+                        dataType: 'json',
+                        success: function (e) {
+                            var tbody = $('#searchArticlesPage tbody').html('').append(
+                                $('<tr>', {'class': 'spacer'}).append(
+                                    $('<td>', {'colspan': 6})
+                                )
+                            );
+                            $(e).each(function () {
+                                tbody.append(
+                                    $('<tr>', {'class': this.sold > 0 ? 'success': ''}).append(
+                                        $('<td>').html(this.title),
+                                        $('<td>', {'class': 'hidden-phone'}).html(this.authors),
+                                        price = $('<td>'),
+                                        field = $('<td>'),
+                                        $('<td>', {'class': 'hidden-phone', 'style': 'text-align: center'}).html(this.booked),
+                                        comments = $('<td>', {'class': 'hidden-phone'})
+                                    )
+                                );
+
+                                if (this.discounts.length > 0) {
+                                    var popoverContent = '';
+                                    $(this.discounts).each(function () {
+                                        popoverContent += '<span class="badge badge-info">' + this.type + '</span> &euro; ' + this.price + '<br/>';
+                                    });
+                                    price.append(
+                                        $('<span>', {
+                                            'data-original-title': '{{ translate('Discounts') }}',
+                                            'data-content': popoverContent,
+                                            'data-placement': 'right',
+                                            'style': 'cursor:pointer',
+                                        }).append('&euro; ' + this.price).popover({'trigger': 'hover'})
+                                    );
+                                } else {
+                                    price.html('&euro; ' + this.price);
+                                }
+
+                                if (this.comments.length > 0) {
+                                    var popoverContent = '';
+                                    var counter = 0;
+                                    $(this.comments).each(function () {
+                                        popoverContent += '<span class="badge badge-info">' + (++counter) + '</span> ' + this + '<br/>';
+                                    });
+                                    comments.append(
+                                        $('<a>', {
+                                            'data-original-title': '{{ translate('Comments') }}',
+                                            'data-content': popoverContent,
+                                            'data-placement': 'left',
+                                            'style': 'cursor:pointer',
+                                            'class': 'label label-warning',
+                                        }).html(this.comments.length > 1 ? '{{ translate('Remarks') }}' : '{{ translate('Remark') }}').popover({'trigger': 'hover'})
+                                    );
+                                }
+
+                                if (this.bookable) {
+                                    field.append(
+                                        $('<input>', {'type': 'text', 'id': 'article-' + this.id, 'class': 'input-very-mini', 'placeholder': '0'}).data('id', this.id)
+                                    );
+                                } else {
+                                    field.append(
+                                        $('<span>', {'class': 'label label-info hidden-phone'}).html('{{ translate('Not Bookable') }}')
+                                    );
+                                }
+                            });
+
+                            $('#bookSearchArticles').toggle(e.length > 0);
+                        }
+                    });
+                }, 200));
+            });
+            $('#bookSearchArticles').click(function () {
+                var data = {};
+                $('#searchArticlesPage tbody input').each(function () {
+                    if ($(this).val() > 0)
+                        data[$(this).data('id')] = $(this).val();
+                });
+                $.post('{{ url('booking', {'action': 'bookSearch'}) }}', data, function (e) {
+                    if (e.status == 'success')
+                        window.location.href = '{{ url('booking', {'action': 'view'}) }}';
+                    else
+                        window.location.href = '{{ url('booking', {'action': 'book'}) }}';
+                }, 'json');
+            });
+            {% endif %}
         });
     </script>
 {% endblock %}
