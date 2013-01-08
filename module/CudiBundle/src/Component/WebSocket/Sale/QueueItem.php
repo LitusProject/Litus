@@ -277,7 +277,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     $number,
                     $price * $number / 100,
                     $item,
-                    $bestDiscount->getRawType()
+                    isset($bestDiscount) ? $bestDiscount->getRawType() : null
                 );
                 $this->_entityManager->persist($saleItem);
                 $saleItems[] = $saleItem;

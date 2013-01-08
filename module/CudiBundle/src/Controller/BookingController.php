@@ -17,6 +17,7 @@ namespace CudiBundle\Controller;
 use CommonBundle\Entity\Users\People\Academic,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Form\Booking\Booking as BookingForm,
+    CudiBundle\Form\Booking\Search as SearchForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
@@ -286,19 +287,203 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             }
         }
 
+        $searchForm = new SearchForm();
+
         return new ViewModel(
             array(
                 'subjectArticleMap' => $result,
                 'form' => $form,
+                'searchForm' => $searchForm,
                 'bookingsEnabled' => $enableBookings,
                 'bookingsClosedExceptions' => $bookingsClosedExceptions
             )
         );
     }
 
+    public function searchAction()
+    {
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findAllByTitleOrAuthorAndAcademicYear($this->getParam('id'), $this->getCurrentAcademicYear());
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($articles, $numResults);
+
+        $bookingsEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_bookings') == '1';
+
+        $bookingsClosedExceptions = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.bookings_closed_exceptions')
+        );
+
+        $bookingsOpen = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
+
+        $booked = array();
+        foreach($bookingsOpen as $booking) {
+            if (!isset($booked[$booking->getArticle()->getId()]))
+                $booked[$booking->getArticle()->getId()] = 0;
+            $booked[$booking->getArticle()->getId()] += $booking->getNumber();
+        }
+
+        $bookingsSold = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllSoldByPerson($this->getAuthentication()->getPersonObject());
+
+        $sold = array();
+        foreach($bookingsSold as $booking) {
+            if (!isset($sold[$booking->getArticle()->getId()]))
+                $sold[$booking->getArticle()->getId()] = 0;
+            $sold[$booking->getArticle()->getId()] += $booking->getNumber();
+        }
+
+        $result = array();
+        foreach($articles as $article) {
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->title = $article->getMainArticle()->getTitle();
+            $item->authors = $article->getMainArticle()->getAuthors();
+            $item->price = number_format($article->getSellPrice()/100, 2);
+            $item->discounts = array();
+
+            foreach($article->getDiscounts() as $discount) {
+                $item->discounts[] = array(
+                    'type' => $this->getTranslator()->translate($discount->getType()),
+                    'price' => number_format($discount->apply($article->getSellPrice())/100, 2),
+                );
+            }
+
+            $item->bookable = $article->isBookable() && ($bookingsEnabled || in_array($article->getId(), $bookingsClosedExceptions));
+            $item->booked = isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0;
+            $item->sold = isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0;
+            $item->comments = array();
+
+            $comments = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Comments\Comment')
+                ->findAllSiteByArticle($article->getMainArticle());
+
+            foreach($comments as $comment) {
+                $item->comments[] = $comment->getText();
+            }
+
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    public function bookSearchAction()
+    {
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            $bookingsEnabled = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.enable_bookings') == '1';
+
+            $bookingsClosedExceptions = unserialize(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.bookings_closed_exceptions')
+            );
+
+            $enableAssignment = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.enable_automatic_assignment');
+
+            $currentPeriod = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period')
+                ->findOneActive();
+            $currentPeriod->setEntityManager($this->getEntityManager());
+
+            foreach($formData as $id => $number) {
+                $article = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findOneById($id);
+
+                if (null === $article || !is_numeric($number))
+                    continue;
+
+                if ($article->isBookable() && ($bookingsEnabled || in_array($article->getId(), $bookingsClosedExceptions))) {
+                    $booking = new Booking(
+                        $this->getEntityManager(),
+                        $this->getAuthentication()->getPersonObject(),
+                        $article,
+                        'booked',
+                        $number
+                    );
+
+                    $this->getEntityManager()->persist($booking);
+
+                    if ($enableAssignment == '1') {
+                        $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                        if ($available > 0) {
+                            if ($available >= $booking->getNumber()) {
+                                $booking->setStatus('assigned', $this->getEntityManager());
+                            } else {
+                                $new = new Booking(
+                                    $this->getEntityManager(),
+                                    $booking->getPerson(),
+                                    $booking->getArticle(),
+                                    'booked',
+                                    $booking->getNumber() - $available
+                                );
+
+                                $this->getEntityManager()->persist($new);
+                                $booking->setNumber($available)
+                                    ->setStatus('assigned', $this->getEntityManager());
+                            }
+                        }
+                    }
+                }
+            }
+
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCES',
+                    'The textbooks have been booked!'
+                )
+            );
+
+            return new ViewModel(
+                array(
+                    'result' => array('status' => 'success'),
+                )
+            );
+        }
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'ERROR',
+                'The textbooks couldn\'t be booked!'
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'result' => array('status' => 'error'),
+            )
+        );
+    }
+
     private function _getBooking()
     {
-        if (null === $this->getParam('id'))
+        if (null === $this->getParam('id') || !is_numeric($this->getParam('id')))
             return;
 
         $booking = $this->getEntityManager()

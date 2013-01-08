@@ -421,7 +421,7 @@ VTK Cudi
                         'index'
                     ),
                     'booking' => array(
-                        'book', 'cancel', 'view',
+                        'book', 'bookSearch', 'cancel', 'search', 'view'
                     ),
                 )
             )
