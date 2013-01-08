@@ -51,4 +51,9 @@ return array(
     'Discounts' => 'Discounts',
     'Member' => 'Member',
     'Acco' => 'Acco',
+
+    'Search' => 'Search',
+    'Stop Search' => 'Stop Search',
+    'Search String' => 'Search String',
+    'No Articles Found' => 'No Articles Found',
 );

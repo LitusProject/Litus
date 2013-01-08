@@ -51,4 +51,9 @@ return array(
     'Discounts' => 'Kortingen',
     'Member' => 'Lid',
     'Acco' => 'Acco',
+
+    'Search' => 'Zoeken',
+    'Stop Search' => 'Stop Zoeken',
+    'Search String' => 'Zoek Opdracht',
+    'No Articles Found' => 'Geen Artikels Gevonden',
 );
