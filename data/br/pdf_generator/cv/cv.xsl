@@ -152,10 +152,10 @@
                             <fo:block></fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block font-weight="bold">Oral Skills</fo:block>
+                            <fo:block font-weight="bold"><xsl:value-of select="@oral"/></fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block font-weight="bold">Written Skills</fo:block>
+                            <fo:block font-weight="bold"><xsl:value-of select="@written"/></fo:block>
                         </fo:table-cell>
                     </fo:table-row>
                 </fo:table-header>

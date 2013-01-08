@@ -60,7 +60,12 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $file = new TmpFile();
         $year = $this->getAcademicYear();
 
-        $document = new CvBookGenerator($this->getEntityManager(), $year, $file);
+        $translator = $this->getTranslator();
+        $locale = $this->getEntityManager()
+            ->getRepository('CommonBUndle\Entity\General\Config')
+            ->getConfigValue('br.cv_book_language');
+        $translator->setLocale($locale);
+        $document = new CvBookGenerator($this->getEntityManager(), $year, $file, $translator);
 
         $document->generate();
 

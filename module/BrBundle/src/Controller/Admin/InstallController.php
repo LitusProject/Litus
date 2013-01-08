@@ -81,6 +81,11 @@ The VTK Corporate Team',
                     ),
                     'description' => 'The default languages present in the CV book form',
                 ),
+                array(
+                    'key'         => 'br.cv_book_language',
+                    'value'       => 'nl',
+                    'description' => 'The language used in the printed version of the CV Book',
+                ),
             )
         );
     }
