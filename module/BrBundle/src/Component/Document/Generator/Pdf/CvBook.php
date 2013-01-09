@@ -88,6 +88,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 'cvbook',
                 array(
                     'logo' => $logoPath,
+                    'index' => $this->_translator->translate('Alphabetical Index'),
+                    'toc' => $this->_translator->translate('Table of Contents'),
+                    'fw' => $this->_translator->translate('Foreword'),
                 ),
                 $groups
             )

@@ -17,7 +17,7 @@
 
             <!-- Set a marker: change the footer text -->
             <fo:marker marker-class-name="footer-text">
-                Alfabetische Index
+                <xsl:value-of select="/cvbook/@index"/>
             </fo:marker>
 
             <!-- Title -->
@@ -25,7 +25,7 @@
                 line-height="{$title-line-height}"
                 font-size="{$title-font-size}pt">
 
-                Alfabetische Index
+                <xsl:value-of select="/cvbook/@index"/>
 
             </fo:block>
 
