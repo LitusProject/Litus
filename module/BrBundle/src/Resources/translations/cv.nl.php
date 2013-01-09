@@ -84,4 +84,8 @@ return array(
     "Mobility in the World" => "Mobiliteit in de Wereld",
     "About Myself" => "Over Mijzelf",
 
+    "Alphabetical Index" => "Alfabetische Index",
+    "Table of Contents" => "Inhoudstafel",
+    "Foreword" => "Voorwoord",
+
 );

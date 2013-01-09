@@ -12,6 +12,7 @@
     <xsl:import href="config.xsl"/>
     <xsl:import href="footer.xsl"/>
 
+    <xsl:import href="foreword.xsl"/>
     <xsl:import href="toc.xsl"/>
     <xsl:import href="cvgroup.xsl"/>
     <xsl:import href="index.xsl"/>
@@ -78,6 +79,9 @@
 
                 <!-- The body -->
                 <fo:flow flow-name="xsl-region-body">
+
+                    <!-- Foreword -->
+                    <xsl:call-template name="foreword"/>
 
                     <!-- Table of contents -->
                     <xsl:call-template name="toc"/>
