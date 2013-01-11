@@ -86,6 +86,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     )
                 )
             );
+
         if (null !== $article->getSaleArticle($previousAcademicYear)) {
             $this->redirect()->toRoute(
                 'admin_sales_article',
@@ -98,7 +99,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $form = new AddForm($this->getEntityManager());
 
         $precalculatedSellPrice = $article->isInternal() ? $article->precalculateSellPrice($this->getEntityManager()) : 0;
         $precalculatedPurchasePrice = $article->isInternal() ? $article->precalculatePurchasePrice($this->getEntityManager()) : 0;
