@@ -42,6 +42,19 @@ return array(
                     ),
                 ),
             ),
+            'admin_calendar_registration' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/site/calendar/registration[/:action][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_calendar_registration',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'calendar' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -107,8 +120,9 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'calendar_install' => 'CalendarBundle\Controller\Admin\InstallController',
-            'admin_calendar'   => 'CalendarBundle\Controller\Admin\CalendarController',
+            'calendar_install'            => 'CalendarBundle\Controller\Admin\InstallController',
+            'admin_calendar'              => 'CalendarBundle\Controller\Admin\CalendarController',
+            'admin_calendar_registration' => 'CalendarBundle\Controller\Admin\RegistrationController',
 
             'calendar'  => 'CalendarBundle\Controller\CalendarController',
         ),
