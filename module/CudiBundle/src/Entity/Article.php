@@ -106,7 +106,7 @@ abstract class Article
     /**
      * @var boolean The flag whether the article is just created by a prof
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="is_prof", type="boolean")
      */
     private $isProf;
 
