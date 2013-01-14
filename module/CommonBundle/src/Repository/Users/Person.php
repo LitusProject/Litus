@@ -2,7 +2,8 @@
 
 namespace CommonBundle\Repository\Users;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Person
@@ -12,7 +13,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class Person extends EntityRepository
 {
-
     public function findOneById($id)
     {
         $query = $this->_em->createQueryBuilder();
@@ -111,7 +111,6 @@ class Person extends EntityRepository
         return null;
     }
 
-
     public function findAllByNameTypeahead($name)
     {
         $query = $this->_em->createQueryBuilder();
@@ -140,5 +139,27 @@ class Person extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    public function findAllMembers(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('CommonBundle\Entity\Users\Statuses\Organization', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->neq('s.status', '\'non_member\''),
+                    $query->expr()->eq('s.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+
+        $persons = array();
+        foreach($resultSet as $result)
+            $persons[] = $result->getPerson();
+
+        return $persons;
     }
 }
