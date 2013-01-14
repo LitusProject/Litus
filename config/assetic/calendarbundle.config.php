@@ -31,6 +31,12 @@ return array(
             '@gollum_js',
             '@admin_css',
         ),
+        'admin_calendar_registration' => array(
+            '@common_jquery',
+            '@admin_js',
+            '@admin_css',
+            '@common_download_file',
+        ),
         'calendar' => array(
             '@common_jquery',
             '@bootstrap_css',
