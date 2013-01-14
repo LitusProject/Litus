@@ -15,7 +15,7 @@
     <!-- A group of cvs -->
     <xsl:template match="cvgroup">
         <!-- A separation page -->
-        <fo:block break-before="page">
+        <fo:block break-before="odd-page">
 
             <!-- Set the id -->
             <xsl:attribute name="id">
@@ -56,6 +56,8 @@
 
         </fo:block>
 
+        <!-- Additional page break, to leave the back of the title page blank -->
+        <fo:block break-before="page"/>
         <!-- Add the CVs -->
         <xsl:apply-templates/>
     </xsl:template>
