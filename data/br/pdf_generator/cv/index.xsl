@@ -13,7 +13,7 @@
 
     <!-- The table of contents -->
     <xsl:template name="index">
-        <fo:block break-before="page">
+        <fo:block break-before="odd-page">
 
             <!-- Set a marker: change the footer text -->
             <fo:marker marker-class-name="footer-text">
