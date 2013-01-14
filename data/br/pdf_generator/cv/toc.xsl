@@ -35,7 +35,7 @@
 
                 <fo:table-body>
 
-                    <xsl:for-each select="/cvbook/cvgroup">
+                    <xsl:for-each select="/cvbook/cvs/cvgroup">
                         <fo:table-row>
                             <fo:table-cell>
 
