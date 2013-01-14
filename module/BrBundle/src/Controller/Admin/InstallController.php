@@ -70,21 +70,18 @@ The VTK Corporate Team',
                     'description' => 'The mail subject when an account is activated',
                 ),
                 array(
-                    'key'         => 'br.cv_default_languages',
-                    'value'       => serialize(
-                        array(
-                            'nl' => 'Dutch',
-                            'fr' => 'French',
-                            'de' => 'German',
-                            'en' => 'English',
-                        )
-                    ),
-                    'description' => 'The default languages present in the CV book form',
-                ),
-                array(
                     'key'         => 'br.cv_book_language',
                     'value'       => 'nl',
                     'description' => 'The language used in the printed version of the CV Book',
+                ),
+                array(
+                    'key'         => 'br.cv_book_foreword',
+                    'value'       => '<section title="Example section">
+    <content>
+        Example content of this section.
+    </content>
+</section>',
+                    'description' => 'The foreword of the CV Book',
                 ),
             )
         );

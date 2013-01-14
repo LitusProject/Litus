@@ -35,7 +35,7 @@
 
                 <fo:table-body>
 
-                    <xsl:for-each select="/cvbook/cvgroup/cv">
+                    <xsl:for-each select="/cvbook/cvs/cvgroup/cv">
 
                         <xsl:sort select="@lastname"/>
                         <xsl:sort select="@firstname"/>
