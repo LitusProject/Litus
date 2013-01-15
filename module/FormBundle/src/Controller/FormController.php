@@ -158,6 +158,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                     $mail->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
+                    if ($formSpecification->getMailBcc())
+                        $mail->addBcc($mailAddress);
+
                     if ('development' != getenv('APPLICATION_ENV'))
                         $this->getMailTransport()->send($mail);
                 }
