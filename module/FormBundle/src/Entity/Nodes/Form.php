@@ -20,6 +20,7 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Nodes\Entry,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -324,12 +325,28 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         return $this->mailBody;
     }
 
-    public function getCompletedMailBody(Entry $entry) {
+    public function getCompletedMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
         $body = $this->getMailBody();
         $body = str_replace('%id%', $entry->getId(), $body);
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
         $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
+
+        $body = str_replace('%entry_summary%', $this->_getSummary($entityManager, $entry, $language));
+
         return $body;
+    }
+
+    private function _getSummary(EntityManager $entityManager, Entry $entry, Language $language) {
+        $fieldEntries = $entityManager->getRepository('FormBundle\Entity\Entry')
+            ->findAllByFormEntry($entry);
+
+        $result = '';
+        foreach ($fieldEntries as $fieldEntry) {
+            $result = $result . $fieldEntry->getField()->getLabel($language) . ': ' . $fieldEntry->getValueString($language) . '
+';
+        }
+
+        return $result;
     }
 
     /**
