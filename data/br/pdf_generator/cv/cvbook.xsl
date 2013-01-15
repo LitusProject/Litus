@@ -81,13 +81,13 @@
                 <fo:flow flow-name="xsl-region-body">
 
                     <!-- Foreword -->
-                    <xsl:call-template name="foreword"/>
+                    <xsl:apply-templates select="foreword"/>
 
                     <!-- Table of contents -->
                     <xsl:call-template name="toc"/>
 
                     <!-- The actual content: the cvs -->
-                    <xsl:apply-templates/>
+                    <xsl:apply-templates select="cvs"/>
 
                     <!-- The alphabetical index -->
                     <xsl:call-template name="index"/>

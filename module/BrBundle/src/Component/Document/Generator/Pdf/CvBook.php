@@ -73,8 +73,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         // Generate the xml
         $data = Util::getGrouped($this->_entityManager, $this->_year);
 
-        // Process each cv
+        // Add the groups
         $groups = array();
+
         foreach ($data as $studyData) {
             $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
         }
@@ -83,6 +84,10 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_logo');
 
+        $foreword = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_book_foreword');
+
         $xml->append(
             new Object(
                 'cvbook',
@@ -90,9 +95,21 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                     'logo' => $logoPath,
                     'index' => $this->_translator->translate('Alphabetical Index'),
                     'toc' => $this->_translator->translate('Table of Contents'),
-                    'fw' => $this->_translator->translate('Foreword'),
                 ),
-                $groups
+                array(
+                    new Object(
+                        'foreword',
+                        array(
+                            'title' => $this->_translator->translate('Foreword'),
+                        ),
+                        Object::fromString($foreword)
+                    ),
+                    new Object(
+                        'cvs',
+                        null,
+                        $groups
+                    )
+                )
             )
         );
     }
