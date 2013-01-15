@@ -73,7 +73,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $formData['non_members'],
                     $formData['mail'],
                     $formData['mail_subject'],
-                    $formData['mail_body']
+                    $formData['mail_body'],
+                    $formData['mail_from'],
+                    $formData['mail_bcc']
                 );
 
                 $this->getEntityManager()->persist($form);
@@ -175,7 +177,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->setNonMember($formData['non_members'])
                     ->setMail($formData['mail'])
                     ->setMailSubject($formData['mail_subject'])
-                    ->setMailBody($formData['mail_body']);
+                    ->setMailBody($formData['mail_body'])
+                    ->setMailFrom($formData['mail_from'])
+                    ->setMailBcc($formData['mail_bcc']);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')

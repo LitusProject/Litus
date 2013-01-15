@@ -58,6 +58,8 @@ class Edit extends Add
             'mail'         => $form->hasMail(),
             'mail_subject' => $form->getMailSubject(),
             'mail_body'    => $form->getMailBody(),
+            'mail_from'    => $form->getMailFrom(),
+            'mail_bcc'     => $form->getMailBcc(),
         );
 
         foreach($this->getLanguages() as $language) {
