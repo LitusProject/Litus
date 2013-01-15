@@ -331,7 +331,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
         $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
 
-        $body = str_replace('%entry_summary%', $this->_getSummary($entityManager, $entry, $language));
+        $body = str_replace('%entry_summary%', $this->_getSummary($entityManager, $entry, $language), $body);
 
         return $body;
     }
