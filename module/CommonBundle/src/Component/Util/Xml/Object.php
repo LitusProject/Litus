@@ -84,6 +84,19 @@ class Object
     }
 
     /**
+     * Creates an XML object directly from a given XML string.
+     *
+     * @param string $xmlString The content of the object
+     * @return Object
+     */
+    public static function fromString($xmlString)
+    {
+        $result = new Object('tag');
+        $result->_content = $xmlString;
+        return $result;
+    }
+
+    /**
      * Converts an UTF-8 value to HTML.
      *
      * @param string $value The value that should be converted

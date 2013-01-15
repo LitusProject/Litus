@@ -50,4 +50,7 @@
     <xsl:variable name="footer-top-padding"         select="0.5"/>
     <xsl:variable name="footer-text-top-padding"    select="1.9"/>
 
+    <!-- Foreword font size decrease -->
+    <xsl:variable name="font-size-decrease"         select="1.5"/>
+
 </xsl:stylesheet>
