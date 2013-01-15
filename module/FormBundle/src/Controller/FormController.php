@@ -152,7 +152,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $mailAddress = $formSpecification->getMailFrom();
 
                     $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry))
+                    $mail->setBody($formSpecification->getCompletedMailBody($this->getEntityManager(), $formEntry, $this->getLanguage()))
                         ->setFrom($mailAddress)
                         ->setSubject($formSpecification->getMailSubject());
 

@@ -44,10 +44,12 @@ class Entry extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Entry', 'n')
+            ->innerJoin('n.field', 'f')
             ->where(
                 $query->expr()->eq('n.formEntry', ':formEntry')
             )
             ->setParameter('formEntry', $formEntry)
+            ->orderBy('f.order', 'ASC')
             ->getQuery()
             ->getResult();
 
