@@ -73,7 +73,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'admin_subject',
                     array(
-                        'action' => 'subject',
+                        'action' => 'edit',
                         'id' => $subject->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
