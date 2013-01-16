@@ -123,6 +123,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setAttribute('id', 'mail_form');
         $this->add($mail);
 
+        $field = new Text('mail_from');
+        $field->setLabel('Mail Sender Address')
+            ->setRequired();
+        $mail->add($field);
+
+        $field = new Checkbox('mail_bcc');
+        $field->setLabel('Send BCC to sender for every entry')
+            ->setValue(true);
+        $mail->add($field);
+
         $field = new Text('mail_subject');
         $field->setLabel('Subject')
             ->setRequired();
@@ -209,6 +219,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 )
             )
         );
+
+        if ($this->data['mail']) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'mail_from',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
+                        ),
+                    )
+                )
+            );
+        }
 
         foreach($this->getLanguages() as $language) {
             $inputFilter->add(
