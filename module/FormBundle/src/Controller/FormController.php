@@ -149,20 +149,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 if ($formSpecification->hasMail()) {
 
-                    $mailAddress = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('system_mail_address');
-
-                    $mailName = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('system_mail_name');
+                    $mailAddress = $formSpecification->getMailFrom();
 
                     $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry))
-                        ->setFrom($mailAddress, $mailName)
+                    $mail->setBody($formSpecification->getCompletedMailBody($this->getEntityManager(), $formEntry, $this->getLanguage()))
+                        ->setFrom($mailAddress)
                         ->setSubject($formSpecification->getMailSubject());
 
                     $mail->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
+
+                    if ($formSpecification->getMailBcc())
+                        $mail->addBcc($mailAddress);
 
                     if ('development' != getenv('APPLICATION_ENV'))
                         $this->getMailTransport()->send($mail);

@@ -20,6 +20,7 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Nodes\Entry,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -111,6 +112,20 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     private $mailBody;
 
     /**
+     * @var string The email address from which the mail is sent.
+     *
+     * @ORM\Column(name="mail_from", type="text")
+     */
+    private $mailFrom;
+
+    /**
+     * @var boolean Whether to send a copy to the sender or not.
+     *
+     * @ORM\Column(name="mail_bcc", type="boolean")
+     */
+    private $mailBcc;
+
+    /**
      * @var array The translations of this form
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Nodes\Translation", mappedBy="form", cascade={"remove"})
@@ -126,7 +141,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      * @param string $mailSubject The subject of the mail.
      * @param string $mailBody The body of the mail.
      */
-    public function __construct($person, $startDate, $endDate, $active, $max, $multiple, $nonMember, $mail, $mailSubject, $mailBody)
+    public function __construct($person, $startDate, $endDate, $active, $max, $multiple, $nonMember, $mail, $mailSubject, $mailBody, $mailFrom, $mailBcc)
     {
         parent::__construct($person);
 
@@ -141,6 +156,8 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         $this->mail = $mail;
         $this->mailSubject = $mailSubject;
         $this->mailBody = $mailBody;
+        $this->mailFrom = $mailFrom;
+        $this->mailBcc = $mailBcc;
     }
 
     /**
@@ -308,12 +325,62 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         return $this->mailBody;
     }
 
-    public function getCompletedMailBody(Entry $entry) {
+    public function getCompletedMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
         $body = $this->getMailBody();
         $body = str_replace('%id%', $entry->getId(), $body);
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
         $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
+
+        $body = str_replace('%entry_summary%', $this->_getSummary($entityManager, $entry, $language), $body);
+
         return $body;
+    }
+
+    private function _getSummary(EntityManager $entityManager, Entry $entry, Language $language) {
+        $fieldEntries = $entityManager->getRepository('FormBundle\Entity\Entry')
+            ->findAllByFormEntry($entry);
+
+        $result = '';
+        foreach ($fieldEntries as $fieldEntry) {
+            $result = $result . $fieldEntry->getField()->getLabel($language) . ': ' . $fieldEntry->getValueString($language) . '
+';
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailFrom() {
+        return $this->mailFrom;
+    }
+
+    /**
+     * @param string $mailFrom
+     *
+     * @return \FromBundle\Entity\Nodes\Form
+     */
+    public function setMailFrom($mailFrom) {
+        $this->mailFrom = $mailFrom;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMailBcc() {
+        return $this->mailBcc;
+    }
+
+    /**
+     * @param boolean $mailBcc
+     *
+     * @return \FromBundle\Entity\Nodes\Form
+     */
+    public function setMailBcc($mailBcc) {
+        $this->mailBcc = $mailBcc;
+        return $this;
     }
 
     /**
