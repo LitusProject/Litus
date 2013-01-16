@@ -8,7 +8,6 @@
 	<div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-
 	</div>
 	<aside>
 	    {% if hasAccess('admin_form_field', 'manage') %}
@@ -45,7 +44,7 @@
 
         $(document).ready(function () {
             $('#languages a:first').click();
-            $('textarea.md').gollum();
+            $('textarea.md').gollum({'width': '400px'});
             $('#mail').click(toggleMail);
             toggleMail();
 
