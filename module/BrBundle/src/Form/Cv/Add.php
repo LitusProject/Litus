@@ -14,9 +14,9 @@
 
 namespace BrBundle\Form\Cv;
 
-use BrBundle\Component\Validator\FieldLength as LengthValidator,
-    BrBundle\Entity\Cv\Entry as CvEntry,
+use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Entity\Cv\Language as CvLanguage,
+    CommonBundle\Component\Validator\FieldLength as LengthValidator,
     CommonBundle\Component\Form\Bootstrap\Element\Button,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Hidden,

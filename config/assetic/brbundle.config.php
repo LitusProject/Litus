@@ -169,6 +169,7 @@ return array(
         ),
         'cv_index' => array(
             '@common_jquery',
+            '@common_fieldcount',
             '@cv_css',
             '@bootstrap_css',
             '@bootstrap_responsive_css',

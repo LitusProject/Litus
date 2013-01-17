@@ -411,6 +411,11 @@ return array(
                             'common/js/downloadFile.js',
                         ),
                     ),
+                    'common_fieldcount' => array(
+                        'assets'  => array(
+                            'common/js/fieldcount.js',
+                        ),
+                    ),
                     'common_typeahead_remote' => array(
                         'assets'  => array(
                             'common/js/typeaheadRemote.js',

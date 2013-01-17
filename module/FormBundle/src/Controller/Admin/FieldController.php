@@ -109,7 +109,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         $field = new StringField(
                             $formSpecification,
                             $formData['order'],
-                            $formData['required']
+                            $formData['required'],
+                            $formData['length']
                         );
                         break;
                     case 'dropdown':

@@ -73,14 +73,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
-            $option_form = new Collection('option_form_' . $language->getAbbrev());
-            $option_form->setLabel('Options')
-                ->setAttribute('class', 'option_form hide');
-            $pane->add($option_form);
+            $dropdown_form = new Collection('dropdown_form_' . $language->getAbbrev());
+            $dropdown_form->setLabel('Options')
+                ->setAttribute('class', 'dropdown_form extra_form hide');
+            $pane->add($dropdown_form);
 
             $field = new Text('options_' . $language->getAbbrev());
             $field->setLabel('Options');
-            $option_form->add($field);
+            $dropdown_form->add($field);
 
             $tabContent->add($pane);
         }
@@ -101,6 +101,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Checkbox('required');
         $field->setLabel('Required');
         $this->add($field);
+
+        $string_form = new Collection('string_form');
+        $string_form->setLabel('String Options')
+            ->setAttribute('class', 'string_form extra_form hide');
+        $this->add($string_form);
+
+        $field = new Text('length');
+        $field->setLabel('Max. Length (or Infinite)');
+        $string_form->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -137,6 +146,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'length',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits'
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'order',
                     'required' => true,
                     'filters'  => array(
@@ -150,7 +176,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
-        
+
         return $inputFilter;
     }
 }

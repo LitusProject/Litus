@@ -32,13 +32,41 @@ class String extends Field
 {
 
     /**
+     * @var int The maximum length of this string field.
+     *
+     * @ORM\Column(name="max_length", type="bigint", nullable=true)
+     */
+    private $maxLength;
+
+    /**
      * @param FormBundle\Entity\Nodes\Form $form
      * @param integer $order
      * @param bool $required
      */
-    public function __construct($form, $order, $required)
+    public function __construct($form, $order, $required, $maxLength)
     {
         parent::__construct($form, $order, $required);
+        $this->maxLength = $maxLength;
+    }
+
+    /**
+     * Returns the maximum length of this string field.
+     *
+     * @return The maximum length
+     */
+    public function getMaxLength()
+    {
+        return $this->maxLength;
+    }
+
+    /**
+     * Returns whether this field has a maximum length or not.
+     *
+     * @return True if and only if the maximum length is not null and not zero.
+     */
+    public function hasMaxLength()
+    {
+        return $this->maxLength !== NULL && $this->maxLength != 0;
     }
 
     public function getValueString(Language $language, $value) {
