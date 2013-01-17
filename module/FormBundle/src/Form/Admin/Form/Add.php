@@ -53,6 +53,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->_entityManager = $entityManager;
 
         $tabs = new Tabs('languages');
+        $tabs->setAttribute('class', 'table_default_width');
         $this->add($tabs);
 
         $tabContent = new TabContent('tab_content');

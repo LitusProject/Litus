@@ -156,8 +156,17 @@ class Article extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $mapping)
-            $ids[] = $mapping->getArticle()->getId();
+        foreach($resultSet as $mapping) {
+            $edited = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllByEntityAndPreviousIdAndAction('article', $mapping->getArticle()->getId(), 'edit');
+
+            if (isset($edited[0])) {
+                $ids[] = $edited[0]->getEntityId();
+            } else {
+                $ids[] = $mapping->getArticle()->getId();
+            }
+        }
 
         $added = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
