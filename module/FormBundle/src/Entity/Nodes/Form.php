@@ -473,4 +473,23 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         return false;
     }
 
+    /**
+     * Returns the value for the given entry and field.
+     *
+     * @param entry The entry to find the value for.
+     * @param field The field to find the value for.
+     * @param language The language to get the value in.
+     *
+     * @return The value.
+     */
+    public function getValueFor($entry, $field, $language)
+    {
+        foreach ($entry->getFieldEntries() as $fieldEntry) {
+            if ($fieldEntry->getField()->getId() === $field->getId()) {
+                return $fieldEntry->getValueString($language);
+            }
+        }
+        return '';
+    }
+
 }

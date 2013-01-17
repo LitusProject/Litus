@@ -17,6 +17,7 @@ namespace FormBundle\Form;
 use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     CommonBundle\Component\Validator\FieldLength as LengthValidator,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
@@ -79,7 +80,14 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
 
         foreach ($fields as $fieldSpecification) {
             if ($fieldSpecification instanceof StringField) {
-                $field = new Text('field-' . $fieldSpecification->getId());
+
+                if ($fieldSpecification->isMultiLine()) {
+                    $field = new TextArea('field-' . $fieldSpecification->getId());
+                    $field->setAttribute('rows', 3);
+                } else {
+                    $field = new Text('field-' . $fieldSpecification->getId());
+                }
+
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setRequired($fieldSpecification->isRequired());
 

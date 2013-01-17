@@ -165,15 +165,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $this->getMailTransport()->send($mail);
                 }
 
-                $this->redirect()->toRoute(
-                    'form_view',
-                    array
-                    (
-                        'action'   => 'complete',
-                        'id'       => $formSpecification->getId(),
-                        'language' => $this->getLanguage()->getAbbrev(),
-                    )
-                );
+                // $this->redirect()->toRoute(
+                //     'form_view',
+                //     array
+                //     (
+                //         'action'   => 'complete',
+                //         'id'       => $formSpecification->getId(),
+                //         'language' => $this->getLanguage()->getAbbrev(),
+                //     )
+                // );
 
                 return new ViewModel();
             }

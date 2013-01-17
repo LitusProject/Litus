@@ -39,14 +39,24 @@ class String extends Field
     private $maxLength;
 
     /**
+     * @var boolean Whether this is a multiline text field.
+     *
+     * @ORM\Column(name="multiline", type="boolean")
+     */
+    private $multiLine;
+
+    /**
      * @param FormBundle\Entity\Nodes\Form $form
      * @param integer $order
      * @param bool $required
+     * @param integer $maxLength
+     * @param bool $multiLine
      */
-    public function __construct($form, $order, $required, $maxLength)
+    public function __construct($form, $order, $required, $maxLength, $multiLine)
     {
         parent::__construct($form, $order, $required);
         $this->maxLength = $maxLength;
+        $this->multiLine = $multiLine;
     }
 
     /**
@@ -57,6 +67,16 @@ class String extends Field
     public function getMaxLength()
     {
         return $this->maxLength;
+    }
+
+    /**
+     * Returns whether this is a multiline field.
+     *
+     * @return True if and only if this is a multiline field.
+     */
+    public function isMultiLine()
+    {
+        return $this->multiLine;
     }
 
     /**

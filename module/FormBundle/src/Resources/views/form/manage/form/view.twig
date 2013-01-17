@@ -49,7 +49,7 @@
     				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
 
 	    			{% for field in fields %}
-	    				<td class="column-{{ field.getId() }}"></td>
+	    				<td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
     				{% endfor %}
 
     				{% if canedit %}
@@ -98,13 +98,6 @@
 		$(document).ready(function() {
 
 			$('.item .delete').click(openModal);
-
-			// Very cumbersome solution to make sure the field entries are filled in the right column
-			{% for entry in entries %}
-				{% for fieldentry in entry.getFieldEntries() %}
-					$('.item-{{ entry.getId() }} .column-{{ fieldentry.getField().getId() }}').text("{{ fieldentry.getValueString(language) }}");
-				{% endfor %}
-			{% endfor %}
 
 		});
 
