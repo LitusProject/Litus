@@ -111,6 +111,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Max. Length (or Infinite)');
         $string_form->add($field);
 
+        $field = new Checkbox('multiline');
+        $field->setLabel('Multiline');
+        $string_form->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'field_add');
