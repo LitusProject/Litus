@@ -12,11 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Validator;
-
-use CommonBundle\Component\Util\Url,
-    Doctrine\ORM\EntityManager,
-    BrBundle\Entity\Company;
+namespace CommonBundle\Component\Validator;
 
 /**
  * Checks the length of a field.
@@ -45,8 +41,8 @@ class FieldLength extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Company The company exluded from this check
+     * @param $maxLength The maximum length of the value
+     * @param $newlineLength A newline is interpreted as this number of characters.
      * @param mixed $opts The validator's options
      */
     public function __construct($maxLength, $newlineLength, $opts = null)

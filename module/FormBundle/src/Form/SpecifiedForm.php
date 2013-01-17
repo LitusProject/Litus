@@ -17,6 +17,7 @@ namespace FormBundle\Form;
 use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Validator\FieldLength as LengthValidator,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
@@ -81,6 +82,12 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
                 $field = new Text('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setRequired($fieldSpecification->isRequired());
+
+                if ($fieldSpecification->hasMaxLength()) {
+                    $field->setAttribute('class', $field->getAttribute('class') . ' count')
+                        ->setAttribute('data-count', $fieldSpecification->getMaxLength());
+                }
+
                 $this->add($field);
             } elseif ($fieldSpecification instanceof Dropdown) {
                 $field = new Select('field-' . $fieldSpecification->getId());
@@ -127,6 +134,15 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
 
         foreach ($this->_form->getFields() as $fieldSpecification) {
             if ($fieldSpecification instanceof StringField) {
+                $validators = array();
+
+                if ($fieldSpecification->hasMaxLength()) {
+                    $validators[] = new LengthValidator(
+                        $fieldSpecification->getMaxLength(),
+                        1 // An enter is only one character
+                    );
+                }
+
                 $inputFilter->add(
                     $factory->createInput(
                         array(
@@ -135,6 +151,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
+                            'validators' => $validators,
                         )
                     )
                 );

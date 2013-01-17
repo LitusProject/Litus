@@ -47,6 +47,7 @@ return array(
         ),
         'form_view' => array(
             '@common_jquery',
+            '@common_fieldcount',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
             '@site_css',

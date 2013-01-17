@@ -22,17 +22,12 @@
         $(document).ready(function () {
             $('#languages a:first').click();
             $('#type').change(toggleType);
+            toggleType();
         });
 
         function toggleType() {
-        	toggleOptions();
-        }
-
-        function toggleOptions() {
-        	if ('string' == $('#type').val() || 'checkbox' == $('#type').val())
-        		$('.option_form').addClass('hide');
-        	else
-        		$('.option_form').removeClass('hide');
+            $('.extra_form').addClass('hide');
+            $('.' + $('#type').val() + '_form').removeClass('hide');
         }
 
     </script>
