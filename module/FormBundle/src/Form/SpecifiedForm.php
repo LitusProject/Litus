@@ -124,8 +124,6 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
             $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
             $formData['last_name'] = $entry->getGuestInfo()->getLastName();
             $formData['email'] = $entry->getGuestInfo()->getEmail();
-        } else {
-            $formData['first_name'] = "bla";
         }
 
         foreach ($entry->getFieldEntries() as $fieldEntry) {
