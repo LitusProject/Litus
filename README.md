@@ -9,7 +9,7 @@ You are running a student organization and need some supporting applications, bu
 This is only the tip of the iceberg and there is a lot more inside! You can easily try it out by installing it locally. You'll find some installation instructions on our [wiki](https://github.com/LitusProject/Litus/wiki).
 
 ### License
-Because we spent a great deal of time on this project, we thought it would be nice to release all our code under the GPLv3 license. That way, you can contribute to it if you have a great idea or you think something's missing. We also wrote a lot of code to use various protocols and to integrate with other applications.
+Because we spent a great deal of time on this project, we thought it would be nice to release all our code under the AGPLv3 license. That way, you can contribute to it if you have a great idea or you think something's missing. We also wrote a lot of code to use various protocols and to integrate with other applications.
 
 Wrote a nice new feature? Solved a bug? Just shoot us a pull request and we'll review it! However, when contributing some code to the project, please take a look at our [Coding Style](https://github.com/LitusProject/Litus/wiki/Style) first.
 
