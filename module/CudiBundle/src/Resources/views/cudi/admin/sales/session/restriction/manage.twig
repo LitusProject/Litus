@@ -1,0 +1,40 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sales/session/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Sale Session</h1>
+        <p>Manager: <b>{{ session.getManager().getFullName() }}</b></p>
+        <p>Date openend: <b>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</b></p>
+        {% if not session.isOpen() %}<p>Date closed: <b>{{ session.getCloseDate().format('Y-m-d H:i:s')}}</b></p>{% endif %}
+        <br />
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br style="clear:both"/>
+        <br style="clear:both"/>
+
+        <table class="full_width manage">
+
+            <tr>
+                <th>Type</th>
+                <th width="120px">Start Value</th>
+                <th width="120px">End Value</th>
+                <th width="90px">Action</th>
+            </tr>
+
+            {% for restriction in restrictions %}
+                <tr>
+                    <td>{{ restriction.getType() }}</td>
+                    <td>{{ restriction.getStartValue() }}</td>
+                    <td>{{ restriction.getEndValue() }}</td>
+                    <td class="actions">
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
