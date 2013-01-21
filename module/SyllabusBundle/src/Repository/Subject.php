@@ -2,7 +2,9 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear as UtilAcademicYear,
+    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
 
@@ -40,5 +42,30 @@ class Subject extends EntityRepository
             $subjects[$map->getSubject()->getId()] = $map->getSubject();
 
         return $subjects;
+    }
+
+    public function getYearsByPerson(Person $person)
+    {
+        $years = array();
+
+        $startAcademicYear = UtilAcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        $studies = $this->_em->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($person, $academicYear);
+
+        foreach($studies as $studyMap) {
+            $year = $studyMap->getStudy()->getPhase();
+            if (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'master') !== false)
+                $years[$year+3] = $year+3;
+            elseif (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'bachelor') !== false)
+                $years[$year] = $year;
+        }
+
+        return $years;
     }
 }

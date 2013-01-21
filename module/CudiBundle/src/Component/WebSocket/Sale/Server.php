@@ -282,7 +282,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($user->getExtraData('session'));
 
-        $this->_queue->addPerson($session, $universityIdentification);
+        $this->_queue->addPerson($session, $universityIdentification, true);
     }
 
     private function _startCollecting(User $user, $id)

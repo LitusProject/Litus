@@ -14,7 +14,9 @@
 
 namespace CudiBundle\Entity\Sales\Session;
 
-use CudiBundle\Entity\Sales\Session,
+use CommonBundle\Entity\Users\Person,
+    CudiBundle\Entity\Sales\Session,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,7 +37,7 @@ class Restriction
     /**
      * @var \CudiBundle\Entity\Sales\Session The session of the queue item
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session", inversedBy="restrictions")
      * @ORM\JoinColumn(name="session", referencedColumnName="id")
      */
     private $session;
@@ -70,6 +72,17 @@ class Restriction
     );
 
     /**
+     * @var array The possible states of a queue item
+     */
+    public static $POSSIBLE_YEARS = array(
+        '1' => '1st Bachelor',
+        '2' => '2nd Bachelor',
+        '3' => '3th Bachelor',
+        '4' => '1st Master',
+        '5' => '2nd Master',
+    );
+
+    /**
      * @param \CudiBundle\Entity\Sales\Session $session
      * @param string $type
      * @param string $startValue
@@ -81,8 +94,8 @@ class Restriction
             throw new \InvalidArgumentException('The type is not valid.');
 
         $this->session = $session;
-        $this->startValue = $startValue;
-        $this->endValue = $endValue;
+        $this->startValue = strtolower($startValue);
+        $this->endValue = strtolower($endValue);
         $this->type = $type;
     }
 
@@ -131,6 +144,16 @@ class Restriction
      */
     public function getStartValue()
     {
+        if ('year' == $this->type)
+            return self::$POSSIBLE_YEARS[$this->startValue];
+        return $this->startValue;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawStartValue()
+    {
         return $this->startValue;
     }
 
@@ -139,6 +162,45 @@ class Restriction
      */
     public function getEndValue()
     {
+        if ('year' == $this->type)
+            return self::$POSSIBLE_YEARS[$this->endValue];
         return $this->endValue;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawEndValue()
+    {
+        return $this->endValue;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \CommonBundle\Entity\Users\Person $person
+     *
+     * @return boolean
+     */
+    public function canSignIn(EntityManager $entityManager, Person $person)
+    {
+        if ($this->getRawType() == 'year') {
+            $years = $entityManager->getRepository('SyllabusBundle\Entity\Subject')
+                ->getYearsByPerson($person);
+            $yearFound = false;
+            foreach($years as $year) {
+                if ($year >= $this->getRawStartValue() && $year <= $this->getRawEndValue()) {
+                    $yearFound = true;
+                    break;
+                }
+            }
+            if (!$yearFound)
+                return false;
+        } elseif ($this->getRawType() == 'name') {
+            if (strtolower(substr($person->getLastName(), 0, strlen($this->getStartValue()))) < $this->getStartValue())
+                return false;
+            if (strtolower(substr($person->getLastName(), 0, strlen($this->getEndValue()))) > $this->getEndValue())
+                return false;
+        }
+        return true;
     }
 }
