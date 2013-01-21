@@ -44,7 +44,10 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $restriction = new Restriction($session, $formData['type'], $formData['start_value'], $formData['end_value']);
+                $startValue = 'year' == $formData['restriction_type']  ? $formData['start_value_year'] : $formData['start_value'];
+                $endValue = 'year' == $formData['restriction_type'] ? $formData['end_value_year'] : $formData['end_value'];
+
+                $restriction = new Restriction($session, $formData['restriction_type'], $startValue, $endValue);
 
                 $this->getEntityManager()->persist($restriction);
 
