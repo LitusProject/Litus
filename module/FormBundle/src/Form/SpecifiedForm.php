@@ -18,7 +18,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
-    CommonBundle\Component\Validator\FieldLength as LengthValidator,
+    CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
@@ -91,9 +91,10 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setRequired($fieldSpecification->isRequired());
 
-                if ($fieldSpecification->hasMaxLength()) {
+                if ($fieldSpecification->hasLengthSpecification()) {
                     $field->setAttribute('class', $field->getAttribute('class') . ' count')
-                        ->setAttribute('data-count', $fieldSpecification->getMaxLength());
+                        ->setAttribute('data-linelen', $fieldSpecification->getLineLength())
+                        ->setAttribute('data-linecount', $fieldSpecification->getLines());
                 }
 
                 $this->add($field);
@@ -140,12 +141,12 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
 
         foreach ($this->_form->getFields() as $fieldSpecification) {
             if ($fieldSpecification instanceof StringField) {
-                $validators = array();
 
-                if ($fieldSpecification->hasMaxLength()) {
+                $validators = array();
+                if ($fieldSpecification->hasLengthSpecification()) {
                     $validators[] = new LengthValidator(
-                        $fieldSpecification->getMaxLength(),
-                        1 // An enter is only one character
+                        $fieldSpecification->getLineLength(),
+                        $fieldSpecification->getLines()
                     );
                 }
 

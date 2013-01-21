@@ -110,7 +110,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             $formSpecification,
                             $formData['order'],
                             $formData['required'],
-                            $formData['length'] === '' ? 0 : $formData['length'],
+                            $formData['charsperline'] === '' ? 0 : $formData['charsperline'],
+                            $formData['lines'] === '' ? 0 : $formData['lines'],
                             $formData['multiline']
                         );
                         break;
