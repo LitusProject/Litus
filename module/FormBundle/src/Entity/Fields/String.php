@@ -108,9 +108,6 @@ class String extends Field
     public function hasLengthSpecification()
     {
         $result = $this->getLineLength() !== NULL && $this->getLineLength() != 0 && $this->getLines() !== NULL && $this->getLines() != 0;
-        echo ' linelen: ' . $this->getLineLength();
-        echo ' lines: ' . $this->getLines();
-        echo ' field ' . $this->getId() . ' returns ' . $result . ' --- ';
         return $result;
     }
 
