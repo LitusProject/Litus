@@ -37,7 +37,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
         $form = new AddForm($this->getEntityManager(), $session);
 
-        if($this->getRequest()->isPost()) {
+        if($this->getRequest()->isPost() && $session->isOpen()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -81,7 +81,19 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
     public function deleteAction()
     {
+        $this->initAjax();
 
+        if (!($restriction = $this->_getRestriction()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($restriction);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
     }
 
     private function _getSession()
@@ -129,5 +141,52 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         return $session;
+    }
+
+    private function _getRestriction()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the restriction!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_sales_session',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $restriction = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session\Restriction')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $restriction) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No restriction with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_sales_session',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $restriction;
     }
 }
