@@ -104,7 +104,6 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         foreach ($categories as $category) {
             $menu[$i] = array(
                 'type'  => 'category',
-                'slug'  => $category->getSlug(),
                 'name'  => $category->getName($this->getLanguage()),
                 'items' => array()
             );

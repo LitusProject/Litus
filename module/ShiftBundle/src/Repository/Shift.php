@@ -178,7 +178,6 @@ class Shift extends EntityRepository
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.responsibles', 'r');
 
-        $where = null;
         if (null === $academicYear) {
             $where = $query->expr()->eq('r.person', ':person');
         } else {

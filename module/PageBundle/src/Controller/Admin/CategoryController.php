@@ -136,8 +136,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
                     $fallbackLanguage = \Locale::getDefault();
 
-                    $category->setParent($parent)
-                        ->setSlug($formData['name_' . $fallbackLanguage]);
+                    $category->setParent($parent);
                 }
 
                 if (isset($parent))
