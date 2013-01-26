@@ -89,9 +89,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $submenu = array();
         foreach ($pages as $page) {
             $submenu[] = array(
-                'type'  => 'page',
-                'name'  => $page->getName(),
-                'title' => $page->getTitle($this->getLanguage())
+                'type'     => 'page',
+                'name'     => $page->getName(),
+                'category' => $page->getCategory()->getSlug(),
+                'title'    => $page->getTitle($this->getLanguage())
             );
         }
 
