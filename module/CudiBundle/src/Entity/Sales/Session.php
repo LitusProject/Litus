@@ -86,7 +86,14 @@ class Session
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
+     * @var \Doctrine\Common\Collections\ArrayCollection The restrictions of this sale session
+     *
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Session\Restriction", mappedBy="session")
+     */
+    private $restrictions;
+
+    /**
+     * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
      * @param \CommonBundle\Entity\Users\Person $manager The manager of the session
      * @param string $comment The comment on this sale session
      */
@@ -237,5 +244,21 @@ class Session
     {
         $this->_entityManager = $entityManager;
         return $this;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \CommonBundle\Entity\Users\Person $person
+     *
+     * @return boolean
+     */
+    public function canSignIn(EntityManager $entityManager, Person $person)
+    {
+        foreach($this->restrictions as $restriction) {
+            if (!$restriction->canSignIn($entityManager, $person))
+                return false;
+        }
+
+        return true;
     }
 }

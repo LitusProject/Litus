@@ -15,6 +15,7 @@ return array(
     'FormBundle\Form\Admin\Form\Edit'                         => __DIR__ . '/src/Form/Admin/Form/Edit.php',
     'FormBundle\Form\SpecifiedForm'                           => __DIR__ . '/src/Form/SpecifiedForm.php',
     'FormBundle\Component\Validator\PersonValidator'          => __DIR__ . '/src/Component/Validator/PersonValidator.php',
+    'FormBundle\Component\Validator\StringFieldValidator'     => __DIR__ . '/src/Component/Validator/StringFieldValidator.php',
     'FormBundle\Component\Controller\FormController'          => __DIR__ . '/src/Component/Controller/FormController.php',
     'FormBundle\Component\Exception\UnsupportedTypeException' => __DIR__ . '/src/Component/Exception/UnsupportedTypeException.php',
     'FormBundle\Entity\Fields\String'                         => __DIR__ . '/src/Entity/Fields/String.php',

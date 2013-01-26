@@ -70,6 +70,10 @@
                             $('#add_queue_success').removeClass('in');
                             $('#add_queue_error').addClass('in')
                                 .find('.content').html('There are no bookings for you.');
+                        } else if ('rejected' == data.error) {
+                            $('#add_queue_success').removeClass('in');
+                            $('#add_queue_error').addClass('in')
+                                .find('.content').html('You cannot buy your articles during this sale session.');
                         } else {
                             $('#add_queue_success').removeClass('in');
                             $('#add_queue_error').addClass('in')
