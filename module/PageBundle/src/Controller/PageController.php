@@ -149,11 +149,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneBy(
-                array(
-                    'category' => $category,
-                    'name' => $this->getParam('name')
-                )
+            ->findOneByNameInCategory(
+                $category, $this->getParam('name')
             );
 
         if (null === $page)
