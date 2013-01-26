@@ -14,7 +14,8 @@
 
 namespace PageBundle\Entity;
 
-use CommonBundle\Entity\General\Language,
+use CommonBundle\Component\Util\Url,
+    CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     PageBundle\Entity\Nodes\Page;
@@ -58,10 +59,22 @@ class Category
      */
     private $active;
 
-    public function __construct()
+    /**
+     * @var string The slug of this category
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $slug;
+
+    /**
+     * @param string $name
+     */
+    public function __construct($name)
     {
-        $this->translations = new ArrayCollection();
         $this->active = true;
+        $this->slug = Url::createSlug($name);
+
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -73,21 +86,21 @@ class Category
     }
 
     /**
-     * @param \PageBundle\Entity\Nodes\Page $category The page's category
-     * @return \PageBundle\Entity\Nodes\Page
-     */
-    public function setParent(Page $parent)
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    /**
      * @return \PageBundle\Entity\Nodes\Page
      */
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * @param \PageBundle\Entity\Nodes\Page $category The page's category
+     * @return \PageBundle\Entity\Category
+     */
+    public function setParent(Page $parent)
+    {
+        $this->parent = $parent;
+        return $this;
     }
 
     /**
@@ -140,5 +153,23 @@ class Category
     public function deactivate()
     {
         $this->active = false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $name
+     * @return \PageBundle\Entity\Category
+     */
+    public function setSlug($name)
+    {
+        $this->slug = Url::createSlug($name);
+        return $this;
     }
 }
