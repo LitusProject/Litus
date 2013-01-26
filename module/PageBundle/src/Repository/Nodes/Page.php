@@ -2,7 +2,8 @@
 
 namespace PageBundle\Repository\Nodes;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository,
+    PageBundle\Entity\Category;
 
 /**
  * Page
@@ -38,18 +39,22 @@ class Page extends EntityRepository
             ->findBy(array('parent' => $parent, 'endTime' => null));
     }
 
-    public function findOneByName($name)
+    public function findOneByNameInCategory(Category $category, $name)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PageBundle\Entity\Nodes\Page', 'p')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->isNull('p.endTime'),
-                    $query->expr()->eq('p.name', ':name')
+                    $query->expr()->eq('p.category', ':category'),
+                    $query->expr()->andX(
+                        $query->expr()->eq('p.name', ':name'),
+                        $query->expr()->isNull('p.endTime')
+                    )
                 )
             )
             ->setParameter('name', $name)
+            ->setParameter('category', $category)
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();

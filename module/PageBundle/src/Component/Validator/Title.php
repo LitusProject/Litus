@@ -77,11 +77,8 @@ class Title extends \Zend\Validator\AbstractValidator
 
         $page = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneBy(
-                array(
-                    'category' => $category,
-                    'name' => Url::createSlug($value)
-                )
+            ->findOneByNameInCategory(
+                $category, Url::createSlug($value)
             );
 
         if (null === $page || $page->getName() == $this->_exclude)
