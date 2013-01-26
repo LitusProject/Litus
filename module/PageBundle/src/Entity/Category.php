@@ -14,8 +14,7 @@
 
 namespace PageBundle\Entity;
 
-use CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     PageBundle\Entity\Nodes\Page;

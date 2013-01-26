@@ -57,9 +57,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $fallbackLanguage = \Locale::getDefault();
-
-                $category = new Category($formData['name_' . $fallbackLanguage]);
+                $category = new Category();
 
                 if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
@@ -133,8 +131,6 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
                         ->findOneById($formData['parent']);
-
-                    $fallbackLanguage = \Locale::getDefault();
 
                     $category->setParent($parent);
                 }
