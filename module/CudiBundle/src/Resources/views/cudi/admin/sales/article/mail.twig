@@ -1,0 +1,19 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sales/article/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Article</h1>
+
+        <p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+        <p>Author: <b>{{ article.getMainArticle().getAuthors() }}</b></p>
+        <p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
+        <br />
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}

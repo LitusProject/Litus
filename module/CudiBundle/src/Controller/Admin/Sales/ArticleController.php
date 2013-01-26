@@ -18,11 +18,13 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
+    CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
     CudiBundle\Entity\Log\Sales\ProfVersion as ProfVersionLog,
     CudiBundle\Entity\Sales\Article as SaleArticle,
     CudiBundle\Entity\Sales\Articles\History,
     CudiBundle\Entity\Sales\SaleItem,
     DateTime,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -354,6 +356,78 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function mailAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
+
+        $form = new MailForm();
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $persons = array();
+
+                $mailAddress = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.mail');
+
+                $mailName = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.mail_name');
+
+                foreach($formData['to'] as $status) {
+                    $bookings = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->findAllByStatusAndArticleAndPeriod($status, $saleArticle, $this->getActiveStockPeriod());
+
+                    foreach($bookings as $booking) {
+                        if (isset($persons[$booking->getPerson()->getId()]))
+                            continue;
+
+                        $persons[$booking->getPerson()->getId()] = true;
+
+                        $mail = new Message();
+                        $mail->setBody($formData['message'])
+                            ->setFrom($mailAddress, $mailName)
+                            ->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
+                            ->setSubject($formData['subject']);
+
+                        if ('development' != getenv('APPLICATION_ENV'))
+                            $this->getMailTransport()->send($mail);
+                     }
+                }
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The email was successfully send to ' . sizeof($persons) . ' academics!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_sales_article',
+                    array(
+                        'action' => 'edit',
+                        'id' => $saleArticle->getId(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'article' => $saleArticle,
+                'form' => $form,
             )
         );
     }
