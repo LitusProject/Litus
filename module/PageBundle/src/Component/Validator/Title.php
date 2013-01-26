@@ -41,7 +41,7 @@ class Title extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'There already exists a page with this title'
+        self::NOT_VALID => 'There already exists a page with this title and the same parent'
     );
 
     /**
@@ -68,17 +68,17 @@ class Title extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $category = $this->_entityManager
-            ->getRepository('PageBundle\Entity\Category')
-            ->findOneById($context['category']);
-
-        if (null === $category)
-            return false;
+        $parent = null;
+        if ('' != $parent) {
+            $parent = $this->_entityManager
+                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->findOneById($context['parent']);
+        }
 
         $page = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByNameInCategory(
-                $category, Url::createSlug($value)
+            ->findOneByName(
+                Url::createSlug($value), $parent
             );
 
         if (null === $page || $page->getName() == $this->_exclude)

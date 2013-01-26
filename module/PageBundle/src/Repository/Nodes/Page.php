@@ -3,7 +3,7 @@
 namespace PageBundle\Repository\Nodes;
 
 use Doctrine\ORM\EntityRepository,
-    PageBundle\Entity\Category;
+    PageBundle\Entity\Nodes\Page as PageEntity;
 
 /**
  * Page
@@ -39,23 +39,34 @@ class Page extends EntityRepository
             ->findBy(array('parent' => $parent, 'endTime' => null));
     }
 
-    public function findOneByNameInCategory(Category $category, $name)
+    public function findOneByName($name, PageEntity $parent = null)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('p')
-            ->from('PageBundle\Entity\Nodes\Page', 'p')
-            ->where(
+        $query->select('p')
+            ->from('PageBundle\Entity\Nodes\Page', 'p');
+
+        if (null === $parent) {
+            $where = $query->expr()->andX(
+                $query->expr()->eq('p.name', ':name'),
+                $query->expr()->isNull('p.endTime')
+            );
+        } else {
+            $where = $query->expr()->andX(
+                $query->expr()->eq('p.parent', ':parent'),
                 $query->expr()->andX(
-                    $query->expr()->eq('p.category', ':category'),
-                    $query->expr()->andX(
-                        $query->expr()->eq('p.name', ':name'),
-                        $query->expr()->isNull('p.endTime')
-                    )
+                    $query->expr()->eq('p.name', ':name'),
+                    $query->expr()->isNull('p.endTime')
                 )
-            )
-            ->setParameter('name', $name)
-            ->setParameter('category', $category)
-            ->setMaxResults(1)
+            );
+        }
+
+        $query->where($where)
+            ->setParameter('name', $name);
+
+        if (null !== $parent)
+            $query->setParameter('parent', $parent);
+
+        $resultSet = $query->setMaxResults(1)
             ->getQuery()
             ->getResult();
 

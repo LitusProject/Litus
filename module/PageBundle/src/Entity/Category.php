@@ -59,20 +59,9 @@ class Category
      */
     private $active;
 
-    /**
-     * @var string The slug of this category
-     *
-     * @ORM\Column(type="string")
-     */
-    private $slug;
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name)
+    public function __construct()
     {
         $this->active = true;
-        $this->slug = Url::createSlug($name);
 
         $this->translations = new ArrayCollection();
     }
@@ -153,23 +142,5 @@ class Category
     public function deactivate()
     {
         $this->active = false;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $name
-     * @return \PageBundle\Entity\Category
-     */
-    public function setSlug($name)
-    {
-        $this->slug = Url::createSlug($name);
-        return $this;
     }
 }
