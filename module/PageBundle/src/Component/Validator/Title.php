@@ -69,7 +69,7 @@ class Title extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $parent = null;
-        if ('' != $parent) {
+        if ('' != $context['parent']) {
             $parent = $this->_entityManager
                 ->getRepository('PageBundle\Entity\Nodes\Page')
                 ->findOneById($context['parent']);
