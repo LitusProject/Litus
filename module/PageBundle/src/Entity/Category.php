@@ -62,7 +62,7 @@ class Category
     /**
      * @var string The slug of this category
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string")
      */
     private $slug;
 

@@ -13,7 +13,7 @@
                 <div class="subnav nav-collapse">
                     <ul class="nav">
                         {% if page.getParent() is not null %}
-                            <li><a href="{{ url('page', {"name": page.getParent().getName()}) }}"><i class="icon-arrow-left"></i> {{ page.getParent().getTitle(language) }}</a></li>
+                            <li><a href="{{ url('page', {"category": page.getCategory().getSlug(), "name": page.getParent().getName()}) }}"><i class="icon-arrow-left"></i> {{ page.getParent().getTitle(language) }}</a></li>
                         {% endif %}
                         {% for item in submenu %}
                             {% if 'category' == item.type %}
@@ -31,7 +31,7 @@
                                 </li>
                             {% else %}
                                 {% if hasAccess('page', 'view') %}
-                                    <li {% if item.name == getParam('name') %}class="active"{% endif %}><a href="{{ url('page', {"name": item.name}) }}">{{ item.title }}</a></li>
+                                    <li {% if item.name == getParam('name') %}class="active"{% endif %}><a href="{{ url('page', {"category": item.category, "name": item.name}) }}">{{ item.title }}</a></li>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}

@@ -120,7 +120,7 @@
         		        </a>
         		        <ul class="dropdown-menu">
         		            {% for language in languages %}
-        			            <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'name': getParam('name')}) }}">{{ translate(language.getName()) }}</a></li>
+        			            <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'category': getParam('category'), 'name': getParam('name')}) }}">{{ translate(language.getName()) }}</a></li>
         		            {% endfor %}
         		        </ul>
         			</li>
