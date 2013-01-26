@@ -110,6 +110,7 @@ return array(
     'CommonBundle\Component\Validator\Price'                                           => __DIR__ . '/src/Component/Validator/Price.php',
     'CommonBundle\Component\Validator\Decimal'                                         => __DIR__ . '/src/Component/Validator/Decimal.php',
     'CommonBundle\Component\Validator\DateCompare'                                     => __DIR__ . '/src/Component/Validator/DateCompare.php',
+    'CommonBundle\Component\Validator\FieldLineLength'                                 => __DIR__ . '/src/Component/Validator/FieldLineLength.php',
     'CommonBundle\Component\Validator\Uri'                                             => __DIR__ . '/src/Component/Validator/Uri.php',
     'CommonBundle\Component\Validator\Academic'                                        => __DIR__ . '/src/Component/Validator/Academic.php',
     'CommonBundle\Component\Validator\PhoneNumber'                                     => __DIR__ . '/src/Component/Validator/PhoneNumber.php',

@@ -426,6 +426,11 @@ return array(
                             'common/js/spin.min.js',
                         ),
                     ),
+                    'common_holder_js' => array(
+                        'assets'  => array(
+                            'common/js/holder.js',
+                        ),
+                    ),
 
                     'admin_css' => array(
                         'assets' => array(

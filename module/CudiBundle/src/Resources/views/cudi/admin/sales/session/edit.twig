@@ -145,6 +145,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('admin_sales_session_restriction', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Restrictions</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the restrictions of this session!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url("admin_sales_session_restriction", {"action": "manage", "id": session.getId()}) }}">&rarr; Restrictions</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
     <div class="modal hide fade" id="closeSession">

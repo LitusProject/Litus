@@ -21,6 +21,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
+    FormBundle\Component\Validator\StringFieldValidator,
     FormBundle\Entity\Nodes\Form,
     FormBundle\Entity\Field,
     Doctrine\ORM\EntityManager,
@@ -107,12 +108,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('class', 'string_form extra_form hide');
         $this->add($string_form);
 
-        $field = new Text('length');
-        $field->setLabel('Max. Length (or Infinite)');
-        $string_form->add($field);
-
         $field = new Checkbox('multiline');
         $field->setLabel('Multiline');
+        $string_form->add($field);
+
+        $field = new Text('charsperline');
+        $field->setLabel('Max. characters per line (or Infinite)');
+        $string_form->add($field);
+
+        $field = new Text('lines');
+        $field->setLabel('Max. number of lines (Multiline fields only)');
         $string_form->add($field);
 
         $field = new Submit('submit');
@@ -150,7 +155,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'length',
+                    'name'     => 'charsperline',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits'
+                        ),
+                        new StringFieldValidator($this->data['multiline'], $this->data['lines']),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'lines',
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

@@ -32,11 +32,18 @@ class String extends Field
 {
 
     /**
-     * @var int The maximum length of this string field.
+     * @var int The maximum length per line of this string field.
      *
-     * @ORM\Column(name="max_length", type="bigint", nullable=true)
+     * @ORM\Column(name="line_length", type="bigint", nullable=true)
      */
-    private $maxLength;
+    private $lineLength;
+
+    /**
+     * @var int The maximum number of lines.
+     *
+     * @ORM\Column(name="lines", type="bigint", nullable=true)
+     */
+    private $lines;
 
     /**
      * @var boolean Whether this is a multiline text field.
@@ -49,30 +56,43 @@ class String extends Field
      * @param FormBundle\Entity\Nodes\Form $form
      * @param integer $order
      * @param bool $required
-     * @param integer $maxLength
+     * @param integer $lineLength
      * @param bool $multiLine
      */
-    public function __construct($form, $order, $required, $maxLength, $multiLine)
+    public function __construct($form, $order, $required, $lineLength, $lines, $multiLine)
     {
         parent::__construct($form, $order, $required);
-        $this->maxLength = $maxLength;
+        $this->lineLength = $lineLength;
+        $this->lines = $lines;
         $this->multiLine = $multiLine;
     }
 
     /**
-     * Returns the maximum length of this string field.
+     * Returns the maximum number of characters per line for this field.
      *
-     * @return The maximum length
+     * @return integer The maximum number of characters per line.
      */
-    public function getMaxLength()
+    public function getLineLength()
     {
-        return $this->maxLength;
+        return $this->lineLength;
+    }
+
+    /**
+     * Returns the maximum number of lines for this field.
+     *
+     * @return integer The maximum number of lines.
+     */
+    public function getLines()
+    {
+        if (!$this->isMultiLine())
+            return 1;
+        return $this->lines;
     }
 
     /**
      * Returns whether this is a multiline field.
      *
-     * @return True if and only if this is a multiline field.
+     * @return boolean True if and only if this is a multiline field.
      */
     public function isMultiLine()
     {
@@ -82,11 +102,13 @@ class String extends Field
     /**
      * Returns whether this field has a maximum length or not.
      *
-     * @return True if and only if the maximum length is not null and not zero.
+     * @return boolean True if and only if the maximum length per line is specified and, for
+     *         multiline fields, the maximum number of lines is specified.
      */
-    public function hasMaxLength()
+    public function hasLengthSpecification()
     {
-        return $this->maxLength !== NULL && $this->maxLength != 0;
+        $result = $this->getLineLength() !== NULL && $this->getLineLength() != 0 && $this->getLines() !== NULL && $this->getLines() != 0;
+        return $result;
     }
 
     public function getValueString(Language $language, $value) {

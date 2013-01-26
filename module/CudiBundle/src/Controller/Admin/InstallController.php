@@ -360,6 +360,9 @@ VTK Cudi
                     'admin_sales_session' => array(
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
                     ),
+                    'admin_sales_session_restriction' => array(
+                        'delete', 'manage'
+                    ),
                     'admin_stock' => array(
                         'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
                     ),
