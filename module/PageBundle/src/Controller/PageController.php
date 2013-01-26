@@ -99,6 +99,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         foreach ($categories as $category) {
             $submenu[$i] = array(
                 'type'  => 'category',
+                'slug'  => $category->getSlug(),
                 'name'  => $category->getName(),
                 'items' => array()
             );
@@ -135,12 +136,24 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     private function _getPage()
     {
-        if (null === $this->getParam('name'))
+        if (null === $this->getParam('category') || null === $this->getParam('name'))
+            return;
+
+        $category = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Category')
+            ->findOneBySlug($this->getParam('category'));
+
+        if (null === $category)
             return;
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByName($this->getParam('name'));
+            ->findOneBy(
+                array(
+                    'category' => $category,
+                    'name' => $this->getParam('name')
+                )
+            );
 
         if (null === $page)
             return;

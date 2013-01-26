@@ -33,7 +33,7 @@
                                     <ul class="dropdown-menu">
                                         {% for page in item.items %}
                                             {% if hasAccess('page', 'view') %}
-                                                <li><a href="{{ url('page', {"name": page.name}) }}">{{ page.title }}</a></li>
+                                                <li><a href="{{ url('page', {"category": item.slug, "name": page.name}) }}">{{ page.title }}</a></li>
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
