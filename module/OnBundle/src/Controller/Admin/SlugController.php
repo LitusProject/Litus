@@ -114,7 +114,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                 $slug->setName($formData['name'])
                     ->setUrl($formData['url']);
 
-                $this->getEntityManager()->flush();
+                $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
