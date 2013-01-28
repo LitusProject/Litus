@@ -54,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
         $this->_session = $session;
 
-        $field = new Select('type');
+        $field = new Select('restriction_type');
         $field->setLabel('Type')
             ->setRequired()
             ->setAttribute('options', Restriction::$POSSIBLE_TYPES);
@@ -68,6 +68,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('end_value');
         $field->setLabel('End Value')
             ->setRequired();
+        $this->add($field);
+
+        $field = new Select('start_value_year');
+        $field->setLabel('Start Value')
+            ->setRequired()
+            ->setAttribute('options', Restriction::$POSSIBLE_YEARS);
+        $this->add($field);
+
+        $field = new Select('end_value_year');
+        $field->setLabel('End Value')
+            ->setRequired()
+            ->setAttribute('options', Restriction::$POSSIBLE_YEARS);
         $this->add($field);
 
         $field = new Submit('submit');
@@ -84,7 +96,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'type',
+                    'name'     => 'restriction_type',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -96,32 +108,61 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_value',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        if (isset($this->data['restriction_type']) && $this->data['restriction_type'] == 'year') {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'start_value_year',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
                 )
-            )
-        );
+            );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_value',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new ValuesValidator('start_value')
-                    ),
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'end_value_year',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new ValuesValidator('start_value_year')
+                        ),
+                    )
                 )
-            )
-        );
+            );
+        } else {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'start_value',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'end_value',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new ValuesValidator('start_value')
+                        ),
+                    )
+                )
+            );
+        }
 
         return $inputFilter;
     }

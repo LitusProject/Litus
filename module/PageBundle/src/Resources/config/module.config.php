@@ -60,8 +60,9 @@ return array(
             'page' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/page[/:name][/]',
+                    'route' => '[/:language]/page[/parent/:parent][/name/:name][/]',
                     'constraints' => array(
+                        'parent'   => '[a-zA-Z0-9_-]*',
                         'name'     => '[a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
                     ),

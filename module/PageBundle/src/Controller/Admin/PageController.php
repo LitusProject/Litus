@@ -155,6 +155,20 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         if (!($page = $this->_getPage()))
             return new ViewModel();
 
+        if (null !== $page->getEndTime()) {
+            $activeVersion = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->findOneByName($page->getName());
+
+            $this->redirect()->toRoute(
+                    'admin_page',
+                    array(
+                        'action' => 'edit',
+                        'id'     => $activeVersion->getId()
+                    )
+                );
+        }
+
         $form = new EditForm($this->getEntityManager(), $page);
 
         if ($this->getRequest()->isPost()) {

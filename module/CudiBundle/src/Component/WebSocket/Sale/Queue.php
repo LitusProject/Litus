@@ -113,7 +113,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      *
      * @return string
      */
-    public function addPerson(Session $session, $universityIdentification)
+    public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
         $person = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
@@ -125,6 +125,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'error' => 'person',
                 )
             );
+        }
+
+        if (!$forced) {
+            if (!$session->canSignIn($this->_entityManager, $person)) {
+                return json_encode(
+                    (object) array(
+                        'error' => 'rejected',
+                    )
+                );
+            }
         }
 
         $bookings = $this->_entityManager

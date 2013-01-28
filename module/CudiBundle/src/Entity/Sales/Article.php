@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Entity\Sales;
 
-use CudiBundle\Entity\Article as MainArticle,
+use CommonBundle\Entity\General\Organisation,
+    CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sales\Articles\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
     DateTime,
@@ -130,6 +131,14 @@ class Article
     private $barcodes;
 
     /**
+     * @var \CommonBundle\Entity\General\Union The organisation of this article
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organisation")
+     * @ORM\JoinColumn(name="organisation", referencedColumnName="id")
+     */
+    private $organisation;
+
+    /**
      * @param \CudiBundle\Entity\Article $mainArticle The main article of this sale article
      * @param integer $barcode  The barcode of the article
      * @param integer $purchasePrice The purchase price of the articl
@@ -138,8 +147,9 @@ class Article
      * @param boolean $unbookable Flag whether the article is unbookable
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of the article
      * @param boolean $canExpire Flag whether the aritcle can expire
+     * @param \CommonBundle\Entity\General\Organisation $organisation The organisation of this article
      */
-    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire)
+    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire, Organisation $organisation)
     {
         $this->discounts = new ArrayCollection();
         $this->barcodes = new ArrayCollection();
@@ -153,7 +163,8 @@ class Article
             ->setSupplier($supplier)
             ->setCanExpire($canExpire)
             ->setVersionNumber(1)
-            ->setIsHistory(false);
+            ->setIsHistory(false)
+            ->setOrganisation($organisation);
         $this->timestamp = new DateTime();
         $this->stockValue = 0;
     }
@@ -454,6 +465,25 @@ class Article
     }
 
     /**
+     * @param \CommonBundle\Entity\General\Organisation $organisation
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setOrganisation(Organisation $organisation)
+    {
+        $this->organisation = $organisation;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Organisation
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
      * @return \CudiBundle\Entity\Sales\Article
      */
     public function duplicate()
@@ -466,7 +496,8 @@ class Article
             $this->isBookable(),
             $this->isUnbookable(),
             $this->getSupplier(),
-            $this->canExpire()
+            $this->canExpire(),
+            $this->getOrganisation()
         );
         foreach($this->barcodes as $barcode)
             $article->addBarcode(new Barcode($article, $barcode->getBarcode()));
