@@ -26,7 +26,7 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
 class AcademicYear
 {
     /**
-     * @var integer The ID of the address
+     * @var integer The ID of the academic year
      *
      * @ORM\Id
      * @ORM\GeneratedValue

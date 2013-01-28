@@ -63,6 +63,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Select('organisation');
+        $field->setLabel('Organisation')
+            ->setRequired()
+            ->setAttribute('options', $this->_getOrganisations());
+        $this->add($field);
+
         $field = new Select('supplier');
         $field->setLabel('Supplier')
             ->setRequired()
@@ -97,6 +103,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $supplierOptions[$item->getId()] = $item->getName();
 
         return $supplierOptions;
+    }
+
+    private function _getOrganisations()
+    {
+        $organisations = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Organisation')
+            ->findAll();
+        $organisationsOptions = array();
+        foreach($organisations as $organisation)
+            $organisationsOptions[$organisation->getId()] = $organisation->getName();
+
+        return $organisationsOptions;
     }
 
     public function populateFromArticle(Article $article)
@@ -167,6 +185,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                         new UniqueBarcodeValidator($this->_entityManager),
                     ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'organisation',
+                    'required' => true,
                 )
             )
         );
