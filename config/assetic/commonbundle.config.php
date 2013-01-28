@@ -89,6 +89,7 @@ return array(
             '@bootstrap_js_modal',
             '@secretary_css',
             '@common_typeahead_remote',
+            '@common_holder_js',
         ),
         'auth' => array(
             '@common_jquery',

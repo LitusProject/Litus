@@ -60,8 +60,9 @@ class Category
 
     public function __construct()
     {
-        $this->translations = new ArrayCollection();
         $this->active = true;
+
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -73,21 +74,21 @@ class Category
     }
 
     /**
-     * @param \PageBundle\Entity\Nodes\Page $category The page's category
-     * @return \PageBundle\Entity\Nodes\Page
-     */
-    public function setParent(Page $parent)
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    /**
      * @return \PageBundle\Entity\Nodes\Page
      */
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * @param \PageBundle\Entity\Nodes\Page $category The page's category
+     * @return \PageBundle\Entity\Category
+     */
+    public function setParent(Page $parent)
+    {
+        $this->parent = $parent;
+        return $this;
     }
 
     /**

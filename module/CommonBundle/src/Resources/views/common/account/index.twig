@@ -10,22 +10,35 @@
     <div class="row page">
         <div class="span12">
             <h3>{{ translate('Personal') }}</h3>
-            <dl class="dl-horizontal wide">
-                <dt>{{ translate('Name') }}</dt>
-                <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
-                <dt>{{ translate('Birthday') }}</dt>
-                <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
-                <dt>{{ translate('Sex') }}</dt>
-                <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
-                <dt>{{ translate('Phone Number') }}</dt>
-                <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
-                <dt>{{ translate('University Identification') }}</dt>
-                <dd>{{ authenticatedPerson.getUniversityIdentification() }}&nbsp;</dd>
-                <dt>{{ translate('University E-mail') }}</dt>
-                <dd>{{ authenticatedPerson.getUniversityEmail() }}&nbsp;</dd>
-                <dt>{{ translate('Personal E-mail') }}</dt>
-                <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
-            </dl>
+            <div class="row">
+                <div class="span9">
+                    <dl class="dl-horizontal wide">
+                        <dt>{{ translate('Name') }}</dt>
+                        <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
+                        <dt>{{ translate('Birthday') }}</dt>
+                        <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
+                        <dt>{{ translate('Sex') }}</dt>
+                        <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
+                        <dt>{{ translate('Phone Number') }}</dt>
+                        <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
+                        <dt>{{ translate('University Identification') }}</dt>
+                        <dd>{{ authenticatedPerson.getUniversityIdentification() }}&nbsp;</dd>
+                        <dt>{{ translate('University E-mail') }}</dt>
+                        <dd>{{ authenticatedPerson.getUniversityEmail() }}&nbsp;</dd>
+                        <dt>{{ translate('Personal E-mail') }}</dt>
+                        <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
+                    </dl>
+                </div>
+                <div class="span3">
+                    <div class="thumbnail" style="width: 180px;height: 135px">
+                        {% if authenticatedPerson.getPhotoPath() %}
+                            <img src="{{ url('account', {'action': 'photo', 'image': authenticatedPerson.getPhotoPath()}) }}" alt="">
+                        {% else %}
+                            <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
 
             <h3>{{ translate('Addresses') }}</h3>
             <div class="row">

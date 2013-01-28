@@ -151,7 +151,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            $rolesArray[$role->getName()] = $role->getName();
+            if (!$role->getSystem())
+                $rolesArray[$role->getName()] = $role->getName();
         }
 
         asort($rolesArray);

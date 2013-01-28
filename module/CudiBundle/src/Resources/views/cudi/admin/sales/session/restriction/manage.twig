@@ -80,6 +80,20 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(openRemoveModal);
+
+            $('#restriction_type').change(function () {
+                if ($(this).val() == 'year') {
+                    $('#start_value_year').closest('.row').show();
+                    $('#end_value_year').closest('.row').show();
+                    $('#start_value').closest('.row').hide();
+                    $('#end_value').closest('.row').hide();
+                } else {
+                    $('#start_value_year').closest('.row').hide();
+                    $('#end_value_year').closest('.row').hide();
+                    $('#start_value').closest('.row').show();
+                    $('#end_value').closest('.row').show();
+                }
+            }).trigger('change');
         });
 
         function openRemoveModal(e) {

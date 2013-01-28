@@ -598,11 +598,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return $this->getActiveStockPeriod();
         }
 
-        $supplier = $this->getEntityManager()
+        $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneById($this->getParam('period'));
 
-        if (null === $supplier) {
+        if (null === $period) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -621,7 +621,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $supplier;
+        return $period;
     }
 
     private function _getBooking()

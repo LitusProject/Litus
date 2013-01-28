@@ -89,9 +89,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $submenu = array();
         foreach ($pages as $page) {
             $submenu[] = array(
-                'type'  => 'page',
-                'name'  => $page->getName(),
-                'title' => $page->getTitle($this->getLanguage())
+                'type'     => 'page',
+                'name'     => $page->getName(),
+                'parent'   => $page->getParent()->getName(),
+                'title'    => $page->getTitle($this->getLanguage())
             );
         }
 
@@ -138,9 +139,15 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         if (null === $this->getParam('name'))
             return;
 
+        $parent = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->findOneByName($this->getParam('parent'));
+
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByName($this->getParam('name'));
+            ->findOneByName(
+                $this->getParam('name'), $parent
+            );
 
         if (null === $page)
             return;
