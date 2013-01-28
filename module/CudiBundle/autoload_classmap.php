@@ -106,6 +106,7 @@ return array(
     'CudiBundle\Form\Admin\Prof\File\Confirm'                         => __DIR__ . '/src/Form/Admin/Prof/File/Confirm.php',
     'CudiBundle\Form\Admin\Sales\Article\Add'                         => __DIR__ . '/src/Form/Admin/Sales/Article/Add.php',
     'CudiBundle\Form\Admin\Sales\Article\Edit'                        => __DIR__ . '/src/Form/Admin/Sales/Article/Edit.php',
+    'CudiBundle\Form\Admin\Sales\Article\Mail'                        => __DIR__ . '/src/Form/Admin/Sales/Article/Mail.php',
     'CudiBundle\Form\Admin\Sales\Barcodes\Add'                        => __DIR__ . '/src/Form/Admin/Sales/Barcodes/Add.php',
     'CudiBundle\Form\Admin\Sales\Booking\Add'                         => __DIR__ . '/src/Form/Admin/Sales/Booking/Add.php',
     'CudiBundle\Form\Admin\Sales\Booking\Article'                     => __DIR__ . '/src/Form/Admin/Sales/Booking/Article.php',

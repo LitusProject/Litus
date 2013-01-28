@@ -420,9 +420,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             1,
                             true
                         );
-                        echo 'create new';
-                        exit;
-                        //$this->getEntityManager()->persist($booking);
+                        $this->getEntityManager()->persist($booking);
 
                         if ($enableAssignment == '1') {
                             $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
@@ -441,7 +439,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             $academic
                         );
 
-                    if (null === $booking)
+                    if (null !== $booking)
                         $this->getEntityManager()->remove($booking);
                 }
 
