@@ -1,5 +1,5 @@
 <!--
-    XSL Stylsheet for CV Book: the table of contents
+    XSL Stylsheet for CV Book: the foreword
 
     @author Niels Avonds <niels.avonds@litus.cc>
 -->
@@ -9,6 +9,7 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
 >
 
+    <xsl:import href="../../../pdf_generator/essentials.d/style.xsl"/>
     <xsl:import href="config.xsl"/>
 
     <!-- The table of contents -->
@@ -19,15 +20,6 @@
             <fo:marker marker-class-name="footer-text">
                 <xsl:value-of select="@title"/>
             </fo:marker>
-
-            <!-- Title -->
-            <fo:block
-                line-height="{$title-line-height}"
-                font-size="{$title-font-size}pt">
-
-                <xsl:value-of select="@title"/>
-
-            </fo:block>
 
             <!-- Content -->
             <xsl:apply-templates select="section">
@@ -54,7 +46,7 @@
         </fo:block>
 
         <fo:block>
-            <xsl:value-of select="content"/>
+            <xsl:apply-templates select="content"/>
         </fo:block>
 
         <xsl:apply-templates select="section">
