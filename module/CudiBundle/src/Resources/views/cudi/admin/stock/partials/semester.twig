@@ -1,9 +1,30 @@
 <header id="controller_sub_header">
     <nav id="controller_sub_nav">
-        <ul id="supplier_nav">
-            <li><a {% if currentSemester != 1 and currentSemester != 2 %} class="active" {% endif %}href="{{ url("admin_stock", {"action": "manage"}) }}">All</a></li>
-            <li><a {% if currentSemester == 1 %} class="active" {% endif %}href="{{ url("admin_stock", {"action": "manage", "semester": 1}) }}">Semester 1</a></li>
-            <li><a {% if currentSemester == 2 %} class="active" {% endif %}href="{{ url("admin_stock", {"action": "manage", "semester": 2}) }}">Semester 2</a></li>
+        <ul>
+            <li>
+                <a {% if currentSemester != 1 and currentSemester != 2 %} class="active" {% endif %}
+                    href="{% if currentOrganisation %}
+                        {{ url('admin_stock', {'action': 'manage', 'organisation': currentOrganisation.getId()}) }}
+                    {% else %}
+                        {{ url('admin_stock', {'action': 'manage'}) }}
+                    {% endif %}">All</a>
+            </li>
+            <li>
+                <a {% if currentSemester == 1 %} class="active" {% endif %}
+                    href="{% if currentOrganisation %}
+                        {{ url('admin_stock', {'action': 'manage', 'semester': 1, 'organisation': currentOrganisation.getId()}) }}
+                    {% else %}
+                        {{ url('admin_stock', {'action': 'manage', 'semester': 1}) }}
+                    {% endif %}">Semester 1</a>
+            </li>
+            <li>
+                <a {% if currentSemester == 2 %} class="active" {% endif %}
+                    href="{% if currentOrganisation %}
+                        {{ url('admin_stock', {'action': 'manage', 'semester': 2, 'organisation': currentOrganisation.getId()}) }}
+                    {% else %}
+                        {{ url('admin_stock', {'action': 'manage', 'semester': 2}) }}
+                    {% endif %}">Semester 2</a>
+            </li>
         </ul>
     </nav>
 </header>
