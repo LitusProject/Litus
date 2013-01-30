@@ -15,6 +15,7 @@
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
+    CommonBundle\Entity\General\Organisation,
     CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -208,22 +209,24 @@ class Session
     }
 
     /**
-     * Calculates the theoretical revenue of a given session --
-     * that is, the revenue expected on the basis of sold stock items
+     * @param \CommonBundle\Entity\General\Organisation|null $organisation
      *
      * @return integer
      */
-    public function getTheoreticalRevenue()
+    public function getTheoreticalRevenue(Organisation $organisation = null)
     {
+        if (null === $organisation) {
+            return $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->getTheoreticalRevenue($this);
+        }
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Session')
-            ->getTheoreticalRevenue($this);
+            ->getTheoreticalRevenueByOrganisation($this, $organisation);
     }
 
     /**
-     * Calculates the actual revenue of a given session --
-     * that is, the register difference between opening and closure of
-     * a session
+     * @param \CommonBundle\Entity\General\Organisation|null $organisation
      *
      * @return integer
      */
