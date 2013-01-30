@@ -241,13 +241,15 @@ return array(
             'admin_stock' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/stock[/:action[/:id][/semester/:semester][/page/:page][/:field/:string]][/]',
+                    'route' => '/admin/stock[/:action[/:id][/semester/:semester][/organisation/:organisation][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]*',
-                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string' => '[%a-zA-Z0-9:.,_-]*',
-                        'page'   => '[0-9]*',
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                        'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
+                        'page'         => '[0-9]*',
+                        'semester'     => '[0-9]*',
+                        'organisation' => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_stock',
