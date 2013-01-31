@@ -1,22 +1,16 @@
-# We don't want to version the folders some IDE's create
-.idea
-.project
-
-*.esproj
+# Do not version SublimeText's configuration and workspace
 *.sublime-project
 *.sublime-workspace
 
-.settings
-.buildpath
-
-# Excluding all nasty .DS_Store files
+# Exclude the custom folder attributes file
 .DS_Store
 
-# We don't want to version some configuration files
-config/database.config.php
+# These files contain sensitive data
 config/amon.config.php
+config/database.config.php
+config/ldap.config.php
 
-# Cached data doesn't have to be versioned
+# We don't want cached data in our repository
 data/banner/images
 data/br/companies
 data/br/files
@@ -33,7 +27,7 @@ public/_gallery/albums
 public/_publications
 public/_br/img
 
-# Exclude composer files
+# Exclude Composer configuration and dependencies
 vendor/
 composer.lock
 composer.phar
