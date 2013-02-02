@@ -36,10 +36,39 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="p">
-        <fo:block>
+    <xsl:template match="ul">
+        <fo:list-block>
             <xsl:apply-templates/>
-        </fo:block>
+        </fo:list-block>
+    </xsl:template>
+
+    <xsl:template match="ul/li">
+        <fo:list-item>
+            <fo:list-item-label end-indent="label-end()">
+                <fo:block>&#x2022;</fo:block>
+            </fo:list-item-label>
+            <fo:list-item-body start-indent="5mm">
+                <fo:block>
+                    <xsl:apply-templates/>
+                </fo:block>
+            </fo:list-item-body>
+        </fo:list-item>
+    </xsl:template>
+
+    <xsl:template match="p">
+        <xsl:choose>
+            <xsl:when test="@text-align">
+                <fo:block>
+                    <xsl:attribute name="text-align"><xsl:value-of select="@text-align"/></xsl:attribute>
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:block>
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="page-break">
