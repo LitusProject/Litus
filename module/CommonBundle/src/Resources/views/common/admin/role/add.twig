@@ -27,13 +27,23 @@
                     );
 
                     $(this).children('optgroup').each(function () {
-                        var li = $('<li/>').append(
+                        var li = $('<li>', {'class': 'parent'}).append(
                             $('<label>').append(
-                                $('<input>', {'type': 'checkbox'}).change(function() {
+                                $('<input>', {'type': 'checkbox', 'class': 'parent'}).change(function() {
                                     if ($(this).is(':checked')) {
                                         $(this).closest('li').find('ul input').prop('checked', true).trigger('change');
                                     } else {
                                         $(this).closest('li').find('ul input').prop('checked', false).trigger('change');
+                                    }
+                                }).bind('update', function () {
+                                    var total = $(this).closest('li').find('ul input').length;
+                                    var checked = $(this).closest('li').find('ul input:checked').length;
+                                    if (total == checked) {
+                                        $(this).prop('checked', true).prop('indeterminate', false);
+                                    } else if (checked == 0) {
+                                        $(this).prop('checked', false).prop('indeterminate', false);
+                                    } else {
+                                        $(this).prop('indeterminate', true);
                                     }
                                 }).css({
                                     'vertical-align': 'middle',
@@ -55,12 +65,12 @@
                             $('<li>').append(
                                 $('<label>').append(
                                     checkbox = $('<input>', {'type': 'checkbox'}).change(function() {
-                                        console.log('change');
                                         if ($(this).is(':checked')) {
                                             option.attr('selected', 'selected');
                                         } else {
                                             option.removeAttr('selected');
                                         }
+                                        $(this).closest('li.parent').find('input.parent').trigger('update')
                                     }).css({
                                         'vertical-align': 'middle',
                                         'position': 'relative',
