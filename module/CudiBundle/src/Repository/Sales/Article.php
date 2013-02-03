@@ -185,12 +185,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear, $semester = 0)
+    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear, $semester = 0, Organisation $organisation = null)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -202,8 +202,14 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('author', '%'.strtolower($author).'%')
-            ->orderBy('m.title', 'ASC')
+            ->setParameter('author', '%'.strtolower($author).'%');
+
+        if (null !== $organisation) {
+            $query->andWhere($query->expr()->eq('a.organisation', ':organisation'))
+                ->setParameter('organisation', $organisation);
+        }
+
+        $resultSet = $query->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -238,12 +244,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear, $semester = 0)
+    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear, $semester = 0, Organisation $organisation = null)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -255,8 +261,14 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('publisher', '%'.strtolower($publisher).'%')
-            ->orderBy('m.title', 'ASC')
+            ->setParameter('publisher', '%'.strtolower($publisher).'%');
+
+        if (null !== $organisation) {
+            $query->andWhere($query->expr()->eq('a.organisation', ':organisation'))
+                ->setParameter('organisation', $organisation);
+        }
+
+        $resultSet = $query->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
