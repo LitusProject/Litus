@@ -306,7 +306,7 @@ class Article extends EntityRepository
 
         $articles = array();
         foreach($resultSet as $barcode)
-            $articles[] = $barcode->getArticle();
+            $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
 
         return $articles;
     }
