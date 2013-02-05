@@ -19,5 +19,10 @@
             {{ translate('Subjects') }}
         </a>
     </li>
+    <li {% if getParam('controller') == 'session' %}class="active"{% endif %}>
+        <a href="{{ url('session', {'action': 'manage'}) }}">
+            {{ translate('Sessions') }}
+        </a>
+    </li>
 </ul>
 

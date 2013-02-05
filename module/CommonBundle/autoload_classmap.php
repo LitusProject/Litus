@@ -121,6 +121,7 @@ return array(
     'CommonBundle\Controller\Admin\SessionController'                                  => __DIR__ . '/src/Controller/Admin/SessionController.php',
     'CommonBundle\Controller\AuthController'                                           => __DIR__ . '/src/Controller/AuthController.php',
     'CommonBundle\Controller\IndexController'                                          => __DIR__ . '/src/Controller/IndexController.php',
+    'CommonBundle\Controller\SessionController'                                        => __DIR__ . '/src/Controller/SessionController.php',
     'CommonBundle\Entity\Acl\Action'                                                   => __DIR__ . '/src/Entity/Acl/Action.php',
     'CommonBundle\Entity\Acl\Resource'                                                 => __DIR__ . '/src/Entity/Acl/Resource.php',
     'CommonBundle\Entity\Acl\Role'                                                     => __DIR__ . '/src/Entity/Acl/Role.php',

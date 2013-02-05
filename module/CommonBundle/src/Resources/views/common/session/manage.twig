@@ -1,0 +1,81 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-success fade" id="session_removed_success">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">{{ translate('Success') }}</div>
+        <div class="content">
+            <p>{{ translate('The session was successfully expired!') }}</p>
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="session_removed_error">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">{{ translate('Error') }}</div>
+        <div class="content">
+            <p>{{ translate('An error occurred while trying to expire the session.') }}</p>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ translate('Account') }}</h1>
+    </div>
+
+    {% include 'common/account/partials/navigation.twig' %}
+
+    <div class="row page">
+        <div class="span12">
+            <h3>{{ translate('Sessions') }}</h3>
+
+            <table class="table">
+                <tr>
+                    <th>IP</th>
+                    <th width="200px">Start Time</th>
+                    <th width="200px">Expiration Time</th>
+                    <th width="90px">Shibboleth</th>
+                    <th width="100px">Action</th>
+                </tr>
+                {% for session in activeSessions %}
+                    <tr class="item item-{{ session.getId() }}">
+                        <td>{{ session.getIp() }}</td>
+                        <td>{{ dateLocalized(session.getStartTime(), 'd/M/y HH:mm') }}</td>
+                        <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
+                        <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
+                        <td class="actions">
+                            {% if hasAccess('admin_session', 'expire') and session.getId() != currentSession.getId() %}
+                                <a href="#" class="btn btn-danger expireSession" data-id="{{ session.getId() }}">{{ translate('Expire') }}</a></li>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.expireSession').click(expireSession);
+        });
+
+        function expireSession(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            $.post('{{ url('session', {"action": "expire"})}}' + $this.data('id'), function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').removeClass('in');
+                    $('#session_removed_success').addClass('in');
+                    $this.parent().parent().remove();
+                } else {
+                    errorRemoveSession();
+                }
+            }, 'json').error(errorRemoveSession);
+        }
+
+        function errorRemoveSession() {
+            $('.flashmessage').removeClass('in');
+            $('#session_removed_error').addClass('in');
+        }
+    </script>
+{% endblock %}
