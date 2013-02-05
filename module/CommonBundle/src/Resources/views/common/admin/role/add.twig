@@ -83,7 +83,7 @@
                             ).appendTo(subUl)
 
                             if (option.is(':selected'))
-                                checkbox.attr('checked', 'checked');
+                                checkbox.attr('checked', 'checked').trigger('change');
                         });
                     });
                     $(this).hide();
