@@ -19,5 +19,11 @@
             {{ translate('Subjects') }}
         </a>
     </li>
+
+    <li class="pull-right {% if getParam('action') == 'fileServer' %}active{% endif %}">
+        <a href="{{ url('account', {'action': 'fileServer'}) }}">
+            {{ translate('File Server') }}
+        </a>
+    </li>
 </ul>
 

@@ -34,7 +34,7 @@
                             'baseDn'         => $ldapConfig['baseDn'],
                         )
                     );
-                    return $client;
+                    return $ldap;
                 },
             ),
         ),
