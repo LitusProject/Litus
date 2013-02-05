@@ -98,7 +98,7 @@
                                                 <span>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
                                             {% endif %}
                                         </td>
-                                        <td class="hidden-phone">{{ map['mandatory'] ? 'X' : '' }}</td>
+                                        <td class="hidden-phone">{{ map['mandatory'] ? '&times;' : '' }}</td>
                                         <td>
                                             {% if map['article'].isBookable() and (bookingsEnabled or map['article'].getId() in bookingsClosedExceptions) %}
                                                 {% set name = 'article-' ~ map['article'].getId() %}
