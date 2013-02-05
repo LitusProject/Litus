@@ -126,7 +126,7 @@ return array(
             'admin_subject_comment' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/subject/comment[/:action[/:id][/:academicyear][/page/:page]][/]',
+                    'route' => '/admin/syllabus/subject/comments[/:action[/:id][/:academicyear][/page/:page]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
