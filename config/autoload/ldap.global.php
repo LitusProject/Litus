@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-//if ('production' == getenv('APPLICATION_ENV')) {
+if ('production' == getenv('APPLICATION_ENV')) {
     if (!file_exists(__DIR__ . '/../ldap.config.php')) {
         throw new RuntimeException(
             'The LDAP configuration file (' . (__DIR__ . '/../ldap.config.php') . ') was not found'
@@ -39,6 +39,6 @@
             ),
         ),
     );
-//}
+}
 
 return array();
