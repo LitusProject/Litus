@@ -207,6 +207,21 @@ return array(
                     ),
                 ),
             ),
+            'session' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/session[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'language' => '[a-z]{2}',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'session',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -324,6 +339,7 @@ return array(
 
             'index'          => 'CommonBundle\Controller\IndexController',
             'account'        => 'CommonBundle\Controller\AccountController',
+            'session'        => 'CommonBundle\Controller\SessionController',
             'auth'           => 'CommonBundle\Controller\AuthController',
         ),
     ),

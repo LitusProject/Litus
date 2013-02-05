@@ -130,7 +130,7 @@
                             {% endif %}
                             {% if hasAccess('admin_sales_article', 'add') %}
                                 if (this.saleArticle == 0) {
-                                    actions.append('<a href="{{ url('admin_sales_article', {"action": "add"}) }}' + this.saleArticle + '" class="article">Sale Article</a>');
+                                    actions.append('<a href="{{ url('admin_sales_article', {"action": "add"}) }}' + this.id + '" class="article">Sale Article</a>');
                                 }
                             {% endif %}
 
