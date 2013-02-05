@@ -197,6 +197,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'account' => array(
                         'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',
                     ),
+                    'session' => array(
+                        'manage', 'expire'
+                    ),
                     'auth' => array(
                         'login', 'logout', 'shibboleth'
                     ),

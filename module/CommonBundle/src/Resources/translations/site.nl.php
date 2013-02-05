@@ -58,6 +58,10 @@ return array(
     'Subjects' => 'Vakken',
     'Choose Your Subjects' => 'Kies Je Vakken',
     'Your data was succesfully updated!' => 'Je gegevens zijn succesvol geupdate!',
+    'Sessions' => 'Sessies',
+    'Expire' => 'Vervallen',
+    'The session was successfully expired!' => 'De sessie is succesvol vervallen!',
+    'An error occurred while trying to expire the session.' => 'Er is een fout opgetreden tijdens het vervallen van de sessie.',
 
     'Other' => 'Andere',
 

@@ -91,6 +91,17 @@ return array(
             '@common_typeahead_remote',
             '@common_holder_js',
         ),
+        'session' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_responsive_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+        ),
         'auth' => array(
             '@common_jquery',
             '@bootstrap_css',

@@ -58,6 +58,10 @@ return array(
     'Subjects' => 'Subjects',
     'Choose Your Subjects' => 'Choose Your Subjects',
     'Your data was succesfully updated!' => 'Your data was succesfully updated!',
+    'Sessions' => 'Sessions',
+    'Expire' => 'Expire',
+    'The session was successfully expired!' => 'The session was successfully expired!',
+    'An error occurred while trying to expire the session.' => 'An error occurred while trying to expire the session.',
 
     'Other' => 'Other',
 
