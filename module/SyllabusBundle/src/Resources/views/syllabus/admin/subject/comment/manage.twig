@@ -11,7 +11,8 @@
         <table class="full_width manage">
             <tr>
                 <th width="100px">Date</th>
-                <th width="140px">Person</th>
+                <th width="130px">Person</th>
+                <th width="220px">Subject</th>
                 <th>Summary</th>
                 <th width="80px">Type</th>
                 <th width="70px">Action</th>
@@ -21,10 +22,11 @@
                 <tr class="item item-{{ comment.getId() }}">
                     <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
                     <td>{{ comment.getPerson().getFullName() }}</td>
+                    <td>{{ comment.getSubject().getName() }}</td>
                     <td>{{ comment.getSummary() }}</td>
                     <td>{{ comment.getType()|capitalize }}</td>
                     <td class="actions">
-                        <a href="#" class="view" data-text="{{ comment.getText() }}">View</a>
+                        <a href="#" class="view viewOne" data-text="{{ comment.getText() }}">View</a>
                         {% if hasAccess('admin_subject_comment', 'subject') %}
                             <a href="{{ url('admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
                         {% endif %}
@@ -54,7 +56,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.item .view').click(openViewModal);
+            $('.item .viewOne').click(openViewModal);
         });
 
         function openViewModal(e) {
