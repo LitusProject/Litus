@@ -808,6 +808,10 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function fileServerAction() {
+        var_dump($this->getLdap()->getEntry('uid=s0213526,cn=students,ou=group,dc=ldap,dc=vtk,dc=be'));
+    }
+
     private function _getUser()
     {
         if (null === $this->getParam('code')) {
