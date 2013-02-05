@@ -88,7 +88,7 @@ return array(
             'admin_sales_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                    'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/semester/:semester][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
@@ -96,6 +96,7 @@ return array(
                         'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'string'       => '[%a-zA-Z0-9:.,_-]*',
                         'page'         => '[0-9]*',
+                        'semester'     => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_sales_article',

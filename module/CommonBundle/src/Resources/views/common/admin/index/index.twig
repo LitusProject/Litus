@@ -91,17 +91,17 @@
             </tr>
 
             {% for session in activeSessions %}
-                    <tr class="item item-{{ session.getId() }}">
-                        <td>{{ session.getIp() }}</td>
-                        <td>{{ dateLocalized(session.getStartTime(), 'd/M/y HH:mm') }}</td>
-                        <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
-                        <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
-                        <td class="actions">
-                            {% if hasAccess('admin_session', 'expire') and session.getId() != currentSession.getId() %}
-                                <a href="#" class="delete" data-id="{{ session.getId() }}">Expire</a></li>
-                            {% endif %}
-                        </td>
-                    </tr>
+                <tr class="item item-{{ session.getId() }}">
+                    <td>{{ session.getIp() }}</td>
+                    <td>{{ dateLocalized(session.getStartTime(), 'd/M/y HH:mm') }}</td>
+                    <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
+                    <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
+                    <td class="actions">
+                        {% if hasAccess('admin_session', 'expire') and session.getId() != currentSession.getId() %}
+                            <a href="#" class="delete" data-id="{{ session.getId() }}">Expire</a></li>
+                        {% endif %}
+                    </td>
+                </tr>
             {% endfor %}
         </table>
 	</div>

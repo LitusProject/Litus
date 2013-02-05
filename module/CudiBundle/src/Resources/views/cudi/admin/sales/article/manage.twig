@@ -19,6 +19,8 @@
 
     {% include 'cudi/admin/sales/article/partials/years.twig' %}
 
+    {% include 'cudi/admin/sales/article/partials/semester.twig' %}
+
     <div id="controller_action">
         <div id="article_search" style="display:none;">
             <div style="padding:4px;text-align:right">
@@ -109,8 +111,8 @@
                 searchDiv: $('#article_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_sales_article', {'action': 'manage'}) }}manage/',
-                url: '{{ url('admin_sales_article', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                searchPage: '{{ url('admin_sales_article', {'action': 'manage', 'semester': currentSemester}) }}',
+                url: '{{ url('admin_sales_article', {'action': 'search', 'academicyear': activeAcademicYear.getCode(), 'semester': currentSemester}) }}',
                 display: function (data) {
                     $('#article_search table').find('tr.item').remove();
                     $(data).each(function () {
