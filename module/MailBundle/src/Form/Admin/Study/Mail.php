@@ -121,7 +121,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('style', 'width: 500px; height: 200px;');
         $collection->add($field);
 
-        $field = new File('file[]');
+        $field = new File('file');
         $field->setLabel('Attachments')
             ->setAttribute('multiple', 'multiple')
             ->setRequired();
