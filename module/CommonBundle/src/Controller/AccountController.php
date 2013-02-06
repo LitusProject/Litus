@@ -813,6 +813,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     public function fileServerAction() {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index'
+            );
+
+            return new ViewModel();
+        }
+
         if ('' == $this->getAuthentication()->getPersonObject()->getUniversityIdentification()) {
             return new ViewModel(
                 array(
@@ -858,7 +874,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
                         if ('production' == getenv('APPLICATION_ENV')) {
                             $this->getLdap()->update(
-                                'uid=s0213526,' . $studentsOu, $studentsGroup
+                                'uid=' . $this->getAuthentication()->getPersonObject()->getUniversityIdentification() . ',' . $studentsOu, $entry
                             );
                         }
 
@@ -940,7 +956,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                         );
 
                         Attribute::setAttribute(
-                            $newEntry, 'sn', $this->getAuthentication()->getLastName()
+                            $newEntry, 'sn', $this->getAuthentication()->getPersonObject()->getLastName()
                         );
 
                         Attribute::setAttribute(
