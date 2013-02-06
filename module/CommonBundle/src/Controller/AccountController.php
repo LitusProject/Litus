@@ -813,6 +813,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     public function fileServerAction() {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index'
+            );
+
+            return new ViewModel();
+        }
+
         if ('' == $this->getAuthentication()->getPersonObject()->getUniversityIdentification()) {
             return new ViewModel(
                 array(
@@ -940,7 +956,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                         );
 
                         Attribute::setAttribute(
-                            $newEntry, 'sn', $this->getAuthentication()->getLastName()
+                            $newEntry, 'sn', $this->getAuthentication()->getPersonObject()->getLastName()
                         );
 
                         Attribute::setAttribute(
