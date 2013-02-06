@@ -12,30 +12,30 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PageBundle\Form\Admin\Page;
+namespace PageBundle\Form\Admin\Link;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
-    PageBundle\Component\Validator\Title as TitleValidator,
-    PageBundle\Entity\Nodes\Page,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Add Page
+ * Add Link
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    protected $_entityManager = null;
+    private $_entityManager = null;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -57,15 +57,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
 
-            $field = new Text('title_' . $language->getAbbrev());
-            $field->setLabel('Title')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-
-            $pane->add($field);
-
-            $field = new Textarea('content_' . $language->getAbbrev());
-            $field->setLabel('Content')
-                ->setAttribute('rows', 20)
+            $field = new Text('name_' . $language->getAbbrev());
+            $field->setLabel('Name')
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
 
             $pane->add($field);
@@ -83,19 +76,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Select('parent');
         $field->setLabel('Parent')
-            ->setAttribute('options', $this->createPagesArray());
+            ->setAttribute('options', $this->_createPagesArray());
         $this->add($field);
 
-        $field = new Select('edit_roles');
-        $field->setLabel('Edit Roles')
-            ->setRequired()
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_createEditRolesArray());
+        $field = new Text('url');
+        $field->setLabel('URL')
+            ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'page_add');
+            ->setAttribute('class', 'link_add');
         $this->add($field);
     }
 
@@ -113,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findAll();
 
         if (empty($categories))
-            throw new \RuntimeException('There needs to be at least one category before you can add a page');
+            throw new \RuntimeException('There needs to be at least one category before you can add a link');
 
         $categoryOptions = array();
         foreach($categories as $category)
@@ -124,7 +115,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $categoryOptions;
     }
 
-    protected function createPagesArray($excludeTitle = '')
+    private function _createPagesArray()
     {
         $pages = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
@@ -133,31 +124,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $pageOptions = array(
             '' => ''
         );
-        foreach($pages as $page) {
-            if ($page->getTitle() != $excludeTitle)
-                $pageOptions[$page->getId()] = $page->getTitle();
-        }
-
-        asort($pageOptions);
+        foreach($pages as $page)
+            $pageOptions[$page->getId()] = $page->getTitle();
 
         return $pageOptions;
-    }
-
-    private function _createEditRolesArray()
-    {
-        $roles = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\Acl\Role')
-            ->findAll();
-
-        $rolesArray = array();
-        foreach ($roles as $role) {
-            if (!$role->getSystem())
-                $rolesArray[$role->getName()] = $role->getName();
-        }
-
-        asort($rolesArray);
-
-        return $rolesArray;
     }
 
     public function getInputFilter()
@@ -169,26 +139,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'title_' . $language->getAbbrev(),
+                        'name'     => 'name_' . $language->getAbbrev(),
                         'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new TitleValidator($this->_entityManager),
-                        ),
-                    )
-                )
-            );
-
-            if ($language->getAbbrev() !== \Locale::getDefault())
-                continue;
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'content_' . $language->getAbbrev(),
-                        'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -209,8 +161,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'edit_roles',
+                    'name'     => 'url',
                     'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'Uri'),
+                    ),
                 )
             )
         );

@@ -15,27 +15,24 @@
 namespace PageBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Category,
-    PageBundle\Entity\Categories\Translation,
-    PageBundle\Form\Admin\Category\Add as AddForm,
-    PageBundle\Form\Admin\Category\Edit as EditForm,
+    PageBundle\Entity\Link,
+    PageBundle\Entity\Links\Translation,
+    PageBundle\Form\Admin\Link\Add as AddForm,
+    PageBundle\Form\Admin\Link\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
- * CategoryController
+ * LinkController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class CategoryController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class LinkController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'PageBundle\Entity\Category',
-            $this->getParam('page'),
-            array(
-                'active' => true
-            )
+            'PageBundle\Entity\Link',
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -57,17 +54,21 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $category = new Category();
+                $category = $this->getEntityManager()
+                    ->getRepository('PageBundle\Entity\Category')
+                    ->findOneById($formData['category']);
+
+                $link = new Link($category, $formData['url']);
 
                 if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
                         ->findOneById($formData['parent']);
 
-                    $category->setParent($parent);
+                    $link->setParent($parent);
                 }
 
-                $this->getEntityManager()->persist($category);
+                $this->getEntityManager()->persist($link);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -76,7 +77,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 foreach($languages as $language) {
                     if ('' != $formData['name_' . $language->getAbbrev()]) {
                         $translation = new Translation(
-                            $category,
+                            $link,
                             $language,
                             $formData['name_' . $language->getAbbrev()]
                         );
@@ -91,12 +92,12 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The category was successfully added!'
+                        'The link was successfully added!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page_category',
+                    'admin_page_link',
                     array(
                         'action' => 'manage'
                     )
@@ -115,10 +116,10 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($category = $this->_getCategory()))
+        if (!($link = $this->_getLink()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $category);
+        $form = new EditForm($this->getEntityManager(), $link);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -127,12 +128,19 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
+                $category = $this->getEntityManager()
+                    ->getRepository('PageBundle\Entity\Category')
+                    ->findOneById($formData['category']);
+
+                $link->setCategory($category)
+                    ->setUrl($formData['url']);
+
                 if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
                         ->findOneById($formData['parent']);
 
-                    $category->setParent($parent);
+                    $link->setParent($parent);
                 }
 
                 $languages = $this->getEntityManager()
@@ -140,14 +148,14 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = $category->getTranslation($language, false);
+                    $translation = $link->getTranslation($language, false);
 
                     if (null !== $translation) {
                         $translation->setName($formData['name_' . $language->getAbbrev()]);
                     } else {
                         if ('' != $formData['name_' . $language->getAbbrev()]) {
                             $translation = new Translation(
-                                $category,
+                                $link,
                                 $language,
                                 $formData['name_' . $language->getAbbrev()]
                             );
@@ -163,12 +171,12 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The category was successfully edited!'
+                        'The link was successfully edited!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page_category',
+                    'admin_page_link',
                     array(
                         'action' => 'manage'
                     )
@@ -189,10 +197,10 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($category = $this->_getCategory()))
+        if (!($link = $this->_getLink()))
             return new ViewModel();
 
-        $category->deactivate();
+        $this->getEntityManager()->remove($link);
 
         $this->getEntityManager()->flush();
 
@@ -205,19 +213,19 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _getCategory()
+    private function _getLink()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the category!'
+                    'No ID was given to identify the link!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_page_category',
+                'admin_page_link',
                 array(
                     'action' => 'manage'
                 )
@@ -226,21 +234,21 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        $category = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Category')
+        $link = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Link')
             ->findOneById($this->getParam('id'));
 
-        if (null === $category) {
+        if (null === $link) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No category with the given ID was found!'
+                    'No link with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_page_category',
+                'admin_page_link',
                 array(
                     'action' => 'manage'
                 )
@@ -249,6 +257,6 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        return $category;
+        return $link;
     }
 }

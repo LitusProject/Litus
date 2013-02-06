@@ -31,9 +31,17 @@
                                         {{ item.name }} <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        {% for page in item.items %}
-                                            {% if hasAccess('page', 'view') %}
-                                                <li><a href="{{ url('page', {"name": page.name}) }}">{{ page.title }}</a></li>
+                                        {% for categoryItem in item.items %}
+                                            {% if 'page' == categoryItem.type %}
+                                                {% if hasAccess('page', 'view') %}
+                                                    <li><a href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></li>
+                                                {% endif %}
+                                            {% endif %}
+
+                                            {% if 'link' == categoryItem.type %}
+                                                {% if hasAccess('link', 'view') %}
+                                                    <li><a href="{{ url('link', {"id": categoryItem.id}) }}">{{ categoryItem.name }}</a></li>
+                                                {% endif %}
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
@@ -166,7 +174,7 @@
                                     <li>
                                         <a href="{{ url('admin_index') }}">{{ translate('Admin') }}</a>
                                     </li>
-                                    
+
                                     <li class="divider"></li>
                                 {% endif %}
                                 <li>

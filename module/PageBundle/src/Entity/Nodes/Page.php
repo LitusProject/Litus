@@ -45,7 +45,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     private $endTime;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The page's parent
+     * @var \PageBundle\Entity\Nodes\Page The page's category
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")

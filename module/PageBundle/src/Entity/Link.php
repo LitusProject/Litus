@@ -17,18 +17,19 @@ namespace PageBundle\Entity;
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
+    PageBundle\Entity\Category,
     PageBundle\Entity\Nodes\Page;
 
 /**
- * This entity stores a category.
+ * This entity represents a link in the menu structure.
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Category")
- * @ORM\Table(name="nodes.pages_categories")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Link")
+ * @ORM\Table(name="nodes.pages_links")
  */
-class Category
+class Link
 {
     /**
-     * @var int The ID of this category
+     * @var int The ID of this link
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,7 +38,7 @@ class Category
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The category's parent
+     * @var \PageBundle\Entity\Nodes\Page The link's parent
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
@@ -45,22 +46,35 @@ class Category
     private $parent;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this category
+     * @var \PageBundle\Entity\Nodes\Page The link's category
      *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Categories\Translation", mappedBy="category", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
+     * @ORM\JoinColumn(name="category", referencedColumnName="id")
+     */
+    private $category;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this link
+     *
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Links\Translation", mappedBy="link", cascade={"remove"})
      */
     private $translations;
 
     /**
-     * @var bool Whether or not the category is active
+     * @var string The URL this link redirects to
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string")
      */
-    private $active;
+    private $url;
 
-    public function __construct()
+    /**
+     * @param \PageBundle\Entity\Category $category
+     * @param string $url
+     */
+    public function __construct(Category $category, $url)
     {
-        $this->active = true;
+        $this->category = $category;
+        $this->url = $url;
 
         $this->translations = new ArrayCollection();
     }
@@ -92,9 +106,27 @@ class Category
     }
 
     /**
+     * @return \PageBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param \PageBundle\Entity\Category $category
+     * @return \PageBundle\Entity\Link
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \PageBundle\Entity\Categories\Translation
+     * @return \PageBundle\Entity\Links\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -128,18 +160,20 @@ class Category
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function isActive()
+    public function getUrl()
     {
-        return $this->active;
+        return $this->url;
     }
 
     /**
-     * @return void
+     * @param string $url
+     * @return \PageBundle\Entity\Link
      */
-    public function deactivate()
+    public function setUrl($url)
     {
-        $this->active = false;
+        $this->url = $url;
+        return $this;
     }
 }

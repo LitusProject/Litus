@@ -118,19 +118,36 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
+            $links = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Link')
+                ->findBy(
+                    array(
+                        'category' => $category,
+                        'parent' => null
+                    )
+                );
+
             foreach ($pages as $page) {
                 $menu[$i]['items'][] = array(
                     'type'  => 'page',
                     'name'  => $page->getName(),
                     'title' => $page->getTitle($this->getLanguage())
                 );
-
-                $sort = array();
-                foreach ($menu[$i]['items'] as $key => $value)
-                    $sort[$key] = $value['title'];
-
-                array_multisort($sort, $menu[$i]['items']);
             }
+
+            foreach ($links as $link) {
+                $menu[$i]['items'][] = array(
+                    'type' => 'link',
+                    'id'   => $link->getId(),
+                    'name' => $link->getName($this->getLanguage())
+                );
+            }
+
+            $sort = array();
+            foreach ($menu[$i]['items'] as $key => $value)
+                $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+
+            array_multisort($sort, $menu[$i]['items']);
 
             $i++;
         }
