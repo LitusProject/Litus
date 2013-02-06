@@ -460,8 +460,8 @@ class Study
 
         $diplomas = array();
 
-        foreach($root->data->children() as $organisation) {
-            foreach($organisation->children() as $department) {
+        foreach($root->data->children() as $organization) {
+            foreach($organization->children() as $department) {
                 if (in_array($department->attributes()->objid, $departments)) {
                     foreach($department->classificaties->children() as $classification) {
                         foreach($classification->graad as $grade) {

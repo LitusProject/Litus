@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Sales;
 
-use CommonBundle\Entity\General\Organisation,
+use CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sales\Articles\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
@@ -131,12 +131,12 @@ class Article
     private $barcodes;
 
     /**
-     * @var \CommonBundle\Entity\General\Union The organisation of this article
+     * @var \CommonBundle\Entity\General\Union The organization of this article
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organisation")
-     * @ORM\JoinColumn(name="organisation", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
+     * @ORM\JoinColumn(name="organization", referencedColumnName="id")
      */
-    private $organisation;
+    private $organization;
 
     /**
      * @param \CudiBundle\Entity\Article $mainArticle The main article of this sale article
@@ -147,9 +147,9 @@ class Article
      * @param boolean $unbookable Flag whether the article is unbookable
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of the article
      * @param boolean $canExpire Flag whether the aritcle can expire
-     * @param \CommonBundle\Entity\General\Organisation $organisation The organisation of this article
+     * @param \CommonBundle\Entity\General\Organization $organization The organization of this article
      */
-    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire, Organisation $organisation)
+    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire, Organization $organization)
     {
         $this->discounts = new ArrayCollection();
         $this->barcodes = new ArrayCollection();
@@ -164,7 +164,7 @@ class Article
             ->setCanExpire($canExpire)
             ->setVersionNumber(1)
             ->setIsHistory(false)
-            ->setOrganisation($organisation);
+            ->setOrganization($organization);
         $this->timestamp = new DateTime();
         $this->stockValue = 0;
     }
@@ -465,22 +465,22 @@ class Article
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organisation $organisation
+     * @param \CommonBundle\Entity\General\Organization $organization
      *
      * @return \CudiBundle\Entity\Sales\Article
      */
-    public function setOrganisation(Organisation $organisation)
+    public function setOrganization(Organization $organization)
     {
-        $this->organisation = $organisation;
+        $this->organization = $organization;
         return $this;
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organisation
+     * @return \CommonBundle\Entity\General\Organization
      */
-    public function getOrganisation()
+    public function getOrganization()
     {
-        return $this->organisation;
+        return $this->organization;
     }
 
     /**
@@ -497,7 +497,7 @@ class Article
             $this->isUnbookable(),
             $this->getSupplier(),
             $this->canExpire(),
-            $this->getOrganisation()
+            $this->getOrganization()
         );
         foreach($this->barcodes as $barcode)
             $article->addBarcode(new Barcode($article, $barcode->getBarcode()));
