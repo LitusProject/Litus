@@ -1,10 +1,10 @@
-{% if organisations|length > 1 %}
+{% if organizations|length > 1 %}
 <header id="controller_sub_header">
     <nav id="controller_sub_nav">
         <ul>
             {% set found = false %}
-            {% for organisation in organisations %}
-                {% if currentOrganisation.getId() == organisation.getId() %}
+            {% for organization in organizations %}
+                {% if currentOrganization.getId() == organization.getId() %}
                     {% set found = true %}
                 {% endif %}
             {% endfor %}
@@ -16,14 +16,14 @@
                         {{ url('admin_stock', {'action': 'manage'}) }}
                     {% endif %}">All</a>
             </li>
-            {% for organisation in organisations %}
+            {% for organization in organizations %}
                 <li>
-                    <a {% if currentOrganisation.getId() == organisation.getId() %} class="active" {% endif %}
+                    <a {% if currentOrganization.getId() == organization.getId() %} class="active" {% endif %}
                     href="{% if currentSemester != 0 %}
-                        {{ url('admin_stock', {'action': 'manage', 'semester': currentSemester, 'organisation': organisation.getId()}) }}
+                        {{ url('admin_stock', {'action': 'manage', 'semester': currentSemester, 'organization': organization.getId()}) }}
                     {% else %}
-                        {{ url('admin_stock', {'action': 'manage', 'organisation': organisation.getId()}) }}
-                    {% endif %}">{{ organisation.getName() }}</a>
+                        {{ url('admin_stock', {'action': 'manage', 'organization': organization.getId()}) }}
+                    {% endif %}">{{ organization.getName() }}</a>
                 </li>
             {% endfor %}
         </ul>

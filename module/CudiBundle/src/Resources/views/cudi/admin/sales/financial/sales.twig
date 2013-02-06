@@ -6,13 +6,13 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        {% if organisations|length > 1 %}
+        {% if organizations|length > 1 %}
             <div style="padding:4px;text-align:right">
-                Organisation:
-                <select id="organisationField">
+                Organization:
+                <select id="organizationField">
                     <option value="all">All</option>
-                    {% for organisation in organisations %}
-                        <option value="{{ organisation.getId() }}">{{ organisation.getName() }}</option>
+                    {% for organization in organizations %}
+                        <option value="{{ organization.getId() }}">{{ organization.getName() }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -37,15 +37,15 @@
                     <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i') }}{% endif %}</td>
                     {% set theoreticalRevenue = session.getTheoreticalRevenue() %}
                     {% set actualRevenue = session.getActualRevenue() %}
-                    <td class="organisation organisation-all">&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</td>
-                    <td class="organisation organisation-all">&euro; {{ (actualRevenue/100)|number_format(2) }}</td>
-                    <td class="organisation organisation-all">&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</td>
-                    {% for organisation in organisations %}
-                        {% set theoreticalRevenue = session.getTheoreticalRevenue(organisation) %}
+                    <td class="organization organization-all">&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</td>
+                    <td class="organization organization-all">&euro; {{ (actualRevenue/100)|number_format(2) }}</td>
+                    <td class="organization organization-all">&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</td>
+                    {% for organization in organizations %}
+                        {% set theoreticalRevenue = session.getTheoreticalRevenue(organization) %}
                         {% set actualRevenue = session.getActualRevenue() %}
-                        <td class="organisation organisation-{{ organisation.getId() }}" style="display: none;">&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</td>
-                        <td class="organisation organisation-{{ organisation.getId() }}" style="display: none;">&euro; {{ (actualRevenue/100)|number_format(2) }}</td>
-                        <td class="organisation organisation-{{ organisation.getId() }}" style="display: none;">&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</td>
+                        <td class="organization organization-{{ organization.getId() }}" style="display: none;">&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</td>
+                        <td class="organization organization-{{ organization.getId() }}" style="display: none;">&euro; {{ (actualRevenue/100)|number_format(2) }}</td>
+                        <td class="organization organization-{{ organization.getId() }}" style="display: none;">&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</td>
                     {% endfor %}
                     <td class="actions">
                         {% if hasAccess('admin_sales_session', 'edit') %}
@@ -63,9 +63,9 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#organisationField').change(function() {
-                $('.item .organisation').hide();
-                $('.item .organisation-' + $(this).find(':selected').val()).show();
+            $('#organizationField').change(function() {
+                $('.item .organization').hide();
+                $('.item .organization-' + $(this).find(':selected').val()).show();
             });
         });
     </script>
