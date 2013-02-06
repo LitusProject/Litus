@@ -12,33 +12,29 @@
  * @license http://litus.cc/LICENSE
  */
 
-if ('production' == getenv('APPLICATION_ENV')) {
-    if (!file_exists(__DIR__ . '/../ldap.config.php')) {
-        throw new RuntimeException(
-            'The LDAP configuration file (' . (__DIR__ . '/../ldap.config.php') . ') was not found'
-        );
-    }
-
-    return array(
-        'service_manager' => array(
-            'factories' => array(
-                'ldap' => function ($serviceManager) {
-                    $ldapConfig = include __DIR__ . '/../ldap.config.php';
-
-                    $ldap = new Zend\Ldap\Ldap(
-                        array(
-                            'host'           => $ldapConfig['host'],
-                            'username'       => $ldapConfig['username'],
-                            'password'       => $ldapConfig['password'],
-                            'bindRequiresDn' => $ldapConfig['bindRequiresDn'],
-                            'baseDn'         => $ldapConfig['baseDn'],
-                        )
-                    );
-                    return $ldap;
-                },
-            ),
-        ),
+if (!file_exists(__DIR__ . '/../ldap.config.php')) {
+    throw new RuntimeException(
+        'The LDAP configuration file (' . (__DIR__ . '/../ldap.config.php') . ') was not found'
     );
 }
 
-return array();
+return array(
+    'service_manager' => array(
+        'factories' => array(
+            'ldap' => function ($serviceManager) {
+                $ldapConfig = include __DIR__ . '/../ldap.config.php';
+
+                $ldap = new Zend\Ldap\Ldap(
+                    array(
+                        'host'           => $ldapConfig['host'],
+                        'username'       => $ldapConfig['username'],
+                        'password'       => $ldapConfig['password'],
+                        'bindRequiresDn' => $ldapConfig['bindRequiresDn'],
+                        'baseDn'         => $ldapConfig['baseDn'],
+                    )
+                );
+                return $ldap;
+            },
+        ),
+    ),
+);

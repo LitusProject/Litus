@@ -149,6 +149,8 @@ return array(
     'CommonBundle\Entity\Users\Statuses\Organization'                                  => __DIR__ . '/src/Entity/Users/Statuses/Organization.php',
     'CommonBundle\Entity\Users\Statuses\University'                                    => __DIR__ . '/src/Entity/Users/Statuses/University.php',
     'CommonBundle\Form\Account\Activate'                                               => __DIR__ . '/src/Form/Account/Activate.php',
+    'CommonBundle\Form\Account\FileServer\ChangePassword'                              => __DIR__ . '/src/Form/Account/FileServer/ChangePassword.php',
+    'CommonBundle\Form\Account\FileServer\CreateAccount'                               => __DIR__ . '/src/Form/Account/FileServer/CreateAccount.php',
     'CommonBundle\Form\Address\Add'                                                    => __DIR__ . '/src/Form/Address/Add.php',
     'CommonBundle\Form\Address\AddPrimary'                                             => __DIR__ . '/src/Form/Address/AddPrimary.php',
     'CommonBundle\Form\Admin\Academic\Add'                                             => __DIR__ . '/src/Form/Admin/Academic/Add.php',
