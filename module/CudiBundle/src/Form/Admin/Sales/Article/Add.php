@@ -63,10 +63,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Select('organisation');
-        $field->setLabel('Organisation')
+        $field = new Select('organization');
+        $field->setLabel('Organization')
             ->setRequired()
-            ->setAttribute('options', $this->_getOrganisations());
+            ->setAttribute('options', $this->_getOrganizations());
         $this->add($field);
 
         $field = new Select('supplier');
@@ -105,16 +105,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $supplierOptions;
     }
 
-    private function _getOrganisations()
+    private function _getOrganizations()
     {
-        $organisations = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Organisation')
+        $organizations = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
-        $organisationsOptions = array();
-        foreach($organisations as $organisation)
-            $organisationsOptions[$organisation->getId()] = $organisation->getName();
+        $organizationsOptions = array();
+        foreach($organizations as $organization)
+            $organizationsOptions[$organization->getId()] = $organization->getName();
 
-        return $organisationsOptions;
+        return $organizationsOptions;
     }
 
     public function populateFromArticle(Article $article)
@@ -192,7 +192,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'organisation',
+                    'name'     => 'organization',
                     'required' => true,
                 )
             )
