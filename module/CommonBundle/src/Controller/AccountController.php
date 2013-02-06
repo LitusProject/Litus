@@ -874,7 +874,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
                         if ('production' == getenv('APPLICATION_ENV')) {
                             $this->getLdap()->update(
-                                'uid=s0213526,' . $studentsOu, $entry
+                                'uid=' . $this->getAuthentication()->getPersonObject()->getUniversityIdentification() . ',' . $studentsOu, $entry
                             );
                         }
 
