@@ -1,34 +1,50 @@
 <ul class="nav nav-tabs hidden-phone">
-    <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
-        <a href="{{ url('account', {'action': 'index'}) }}">
-            {{ translate('Overview') }}
-        </a>
-    </li>
-    <li {% if getParam('action') == 'edit' %}class="active"{% endif %}>
-        <a href="{{ url('account', {'action': 'edit'}) }}">
-            {{ translate('Edit') }}
-        </a>
-    </li>
-    <li {% if getParam('action') == 'studies' %}class="active"{% endif %}>
-        <a href="{{ url('account', {'action': 'studies'}) }}">
-            {{ translate('Studies') }}
-        </a>
-    </li>
-    <li {% if getParam('action') == 'subjects' %}class="active"{% endif %}>
-        <a href="{{ url('account', {'action': 'subjects'}) }}">
-            {{ translate('Subjects') }}
-        </a>
-    </li>
+    {% if hasAccess('account', 'index') %}
+        <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
+            <a href="{{ url('account', {'action': 'index'}) }}">
+                {{ translate('Overview') }}
+            </a>
+        </li>
+    {% endif %}
 
-    <li class="pull-right {% if getParam('action') == 'fileServer' %}active{% endif %}">
-        <a href="{{ url('account', {'action': 'fileServer'}) }}">
-            {{ translate('File Server') }}
-        </a>
-    </li>
-    <li class="pull-right {% if getParam('controller') == 'session' %}active{% endif %}">
-        <a href="{{ url('session', {'action': 'manage'}) }}">
-            {{ translate('Sessions') }}
-        </a>
-    </li>
+    {% if hasAccess('account', 'edit') %}
+        <li {% if getParam('action') == 'edit' %}class="active"{% endif %}>
+            <a href="{{ url('account', {'action': 'edit'}) }}">
+                {{ translate('Edit') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if hasAccess('account', 'studies') %}
+        <li {% if getParam('action') == 'studies' %}class="active"{% endif %}>
+            <a href="{{ url('account', {'action': 'studies'}) }}">
+                {{ translate('Studies') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if hasAccess('account', 'subjects') %}
+        <li {% if getParam('action') == 'subjects' %}class="active"{% endif %}>
+            <a href="{{ url('account', {'action': 'subjects'}) }}">
+                {{ translate('Subjects') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if hasAccess('account', 'fileServer') %}
+        <li class="pull-right {% if getParam('action') == 'fileServer' %}active{% endif %}">
+            <a href="{{ url('account', {'action': 'fileServer'}) }}">
+                {{ translate('File Server') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if hasAccess('account', 'session') %}
+        <li class="pull-right {% if getParam('controller') == 'session' %}active{% endif %}">
+            <a href="{{ url('session', {'action': 'manage'}) }}">
+                {{ translate('Sessions') }}
+            </a>
+        </li>
+    {% endif %}
 </ul>
 
