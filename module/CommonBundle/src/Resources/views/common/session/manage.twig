@@ -3,14 +3,12 @@
 {% block content %}
     <div class="flashmessage alert alert-success fade" id="session_removed_success">
         <a class="close" data-dismiss="alert">&times;</a>
-        <div class="title">{{ translate('Success') }}</div>
         <div class="content">
             <p>{{ translate('The session was successfully expired!') }}</p>
         </div>
     </div>
     <div class="flashmessage alert alert-error fade" id="session_removed_error">
         <a class="close" data-dismiss="alert">&times;</a>
-        <div class="title">{{ translate('Error') }}</div>
         <div class="content">
             <p>{{ translate('An error occurred while trying to expire the session.') }}</p>
         </div>
