@@ -57,6 +57,36 @@ return array(
                     ),
                 ),
             ),
+            'admin_page_link' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/site/page/link[/:action[/:id][/page/:page]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_page_link',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+
+            'link' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/link[/:id][/]',
+                    'constraints' => array(
+                        'id'       => '[0-9]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'link',
+                        'action'     => 'view',
+                    ),
+                ),
+            ),
             'page' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -126,7 +156,9 @@ return array(
 
             'admin_page'          => 'PageBundle\Controller\Admin\PageController',
             'admin_page_category' => 'PageBundle\Controller\Admin\CategoryController',
+            'admin_page_link'     => 'PageBundle\Controller\Admin\LinkController',
 
+            'link'                => 'PageBundle\Controller\LinkController',
             'page'                => 'PageBundle\Controller\PageController',
         ),
     ),

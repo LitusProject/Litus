@@ -46,6 +46,12 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_page_category' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'admin_page_link' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
+                    'link' => array(
+                        'view'
+                    ),
                     'page' => array(
                         'file', 'view'
                     ),
@@ -68,6 +74,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'system' => true,
                     'parents' => array(),
                     'actions' => array(
+                        'link' => array(
+                            'view'
+                        ),
                         'page' => array(
                             'file', 'view'
                         ),

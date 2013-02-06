@@ -39,6 +39,14 @@ return array(
             '@bootstrap_js_modal',
             '@admin_css',
         ),
+        'admin_page_link' => array(
+            '@common_jquery',
+            '@admin_js',
+            '@bootstrap_js_tab',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@admin_css',
+        ),
 
         'page' => array(
             '@common_jquery',

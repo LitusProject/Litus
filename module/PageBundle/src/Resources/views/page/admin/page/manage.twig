@@ -54,8 +54,8 @@
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
 
-	{% if hasAccess('admin_page_category', 'manage') %}
-		<aside>
+	<aside>
+		{% if hasAccess('admin_page_category', 'manage') %}
 			<div class="sidebox">
 			    <div class="title">Categories</div>
 			    <div class="content">
@@ -67,8 +67,22 @@
 			    	</p>
 			    </div>
 			</div>
-		</aside>
-	{% endif %}
+		{% endif %}
+
+		{% if hasAccess('admin_page_link', 'manage') %}
+			<div class="sidebox">
+			    <div class="title">Links</div>
+			    <div class="content">
+			        <p>
+			            <i>Please hit the link below to manage and create links!</i>
+			        </p>
+			    	<p>
+			    		<a href="{{ url('admin_page_link', {"action": "manage"}) }}">&rarr; Links</a>
+			    	</p>
+			    </div>
+			</div>
+		{% endif %}
+	</aside>
 
 	<div class="modal hide fade" id="removePage">
 		<div class="modal-header">

@@ -20,7 +20,6 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
-    PageBundle\Entity\Category,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;

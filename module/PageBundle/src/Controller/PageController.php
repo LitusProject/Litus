@@ -86,6 +86,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('PageBundle\Entity\Category')
             ->findByParent($page->getId());
 
+        $links = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Link')
+            ->findByParent($page->getId());
+
         $submenu = array();
         foreach ($pages as $page) {
             $submenu[] = array(
@@ -108,26 +112,46 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('PageBundle\Entity\Nodes\Page')
                 ->findByCategory($category);
 
+            $links = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Link')
+                ->findByCategory($category);
+
             foreach ($pages as $page) {
                 $submenu[$i]['items'][] = array(
                     'type'  => 'page',
                     'name'  => $page->getName(),
                     'title' => $page->getTitle($this->getLanguage())
                 );
-
-                $sort = array();
-                foreach ($submenu[$i]['items'] as $key => $value)
-                    $sort[$key] = $value['title'];
-
-                array_multisort($sort, $submenu[$i]['items']);
             }
+
+            foreach ($links as $link) {
+                $submenu[$i]['items'][] = array(
+                    'type' => 'link',
+                    'id'   => $link->getId(),
+                    'name' => $link->getName($this->getLanguage())
+                );
+            }
+
+            $sort = array();
+            foreach ($submenu[$i]['items'] as $key => $value)
+                $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+
+            array_multisort($sort, $submenu[$i]['items']);
 
             $i++;
         }
 
+        foreach ($links as $link) {
+            $submenu[] = array(
+                'type' => 'link',
+                'id'   => $link->getId(),
+                'name' => $link->getName($this->getLanguage())
+            );
+        }
+
         $sort = array();
         foreach ($submenu as $key => $value)
-            $sort[$key] = isset($value['title'])? $value['title'] : $value['name'];
+            $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
 
         array_multisort($sort, $submenu);
 
