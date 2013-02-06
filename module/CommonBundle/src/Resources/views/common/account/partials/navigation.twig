@@ -39,7 +39,7 @@
         </li>
     {% endif %}
 
-    {% if hasAccess('account', 'session') %}
+    {% if hasAccess('session', 'manage') %}
         <li class="pull-right {% if getParam('controller') == 'session' %}active{% endif %}">
             <a href="{{ url('session', {'action': 'manage'}) }}">
                 {{ translate('Sessions') }}
