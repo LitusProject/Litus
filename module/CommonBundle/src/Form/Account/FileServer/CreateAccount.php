@@ -39,12 +39,12 @@ class CreateAccount extends \CommonBundle\Component\Form\Bootstrap\Form
         $collection->setLabel('Create Account');
         $this->add($collection);
 
-        $field = new Password('credential');
+        $field = new Password('password');
         $field->setLabel('Password')
             ->setRequired();
         $collection->add($field);
 
-        $field = new Password('verify_credential');
+        $field = new Password('verify_password');
         $field->setLabel('Verify Password')
             ->setRequired();
         $collection->add($field);
@@ -62,7 +62,7 @@ class CreateAccount extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'credential',
+                    'name'     => 'password',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -74,7 +74,7 @@ class CreateAccount extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'verify_credential',
+                    'name'     => 'verify_password',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -83,7 +83,7 @@ class CreateAccount extends \CommonBundle\Component\Form\Bootstrap\Form
                         array(
                             'name' => 'identical',
                             'options' => array(
-                                'token' => 'credential',
+                                'token' => 'password',
                             ),
                         ),
                     ),
