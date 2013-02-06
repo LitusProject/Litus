@@ -869,7 +869,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
                         $salt = mcrypt_create_iv(8, MCRYPT_DEV_URANDOM);
                         Attribute::setAttribute(
-                            $entry, 'userPassword', '{SSHA}' . base64_encode(sha1($formData['password'] . $salt, true) . $salt)
+                            $entry, 'userPassword', '{SSHA}' . base64_encode(pack('H*', sha1($formData['password'] . $salt)) . $salt)
                         );
 
                         if ('production' == getenv('APPLICATION_ENV')) {
@@ -968,7 +968,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 
                         $salt = mcrypt_create_iv(8, MCRYPT_DEV_URANDOM);
                         Attribute::setAttribute(
-                            $newEntry, 'userPassword', '{SSHA}' . base64_encode(sha1($formData['password'] . $salt, true) . $salt)
+                            $newEntry, 'userPassword', '{SSHA}' . base64_encode(pack('H*', sha1($formData['password'] . $salt)) . $salt)
                         );
 
                         if ('production' == getenv('APPLICATION_ENV')) {
