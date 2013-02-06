@@ -183,7 +183,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $part->type = Mime::TYPE_TEXT;
                         if ($storedMessage->getType() == 'html')
                             $part->type = Mime::TYPE_HTML;
-                            
+
                         $part->charset = 'utf-8';
                         $message = new MimeMessage();
                         $message->addPart($part);
