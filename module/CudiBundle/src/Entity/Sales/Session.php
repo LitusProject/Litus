@@ -15,7 +15,7 @@
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Organisation,
+    CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -209,24 +209,24 @@ class Session
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organisation|null $organisation
+     * @param \CommonBundle\Entity\General\Organization|null $organization
      *
      * @return integer
      */
-    public function getTheoreticalRevenue(Organisation $organisation = null)
+    public function getTheoreticalRevenue(Organization $organization = null)
     {
-        if (null === $organisation) {
+        if (null === $organization) {
             return $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sales\Session')
                 ->getTheoreticalRevenue($this);
         }
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Session')
-            ->getTheoreticalRevenueByOrganisation($this, $organisation);
+            ->getTheoreticalRevenueByOrganization($this, $organization);
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organisation|null $organisation
+     * @param \CommonBundle\Entity\General\Organization|null $organization
      *
      * @return integer
      */

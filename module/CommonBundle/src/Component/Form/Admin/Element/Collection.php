@@ -14,7 +14,7 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use Zend\Form\Form;
+use Zend\Form\FormInterface;
 
 /**
  * Collection form element
@@ -38,7 +38,7 @@ class Collection extends \Zend\Form\Element\Collection
      * @param  Form $form
      * @return mixed|void
      */
-    public function prepareElement(Form $form)
+    public function prepareElement(FormInterface $form)
     {
         foreach ($this->byName as $elementOrFieldset) {
             // Recursively prepare elements

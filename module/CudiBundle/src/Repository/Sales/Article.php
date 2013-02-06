@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organisation,
+    CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Article as ArticleEntity,
     CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository,
@@ -18,7 +18,7 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
  */
 class Article extends EntityRepository
 {
-    public function findAllByAcademicYear(AcademicYear $academicYear, $semester = 0, Organisation $organisation = null)
+    public function findAllByAcademicYear(AcademicYear $academicYear, $semester = 0, Organization $organization = null)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
@@ -35,9 +35,9 @@ class Article extends EntityRepository
                 )
             );
 
-        if (null !== $organisation) {
-            $query->andWhere($query->expr()->eq('a.organisation', ':organisation'))
-                ->setParameter('organisation', $organisation);
+        if (null !== $organization) {
+            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
+                ->setParameter('organization', $organization);
         }
 
         $resultSet = $query->orderBy('m.title', 'ASC')
@@ -154,7 +154,7 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear, $semester = 0, Organisation $organisation = null)
+    public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
@@ -173,9 +173,9 @@ class Article extends EntityRepository
             )
             ->setParameter('title', '%'.strtolower($title).'%');
 
-        if (null !== $organisation) {
-            $query->andWhere($query->expr()->eq('a.organisation', ':organisation'))
-                ->setParameter('organisation', $organisation);
+        if (null !== $organization) {
+            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
+                ->setParameter('organization', $organization);
         }
 
         $resultSet = $query->orderBy('m.title', 'ASC')
@@ -185,12 +185,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear, $semester = 0)
+    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -202,8 +202,14 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('author', '%'.strtolower($author).'%')
-            ->orderBy('m.title', 'ASC')
+            ->setParameter('author', '%'.strtolower($author).'%');
+
+        if (null !== $organization) {
+            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
+                ->setParameter('organization', $organization);
+        }
+
+        $resultSet = $query->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -238,12 +244,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear, $semester = 0)
+    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -255,15 +261,21 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('publisher', '%'.strtolower($publisher).'%')
-            ->orderBy('m.title', 'ASC')
+            ->setParameter('publisher', '%'.strtolower($publisher).'%');
+
+        if (null !== $organization) {
+            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
+                ->setParameter('organization', $organization);
+        }
+
+        $resultSet = $query->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
         return $resultSet;
     }
 
-    public function findAllByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear, $semester = 0, Organisation $organisation = null)
+    public function findAllByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
@@ -283,9 +295,9 @@ class Article extends EntityRepository
             )
             ->setParameter('barcode', '%'.$barcode.'%');
 
-        if (null !== $organisation) {
-            $query->andWhere($query->expr()->eq('a.organisation', ':organisation'))
-                ->setParameter('organisation', $organisation);
+        if (null !== $organization) {
+            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
+                ->setParameter('organization', $organization);
         }
 
         $resultSet = $query->orderBy('m.title', 'ASC')
@@ -294,12 +306,12 @@ class Article extends EntityRepository
 
         $articles = array();
         foreach($resultSet as $barcode)
-            $articles[] = $barcode->getArticle();
+            $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
 
         return $articles;
     }
 
-    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear, $semester = 0, Organisation $organisation = null)
+    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
@@ -320,9 +332,9 @@ class Article extends EntityRepository
             )
             ->setParameter('supplier', '%' . strtolower($supplier) . '%');
 
-        if (null !== $organisation) {
-            $query->andWhere($query->expr()->eq('a.organisation', ':organisation'))
-                ->setParameter('organisation', $organisation);
+        if (null !== $organization) {
+            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
+                ->setParameter('organization', $organization);
         }
 
         $resultSet = $query->orderBy('m.title', 'ASC')
