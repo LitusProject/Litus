@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Entity\Sales\Article,
@@ -112,7 +113,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         $subjects = array();
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-            ->findAllByArticleAndAcademicYear($this->_article->getMainArticle(), $this->_article->getAcademicYear());
+            ->findAllByArticleAndAcademicYear($this->_article->getMainArticle(), $this->_getCurrentAcademicYear());
         foreach ($mappings as $mapping) {
             $subjects[] = new Object(
                 'subject',
@@ -223,5 +224,20 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                 )
             )
         );
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    private function _getCurrentAcademicYear()
+    {
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
+
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
     }
 }

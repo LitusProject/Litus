@@ -1,0 +1,34 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Account') }} <small>&mdash; {{ translate('File Server') }}</small></h1>
+    </div>
+
+    {% include 'common/account/partials/navigation.twig' %}
+
+    <div class="row page">
+        <div class="span12">
+            {% if noUniversityIdentification %}
+                <div class="alert alert-error">
+                    {{ translate('Unfortunately, there is no record of your university identification and as a consequence cannot create an account for you.') }}
+                </div>
+            {% else %}
+                {% if not hasPayed %}
+                    <div class="alert alert-error">
+                        {{ translate('You have to be a member of our organization to be able to request an account on the file server.') }}
+                    </div>
+                {% else %}
+                    {% if accountExists %}
+                        <div class="alert alert-info">
+                            {{ translate('You have already activated your account on our server.') }}
+                        </div>
+                    {% endif %}
+
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(form) }}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

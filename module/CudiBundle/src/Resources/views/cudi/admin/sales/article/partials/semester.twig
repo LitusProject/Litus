@@ -1,0 +1,15 @@
+<header id="controller_sub_header">
+    <nav id="controller_sub_nav">
+        <ul>
+            <li>
+                <a {% if currentSemester != 1 and currentSemester != 2 %} class="active" {% endif %} href="{{ url('admin_sales_article', {'action': 'manage'}) }}">All</a>
+            </li>
+            <li>
+                <a {% if currentSemester == 1 %} class="active" {% endif %} href=" {{ url('admin_sales_article', {'action': 'manage', 'semester': 1}) }}">Semester 1</a>
+            </li>
+            <li>
+                <a {% if currentSemester == 2 %} class="active" {% endif %} href="{{ url('admin_sales_article', {'action': 'manage', 'semester': 2}) }}">Semester 2</a>
+            </li>
+        </ul>
+    </nav>
+</header>

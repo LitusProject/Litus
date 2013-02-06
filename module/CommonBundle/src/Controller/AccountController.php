@@ -20,6 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
+    CommonBundle\Form\Account\FileServer\CreateAccount as CreateAccountForm,
+    CommonBundle\Form\Account\FileServer\ChangePassword as ChangePasswordForm,
     CudiBundle\Entity\Sales\Booking,
     DateTime,
     Imagick,
@@ -31,6 +33,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
+    Zend\Ldap\Attribute,
+    Zend\Ldap\Ldap,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
@@ -806,6 +810,221 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 'data' => $data,
             )
         );
+    }
+
+    public function fileServerAction() {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index'
+            );
+
+            return new ViewModel();
+        }
+
+        if ('' == $this->getAuthentication()->getPersonObject()->getUniversityIdentification()) {
+            return new ViewModel(
+                array(
+                    'noUniversityIdentification' => true
+                )
+            );
+        }
+
+        $registration = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+
+        if (null !== $registration && $registration->hasPayed()) {
+            $this->getLdap()->bind();
+
+            $peopleOu = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.ldap_people_ou');
+            $studentsOu = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.ldap_students_ou');
+            $studentsCn = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.ldap_students_cn');
+            $usersCn = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.ldap_users_cn');
+
+            if ($accountExists = $this->getLdap()->exists('uid=' . $this->getAuthentication()->getPersonObject()->getUniversityIdentification() . ',' . $studentsOu)) {
+                $form = new ChangePasswordForm();
+
+                if ($this->getRequest()->isPost()) {
+                    $formData = $this->getRequest()->getPost();
+                    $form->setData($formData);
+
+                    if ($form->isValid()) {
+                        $entry = $this->getLdap()->getEntry('uid=' . $this->getAuthentication()->getPersonObject()->getUniversityIdentification() . ',' . $studentsOu);
+
+                        $salt = mcrypt_create_iv(8, MCRYPT_DEV_URANDOM);
+                        Attribute::setAttribute(
+                            $entry, 'userPassword', '{SSHA}' . base64_encode(sha1($formData['password'] . $salt, true) . $salt)
+                        );
+
+                        if ('production' == getenv('APPLICATION_ENV')) {
+                            $this->getLdap()->update(
+                                'uid=' . $this->getAuthentication()->getPersonObject()->getUniversityIdentification() . ',' . $studentsOu, $entry
+                            );
+                        }
+
+                        $this->flashMessenger()->addMessage(
+                            new FlashMessage(
+                                FlashMessage::SUCCESS,
+                                'Success',
+                                'Your password was succesfully changed!'
+                            )
+                        );
+
+                        $this->redirect()->toRoute(
+                            'account',
+                            array(
+                                'action' => 'fileServer',
+                            )
+                        );
+
+                        return new ViewModel();
+                    }
+                }
+            } else {
+                $form = new CreateAccountForm();
+
+                if ($this->getRequest()->isPost()) {
+                    $formData = $this->getRequest()->getPost();
+                    $form->setData($formData);
+
+                    if ($form->isValid()) {
+                        $uidNumbers = $this->getLdap()->search(
+                            'uidNumber=*',
+                            $peopleOu,
+                            Ldap::SEARCH_SCOPE_SUB,
+                            array(
+                                'uidNumber'
+                            )
+                        );
+
+                        $maxUidNumber = 0;
+                        foreach ($uidNumbers as $uidNumber) {
+                            if ($uidNumber['uidnumber'][0] == 65534)
+                                continue;
+
+                            if ($uidNumber['uidnumber'][0] > $maxUidNumber)
+                                $maxUidNumber = $uidNumber['uidnumber'][0];
+                        }
+
+                        $studentsGroup = $this->getLdap()->getEntry($studentsCn);
+                        $usersGroup = $this->getLdap()->getEntry($usersCn);
+
+                        // Creating our new user
+                        $newEntry = array();
+
+                        Attribute::setAttribute(
+                            $newEntry,
+                            'objectClass',
+                            array(
+                                'posixAccount',
+                                'inetOrgPerson',
+                                'organizationalPerson',
+                                'person'
+                            )
+                        );
+
+                        Attribute::setAttribute(
+                            $newEntry, 'cn', $this->getAuthentication()->getPersonObject()->getFullName()
+                        );
+                        Attribute::setAttribute(
+                            $newEntry, 'gidNumber', $usersGroup['gidnumber'][0]
+                        );
+                        Attribute::setAttribute(
+                            $newEntry, 'givenName', $this->getAuthentication()->getPersonObject()->getFirstName()
+                        );
+                        Attribute::setAttribute(
+                            $newEntry, 'homeDirectory', '/vtk/students/' . $this->getAuthentication()->getPersonObject()->getUniversityIdentification()
+                        );
+                        Attribute::setAttribute(
+                            $newEntry, 'loginShell', '/bin/false'
+                        );
+
+                        Attribute::setAttribute(
+                            $newEntry, 'sn', $this->getAuthentication()->getPersonObject()->getLastName()
+                        );
+
+                        Attribute::setAttribute(
+                            $newEntry, 'uid', $this->getAuthentication()->getPersonObject()->getUniversityIdentification()
+                        );
+                        Attribute::setAttribute(
+                            $newEntry, 'uidNumber', ++$maxUidNumber
+                        );
+
+                        $salt = mcrypt_create_iv(8, MCRYPT_DEV_URANDOM);
+                        Attribute::setAttribute(
+                            $newEntry, 'userPassword', '{SSHA}' . base64_encode(sha1($formData['password'] . $salt, true) . $salt)
+                        );
+
+                        if ('production' == getenv('APPLICATION_ENV')) {
+                            $this->getLdap()->add(
+                                'uid=' . $this->getAuthentication()->getPersonObject()->getUniversityIdentification() . ',' . $studentsOu, $newEntry
+                            );
+                        }
+
+                        // Add the user to the group
+                        $memberUidArray = $studentsGroup['memberuid'];
+
+                        $memberUidArray[] = $this->getAuthentication()->getPersonObject()->getUniversityIdentification();
+                        Attribute::setAttribute(
+                            $studentsGroup, 'memberUid', $memberUidArray
+                        );
+
+                        if ('production' == getenv('APPLICATION_ENV')) {
+                            $this->getLdap()->update(
+                                $studentsCn, $studentsGroup
+                            );
+                        }
+
+                        $this->flashMessenger()->addMessage(
+                            new FlashMessage(
+                                FlashMessage::SUCCESS,
+                                'Success',
+                                'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.'
+                            )
+                        );
+
+                        $this->redirect()->toRoute(
+                            'account',
+                            array(
+                                'action' => 'fileServer',
+                            )
+                        );
+
+                        return new ViewModel();
+                    }
+                }
+            }
+
+            return new ViewModel(
+                array(
+                    'hasPayed' => true,
+                    'accountExists' => $accountExists,
+                    'form' => $form
+                )
+            );
+        } else {
+            return new ViewModel(
+                array(
+                    'hasPayed' => false
+                )
+            );
+        }
     }
 
     private function _getUser()

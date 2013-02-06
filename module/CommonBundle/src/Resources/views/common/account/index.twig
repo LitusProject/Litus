@@ -30,7 +30,7 @@
                     </dl>
                 </div>
                 <div class="span3">
-                    <div class="thumbnail" style="width: 180px;height: 135px">
+                    <div class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px;">
                         {% if authenticatedPerson.getPhotoPath() %}
                             <img src="{{ url('account', {'action': 'photo', 'image': authenticatedPerson.getPhotoPath()}) }}" alt="">
                         {% else %}

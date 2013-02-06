@@ -158,6 +158,26 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'value'       => '1',
                     'description' => 'The Piwik ID of the site that should be queried',
                 ),
+                array(
+                    'key'         => 'common.ldap_people_ou',
+                    'value'       => 'ou=people,dc=ldap,dc=vtk,dc=be',
+                    'description' => 'The LDAP identifier for the organizational unit containing the people',
+                ),
+                array(
+                    'key'         => 'common.ldap_students_ou',
+                    'value'       => 'ou=students,ou=people,dc=ldap,dc=vtk,dc=be',
+                    'description' => 'The LDAP identifier for the organizational unit containing the students',
+                ),
+                array(
+                    'key'         => 'common.ldap_students_cn',
+                    'value'       => 'cn=students,ou=groups,dc=ldap,dc=vtk,dc=be',
+                    'description' => 'The LDAP identifier for the students group',
+                ),
+                array(
+                    'key'         => 'common.ldap_users_cn',
+                    'value'       => 'cn=users,ou=groups,dc=ldap,dc=vtk,dc=be',
+                    'description' => 'The LDAP identifier for the users group',
+                ),
             )
         );
     }
@@ -195,7 +215,10 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'expire'
                     ),
                     'account' => array(
-                        'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',
+                        'activate', 'edit', 'fileServer', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                    ),
+                    'session' => array(
+                        'manage', 'expire'
                     ),
                     'auth' => array(
                         'login', 'logout', 'shibboleth'

@@ -80,11 +80,7 @@ class Study
         $this->_mailTransport = $mailTransport;
         $this->_callback = $callback;
 
-        $urls = unserialize(
-            $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('syllabus.xml_url')
-        );
+        $urls = $this->_getUrls();
 
         /*
         To add one xml without destroying database:
@@ -444,5 +440,83 @@ class Study
     private function _callback($type, $extra = null)
     {
         call_user_func($this->_callback, $type, $extra);
+    }
+
+    private function _getUrls()
+    {
+        $url = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.root_xml');
+
+        $departments = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('syllabus.department_ids')
+            );
+
+        $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
+
+        $root = simplexml_load_file($url);
+
+        $diplomas = array();
+
+        foreach($root->data->children() as $organization) {
+            foreach($organization->children() as $department) {
+                if (in_array($department->attributes()->objid, $departments)) {
+                    foreach($department->classificaties->children() as $classification) {
+                        foreach($classification->graad as $grade) {
+                            foreach($grade->diplomas->children() as $diploma) {
+                                $diplomas[] = array(
+                                    'id' => (string) $diploma->attributes()->objid,
+                                    'language' => $diploma->originele_titel->attributes()->taal,
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $departmentUrl = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.department_url');
+
+        $studyUrl = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.study_url');
+
+        $urls = array();
+
+        foreach($diplomas as $diploma) {
+            $url = str_replace(
+                array(
+                    '{{ language }}',
+                    '{{ id }}'
+                ),
+                array(
+                    $diploma['language'],
+                    $diploma['id']
+                ),
+                $departmentUrl
+            );
+            $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
+            $xml = simplexml_load_file($url);
+
+            foreach($xml->data->diploma->opleidingen->children() as $study) {
+                $urls[] = str_replace(
+                    array(
+                        '{{ language }}',
+                        '{{ id }}'
+                    ),
+                    array(
+                        strtolower((string) $study->originele_taal),
+                        (string) $study->attributes()->objid,
+                    ),
+                    $studyUrl
+                );
+            }
+        }
+
+        return $urls;
     }
 }

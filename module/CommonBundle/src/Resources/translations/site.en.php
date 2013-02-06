@@ -58,6 +58,10 @@ return array(
     'Subjects' => 'Subjects',
     'Choose Your Subjects' => 'Choose Your Subjects',
     'Your data was succesfully updated!' => 'Your data was succesfully updated!',
+    'Sessions' => 'Sessions',
+    'Expire' => 'Expire',
+    'The session was successfully expired!' => 'The session was successfully expired!',
+    'An error occurred while trying to expire the session.' => 'An error occurred while trying to expire the session.',
 
     'Other' => 'Other',
 
@@ -71,4 +75,11 @@ return array(
     'Select Image' => 'Select Image',
     'Change Image' => 'Change Image',
     'Remove' => 'Remove',
+
+    'File Server' => 'Bestandsserver',
+    'Unfortunately, there is no record of your university identification and as a consequence cannot create an account for you.' => 'Unfortunately, there is no record of your university identification and as a consequence cannot create an account for you.',
+    'You have to be a member of our organization to be able to request an account on the file server.' => 'You have to be a member of our organization to be able to request an account on the file server.',
+    'You have already activated your account on our server.' => 'You have already activated your account on our server.',
+    'Your password was succesfully changed!' => 'Your password was succesfully changed!',
+    'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.' => 'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.',
 );

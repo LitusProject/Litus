@@ -58,6 +58,10 @@ return array(
     'Subjects' => 'Vakken',
     'Choose Your Subjects' => 'Kies Je Vakken',
     'Your data was succesfully updated!' => 'Je gegevens zijn succesvol geupdate!',
+    'Sessions' => 'Sessies',
+    'Expire' => 'Vervallen',
+    'The session was successfully expired!' => 'De sessie is succesvol vervallen!',
+    'An error occurred while trying to expire the session.' => 'Er is een fout opgetreden tijdens het vervallen van de sessie.',
 
     'Other' => 'Andere',
 
@@ -71,4 +75,10 @@ return array(
     'Select Image' => 'Selecteer Afbeelding',
     'Change Image' => 'Wijzig Afbeelding',
     'Remove' => 'Verwijder',
+
+    'Unfortunately, there is no record of your university identification and as a consequence cannot create an account for you.' => 'Je studentennummer staat niet geristreerd in onze database en we kunnen daarom geen account voor je aanmaken.',
+    'You have to be a member of our organization to be able to request an account on the file server.' => 'Alleen leden kunnen een account aanvragen op de bestandsserver.',
+    'You have already activated your account on our server.' => 'Je hebt je account op onze server reeds geactiveerd.',
+    'Your password was succesfully changed!' => 'Je nieuw wachtwoord is opgeslagen!',
+    'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.' => 'Je account werd geactiveerd! Het kan echter enkele minuten duren voordat je kan inloggen op de server.',
 );

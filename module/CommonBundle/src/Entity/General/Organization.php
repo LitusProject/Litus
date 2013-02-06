@@ -17,15 +17,15 @@ namespace CommonBundle\Entity\General;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * This class represents an organisation entry that is saved in the database
+ * This class represents an organization entry that is saved in the database
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Organisation")
- * @ORM\Table(name="general.organisation")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Organization")
+ * @ORM\Table(name="general.organization")
  */
-class Organisation
+class Organization
 {
     /**
-     * @var integer The ID of the organisation
+     * @var integer The ID of the organization
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -34,7 +34,7 @@ class Organisation
     private $id;
 
     /**
-     * @var \DateTime The name of the organisation
+     * @var \DateTime The name of the organization
      *
      * @ORM\Column(type="string")
      */
