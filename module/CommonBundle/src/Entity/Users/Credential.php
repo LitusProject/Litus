@@ -67,7 +67,7 @@ class Credential
             throw new \InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
 
         $this->algorithm = $algorithm;
-        $this->salt = md5(uniqid(rand(), true));
+        $this->salt = bin2hex(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
 
         $this->hash = hash_hmac(
             $algorithm, $credential, $this->salt
