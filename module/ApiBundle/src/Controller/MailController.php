@@ -45,8 +45,6 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
         ));
         $this->getResponse()->setHeaders($headers);
 
-        var_dump($archive->getFileName());
-
         $handle = fopen($archive->getFileName(), 'r');
         $data = fread($handle, filesize($archive->getFileName()));
         fclose($handle);
