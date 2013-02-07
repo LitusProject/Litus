@@ -82,12 +82,12 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('PageBundle\Entity\Nodes\Page')
             ->findByParent($page->getId());
 
-        $categories = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Category')
-            ->findByParent($page->getId());
-
         $links = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Link')
+            ->findByParent($page->getId());
+
+        $categories = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Category')
             ->findByParent($page->getId());
 
         $submenu = array();
@@ -97,6 +97,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 'name'     => $page->getName(),
                 'parent'   => $page->getParent()->getName(),
                 'title'    => $page->getTitle($this->getLanguage())
+            );
+        }
+
+        foreach ($links as $link) {
+            $submenu[] = array(
+                'type' => 'link',
+                'id'   => $link->getId(),
+                'name' => $link->getName($this->getLanguage())
             );
         }
 
@@ -139,14 +147,6 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             array_multisort($sort, $submenu[$i]['items']);
 
             $i++;
-        }
-
-        foreach ($links as $link) {
-            $submenu[] = array(
-                'type' => 'link',
-                'id'   => $link->getId(),
-                'name' => $link->getName($this->getLanguage())
-            );
         }
 
         $sort = array();

@@ -12,9 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class Link extends EntityRepository
 {
-    public function findByParent($parent)
-    {
-        return $this->_em->getRepository('PageBundle\Entity\Category')
-            ->findBy(array('parent' => $parent, 'active' => true));
-    }
 }
