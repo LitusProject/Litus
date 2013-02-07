@@ -105,12 +105,12 @@ return array(
         'translation_files' => array(
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/archive.en.php',
+                'filename' => __DIR__ . '/../translations/site.en.php',
                 'locale'   => 'en'
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/archive.nl.php',
+                'filename' => __DIR__ . '/../translations/site.nl.php',
                 'locale'   => 'nl'
             ),
         ),
