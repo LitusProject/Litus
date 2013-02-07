@@ -22,24 +22,32 @@
                                         {{ item.name }} <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        {% for pageItem in item.items %}
-                                            {% if 'page' == pageItem.type %}
+                                        {% for categoryItem in item.items %}
+                                            {% if 'page' == categoryItem.type %}
                                                 {% if hasAccess('page', 'view') %}
-                                                    <li><a href="{{ url('page', {"name": pageItem.name}) }}">{{ pageItem.title }}</a></li>
+                                                    <li><a href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></li>
                                                 {% endif %}
                                             {% endif %}
 
-                                            {% if 'link' == pageItem.type %}
+                                            {% if 'link' == categoryItem.type %}
                                                 {% if hasAccess('link', 'view') %}
-                                                    <li><a href="{{ url('link', {"id": pageItem.id}) }}">{{ pageItem.name }}</a></li>
+                                                    <li><a href="{{ url('link', {"id": categoryItem.id}) }}">{{ categoryItem.name }}</a></li>
                                                 {% endif %}
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
                                 </li>
                             {% else %}
-                                {% if hasAccess('page', 'view') %}
-                                    <li {% if item.name == getParam('name') %}class="active"{% endif %}><a href="{{ url('page', {"parent": item.parent, "name": item.name}) }}">{{ item.title }}</a></li>
+                                {% if 'page' == item.type %}
+                                    {% if hasAccess('page', 'view') %}
+                                        <li {% if item.name == getParam('name') %}class="active"{% endif %}><a href="{{ url('page', {"parent": item.parent, "name": item.name}) }}">{{ item.title }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if 'link' == item.type %}
+                                    {% if hasAccess('link', 'view') %}
+                                        <li><a href="{{ url('link', {"id": item.id}) }}">{{ item.name }}</a></li>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
