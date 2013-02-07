@@ -52,7 +52,7 @@
                     <tr class="item item-{{ comment.getId() }}">
                         <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
                         <td>{{ comment.getPerson().getFullName() }}</td>
-                        <td>{{ comment.getSummary() }}</td>
+                        <td>{{ comment.getText() }}</td>
                         <td class="actions">
                             {% if hasAccess('admin_subject', 'edit') %}
                                 <a href="{{ url('admin_subject', {'action': 'edit', 'id': comment.getSubject().getId()}) }}" class="view">View Subject</a>
