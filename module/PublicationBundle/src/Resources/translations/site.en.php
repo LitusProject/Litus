@@ -13,9 +13,7 @@
  */
 
 return array(
-    'Publications' => 'Publicaties',
-    
-    'Year' => 'Jaar',
-    'PDF Editions' => 'PDF Edities',
-    'HTML Editions' => 'HTML Edities',
+    'Year' => 'Year',
+    'PDF Editions' => 'PDF Editions',
+    'HTML Editions' => 'HTML Editions',
 );
