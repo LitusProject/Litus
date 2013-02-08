@@ -354,6 +354,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
+        if (!is_numeric($barcode)) {
+            return json_encode(
+                array(
+                    'addArticle' => array(
+                        'error' => 'no_article',
+                    ),
+                )
+            );
+        }
+
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($id);
