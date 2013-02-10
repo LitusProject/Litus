@@ -177,7 +177,6 @@
         });
 
         printNext.click(function () {
-            alert('next');
             $this.find('tbody tr').each(function () {
                 if ($(this).data('info').status == 'signed_in' && $(this).data('info').id > lastPrinted) {
                     lastPrinted = $(this).data('info').id;
