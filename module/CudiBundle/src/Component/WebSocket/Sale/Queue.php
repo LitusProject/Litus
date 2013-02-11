@@ -81,8 +81,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'collecting' => $this->_createJsonQueue(
                         $repository->findAllByStatus($session, 'collecting')
                     ),
-                    'signed_in' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($session, 'signed_in')
+                    'signed_in' => array_slice(
+                        $this->_createJsonQueue(
+                            $repository->findAllByStatus($session, 'signed_in')
+                        ),
+                        0,
+                        10
                     ),
                 )
             )
