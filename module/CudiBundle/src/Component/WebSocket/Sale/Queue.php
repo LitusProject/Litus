@@ -262,7 +262,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneByCode($user->getExtraData('paydesk'));
         if (null !== $paydesk)
             $item->setPayDesk($paydesk);
-        
+
         $this->_entityManager->flush();
 
         if (!isset($this->_queueItems[$id]))
