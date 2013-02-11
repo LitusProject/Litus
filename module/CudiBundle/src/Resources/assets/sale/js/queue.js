@@ -122,7 +122,7 @@
 
         hideHold.change(function () {
             $this.find('tbody tr').each(function () {
-                _toggleVisibility($this, $(this));
+                _toggleVisibility($this, $(this), $(this).data('info'));
             });
         });
 
@@ -172,7 +172,7 @@
             }
 
             $this.find('tbody tr').each(function () {
-                _toggleVisibility($this, $(this));
+                _toggleVisibility($this, $(this), $(this).data('info'));
             });
         });
 
@@ -203,9 +203,10 @@
         var settings = $this.data('queueSettings');
         var tbody = $this.find('tbody');
         var inQueue = [];
+        console.log('UPDATE');
 
         $(data).each(function () {
-            inQueue.push(parseInt(this.id, 10));
+            inQueue.push(this.id);
 
             var item = tbody.find('#item-' + this.id);
             if (item.length == 0) {
@@ -216,12 +217,16 @@
             }
 
             _showActions($this, item);
-            _toggleVisibility($this, item);
+            _toggleVisibility($this, item, this);
         });
 
         tbody.find('tr').each(function () {
-            if ($.inArray(parseInt($(this).data('info').id, 10), inQueue) < 0)
+            var pos = $.inArray($(this).data('info').id, inQueue)
+            if (pos < 0) {
                 $(this).remove();
+            } else {
+                inQueue.splice(pos, 1);
+            }
         });
     }
 
@@ -383,15 +388,16 @@
         return row;
     }
 
-    function _toggleVisibility($this, row) {
+    function _toggleVisibility($this, row, data) {
         var show = true;
-        if ($this.find('.hideHold').is(':checked') && row.data('info').status == 'hold')
+        if ($this.find('.hideHold').is(':checked') && data.status == 'hold')
             show = false;
 
-        var filter = $this.find('.filterText').val().toLowerCase();
+        var filter = $this.find('.filterText').val();
         if (filter.length > 0) {
+            filter = filter.toLowerCase();
             show = false;
-            if (row.data('info').name.toLowerCase().indexOf(filter) >= 0 || row.data('info').university_identification.toLowerCase().indexOf(filter) >= 0)
+            if (data.name.toLowerCase().indexOf(filter) >= 0 || data.university_identification.toLowerCase().indexOf(filter) >= 0)
                 show = true
         }
 
