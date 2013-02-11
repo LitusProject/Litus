@@ -203,7 +203,6 @@
         var settings = $this.data('queueSettings');
         var tbody = $this.find('tbody');
         var inQueue = [];
-        console.log('UPDATE');
 
         $(data).each(function () {
             inQueue.push(this.id);
@@ -216,8 +215,8 @@
                 _updateItem(settings, item, this)
             }
 
-            /*_showActions($this, item, this);
-            _toggleVisibility($this, item, this);*/
+            _showActions($this, item, this);
+            _toggleVisibility($this, item, this);
         });
 
         tbody.find('tr').each(function () {
