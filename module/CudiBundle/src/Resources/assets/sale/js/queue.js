@@ -204,14 +204,22 @@
         var tbody = $this.find('tbody');
         var inQueue = [];
 
+        var currentList = new Object();
+        tbody.find('tr').each(function () {
+            currentList[$(this).attr('id')] = $(this);
+        });
+        console.log(currentList)
+
         $(data).each(function () {
             inQueue.push(this.id);
 
-            var item = tbody.find('#item-' + this.id);
-            if (item.length == 0) {
+            var item = currentList['item-' + this.id];
+            if (undefined == item) {
+                console.log('add');
                 item = _createItem(settings, this);
                 tbody.append(item);
             } else {
+                console.log('update')
                 _updateItem(settings, item, this)
             }
 
