@@ -257,6 +257,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneById($id);
 
         $item->setStatus('selling');
+        $paydesk = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\PayDesk')
+            ->findOneByCode($user->getExtraData('paydesk'));
+        if (null !== $paydesk)
+            $item->setPayDesk($paydesk);
+        
         $this->_entityManager->flush();
 
         if (!isset($this->_queueItems[$id]))
