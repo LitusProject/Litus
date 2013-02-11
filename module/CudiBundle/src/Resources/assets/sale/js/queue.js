@@ -38,7 +38,7 @@
             var $this = $(this);
 
             $(this).find('tbody tr').each(function () {
-                _showActions($this, $(this));
+                _showActions($this, $(this), $(this).data('info'));
             });
             return this;
         },
@@ -216,8 +216,8 @@
                 _updateItem(settings, item, this)
             }
 
-            _showActions($this, item);
-            _toggleVisibility($this, item, this);
+            /*_showActions($this, item, this);
+            _toggleVisibility($this, item, this);*/
         });
 
         tbody.find('tr').each(function () {
@@ -230,9 +230,7 @@
         });
     }
 
-    function _showActions($this, row) {
-        var data = row.data('info');
-
+    function _showActions($this, row, data) {
         switch (data.status) {
             case 'signed_in':
                 if (currentView == 'sale' || currentView == 'collect') {
