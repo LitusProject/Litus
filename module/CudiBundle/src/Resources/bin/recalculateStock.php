@@ -30,6 +30,7 @@ $entityManager = $application->getServiceManager()->get('doctrine.entitymanager.
 
 $rules = array(
     'run|r' => 'Recalculate Stock',
+    'flush|f'     => 'Flush',
 );
 
 try {
@@ -68,5 +69,7 @@ if (isset($opts->r)) {
         }
     }
 
-    $entityManager->flush();
+    if (isset($opts->f)) {
+        $entityManager->flush();
+    }
 }
