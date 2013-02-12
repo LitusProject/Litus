@@ -60,7 +60,7 @@ if (isset($opts->a)) {
             ->findOneByAcademic($person->getAcademic());
         if (null === $registration)
             continue;
-        
+
         if ($person->getAcademic()->isMember($academicYear) && $registration->hasPayed()) {
             $number++;
             $booking = new \CudiBundle\Entity\Sales\Booking($em, $person->getAcademic(), $article, 'assigned', 1, true);

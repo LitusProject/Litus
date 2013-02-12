@@ -208,22 +208,18 @@
         tbody.find('tr').each(function () {
             currentList[$(this).attr('id')] = $(this);
         });
-        console.log(currentList)
 
         $(data).each(function () {
             inQueue.push(this.id);
 
             var item = currentList['item-' + this.id];
             if (undefined == item) {
-                console.log('add');
-                item = _createItem(settings, this);
+                item = _createItem($this, settings, this);
                 tbody.append(item);
             } else {
-                console.log('update')
-                _updateItem(settings, item, this)
+                _updateItem($this, settings, item, this)
             }
 
-            _showActions($this, item, this);
             _toggleVisibility($this, item, this);
         });
 
@@ -277,7 +273,11 @@
             row.find('button').removeClass('disabled');
     }
 
-    function _updateItem(settings, row, data) {
+    function _updateItem($this, settings, row, data) {
+        var previousStatus = '';
+        if (row.data('info'))
+            previousStatus = row.data('info').status;
+
         row.find('.number').html(data.number);
         row.find('.name').html('').append(
             data.name,
@@ -286,9 +286,12 @@
         );
         row.find('.status').html(settings.translateStatus(data.status));
         row.data('info', data);
+
+        if (previousStatus != data.status)
+            _showActions($this, row, data);
     }
 
-    function _createItem(settings, data) {
+    function _createItem($this, settings, data) {
         var row = $('<tr>', {'id': 'item-' + data.id}).append(
             $('<td>', {'class': 'number'}),
             $('<td>', {'class': 'name'}),
@@ -304,7 +307,7 @@
             )
         );
 
-        _updateItem(settings, row, data);
+        _updateItem($this, settings, row, data);
 
         startCollecting.click(function () {
             if ($(this).is('.disabled'))
