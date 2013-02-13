@@ -96,12 +96,20 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     public function getJsonQueueList(Session $session)
     {
+        $numItems = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.number_queue_items');
+
         return json_encode(
             (object) array(
-                'queue' => $this->_createJsonQueue(
-                    $this->_entityManager
-                        ->getRepository('CudiBundle\Entity\Sales\QueueItem')
-                        ->findAllBySession($session)
+                'queue' => array_slice(
+                    $this->_createJsonQueue(
+                        $this->_entityManager
+                            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                            ->findAllBySession($session)
+                    ),
+                    0,
+                    $numItems
                 )
             )
         );

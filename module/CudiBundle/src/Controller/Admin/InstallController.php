@@ -307,6 +307,11 @@ VTK Cudi
                     ),
                     'description' => 'The articles assigned at registration',
                 ),
+                array(
+                    'key'         => 'cudi.number_queue_items',
+                    'value'       => '50',
+                    'description' => 'The number of queue items shown in sale app',
+                ),
             )
         );
 
