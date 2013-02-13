@@ -33,6 +33,7 @@ $mt = $application->getServiceManager()->get('mail_transport');
 $rules = array(
     'article|a-s' => 'Article',
     'flush|f'     => 'Flush',
+    'mail|m'      => 'Send Mail',
 );
 
 try {
@@ -62,12 +63,17 @@ if (isset($opts->a)) {
             continue;
 
         if ($person->getAcademic()->isMember($academicYear) && $registration->hasPayed()) {
-            $number++;
-            $booking = new \CudiBundle\Entity\Sales\Booking($em, $person->getAcademic(), $article, 'assigned', 1, true);
-            $em->persist($booking);
+            $booking = $em->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findOneSoldOrAssignedOrBookedByArticleAndPerson($article, $person->getAcademic());
 
-            if (isset($opts->f))
-                \CudiBundle\Component\Mail\Booking::sendMail($em, $mt, array($booking), $booking->getPerson());
+            if (null === $booking) {
+                $number++;
+                $booking = new \CudiBundle\Entity\Sales\Booking($em, $person->getAcademic(), $article, 'assigned', 1, true);
+                $em->persist($booking);
+
+                if (isset($opts->f) && isset($opts->m))
+                    \CudiBundle\Component\Mail\Booking::sendMail($em, $mt, array($booking), $booking->getPerson());
+            }
         }
     }
 
