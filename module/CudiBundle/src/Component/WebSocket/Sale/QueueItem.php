@@ -284,7 +284,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
 
                 $soldArticle['number'] -= $number;
 
-                $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $soldArticle['number']);
+                $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $number);
             }
         }
 

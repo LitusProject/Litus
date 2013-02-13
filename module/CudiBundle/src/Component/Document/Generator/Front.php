@@ -133,6 +133,25 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             );
         }
 
+        if (sizeof($subjects) == 0) {
+            $subjects[] = new Object(
+                'subject',
+                null,
+                array(
+                    new Object(
+                        'code',
+                        null,
+                        ''
+                    ),
+                    new Object(
+                        'name',
+                        null,
+                        ''
+                    ),
+                )
+            );
+        }
+
         $xml = new Generator($tmpFile);
 
         $xml->append(

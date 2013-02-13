@@ -38,7 +38,7 @@
             var $this = $(this);
 
             $(this).find('tbody tr').each(function () {
-                _showActions($this, $(this));
+                _showActions($this, $(this), $(this).data('info'));
             });
             return this;
         },
@@ -122,7 +122,7 @@
 
         hideHold.change(function () {
             $this.find('tbody tr').each(function () {
-                _toggleVisibility($this, $(this));
+                _toggleVisibility($this, $(this), $(this).data('info'));
             });
         });
 
@@ -172,12 +172,11 @@
             }
 
             $this.find('tbody tr').each(function () {
-                _toggleVisibility($this, $(this));
+                _toggleVisibility($this, $(this), $(this).data('info'));
             });
         });
 
         printNext.click(function () {
-            alert('next');
             $this.find('tbody tr').each(function () {
                 if ($(this).data('info').status == 'signed_in' && $(this).data('info').id > lastPrinted) {
                     lastPrinted = $(this).data('info').id;
@@ -205,30 +204,36 @@
         var tbody = $this.find('tbody');
         var inQueue = [];
 
-        $(data).each(function () {
-            inQueue.push(parseInt(this.id, 10));
+        var currentList = new Object();
+        tbody.find('tr').each(function () {
+            currentList[$(this).attr('id')] = $(this);
+        });
 
-            var item = tbody.find('#item-' + this.id);
-            if (item.length == 0) {
-                item = _createItem(settings, this);
+        $(data).each(function () {
+            inQueue.push(this.id);
+
+            var item = currentList['item-' + this.id];
+            if (undefined == item) {
+                item = _createItem($this, settings, this);
                 tbody.append(item);
             } else {
-                _updateItem(settings, item, this)
+                _updateItem($this, settings, item, this)
             }
 
-            _showActions($this, item);
-            _toggleVisibility($this, item);
+            _toggleVisibility($this, item, this);
         });
 
         tbody.find('tr').each(function () {
-            if ($.inArray(parseInt($(this).data('info').id, 10), inQueue) < 0)
+            var pos = $.inArray($(this).data('info').id, inQueue)
+            if (pos < 0) {
                 $(this).remove();
+            } else {
+                inQueue.splice(pos, 1);
+            }
         });
     }
 
-    function _showActions($this, row) {
-        var data = row.data('info');
-
+    function _showActions($this, row, data) {
         switch (data.status) {
             case 'signed_in':
                 if (currentView == 'sale' || currentView == 'collect') {
@@ -268,7 +273,11 @@
             row.find('button').removeClass('disabled');
     }
 
-    function _updateItem(settings, row, data) {
+    function _updateItem($this, settings, row, data) {
+        var previousStatus = '';
+        if (row.data('info'))
+            previousStatus = row.data('info').status;
+
         row.find('.number').html(data.number);
         row.find('.name').html('').append(
             data.name,
@@ -277,9 +286,12 @@
         );
         row.find('.status').html(settings.translateStatus(data.status));
         row.data('info', data);
+
+        if (previousStatus != data.status)
+            _showActions($this, row, data);
     }
 
-    function _createItem(settings, data) {
+    function _createItem($this, settings, data) {
         var row = $('<tr>', {'id': 'item-' + data.id}).append(
             $('<td>', {'class': 'number'}),
             $('<td>', {'class': 'name'}),
@@ -295,7 +307,7 @@
             )
         );
 
-        _updateItem(settings, row, data);
+        _updateItem($this, settings, row, data);
 
         startCollecting.click(function () {
             if ($(this).is('.disabled'))
@@ -384,15 +396,16 @@
         return row;
     }
 
-    function _toggleVisibility($this, row) {
+    function _toggleVisibility($this, row, data) {
         var show = true;
-        if ($this.find('.hideHold').is(':checked') && row.data('info').status == 'hold')
+        if ($this.find('.hideHold').is(':checked') && data.status == 'hold')
             show = false;
 
-        var filter = $this.find('.filterText').val().toLowerCase();
+        var filter = $this.find('.filterText').val();
         if (filter.length > 0) {
+            filter = filter.toLowerCase();
             show = false;
-            if (row.data('info').name.toLowerCase().indexOf(filter) >= 0 || row.data('info').university_identification.toLowerCase().indexOf(filter) >= 0)
+            if (data.name.toLowerCase().indexOf(filter) >= 0 || data.university_identification.toLowerCase().indexOf(filter) >= 0)
                 show = true
         }
 

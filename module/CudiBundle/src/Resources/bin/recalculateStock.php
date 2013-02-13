@@ -30,6 +30,7 @@ $entityManager = $application->getServiceManager()->get('doctrine.entitymanager.
 
 $rules = array(
     'run|r' => 'Recalculate Stock',
+    'flush|f'     => 'Flush',
 );
 
 try {
@@ -66,7 +67,24 @@ if (isset($opts->r)) {
             echo 'Updated ' . $article->getMainArticle()->getTitle() . ': ' . $article->getStockValue() . ' to ' . $number . PHP_EOL;
             $article->setStockValue($number);
         }
+
+        $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
+        if ($nbToMuchAssigned > 0) {
+            echo 'Unassign ' . $article->getMainArticle()->getTitle() . ' (' . $nbToMuchAssigned . ' times)' . PHP_EOL;
+            $bookings = $entityManager
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findLastAssignedByArticle($article);
+
+            foreach($bookings as $booking) {
+                if ($nbToMuchAssigned <= 0)
+                    break;
+                $booking->setStatus('booked', $entityManager);
+                $nbToMuchAssigned -= $booking->getNumber();
+            }
+        }
     }
 
-    $entityManager->flush();
+    if (isset($opts->f)) {
+        $entityManager->flush();
+    }
 }

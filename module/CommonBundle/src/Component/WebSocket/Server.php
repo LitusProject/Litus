@@ -79,6 +79,12 @@ class Server
     public function process()
     {
         while(true){
+            clearstatcache();
+
+            if (function_exists('gc_collect_cycles')) {
+                gc_collect_cycles();
+            }
+
             $changed = $this->_sockets;
             socket_select($changed, $write, $except, null);
 

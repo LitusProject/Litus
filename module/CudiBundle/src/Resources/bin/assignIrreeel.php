@@ -58,6 +58,9 @@ if (isset($opts->a)) {
     foreach($people as $person) {
         $registration = $em->getRepository('SecretaryBundle\Entity\Registration')
             ->findOneByAcademic($person->getAcademic());
+        if (null === $registration)
+            continue;
+
         if ($person->getAcademic()->isMember($academicYear) && $registration->hasPayed()) {
             $number++;
             $booking = new \CudiBundle\Entity\Sales\Booking($em, $person->getAcademic(), $article, 'assigned', 1, true);
