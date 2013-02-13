@@ -23,7 +23,7 @@
                     <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
                     <td>{{ comment.getPerson().getFullName() }}</td>
                     <td>{{ comment.getSubject().getName() }}</td>
-                    <td>{{ comment.getSummary() }}</td>
+                    <td>{{ comment.getText() }}</td>
                     <td>{{ comment.getType()|capitalize }}</td>
                     <td class="actions">
                         <a href="#" class="view viewOne" data-text="{{ comment.getText() }}">View</a>

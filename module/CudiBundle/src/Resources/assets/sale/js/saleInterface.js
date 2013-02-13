@@ -21,6 +21,8 @@
         tRemove: 'Remove',
         tAddArticle: 'Add Article',
         tBarcode: 'Barcode',
+        tErrorTitle: 'Error',
+        tErrorExtraArticle: 'An error occurred while adding the article.',
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
@@ -259,7 +261,7 @@
             ),
             $('<td class="price">').append('&euro; ' + (bestPrice/100).toFixed(2)),
             actions = $('<td>', {class: 'actions'})
-        ).data('info', data)
+        ).data('info', data);
 
         if ("booked" == data.status) {
             row.addClass('inactive');
@@ -423,7 +425,42 @@
     function _addExtraArticle($this, data) {
         var settings = $this.data('saleInterfaceSettings');
 
-        $this.find('tbody').prepend(_addArticleRow($this, settings, data));
+        if (data.error) {
+            $this.find('.saleScreen .flashmessage').remove();
+            $this.find('.saleScreen').prepend(
+                $('<div>', {'class': 'flashmessage alert alert-error fade'}).append(
+                    $('<div>', {'class': 'title'}).html(settings.tErrorTitle),
+                    $('<div>', {'class': 'content'}).append('<p>').html(settings.tErrorExtraArticle)
+                ).addClass('in')
+            );
+        } else {
+            if ($this.find('#article-' + data.articleId).length > 0) {
+                row = $this.find('#article-' + data.articleId);
+                data = row.data('info');
+                if (data.status == 'assigned') {
+                    data.number++;
+                    row.find('td:nth-child(4)').html('').append(
+                        $('<span>', {class: 'currentNumber'}).html(data.collected),
+                        '/' + data.number
+                    );
+                } else {
+                    data.status = 'assigned';
+                    row.removeClass('inactive');
+                    row.find('td:nth-child(6)').append(
+                        $('<button>', {class: 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
+                            _addArticle($this, $(this).closest('tr').data('info').articleId);
+                        }).hide(),
+                        $('<button>', {class: 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
+                            _removeArticle($this, $(this).closest('tr').data('info').articleId);
+                        }).hide()
+                    );
+                    _updateRow($this, row);
+                }
+                row.data('info', data);
+            } else {
+                $this.find('tbody').prepend(_addArticleRow($this, settings, data));
+            }
+        }
     }
 
     function _updatePrice($this) {
