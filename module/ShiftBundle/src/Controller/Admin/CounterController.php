@@ -113,6 +113,44 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        $shift = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $shift)
+            return new ViewModel();
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->findOneById($this->getParam('person'));
+
+        if (null === $person)
+            return new ViewModel();
+
+        foreach ($shift->getVolunteers() as $volunteer) {
+            if ($volunteer->getPerson() == $person) {
+                $shift->removePerson($person);
+
+                $this->getEntityManager()->remove($volunteer);
+                $this->getEntityManager()->flush();
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     public function searchAction()
     {
         $this->initAjax();

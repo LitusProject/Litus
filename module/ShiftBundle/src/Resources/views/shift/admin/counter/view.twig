@@ -17,6 +17,19 @@
         </div>
     </div>
 
+    <div class="flashmessage success_message full_width shift_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The shift was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width shift_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the shift.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <h1>As Responsible</h1>
         <table class="full_width">
@@ -26,6 +39,7 @@
                     <th>Event</th>
                     <th>Start</th>
                     <th>End</th>
+                    <th width="70px">Actions</th>
                 </tr>
             </thead>
 
@@ -36,6 +50,11 @@
                         <td>{{ shift.getEvent().getTitle(language) }}</td>
                         <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
+                        <td>
+                            {% if hasAccess('admin_shift_counter', 'delete') %}
+                                <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -50,6 +69,7 @@
                     <th>Start</th>
                     <th>End</th>
                     <th width="45px">Payed</th>
+                    <th width="70px">Actions</th>
                 </tr>
             </thead>
 
@@ -63,10 +83,35 @@
                         <td style="text-align: center;">
                             <input type="checkbox" id="{{ shift.getId() }}" {% if payed[shift.getId()] %}checked="checked"{% endif %} />
                         </td>
+                        <td>
+                            {% if hasAccess('admin_shift', 'delete') %}
+                                <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="modal hide fade" id="removeShift">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Shift
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete this person from the shift with the following name: <b class="name"></b>?
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -74,10 +119,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item input[type=checkbox]').click(changePayed);
+            $('.item .delete').click(openModal);
         });
 
         function changePayed(e) {
-            $.get('{{ url('admin_shift_counter', {"action": "payed"})}}' +  $(this).attr('id') + '/{{ person }}/' + $(this).is(':checked'), function (data) {
+            $.get('{{ url('admin_shift_counter', {"action": "payed"}) }}' +  $(this).attr('id') + '/{{ person }}/' + $(this).is(':checked') + '/', function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').addClass('hide');
                     $('.change_payed_success').removeClass('hide');
@@ -86,12 +132,44 @@
                 }
             }, 'json').error(errorChangePayed);
 
-            $('#flashmessage').delay(2000).addClass('hide')
+            $('.flashmessage').delay(2000).addClass('hide')
         }
 
         function errorChangePayed() {
             $('.flashmessage').addClass('hide');
             $('.change_payed_error').removeClass('hide');
+        }
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeShift = $('#removeShift');
+            removeShift.find('.name').html($(this).data('name'));
+            removeShift.find('.cancel').one('click', function () {
+                removeShift.modal('hide');
+            });
+            var id = $this.data('id');
+            removeShift.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_shift_counter', {"action": "delete"})}}' + id + '/{{ person }}/', function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.shift_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeShift.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+
+                $('#flashmessage').delay(2000).addClass('hide');
+            });
+            removeShift.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.shift_removed_error').removeClass('hide');
+            $('#removeShift').modal('hide');
         }
     </script>
 {% endblock %}
