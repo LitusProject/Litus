@@ -238,6 +238,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
     }
 
+    public function downloadAction()
+    {
+        
+    }
+
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
