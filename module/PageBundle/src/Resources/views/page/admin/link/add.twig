@@ -15,6 +15,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
+
+            $('#category').change(function () {
+                $('select.parent').closest('.row').hide();
+                $('select#parent_' + $(this).find('option:selected').val()).closest('.row').show();
+            }).trigger('change');
         });
     </script>
 {% endblock %}

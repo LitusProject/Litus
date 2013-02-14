@@ -48,12 +48,13 @@ class Edit extends Add
     private function _populateFromLink(Link $link)
     {
         $data = array();
-        foreach($this->getLanguages() as $language)
+        foreach($this->getLanguages() as $language) {
             $data['name_' . $language->getAbbrev()] = $link->getName($language, false);
+            $data['url_' . $language->getAbbrev()] = $link->getUrl($language, false);
+        }
 
         $data['category'] = $link->getCategory()->getId();
-        $data['parent'] = null !== $link->getParent() ? $link->getParent()->getId() : '';
-        $data['url'] = $link->getUrl();
+        $data['parent_' . $link->getCategory()->getId()] = null !== $link->getParent() ? $link->getParent()->getId() : '';
 
         $this->setData($data);
     }

@@ -19,6 +19,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
+    PageBundle\Entity\Category,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -60,7 +61,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $field = new Text('name_' . $language->getAbbrev());
             $field->setLabel('Name')
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
 
+            $field = new Text('url_' . $language->getAbbrev());
+            $field->setLabel('URL')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
             $tabContent->add($pane);
@@ -74,15 +79,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setAttribute('options', $this->_createCategoriesArray());
         $this->add($field);
 
-        $field = new Select('parent');
-        $field->setLabel('Parent')
-            ->setAttribute('options', $this->_createPagesArray());
-        $this->add($field);
+        $categories = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Category')
+            ->findAll();
 
-        $field = new Text('url');
-        $field->setLabel('URL')
-            ->setRequired();
-        $this->add($field);
+        foreach($categories as $category) {
+            $field = new Select('parent_' . $category->getId());
+            $field->setLabel('Parent')
+                ->setAttribute('class', 'parent')
+                ->setAttribute('options', $this->_createPagesArray($category));
+            $this->add($field);
+        }
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -115,11 +122,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $categoryOptions;
     }
 
-    private function _createPagesArray()
+    private function _createPagesArray(Category $category)
     {
         $pages = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findAll();
+            ->findByCategory($category);
 
         $pageOptions = array(
             '' => ''
@@ -147,6 +154,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     )
                 )
             );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'url_' . $language->getAbbrev(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault(),
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Uri'),
+                        ),
+                    )
+                )
+            );
         }
 
         $inputFilter->add(
@@ -154,21 +176,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 array(
                     'name'     => 'category',
                     'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'url',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Uri'),
-                    ),
                 )
             )
         );

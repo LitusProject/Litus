@@ -61,20 +61,11 @@ class Link
     private $translations;
 
     /**
-     * @var string The URL this link redirects to
-     *
-     * @ORM\Column(type="string")
-     */
-    private $url;
-
-    /**
      * @param \PageBundle\Entity\Category $category
-     * @param string $url
      */
-    public function __construct(Category $category, $url)
+    public function __construct(Category $category)
     {
         $this->category = $category;
-        $this->url = $url;
 
         $this->translations = new ArrayCollection();
     }
@@ -160,20 +151,17 @@ class Link
     }
 
     /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getUrl()
+    public function getUrl(Language $language = null, $allowFallback = true)
     {
-        return $this->url;
-    }
+        $translation = $this->getTranslation($language, $allowFallback);
 
-    /**
-     * @param string $url
-     * @return \PageBundle\Entity\Link
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-        return $this;
+        if (null !== $translation)
+            return $translation->getUrl();
+
+        return '';
     }
 }
