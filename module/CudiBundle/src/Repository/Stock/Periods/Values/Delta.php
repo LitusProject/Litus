@@ -2,7 +2,9 @@
 
 namespace CudiBundle\Repository\Stock\Periods\Values;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Stock\Period,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Delta
@@ -12,10 +14,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class Delta extends EntityRepository
 {
-    public function findOneByArticleAndPeriod(Article $article, Period $period)
+    public function findTotalByArticleAndPeriod(Article $article, Period $period)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('v')
+        $resultSet = $query->select('SUM(v.value)')
             ->from('CudiBundle\Entity\Stock\Periods\Values\Delta', 'v')
             ->where(
                 $query->expr()->andX(
@@ -25,13 +27,9 @@ class Delta extends EntityRepository
             )
             ->setParameter('article', $article->getId())
             ->setParameter('period', $period->getId())
-            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getSingleScalarResult();
 
-       if (isset($resultSet[0]))
-           return $resultSet[0];
-
-       return null;
+       return $resultSet;
     }
 }
