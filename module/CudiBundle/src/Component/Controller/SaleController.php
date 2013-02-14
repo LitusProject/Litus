@@ -37,6 +37,22 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($this->getParam('session'));
 
+        if (null == $session) {
+            $sessions = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->findOpen();
+            if (sizeof($sessions) == 1) {
+                $this->redirect()->toRoute(
+                    $this->getParam('controller'),
+                    array(
+                        'action' => $this->getParam('action'),
+                        'language' => $this->getLanguage()->getAbbrev(),
+                        'session' => $sessions[0]->getId(),
+                    )
+                );
+            }
+        }
+
         if (null == $session || !$session->isOpen())
             throw new Exception('No valid session is given');
 
