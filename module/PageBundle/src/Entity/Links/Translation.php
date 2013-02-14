@@ -59,15 +59,24 @@ class Translation
     private $name;
 
     /**
+     * @var string The URL this link redirects to
+     *
+     * @ORM\Column(type="string")
+     */
+    private $url;
+
+    /**
      * @param \PageBundle\Entity\Link $link
      * @param \CommonBundle\Entity\General\Language $language
      * @param string $name
+     * @param string $url
      */
-    public function __construct(Link $link, Language $language, $name)
+    public function __construct(Link $link, Language $language, $name, $url)
     {
         $this->link = $link;
         $this->language = $language;
         $this->name = $name;
+        $this->url = $url;
     }
 
     /**
@@ -102,6 +111,25 @@ class Translation
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return \PageBundle\Entity\Links\Translation
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
         return $this;
     }
 }

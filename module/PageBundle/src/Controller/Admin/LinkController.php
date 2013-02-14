@@ -58,12 +58,12 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('PageBundle\Entity\Category')
                     ->findOneById($formData['category']);
 
-                $link = new Link($category, $formData['url']);
+                $link = new Link($category);
 
-                if ('' != $formData['parent']) {
+                if ('' != $formData['parent_' . $category->getId()]) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
-                        ->findOneById($formData['parent']);
+                        ->findOneById($formData['parent_' . $category->getId()]);
 
                     $link->setParent($parent);
                 }
@@ -79,7 +79,8 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                         $translation = new Translation(
                             $link,
                             $language,
-                            $formData['name_' . $language->getAbbrev()]
+                            $formData['name_' . $language->getAbbrev()],
+                            $formData['url_' . $language->getAbbrev()]
                         );
 
                         $this->getEntityManager()->persist($translation);
@@ -132,13 +133,12 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('PageBundle\Entity\Category')
                     ->findOneById($formData['category']);
 
-                $link->setCategory($category)
-                    ->setUrl($formData['url']);
+                $link->setCategory($category);
 
-                if ('' != $formData['parent']) {
+                if ('' != $formData['parent_' . $category->getId()]) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
-                        ->findOneById($formData['parent']);
+                        ->findOneById($formData['parent_' . $category->getId()]);
 
                     $link->setParent($parent);
                 }
@@ -151,13 +151,15 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                     $translation = $link->getTranslation($language, false);
 
                     if (null !== $translation) {
-                        $translation->setName($formData['name_' . $language->getAbbrev()]);
+                        $translation->setName($formData['name_' . $language->getAbbrev()])
+                            ->setName($formData['url_' . $language->getAbbrev()]);
                     } else {
                         if ('' != $formData['name_' . $language->getAbbrev()]) {
                             $translation = new Translation(
                                 $link,
                                 $language,
-                                $formData['name_' . $language->getAbbrev()]
+                                $formData['name_' . $language->getAbbrev()],
+                                $formData['url_' . $language->getAbbrev()]
                             );
 
                             $this->getEntityManager()->persist($translation);

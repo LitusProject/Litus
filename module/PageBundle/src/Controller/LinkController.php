@@ -34,7 +34,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $this->redirect()->toUrl($link->getUrl());
+        $this->redirect()->toUrl($link->getUrl($this->getLanguage()));
 
         return new ViewModel();
     }
