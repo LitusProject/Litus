@@ -37,7 +37,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($this->getParam('session'));
 
-        if (null == $session) {
+        if (null == $session || !$session->isOpen()) {
             $sessions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Session')
                 ->findOpen();
