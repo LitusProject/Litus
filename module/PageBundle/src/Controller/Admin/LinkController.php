@@ -152,7 +152,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
                     if (null !== $translation) {
                         $translation->setName($formData['name_' . $language->getAbbrev()])
-                            ->setName($formData['url_' . $language->getAbbrev()]);
+                            ->setUrl($formData['url_' . $language->getAbbrev()]);
                     } else {
                         if ('' != $formData['name_' . $language->getAbbrev()]) {
                             $translation = new Translation(
