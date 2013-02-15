@@ -40,7 +40,7 @@
     <div class="row-fluid">
         <div class="span6">
             <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-calendar.png" /></a>
-            
+
             <h2>{{ translate('Calendar') }}</h2>
 
             {% for day in calendarItems %}
@@ -92,6 +92,6 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        $('a[rel=popover]').popover({'trigger': 'hover'});
+        $('a[rel=popover]').popover({'trigger': 'hover', 'html': true});
     </script>
 {% endblock %}
