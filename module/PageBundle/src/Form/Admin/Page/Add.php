@@ -22,6 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
+    PageBundle\Entity\Category,
     PageBundle\Entity\Nodes\Page,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -81,10 +82,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setAttribute('options', $this->_createCategoriesArray());
         $this->add($field);
 
-        $field = new Select('parent');
-        $field->setLabel('Parent')
-            ->setAttribute('options', $this->createPagesArray());
-        $this->add($field);
+        $categories = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Category')
+            ->findAll();
+
+        foreach($categories as $category) {
+            $field = new Select('parent_' . $category->getId());
+            $field->setLabel('Parent')
+                ->setAttribute('class', 'parent')
+                ->setAttribute('options', $this->_createPagesArray($category));
+            $this->add($field);
+        }
 
         $field = new Select('edit_roles');
         $field->setLabel('Edit Roles')
@@ -124,11 +132,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $categoryOptions;
     }
 
-    protected function createPagesArray($excludeTitle = '')
+    protected function _createPagesArray(Category $category, $excludeTitle = '')
     {
         $pages = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findAll();
+            ->findByCategory($category);
 
         $pageOptions = array(
             '' => ''
@@ -139,7 +147,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         }
 
         asort($pageOptions);
-
         return $pageOptions;
     }
 
