@@ -107,7 +107,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add($field);
 
         $field = new Checkbox('non_members');
-        $field->setLabel('Allow Entry Without Login (First and Last name fields will be created automatically)');
+        $field->setLabel('Allow Entry Without Login (First name, last name and email fields will be created automatically)');
         $this->add($field);
 
         $field = new Checkbox('multiple');
