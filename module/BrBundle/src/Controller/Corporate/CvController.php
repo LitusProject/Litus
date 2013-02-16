@@ -33,21 +33,43 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null) {
-            return new ViewModel(
-                array(
-                    'message' => 'Please log in to view the cv book.',
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please log in to view the cv book.'
                 )
             );
+
+            $this->redirect()->toRoute(
+                'corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
         }
 
         $academicYear = $this->getAcademicYear();
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            return new ViewModel(
-                array(
-                    'message' => 'You don\'t have access to the CVs of this year.',
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'You don\'t have access to the CVs of this year.'
                 )
             );
+
+            $this->redirect()->toRoute(
+                'corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
         }
 
         $result = Util::getGrouped($this->getEntityManager(), $academicYear);
@@ -65,21 +87,43 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null) {
-            return new ViewModel(
-                array(
-                    'message' => 'Please log in to view the cv book.',
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please log in to view the cv book.'
                 )
             );
+
+            $this->redirect()->toRoute(
+                'corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
         }
 
         $academicYear = $this->getAcademicYear();
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            return new ViewModel(
-                array(
-                    'message' => 'You don\'t have access to the CVs of this year.',
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'You don\'t have access to the CVs of this year.'
                 )
             );
+
+            $this->redirect()->toRoute(
+                'corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
         }
 
         $entries = $this->_getList($academicYear);
@@ -99,21 +143,43 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null) {
-            return new ViewModel(
-                array(
-                    'message' => 'Please log in to view the cv book.',
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please log in to view the cv book.'
                 )
             );
+
+            $this->redirect()->toRoute(
+                'corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
         }
 
         $academicYear = $this->getAcademicYear();
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            return new ViewModel(
-                array(
-                    'message' => 'You don\'t have access to the CVs of this year.',
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'You don\'t have access to the CVs of this year.'
                 )
             );
+
+            $this->redirect()->toRoute(
+                'corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
         }
 
         $filters = array();
