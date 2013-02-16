@@ -15,9 +15,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
-        });
+            
+            $('#category').change(function () {
+                $('select.parent').closest('.row').hide();
+                $('select#parent_' + $(this).find('option:selected').val()).closest('.row').show();
+            }).trigger('change');
 
-        $(document).ready(function () {
             $('textarea').gollum({
                 uploadURL: '{{ url('admin_page', {'action': 'upload'}) }}',
                 progressURL: '{{ url('admin_page', {'action': 'uploadProgress'}) }}',

@@ -42,12 +42,19 @@ class Edit extends Add
 
         $this->_page = $page;
 
-        $this->remove('parent');
+        $categories = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Category')
+            ->findAll();
 
-        $field = new Select('parent');
-        $field->setLabel('Parent')
-            ->setAttribute('options', $this->createPagesArray($page->getTitle()));
-        $this->add($field);
+        foreach($categories as $category) {
+            $this->remove('parent_' . $category->getId());
+
+            $field = new Select('parent_' . $category->getId());
+            $field->setLabel('Parent')
+                ->setAttribute('class', 'parent')
+                ->setAttribute('options', $this->_createPagesArray($category, $page->getCategory()->getId() == $category->getId() ? $page->getTitle() : ''));
+            $this->add($field);
+        }
 
         $this->remove('submit');
 
@@ -73,7 +80,7 @@ class Edit extends Add
         foreach ($page->getEditRoles() as $role)
             $data['edit_roles'][] = $role->getName();
 
-        $data['parent'] = null !== $page->getParent() ? $page->getParent()->getId() : '';
+        $data['parent_' . $page->getCategory()->getId()] = null !== $page->getParent() ? $page->getParent()->getId() : '';
 
         $this->setData($data);
     }
