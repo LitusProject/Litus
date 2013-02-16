@@ -20,7 +20,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\Extension as ExtensionValidator,
     Zend\View\Model\ViewModel,
     \ZipArchive;
 

@@ -91,7 +91,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         $upload = new FileUpload();
         $upload->addValidator(new SizeValidator(array('max' => '30MB')));
-        $upload->addValidator(new ExtensionValidator('zip'));
+        // $upload->addValidator(new ExtensionValidator('zip')); // Awaiting ZF Fix
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
