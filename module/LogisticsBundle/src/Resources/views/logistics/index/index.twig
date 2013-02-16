@@ -231,6 +231,8 @@
                         poppedElement = null;
                     }
 
+                    $('#popover_header .reason').html('New Event');
+
                     $(jsEvent.target).popover({
                         placement:'bottom',
                         title:$('#popover_header').html(),
@@ -242,13 +244,24 @@
 
                     $('#add_popover_content_internal .start').val(formatDate(startDate));
                     $('#add_popover_content_internal .end').val(formatDate(endDate));
+
+                    $('#passengerSearch').typeaheadRemote(
+                        {
+                            source: '{{ url("admin_academic_typeahead", {}) }}',
+                        }
+                    ).change(function(e) {
+                        if ($(this).data('value')) {
+                            $('#passengerId').val($(this).data('value').id);
+                        } else {
+                            $('#passengerId').val('');
+                        }
+                    });
                 },
 
                 {% endif %}
 
             });
 
-            $('#popover_header .reason').text('New Event');
 
             $('.popover .close').live('click',function(){
                 hidePopover(poppedElement);
