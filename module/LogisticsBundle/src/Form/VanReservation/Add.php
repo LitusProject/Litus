@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Bootstrap\VanReservation;
+namespace LogisticsBundle\Form\VanReservation;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Select,

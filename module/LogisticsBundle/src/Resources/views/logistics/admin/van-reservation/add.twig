@@ -1,13 +1,13 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'logistics/admin/van-reservation/partials/navigation.twig' %}
+    {% include 'logistics/admin/van-reservation/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
 
-		{% import 'admin/partials/form.twig' as forms %}
+        {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
 
     </div>
@@ -15,22 +15,22 @@
 
 {% block content_script %}
 
-	<script type="text/javascript">
-		$(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-			$('#passengerSearch').typeaheadRemote(
-				{
-					source: '{{ url("admin_academic_typeahead", {}) }}',
-				}
-			).change(function(e) {
-				if ($(this).data('value')) {
-					$('#passengerId').val($(this).data('value').id);
-				} else {
-					$('#passengerId').val('');
-				}
-			});
+            $('#passengerSearch').typeaheadRemote(
+                {
+                    source: '{{ url("admin_academic_typeahead", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('#passengerId').val($(this).data('value').id);
+                } else {
+                    $('#passengerId').val('');
+                }
+            });
 
-		});
-	</script>
+        });
+    </script>
 
 {% endblock %}
