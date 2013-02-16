@@ -141,6 +141,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $field = new TextArea('mail_body');
         $field->setLabel('Body')
             ->setAttribute('rows', 20)
+            ->setValue('Exameple mail:
+
+Dear %first_name% %last_name%,
+
+Your subscription was successful. Your unique subscription id is %id%. Below is a summary of the values you entered in this form:
+
+%entry_summary%
+
+With best regards,
+The Form Creator')
             ->setRequired();
         $mail->add($field);
 
