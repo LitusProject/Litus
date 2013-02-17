@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Articles\Discounts\Discount")
- * @ORM\Table(name="cudi.sales_discounts_discounts")
+ * @ORM\Table(name="cudi.sales_articles_discounts_discounts")
  */
 class Discount
 {

@@ -32,18 +32,18 @@
 
         <table class="full_width manage" id="articleRestrictions">
             <tr>
-                <th>Barcode</th>
-                <th width="150px">Main</th>
+                <th>Type</th>
+                <th width="150px">Value</th>
                 <th width="100px">Actions</th>
             </tr>
 
-            {% for barcode in barcodes %}
-                <tr class="item item-{{ barcode.getId() }}">
-                    <td>{{ barcode.getBarcode() }}</td>
-                    <td>{% if barcode.isMain() %}Yes{% else %}No{% endif %}</td>
+            {% for restriction in restrictions %}
+                <tr class="item item-{{ restriction.getId() }}">
+                    <td>{{ restriction.getType() }}</td>
+                    <td>{{ restriction.getValue() }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_sales_article_barcode', 'delete') and not barcode.isMain() %}
-                            <a href="#" class="delete" data-id="{{ barcode.getId() }}" data-barcode="{{ barcode.getBarcode() }}">Delete</a>
+                        {% if hasAccess('admin_sales_article_restriction', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ restriction.getId() }}" data-restriction="{{ restriction.getType() }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -76,6 +76,16 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(openRemoveModal);
+
+            $('#restriction_type').change(function () {
+                if ($('#type_' + $(this).find(':selected').val()).val() == 'boolean') {
+                    $('#restriction_value_boolean').closest('.row').show();
+                    $('#restriction_value_string').closest('.row').hide();
+                } else {
+                    $('#restriction_value_boolean').closest('.row').hide();
+                    $('#restriction_value_string').closest('.row').show();
+                }
+            }).trigger('change');
         });
 
         function openRemoveModal(e) {

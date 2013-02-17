@@ -19,7 +19,7 @@ use CudiBundle\Entity\Sales\Article as Article,
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Articles\Discounts\Template")
- * @ORM\Table(name="cudi.sales_discounts_templates")
+ * @ORM\Table(name="cudi.sales_articles_discounts_templates")
  */
 class Template
 {
