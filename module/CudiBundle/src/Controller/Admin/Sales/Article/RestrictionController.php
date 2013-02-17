@@ -41,7 +41,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
                 $formData = $form->getFormData($formData);
 
                 if (Restriction::$VALUE_TYPES[$formData['type']] == 'boolean') {
-                    $value = isset($formData['value_boolean']) ? '1' : '0';
+                    $value = isset($formData['value_boolean']) && $formData['value_boolean'] ? '1' : '0';
                 } else {
                     $value = $formData['value_string'];
                 }

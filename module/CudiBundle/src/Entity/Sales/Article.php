@@ -15,11 +15,13 @@
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\Organization,
+    CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sales\Articles\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -129,6 +131,13 @@ class Article
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Articles\Barcode", mappedBy="article", cascade={"persist", "remove"})
      */
     private $barcodes;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The restrictions of the article
+     *
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Articles\Restriction", mappedBy="article", cascade={"persist", "remove"})
+     */
+    private $restrictions;
 
     /**
      * @var \CommonBundle\Entity\General\Union The organization of this article
@@ -481,6 +490,29 @@ class Article
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getRestrictions()
+    {
+        return $this->restrictions;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return boolean
+     */
+    public function canBook(Person $person, EntityManager $entityManager)
+    {
+        foreach($this->restrictions as $restriction) {
+            if (!$restriction->canBook($person, $entityManager))
+                return false;
+        }
+        return true;
     }
 
     /**

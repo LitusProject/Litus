@@ -14,7 +14,10 @@
 
 namespace CudiBundle\Entity\Sales\Articles;
 
-use CudiBundle\Entity\Sales\Article as Article,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\Users\Person,
+    CudiBundle\Entity\Sales\Article as Article,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -131,5 +134,32 @@ class Restriction
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return boolean
+     */
+    public function canBook(Person $person, EntityManager $entityManager)
+    {
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        if ('member' == $this->type) {
+            return ('1' == $this->value && $person->isMember($academicYear) || '0' == $this->value && !$person->isMember($academicYear));
+        } elseif ('amount' == $this->type) {
+            $amount = sizeof($entityManager
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findOneSoldOrAssignedOrBookedByArticleAndPerson($this->article, $person));
+            return $amount < $this->value;
+        } else {
+            return false;
+        }
     }
 }

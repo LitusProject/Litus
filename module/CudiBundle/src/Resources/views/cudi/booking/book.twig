@@ -100,7 +100,7 @@
                                         </td>
                                         <td class="hidden-phone">{{ map['mandatory'] ? '&times;' : '' }}</td>
                                         <td>
-                                            {% if map['article'].isBookable() and (bookingsEnabled or map['article'].getId() in bookingsClosedExceptions) %}
+                                            {% if map['bookable'] and (bookingsEnabled or map['article'].getId() in bookingsClosedExceptions) %}
                                                 {% set name = 'article-' ~ map['article'].getId() %}
                                                 {% set element = form.get(name) %}
                                                 {{ formElement(element) }}
@@ -122,7 +122,7 @@
                                         </td>
                                     </tr>
 
-                                    {% if element.getMessages()|length > 0  and map['article'].isBookable() %}
+                                    {% if element.getMessages()|length > 0  and map['bookable'] %}
                                         <tr>
                                             <td colspan="7"  style="border-top-width:0px;">
                                                 <div class="help-inline pull-right">
