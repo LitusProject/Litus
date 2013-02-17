@@ -12,11 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Sales;
+namespace CudiBundle\Controller\Admin\Sales\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\Articles\Barcode,
-    CudiBundle\Form\Admin\Sales\Barcodes\Add as AddForm,
+    CudiBundle\Form\Admin\Sales\Article\Barcodes\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -53,7 +53,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_barcode',
+                    'admin_sales_article_barcode',
                     array(
                         'action' => 'manage',
                         'id' => $article->getId(),

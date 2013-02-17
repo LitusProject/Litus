@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Sales\Discounts;
+namespace CudiBundle\Form\Admin\Sales\Article\Discounts;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Component\Validator\Sales\Article\Discounts\Exists as DiscountValidator,
     CudiBundle\Entity\Sales\Article,
-    CudiBundle\Entity\Sales\Discounts\Discount,
+    CudiBundle\Entity\Sales\Articles\Discounts\Discount,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $templates = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Template')
             ->findAll();
 
         foreach($templates as $template) {
@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getTemplates()
     {
         $templates = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Template')
             ->findAll();
         $templateOptions = array(0 => 'none');
         foreach($templates as $template)

@@ -350,13 +350,13 @@ VTK Cudi
                     'admin_sales_article' => array(
                         'activate', 'add', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead'
                     ),
-                    'admin_sales_barcode' => array(
+                    'admin_sales_article_barcode' => array(
                         'delete', 'manage'
                     ),
                     'admin_sales_booking' => array(
                         'add', 'article', 'assign', 'assignAll', 'assignments', 'delete', 'edit', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
                     ),
-                    'admin_sales_discount' => array(
+                    'admin_sales_article_discount' => array(
                         'delete', 'manage'
                     ),
                     'admin_sales_financial' => array(

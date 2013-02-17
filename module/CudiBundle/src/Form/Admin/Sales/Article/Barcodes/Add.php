@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Sales\Barcodes;
+namespace CudiBundle\Form\Admin\Sales\Article\Barcodes;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,

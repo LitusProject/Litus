@@ -4,16 +4,16 @@
     {% include 'cudi/admin/sales/article/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
-    <div class="flashmessage success_message full_width barcode_removed_success hide">
+    <div class="flashmessage success_message full_width restriction_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The barcode was successfully removed!</p>
+            <p>The restriction was successfully removed!</p>
         </div>
     </div>
-    <div class="flashmessage error_message full_width barcode_removed_error hide">
+    <div class="flashmessage error_message full_width restriction_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to delete the barcode.</p>
+            <p>An error occurred while trying to delete the restriction.</p>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
         {{ forms.renderForm(form) }}
         <br style="clear:both"/>
 
-        <table class="full_width manage" id="articleBarcodes">
+        <table class="full_width manage" id="articleRestrictions">
             <tr>
                 <th>Barcode</th>
                 <th width="150px">Main</th>
@@ -42,7 +42,7 @@
                     <td>{{ barcode.getBarcode() }}</td>
                     <td>{% if barcode.isMain() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_sales_barcode', 'delete') and not barcode.isMain() %}
+                        {% if hasAccess('admin_sales_article_barcode', 'delete') and not barcode.isMain() %}
                             <a href="#" class="delete" data-id="{{ barcode.getId() }}" data-barcode="{{ barcode.getBarcode() }}">Delete</a>
                         {% endif %}
                     </td>
@@ -51,14 +51,14 @@
         </table>
     </div>
 
-    <div class="modal hide fade" id="removeBarcode">
+    <div class="modal hide fade" id="removeRestriction">
         <div class="modal-header">
             <span>Litus Admin</span>
-            /Delete Barcode
+            /Delete Restriction
         </div>
         <div class="modal-body">
             <p>
-                You are about to delete the following barcode <b class="barcode"></b>!<br />
+                You are about to delete the following restriction <b class="restriction"></b>!<br />
                 Please note that this operation cannot be undone!
             </p>
             <p>
@@ -82,28 +82,28 @@
             var $this = $(this);
 
             e.preventDefault();
-            var removeBarcode = $('#removeBarcode');
-            removeBarcode.find('.barcode').html($(this).data('barcode'));
+            var removeRestriction = $('#removeRestriction');
+            removeRestriction.find('.restriction').html($(this).data('restriction'));
             var id = $this.data('id');
-            removeBarcode.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_sales_barcode', {"action": "delete"})}}' + id, function (data) {
+            removeRestriction.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_sales_article_restriction', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.barcode_removed_success').removeClass('hide');
+                        $('.restriction_removed_success').removeClass('hide');
                         $('.item-' + id).remove();
-                        removeBarcode.modal('hide');
+                        removeRestriction.modal('hide');
                     } else {
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
-            removeBarcode.modal();
+            removeRestriction.modal();
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('hide');
-            $('.barcode_removed_error').removeClass('hide');
-            $('#removeBarcode').modal('hide');
+            $('.restriction_removed_error').removeClass('hide');
+            $('#removeRestriction').modal('hide');
         }
     </script>
 {% endblock %}
