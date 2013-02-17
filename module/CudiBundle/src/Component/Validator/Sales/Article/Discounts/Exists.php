@@ -73,7 +73,7 @@ class Exists extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $discount = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Discount')
             ->findOneByArticleAndType($this->_article, $value);
 
         if (null === $discount)

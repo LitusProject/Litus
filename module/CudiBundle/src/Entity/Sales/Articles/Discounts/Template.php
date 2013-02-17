@@ -12,13 +12,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Sales\Discounts;
+namespace CudiBundle\Entity\Sales\Articles\Discounts;
 
 use CudiBundle\Entity\Sales\Article as Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Template")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Articles\Discounts\Template")
  * @ORM\Table(name="cudi.sales_discounts_templates")
  */
 class Template

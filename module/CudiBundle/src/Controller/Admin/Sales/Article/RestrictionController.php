@@ -12,85 +12,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Sales;
+namespace CudiBundle\Controller\Admin\Sales\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Discounts\Discount,
-    CudiBundle\Form\Admin\Sales\Discounts\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
- * DiscountController
+ * RestrictionController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class DiscountController extends \CudiBundle\Component\Controller\ActionController
+class RestrictionController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
         if (!($article = $this->_getSaleArticle()))
             return new ViewModel();
 
-        $form = new AddForm($article, $this->getEntityManager());
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $discount = new Discount($article);
-
-                if ($formData['template'] == 0) {
-                    $discount->setDiscount(
-                        $formData['value'],
-                        $formData['method'],
-                        $formData['type'],
-                        $formData['rounding'],
-                        $formData['apply_once']
-                    );
-                } else {
-                    $template = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
-                        ->findOneById($formData['template']);
-
-                    $discount->setTemplate($template);
-                }
-
-                $this->getEntityManager()->persist($discount);
-
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The discount was successfully created!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'admin_sales_discount',
-                    array(
-                        'action' => 'manage',
-                        'id' => $article->getId(),
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        $discounts = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
-            ->findByArticle($article);
-
         return new ViewModel(
             array(
                 'article' => $article,
-                'discounts' => $discounts,
-                'form' => $form,
             )
         );
     }
@@ -99,10 +40,10 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($discount = $this->_getDiscount()))
+        if (!($restriction = $this->_getRestriction()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($discount);
+        $this->getEntityManager()->remove($restriction);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -159,14 +100,14 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         return $article;
     }
 
-    private function _getDiscount()
+    private function _getRestriction()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the discount!'
+                    'No ID was given to identify the restriction!'
                 )
             );
 
@@ -180,16 +121,16 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             return;
         }
 
-        $discount = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
+        $restriction = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Restriction')
             ->findOneById($this->getParam('id'));
 
-        if (null === $discount) {
+        if (null === $restriction) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No discount with the given ID was found!'
+                    'No restriction with the given ID was found!'
                 )
             );
 
@@ -203,6 +144,6 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             return;
         }
 
-        return $discount;
+        return $restriction;
     }
 }

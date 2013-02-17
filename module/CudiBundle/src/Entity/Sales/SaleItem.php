@@ -15,7 +15,7 @@
 namespace CudiBundle\Entity\Sales;
 
 use CudiBundle\Entity\Sales\Article,
-    CudiBundle\Entity\Sales\Discounts\Discount,
+    CudiBundle\Entity\Sales\Articles\Discounts\Discount,
     CudiBundle\Entity\Sales\QueueItem,
     DateTime,
     Doctrine\ORM\EntityManager,

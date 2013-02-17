@@ -119,7 +119,7 @@ class Article
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The discounts of the article
      *
-     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Discounts\Discount", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Articles\Discounts\Discount", mappedBy="article")
      */
     private $discounts;
 
