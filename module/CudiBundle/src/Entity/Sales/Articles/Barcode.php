@@ -55,7 +55,7 @@ class Barcode
     private $main;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article The article of the discount
+     * @param \CudiBundle\Entity\Sales\Article The article of the barcode
      * @param integer $barcode The barcode of the article
      * @param boolean $main Flag whether this is the main barcode
      */

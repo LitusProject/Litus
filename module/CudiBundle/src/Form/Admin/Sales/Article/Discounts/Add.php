@@ -162,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $required = (isset($data['template']) && $data['template'] == 0);
+        $required = (isset($this->data['template']) && $this->data['template'] == 0);
 
         $inputFilter->add(
             $factory->createInput(

@@ -15,6 +15,8 @@
 namespace CudiBundle\Controller\Admin\Sales\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Sales\Articles\Restriction,
+    CudiBundle\Form\Admin\Sales\Article\Restrictions\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -29,9 +31,56 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         if (!($article = $this->_getSaleArticle()))
             return new ViewModel();
 
+        $form = new AddForm($article, $this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if (Restriction::$VALUE_TYPES[$formData['type']] == 'boolean') {
+                    $value = isset($formData['value_boolean']) ? '1' : '0';
+                } else {
+                    $value = $formData['value_string'];
+                }
+
+                $restriction = new Restriction($article, $formData['type'], $value);
+
+                $this->getEntityManager()->persist($restriction);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The restriction was successfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_sales_article_restriction',
+                    array(
+                        'action' => 'manage',
+                        'id' => $article->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $restrictions = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Restriction')
+            ->findAllByArticle($article);
+
         return new ViewModel(
             array(
                 'article' => $article,
+                'restrictions' => $restrictions,
+                'form' => $form,
             )
         );
     }
