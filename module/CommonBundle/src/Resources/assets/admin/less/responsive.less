@@ -25,7 +25,9 @@
 
         #controller_action {
             img {
-                width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 200;
+                .full_width {
+                    width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 200;
+                }
             }
 
             .form {
@@ -120,7 +122,9 @@
 
         #controller_action {
             img {
-                width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 400;
+                .full_width {
+                    width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 400;
+                }
             }
 
             .form {
