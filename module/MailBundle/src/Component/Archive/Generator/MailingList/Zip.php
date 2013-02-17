@@ -12,13 +12,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Component\Generator\MailingList;
+namespace MailBundle\Component\Archive\Generator\MailingList;
 
 use CommonBundle\Component\Util\File\TmpFile,
     DateTime,
     Doctrine\ORM\EntityManager,
     ZipArchive;
 
+/**
+ * A class that can be used to generate a ZIP from a given array of
+ * mailing lists.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
 class Zip
 {
     /**
@@ -32,15 +38,13 @@ class Zip
     private $_lists;
 
     /**
-     * Create a Order XML Generator.
-     *
      * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
      * @param arrays $lists The array containing the mailinglists
      */
     public function __construct(EntityManager $entityManager, array $lists)
     {
-        $this->_lists = $lists;
         $this->_entityManager = $entityManager;
+        $this->_lists = $lists;
     }
 
     /**

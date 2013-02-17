@@ -42,6 +42,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $this->getParam('page'),
             array(
                 'active' => true
+            ),
+            array(
+                'name' => 'ASC'
             )
         );
 
