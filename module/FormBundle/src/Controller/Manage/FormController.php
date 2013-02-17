@@ -144,7 +144,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
                     $value = $formData['field-' . $field->getId()];
 
-                    // find entry
+                    // Find entry
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($formEntry, $field);

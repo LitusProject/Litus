@@ -77,6 +77,7 @@ return array(
     'CommonBundle\Component\Util\Exception\InvalidArgumentException'                   => __DIR__ . '/src/Component/Util/Exception/InvalidArgumentException.php',
     'CommonBundle\Component\Util\File\Exception\FailedToOpenException'                 => __DIR__ . '/src/Component/Util/File/Exception/FailedToOpenException.php',
     'CommonBundle\Component\Util\File\Exception\TmpFileClosedException'                => __DIR__ . '/src/Component/Util/File/Exception/TmpFileClosedException.php',
+    'CommonBundle\Component\Util\File\TmpFile\Csv'                                     => __DIR__ . '/src/Component/Util/File/TmpFile/Csv.php',
     'CommonBundle\Component\Util\File\TmpFile'                                         => __DIR__ . '/src/Component/Util/File/TmpFile.php',
     'CommonBundle\Component\Util\File'                                                 => __DIR__ . '/src/Component/Util/File.php',
     'CommonBundle\Component\Util\String'                                               => __DIR__ . '/src/Component/Util/String.php',

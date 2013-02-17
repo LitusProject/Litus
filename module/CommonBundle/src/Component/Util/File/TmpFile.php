@@ -19,7 +19,7 @@ use CommonBundle\Component\Util\File as FileUtil;
 /**
  * Utility class containing methods used for common actions on files
  *
- * @author Bram Gotink
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class TmpFile
 {
@@ -31,7 +31,7 @@ class TmpFile
     /**
      * @var resource The file handler
      */
-    private $_fileHandler;
+    protected $fileHandler;
 
     /**
      * @param string $tmpDirectory The path to the directory that holds the temporary files
@@ -47,9 +47,9 @@ class TmpFile
         );
 
         $this->_filename = FileUtil::getRealFilename($tmpDirectory . $filename);
-        $this->_fileHandler = fopen($this->_filename, 'w+b');
+        $this->fileHandler = fopen($this->_filename, 'w+b');
 
-        if(!$this->_fileHandler) {
+        if(!$this->fileHandler) {
             throw new Exception\FailedtoOpenException(
                 'Failed to open file ' . $this->_filename
             );
@@ -63,11 +63,11 @@ class TmpFile
      */
     public function getContent()
     {
-        $this->_checkOpen();
-        fseek($this->_fileHandler, 0);
+        $this->checkOpen();
+        fseek($this->fileHandler, 0);
 
         return fread(
-            $this->_fileHandler, filesize($this->_filename)
+            $this->fileHandler, filesize($this->_filename)
         );
     }
 
@@ -79,8 +79,8 @@ class TmpFile
      */
     public function appendContent($content)
     {
-        $this->_checkOpen();
-        fwrite($this->_fileHandler, $content);
+        $this->checkOpen();
+        fwrite($this->fileHandler, $content);
     }
 
     /**
@@ -90,7 +90,7 @@ class TmpFile
      */
     public function getFilename()
     {
-        $this->_checkOpen();
+        $this->checkOpen();
         return $this->_filename;
     }
 
@@ -101,7 +101,7 @@ class TmpFile
      */
     public function isOpen()
     {
-        return $this->_fileHandler !== null;
+        return $this->fileHandler !== null;
     }
 
     /**
@@ -112,7 +112,7 @@ class TmpFile
     public function destroy()
     {
         if ($this->isOpen()) {
-            $fileHandler = $this->_fileHandler;
+            $fileHandler = $this->fileHandler;
             $this->_fileHanlder = null;
 
             fclose($fileHandler);
@@ -122,22 +122,22 @@ class TmpFile
     }
 
     /**
-     * Checks whether or not this file is open, throwing an exception if it is not.
-     *
-     * @return void
-     * @throws \CommonBundle\Component\Util\File\Exception\TmpFileClosedException If the file is not open
-     */
-    private function _checkOpen()
-    {
-        if (!$this->isOpen())
-            throw new Exception\TmpFileClosedException($this);
-    }
-
-    /**
      * @return void
      */
     public function __destruct()
     {
         $this->destroy();
+    }
+
+    /**
+     * Checks whether or not this file is open, throwing an exception if it is not.
+     *
+     * @return void
+     * @throws \CommonBundle\Component\Util\File\Exception\TmpFileClosedException If the file is not open
+     */
+    protected function checkOpen()
+    {
+        if (!$this->isOpen())
+            throw new Exception\TmpFileClosedException($this);
     }
 }
