@@ -211,7 +211,6 @@
                         pop_content.find('.driver_value').text(event.driver);
 
                     element.popover({'placement': 'right', 'title': $('#popover_header').html(), 'content':pop_content.html(), 'trigger': 'manual', 'html': true});
-
                 },
 
                 eventClick : function(event, jsEvent, view) {
@@ -232,21 +231,37 @@
                         poppedElement = null;
                     }
 
-                    showPopover($('.fc-header-title'));
+                    $('#popover_header .reason').html('New Event');
+
+                    $(jsEvent.target).popover({
+                        placement:'bottom',
+                        title:$('#popover_header').html(),
+                        content:$('#add_popover_content').html(),
+                        trigger:'manual',
+                        html: true
+                    });
+                    showPopover($(jsEvent.target));
 
                     $('#add_popover_content_internal .start').val(formatDate(startDate));
                     $('#add_popover_content_internal .end').val(formatDate(endDate));
+
+                    $('#passengerSearch').typeaheadRemote(
+                        {
+                            source: '{{ url("admin_academic_typeahead", {}) }}',
+                        }
+                    ).change(function(e) {
+                        if ($(this).data('value')) {
+                            $('#passengerId').val($(this).data('value').id);
+                        } else {
+                            $('#passengerId').val('');
+                        }
+                    });
                 },
 
                 {% endif %}
 
             });
 
-            $('#popover_header .reason').text('New Event');
-
-            var content = $('#add_popover_content').html();
-
-            $('.fc-header-title').popover({placement:'bottom', title:$('#popover_header').html(), content:content, trigger:'manual'});
 
             $('.popover .close').live('click',function(){
                 hidePopover(poppedElement);

@@ -15,14 +15,7 @@
 namespace PublicationBundle\Controller\Edition;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PublicationBundle\Entity\Publication,
-    PublicationBundle\Entity\Editions\Html as HtmlEdition,
-    PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\Extension as ExtensionValidator,
-    Zend\View\Model\ViewModel,
-    \ZipArchive;
+    Zend\View\Model\ViewModel;
 
 /**
  * HtmlController

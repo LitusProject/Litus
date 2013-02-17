@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Sales\Articles;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Sales\Article,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Barcode
@@ -38,7 +39,7 @@ class Barcode extends EntityRepository
         return null;
     }
 
-    public function findAllByArticle($article)
+    public function findAllByArticle(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')

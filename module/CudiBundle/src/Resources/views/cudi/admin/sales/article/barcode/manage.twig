@@ -42,7 +42,7 @@
                     <td>{{ barcode.getBarcode() }}</td>
                     <td>{% if barcode.isMain() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_sales_barcode', 'delete') and not barcode.isMain() %}
+                        {% if hasAccess('admin_sales_article_barcode', 'delete') and not barcode.isMain() %}
                             <a href="#" class="delete" data-id="{{ barcode.getId() }}" data-barcode="{{ barcode.getBarcode() }}">Delete</a>
                         {% endif %}
                     </td>
@@ -86,7 +86,7 @@
             removeBarcode.find('.barcode').html($(this).data('barcode'));
             var id = $this.data('id');
             removeBarcode.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_sales_barcode', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('admin_sales_article_barcode', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.barcode_removed_success').removeClass('hide');

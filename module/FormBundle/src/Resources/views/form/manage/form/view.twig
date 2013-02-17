@@ -18,7 +18,7 @@
     </div>
 
     {% if authenticatedPerson is not null %}
-	    <h2>{{ form.getTitle(language) }}</h2>
+	    <h2>{{ form.getTitle(language) }} ({{ entries|length }} {{ translate("subscriptions") }})</h2>
 
 	    <table class="table">
 

@@ -31,7 +31,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_discount', 'manage') %}
+        {% if hasAccess('admin_sales_article_discount', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Article Discounts</div>
                 <div class="content">
@@ -39,12 +39,12 @@
                         <i>Please hit the link below to manage the discounts of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_discount', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Discount</a>
+                        <a href="{{ url('admin_sales_article_discount', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Discount</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_barcode', 'manage') %}
+        {% if hasAccess('admin_sales_article_barcode', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Article Barcodes</div>
                 <div class="content">
@@ -52,7 +52,20 @@
                         <i>Please hit the link below to manage the barcodes of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_barcode', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Barcodes</a>
+                        <a href="{{ url('admin_sales_article_barcode', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Barcodes</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_sales_article_restriction', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Article Restrictions</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the restrictions of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_sales_article_restriction', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Restrictions</a>
                     </p>
                 </div>
             </div>

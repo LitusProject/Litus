@@ -77,6 +77,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         else
             $description = $descriptions[\Locale::getDefault()];
 
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+            $serverName = 'https://' . $_SERVER['SERVER_NAME'];
+        else
+            $serverName = 'http://' . $_SERVER['SERVER_NAME'];
+
         $data = array(
             new XmlObject(
                 'title',
@@ -96,7 +101,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             new XmlObject(
                 'link',
                 array(),
-                $_SERVER['SERVER_NAME'] . $this->url()->fromRoute(
+                $serverName . $this->url()->fromRoute(
                     'news',
                     array(
                         'feed',
@@ -115,12 +120,12 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new XmlObject(
                         'url',
                         array(),
-                        $_SERVER['SERVER_NAME'] . $config->getConfigValue('newsbundle.rss_image_link')
+                        $serverName . $config->getConfigValue('newsbundle.rss_image_link')
                     ),
                     new XmlObject(
                         'link',
                         array(),
-                        $_SERVER['SERVER_NAME']
+                        $serverName
                     ),
                 )
             ),
@@ -157,7 +162,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new XmlObject(
                         'link',
                         array(),
-                        $_SERVER['SERVER_NAME'] . $this->url()->fromRoute(
+                        $serverName . $this->url()->fromRoute(
                             'news',
                             array(
                                 'action' => 'view',

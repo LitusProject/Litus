@@ -2,12 +2,6 @@
 
 {% block content %}
 
-    {% if message %}
-
-        {{ translate(message) }}
-
-    {% else %}
-
     <div class="navbar">
         <div class="navbar-inner">
             <div class="subnav nav-collapse">
@@ -51,8 +45,6 @@
     </div>
 
     {% block cvcontent %} {% endblock %}
-
-    {% endif %}
 
 {% endblock %}
 

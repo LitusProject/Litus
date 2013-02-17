@@ -1,6 +1,6 @@
 <?php
 
-namespace CudiBundle\Repository\Sales\Discounts;
+namespace CudiBundle\Repository\Sales\Articles\Discounts;
 
 use Doctrine\ORM\EntityRepository;
 
