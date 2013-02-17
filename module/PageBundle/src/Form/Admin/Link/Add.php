@@ -134,6 +134,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         foreach($pages as $page)
             $pageOptions[$page->getId()] = $page->getTitle();
 
+        asort($pageOptions);
         return $pageOptions;
     }
 

@@ -12,13 +12,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Validator\Sales\Article\Discounts;
+namespace CudiBundle\Component\Validator\Sales\Article\Restrictions;
 
 use CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager;
 
 /**
- * Matches the given discount against the database to check whether it already exists or not.
+ * Matches the given restriction against the database to check whether it already exists or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -43,7 +43,7 @@ class Exists extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The discount already exist!'
+        self::NOT_VALID => 'The restriction already exist!'
     );
 
     /**
@@ -72,11 +72,11 @@ class Exists extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $discount = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Discount')
+        $restriction = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Restriction')
             ->findOneByArticleAndType($this->_article, $value);
 
-        if (null === $discount)
+        if (null === $restriction)
             return true;
 
         $this->error(self::NOT_VALID);

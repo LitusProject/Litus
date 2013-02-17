@@ -42,6 +42,11 @@
                     		{% if hasAccess('form_view', 'view') %}
 								<a href="{{ url('form_view', {"action": "view", "id": form.getId()}) }}" class="view">View Form</a>
                     		{% endif %}
+                    		{% if form.canBeViewedBy(authenticatedPerson, entityManager) %}
+		                        {% if hasAccess('form_manage', 'view') %}
+		                            <a href="{{ url('form_manage', {"action": "view", "id": form.getId()}) }}" class="view">View Results</a>
+		                        {% endif %}
+                    		{% endif %}
                     		{% if form.canBeEditedBy(authenticatedPerson) %}
 		                        {% if hasAccess('admin_form', 'edit') %}
 		                            <a href="{{ url('admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>

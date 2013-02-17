@@ -12,26 +12,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Sales;
+namespace CudiBundle\Controller\Admin\Sales\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Articles\Barcode,
-    CudiBundle\Form\Admin\Sales\Barcodes\Add as AddForm,
+    CudiBundle\Entity\Sales\Articles\Restriction,
+    CudiBundle\Form\Admin\Sales\Article\Restrictions\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
- * BarcodeController
+ * RestrictionController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class BarcodeController extends \CudiBundle\Component\Controller\ActionController
+class RestrictionController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
         if (!($article = $this->_getSaleArticle()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = new AddForm($article, $this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -40,7 +40,15 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $article->addBarcode(new Barcode($article, $formData['barcode']));
+                if (Restriction::$VALUE_TYPES[$formData['type']] == 'boolean') {
+                    $value = isset($formData['value_boolean']) && $formData['value_boolean'] ? '1' : '0';
+                } else {
+                    $value = $formData['value_string'];
+                }
+
+                $restriction = new Restriction($article, $formData['type'], $value);
+
+                $this->getEntityManager()->persist($restriction);
 
                 $this->getEntityManager()->flush();
 
@@ -48,12 +56,12 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
-                        'The barcode was successfully created!'
+                        'The restriction was successfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_barcode',
+                    'admin_sales_article_restriction',
                     array(
                         'action' => 'manage',
                         'id' => $article->getId(),
@@ -64,14 +72,14 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             }
         }
 
-        $barcodes = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
+        $restrictions = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Restriction')
             ->findAllByArticle($article);
 
         return new ViewModel(
             array(
                 'article' => $article,
-                'barcodes' => $barcodes,
+                'restrictions' => $restrictions,
                 'form' => $form,
             )
         );
@@ -81,10 +89,10 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($barcode = $this->_getBarcode()) || $barcode->isMain())
+        if (!($restriction = $this->_getRestriction()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($barcode);
+        $this->getEntityManager()->remove($restriction);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -141,14 +149,14 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
         return $article;
     }
 
-    private function _getBarcode()
+    private function _getRestriction()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the barcode!'
+                    'No ID was given to identify the restriction!'
                 )
             );
 
@@ -162,16 +170,16 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $barcode = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
+        $restriction = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Restriction')
             ->findOneById($this->getParam('id'));
 
-        if (null === $barcode) {
+        if (null === $restriction) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No barcode with the given ID was found!'
+                    'No restriction with the given ID was found!'
                 )
             );
 
@@ -185,6 +193,6 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $barcode;
+        return $restriction;
     }
 }

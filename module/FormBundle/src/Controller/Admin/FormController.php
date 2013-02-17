@@ -41,6 +41,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'entityManager' => $this->getEntityManager(),
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )

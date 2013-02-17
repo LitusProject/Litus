@@ -56,14 +56,14 @@
       if (!this.query) {
         return this.shown ? this.hide() : this
       }
-      
+
       if (this.$element.data('timeout'))
           clearTimeout(this.$element.data('timeout'));
       this.$element.data('timeout', setTimeout(function () {
           $.getJSON(that.source + that.query, function(items) {
               if (!items.length)
                 return that.shown ? that.hide() : that
-          
+
               return that.render(items.slice(0, that.options.items)).show()
           });
       }, 200));

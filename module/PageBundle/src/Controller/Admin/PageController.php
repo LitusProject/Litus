@@ -93,10 +93,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     $editRoles
                 );
 
-                if ('' != $formData['parent']) {
+                if ('' != $formData['parent_' . $category->getId()]) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
-                        ->findOneById($formData['parent']);
+                        ->findOneById($formData['parent_' . $category->getId()]);
 
                     $page->setParent($parent);
                 }
@@ -200,10 +200,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     $editRoles
                 );
 
-                if ('' != $formData['parent']) {
+                if ('' != $formData['parent_' . $category->getId()]) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
-                        ->findOneById($formData['parent']);
+                        ->findOneById($formData['parent_' . $category->getId()]);
 
                     $newPage->setParent($parent);
                 }

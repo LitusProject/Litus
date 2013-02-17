@@ -1,6 +1,6 @@
 <?php
 
-namespace CudiBundle\Repository\Sales\Discounts;
+namespace CudiBundle\Repository\Sales\Articles\Discounts;
 
 use CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityRepository,
@@ -18,7 +18,7 @@ class Discount extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
-            ->from('CudiBundle\Entity\Sales\Discounts\Discount', 'd')
+            ->from('CudiBundle\Entity\Sales\Articles\Discounts\Discount', 'd')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('d.article', ':article'),
@@ -36,7 +36,7 @@ class Discount extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
-            ->from('CudiBundle\Entity\Sales\Discounts\Discount', 'd')
+            ->from('CudiBundle\Entity\Sales\Articles\Discounts\Discount', 'd')
             ->innerJoin('d.template', 't', Join::WITH,
                    $query->expr()->eq('t.type', ':type')
             )

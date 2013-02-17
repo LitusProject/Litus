@@ -14,7 +14,7 @@
 
 namespace LogisticsBundle\Controller;
 
-use LogisticsBundle\Form\Bootstrap\VanReservation\Add as AddForm,
+use LogisticsBundle\Form\VanReservation\Add as AddForm,
     LogisticsBundle\Entity\Driver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel,

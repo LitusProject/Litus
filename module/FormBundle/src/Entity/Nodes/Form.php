@@ -452,6 +452,24 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
+     * Indicates whether the given person can view this form.
+     *
+     * @param \CommonBundle\Entity\Users\Persons $person The person to check.
+     * @param \Doctrine\ORM\EntityManager $entityManager The entity manager to use.
+     * @return boolean
+     */
+    public function canBeViewedBy(Person $person = null, EntityManager $entityManager)
+    {
+        if (null === $person)
+            return false;
+
+        $result = $entityManager->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $this);
+
+        return $result !== null;
+    }
+
+    /**
      * Indicates whether the given person can edit this form.
      *
      * @param \CommonBundle\Entity\Users\Person $person The person to check.

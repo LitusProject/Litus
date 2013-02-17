@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Sales\Discounts;
+namespace CudiBundle\Entity\Sales\Articles\Discounts;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article as Article,
@@ -20,8 +20,8 @@ use CommonBundle\Entity\Users\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Discount")
- * @ORM\Table(name="cudi.sales_discounts_discounts")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Articles\Discounts\Discount")
+ * @ORM\Table(name="cudi.sales_articles_discounts_discounts")
  */
 class Discount
 {
@@ -35,9 +35,9 @@ class Discount
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Discounts\Template The template of the discount
+     * @var \CudiBundle\Entity\Sales\Articles\Discounts\Template The template of the discount
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Discounts\Template")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Articles\Discounts\Template")
      * @ORM\JoinColumn(name="template", referencedColumnName="id")
      */
     private $template;
@@ -152,9 +152,9 @@ class Discount
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Discounts\Template The template of the discount
+     * @param \CudiBundle\Entity\Sales\Articles\Discounts\Template The template of the discount
      *
-     * @return \CudiBundle\Entity\Sales\Discounts\Discount
+     * @return \CudiBundle\Entity\Sales\Articles\Discounts\Discount
      */
     public function setTemplate(Template $template)
     {
@@ -174,7 +174,7 @@ class Discount
      * @param string $rounding The type of the rounding
      * @param boolean $applyOnce Apply the discount only once
      *
-     * @return \CudiBundle\Entity\Sales\Discounts\Discount
+     * @return \CudiBundle\Entity\Sales\Articles\Discounts\Discount
      */
     public function setDiscount($value, $method, $type, $rounding, $applyOnce)
     {
@@ -229,7 +229,7 @@ class Discount
     }
 
     /**
-     * @return \CudiBundle\Entity\Sales\Discounts\Template
+     * @return \CudiBundle\Entity\Sales\Articles\Discounts\Template
      */
     public function getTemplate()
     {
@@ -338,6 +338,13 @@ class Discount
         return $value;
     }
 
+    /**
+     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return boolean
+     */
     public function alreadyApplied(Article $article, Person $person, EntityManager $entityManager)
     {
         return $entityManager->getRepository('CudiBundle\Entity\Sales\SaleItem')

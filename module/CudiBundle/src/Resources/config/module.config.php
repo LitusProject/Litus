@@ -118,30 +118,44 @@ return array(
                     ),
                 ),
             ),
-            'admin_sales_discount' => array(
+            'admin_sales_article_discount' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/discount[/:action[/:id]][/]',
+                    'route' => '/admin/sales/article/discount[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_discount',
+                        'controller' => 'admin_sales_article_discount',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_barcode' => array(
+            'admin_sales_article_barcode' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/barcode[/:action[/:id]][/]',
+                    'route' => '/admin/sales/article/barcode[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_barcode',
+                        'controller' => 'admin_sales_article_barcode',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'admin_sales_article_restriction' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/article/restriction[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_sales_article_restriction',
                         'action'     => 'manage',
                     ),
                 ),
@@ -694,8 +708,9 @@ return array(
             'admin_article_comment'           => 'CudiBundle\Controller\Admin\Article\CommentController',
             'admin_article_file'              => 'CudiBundle\Controller\Admin\Article\FileController',
             'admin_sales_article'             => 'CudiBundle\Controller\Admin\Sales\ArticleController',
-            'admin_sales_barcode'             => 'CudiBundle\Controller\Admin\Sales\BarcodeController',
-            'admin_sales_discount'            => 'CudiBundle\Controller\Admin\Sales\DiscountController',
+            'admin_sales_article_barcode'     => 'CudiBundle\Controller\Admin\Sales\Article\BarcodeController',
+            'admin_sales_article_discount'    => 'CudiBundle\Controller\Admin\Sales\Article\DiscountController',
+            'admin_sales_article_restriction' => 'CudiBundle\Controller\Admin\Sales\Article\RestrictionController',
             'admin_sales_booking'             => 'CudiBundle\Controller\Admin\Sales\BookingController',
             'admin_sales_session'             => 'CudiBundle\Controller\Admin\Sales\SessionController',
             'admin_sales_session_restriction' => 'CudiBundle\Controller\Admin\Sales\Session\RestrictionController',
