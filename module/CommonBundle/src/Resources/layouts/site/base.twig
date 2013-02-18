@@ -27,8 +27,8 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="title hidden-desktop" href="{{ url('index') }}">{{ translate('VTK Leuven vzw') }}</a>
-                <div class="main-nav nav-collapse main-nav">
-        			<ul class="nav main-nav">
+                <div class="main-nav nav-collapse collapse">
+        			<ul class="nav">
                         {% for item in menu %}
                             {% if 'category' == item.type %}
                                 <li class="dropdown">
@@ -57,7 +57,7 @@
                         {% if authenticatedPerson is not null %}
                             <li class="dropdown hidden-desktop" id="accountDropdown">
                                 <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
-                                    Account
+                                    Account <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
