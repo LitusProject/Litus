@@ -100,7 +100,7 @@
                                         </td>
                                         <td class="hidden-phone">{{ map['mandatory'] ? '&times;' : '' }}</td>
                                         <td>
-                                            {% if map['bookable'] and (bookingsEnabled or map['article'].getId() in bookingsClosedExceptions) %}
+                                            {% if map['bookable'] %}
                                                 {% set name = 'article-' ~ map['article'].getId() %}
                                                 {% set element = form.get(name) %}
                                                 {{ formElement(element) }}
