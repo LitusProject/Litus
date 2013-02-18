@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Component\Document\Generator\MailingList;
+namespace FormBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     DateTime,
@@ -26,17 +26,24 @@ class Csv
     private $_entityManager = null;
 
     /**
-     * @var array The array containing the mailinglists
+     * @var array The array containing the headers
+     */
+    private $_headers;
+
+    /**
+     * @var arrays The array containing the results
      */
     private $_results;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
-     * @param arrays $lists The array containing the mailinglists
+     * @param array $headers The array containing the headers
+     * @param arrays $results The array containing the form results
      */
-    public function __construct(EntityManager $entityManager, array $results)
+    public function __construct(EntityManager $entityManager, array $headers, array $results)
     {
         $this->_entityManager = $entityManager;
+        $this->_headers = $headers;
         $this->_results = $results;
     }
 
@@ -47,6 +54,8 @@ class Csv
      */
     public function generateDocument(CsvFile $file)
     {
+        $file->appendContent($this->_headers);
+
         foreach($this->_results as $result) {
             $file->appendContent($result);
         }
