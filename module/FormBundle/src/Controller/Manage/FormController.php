@@ -243,7 +243,35 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadAction()
     {
-        $form = $this->_getForm();
+        if (!($person = $this->getAuthentication()->getPersonObject()))
+            return new ViewModel();
+
+        if(!($form = $this->_getForm()))
+            return new ViewModel();
+
+        $viewerMap = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $form);
+
+        if (!$viewerMap) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to the given form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $file = new CsvFile();
 
         $language = $this->getLanguage();
