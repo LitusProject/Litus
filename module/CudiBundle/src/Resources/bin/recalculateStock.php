@@ -61,6 +61,9 @@ if (isset($opts->r)) {
             + $period->getNbDelivered($article) - $period->getNbSold($article)
             + $entityManager
                 ->getRepository('CudiBundle\Entity\Stock\Periods\Values\Delta')
+                ->findTotalByArticleAndPeriod($article, $period)
+            - $entityManager
+                ->getRepository('CudiBundle\Entity\Stock\Retour')
                 ->findTotalByArticleAndPeriod($article, $period);
 
         if ($number < 0)
