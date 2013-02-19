@@ -241,6 +241,11 @@
         var settings = $this.data('queueSettings');
         var item = $this.find('tbody #item-' + data.id);
 
+        if (data.status == 'sold') {
+            item.remove();
+            return;
+        }
+
         if (undefined == item) {
             item = _createItem($this, settings, data);
             tbody.append(item);
