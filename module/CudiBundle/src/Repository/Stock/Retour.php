@@ -62,7 +62,7 @@ class Retour extends EntityRepository
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
 
-        return $resultSet;
+        return $resultSet ? $resultSet : 0;
     }
 
     public function findAllByPeriod(PeriodEntity $period)
