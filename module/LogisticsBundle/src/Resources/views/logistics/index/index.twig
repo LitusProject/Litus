@@ -227,18 +227,19 @@
                 select : function( startDate, endDate, allDay, jsEvent, view ) {
 
                     if (poppedElement != null) {
-                        poppedElement.popover('hide');
+                        poppedElement.popover('destroy');
                         poppedElement = null;
                     }
 
                     $('#popover_header .reason').html('New Event');
 
                     $(jsEvent.target).popover({
-                        placement:'bottom',
-                        title:$('#popover_header').html(),
-                        content:$('#add_popover_content').html(),
-                        trigger:'manual',
-                        html: true
+                        placement: startDate.getDay() < 4 && startDate.getDay() > 0 ? 'right' : 'left',
+                        title: $('#popover_header').html(),
+                        content: $('#add_popover_content').html(),
+                        trigger: 'manual',
+                        html: true,
+                        container: 'body'
                     });
                     showPopover($(jsEvent.target));
 
