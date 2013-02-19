@@ -185,7 +185,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             $factory->createInput(
                 array(
                     'name'     => 'birthday',
-                    'required' => true,
+                    'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -227,7 +227,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             $factory->createInput(
                 array(
                     'name'     => 'university_email',
-                    'required' => true,
+                    'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
