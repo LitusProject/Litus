@@ -19,7 +19,7 @@ namespace CommonBundle\Component\Util\File\TmpFile;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Csv extends CommonBundle\Component\Util\File\TmpFile
+class Csv extends \CommonBundle\Component\Util\File\TmpFile
 {
     /**
      * Append a new array to the file.
@@ -27,7 +27,7 @@ class Csv extends CommonBundle\Component\Util\File\TmpFile
      * @param array $content The content that should be appended
      * @return void
      */
-    public function appendContent(array $content)
+    public function appendContent($content)
     {
         $this->checkOpen();
         fputcsv($this->fileHandler, $content);
