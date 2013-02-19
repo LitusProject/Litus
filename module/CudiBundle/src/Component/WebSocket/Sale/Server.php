@@ -147,6 +147,29 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * Send queue to all users
+     */
+    private function sendQueueItemToAll($id)
+    {
+        $json = $this->_queue->getJsonQueueItem($id);
+
+        foreach($this->getUsers() as $user) {
+            $session = $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->findOneById($user->getExtraData('session'));
+
+            switch ($user->getExtraData('queueType')) {
+                case 'queue':
+                    $this->sendText($user, $this->_queue->getJsonQueue($session));
+                    break;
+                case 'queueList':
+                    $this->sendText($user, $json);
+                    break;
+            }
+        }
+    }
+
+    /**
      * Parse action text
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
@@ -163,45 +186,42 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         switch ($command->action) {
             case 'signIn':
-                $this->_signIn($user, $command->universityIdentification);
-                if (rand(1, floor($this->_queue->getNumberSignedIn($session)/15)+1) == 1) // Send queue random if length(signed_in) > 15
-                    $this->sendQueueToAll();
+                $this->sendQueueToAll($this->_signIn($user, $command->universityIdentification));
                 break;
             case 'addToQueue':
-                $this->_addToQueue($user, $command->universityIdentification);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($this->_addToQueue($user, $command->universityIdentification));
                 break;
             case 'startCollecting':
                 $this->_startCollecting($user, $command->id);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
             case 'cancelCollecting':
                 $this->_cancelCollecting($user, $command->id);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
             case 'stopCollecting':
                 $this->_stopCollecting($user, $command->id, isset($command->articles) ? $command->articles : null);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
             case 'startSelling':
                 $this->_startSelling($user, $command->id);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
             case 'cancelSelling':
                 $this->_cancelSelling($user, $command->id);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
             case 'concludeSelling':
                 $this->_concludeSelling($user, $command->id, $command->articles, $command->discounts, $command->payMethod);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
             case 'hold':
                 $this->_hold($command->id);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
             case 'unhold':
                 $this->_unhold($command->id);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
             case 'saveComment':
                 $this->_saveComment($command->id, $command->comment);
@@ -211,7 +231,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 break;
             case 'undoSelling':
                 $this->_undoSelling($command->id);
-                $this->sendQueueToAll();
+                $this->sendQueueItemToAll($command->id);
                 break;
         }
     }
@@ -273,6 +293,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     ->getRepository('CudiBundle\Entity\Sales\Booking')
                     ->findAllAssignedByPerson($item->getPerson())
             );
+
+            return $item->getId();
         }
     }
 
@@ -282,7 +304,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($user->getExtraData('session'));
 
-        $this->_queue->addPerson($session, $universityIdentification, true);
+        $item = $this->_queue->addPerson($session, $universityIdentification, true);
+        if (null !== $item)
+            return $item->getId();
     }
 
     private function _startCollecting(User $user, $id)
