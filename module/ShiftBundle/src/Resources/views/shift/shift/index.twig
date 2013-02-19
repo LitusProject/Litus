@@ -170,7 +170,7 @@
                 button.addClass('btn-danger');
             }
 
-            button.find('.count').text(++count);
+            button.find('.count').text(ratio == 1 ? count : ++count);
         }
 
         function errorSave() {
