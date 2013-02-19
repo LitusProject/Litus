@@ -2,6 +2,14 @@
 
 {% block content %}
     <div class="page-header">
+        {% if hasAccess('shift', 'index') and hasShifts %}
+            <div class="pull-right" style="line-height: 50px">
+                <form action="{{ url('shift') }}" method="post">
+                    <input type="hidden" name="event" value="{{ event.getId() }}">
+                    <button type="submit" class="btn"><span class="icon-tasks"></span> {{ translate('Shifts') }}</button>
+                </form>
+            </div>
+        {% endif %}
         <h2>{{ translate('Calendar') }}</h2>
     </div>
 
