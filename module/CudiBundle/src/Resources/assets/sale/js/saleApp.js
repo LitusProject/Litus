@@ -183,6 +183,8 @@ var currentView = 'selectPaydesk';
             message: function (e, data) {
                 if (data.queue) {
                     queue.queue('updateQueue', data.queue);
+                } else if (data.item) {
+                    queue.queue('updateQueueItem', data.item);
                 } else if (data.collect && currentView != 'collect') {
                     queue.queue('hide');
                     collect.collect('show', data.collect);

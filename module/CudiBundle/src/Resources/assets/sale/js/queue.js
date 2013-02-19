@@ -50,6 +50,10 @@
             _updateQueue($(this), data);
             return this;
         },
+        updateQueueItem : function (data) {
+            _updateQueueItem($(this), data);
+            return this;
+        },
         setLastSold : function (data) {
             lastSold = data;
             $(this).find('.undoLastSelling').toggle(lastSold > 0);
@@ -231,6 +235,20 @@
                 inQueue.splice(pos, 1);
             }
         });
+    }
+
+    function _updateQueueItem($this, data) {
+        var settings = $this.data('queueSettings');
+        var item = $this.find('tbody #item-' + data.id);
+
+        if (undefined == item) {
+            item = _createItem($this, settings, data);
+            tbody.append(item);
+        } else {
+            _updateItem($this, settings, item, data)
+        }
+
+        _toggleVisibility($this, item, data);
     }
 
     function _showActions($this, row, data) {

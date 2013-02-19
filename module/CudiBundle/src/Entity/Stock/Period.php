@@ -199,6 +199,18 @@ class Period
      *
      * @return integer
      */
+    public function getNbRetoured(Article $article)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->getNbRetoured($this, $article);
+    }
+
+    /**
+     * @param \CudiBundle\Entity\Sales\Article $article
+     *
+     * @return integer
+     */
     public function getNbQueueOrder(Article $article)
     {
         return $this->_entityManager
