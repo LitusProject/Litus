@@ -246,9 +246,9 @@
             return;
         }
 
-        if (undefined == item) {
+        if (item.length == 0) {
             item = _createItem($this, settings, data);
-            tbody.append(item);
+            $this.find('tbody').append(item);
         } else {
             _updateItem($this, settings, item, data)
         }
