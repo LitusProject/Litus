@@ -156,7 +156,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover'});
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
 
             $('input[id*=article-]').each(function(i) {
                 $('[id="' + this.id + '"]').each(function(i) {
@@ -232,7 +232,7 @@
                                             'data-content': popoverContent,
                                             'data-placement': 'right',
                                             'style': 'cursor:pointer',
-                                        }).append('&euro; ' + this.price).popover({'trigger': 'hover'})
+                                        }).append('&euro; ' + this.price).popover({'trigger': 'hover', 'html': true})
                                     );
                                 } else {
                                     price.html('&euro; ' + this.price);
