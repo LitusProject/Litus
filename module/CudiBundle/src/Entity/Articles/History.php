@@ -90,6 +90,17 @@ class History
     }
 
     /**
+     * @param \CudiBundle\Entity\Article $article
+     *
+     * @return \CudiBundle\Entity\Articles\History
+     */
+    public function setArticle(Article $article)
+    {
+        $this->article = $article;
+        return $this;
+    }
+
+    /**
      * @return \CudiBundle\Entity\Article
      */
     public function getPrecursor()

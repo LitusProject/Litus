@@ -159,5 +159,11 @@ return array(
     'No mapping with the given ID was found!' => 'No mapping with the given ID was found!',
     'The student enrollment was successfully updated!' => 'The student enrollment was successfully updated!',
 
-    'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.',
+    'If this is an article that will be published by us, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'If this is an article that will be published by us, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.',
+
+    'An internal article is an article published by us. By checking this checkbox you can attach files to the article.' => 'An internal article is an article published by us. By checking this checkbox you can attach files to the article.',
+
+    'How To Start' => 'How To Start',
+    'Your first time here?' => 'Your first time here?',
+    'Click here for help' => 'Click here for help',
 );

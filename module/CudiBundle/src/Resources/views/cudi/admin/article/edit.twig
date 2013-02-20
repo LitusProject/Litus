@@ -133,6 +133,32 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('admin_article', 'convertToExternal') and article.isInternal() %}
+            <div class="sidebox">
+                <div class="title">Convert To External</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to convert this article to an external!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article', {"action": "convertToExternal", "id": article.getId()}) }}">&rarr; Convert To External</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_article', 'convertToInternal') and not article.isInternal() %}
+            <div class="sidebox">
+                <div class="title">Convert To Internal</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to convert this article to an internal!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_article', {"action": "convertToInternal", "id": article.getId()}) }}">&rarr; Convert To Internal</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
     <div class="modal hide fade" id="viewComment">

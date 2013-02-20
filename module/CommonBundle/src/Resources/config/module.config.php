@@ -535,6 +535,11 @@ return array(
                             'output' => 'bootstrap_responsive_css.css',
                         ),
                     ),
+                    'bootstrap_js_affix' => array(
+                        'assets' => array(
+                            'bootstrap/js/bootstrap-affix.js',
+                        ),
+                    ),
                     'bootstrap_js_alert' => array(
                         'assets' => array(
                             'bootstrap/js/bootstrap-alert.js',
