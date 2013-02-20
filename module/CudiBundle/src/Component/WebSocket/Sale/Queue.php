@@ -448,6 +448,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             'author' => $article->getMainArticle()->getAuthors(),
             'number' => 1,
             'status' => 'assigned',
+            'sellable' => $article->isSellable(),
             'collected' => 0,
             'discounts' => array(),
         );

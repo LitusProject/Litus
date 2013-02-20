@@ -263,7 +263,7 @@
             actions = $('<td>', {class: 'actions'})
         ).data('info', data);
 
-        if ("booked" == data.status) {
+        if ("booked" == data.status || data.sellable == false) {
             row.addClass('inactive');
         } else {
             actions.append(

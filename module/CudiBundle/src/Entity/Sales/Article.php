@@ -83,6 +83,13 @@ class Article
     private $unbookable;
 
     /**
+     * @var boolean Flag whether the article is sellable
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $sellable;
+
+    /**
      * @var \CudiBundle\Entity\Supplier The supplier of the article
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
@@ -154,11 +161,12 @@ class Article
      * @param integer $sellPrice The sell price of the article
      * @param boolean $bookable Flag whether the article is bookable
      * @param boolean $unbookable Flag whether the article is unbookable
+     * @param boolean $sellable Flag whether the article is sellable
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of the article
      * @param boolean $canExpire Flag whether the aritcle can expire
      * @param \CommonBundle\Entity\General\Organization $organization The organization of this article
      */
-    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire, Organization $organization)
+    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, $sellable, Supplier $supplier, $canExpire, Organization $organization)
     {
         $this->discounts = new ArrayCollection();
         $this->barcodes = new ArrayCollection();
@@ -169,6 +177,7 @@ class Article
             ->setSellPrice($sellPrice)
             ->setIsBookable($bookable)
             ->setIsUnbookable($unbookable)
+            ->setIsSellable($sellable)
             ->setSupplier($supplier)
             ->setCanExpire($canExpire)
             ->setVersionNumber(1)
@@ -337,6 +346,25 @@ class Article
     public function setIsUnbookable($unbookable)
     {
         $this->unbookable = $unbookable;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSellable()
+    {
+        return $this->sellable;
+    }
+
+    /**
+     * @param boolean $sellable
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setIsSellable($sellable)
+    {
+        $this->sellable = $sellable;
         return $this;
     }
 
@@ -527,6 +555,7 @@ class Article
             $this->getSellPrice()/100,
             $this->isBookable(),
             $this->isUnbookable(),
+            $this->isSellable(),
             $this->getSupplier(),
             $this->canExpire(),
             $this->getOrganization()

@@ -83,6 +83,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Unbookable');
         $this->add($field);
 
+        $field = new Checkbox('sellable');
+        $field->setLabel('Sellable')
+            ->setValue(true);
+        $this->add($field);
+
         $field = new Checkbox('can_expire');
         $field->setLabel('Can Expire');
         $this->add($field);
@@ -127,6 +132,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'supplier' => $article->getSupplier()->getId(),
                 'bookable' => $article->isBookable(),
                 'unbookable' => $article->isUnbookable(),
+                'sellable' => $article->isSellable(),
                 'can_expire' => $article->canExpire()
             )
         );
