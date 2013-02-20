@@ -53,8 +53,7 @@
             <th width="120px">{{ translate('Authors') }}</th>
             <th width="220px">{{ translate('Publisher') }}</th>
             <th width="90px">{{ translate('Publish Year') }}</th>
-            <th width="100px">{{ translate('ISBN') }}</th>
-            <th width="90px">{{ translate('Actions') }}</th>
+            <th width="180px">{{ translate('Actions') }}</th>
         </tr>
 
         {% for mapping in articleMappings %}
@@ -63,8 +62,10 @@
                 <td>{{ mapping.getArticle().getAuthors() }}</td>
                 <td>{{ mapping.getArticle().getPublishers() }}</td>
                 <td>{{ mapping.getArticle().getYearPublished() }}</td>
-                <td>{{ mapping.getArticle().getISBN() }}</td>
                 <td class="actions">
+                    {% if hasAccess('prof_article', 'edit') %}
+                        <a href="{{ url('prof_article', {'action': 'edit', 'id': mapping.getArticle().getId()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+                    {% endif %}
                     {% if hasAccess('prof_article_mapping', 'delete') %}
                         <a href="#" class="btn btn-danger removeArticle" data-id="{{ mapping.getId() }}" data-article="{{ mapping.getArticle().getTitle() }}">{{ translate('Remove') }}</a>
                     {% endif %}
