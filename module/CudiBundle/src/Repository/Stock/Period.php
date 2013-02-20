@@ -374,4 +374,11 @@ class Period extends EntityRepository
             return $resultSet;
         return 0;
     }
+
+    public function getNbRetoured(PeriodEntity $period, Article $article)
+    {
+        return $this->_em
+            ->getRepository('CudiBundle\Entity\Stock\Retour')
+            ->findTotalByArticleAndPeriod($article, $period);
+    }
 }

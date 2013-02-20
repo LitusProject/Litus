@@ -3,9 +3,9 @@
 <html lang="en">
 <head>
     {{ headMeta() }}
-	{{ headTitle(translate('Prof'), 'PREPEND') }}
+    {{ headTitle(translate('Prof'), 'PREPEND') }}
 
-	{{ headLink() }}
+    {{ headLink() }}
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -13,106 +13,104 @@
     <![endif]-->
 </head>
 
-<body>
+<body{% if 'prof_help' == getParam('controller') %} data-spy="scroll" data-target=".bs-docs-sidebar"{% endif %}>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
-			<ul class="nav">
-				{% if hasAccess('prof_index', 'index') %}
-					<li {% if 'index' == getParam('action') and 'prof_index' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
-					</li>
-				{% endif %}
-				{% if hasAccess('prof_subject', 'manage') %}
-					<li {% if 'prof_subject' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_subject", {"language": language.getAbbrev()}) }}">{{ translate('Subjects') }}</a>
-					</li>
-				{% endif %}
-				{% if hasAccess('prof_article', 'manage') %}
-					<li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_article", {"language": language.getAbbrev()}) }}">{{ translate('Articles') }}</a>
-					</li>
-				{% endif %}
-			</ul>
-			<ul class="nav pull-right lang-nav visible-desktop">
-			    <li class="dropdown" id="langDropdown">
-				    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				        Language <span class="caret"></span>
-			        </a>
-			        <ul class="dropdown-menu">
-			            {% for language in languages %}
-				            <li>
-				                <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
-				            </li>
-			            {% endfor %}
-			        </ul>
-				</li>
-			</ul>
-			<ul class="nav pull-right auth-nav">
-			    {% if authenticatedPerson is not null %}
-			        <li class="dropdown" id="accountDropdown">
-			            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-			                <span class="profile-wrapper">
-			                    <i class="profile"></i>
-			                </span>
-			                <span class="caret"></span>
-			            </a>
-			            <ul class="dropdown-menu">
-			                <li>
-			                    <a href="">
-			                        <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-			                        <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
-			                    </a>
-			                </li>
-			                <li class="divider"></li>
-			                <li>
-			                    <a href="{{ url("prof_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-			                </li>
-			            </ul>
-			        </li>
-			    {% else %}
-				    <li class="dropdown" id="loginDropdown">
-				        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				            {{ translate('Login') }} <span class="caret"></span>
-			            </a>
-			            <ul class="dropdown-menu">
-			                <li style="text-align: center;">
-			                	<a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
-			                </li>
-			            </ul>
-				    </li>
-				{% endif %}
-			</ul>
-		</div>
-	</div>
+    <div class="navbar-inner">
+        <div class="container">
+            <a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
+            <ul class="nav">
+                {% if hasAccess('prof_index', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'prof_index' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('prof_subject', 'manage') %}
+                    <li {% if 'prof_subject' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("prof_subject", {"language": language.getAbbrev()}) }}">{{ translate('Subjects') }}</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('prof_article', 'manage') %}
+                    <li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("prof_article", {"language": language.getAbbrev()}) }}">{{ translate('Articles') }}</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('prof_help', 'index') %}
+                    <li {% if 'prof_help' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("prof_help", {"language": language.getAbbrev()}) }}">{{ translate('Help') }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="nav pull-right lang-nav visible-desktop">
+                <li class="dropdown" id="langDropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Language <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for language in languages %}
+                            <li>
+                                <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right auth-nav">
+                {% if authenticatedPerson is not null %}
+                    <li class="dropdown" id="accountDropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="profile-wrapper">
+                                <i class="profile"></i>
+                            </span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="">
+                                    <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                    <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ url("prof_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 </nav>
 
 <header>
-	<div class="inner">
-		<div class="container">
-			<h1>{{ translate('Prof') }}</h1>
-		</div>
-	</div>
+    <div class="inner">
+        <div class="container">
+            <h1>{{ translate('Prof') }}</h1>
+        </div>
+    </div>
 </header>
 
 <div class="container">
-	{% include 'prof/partials/flashMessenger.twig' %}
+    {% include 'prof/partials/flashMessenger.twig' %}
 
-	<div id="content_controller">
-	    {% block content %} {% endblock %}
-	</div>
+    <div id="content_controller">
+        {% block content %} {% endblock %}
+    </div>
 
-	<footer>
-	    Litus Prof | Code by <a href="http://litus.cc">Litus</a>
+    <footer>
+        Litus Prof | Code by <a href="http://litus.cc">Litus</a>
 
-		{% if 'production' != environment %}
-		    <span class="development_information">
-		    	Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
-		    </span>
-		{% endif %}
-	</footer>
+        {% if 'production' != environment %}
+            <span class="development_information">
+                Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
+            </span>
+        {% endif %}
+    </footer>
 </div>
 
 {{ inlineScript() }}

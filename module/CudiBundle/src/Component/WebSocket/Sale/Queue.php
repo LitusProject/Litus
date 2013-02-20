@@ -90,6 +90,42 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * @param string $id The queue item id
+     *
+     * @return string
+     */
+    public function getJsonQueueItem($id)
+    {
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($id);
+
+        $prefix = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_item_barcode_prefix');
+
+        $result = (object) array();
+        $result->id = $item->getId();
+        $result->barcode = $prefix + $item->getId();
+        $result->number = $item->getQueueNumber();
+        $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
+        $result->university_identification = $item->getPerson()->getUniversityIdentification();
+        $result->status = $item->getStatus();
+        $result->locked = isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : false;
+
+        if ($item->getPayDesk()) {
+            $result->payDesk = $item->getPayDesk()->getName();
+            $result->payDeskId = $item->getPayDesk()->getId();
+        }
+
+        return json_encode(
+            (object) array(
+                'item' => $result
+            )
+        );
+    }
+
+    /**
      * @param \CudiBundle\Entity\Sales\Session $session The sale session
      *
      * @return string
@@ -212,12 +248,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if ($enableCollectScanning !== '1')
-            return;
+        if ($enableCollectScanning == '1') {
+            $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
-        $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
-
-        return $this->_queueItems[$id]->getCollectInfo();
+            return $this->_queueItems[$id]->getCollectInfo();
+        } else {
+            $item->setStatus('collected');
+            $this->_entityManager->flush();
+        }
     }
 
     /**
