@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\Internal,
     CudiBundle\Entity\Articles\History,
     CudiBundle\Entity\Articles\SubjectMap,
+    cudiBundle\Entity\Comments\Mapping as CommentMapping,
     CudiBundle\Form\Admin\Article\Add as AddForm,
     CudiBundle\Form\Admin\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Article\Duplicate as DuplicateForm,
@@ -466,6 +467,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         foreach($completeHistory as $item)
             $item->setArticle($article);
 
+        $comments = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Comments\Comment')
+            ->findAllByArticle($previous);
+
+        foreach($comments as $comment)
+            $this->getEntityManager()->persist(new CommentMapping($article, $comment));
+
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
             ->findAllByArticle($previous, true);
@@ -553,6 +561,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         foreach($completeHistory as $item)
             $item->setArticle($article);
+
+        $comments = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Comments\Comment')
+            ->findAllByArticle($previous);
+
+        foreach($comments as $comment)
+            $this->getEntityManager()->persist(new CommentMapping($article, $comment));
 
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
