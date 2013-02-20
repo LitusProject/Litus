@@ -88,4 +88,23 @@ class SubjectMap extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllByArticle(Article $article, $isProf = false)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.removed', 'false'),
+                    $query->expr()->eq('m.article', ':article'),
+                    $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

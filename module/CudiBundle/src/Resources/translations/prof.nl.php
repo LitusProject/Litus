@@ -157,5 +157,11 @@ return array(
     'The docent was successfully added!' => 'De docent is succesvol toegevoegd!',
     'The student enrollment was successfully updated!' => 'De student inschrijving is succesvol aangepast!',
 
-    'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'Als dit een artikel is dat uitgegeven wordt door VTK, gelieve dan <i>Intern Artikel</i> aan te vinken. Als het een handboek is, gelieve dat niet aan te vinken. Bij een <i>Intern Artikel</i> heb je de mogelijkheid om bestanden te uploaden.',
+    'If this is an article that will be published by us, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'Als dit een artikel is dat uitgegeven wordt door ons, gelieve dan <i>Intern Artikel</i> aan te vinken. Als het een handboek is, gelieve dat niet aan te vinken. Bij een <i>Intern Artikel</i> heb je de mogelijkheid om bestanden te uploaden.',
+
+    'An internal article is an article published by us. By checking this checkbox you can attach files to the article.' => 'Een intern artikel is een artikel dat wordt gepubliceerd door ons. Door dit aan te vinken kan je bestanden aan dit artikel toevoegen.',
+
+    'How To Start' => 'Hoe Starten',
+    'Your first time here?' => 'Je eerste keer hier?',
+    'Click here for help' => 'Klik hier voor hulp',
 );

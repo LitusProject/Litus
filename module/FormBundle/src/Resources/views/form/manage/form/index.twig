@@ -25,7 +25,8 @@
 					<td>{% if form.isActive() %}X{% endif %}</td>
 					<td>
 						<a href="{{ url("form_manage", {"action" : "view", "id" : form.getId()}) }}" class="btn btn-mini">{{ translate("View") }}</a>
-					</td>
+                        <a href="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="btn btn-mini">{{ translate("Download") }}</a>
+                    </td>
 	    		</tr>
 		    {% endfor %}
 			</tbody>

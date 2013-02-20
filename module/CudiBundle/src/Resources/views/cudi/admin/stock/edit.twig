@@ -41,6 +41,14 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(deliveryForm) }}
         <br style="clear:both" />
+        <h1>Retours</h1>
+        <table class="half_width">
+            <tr>
+                <td>Total</td>
+                <td style="width:30%">{{ period.getNbRetoured(article) }}</td>
+            </tr>
+        </table>
+        <br style="clear:both" />
         <h1>Bookings</h1>
         <table class="half_width">
             <tr>

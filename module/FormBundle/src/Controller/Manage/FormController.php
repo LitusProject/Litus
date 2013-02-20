@@ -15,8 +15,11 @@
 namespace FormBundle\Controller\Manage;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    FormBundle\Component\Document\Generator\Csv as CsvGenerator,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\SpecifiedForm,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -240,7 +243,78 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadAction()
     {
-        
+        if (!($person = $this->getAuthentication()->getPersonObject()))
+            return new ViewModel();
+
+        if(!($form = $this->_getForm()))
+            return new ViewModel();
+
+        $viewerMap = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $form);
+
+        if (!$viewerMap) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to the given form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $file = new CsvFile();
+
+        $language = $this->getLanguage();
+        $heading = array('ID', 'Submitter', 'Submitted');
+        $fields = $form->getFields();
+        foreach ($fields as $field) {
+            $heading[] = $field->getLabel($language);
+        }
+
+        $entries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->findAllByForm($form);
+
+        $results = array();
+        foreach ($entries as $entry) {
+            $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
+            foreach($fields as $field) {
+                $fieldEntry = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Entry')
+                    ->findOneByFormEntryAndField($entry, $field);
+                if ($fieldEntry)
+                    $result[] = $fieldEntry->getValueString($language);
+                else
+                    $result[] = '';
+            }
+            $results[] = $result;
+        }
+
+        $document = new CsvGenerator($this->getEntityManager(), $heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="results.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
     }
 
     private function _getForm()
