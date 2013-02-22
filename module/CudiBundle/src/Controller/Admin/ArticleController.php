@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\Internal,
     CudiBundle\Entity\Articles\History,
     CudiBundle\Entity\Articles\SubjectMap,
+    cudiBundle\Entity\Comments\Mapping as CommentMapping,
     CudiBundle\Form\Admin\Article\Add as AddForm,
     CudiBundle\Form\Admin\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Article\Duplicate as DuplicateForm,
@@ -281,7 +282,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $history = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\History')
-            ->findByArticle($article);
+            ->findAllByArticle($article);
 
         return new ViewModel(
             array(
@@ -423,6 +424,180 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'article' => $article,
             )
         );
+    }
+
+    public function convertToExternalAction()
+    {
+        if (!($previous = $this->_getArticle()))
+            return new ViewModel();
+
+        if (!$previous->isInternal()) {
+            $this->redirect()->toRoute(
+                'admin_article',
+                array(
+                    'action' => 'edit',
+                    'id' => $previous->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $article = new External(
+            $previous->getTitle(),
+            $previous->getAuthors(),
+            $previous->getPublishers(),
+            $previous->getYearPublished(),
+            $previous->getISBN(),
+            $previous->getUrl(),
+            $previous->getType(),
+            $previous->isDownloadable(),
+            $previous->isSameAsPreviousYear()
+        );
+        $article->setVersionNumber($previous->getVersionNumber());
+        $this->getEntityManager()->persist($article);
+
+        $history = new History($article, $previous);
+        $this->getEntityManager()->persist($history);
+
+        $completeHistory = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Articles\History')
+            ->findByArticle($previous);
+
+        foreach($completeHistory as $item)
+            $item->setArticle($article);
+
+        $comments = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Comments\Comment')
+            ->findAllByArticle($previous);
+
+        foreach($comments as $comment)
+            $this->getEntityManager()->persist(new CommentMapping($article, $comment));
+
+        $mappings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->findAllByArticle($previous, true);
+
+        foreach($mappings as $mapping) {
+            $new = new SubjectMap($article, $mapping->getSubject(), $mapping->getAcademicYear(), $mapping->isMandatory());
+            $new->setIsProf($mapping->isProf());
+            $this->getEntityManager()->persist($new);
+        }
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Success',
+                'The article was succesfully converted!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'admin_article',
+            array(
+                'action' => 'edit',
+                'id' => $article->getId(),
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    public function convertToInternalAction()
+    {
+        if (!($previous = $this->_getArticle()))
+            return new ViewModel();
+
+        if ($previous->isInternal()) {
+            $this->redirect()->toRoute(
+                'admin_article',
+                array(
+                    'action' => 'edit',
+                    'id' => $previous->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $binding = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+            ->findOneByCode('glued');
+
+        $frontColor = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+            ->findOneByName('White');
+
+        $article = new Internal(
+            $previous->getTitle(),
+            $previous->getAuthors(),
+            $previous->getPublishers(),
+            $previous->getYearPublished(),
+            $previous->getISBN(),
+            $previous->getUrl(),
+            $previous->getType(),
+            $previous->isDownloadable(),
+            $previous->isSameAsPreviousYear(),
+            0,
+            0,
+            $binding,
+            true,
+            true,
+            $frontColor,
+            false,
+            false
+        );
+        $article->setVersionNumber($previous->getVersionNumber());
+        $this->getEntityManager()->persist($article);
+
+        $history = new History($article, $previous);
+        $this->getEntityManager()->persist($history);
+
+        $completeHistory = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Articles\History')
+            ->findByArticle($previous);
+
+        foreach($completeHistory as $item)
+            $item->setArticle($article);
+
+        $comments = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Comments\Comment')
+            ->findAllByArticle($previous);
+
+        foreach($comments as $comment)
+            $this->getEntityManager()->persist(new CommentMapping($article, $comment));
+
+        $mappings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->findAllByArticle($previous, true);
+
+        foreach($mappings as $mapping) {
+            $new = new SubjectMap($article, $mapping->getSubject(), $mapping->getAcademicYear(), $mapping->isMandatory());
+            $new->setIsProf($mapping->isProf());
+            $this->getEntityManager()->persist($new);
+        }
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Success',
+                'The article was succesfully converted!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'admin_article',
+            array(
+                'action' => 'edit',
+                'id' => $article->getId(),
+            )
+        );
+
+        return new ViewModel();
     }
 
     private function _search(AcademicYear $academicYear)

@@ -166,7 +166,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         'mandatory' => $subjectMap->isMandatory(),
                         'booked' => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
                         'sold' => isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0,
-                        'bookable' => $article->isBookable() && $article->getSellPrice() != 0
+                        'bookable' => $article->isBookable()
                             && $article->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
                             && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
                     );
@@ -199,7 +199,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'mandatory' => false,
                     'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
                     'sold' => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
-                    'bookable' => $commonArticle->isBookable() && $commonArticle->getSellPrice() != 0
+                    'bookable' => $commonArticle->isBookable()
                         && $commonArticle->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
                         && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
                 );
