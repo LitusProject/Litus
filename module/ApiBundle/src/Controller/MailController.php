@@ -58,7 +58,26 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'data' => $data,
+                'data' => $data
+            )
+        );
+    }
+
+    public function getAliasesAction()
+    {
+        $aliases = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Alias')
+            ->findAll();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Type' => 'text/plain'
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'aliases' => $aliases
             )
         );
     }
