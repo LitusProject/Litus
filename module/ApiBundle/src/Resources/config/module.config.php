@@ -57,9 +57,10 @@ return array(
             'api_mail' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/api/mail[/:action][/]',
+                    'route' => '/api/mail[/:action[/type/:type]][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'type'   => '(tar|zip)'
                     ),
                     'defaults' => array(
                         'controller' => 'api_mail',
