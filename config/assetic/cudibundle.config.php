@@ -229,6 +229,8 @@ return array(
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
             '@common_typeahead_remote',
             '@prof_css',
         ),
@@ -276,6 +278,14 @@ return array(
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
             '@common_typeahead_remote',
+            '@prof_css',
+        ),
+        'prof_help' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@bootstrap_js_affix',
             '@prof_css',
         ),
         'booking' => array(

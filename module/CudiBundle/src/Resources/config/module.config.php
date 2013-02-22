@@ -614,6 +614,20 @@ return array(
                     ),
                 ),
             ),
+            'prof_help' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/cudi/prof/help[/:action][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'prof_help',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'prof_typeahead' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -741,6 +755,7 @@ return array(
             'prof_prof'                       => 'CudiBundle\Controller\Prof\ProfController',
             'prof_subject'                    => 'CudiBundle\Controller\Prof\SubjectController',
             'prof_subject_comment'            => 'CudiBundle\Controller\Prof\Subject\CommentController',
+            'prof_help'                       => 'CudiBundle\Controller\Prof\HelpController',
 
             'booking'                         => 'CudiBundle\Controller\BookingController',
         ),

@@ -1,0 +1,91 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="span3 bs-docs-sidebar">
+            <ul class="nav nav-list bs-docs-sidenav affix">
+                <li>
+                    <a href="#start">{{ translate('Start') }}</a>
+                </li>
+                <li>
+                    <a href="#subjects">{{ translate('Subjects') }}</a>
+                </li>
+                <li>
+                    <a href="#articles">{{ translate('Articles') }}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="span9" style="margin-top: -20px">
+            <section id="start" style="padding-top: 30px">
+                <div class="page-header">
+                    <h1>{{ translate('Start') }}</h1>
+                </div>
+                <p>
+                    {{ translate('On the start page of the <em>Prof Application</em>, you can view your previous actions and there status.') }}
+                </p>
+            </section>
+            <section id="subjects" style="padding-top: 30px">
+                <div class="page-header">
+                    <h1>{{ translate('Subjects') }}</h1>
+                </div>
+                <p>
+                    {{ translate('On the subject page, you can see all your subjects (or courses) you can edit.') }}
+                </p>
+                <h3>{{ translate('Comments') }}</h3>
+                <p>
+                    {{ translate('If you press on <em>comments</em>, you get an overview of all comments about that subject. You can view all the comments including the person who created it and the date. If the comment was created with your account, you have the ability to remove it. There is also a button to add new comments.') }}
+                </p>
+                <h3>{{ translate('Subject') }}</h3>
+                <p>
+                    {{ translate('Beneath the general information of the subject you can enter the number of students subscribed to this course. This field is not required, with this number we know how many books must be ordered.') }}
+                </p>
+                <p>
+                    {{ translate('On this page you can view all the articles (the books) attached to this subject. There is a button to add other articles to the subject. Existing articles can be edited and/or removed.') }}
+                </p>
+                <p>
+                    {{ translate('At the bottom of this page you can view all the other docents of the course, they can also edit the subject, add articles, etc. You can remove them or add new ones.') }}
+                </p>
+            </section>
+            <section id="articles" style="padding-top: 30px">
+                <div class="page-header">
+                    <h1>{{ translate('Articles') }}</h1>
+                </div>
+                <p>
+                    {{ translate('Here you can manage all your articles (or books). You can edit existing ones or add new.') }}
+                </p>
+                <h3>{{ translate('Add') }}</h3>
+                <p>
+                    {{ translate('To create an article you first need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.') }}
+                </p>
+                <p>
+                    {{ translate('If the article isn\'t a textbook pressed by an extern publisher, you probably need to check <em>Internal Article</em>. By checking this box, you can add files to the article and they will be published by us. Afther checking that box, you can choose the binding and printing options.') }}
+                </p>
+                <p>
+                    {{ translate('The last part of creating an article is selecting a subject (or course) for the article. You can choose any of your courses.') }}
+                </p>
+                <h3>{{ translate('Edit') }}</h3>
+                <p>
+                    {{ translate('Here you can change (nearly) everything you entered while creating the article.') }}
+                </p>
+                <p>
+                    {{ translate('You can also view and manage the comments of the article.') }}
+                </p>
+                <p>
+                    {{ translate('If the article is an internal article, you also have the option to manage the files of the article.') }}
+                </p>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.bs-docs-sidenav').affix({
+                offset: {
+                    top: 160
+                }
+            })
+        });
+    </script>
+{% endblock %}

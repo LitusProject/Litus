@@ -330,7 +330,7 @@ VTK Cudi
             array(
                 'cudibundle' => array(
                     'admin_article' => array(
-                        'add', 'delete', 'duplicate', 'edit', 'history', 'manage', 'search'
+                        'add', 'convertToExternal', 'convertToInternal', 'delete', 'duplicate', 'edit', 'history', 'manage', 'search'
                     ),
                     'admin_article_comment' => array(
                         'delete', 'manage'
@@ -415,6 +415,9 @@ VTK Cudi
                     ),
                     'prof_subject' => array(
                         'manage', 'subject', 'typeahead'
+                    ),
+                    'prof_help' => array(
+                        'index'
                     ),
                     'sale_queue' => array(
                         'overview', 'screen', 'signin'

@@ -196,7 +196,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
         $soldArticles = array();
 
         foreach($bookings as $booking) {
-            if (!isset($articles->{$booking->getArticle()->getId()}) || $articles->{$booking->getArticle()->getId()} == 0)
+            if (!isset($articles->{$booking->getArticle()->getId()}) || $articles->{$booking->getArticle()->getId()} == 0 || !$booking->getArticle()->isSellable())
                 continue;
 
             if ($articles->{$booking->getArticle()->getId()} < $booking->getNumber()) {
@@ -232,6 +232,9 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             $article = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sales\Article')
                 ->findOneById($id);
+
+            if (!$article->isSellable())
+                continue;
 
             $booking = new Booking(
                 $this->_entityManager,
@@ -341,6 +344,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'author' => $booking->getArticle()->getMainArticle()->getAuthors(),
                     'number' => $booking->getNumber(),
                     'status' => $booking->getStatus(),
+                    'sellable' => $booking->getArticle()->isSellable(),
                     'collected' => isset($this->_articles->{$booking->getArticle()->getId()}) ? $this->_articles->{$booking->getArticle()->getId()} : 0,
                     'discounts' => array(),
                 );
@@ -378,6 +382,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'author' => $article->getMainArticle()->getAuthors(),
                     'number' => 1,
                     'status' => 'assigned',
+                    'sellable' => $booking->getArticle()->isSellable(),
                     'collected' => $number,
                     'discounts' => array(),
                 );
