@@ -56,13 +56,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('title');
         $field->setLabel('Title')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
+            ->setAttribute('class', 'span6')
             ->setRequired();
         $article->add($field);
 
         $field = new Text('author');
         $field->setLabel('Authors')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
+            ->setAttribute('class', 'span6')
             ->setRequired();
         $article->add($field);
 

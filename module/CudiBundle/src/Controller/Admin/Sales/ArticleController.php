@@ -130,6 +130,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     $formData['sell_price'],
                     $formData['bookable'],
                     $formData['unbookable'],
+                    $formData['sellable'],
                     $supplier,
                     $formData['can_expire'],
                     $organization
@@ -201,6 +202,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setSellPrice($formData['sell_price'])
                     ->setIsBookable($formData['bookable'])
                     ->setIsUnbookable($formData['unbookable'])
+                    ->setIsSellable($formData['sellable'])
                     ->setSupplier($supplier)
                     ->setCanExpire($formData['can_expire'])
                     ->setOrganization($organization);

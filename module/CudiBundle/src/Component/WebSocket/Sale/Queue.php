@@ -248,12 +248,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if ($enableCollectScanning !== '1')
-            return;
+        if ($enableCollectScanning == '1') {
+            $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
-        $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
-
-        return $this->_queueItems[$id]->getCollectInfo();
+            return $this->_queueItems[$id]->getCollectInfo();
+        } else {
+            $item->setStatus('collected');
+            $this->_entityManager->flush();
+        }
     }
 
     /**
@@ -446,6 +448,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             'author' => $article->getMainArticle()->getAuthors(),
             'number' => 1,
             'status' => 'assigned',
+            'sellable' => $article->isSellable(),
             'collected' => 0,
             'discounts' => array(),
         );
