@@ -52,6 +52,14 @@ return array(
             '@bootstrap_js_modal',
             '@common_typeahead_remote',
         ),
+        'admin_mail_alias' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_typeahead_remote',
+        ),
     ),
     'routes' => array(),
 );
