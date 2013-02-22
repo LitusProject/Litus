@@ -179,10 +179,13 @@
                                     Mass Mail, Aliasses &amp; Lists
                                 </div>
                                 <ul
-                                    {% if 'admin_mail' == getParam('controller') or 'admin_mail_bakske' == getParam('controller') or 'admin_mail_prof' == getParam('controller') or 'admin_mail_study' == getParam('controller') or 'admin_mail_list' == getParam('controller') %}
+                                    {% if 'admin_mail' == getParam('controller') or 'admin_mail_bakske' == getParam('controller') or 'admin_mail_prof' == getParam('controller') or 'admin_mail_study' == getParam('controller') or 'admin_mail_list' == getParam('controller') or 'admin_mail_alias' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
+                                    {% if hasAccess('admin_mail_alias', 'manage') %}
+                                        <li><a href="{{ url('admin_mail_alias') }}">Aliases</a></li>
+                                    {% endif %}
                                     {% if hasAccess('admin_mail_bakske', 'send') %}
                                         <li><a href="{{ url('admin_mail_bakske') }}">Het Bakske</a></li>
                                     {% endif %}
