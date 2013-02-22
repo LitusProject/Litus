@@ -39,14 +39,14 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
 
 
         $archive = new TmpFile();
-        $generator = 'tar' == $this->getParam('type')
+        $generator = 'zip' != $this->getParam('type')
             ? new Tar($this->getEntityManager(), $lists)
             : new Zip($this->getEntityManager(), $lists);
         $generator->generateArchive($archive);
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="lists.' . ('tar' == $this->getParam('type') ? 'tar.gz' : 'zip') . '"',
+            'Content-Disposition' => 'inline; filename="lists.' . ('zip' != $this->getParam('type') ? 'tar.gz' : 'zip') . '"',
             'Content-Type' => mime_content_type($archive->getFileName()),
             'Content-Length' => filesize($archive->getFileName()),
         ));
