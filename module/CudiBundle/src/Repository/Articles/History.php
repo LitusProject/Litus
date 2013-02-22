@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Articles;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * History
@@ -12,4 +13,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class History extends EntityRepository
 {
+    public function findAllByArticle(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('h')
+            ->from('CudiBundle\Entity\Articles\History', 'h')
+            ->innerJoin('h.precursor', 'a')
+            ->where(
+                $query->expr()->eq('h.article', ':article')
+            )
+            ->setParameter('article', $article)
+            ->orderBy('a.timestamp')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

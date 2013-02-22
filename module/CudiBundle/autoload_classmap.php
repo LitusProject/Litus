@@ -49,6 +49,7 @@ return array(
     'CudiBundle\Controller\Prof\Article\MappingController'             => __DIR__ . '/src/Controller/Prof/Article/MappingController.php',
     'CudiBundle\Controller\Prof\ArticleController'                     => __DIR__ . '/src/Controller/Prof/ArticleController.php',
     'CudiBundle\Controller\Prof\AuthController'                        => __DIR__ . '/src/Controller/Prof/AuthController.php',
+    'CudiBundle\Controller\Prof\HelpController'                        => __DIR__ . '/src/Controller/Prof/HelpController.php',
     'CudiBundle\Controller\Prof\IndexController'                       => __DIR__ . '/src/Controller/Prof/IndexController.php',
     'CudiBundle\Controller\Prof\ProfController'                        => __DIR__ . '/src/Controller/Prof/ProfController.php',
     'CudiBundle\Controller\Prof\Subject\CommentController'             => __DIR__ . '/src/Controller/Prof/Subject/CommentController.php',

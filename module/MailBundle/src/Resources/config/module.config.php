@@ -108,6 +108,21 @@ return array(
                     ),
                 ),
             ),
+            'admin_mail_alias' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/mail/alias[/:action[/:id][/page/:page]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_mail_alias',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
         ),
     ),
     'doctrine' => array(
@@ -143,6 +158,7 @@ return array(
         'invokables' => array(
             'mail_install'      => 'MailBundle\Controller\Admin\InstallController',
             'admin_mail'        => 'MailBundle\Controller\Admin\MailController',
+            'admin_mail_alias'  => 'MailBundle\Controller\Admin\AliasController',
             'admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
             'admin_mail_prof'   => 'MailBundle\Controller\Admin\ProfController',
             'admin_mail_study'  => 'MailBundle\Controller\Admin\StudyController',
