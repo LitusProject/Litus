@@ -89,6 +89,9 @@ Jorn Hendrickx',
                     'admin_mail_list' => array(
                         'manage', 'add', 'entries', 'delete', 'deleteEntry'
                     ),
+                    'admin_mail_alias' => array(
+                        'manage', 'add', 'delete',
+                    ),
                     'admin_mail_prof' => array(
                         'cudi'
                     ),
