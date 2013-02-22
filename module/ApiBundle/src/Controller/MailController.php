@@ -15,7 +15,8 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Component\Util\File\TmpFile,
-    MailBundle\Component\Generator\MailingList\Zip,
+    MailBundle\Component\Archive\Generator\MailingList\Zip,
+    MailBundle\Component\Archive\Generator\MailingList\Tar,
     MailBundle\Entity\Users\People\Academic,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -27,19 +28,25 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class MailController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getAllListsAction()
+    public function getListsArchiveAction()
     {
         $lists = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList')
             ->findAll();
 
+        if (0 == count($lists))
+            throw new \RuntimeException('There needs to be at least one list before an archive can be created');
+
+
         $archive = new TmpFile();
-        $generator = new Zip($this->getEntityManager(), $lists);
+        $generator = 'tar' == $this->getParam('type')
+            ? new Tar($this->getEntityManager(), $lists)
+            : new Zip($this->getEntityManager(), $lists);
         $generator->generateArchive($archive);
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="lists.zip"',
+            'Content-Disposition' => 'inline; filename="lists.' . ('tar' == $this->getParam('type') ? 'tar.gz' : 'zip') . '"',
             'Content-Type' => mime_content_type($archive->getFileName()),
             'Content-Length' => filesize($archive->getFileName()),
         ));
