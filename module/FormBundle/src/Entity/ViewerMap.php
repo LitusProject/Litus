@@ -60,15 +60,24 @@ class ViewerMap
     private $edit;
 
     /**
+     * @var boolean The flag whether the person is allowed to mail the participants.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $mail;
+
+    /**
      * @param \FormBundle\Entity\Nodes\Form $form
      * @param \CommonBundle\Entity\Users\Person $person
      * @param boolean $edit
+     * @param boolean $mail
      */
-    public function __construct($form, $person, $edit)
+    public function __construct($form, $person, $edit, $mail)
     {
         $this->person = $person;
         $this->form = $form;
         $this->edit = $edit;
+        $this->mail = $mail;
     }
 
     public function getId() {
@@ -94,5 +103,12 @@ class ViewerMap
      */
     public function isEdit() {
         return $this->edit;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMail() {
+        return $this->mail;
     }
 }

@@ -69,6 +69,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Can Edit/Delete entries');
         $this->add($field);
 
+        $field = new Checkbox('mail');
+        $field->setLabel('Can Mail Participants');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'viewer_add');

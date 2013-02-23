@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-        $this->setAttribute('action', '/admin/van_reservation/add/return/logistics_index');
+        $this->setAttribute('action', '/admin/van_reservation/addasync');
 
         $field = new Hidden('passenger_id');
         $field->setAttribute('id', 'passengerId');
