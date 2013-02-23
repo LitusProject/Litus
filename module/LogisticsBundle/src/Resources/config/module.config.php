@@ -13,65 +13,65 @@
  */
 
 return array(
-	'router' => array(
-		'routes' => array(
-		    'logistics_install' => array(
-		        'type' => 'Zend\Mvc\Router\Http\Segment',
-		        'options' => array(
-		            'route' => '/admin/install/logistics[/]',
-		            'defaults' => array(
-		                'controller' => 'logistics_install',
-		                'action'     => 'index',
-		            ),
-		        ),
-		    ),
-			'admin_driver' => array(
-				'type'    => 'Zend\Mvc\Router\Http\Segment',
-				'options' => array(
+    'router' => array(
+        'routes' => array(
+            'logistics_install' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/install/logistics[/]',
+                    'defaults' => array(
+                        'controller' => 'logistics_install',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin_driver' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
                     'route' => '/admin/driver[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
                         'page'    => '[0-9]*',
                     ),
-					'defaults' => array(
-						'controller' => 'admin_driver',
-						'action'     => 'manage',
-					),
-				),
-			),
-			'admin_van_reservation' => array(
-			    'type'    => 'Zend\Mvc\Router\Http\Segment',
-			    'options' => array(
-			        'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/return/:return]][/]',
-			        'constraints' => array(
-			            'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-			            'id'      => '[0-9]*',
+                    'defaults' => array(
+                        'controller' => 'admin_driver',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'admin_van_reservation' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/return/:return]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
                         'return'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-			            'page'    => '[0-9]*',
-			        ),
-			        'defaults' => array(
-			            'controller' => 'admin_van_reservation',
-			            'action'     => 'manage',
-			        ),
-			    ),
-			),
-			'logistics_index' => array(
-			    'type' => 'Zend\Mvc\Router\Http\Segment',
-			    'options' => array(
-			        'route' => '[/:language]/logistics[/:action][/date/:date][/]',
-			        'constraints' => array(
-			            'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-			            'session'  => '[0-9]*',
-			            'language' => '[a-z]{2}',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_van_reservation',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'logistics_index' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/logistics[/:action][/date/:date][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'session'  => '[0-9]*',
+                        'language' => '[a-z]{2}',
                         'date'     => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}',
-			        ),
-			        'defaults' => array(
-			            'controller' => 'logistics_index',
-			            'action'     => 'index',
-			        ),
-			    ),
-			),
+                    ),
+                    'defaults' => array(
+                        'controller' => 'logistics_index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'logistics_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -87,22 +87,22 @@ return array(
                     ),
                 ),
             ),
-			'logistics_reservation_fetch' => array(
-			    'type'    => 'Zend\Mvc\Router\Http\Segment',
-			    'options' => array(
-			        'route' => '/logistics/fetch[/:start][/:end][/]',
-			        'constraints' => array(
+            'logistics_reservation_fetch' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/logistics/fetch[/:start][/:end][/]',
+                    'constraints' => array(
                         'start' => '[0-9]*',
                         'end'   => '[0-9]*',
-			        ),
-			        'defaults' => array(
-			            'controller' => 'logistics_index',
-			            'action'     => 'fetch',
-			        ),
-			    ),
-			),
-		)
-	),
+                    ),
+                    'defaults' => array(
+                        'controller' => 'logistics_index',
+                        'action'     => 'fetch',
+                    ),
+                ),
+            ),
+        )
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             'logistics_layouts' => __DIR__ . '/../layouts',
@@ -186,13 +186,13 @@ return array(
             ),
         ),
     ),
-	'controllers' => array(
-		'invokables' => array(
-			'logistics_install'            => 'LogisticsBundle\Controller\Admin\InstallController',
-			'admin_driver'                 => 'LogisticsBundle\Controller\Admin\DriverController',
-			'admin_van_reservation'        => 'LogisticsBundle\Controller\Admin\VanReservationController',
-		    'logistics_index'              => 'LogisticsBundle\Controller\IndexController',
-			'logistics_auth'               => 'LogisticsBundle\Controller\AuthController',
-		),
-	),
+    'controllers' => array(
+        'invokables' => array(
+            'logistics_install'            => 'LogisticsBundle\Controller\Admin\InstallController',
+            'admin_driver'                 => 'LogisticsBundle\Controller\Admin\DriverController',
+            'admin_van_reservation'        => 'LogisticsBundle\Controller\Admin\VanReservationController',
+            'logistics_index'              => 'LogisticsBundle\Controller\IndexController',
+            'logistics_auth'               => 'LogisticsBundle\Controller\AuthController',
+        ),
+    ),
 );
