@@ -263,6 +263,10 @@
 
             });
 
+            {% if date %}
+            var dateArray = '{{ date }}'.split('-');
+            $('#calendar').fullCalendar( 'gotoDate', dateArray[0], dateArray[1], dateArray[2]);
+            {% endif %}
 
             $('.popover .close').live('click',function(){
                 hidePopover(poppedElement);
