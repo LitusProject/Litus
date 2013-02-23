@@ -15,6 +15,6 @@
 return array(
     'Corporate' => 'Bedrijven',
     'Welcome <i>%name%</i> of <i>%company%</i>' => 'Welkom <i>%name%</i> van <i>%company%</i>',
-    'Please log in to view the cv book.' => 'Gelieve aan the melden om het cv boek te bekijken.',
+    'Please login to view the CV book.' => 'Gelieve aan the melden om het CV boek te bekijken.',
     'You don\'t have access to the CVs of this year.' => 'U heeft geen rechten voor de CV\'s van dit jaar.',
 );

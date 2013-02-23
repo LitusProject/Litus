@@ -49,7 +49,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::WARNING,
                     'Warning',
-                    'Please log in to view the shifts!'
+                    'Please login to view the shifts!'
                 )
             );
 
