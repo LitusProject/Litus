@@ -17,6 +17,7 @@ return array(
     'Home' => 'Start',
     'Subjects' => 'Vakken',
     'Articles' => 'Artikels',
+    'Help' => 'Hulp',
     'Logout' => 'Afmelden',
     'Login' => 'Aanmelden',
 
@@ -163,7 +164,6 @@ return array(
 
     'How To Start' => 'Hoe Starten',
     'Your first time here?' => 'Je eerste keer hier?',
-    'Click here for help' => 'Klik hier voor hulp',
 
     'On the start page of the <em>Prof Application</em>, you can view your previous actions and there status.' => 'Op de start pagina van de <em>Prof Applicatie</em>, kunt u uw vorige acties bekijken en hun status.',
     'On the subject page, you can see all your subjects (or courses) you can edit.' => 'Op de vakken pagina, ziet u al de vakken die u kan bewerken.',

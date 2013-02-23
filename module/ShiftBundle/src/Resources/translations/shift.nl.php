@@ -24,7 +24,7 @@ return array(
     'You have not yet signed up for any shifts. You can use the search functions on the left to look for some!' => 'Je hebt je nog niet ingeschreven voor shiften. Gebruik de zoekfuncties aan de linkerkant om shiften te zoeken!',
     'Volunteer' => 'Vrijwilliger',
     'An error occurred while processing your request!' => 'Er trad een fout op bij het verwerken van je aanvraag!',
-    'You are about to sign yourself in for a shift. Do you want to continue?' => 'Ben je zeker dat je je wil inschrijven voor deze shift?'
+    'You are about to sign yourself in for a shift. Do you want to continue?' => 'Ben je zeker dat je je wil inschrijven voor deze shift?',
     'You were signed in as a volunteer for the selected shift!' => 'Je werd ingeschreven als vrijwilliger op de geselecteerde shift!',
     'You were signed in as a responsible for the selected shift!' => 'Je werd ingeschreven als verantwoordelijke op de geselecteerde shift!',
     'No shifts were found that match the given query.' => 'Er werden geen shiften gevonden die overeenkomen met de gegeven vraag..',
