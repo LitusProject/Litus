@@ -5,12 +5,12 @@
 
     <div class="flashmessage alert alert-success fade" id="responsible_success">
         <div class="content">
-            {{ translate('You were signed up as a responsible for the selected shift!') }}
+            {{ translate('You were signed in as a responsible for the selected shift!') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="responsible_success">
         <div class="content">
-            {{ translate('You were signed up as a volunteer for the selected shift!') }}
+            {{ translate('You were signed in as a volunteer for the selected shift!') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="signout">
@@ -21,6 +21,22 @@
     <div class="flashmessage alert alert-error fade" id="error">
         <div class="content">
             {{ translate('An error occurred while processing your request!') }}
+        </div>
+    </div>
+
+    <div id="modalSignInWarning" class="modal fade hide">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Sign In') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                {{ translate('You are about to sign yourself in for a shift. Do you want to continue?') }}
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+            <button class="btn deny">{{ translate('No') }}</button>
         </div>
     </div>
 
@@ -87,59 +103,87 @@
         $(document).ready(function () {
             $('.responsible').click(function () {
                 var button = $(this);
+                var count = parseInt(button.data('count'), 10);
+
+                if (!button.hasClass('disabled')) {
+                    $('#modalSignInWarning').modal();
+                    $('#modalSignInWarning .confirm').one('click', function () {
+                        $('#modalSignInWarning').modal('hide');
+
+                        $.post(
+                            '{{ url('shift', {"action": "responsible"}) }}',
+                            {"id": button.data('id'), "person": "{{ authenticatedPerson.getId() }}"},
+                            function (data) {
+                                if (data && 'success' == data.status) {
+                                    $('.flashmessage').removeClass('in');
+                                    $('#responsible_success').addClass('in');
+
+                                    updateButton(button, parseInt(data.ratio, 10), count);
+                                } else {
+                                    errorSave();
+                                }
+                            },
+                            'json'
+                        ).error(errorSave);
+                    });
+                }
 
                 button.parent().find('button').each(function(i) {
                     $(this).addClass('active disabled');
-                })
+                });
 
-                var count = parseInt(button.data('count'), 10);
+                $('#modalSignInWarning .deny').one('click', function () {
+                    $('#modalSignInWarning').modal('hide');
 
-                $.post(
-                    '{{ url('shift', {"action": "responsible"}) }}',
-                    {"id": $(this).data('id'), "person": "{{ authenticatedPerson.getId() }}"},
-                    function (data) {
-                        if (data && 'success' == data.status) {
-                            $('.flashmessage').removeClass('in');
-                            $('#responsible_success').addClass('in');
-
-                            updateButton(button, parseInt(data.ratio, 10), count);
-                        } else {
-                            errorSave();
-                        }
-                    },
-                    'json'
-                ).error(errorSave);
+                    button.parent().find('button').each(function(i) {
+                        $(this).removeClass('disabled');
+                    });
+                });
             });
 
             $('.volunteer').click(function () {
                 var button = $(this);
-
-                button.parent().find('button').each(function(i) {
-                    $(this).addClass('active disabled');
-                })
-
                 var count = parseInt($(this).data('count'));
 
-                $.post(
-                    '{{ url('shift', {"action": "volunteer"}) }}',
-                    {"id": $(this).data('id'), "person": "{{ authenticatedPerson.getId() }}"},
-                    function (data) {
-                        if (data && 'success' == data.status) {
-                            $('.flashmessage').removeClass('in');
-                            $('#responsible_volunteer').addClass('in');
+                if (!button.hasClass('disabled')) {
+                    $('#modalSignInWarning').modal();
+                    $('#modalSignInWarning .confirm').one('click', function () {
+                        $('#modalSignInWarning').modal('hide');
 
-                            updateButton(button, parseInt(data.ratio), count);
-                        } else {
-                            errorSave();
-                        }
-                    },
-                    'json'
-                ).error(errorSave);
+                        $.post(
+                            '{{ url('shift', {"action": "volunteer"}) }}',
+                            {"id": button.data('id'), "person": "{{ authenticatedPerson.getId() }}"},
+                            function (data) {
+                                if (data && 'success' == data.status) {
+                                    $('.flashmessage').removeClass('in');
+                                    $('#responsible_volunteer').addClass('in');
+
+                                    updateButton(button, parseInt(data.ratio), count);
+                                } else {
+                                    errorSave();
+                                }
+                            },
+                            'json'
+                        ).error(errorSave);
+                    });
+                }
+
+                button.parent().find('button').each(function(i) {
+                    $(this).addClass('disabled');
+                });
+
+                $('#modalSignInWarning .deny').one('click', function () {
+                    $('#modalSignInWarning').modal('hide');
+
+                    button.parent().find('button').each(function(i) {
+                        $(this).removeClass('disabled');
+                    });
+                });
             });
 
             $('.signout').click(function () {
                 var button = $(this);
-                button.addClass('active disabled');
+                button.addClass('disabled');
 
                 $.post(
                     '{{ url('shift', {"action": "signout"}) }}',

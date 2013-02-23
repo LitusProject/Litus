@@ -10,7 +10,7 @@
     <div class="row page">
         <div class="span12">
             {% if authenticatedPerson == null %}
-                {{ translate('Please log in to book textbooks.') }}
+                {{ translate('Please login to book textbooks.') }}
             {% else %}
                 {% if hasAccess('booking', 'search') %}
                     <div class="row">

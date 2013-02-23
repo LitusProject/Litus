@@ -39,7 +39,7 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
 
 
         $archive = new TmpFile();
-        $generator = 'zip' != $this->getParam('type')
+        $generator = ('zip' != $this->getParam('type'))
             ? new Tar($this->getEntityManager(), $lists)
             : new Zip($this->getEntityManager(), $lists);
         $generator->generateArchive($archive);
