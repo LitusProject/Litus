@@ -87,6 +87,46 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
+        if($this->_handleAdd($form)) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCES',
+                    'The reservation was succesfully created!'
+                )
+            );
+
+            $this->_doRedirect($reservation);
+
+            return new ViewModel();
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function addasyncAction()
+    {
+        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $this->initAjax();
+
+        if ($this->_handleAdd($form)) {
+
+            return new ViewModel(
+                array(
+                    'result' => (object) array("status" => "success"),
+                )
+            );
+        }
+
+        return new ViewModel();
+    }
+
+    private function _handleAdd(AddForm $form)
+    {
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -130,25 +170,11 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCES',
-                        'The reservation was succesfully created!'
-                    )
-                );
-
-                $this->_doRedirect($reservation);
-
-                return new ViewModel();
+                return true;
             }
         }
 
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
+        return false;
     }
 
     public function editAction()
