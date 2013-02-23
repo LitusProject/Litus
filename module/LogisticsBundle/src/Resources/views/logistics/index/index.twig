@@ -9,10 +9,17 @@
         </div>
     </div>
 
-    <div class="flashmessage alert alert-error fade in delete_error hide">
+    <div class="flashmessage alert alert-error fade in remove_error hide">
         <a class="close" data-dismiss="alert">&times;</a>
         <div class="content">
             There was an error while deleting the reservations.
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-error fade in add_error hide">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="content">
+            There was an error while adding the reservation. Please refresh the page to verify.
         </div>
     </div>
 
@@ -86,6 +93,18 @@
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
+            });
+
+            $(".popover-content form").live('submit', function() {
+                $.post($(this).attr('action'), $(this).serialize(), function(response){
+                    $('#calendar').fullCalendar('refetchEvents');
+                    hideAll();
+                },'json').fail(function() {
+                    errorAdd();
+                    $('#calendar').fullCalendar('refetchEvents');
+                    hideAll();
+                });
+                return false;
             });
 
             var date = new Date();
@@ -311,6 +330,11 @@
         function errorRemove() {
             $('.flashmessage').addClass('hide');
             $('.remove_error').removeClass('hide');
+        }
+
+        function errorAdd() {
+            $('.flashmessage').addClass('hide');
+            $('.add_error').removeClass('hide');
         }
 
     </script>
