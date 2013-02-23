@@ -17,6 +17,7 @@ return array(
     'Home' => 'Home',
     'Subjects' => 'Subjects',
     'Articles' => 'Articles',
+    'Help' => 'Help',
     'Logout' => 'Logout',
     'Login' => 'Login',
 
@@ -165,7 +166,6 @@ return array(
 
     'How To Start' => 'How To Start',
     'Your first time here?' => 'Your first time here?',
-    'Click here for help' => 'Click here for help',
 
     'On the start page of the <em>Prof Application</em>, you can view your previous actions and there status.' => 'On the start page of the <em>Prof Application</em>, you can view your previous actions and there status.',
     'On the subject page, you can see all your subjects (or courses) you can edit.' => 'On the subject page, you can see all your subjects (or courses) you can edit.',
