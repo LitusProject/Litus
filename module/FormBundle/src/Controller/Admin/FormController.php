@@ -99,7 +99,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     }
                 }
 
-                $map = new ViewerMap($form, $this->getAuthentication()->getPersonObject(), true);
+                $map = new ViewerMap($form, $this->getAuthentication()->getPersonObject(), true, true);
 
                 $this->getEntityManager()->persist($map);
 

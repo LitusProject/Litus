@@ -28,11 +28,15 @@
 	    			<th width="130px">{{ translate("Submitter") }}</th>
 	    			<th width="130px">{{ translate("Submitted") }}</th>
 
+                    {% if viewer.isMail() %}
+                        <th width="130px">{{ translate("Email") }}</th>
+                    {% endif %}
+
 	    			{% for field in fields %}
 	    				<th>{{ field.getLabel(language) }}</th>
     				{% endfor %}
 
-    				{% if canedit %}
+    				{% if viewer.isEdit() %}
     					<th width="175px">{{ translate("Actions") }}</th>
     				{% endif %}
 
@@ -48,11 +52,15 @@
                     </td>
     				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
 
+                    {% if viewer.isMail() %}
+                        <td>{{ entry.getPersonInfo().getEmail() }}</td>
+                    {% endif %}
+
 	    			{% for field in fields %}
 	    				<td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
     				{% endfor %}
 
-    				{% if canedit %}
+    				{% if viewer.isEdit() %}
     					<td>
 							<a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">{{ translate("Edit") }}</a>
 							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
