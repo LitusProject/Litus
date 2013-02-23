@@ -59,11 +59,12 @@ return array(
 			'logistics_index' => array(
 			    'type' => 'Zend\Mvc\Router\Http\Segment',
 			    'options' => array(
-			        'route' => '[/:language]/logistics[/:action][/]',
+			        'route' => '[/:language]/logistics[/:action][/date/:date][/]',
 			        'constraints' => array(
 			            'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
 			            'session'  => '[0-9]*',
 			            'language' => '[a-z]{2}',
+                        'date'     => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}',
 			        ),
 			        'defaults' => array(
 			            'controller' => 'logistics_index',

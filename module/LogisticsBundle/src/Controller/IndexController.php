@@ -31,7 +31,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         return new ViewModel(
             array(
-            'form' => $form,
+                'form' => $form,
+                'date' => $this->getParam('date'),
             )
         );
     }
