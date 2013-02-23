@@ -138,7 +138,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     )
                 );
 
-                $this->_doRedirect();
+                $this->_doRedirect($reservation);
 
                 return new ViewModel();
             }
@@ -196,7 +196,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     )
                 );
 
-                $this->_doRedirect();
+                $this->_doRedirect($reservation);
 
                 return new ViewModel();
             }
@@ -308,7 +308,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         return $reservation;
     }
 
-    private function _doRedirect()
+    private function _doRedirect($reservation = null)
     {
 
         $controller = $this->getParam('return');
@@ -318,8 +318,15 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $controller = 'admin_van_reservation';
         }
 
+        $params = array();
+        if ($reservation) {
+            $date = $reservation->getStartDate();
+            $params['date'] = $date->format('Y') . '-' . ($date->format('n') - 1) . '-' . $date->format('j');
+        }
+
         $this->redirect()->toRoute(
-            $controller
+            $controller,
+            $params
         );
 
         return;
