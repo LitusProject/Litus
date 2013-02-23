@@ -276,6 +276,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         $language = $this->getLanguage();
         $heading = array('ID', 'Submitter', 'Submitted');
+        if ($viewerMap->isMail()) {
+            $heading[] = 'Email';
+        }
         $fields = $form->getFields();
         foreach ($fields as $field) {
             $heading[] = $field->getLabel($language);
@@ -288,6 +291,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
         $results = array();
         foreach ($entries as $entry) {
             $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
+            if ($viewerMap->isMail()) {
+                $result[] = $entry->getPersonInfo()->getEmail();
+            }
             foreach($fields as $field) {
                 $fieldEntry = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Entry')
