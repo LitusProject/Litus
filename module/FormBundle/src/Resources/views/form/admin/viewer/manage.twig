@@ -27,6 +27,7 @@
             <tr>
                 <th>Name</th>
                 <th width="70px">Can Edit</th>
+                <th width="70px">Can Mail</th>
                 <th width="70px">Actions</th>
             </tr>
 
@@ -34,6 +35,7 @@
                 <tr class="item item-{{ viewer.getId() }}">
                     <td>{{ viewer.getPerson().getFullName() }}</td>
                     <td>{% if viewer.isEdit() %}&times;{% endif %}</td>
+                    <td>{% if viewer.isMail() %}&times;{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('admin_form_viewer', 'delete') %}
                             <a href="#" class="delete" data-id="{{ viewer.getId() }}" data-name="{{ viewer.getPerson().getFullName() }}" data-form="{{ viewer.getForm().getTitle(language) }}">Delete</a>

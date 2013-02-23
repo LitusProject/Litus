@@ -94,7 +94,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 'form'    => $form,
                 'fields'  => $fields,
                 'entries' => $entries,
-                'canedit' => $viewerMap->isEdit(),
+                'viewer'  => $viewerMap,
             )
         );
     }
