@@ -16,8 +16,8 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Entity\MailingList,
-    MailBundle\Entity\Entry\Academic as AcademicEntry,
-    MailBundle\Entity\Entry\External as ExternalEntry,
+    MailBundle\Entity\Entries\Academic as AcademicEntry,
+    MailBundle\Entity\Entries\External as ExternalEntry,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
     MailBundle\Form\Admin\MailingList\Entry\External as ExternalForm,
     MailBundle\Form\Admin\MailingList\Entry\Member as MemberForm,
@@ -109,7 +109,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 $entry = null;
                 if (isset($formData['first_name'], $formData['last_name'], $formData['email'])) {
                     $repositoryCheck = $this->getEntityManager()
-                        ->getRepository('MailBundle\Entity\Entry\External')
+                        ->getRepository('MailBundle\Entity\Entries\External')
                         ->findOneBy(
                             array(
                                 'list' => $list,
@@ -145,7 +145,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                     }
 
                     $repositoryCheck = $this->getEntityManager()
-                        ->getRepository('MailBundle\Entity\Entry\Academic')
+                        ->getRepository('MailBundle\Entity\Entries\Academic')
                         ->findOneBy(
                             array(
                                 'list' => $list,
