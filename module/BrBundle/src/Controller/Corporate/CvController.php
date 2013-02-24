@@ -37,7 +37,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'Please log in to view the cv book.'
+                    'Please login to view the CV book.'
                 )
             );
 
@@ -91,7 +91,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'Please log in to view the cv book.'
+                    'Please login to view the CV book.'
                 )
             );
 
@@ -147,7 +147,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'Please log in to view the cv book.'
+                    'Please login to view the CV book.'
                 )
             );
 
