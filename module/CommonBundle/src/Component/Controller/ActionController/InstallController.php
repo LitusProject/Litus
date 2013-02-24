@@ -70,21 +70,23 @@ abstract class InstallController extends AdminController
     {
         foreach($config as $item) {
             try {
-                $value = $this->getEntityManager()
+                $entry = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue($item['key']);
+                    ->findOneByKey($item['key']);
 
-                if (null === $value) {
-                    $config = new Config($item['key'], $item['value']);
-                    $config->setDescription($item['description']);
+                if (null === $entry) {
+                    $entry = new Config($item['key'], $item['value']);
+                    $entry->setDescription($item['description']);
 
-                    $this->getEntityManager()->persist($config);
+                    $this->getEntityManager()->persist($entry);
+                } else {
+                    $entry->setDescription($item['description']);
                 }
             } catch(\Exception $e) {
-                $config = new Config($item['key'], $item['value']);
-                $config->setDescription($item['description']);
+                $entry = new Config($item['key'], $item['value']);
+                $entry->setDescription($item['description']);
 
-                $this->getEntityManager()->persist($config);
+                $this->getEntityManager()->persist($entry);
             }
         }
 
