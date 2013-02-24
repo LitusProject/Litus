@@ -16,6 +16,8 @@ namespace BrBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    FormBundle\Component\Document\Generator\Csv as CsvGenerator,
     BrBundle\Component\Document\Pdf\CvBook as CvBookGenerator,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -48,7 +50,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
                 'activeAcademicYear' => $academicYear,
                 'currentAcademicYear' => $this->getCurrentAcademicYear(),
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -73,6 +75,42 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="cvbook-' . $year->getCode(true) . '.pdf"',
             'Content-type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function exportAcademicsAction()
+    {
+        $entries = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findAllByAcademicYear($this->getAcademicYear());
+
+        $file = new CsvFile();
+        $language = $this->getLanguage();
+        $heading = array('First Name', 'Last Name', 'Email');
+
+        $results = array();
+        foreach($entries as $entry) {
+            $results[] = array(
+                $entry->getFirstName(),
+                $entry->getLastName(),
+                $entry->getEmail()
+            );
+        }
+
+        $document = new CsvGenerator($this->getEntityManager(), $heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="academics.csv"',
+            'Content-Type'        => 'text/csv',
         ));
         $this->getResponse()->setHeaders($headers);
 

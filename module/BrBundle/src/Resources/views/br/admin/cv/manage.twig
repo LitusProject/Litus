@@ -20,7 +20,7 @@
     {% include 'br/admin/cv/partials/years.twig' %}
 
     <div id="controller_action">
-        <table class="full_width manage">
+        <table class="manage">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -47,6 +47,35 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
+    <aside>
+        {% if hasAccess('admin_cv_entry', 'export') %}
+            <div class="sidebox">
+                <div class="title">Export CV's</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export the cv's!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="exportCVS">&rarr; Export CV's</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_cv_entry', 'exportAcademics') %}
+            <div class="sidebox">
+                <div class="title">Export Academics</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export the academics!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="exportAcademics">&rarr; Export Academics</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
     <div class="modal hide fade" id="removeCv">
         <div class="modal-header">
             <span>Litus Admin</span>
@@ -71,6 +100,12 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.exportCVS').each(function () {
+                $(this).downloadFile('{{ url('admin_cv_entry', {"action": "export", "academicyear": activeAcademicYear.getCode()}) }}');
+            });
+            $('.exportAcademics').each(function () {
+                $(this).downloadFile('{{ url('admin_cv_entry', {"action": "exportAcademics", "academicyear": activeAcademicYear.getCode()}) }}');
+            });
             $('.item .delete').click(openModal);
         });
 

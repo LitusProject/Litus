@@ -108,7 +108,7 @@ The VTK Corporate Team',
                         'manage', 'add', 'delete'
                     ),
                     'admin_cv_entry' => array(
-                        'manage', 'delete', 'export',
+                        'manage', 'delete', 'export', 'exportAcademics'
                     ),
 
                     'career_index' => array(

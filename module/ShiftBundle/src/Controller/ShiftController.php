@@ -383,7 +383,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $suffix = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('calendar.icalendar_uid_suffix');
+            ->getConfigValue('shift.icalendar_uid_suffix');
 
         $result = 'BEGIN:VCALENDAR' . PHP_EOL;
         $result .= 'VERSION:2.0' . PHP_EOL;
