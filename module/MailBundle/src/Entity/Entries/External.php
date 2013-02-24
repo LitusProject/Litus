@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Entity\Entry;
+namespace MailBundle\Entity\Entries;
 
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
@@ -21,8 +21,8 @@ use Doctrine\ORM\Mapping as ORM,
 /**
  * This is the entity for a list entry.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry\External")
- * @ORM\Table(name="mail.list_entries_external")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\Entries\External")
+ * @ORM\Table(name="mail.lists_entries_external")
  */
 class External extends \MailBundle\Entity\Entry
 {
