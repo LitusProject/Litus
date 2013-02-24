@@ -20,8 +20,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'calendar.icalendar_uid_suffix',
-                    'value'       => 'activity.vtk.be',
-                    'description' => 'The suffix of an icalendar event uid',
+                    'value'       => 'event.vtk.be',
+                    'description' => 'The suffix of an iCalendar event uid',
                 ),
             )
         );
