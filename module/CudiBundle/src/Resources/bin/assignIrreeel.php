@@ -16,8 +16,9 @@
  * Assign an Ir.Reëel to all users who receive one at CuDi.
  *
  * Usage:
- * --article|-r     Article
+ * --article|-a     Article
  * --flush|-f       Flush
+ * --mail|-m        Send Mail
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

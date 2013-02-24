@@ -16,7 +16,8 @@
  * Test the printer service.
  *
  * Usage:
- * --run|-r      Run the Socket
+ * --printer|-p     Printer Name
+ * --ticket|-t      Ticket Type
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

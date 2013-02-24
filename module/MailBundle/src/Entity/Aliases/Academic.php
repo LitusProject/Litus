@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Entity\Entry;
+namespace MailBundle\Entity\Aliases;
 
 use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
     Doctrine\ORM\Mapping as ORM,
@@ -20,15 +20,15 @@ use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
     MailBundle\Entity\MailingList;
 
 /**
- * This is the entity for a list entry.
+ * This is the entity for an academic alias.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry\Academic")
- * @ORM\Table(name="mail.list_entries_academic")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\Aliases\Academic")
+ * @ORM\Table(name="mail.aliases_academic")
  */
-class Academic extends \MailBundle\Entity\Entry
+class Academic extends \MailBundle\Entity\Alias
 {
     /**
-     * @var CommonBundle\Entity\Users\People\Academic The academic associated with this entry.
+     * @var CommonBundle\Entity\Users\People\Academic The academic associated with this alias.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id", nullable=false)
@@ -36,14 +36,14 @@ class Academic extends \MailBundle\Entity\Entry
     private $academic;
 
     /**
-     * Creates a new list entry for the given list with the given academic.
+     * Creates a new alias for the given academic with the given name.
      *
-     * @param \MailBundle\Entity\MailingList $list The list for this entry.
-     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic to add.
+     * @param string $name The name for this alias.
+     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic to create the alias for.
      */
-    public function __construct(MailingList $list, AcademicPerson $academic)
+    public function __construct($name, AcademicPerson $academic)
     {
-        parent::__construct($list);
+        parent::__construct($name);
         $this->academic = $academic;
     }
 
@@ -60,21 +60,5 @@ class Academic extends \MailBundle\Entity\Entry
     public function getEmailAddress()
     {
         return $this->academic->getEmail();
-    }
-
-    /**
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->academic->getFirstName();
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->academic->getLastName();
     }
 }
