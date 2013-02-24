@@ -68,6 +68,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_download_file',
         ),
         'admin_section' => array(
             '@common_jquery',
