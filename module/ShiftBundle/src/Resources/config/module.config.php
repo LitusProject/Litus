@@ -75,7 +75,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_subscription' => array(
+            'admin_shift_subscription' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/shift/subscription[/:action[/:id][/type/:type][/page/:page]][/]',
@@ -86,7 +86,7 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_subscription',
+                        'controller' => 'admin_shift_subscription',
                         'action'     => 'manage',
                     ),
                 ),
@@ -182,14 +182,14 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'shift_install'       => 'ShiftBundle\Controller\Admin\InstallController',
-            'admin_shift'         => 'ShiftBundle\Controller\Admin\ShiftController',
-            'admin_shift_counter' => 'ShiftBundle\Controller\Admin\CounterController',
-            'admin_shift_ranking' => 'ShiftBundle\Controller\Admin\RankingController',
-            'admin_subscription'  => 'ShiftBundle\Controller\Admin\SubscriptionController',
-            'admin_unit'          => 'ShiftBundle\Controller\Admin\UnitController',
+            'shift_install'            => 'ShiftBundle\Controller\Admin\InstallController',
+            'admin_shift'              => 'ShiftBundle\Controller\Admin\ShiftController',
+            'admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
+            'admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
+            'admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
+            'admin_unit'               => 'ShiftBundle\Controller\Admin\UnitController',
 
-            'shift'               => 'ShiftBundle\Controller\ShiftController',
+            'shift'                    => 'ShiftBundle\Controller\ShiftController',
         ),
     ),
 );
