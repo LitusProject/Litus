@@ -116,7 +116,7 @@ You have been removed from the following shift by an administrator:
                 ),
                 array(
                     'key'         => 'shift.icalendar_uid_suffix',
-                    'value'       => 'event.vtk.be',
+                    'value'       => 'shift.vtk.be',
                     'description' => 'The suffix of an iCalendar shift uid',
                 ),
             )
