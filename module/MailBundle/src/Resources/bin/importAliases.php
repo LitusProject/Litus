@@ -16,9 +16,10 @@
  * Assign an Ir.Reëel to all users who receive one at CuDi.
  *
  * Usage:
- * --flush|-f       Flush
+ * --flush|-f      Flush
+ * --import|-i     The File
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
@@ -30,7 +31,8 @@ $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default
 $mt = $application->getServiceManager()->get('mail_transport');
 
 $rules = array(
-    'flush|f'     => 'Flush',
+    'import|i-s' => 'Import File',
+    'flush|f'    => 'Flush',
 );
 
 try {
@@ -41,7 +43,7 @@ try {
     exit(2);
 }
 
-foreach (file('/tmp/vtk_aliases') as $alias) {
+foreach (file($opts->i) as $alias) {
     $alias = explode(':', trim($alias));
 
     $academic = $em->getRepository('CommonBundle\Entity\Users\People\Academic')
