@@ -74,7 +74,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null && !$formSpecification->isNonMember()) {
-            $message = 'Please log in to view this form.';
+            $message = 'Please login to view this form.';
 
             return new ViewModel(
                 array(

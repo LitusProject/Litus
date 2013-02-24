@@ -56,7 +56,7 @@ return array(
     "Your entry has been recorded in the CV Book." => "Your entry has been recorded in the CV Book.",
     "You can only fill in the CV Book once." => "You can only fill in the CV Book once.",
 
-    "Please log in to add your CV." => "Please log in to add your CV.",
+    "Please login to add your CV." => "Please login to add your CV.",
     "You must be a student to add your CV." => "You must be a student to add your CV.",
     "The CV Book is currently not accepting entries." => "The CV Book is currently not accepting entries.",
     "The following information in your account is incomplete:" => "The following information in your account is incomplete:",

@@ -109,7 +109,8 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                 $viewer = new ViewerMap(
                     $formSpecification,
                     $person,
-                    $formData['edit']
+                    $formData['edit'],
+                    $formData['mail']
                 );
 
                 $this->getEntityManager()->persist($viewer);

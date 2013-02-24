@@ -37,7 +37,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $languageError = null;
 
         if ($person === null) {
-            $messages = array('Please log in to add your CV.');
+            $messages = array('Please login to add your CV.');
         } else {
             if (!($person instanceof Academic)) {
                 $messages = array('You must be a student to add your CV.');
@@ -179,7 +179,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $languageError = null;
 
         if ($person === null) {
-            $messages = array('Please log in to edit your CV.');
+            $messages = array('Please login to edit your CV.');
         } else {
             if (!($person instanceof Academic)) {
                 $messages = array('You must be a student to edit your CV.');

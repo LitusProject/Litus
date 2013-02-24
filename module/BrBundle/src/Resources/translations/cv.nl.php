@@ -55,7 +55,7 @@ return array(
     "Your entry has been recorded in the CV Book." => "Je CV werd opgeslagen in het CV Boek.",
     "You can only fill in the CV Book once." => "Je kan het CV Boek slechts één keer invullen.",
 
-    "Please log in to add your CV." => "Gelieve je aan te melden om je CV toe te voegen.",
+    "Please login to add your CV." => "Gelieve je aan te melden om je CV toe te voegen.",
     "You must be a student to add your CV." => "Je moet een student zijn om je CV toe te voegen.",
     "The CV Book is currently not accepting entries." => "Het CV Boek is momenteel gesloten.",
     "The following information in your account is incomplete:" => "De volgende informatie uit je account is onvolledig:",

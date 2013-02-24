@@ -15,6 +15,6 @@
 return array(
     'Corporate' => 'Corporate',
     'Welcome <i>%name%</i> of <i>%company%</i>' => 'Welcome <i>%name%</i> of <i>%company%</i>',
-    'Please log in to view the cv book.' => 'Please log in to view the cv book.',
+    'Please login to view the CV book.' => 'Please login to view the CV book.',
     'You don\'t have access to the CVs of this year.' => 'You don\'t have access to the CVs of this year.',
 );
