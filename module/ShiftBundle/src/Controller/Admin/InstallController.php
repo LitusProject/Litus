@@ -135,7 +135,7 @@ You have been removed from the following shift by an administrator:
                     'admin_shift_ranking' => array(
                         'index'
                     ),
-                    'admin_subscription' => array(
+                    'admin_shift_subscription' => array(
                         'manage', 'delete',
                     ),
                     'shift' => array(
