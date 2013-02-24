@@ -45,8 +45,8 @@
 		                            <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
 		                        {% endif %}
 	                        {% endif %}
-	                        {% if hasAccess('admin_subscription', 'manage') %}
-	                            <a href="{{ url('admin_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
+	                        {% if hasAccess('admin_shift_subscription', 'manage') %}
+	                            <a href="{{ url('admin_shift_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>
