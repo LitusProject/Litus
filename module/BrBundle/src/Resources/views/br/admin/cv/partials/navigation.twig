@@ -3,16 +3,6 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_cv_entry', 'export') %}
-                <li>
-                    <a
-                        {% if 'export' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('admin_cv_entry', {"action": "export", "academicyear": activeAcademicYear.getCode()}) }}"
-                    >
-                        Export
-                    </a>
-                </li>
-            {% endif %}
             {% if hasAccess('admin_cv_entry', 'manage') %}
                 <li>
                     <a
