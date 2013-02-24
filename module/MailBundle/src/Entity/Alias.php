@@ -21,12 +21,12 @@ use Doctrine\ORM\Mapping as ORM,
  * This is the entity for an alias.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\Alias")
- * @ORM\Table(name="mail.alias")
+ * @ORM\Table(name="mail.aliases")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "academic"="MailBundle\Entity\Alias\Academic",
- *      "external"="MailBundle\Entity\Alias\External"
+ *      "academic"="MailBundle\Entity\Aliases\Academic",
+ *      "external"="MailBundle\Entity\Aliases\External"
  * })
  */
 abstract class Alias

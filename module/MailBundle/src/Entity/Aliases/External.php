@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Entity\Alias;
+namespace MailBundle\Entity\Aliases;
 
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
@@ -21,8 +21,8 @@ use Doctrine\ORM\Mapping as ORM,
 /**
  * This is the entity for an external alias.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\Alias\External")
- * @ORM\Table(name="mail.alias_external")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\Aliases\External")
+ * @ORM\Table(name="mail.aliases_external")
  */
 class External extends \MailBundle\Entity\Alias
 {
