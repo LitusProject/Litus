@@ -41,7 +41,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_subscription' => array(
+        'admin_shift_subscription' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_transition',
