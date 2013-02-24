@@ -82,7 +82,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 $this->redirect()->toRoute(
-                    'admin_subscription',
+                    'admin_shift_subscription',
                     array(
                         'action' => 'manage',
                         'id' => $shift->getId(),
@@ -297,7 +297,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
 
         $this->redirect()->toRoute(
-            'admin_subscription',
+            'admin_shift_subscription',
             array(
                 'action' => 'manage',
                 'id' => $shift->getId(),
