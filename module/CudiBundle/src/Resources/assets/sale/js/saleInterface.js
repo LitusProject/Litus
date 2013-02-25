@@ -498,7 +498,7 @@
                     $(this).find('.price').append(
                         $('<div>').html('&euro; ' + (bestPrice / 100).toFixed(2) + ' (1x)')
                     );
-                    total += 1 * bestPrice;
+                    total += bestPrice;
                     number -= 1;
                 } else {
                     $(this).find('.price').append(
