@@ -36,20 +36,19 @@
         </div>
     </div>
 
-    <div style="text-align:right;">
-        <select style="margin-bottom:0px" id="searchtype" name="searchtype">
+    <div style="margin-bottom: 20px; text-align: right;">
+        <select style="margin-bottom: 0px" id="searchtype" name="searchtype">
             <option value="text">By Name</option>
             <option value="grade">By Minimum Grade</option>
         </select>
         <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
     </div>
 
-    {% block cvcontent %} {% endblock %}
+    {% block cv_content %} {% endblock %}
 
 {% endblock %}
 
 {% block content_script %}
-
     <script type="text/javascript">
         $(document).ready(function() {
             $('.entry-toggle').click(function() {
@@ -124,5 +123,4 @@
         }
 
     </script>
-
 {% endblock %}
