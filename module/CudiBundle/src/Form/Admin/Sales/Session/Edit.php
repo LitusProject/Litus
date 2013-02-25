@@ -38,7 +38,7 @@ class Edit extends Add
         $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setValue('Edit')
+        $field->setValue('Save')
             ->setAttribute('class', 'sale_edit');
         $this->add($field);
 
