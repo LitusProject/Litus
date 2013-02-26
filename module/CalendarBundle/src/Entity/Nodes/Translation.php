@@ -156,6 +156,6 @@ class Translation
     {
         $parser = new Markdown_Parser();
         $summary = $parser->transform($this->content);
-        return \CommonBundle\Component\Util\String::truncate($summary, $length, '...', true);
+        return \CommonBundle\Component\Util\String::truncate($summary, $length, '...');
     }
 }
