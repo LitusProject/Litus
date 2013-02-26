@@ -17,6 +17,7 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Entity\Sales\SaleItem,
     CudiBundle\Entity\Users\People\Sale\Acco as AccoCard,
@@ -193,6 +194,10 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findAllOpenByPerson($item->getPerson());
 
+        $memberShipArticle = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.membership_article');
+
         $soldArticles = array();
 
         foreach($bookings as $booking) {
@@ -222,6 +227,24 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'article' => $booking->getArticle(),
                     'number' => $booking->getNumber(),
                 );
+            }
+
+            if ($booking->getArticle()->getId() == $memberShipArticle) {
+                try {
+                    $booking->getPerson()
+                        ->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $booking->getPerson(),
+                                'member',
+                                $this->_getCurrentAcademicYear()
+                            )
+                        );
+
+                    $registration = $this->_entityManager
+                        ->getRepository('SecretaryBundle\Entity\Registration')
+                        ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+                    $registration->setPayed();
+                } catch(\Exception $e) {}
             }
         }
 
@@ -307,7 +330,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->persist(new AccoCard($item->getPerson(), $hasAccoCard));
         }
 
-        $this->_entityManager->flush();
+        //$this->_entityManager->flush();
 
         return $saleItems;
     }
