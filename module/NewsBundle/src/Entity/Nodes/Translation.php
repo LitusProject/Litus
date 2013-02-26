@@ -16,7 +16,8 @@ namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    Markdown_Parser;
 
 /**
  * This entity stores the node item.
@@ -127,8 +128,9 @@ class Translation
      */
     public function getSummary($length = 100)
     {
-        $content = $this->content;
-        return substr($content, 0, $length) . (strlen($content) > $length ? '...' : '');
+        $parser = new Markdown_Parser();
+        $summary = $parser->transform($this->content);
+        return \CommonBundle\Component\Util\String::truncate($summary, $length, '...');
     }
 
     /**

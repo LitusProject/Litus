@@ -377,7 +377,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 );
             }
 
-            $item->bookable = $article->isBookable() && $article->getSellPrice() != 0
+            $item->bookable = $article->isBookable()
                 && $article->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
                 && ($bookingsEnabled || in_array($article->getId(), $bookingsClosedExceptions));
             $item->booked = isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0;
