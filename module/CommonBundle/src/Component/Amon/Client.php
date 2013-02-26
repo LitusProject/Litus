@@ -16,6 +16,7 @@ namespace CommonBundle\Component\Amon;
 
 use CommonBundle\Component\Amon\Data\Exception as ExceptionData,
     CommonBundle\Component\Amon\Data\Log as LogData,
+    CommonBundle\Component\Controller\Exception\HasNoAccessException,
     Exception,
     Zend\Mvc\Application,
     Zend\Mvc\MvcEvent;
@@ -79,7 +80,9 @@ class Client
      */
     public function handleMvcEvent(MvcEvent $e)
     {
-        if ($e->getError() == Application::ERROR_EXCEPTION)
-            $this->sendException($e->getParam('exception'));
+        if ($e->getError() == Application::ERROR_EXCEPTION) {
+            if (!($e->getParam('exception') instanceof HasNoAccessException))
+                $this->sendException($e->getParam('exception'));
+        }
     }
 }
