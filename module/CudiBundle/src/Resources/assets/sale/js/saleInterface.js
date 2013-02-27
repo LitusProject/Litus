@@ -314,15 +314,16 @@
 
     function _addArticle($this, id) {
         var settings = $this.data('saleInterfaceSettings');
-        var row = $this.find('#article-' + id);
-
-        if (row.data('info').currentNumber < row.data('info').number) {
-            row.data('info').currentNumber++;
-            _updateRow($this, row)
-            row.addClass('success').removeClass('error');
-        } else {
-            row.addClass('error').removeClass('success');
-        }
+        $this.find('#article-' + id + ':not(.inactive)').each(function () {
+            if ($(this).data('info').currentNumber < $(this).data('info').number) {
+                $(this).data('info').currentNumber++;
+                _updateRow($this, $(this))
+                $(this).addClass('success').removeClass('error');
+                return false;
+            } else {
+                $(this).addClass('error').removeClass('success');
+            }
+        });
 
         if (id == settings.membershipArticle)
             $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
@@ -333,15 +334,15 @@
 
     function _removeArticle($this, id) {
         var settings = $this.data('saleInterfaceSettings');
-        var row = $this.find('#article-' + id);
-
-        if (row.data('info').currentNumber > 0) {
-            row.data('info').currentNumber--;
-            _updateRow($this, row)
-            row.removeClass('error success');
-        } else {
-            row.addClass('error').removeClass('success');
-        }
+        $this.find('#article-' + id + ':not(.inactive)').each(function () {
+            if ($(this).data('info').currentNumber > 0) {
+                $(this).data('info').currentNumber--;
+                _updateRow($this, $(this))
+                $(this).removeClass('error success');
+            } else {
+                $(this).addClass('error').removeClass('success');
+            }
+        });
 
         if (id == settings.membershipArticle)
             $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);

@@ -96,6 +96,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     public function getJsonQueueItem($id)
     {
+        if (null == $id)
+            return;
+
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($id);
@@ -341,6 +344,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     public function concludeSelling($id, $articles, $discounts, $payMethod)
     {
+        if (!isset($this->_queueItems[$id]))
+            return;
+
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($id);

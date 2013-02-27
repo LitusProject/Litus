@@ -151,6 +151,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueueItemToAll($id)
     {
+        if (null == $id)
+            return;
+
         $json = $this->_queue->getJsonQueueItem($id);
 
         foreach($this->getUsers() as $user) {
@@ -305,8 +308,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->findOneById($user->getExtraData('session'));
 
         $item = $this->_queue->addPerson($session, $universityIdentification, true);
-        if (null !== $item)
+
+        if (is_string($item)) {
+            $this->sendText($user, $item);
+        } else {
             return $item->getId();
+        }
     }
 
     private function _startCollecting(User $user, $id)
@@ -352,6 +359,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _concludeSelling(User $user, $id, $articles, $discounts, $payMethod)
     {
         $saleItems = $this->_queue->concludeSelling($id, $articles, $discounts, $payMethod);
+
+        if (null == $saleItems)
+            return;
 
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
