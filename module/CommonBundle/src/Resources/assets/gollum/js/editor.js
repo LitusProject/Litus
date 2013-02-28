@@ -5,7 +5,7 @@
             "h2": ["h2", "Header 2", "h2"],
             "h3": ["h3", "Header 3", "h3"],
             "divider": "-",
-            "link": ["link", "Link", "link"],
+            "link": ["link", "Link", "hyperlink"],
             "image": ["image", "Image", "download-media"],
             "divider": "-",
             "bold": ["bold", "Bold", "bold"],
