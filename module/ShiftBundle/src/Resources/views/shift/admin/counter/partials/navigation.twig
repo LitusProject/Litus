@@ -2,10 +2,11 @@
     <div class="title"><span class="counter">Counter</span></div>
 
     <nav id="controller_nav">
-        <ul>
-            {% for academicYear in academicYears %}
-                <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("admin_shift_counter", {"action": "index", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
-            {% endfor %}
-        </ul>
+        {% if hasAccess('admin_shift_counter', 'units') %}
+            <li><a {% if 'units' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_shift_counter', {"action": "units"}) }}">Units</a></li>
+        {% endif %}
+        {% if hasAccess('admin_shift_counter', 'index') %}
+            <li><a {% if 'index' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_shift_counter', {"action": "index"}) }}">Search</a></li>
+        {% endif %}
     </nav>
 </header>
