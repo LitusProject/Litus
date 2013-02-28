@@ -18,6 +18,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
     CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
+    CudiBundle\Entity\Stock\Period,
     CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -49,6 +50,76 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'suppliers' => $suppliers,
+            )
+        );
+    }
+
+    public function overviewAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return new ViewModel();
+
+        if (null !== $this->getParam('field'))
+            $orders = $this->_search($period);
+
+        if (!isset($orders)) {
+            $orders = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+                ->findAllByPeriod($period);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $orders,
+            $this->getParam('page')
+        );
+
+        $suppliers = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Supplier')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'suppliers' => $suppliers,
+                'period' => $period,
+            )
+        );
+    }
+
+    public function searchAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return new ViewModel();
+
+        $orders = $this->_search($period);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($orders, $numResults);
+
+        $result = array();
+        foreach($orders as $order) {
+            $item = (object) array();
+            $item->id = $order->getId();
+            $item->articleId = $order->getArticle()->getId();
+            $item->title = $order->getArticle()->getMainArticle()->getTitle();
+            $item->dateOrdered = $order->getOrder()->getDateOrdered() ? $order->getOrder()->getDateOrdered()->format('d/m/Y H:i') : '';
+            $item->supplier = $order->getArticle()->getSupplier()->getName();
+            $item->nbAssigned = $period->getNbAssigned($order->getArticle());
+            $item->nbNotAssigned = $period->getNbBooked($order->getArticle());
+            $item->nbInStock = $order->getArticle()->getStockValue();
+            $item->nbNotDelivered = $period->getNbOrdered($order->getArticle()) - $period->getNbDelivered($order->getArticle());
+            $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+            $item->nbReserved = $period->getNbBooked($order->getArticle()) + $period->getNbAssigned($order->getArticle());
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
             )
         );
     }
@@ -284,6 +355,20 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
 
         return new ViewModel();
+    }
+
+    private function _search(Period $period)
+    {
+        switch($this->getParam('field')) {
+            case 'title':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+                    ->findAllByTitleAndPeriod($this->getParam('string'), $period);
+            case 'supplier':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+                    ->findAllBySupplierStringAndPeriod($this->getParam('string'), $period);
+        }
     }
 
     private function _getSupplier()
