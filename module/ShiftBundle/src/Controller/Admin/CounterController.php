@@ -61,30 +61,34 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Unit')
             ->findAllActive();
 
+        $unitsArray = array();
+        foreach ($units as $unit)
+            $unitsArray[$unit->getId()] = $unit->getName();
+
         $result = array();
         foreach ($shifts as $shift) {
-            if (!in_array($shift->getUnit(), $units))
+            if (!array_key_exists($shift->getUnit()->getId(), $unitsArray))
                 continue;
 
             foreach ($shift->getResponsibles() as $responsible) {
-                if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
-                    $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
+                if (!isset($shiftsResult[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
+                    $shiftsResult[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
                         'name' => $responsible->getPerson()->getFullName(),
                         'count' => 1
                     );
                 } else {
-                    $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()]['count']++;
+                    $shiftsResult[$shift->getUnit()->getId()][$responsible->getPerson()->getId()]['count']++;
                 }
             }
 
             foreach ($shift->getVolunteers() as $volunteer) {
-                if (!isset($result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()])) {
-                    $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()] = array(
+                if (!isset($shiftsResult[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()])) {
+                    $shiftsResult[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()] = array(
                         'name' => $volunteer->getPerson()->getFullName(),
                         'count' => 1
                     );
                 } else {
-                    $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()]['count']++;
+                    $shiftsResult[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()]['count']++;
                 }
             }
         }
@@ -94,7 +98,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
                 'result' => $result,
-                'units' => $units
+                'units' => $unitsArray
             )
         );
     }
