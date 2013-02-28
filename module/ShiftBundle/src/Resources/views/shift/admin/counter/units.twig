@@ -1,0 +1,37 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'shift/admin/counter/partials/navigation.twig' %}
+
+    <header id="controller_sub_header">
+        <nav id="controller_sub_nav">
+            <ul id="supplier_nav">
+                {% for academicYear in academicYears %}
+                    <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("admin_shift_counter", {"action": "units", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
+    <div id="controller_action">
+        {% for unit, shifts in result %}
+            <h2>{{ units[unit].getName() }}
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="120px">Count</th>
+                </tr>
+
+                {% for test, shift in shifts %}
+                    <tr>
+                        <td>{{ shift['name'] }}</td>
+                        <td>{{ shift['count'] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -45,6 +45,57 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function unitsAction()
+    {
+        $academicYear = $this->_getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findByAcademicYear($this->_getAcademicYear());
+
+        $units = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Unit')
+            ->findAllActive();
+
+        $result = array();
+        foreach ($shifts as $shift) {
+            foreach ($shift->getResponsibles() as $responsible) {
+                if (!isset($result[$shift->getId()][$responsible->getPerson()->getId()])) {
+                    $result[$shift->getId()][$responsible->getPerson()->getId()] = array(
+                        'name' => $responsible->getPerson()->getFullName(),
+                        'count' => 1
+                    );
+                } else {
+                    $result[$shift->getId()][$responsible->getPerson()->getId()]['count']++;
+                }
+            }
+
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if (!isset($result[$shift->getId()][$volunteer->getPerson()->getId()])) {
+                    $result[$shift->getId()][$volunteer->getPerson()->getId()] = array(
+                        'name' => $volunteer->getPerson()->getFullName(),
+                        'count' => 1
+                    );
+                } else {
+                    $result[$shift->getId()][$volunteer->getPerson()->getId()]['count']++;
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'activeAcademicYear' => $academicYear,
+                'academicYears' => $academicYears,
+                'result' => $result,
+                'units' => $units
+            )
+        );
+    }
+
     public function viewAction()
     {
         if (!($person = $this->_getPerson()))
