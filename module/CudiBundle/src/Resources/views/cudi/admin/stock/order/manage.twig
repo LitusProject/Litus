@@ -42,5 +42,18 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('admin_stock_order', 'overview') %}
+            <div class="sidebox">
+                <div class="title">Overview Orders</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view all the past orders!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('admin_stock_order', {"action": "overview"}) }}">&rarr; Overview Orders</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
