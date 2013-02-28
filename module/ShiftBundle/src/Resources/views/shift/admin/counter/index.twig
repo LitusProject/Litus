@@ -5,6 +5,16 @@
 
     {% include 'shift/admin/counter/partials/navigation.twig' %}
 
+    <header id="controller_sub_header">
+        <nav id="controller_sub_nav">
+            <ul id="supplier_nav">
+                {% for academicYear in academicYears %}
+                    <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("admin_shift_counter", {"action": "index", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
     <div id="controller_action">
         <div id="shift_counter_search">
             <div style="padding: 4px; text-align: right;">
