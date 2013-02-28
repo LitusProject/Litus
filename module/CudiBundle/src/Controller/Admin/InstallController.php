@@ -375,7 +375,7 @@ VTK Cudi
                         'add', 'delete', 'manage', 'supplier', 'typeahead'
                     ),
                     'admin_stock_order' => array(
-                        'add', 'cancel', 'delete', 'edit', 'export', 'manage', 'place', 'pdf', 'supplier'
+                        'add', 'cancel', 'delete', 'edit', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier'
                     ),
                     'admin_stock_period' => array(
                         'manage', 'new', 'search', 'view'
