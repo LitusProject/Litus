@@ -71,24 +71,24 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 continue;
 
             foreach ($shift->getResponsibles() as $responsible) {
-                if (!isset($shiftsResult[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
-                    $shiftsResult[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
+                if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
+                    $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
                         'name' => $responsible->getPerson()->getFullName(),
                         'count' => 1
                     );
                 } else {
-                    $shiftsResult[$shift->getUnit()->getId()][$responsible->getPerson()->getId()]['count']++;
+                    $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()]['count']++;
                 }
             }
 
             foreach ($shift->getVolunteers() as $volunteer) {
-                if (!isset($shiftsResult[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()])) {
-                    $shiftsResult[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()] = array(
+                if (!isset($result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()])) {
+                    $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()] = array(
                         'name' => $volunteer->getPerson()->getFullName(),
                         'count' => 1
                     );
                 } else {
-                    $shiftsResult[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()]['count']++;
+                    $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()]['count']++;
                 }
             }
         }
