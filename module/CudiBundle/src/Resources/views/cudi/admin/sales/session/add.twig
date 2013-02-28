@@ -22,7 +22,7 @@
                 {% endfor %}
                 {% for device in lastSession.getCloseRegister().getBankDeviceAmounts() %}
                     $('#device_{{ device.getDevice().getId() }}').after(
-                        $('<span>').css({'margin-left': '10px', 'color': '#999'}).html('({{ device.getAmount() }})')
+                        $('<span>').css({'margin-left': '10px', 'color': '#999'}).html('({{ (device.getAmount()/100)|number_format(2) }})')
                     );
                 {% endfor %}
             {% endif %}
