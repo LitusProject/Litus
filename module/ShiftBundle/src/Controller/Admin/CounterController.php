@@ -63,6 +63,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         $result = array();
         foreach ($shifts as $shift) {
+            if (!in_array($shift->getUnit(), $units))
+                continue;
+
             foreach ($shift->getResponsibles() as $responsible) {
                 if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
                     $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
