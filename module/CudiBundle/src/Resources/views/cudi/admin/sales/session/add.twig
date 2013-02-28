@@ -10,3 +10,22 @@
         {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if lastSession %}
+                {% for amount in lastSession.getOpenRegister().getMoneyUnitAmounts() %}
+                    $('#unit_{{ amount.getUnit().getId() }}').after(
+                        $('<span>').css({'margin-left': '10px', 'color': '#999'}).html('({{ amount.getAmount() }})')
+                    );
+                {% endfor %}
+                {% for device in lastSession.getOpenRegister().getBankDeviceAmounts() %}
+                    $('#device_{{ device.getDevice().getId() }}').after(
+                        $('<span>').css({'margin-left': '10px', 'color': '#999'}).html('({{ device.getAmount() }})')
+                    );
+                {% endfor %}
+            {% endif %}
+        });
+    </script>
+{% endblock %}
