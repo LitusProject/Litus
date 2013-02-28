@@ -64,24 +64,24 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         $result = array();
         foreach ($shifts as $shift) {
             foreach ($shift->getResponsibles() as $responsible) {
-                if (!isset($result[$shift->getId()][$responsible->getPerson()->getId()])) {
-                    $result[$shift->getId()][$responsible->getPerson()->getId()] = array(
+                if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
+                    $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
                         'name' => $responsible->getPerson()->getFullName(),
                         'count' => 1
                     );
                 } else {
-                    $result[$shift->getId()][$responsible->getPerson()->getId()]['count']++;
+                    $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()]['count']++;
                 }
             }
 
             foreach ($shift->getVolunteers() as $volunteer) {
-                if (!isset($result[$shift->getId()][$volunteer->getPerson()->getId()])) {
-                    $result[$shift->getId()][$volunteer->getPerson()->getId()] = array(
+                if (!isset($result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()])) {
+                    $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()] = array(
                         'name' => $volunteer->getPerson()->getFullName(),
                         'count' => 1
                     );
                 } else {
-                    $result[$shift->getId()][$volunteer->getPerson()->getId()]['count']++;
+                    $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()]['count']++;
                 }
             }
         }
@@ -113,7 +113,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($asVolunteer as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person)
-                    $payed[$shift->getId()] = $volunteer->getPayed();
+                    $payed[$shift->getUnit()->getId()] = $volunteer->getPayed();
             }
         }
 
