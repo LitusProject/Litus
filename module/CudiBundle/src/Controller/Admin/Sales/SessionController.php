@@ -54,6 +54,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $form = new AddForm($this->getEntityManager());
 
+        $lastSession = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getLast();
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -108,6 +112,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form' => $form,
+                'lastSession' => $lastSession,
             )
         );
     }

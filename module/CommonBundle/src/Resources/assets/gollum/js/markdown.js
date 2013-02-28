@@ -67,7 +67,7 @@ var LanguageDefinition = {
                                             $('<br />'),
                                             $('<b>').html('URL'),
                                             $('<br />'),
-                                            url = $('<input>', {'type': 'text', 'class': 'span5', 'placeholder': 'URL'}),
+                                            url = $('<input>', {'type': 'text', 'class': 'span5', 'placeholder': 'URL'}).val('http://'),
                                             $('<br />'),
                                             $('<br />')
                                         ),
@@ -134,6 +134,8 @@ var LanguageDefinition = {
                                     if (url.val() == '' && uploadURL != '') {
                                         form.submit();
                                     } else {
+                                        if (url.val().indexOf('http://') !== 0 && url.val().indexOf('https://') !== 0 && url.val().indexOf('www') === 0)
+                                          url.val('http://' + url.val());
                                         $field.gollum('replaceSelection', '[' + linkText.val() + '](' + url.val() + ')');
                                         modal.modal('hide');
                                     }
