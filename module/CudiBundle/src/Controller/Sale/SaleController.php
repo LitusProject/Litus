@@ -43,6 +43,8 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         return new ViewModel(
             array(
                 'socketUrl' => $this->getSocketUrl(),
+                'authSession' => $this->getAuthentication()
+                    ->getSessionObject(),
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),

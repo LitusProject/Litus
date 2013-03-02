@@ -26,8 +26,9 @@
         $(document).ready(function () {
             $(document).runQueue({
                 url: '{{ socketUrl }}',
+                key: '{{ key }}',
+                authSession: '{{ authSession.getId() }}',
                 errorDialog: $('#loading_queue_error'),
-
             });
 
             $('#queue').click(function (e) {

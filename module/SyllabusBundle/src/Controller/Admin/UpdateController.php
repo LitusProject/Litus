@@ -35,6 +35,11 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'socketUrl' => 'ws://' . $address . ':' . $port,
+                'authSession' => $this->getAuthentication()
+                    ->getSessionObject(),
+                'key' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('syllabus.queue_socket_key'),
             )
         );
     }
