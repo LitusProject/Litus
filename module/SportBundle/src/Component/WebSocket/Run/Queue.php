@@ -14,7 +14,8 @@
 
 namespace SportBundle\Component\WebSocket\Run;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Acl\Acl,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\Users\Person,
     DateTime,
@@ -74,10 +75,64 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         $this->_entityManager->clear();
 
-        if (strpos($data, 'action: ') === 0) {
-            $this->_gotAction($user, $data);
-        } elseif ($data == 'reloadQueue') {
-            $this->sendQueueToAll();
+        $key = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.queue_socket_key');
+
+        $command = json_decode($data);
+
+        if (null == $command)
+            return;
+
+        switch($command->command) {
+            case 'action':
+                $this->_gotAction($user, $command);
+                break;
+            case 'initialize':
+                if (!isset($command->key) || $command->key != $key) {
+                    $this->removeUser($user);
+                    $now = new DateTime();
+                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
+                    return;
+                }
+
+                if (!isset($command->authSession)) {
+                    $this->removeUser($user);
+                    $now = new DateTime();
+                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                    return;
+                }
+
+                $authSession = $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\Users\Session')
+                    ->findOneById($command->authSession);
+
+                if ($authSession) {
+                    $acl = new Acl($this->_entityManager);
+
+                    $allowed = false;
+                    foreach ($authSession->getPerson()->getRoles() as $role) {
+                        if (
+                            $role->isAllowed(
+                                $acl, 'run_screen', 'index'
+                            )
+                        ) {
+                            $allowed = true;
+                        }
+                    }
+                }
+
+                if (null == $authSession || !$allowed) {
+                    $this->removeUser($user);
+                    $now = new DateTime();
+                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                    return;
+                }
+
+                $this->addAuthenticated($user->getSocket());
+
+                $this->sendQueue($user, $this->_getJsonQueue());
+                break;
         }
     }
 
@@ -85,20 +140,19 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * Parse action text
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string $data
+     * @param string $command
      */
-    private function _gotAction(User $user, $data)
+    private function _gotAction(User $user, $command)
     {
-        $data .= ' ';
-        $action = substr($data, strlen('action: '), strpos($data, ' ', strlen('action: ')) - strlen('action: '));
-        $params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
-
-        switch ($action) {
+        switch ($command->action) {
+            case 'reloadQueue':
+                $this->sendQueueToAll();
+                break;
             case 'addToQueue':
-                $this->_addToQueue(json_decode($params));
+                $this->_addToQueue($command);
                 break;
             case 'deleteLap':
-                $this->_deleteLap($params);
+                $this->_deleteLap($command);
                 break;
             case 'startLap':
                 $this->_startLap();
@@ -235,7 +289,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         $lap = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findOneById($data);
+            ->findOneById($data->id);
 
         $this->_entityManager->remove($lap);
         $this->_entityManager->flush();

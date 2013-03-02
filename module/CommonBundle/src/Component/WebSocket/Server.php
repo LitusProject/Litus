@@ -23,12 +23,13 @@ use Exception;
  */
 class Server
 {
-
     private $_address;
     private $_port;
 
     private $_users;
     private $_sockets;
+
+    private $_authenticated;
 
     const OP_CONT = 0x0;
     const OP_TEXT = 0x1;
@@ -47,6 +48,7 @@ class Server
         $this->_port = $port;
         $this->_users = array();
         $this->_sockets = array();
+        $this->_authenticated = array();
 
         $this->createSocket();
     }
@@ -124,6 +126,16 @@ class Server
     }
 
     /**
+     * Add a authenticated socket
+     *
+     * @param mixed $socket
+     */
+    protected function addAuthenticated($socket)
+    {
+        $this->_authenticated[(int) $socket] = $socket;
+    }
+
+    /**
      * Get a user by his socket
      *
      * @param mixed $socket
@@ -150,6 +162,9 @@ class Server
                 $this->onClose($value, 0, '');
             }
         }
+
+        if (isset($this->_authenticated[(int) $socket]))
+            unset($this->_authenticated[(int) $socket]);
 
         @socket_close($socket);
 
@@ -251,6 +266,9 @@ class Server
      */
     public function sendText($user, $text)
     {
+        if (!isset($this->_authenticated[(int) $user->getSocket()]))
+            return;
+
         $len = strlen($text);
 
         if ($len > 0xffff)
@@ -287,8 +305,10 @@ class Server
             $header .= chr($len);
         }
 
-        foreach($this->_users as $user)
-            $user->write($header . $text);
+        foreach($this->_users as $user) {
+            if (isset($this->_authenticated[(int) $user->getSocket()]))
+                $user->write($header . $text);
+        }
     }
 
     /**
