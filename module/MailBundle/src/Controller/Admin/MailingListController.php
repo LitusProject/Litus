@@ -15,10 +15,12 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\MailingList,
     MailBundle\Entity\Entries\Academic as AcademicEntry,
     MailBundle\Entity\Entries\External as ExternalEntry,
+    MailBundle\Entity\MailingList,
+    MailBundle\Entity\MailingList\AdminMap as ListAdmin,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
+    MailBundle\Form\Admin\MailingList\Admin as AdminForm,
     MailBundle\Form\Admin\MailingList\Entry\External as ExternalForm,
     MailBundle\Form\Admin\MailingList\Entry\Member as MemberForm,
     Zend\View\Model\ViewModel;
@@ -36,12 +38,13 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
+                'person' => $this->getAuthentication()->getPersonObject(),
+                'entityManager' => $this->getEntityManager(),
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
-
 
     public function addAction()
     {
@@ -56,6 +59,10 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 
                 $list = new MailingList($formData['name']);
                 $this->getEntityManager()->persist($list);
+
+                $admin = new ListAdmin($list, $this->getAuthentication()->getPersonObject(), true);
+                $this->getEntityManager()->persist($admin);
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -87,6 +94,10 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
     public function entriesAction()
     {
         if(!($list = $this->_getList()))
+            return new ViewModel();
+
+        $person = $this->getAuthentication()->getPersonObject();
+        if (!$list->canBeEditedBy($person, $this->getEntityManager(), false))
             return new ViewModel();
 
         $externalForm = new ExternalForm($this->getEntityManager());
@@ -205,11 +216,102 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
+    public function adminsAction()
+    {
+        if(!($list = $this->_getList()))
+            return new ViewModel();
+
+        $person = $this->getAuthentication()->getPersonObject();
+        if (!$list->canBeEditedBy($person, $this->getEntityManager(), true))
+            return new ViewModel();
+
+        $form = new AdminForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $entry = null;
+
+                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->findOneByUsername($formData['person_name']);
+                } else {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->findOneById($formData['person_id']);
+                }
+
+                $repositoryCheck = $this->getEntityManager()
+                    ->getRepository('MailBundle\Entity\MailingList\AdminMap')
+                    ->findOneBy(
+                        array(
+                            'list' => $list,
+                            'academic' => $academic
+                        )
+                    );
+
+                if (null !== $repositoryCheck) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'ERROR',
+                            'This member already has admin rights to this list!'
+                        )
+                    );
+                } else {
+                    $admin = new ListAdmin($list, $academic, $formData['edit_admin']);
+
+                    $this->getEntityManager()->persist($admin);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCES',
+                            'The admin was succesfully added!'
+                        )
+                    );
+                }
+
+                $this->redirect()->toRoute(
+                    'admin_mail_list',
+                    array(
+                        'action' => 'admins',
+                        'id' => $list->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $admins = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\MailingList\AdminMap')
+            ->findByList($list);
+
+        return new ViewModel(
+            array(
+                'list' => $list,
+                'form' => $form,
+                'admins' => $admins,
+            )
+        );
+    }
+
     public function deleteAction()
     {
         $this->initAjax();
 
         if (!($list = $this->_getList()))
+            return new ViewModel();
+
+        $person = $this->getAuthentication()->getPersonObject();
+        if (!$list->canBeEditedBy($person, $this->getEntityManager(), false))
             return new ViewModel();
 
         $this->getEntityManager()->remove($list);
@@ -229,7 +331,32 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if (!($entry = $this->_getEntry()))
             return new ViewModel();
 
+        $person = $this->getAuthentication()->getPersonObject();
+        if (!$entry->getList()->canBeEditedBy($person, $this->getEntityManager(), false));
+            return new ViewModel();
+
         $this->getEntityManager()->remove($entry);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    public function deleteAdminAction()
+    {
+        $this->initAjax();
+
+        if (!($admin = $this->_getAdmin()))
+            return new ViewModel();
+
+        $person = $this->getAuthentication()->getPersonObject();
+        if (!$admin->getList()->canBeEditedBy($person, $this->getEntityManager(), true));
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($admin);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -331,5 +458,52 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         return $entry;
+    }
+
+    private function _getAdmin()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the admin!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $admin = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\MailingList\AdminMap')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $admin) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No admin with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $admin;
     }
 }
