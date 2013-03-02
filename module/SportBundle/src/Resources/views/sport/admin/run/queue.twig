@@ -125,6 +125,8 @@
         $(document).ready(function () {
             $('#queue').runQueue({
                 url: '{{ socketUrl }}',
+                key: '{{ key }}',
+                authSession: '{{ authSession.getId() }}',
                 errorDialog: $('#loading_queue_error'),
                 displayLaps: displayLaps
             });

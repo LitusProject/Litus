@@ -10,6 +10,7 @@
             $('#saleContainer').saleApp({
                 socketUrl: '{{ socketUrl }}',
                 sessionId: {{ session.getId() }},
+                authSession: '{{ authSession.getId() }}',
                 authKey: '{{ key }}',
                 membershipArticle: {{ membershipArticle.getId() }},
 
