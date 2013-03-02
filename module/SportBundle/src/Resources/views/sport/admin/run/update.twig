@@ -24,6 +24,8 @@
             var initial = true;
             $(document).runQueue({
                 url: '{{ socketUrl }}',
+                key: '{{ key }}',
+                authSession: '{{ authSession.getId() }}',
                 errorDialog: $('#loading_queue_error'),
                 displayLaps: function () {
                     if (initial)
