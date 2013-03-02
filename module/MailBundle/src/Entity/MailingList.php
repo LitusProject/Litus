@@ -74,4 +74,61 @@ class MailingList
         $this->name = strtolower($name);
         return $this;
     }
+
+    public function canBeEditedBy($person, $entityManager, $editAdmin)
+    {
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($role->getName() == 'editor')
+                return true;
+        }
+
+        $adminMap = $entityManager
+            ->getRepository('MailBundle\Entity\MailingList\AdminMap')
+            ->findOneBy(
+                array(
+                    'list' => $this,
+                    'academic' => $person,
+                )
+            );
+
+        if (!$adminMap) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to manage the given list!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return false;
+        }
+
+        if ($adminEdit && !$adminMap->isAdminEdit()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to manage the admins for the given list!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return false;
+        }
+
+        return true;
+    }
 }
