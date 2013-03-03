@@ -25,7 +25,8 @@ use Doctrine\ORM\Mapping as ORM,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "named"="MailBundle\Entity\MailingList\Named"
+ *      "named"="MailBundle\Entity\MailingList\Named",
+ *      "promotion"="SecretaryBundle\Entity\MailingList\Promotion"
  * })
  */
 abstract class MailingList
