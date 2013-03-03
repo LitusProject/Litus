@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "named"="MailBundle\Entity\MailingList\Named",
+ *      "named"="MailBundle\Entity\MailingList\Named"
  * })
  */
 abstract class MailingList
@@ -40,11 +40,27 @@ abstract class MailingList
     private $id;
 
     /**
+     * @var array The entries of this list
+     *
+     * @ORM\OneToMany(targetEntity="MailBundle\Entity\Entry", mappedBy="list", cascade={"remove"})
+     */
+    private $entries;
+
+    /**
+     * @var array The admins of this list
+     *
+     * @ORM\OneToMany(targetEntity="MailBundle\Entity\MailingList\AdminMap", mappedBy="list", cascade={"remove"})
+     */
+    private $admins;
+
+    /**
      * @return int
      */
     public function getId() {
         return $this->id;
     }
+
+    public abstract function getName();
 
     public function canBeEditedBy($person, $entityManager, $editAdmin)
     {
@@ -62,43 +78,11 @@ abstract class MailingList
                 )
             );
 
-        if (!$adminMap) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to manage the given list!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'admin_mail_list',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
+        if (!$adminMap)
             return false;
-        }
 
-        if ($adminEdit && !$adminMap->isAdminEdit()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to manage the admins for the given list!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'admin_mail_list',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
+        if ($editAdmin && !$adminMap->isEditAdmin())
             return false;
-        }
 
         return true;
     }
