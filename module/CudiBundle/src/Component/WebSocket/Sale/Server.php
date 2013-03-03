@@ -77,7 +77,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         switch($command->command) {
             case 'action':
-                $this->_gotAction($user, $command);
+                if ($this->isAuthenticated($user->getSocket()))
+                    $this->_gotAction($user, $command);
                 break;
             case 'queueUpdated':
                 $this->sendQueueToAll();

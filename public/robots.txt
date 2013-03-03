@@ -8,5 +8,5 @@ Disallow: /*/calendar/month/
 Disallow: /*/run/group/getName/
 Disallow: /*/career/company/search/
 
-# We do not want it to access our admin
+# We do not want them to access our admin
 Disallow: /admin/*
