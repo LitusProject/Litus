@@ -29,16 +29,34 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList\Named')
-            ->findAll(),
-            $this->getParam('page')
-        );
+        $person = $this->getAuthentication()->getPersonObject();
+        $editor = false;
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($role->getName() == 'editor') {
+                $editor = true;
+                break;
+            }
+        }
+
+        if (!$editor) {
+            $paginator = $this->paginator()->createFromArray(
+                $this->getEntityManager()
+                ->getRepository('MailBundle\Entity\MailingList\Named')
+                ->findAllByAdmin($person),
+                $this->getParam('page')
+            );
+        } else {
+            $paginator = $this->paginator()->createFromArray(
+                $this->getEntityManager()
+                ->getRepository('MailBundle\Entity\MailingList\Named')
+                ->findAll(),
+                $this->getParam('page')
+            );
+        }
 
         return new ViewModel(
             array(
-                'person' => $this->getAuthentication()->getPersonObject(),
+                'person' => $person,
                 'entityManager' => $this->getEntityManager(),
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
@@ -96,8 +114,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if(!($list = $this->_getList()))
             return new ViewModel();
 
-        $person = $this->getAuthentication()->getPersonObject();
-        if (!$list->canBeEditedBy($person, $this->getEntityManager(), false))
+        if (!$this->_checkAccess($list, false))
             return new ViewModel();
 
         $externalForm = new ExternalForm($this->getEntityManager());
@@ -221,8 +238,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if(!($list = $this->_getList()))
             return new ViewModel();
 
-        $person = $this->getAuthentication()->getPersonObject();
-        if (!$list->canBeEditedBy($person, $this->getEntityManager(), true))
+        if (!$this->_checkAccess($list, true))
             return new ViewModel();
 
         $form = new AdminForm($this->getEntityManager());
@@ -310,8 +326,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if (!($list = $this->_getList()))
             return new ViewModel();
 
-        $person = $this->getAuthentication()->getPersonObject();
-        if (!$list->canBeEditedBy($person, $this->getEntityManager(), false))
+        if (!$this->_checkAccess($list, false))
             return new ViewModel();
 
         $this->getEntityManager()->remove($list);
@@ -331,8 +346,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if (!($entry = $this->_getEntry()))
             return new ViewModel();
 
-        $person = $this->getAuthentication()->getPersonObject();
-        if (!$entry->getList()->canBeEditedBy($person, $this->getEntityManager(), false))
+        if (!$this->_checkAccess($entry->getList(), false))
             return new ViewModel();
 
         $this->getEntityManager()->remove($entry);
@@ -352,8 +366,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if (!($admin = $this->_getAdmin()))
             return new ViewModel();
 
-        $person = $this->getAuthentication()->getPersonObject();
-        if (!$admin->getList()->canBeEditedBy($person, $this->getEntityManager(), true))
+        if (!$this->_checkAccess($admin->getList(), true))
             return new ViewModel();
 
         $this->getEntityManager()->remove($admin);
@@ -505,5 +518,30 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         return $admin;
+    }
+
+    private function _checkAccess($list, $adminEdit) {
+        $person = $this->getAuthentication()->getPersonObject();
+        if (!$list->canBeEditedBy($person, $this->getEntityManager(), $adminEdit)) {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to manage the admins for the given list!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_mail_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return false;
+        }
+
+        return true;
     }
 }

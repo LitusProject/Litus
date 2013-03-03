@@ -2,7 +2,8 @@
 
 namespace MailBundle\Repository\MailingList;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\Users\People\Academic,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Named
@@ -12,4 +13,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class Named extends EntityRepository
 {
+
+    public function findAllByAdmin(Academic $academic) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('MailBundle\Entity\MailingList', 'l')
+            ->from('MailBundle\Entity\MailingList\AdminMap', 'a')
+            // ->innerJoin('a.list', 'l')
+            ->where(
+                $query->expr()->eq('a.academic', ':academic')
+            )
+            ->setParameter('academic', $academic)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
 }
