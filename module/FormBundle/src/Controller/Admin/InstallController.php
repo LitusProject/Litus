@@ -32,7 +32,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'formBundle' => array(
                     'admin_form' => array(
-                        'add', 'delete', 'edit', 'manage'
+                        'add', 'delete', 'edit', 'manage', 'old'
                     ),
                     'admin_form_field' => array(
                         'add', 'delete', 'manage'
