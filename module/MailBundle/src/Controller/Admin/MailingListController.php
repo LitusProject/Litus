@@ -401,7 +401,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         $list = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList\Named')
+            ->getRepository('MailBundle\Entity\MailingList')
             ->findOneById($this->getParam('id'));
 
         if (null === $list) {
