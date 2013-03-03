@@ -16,14 +16,14 @@ namespace MailBundle\Component\Validator;
 
 use CommonBundle\Component\Util\Url,
     Doctrine\ORM\EntityManager,
-    MailBundle\Entity\MailingList as MailingListEntity;
+    MailBundle\Entity\MailingList\Named as MailingListEntity;
 
 /**
  * Checks whether a mailing list name is unique or not.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class MailingList extends \Zend\Validator\AbstractValidator
+class NamedList extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -69,7 +69,7 @@ class MailingList extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $list = $this->_entityManager
-            ->getRepository('MailBundle\Entity\MailingList')
+            ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findOneByName($value);
 
         if (null === $list || ($this->_list && $list == $this->_list))

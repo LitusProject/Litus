@@ -51,7 +51,8 @@
                         JSON.stringify({
                             'command': 'initialize',
                             'session': '{{ session.getId() }}',
-                            'key': '{{ key }}'
+                            'key': '{{ key }}',
+                            'authSession': '{{ authSession.getId() }}',
                         })
                     });
                 },

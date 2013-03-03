@@ -29,6 +29,11 @@ class ScreenController extends \SportBundle\Component\Controller\RunController
         return new ViewModel(
             array(
                 'socketUrl' => $this->getSocketUrl(),
+                'authSession' => $this->getAuthentication()
+                    ->getSessionObject(),
+                'key' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('sport.queue_socket_key'),
             )
         );
     }
