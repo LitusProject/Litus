@@ -286,7 +286,7 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_secretary_registration', 'manage') %}
+                        {% if hasAccess('admin_secretary_registration', 'manage') or hasAccess('admin_mail_promotion', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                         <b>Secretary</b><br />
@@ -294,12 +294,15 @@
                                 </div>
 
                                 <ul
-                                    {% if 'admin_secretary_registration' == getParam('controller') %}
+                                    {% if 'admin_secretary_registration' == getParam('controller') or 'admin_mail_promotion' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
                                     {% if hasAccess('admin_secretary_registration', 'manage') %}
                                         <li><a href="{{ url('admin_secretary_registration') }}">Registrations</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('admin_mail_promotion', 'manage') %}
+                                        <li><a href="{{ url('admin_mail_promotion') }}">Promotion Lists</a></li>
                                     {% endif %}
                                 </ul>
                             </li>

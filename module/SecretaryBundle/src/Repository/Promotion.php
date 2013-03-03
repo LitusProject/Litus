@@ -2,10 +2,7 @@
 
 namespace SecretaryBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
-    Doctrine\ORM\EntityRepository,
-    SyllabusBundle\Entity\Subject;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Promotion
