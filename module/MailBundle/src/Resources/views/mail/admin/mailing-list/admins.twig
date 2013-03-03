@@ -5,16 +5,16 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div class="flashmessage success_message full_width entry_removed_success hide">
+    <div class="flashmessage success_message full_width admin_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The entry was successfully removed!</p>
+            <p>The admin was successfully removed!</p>
         </div>
     </div>
-    <div class="flashmessage error_message full_width entry_removed_error hide">
+    <div class="flashmessage error_message full_width admin_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to delete the entry.</p>
+            <p>An error occurred while trying to delete the admin.</p>
         </div>
     </div>
 
@@ -22,29 +22,26 @@
         <h1>List</h1>
         <p>Name: <b>{{ list.getName() }}</b></p>
 
-        <h1>Entries</h1>
+        <h1>Admins</h1>
 
         {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(memberForm) }}
-        {{ forms.renderForm(externalForm) }}
+        {{ forms.renderForm(form) }}
 
         <br style="clear:both">
 
         <table class="full_width" style="margin-top: 5px;">
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
+                <th>Name</th>
+                <th>Can Edit Admins</th>
                 <th width="90px">Actions</th>
             </tr>
-            {% for entry in entries %}
-                <tr class="item item-{{ entry.getId() }}">
-                    <td>{{ entry.getFirstName() }}</td>
-                    <td>{{ entry.getLastName() }}</td>
-                    <td>{{ entry.getEmailAddress() }}</td>
+            {% for admin in admins %}
+                <tr class="item item-{{ admin.getId() }}">
+                    <td>{{ admin.getAcademic().getFullName() }}</td>
+                    <td>{% if admin.isEditAdmin() %}X{% endif %}</td>
                     <td>
-                        {% if hasAccess('admin_mail_list', 'deleteEntry') %}
-                            <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getFirstName() }} {{ entry.getLastName() }}" class="delete">Delete</a>
+                        {% if hasAccess('admin_mail_list', 'deleteAdmin') %}
+                            <a href="#" data-id="{{ admin.getId() }}" data-name="{{ admin.getAcademic().getFullName() }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -52,14 +49,14 @@
         </table>
     </div>
 
-    <div class="modal hide fade" id="removeEntry">
+    <div class="modal hide fade" id="removeAdmin">
         <div class="modal-header">
             <span>Litus Admin</span>
-            /Delete Entry
+            /Delete Admin
         </div>
         <div class="modal-body">
             <p>
-                You are about to delete the following entry: <b class="entryName"></b>!
+                You are about to delete the following admin: <b class="adminName"></b>!
                 Please note that this operation cannot be undone!
             </p>
             <p>
@@ -95,28 +92,28 @@
             var $this = $(this);
 
             e.preventDefault();
-            var removeEntry = $('#removeEntry');
-            removeEntry.find('.entryName').html($(this).data('name'));
+            var removeAdmin = $('#removeAdmin');
+            removeAdmin.find('.adminName').html($(this).data('name'));
             var id = $this.data('id');
-            removeEntry.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_mail_list', {"action": "deleteEntry"})}}' + id, function (data) {
+            removeAdmin.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_mail_list', {"action": "deleteAdmin"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.entry_removed_success').removeClass('hide');
+                        $('.admin_removed_success').removeClass('hide');
                         $('.item-' + id).remove();
-                        removeEntry.modal('hide');
+                        removeAdmin.modal('hide');
                     } else {
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
-            removeEntry.modal();
+            removeAdmin.modal();
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('hide');
-            $('.entry_removed_error').removeClass('hide');
-            $('#removeEntry').modal('hide');
+            $('.admin_removed_error').removeClass('hide');
+            $('#removeAdmin').modal('hide');
         }
     </script>
 {% endblock %}

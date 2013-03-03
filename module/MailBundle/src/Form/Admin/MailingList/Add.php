@@ -17,7 +17,7 @@ namespace MailBundle\Form\Admin\MailingList;
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    MailBundle\Component\Validator\MailingList as NameValidator,
+    MailBundle\Component\Validator\NamedList as NameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
