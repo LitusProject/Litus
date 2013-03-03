@@ -22,8 +22,13 @@ use Doctrine\ORM\Mapping as ORM,
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList")
  * @ORM\Table(name="mail.lists")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "named"="MailBundle\Entity\MailingList\Named",
+ * })
  */
-class MailingList
+abstract class MailingList
 {
     /**
      * @var int The list's unique identifier
@@ -35,44 +40,10 @@ class MailingList
     private $id;
 
     /**
-     * @var string The name of this list
-     *
-     * @ORM\Column(type="string")
-     */
-    private $name;
-
-    /**
-     * Creates a new list with the given name
-     *
-     * @param $name The name for this list
-     */
-    public function __construct($name)
-    {
-        $this->setName($name);
-    }
-
-    /**
      * @return int
      */
     public function getId() {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name The name
-     * @return \MailBundle\Entity\MailingList
-     */
-    public function setName($name) {
-        $this->name = strtolower($name);
-        return $this;
     }
 
     public function canBeEditedBy($person, $entityManager, $editAdmin)

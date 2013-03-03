@@ -17,7 +17,7 @@ namespace MailBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Entity\Entries\Academic as AcademicEntry,
     MailBundle\Entity\Entries\External as ExternalEntry,
-    MailBundle\Entity\MailingList,
+    MailBundle\Entity\MailingList\Named as NamedList,
     MailBundle\Entity\MailingList\AdminMap as ListAdmin,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
     MailBundle\Form\Admin\MailingList\Admin as AdminForm,
@@ -31,7 +31,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList')
+            ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findAll(),
             $this->getParam('page')
         );
@@ -57,7 +57,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $list = new MailingList($formData['name']);
+                $list = new NamedList($formData['name']);
                 $this->getEntityManager()->persist($list);
 
                 $admin = new ListAdmin($list, $this->getAuthentication()->getPersonObject(), true);
@@ -332,7 +332,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
 
         $person = $this->getAuthentication()->getPersonObject();
-        if (!$entry->getList()->canBeEditedBy($person, $this->getEntityManager(), false));
+        if (!$entry->getList()->canBeEditedBy($person, $this->getEntityManager(), false))
             return new ViewModel();
 
         $this->getEntityManager()->remove($entry);
@@ -353,7 +353,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
 
         $person = $this->getAuthentication()->getPersonObject();
-        if (!$admin->getList()->canBeEditedBy($person, $this->getEntityManager(), true));
+        if (!$admin->getList()->canBeEditedBy($person, $this->getEntityManager(), true))
             return new ViewModel();
 
         $this->getEntityManager()->remove($admin);
@@ -388,7 +388,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         $list = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList')
+            ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findOneById($this->getParam('id'));
 
         if (null === $list) {
