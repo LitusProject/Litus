@@ -86,7 +86,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         switch($command->command) {
             case 'action':
-                $this->_gotAction($user, $command);
+                if ($this->isAuthenticated($user->getSocket()))
+                    $this->_gotAction($user, $command);
                 break;
             case 'initialize':
                 if (!isset($command->key) || $command->key != $key) {
