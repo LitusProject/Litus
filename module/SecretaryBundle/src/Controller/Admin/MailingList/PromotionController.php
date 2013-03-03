@@ -18,6 +18,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Entity\Entries\Academic as AcademicEntry,
     MailBundle\Entity\Entries\External as ExternalEntry,
     MailBundle\Entity\MailingList\Named as NamedList,
+    SecretaryBundle\Entity\Promotion,
+    SecretaryBundle\Entity\MailingList\Promotion as PromotionList,
     Zend\View\Model\ViewModel;
 
 class PromotionController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -57,5 +59,59 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
+    }
+
+    public function generateAction()
+    {
+        $academicYear = $this->getCurrentAcademicYear();
+
+        $existingList = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\MailingList\Promotion')
+            ->findOneByAcademicYear($academicYear);
+
+        if (!$existingList) {
+
+            // Create the promotion if necessary
+            $promotion = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Promotion')
+                ->findOneByAcademicYear($academicYear);
+
+            if (!$promotion) {
+                $promotion = new Promotion($academicYear);
+
+                $this->getEntityManager()->persist($promotion);
+            }
+
+            // Create the promotion list
+            $list = new PromotionList($promotion);
+
+            $this->getEntityManager()->persist($list);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCES',
+                    'The promotion list was succesfully created!'
+                )
+            );
+        } else {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'The promotion list for this year already exists! Remove the existing one to generate a new one.'
+                )
+            );
+        }
+
+        $this->redirect()->toRoute(
+            'admin_mail_promotion',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
     }
 }
