@@ -95,6 +95,7 @@ class Server
                     $this->_addUserSocket(socket_accept($this->master));
                 } else {
                     $bytes = @socket_recv($socket, $buffer, 2048, 0);
+                    
                     if ($bytes == 0) {
                         $this->_removeUserSocket($socket);
                     } else {
@@ -133,6 +134,16 @@ class Server
     protected function addAuthenticated($socket)
     {
         $this->_authenticated[(int) $socket] = $socket;
+    }
+
+    /**
+     * Check a authenticated socket
+     *
+     * @param mixed $socket
+     */
+    protected function isAuthenticated($socket)
+    {
+        return isset($this->_authenticated[(int) $socket]);
     }
 
     /**
@@ -266,7 +277,7 @@ class Server
      */
     public function sendText($user, $text)
     {
-        if (!isset($this->_authenticated[(int) $user->getSocket()]))
+        if (!$this->isAuthenticated($user->getSocket()))
             return;
 
         $len = strlen($text);
@@ -306,7 +317,7 @@ class Server
         }
 
         foreach($this->_users as $user) {
-            if (isset($this->_authenticated[(int) $user->getSocket()]))
+            if ($this->isAuthenticated($user->getSocket()))
                 $user->write($header . $text);
         }
     }
