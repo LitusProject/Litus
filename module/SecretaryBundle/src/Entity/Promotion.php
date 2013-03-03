@@ -14,7 +14,8 @@
 
 namespace SecretaryBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM,
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 
 /**
