@@ -106,24 +106,44 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                     $person = $repository->findOneById($formData['person_id']);
                 }
 
-                $viewer = new ViewerMap(
-                    $formSpecification,
-                    $person,
-                    $formData['edit'],
-                    $formData['mail']
-                );
+                $repositoryCheck = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\ViewerMap')
+                    ->findOneBy(
+                        array(
+                            'form' => $formSpecification,
+                            'person' => $person
+                        )
+                    );
 
-                $this->getEntityManager()->persist($viewer);
+                if (null !== $repositoryCheck) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'SUCCES',
+                            'This user has already been given access to this list!'
+                        )
+                    );
+                } else {
 
-                $this->getEntityManager()->flush();
+                    $viewer = new ViewerMap(
+                        $formSpecification,
+                        $person,
+                        $formData['edit'],
+                        $formData['mail']
+                    );
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The viewer was successfully created!'
-                    )
-                );
+                    $this->getEntityManager()->persist($viewer);
+
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The viewer was successfully created!'
+                        )
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'admin_form_viewer',
