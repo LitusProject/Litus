@@ -14,7 +14,9 @@
 
 namespace SyllabusBundle\Component\WebSocket\Syllabus;
 
-use CommonBundle\Component\WebSocket\User,
+use CommonBundle\Component\Acl\Acl,
+    CommonBundle\Component\WebSocket\User,
+    DateTime,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\XMLParser\Study as StudyParser,
     Zend\Mail\Transport\TransportInterface;
@@ -68,7 +70,56 @@ class Update extends \CommonBundle\Component\WebSocket\Server
      */
     protected function gotText(User $user, $data)
     {
-        if (strpos($data, 'update') === 0 && 'done' == $this->_status) {
+        $command = json_decode($data);
+
+        $key = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.queue_socket_key');
+
+        if (!isset($command->key) || $command->key != $key) {
+            $this->removeUser($user);
+            $now = new DateTime();
+            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
+            return;
+        }
+
+        if (!isset($command->authSession)) {
+            $this->removeUser($user);
+            $now = new DateTime();
+            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+            return;
+        }
+
+        $authSession = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Users\Session')
+            ->findOneById($command->authSession);
+
+        if ($authSession) {
+            $acl = new Acl($this->_entityManager);
+
+            $allowed = false;
+            foreach ($authSession->getPerson()->getRoles() as $role) {
+                if (
+                    $role->isAllowed(
+                        $acl, 'admin_update_syllabus', 'updateNow'
+                    )
+                ) {
+                    $allowed = true;
+                }
+            }
+        }
+
+        if (null == $authSession || !$allowed) {
+            $this->removeUser($user);
+            $now = new DateTime();
+            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+            return;
+        }
+
+
+        $this->addAuthenticated($user->getSocket());
+
+        if ($command->command == 'update' && 'done' == $this->_status) {
             $this->_entityManager->clear();
             $this->_status = 'updating';
             new StudyParser($this->_entityManager, $this->_mailTransport, 'http://litus/admin/syllabus/update/xml', array($this, 'callback'));

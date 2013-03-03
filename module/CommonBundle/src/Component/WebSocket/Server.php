@@ -23,12 +23,13 @@ use Exception;
  */
 class Server
 {
-
     private $_address;
     private $_port;
 
     private $_users;
     private $_sockets;
+
+    private $_authenticated;
 
     const OP_CONT = 0x0;
     const OP_TEXT = 0x1;
@@ -47,6 +48,7 @@ class Server
         $this->_port = $port;
         $this->_users = array();
         $this->_sockets = array();
+        $this->_authenticated = array();
 
         $this->createSocket();
     }
@@ -93,6 +95,7 @@ class Server
                     $this->_addUserSocket(socket_accept($this->master));
                 } else {
                     $bytes = @socket_recv($socket, $buffer, 2048, 0);
+                    
                     if ($bytes == 0) {
                         $this->_removeUserSocket($socket);
                     } else {
@@ -124,6 +127,26 @@ class Server
     }
 
     /**
+     * Add a authenticated socket
+     *
+     * @param mixed $socket
+     */
+    protected function addAuthenticated($socket)
+    {
+        $this->_authenticated[(int) $socket] = $socket;
+    }
+
+    /**
+     * Check a authenticated socket
+     *
+     * @param mixed $socket
+     */
+    protected function isAuthenticated($socket)
+    {
+        return isset($this->_authenticated[(int) $socket]);
+    }
+
+    /**
      * Get a user by his socket
      *
      * @param mixed $socket
@@ -150,6 +173,9 @@ class Server
                 $this->onClose($value, 0, '');
             }
         }
+
+        if (isset($this->_authenticated[(int) $socket]))
+            unset($this->_authenticated[(int) $socket]);
 
         @socket_close($socket);
 
@@ -251,6 +277,9 @@ class Server
      */
     public function sendText($user, $text)
     {
+        if (!$this->isAuthenticated($user->getSocket()))
+            return;
+
         $len = strlen($text);
 
         if ($len > 0xffff)
@@ -287,8 +316,10 @@ class Server
             $header .= chr($len);
         }
 
-        foreach($this->_users as $user)
-            $user->write($header . $text);
+        foreach($this->_users as $user) {
+            if ($this->isAuthenticated($user->getSocket()))
+                $user->write($header . $text);
+        }
     }
 
     /**

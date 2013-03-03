@@ -37,7 +37,7 @@ class ViewerMap
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Article The form of the mapping
+     * @var \FormBundle\Entity\Nodes\Form The form of the mapping
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\Form")
      * @ORM\JoinColumn(name="form", referencedColumnName="id")
@@ -45,7 +45,7 @@ class ViewerMap
     private $form;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The person of the mapping
+     * @var \CommonBundle\Entity\Users\Person The person of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")

@@ -22,8 +22,14 @@ use Doctrine\ORM\Mapping as ORM,
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList")
  * @ORM\Table(name="mail.lists")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "named"="MailBundle\Entity\MailingList\Named",
+ *      "promotion"="SecretaryBundle\Entity\MailingList\Promotion"
+ * })
  */
-class MailingList
+abstract class MailingList
 {
     /**
      * @var int The list's unique identifier
@@ -35,21 +41,18 @@ class MailingList
     private $id;
 
     /**
-     * @var string The name of this list
+     * @var array The entries of this list
      *
-     * @ORM\Column(type="string")
+     * @ORM\OneToMany(targetEntity="MailBundle\Entity\Entry", mappedBy="list", cascade={"remove"})
      */
-    private $name;
+    private $entries;
 
     /**
-     * Creates a new list with the given name
+     * @var array The admins of this list
      *
-     * @param $name The name for this list
+     * @ORM\OneToMany(targetEntity="MailBundle\Entity\MailingList\AdminMap", mappedBy="list", cascade={"remove"})
      */
-    public function __construct($name)
-    {
-        $this->setName($name);
-    }
+    private $admins;
 
     /**
      * @return int
@@ -58,20 +61,30 @@ class MailingList
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+    public abstract function getName();
 
-    /**
-     * @param string $name The name
-     * @return \MailBundle\Entity\MailingList
-     */
-    public function setName($name) {
-        $this->name = strtolower($name);
-        return $this;
+    public function canBeEditedBy($person, $entityManager, $editAdmin)
+    {
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($role->getName() == 'editor')
+                return true;
+        }
+
+        $adminMap = $entityManager
+            ->getRepository('MailBundle\Entity\MailingList\AdminMap')
+            ->findOneBy(
+                array(
+                    'list' => $this,
+                    'academic' => $person,
+                )
+            );
+
+        if (!$adminMap)
+            return false;
+
+        if ($editAdmin && !$adminMap->isEditAdmin())
+            return false;
+
+        return true;
     }
 }
