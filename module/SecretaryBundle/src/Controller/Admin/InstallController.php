@@ -64,7 +64,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'barcode', 'edit', 'manage', 'search'
                     ),
                     'admin_mail_promotion' => array(
-                        'manage'
+                        'manage', 'generate'
                     ),
                 ),
             )
