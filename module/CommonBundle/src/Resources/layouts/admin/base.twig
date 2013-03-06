@@ -84,7 +84,7 @@
                     <div class="title">Divisions</div>
 
                     <ul class="subsubmenu">
-                        {% if hasAccess('admin_company', 'manage') or hasAccess('admin_section', 'manage') or hasAccess('admin_contract', 'manage') or hasAccess('admin_cv_entry', 'manage') %}
+                        {% if hasAccess('br_admin_company', 'manage') or hasAccess('br_admin_cv_entry', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Corporate Relations</b><br />
@@ -92,21 +92,15 @@
                                 </div>
 
                                 <ul
-                                    {% if 'admin_company' == getParam('controller') or 'admin_company_event' == getParam('controller') or 'admin_company_job' == getParam('controller') or 'admin_company_logo' == getParam('controller') or 'admin_section' == getParam('controller') or 'admin_contract' == getParam('controller') or 'admin_cv_entry' == getParam('controller') %}
+                                    {% if 'br_admin_company' == getParam('controller') or 'br_admin_company_event' == getParam('controller') or 'br_admin_company_job' == getParam('controller') or 'br_admin_company_logo' == getParam('controller') or 'br_admin_cv_entry' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_company', 'manage') %}
-                                        <li><a href="{{ url('admin_company') }}">Companies</a></li>
+                                    {% if hasAccess('br_admin_company', 'manage') %}
+                                        <li><a href="{{ url('br_admin_company') }}">Companies</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_cv_entry', 'manage') %}
-                                        <li><a href="{{ url('admin_cv_entry') }}">CVs</a></li>
-                                    {% endif %}
-                                    {% if hasAccess('admin_section', 'manage') %}
-                                        <li><a href="{{ url('admin_section') }}">Sections</a></li>
-                                    {% endif %}
-                                    {% if hasAccess('admin_contract', 'manage') %}
-                                        <li><a href="{{ url('admin_index') }}">Contracts</a></li>
+                                    {% if hasAccess('br_admin_cv_entry', 'manage') %}
+                                        <li><a href="{{ url('br_admin_cv_entry') }}">CVs</a></li>
                                     {% endif %}
                                 </ul>
                             </li>

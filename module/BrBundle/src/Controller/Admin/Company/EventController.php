@@ -119,7 +119,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company_event',
+                    'br_admin_company_event',
                     array(
                         'action' => 'manage',
                         'id' => $company->getId(),
@@ -197,7 +197,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company_event',
+                    'br_admin_company_event',
                     array(
                         'action' => 'manage',
                         'id' => $event->getCompany()->getId(),
@@ -282,7 +282,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_company_event',
+                        'br_admin_company_event',
                         array(
                             'action' => 'editPoster',
                             'id' => $event->getId(),
@@ -315,7 +315,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -338,7 +338,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -362,7 +362,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -385,7 +385,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )

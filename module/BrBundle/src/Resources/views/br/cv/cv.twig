@@ -10,7 +10,7 @@
             {% if not form %}
                 {% for message in messages %}
                 {% autoescape false %}
-                    {{ translate(message)|replace({"{{editurl}}" : url('account', {action: 'edit', return: 'cv_index'})}) }}
+                    {{ translate(message)|replace({"{{editurl}}" : url('account', {action: 'edit', return: 'br_cv_index'})}) }}
                 {% endautoescape %}
                 {% endfor %}
             {% else %}
