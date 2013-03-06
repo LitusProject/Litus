@@ -111,7 +111,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_calendar',
+                    'calendar_admin_calendar',
                     array(
                         'action' => 'manage'
                     )
@@ -186,7 +186,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_calendar',
+                    'calendar_admin_calendar',
                     array(
                         'action' => 'manage'
                     )
@@ -272,7 +272,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_calendar',
+                        'calendar_admin_calendar',
                         array(
                             'action' => 'editPoster',
                             'id' => $event->getId(),
@@ -357,7 +357,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_calendar',
+                'calendar_admin_calendar',
                 array(
                     'action' => 'manage'
                 )
@@ -380,7 +380,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_calendar',
+                'calendar_admin_calendar',
                 array(
                     'action' => 'manage'
                 )
@@ -404,7 +404,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_calendar',
+                'calendar_admin_calendar',
                 array(
                     'action' => 'manage'
                 )
@@ -427,7 +427,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_calendar',
+                'calendar_admin_calendar',
                 array(
                     'action' => 'manage'
                 )
