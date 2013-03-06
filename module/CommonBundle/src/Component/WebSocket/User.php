@@ -95,7 +95,13 @@ class User
      */
     public function write($data)
     {
-        return socket_write($this->_socket, $data, strlen($data));
+        for ($written = 0 ; $written < strlen($data) ; $written += $fwrite) {
+            $fwrite = fwrite($this->_socket, substr($data, $written));
+            if ($fwrite === false) {
+                return $written;
+            }
+        }
+        return $written;
     }
 
     /**

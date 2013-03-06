@@ -36,10 +36,10 @@
                         </ul>
                     {% endif %}
 
-                    {% if hasAccess('admin_key', 'manage') or hasAccess('admin_cache', 'manage') or hasAccess('admin_config', 'manage') %}
+                    {% if hasAccess('api_admin_key', 'manage') or hasAccess('admin_cache', 'manage') or hasAccess('admin_config', 'manage') %}
                         <ul>
-                            {% if hasAccess('admin_key', 'manage') %}
-                                <li><a href="{{ url('admin_key') }}">API Keys</a></li>
+                            {% if hasAccess('api_admin_key', 'manage') %}
+                                <li><a href="{{ url('api_admin_key') }}">API Keys</a></li>
                             {% endif %}
                             {% if hasAccess('admin_cache', 'manage') %}
                                 <li><a href="{{ url('admin_cache') }}">Cache</a></li>

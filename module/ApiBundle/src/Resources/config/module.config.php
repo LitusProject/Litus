@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_key' => array(
+            'api_admin_key' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/api/key[/:action[/:id][/page/:page]][/]',
@@ -37,7 +37,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_key',
+                        'controller' => 'api_admin_key',
                         'action'     => 'manage',
                     ),
                 ),
@@ -90,11 +90,11 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'api_install' => 'ApiBundle\Controller\Admin\InstallController',
-            'admin_key'   => 'ApiBundle\Controller\Admin\KeyController',
+            'api_install'   => 'ApiBundle\Controller\Admin\InstallController',
+            'api_admin_key' => 'ApiBundle\Controller\Admin\KeyController',
 
-            'api_auth'    => 'ApiBundle\Controller\AuthController',
-            'api_mail'    => 'ApiBundle\Controller\MailController',
+            'api_auth'      => 'ApiBundle\Controller\AuthController',
+            'api_mail'      => 'ApiBundle\Controller\MailController',
         ),
     ),
 );
