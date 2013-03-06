@@ -169,7 +169,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_key',
+                'admin_unit',
                 array(
                     'action' => 'manage'
                 )
@@ -192,7 +192,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_key',
+                'admin_unit',
                 array(
                     'action' => 'manage'
                 )

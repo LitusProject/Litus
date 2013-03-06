@@ -20,7 +20,7 @@ return array(
             '@admin_js',
         ),
 
-        'admin_key' => array(
+        'api_admin_key' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_transition',
