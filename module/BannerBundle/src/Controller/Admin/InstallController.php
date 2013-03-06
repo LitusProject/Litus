@@ -44,7 +44,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'banner' => array(
                         'view'
                     ),
-                    'admin_banner' => array(
+                    'banner_admin_banner' => array(
                         'add', 'delete', 'edit', 'manage', 'progress', 'upload'
                     ),
                 ),
