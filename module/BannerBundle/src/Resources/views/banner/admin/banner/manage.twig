@@ -39,10 +39,10 @@
 	                    <td>{{ banner.getCreationPerson().getFullName() }}</td>
 	                    <td>{% if banner.isActive() %} X {% endif %}</td>
 	                    <td class="actions">
-	                        {% if hasAccess('admin_banner', 'edit') %}
-	                            <a href="{{ url('admin_banner', {"action": "edit", "id": banner.getId()}) }}" class="edit">Edit</a>
+	                        {% if hasAccess('banner_admin_banner', 'edit') %}
+	                            <a href="{{ url('banner_admin_banner', {"action": "edit", "id": banner.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
-	                        {% if hasAccess('admin_banner', 'delete') %}
+	                        {% if hasAccess('banner_admin_banner', 'delete') %}
 	                            <a href="#" data-id="{{ banner.getId() }}" data-name="{{ banner.getName() }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
@@ -91,7 +91,7 @@
 			});
 			var id = $this.data('id');
 			removeBanner.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_banner', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('banner_admin_banner', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.banner_removed_success').removeClass('hide');
