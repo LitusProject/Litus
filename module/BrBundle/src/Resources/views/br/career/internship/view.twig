@@ -10,11 +10,11 @@
         {% endif %}
 
         {% if internship.getCompany().getPage().hasYear(currentAcademicYear) %}
-        <a href="{{ url('career_company',{ 'action': 'view', 'company': internship.getCompany().getSlug() }) }}">
+        <a href="{{ url('br_career_company',{ 'action': 'view', 'company': internship.getCompany().getSlug() }) }}">
         {% endif %}
             {% if internship.getCompany().getLogo() %}
 
-                    <img src="{{ url('career_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
+                    <img src="{{ url('br_career_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
             {% else %}
 
                 <h2><center class="company-name">{{ internship.getCompany().getName() }}</center></h2>

@@ -19,7 +19,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_company' => array(
+        'br_admin_company' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -29,7 +29,7 @@ return array(
             '@gollum_css',
             '@gollum_js',
         ),
-        'admin_company_event' => array(
+        'br_admin_company_event' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -39,7 +39,7 @@ return array(
             '@gollum_css',
             '@gollum_js',
         ),
-        'admin_company_job' => array(
+        'br_admin_company_job' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -48,21 +48,21 @@ return array(
             '@gollum_css',
             '@gollum_js',
         ),
-        'admin_company_user' => array(
+        'br_admin_company_user' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_company_logo' => array(
+        'br_admin_company_logo' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_cv_entry' => array(
+        'br_admin_cv_entry' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -70,13 +70,13 @@ return array(
             '@bootstrap_js_modal',
             '@common_download_file',
         ),
-        'admin_section' => array(
+        'br_admin_section' => array(
             '@common_jquery',
             '@common_jqueryui',
             '@admin_css',
             '@admin_js',
         ),
-        'corporate_index' => array(
+        'br_corporate_index' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -85,7 +85,7 @@ return array(
             '@bootstrap_js_custom_collapse',
             '@corporate_css',
         ),
-        'corporate_cv' => array(
+        'br_corporate_cv' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -94,7 +94,7 @@ return array(
             '@bootstrap_js_custom_collapse',
             '@corporate_css',
         ),
-        'career_index' => array(
+        'br_career_index' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -108,7 +108,7 @@ return array(
             '@bootstrap_js_alert',
             '@career_css',
         ),
-        'career_company' => array(
+        'br_career_company' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -123,7 +123,7 @@ return array(
             '@bootstrap_js_rowlink',
             '@career_css',
         ),
-        'career_vacancy' => array(
+        'br_career_vacancy' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -138,7 +138,7 @@ return array(
             '@bootstrap_js_rowlink',
             '@career_css',
         ),
-        'career_internship' => array(
+        'br_career_internship' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -153,7 +153,7 @@ return array(
             '@bootstrap_js_rowlink',
             '@career_css',
         ),
-        'career_event' => array(
+        'br_career_event' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -168,7 +168,7 @@ return array(
             '@bootstrap_js_rowlink',
             '@career_css',
         ),
-        'cv_index' => array(
+        'br_cv_index' => array(
             '@common_jquery',
             '@common_fieldcount',
             '@cv_css',

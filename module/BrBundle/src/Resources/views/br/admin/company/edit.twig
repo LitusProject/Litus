@@ -9,7 +9,7 @@
 	</div>
 
     <aside>
-        {% if hasAccess('admin_company', 'logo') %}
+        {% if hasAccess('br_admin_company', 'logo') %}
             <div class="sidebox">
                 <div class="title">Edit General Logo</div>
                	<div class="content">
@@ -17,12 +17,12 @@
                     	<i>Please hit the link below to edit the general logo of this company!</i>
                     </p>
                     <p>
-                       	<a href="{{ url('admin_company', {"action": "editLogo", "id": company.getId()}) }}">&rarr; Edit General Logo</a>
+                       	<a href="{{ url('br_admin_company', {"action": "editLogo", "id": company.getId()}) }}">&rarr; Edit General Logo</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_company_logo', 'manage') %}
+        {% if hasAccess('br_admin_company_logo', 'manage') %}
             <div class="sidebox">
                 <div class="title">Edit Logo's</div>
                 <div class="content">
@@ -30,12 +30,12 @@
                         <i>Please hit the link below to edit the logo's of this company!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_company_logo', {"action": "manage", "id": company.getId()}) }}">&rarr; Edit Logo's</a>
+                        <a href="{{ url('br_admin_company_logo', {"action": "manage", "id": company.getId()}) }}">&rarr; Edit Logo's</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_company_event', 'manage') %}
+        {% if hasAccess('br_admin_company_event', 'manage') %}
             <div class="sidebox">
                 <div class="title">Events</div>
                	<div class="content">
@@ -43,12 +43,12 @@
                     	<i>Please hit the link below to view the events of this company!</i>
                     </p>
                     <p>
-                       	<a href="{{ url('admin_company_event', {"action": "manage", "id": company.getId()}) }}">&rarr; Events</a>
+                       	<a href="{{ url('br_admin_company_event', {"action": "manage", "id": company.getId()}) }}">&rarr; Events</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_company_job', 'manage') %}
+        {% if hasAccess('br_admin_company_job', 'manage') %}
             <div class="sidebox">
                 <div class="title">Jobs</div>
                	<div class="content">
@@ -56,7 +56,7 @@
                     	<i>Please hit the link below to view the jobs of this company!</i>
                     </p>
                     <p>
-                       	<a href="{{ url('admin_company_job', {"action": "manage", "id": company.getId()}) }}">&rarr; Jobs</a>
+                       	<a href="{{ url('br_admin_company_job', {"action": "manage", "id": company.getId()}) }}">&rarr; Jobs</a>
                     </p>
                 </div>
             </div>
@@ -69,8 +69,8 @@
 	    $(document).ready(function () {
 
             $('textarea#description').gollum({
-                uploadURL: '{{ url('admin_company', {'action': 'upload'}) }}',
-                progressURL: '{{ url('admin_company', {'action': 'uploadProgress'}) }}',
+                uploadURL: '{{ url('br_admin_company', {'action': 'upload'}) }}',
+                progressURL: '{{ url('br_admin_company', {'action': 'uploadProgress'}) }}',
                 uploadProgressName: '{{ uploadProgressName }}',
                 progressId: '{{ uploadProgressId }}',
             });

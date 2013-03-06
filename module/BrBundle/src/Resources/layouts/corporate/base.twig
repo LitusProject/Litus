@@ -21,14 +21,14 @@
         <div class="container">
             <a href="{{ unionUrl }}" class="brand"><img src="/_corporate/img/logo.png" /></a>
             <ul class="nav">
-                {% if hasAccess('corporate_index', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'corporate_index' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                {% if hasAccess('br_corporate_index', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                     </li>
                 {% endif %}
-                {% if (hasAccess('corporate_cv', 'grouped') or hasAccess('corporate_cv', 'list')) and authenticatedPerson != null and authenticatedPerson.getCompany().getCvBookYears()|length > 0 %}
-                    <li {% if 'corporate_cv' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">{{ translate('CV Book') }}</a>
+                {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and authenticatedPerson.getCompany().getCvBookYears()|length > 0 %}
+                    <li {% if 'br_corporate_cv' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">{{ translate('CV Book') }}</a>
                     </li>
                 {% endif %}
             </ul>
@@ -40,7 +40,7 @@
                     <ul class="dropdown-menu">
                         {% for language in languages %}
                             <li>
-                                <a href="{{ url("corporate_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                                <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -64,7 +64,7 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="{{ url("corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                <a href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                             </li>
                         </ul>
                     </li>

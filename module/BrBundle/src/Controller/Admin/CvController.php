@@ -150,7 +150,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
             );
 
             $this->redirect()->toRoute(
-                'admin_cv_entry',
+                'br_admin_cv_entry',
                 array(
                     'action' => 'manage'
                 )
@@ -173,7 +173,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
             );
 
             $this->redirect()->toRoute(
-                'admin_cv_entry',
+                'br_admin_cv_entry',
                 array(
                     'action' => 'manage'
                 )

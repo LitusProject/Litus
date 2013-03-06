@@ -39,11 +39,11 @@
 	                    <td>{{ job.getTypeName() }}</td>
 	                    <td class="actions">
 	                        <ul>
-	                        	{% if hasAccess('admin_company_job', 'delete') %}
+	                        	{% if hasAccess('br_admin_company_job', 'delete') %}
 	                            	<li><a href="#" class="delete" data-id="{{ job.getId() }}" data-name="{{ job.getName() }}">Delete</a></li>
 	                            {% endif %}
-                            	{% if hasAccess('admin_company_job', 'edit') %}
-                                	<li><a href="{{ url('admin_company_job', {"action": "edit", "id": job.getId()}) }}" class="edit">Edit</a></li>
+                            	{% if hasAccess('br_admin_company_job', 'edit') %}
+                                	<li><a href="{{ url('br_admin_company_job', {"action": "edit", "id": job.getId()}) }}" class="edit">Edit</a></li>
                                 {% endif %}
 	                        </ul>
 	                    </td>
@@ -90,7 +90,7 @@
 			removeJob.find('.jobName').html($(this).data('name'));
 			var id = $this.data('id');
 			removeJob.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_company_job', {"action": "delete"}) }}' + id, function (data) {
+				$.post('{{ url('br_admin_company_job', {"action": "delete"}) }}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.job_removed_success').removeClass('hide');

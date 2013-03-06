@@ -92,7 +92,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             );
 
             $this->redirect()->toRoute(
-                'career_event',
+                'br_career_event',
                 array(
                     'action' => 'overview'
                 )
@@ -115,7 +115,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             );
 
             $this->redirect()->toRoute(
-                'career_event',
+                'br_career_event',
                 array(
                     'action' => 'overview'
                 )

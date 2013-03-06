@@ -25,7 +25,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_company' => array(
+            'br_admin_company' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/company[/:action[/:id][/page/:page]][/]',
@@ -35,12 +35,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_company',
+                        'controller' => 'br_admin_company',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_company_event' => array(
+            'br_admin_company_event' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/company/event[/:action[/:id]][/]',
@@ -49,12 +49,12 @@ return array(
                         'id'      => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_company_event',
+                        'controller' => 'br_admin_company_event',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_company_job' => array(
+            'br_admin_company_job' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/company/job[/:action[/:id]][/]',
@@ -63,12 +63,12 @@ return array(
                         'id'      => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_company_job',
+                        'controller' => 'br_admin_company_job',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_company_user' => array(
+            'br_admin_company_user' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/company/user[/:action[/:id]][/page/:page][/]',
@@ -78,12 +78,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_company_user',
+                        'controller' => 'br_admin_company_user',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_company_logo' => array(
+            'br_admin_company_logo' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/company/logos[/:action[/:id]][/]',
@@ -92,12 +92,12 @@ return array(
                         'id'      => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_company_logo',
+                        'controller' => 'br_admin_company_logo',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_cv_entry' => array(
+            'br_admin_cv_entry' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
@@ -108,12 +108,12 @@ return array(
                         'page'         => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_cv_entry',
+                        'controller' => 'br_admin_cv_entry',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_section' => array(
+            'br_admin_section' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/section[/:action[/:id[/:confirm]]][/]',
@@ -123,12 +123,12 @@ return array(
                         'confirm' => '[01]',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_section',
+                        'controller' => 'br_admin_section',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'career_index' => array(
+            'br_career_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/career[/:action][/]',
@@ -137,12 +137,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'career_index',
+                        'controller' => 'br_career_index',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'career_company' => array(
+            'br_career_company' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/career/company[/:action[/:company][/id/:id]][/]',
@@ -153,12 +153,12 @@ return array(
                         'id'      => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'career_company',
+                        'controller' => 'br_career_company',
                         'action'     => 'overview',
                     ),
                 ),
             ),
-            'career_company_search' => array(
+            'br_career_company_search' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/career/company/search[/:string][/]',
@@ -168,12 +168,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'career_company',
+                        'controller' => 'br_career_company',
                         'action'     => 'search',
                     ),
                 ),
             ),
-            'career_event' => array(
+            'br_career_event' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/career/event[/:action[/:id]][/page/:page][/]',
@@ -184,12 +184,12 @@ return array(
                         'page'     => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'career_event',
+                        'controller' => 'br_career_event',
                         'action'     => 'overview',
                     ),
                 ),
             ),
-            'career_vacancy' => array(
+            'br_career_vacancy' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/career/vacancy[/:action[/:id]][/page/:page][/]',
@@ -200,12 +200,12 @@ return array(
                         'page'     => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'career_vacancy',
+                        'controller' => 'br_career_vacancy',
                         'action'     => 'overview',
                     ),
                 ),
             ),
-            'career_internship' => array(
+            'br_career_internship' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/career/internship[/:action[/:id]][/page/:page][/]',
@@ -216,12 +216,12 @@ return array(
                         'page'     => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'career_internship',
+                        'controller' => 'br_career_internship',
                         'action'     => 'overview',
                     ),
                 ),
             ),
-            'career_file' => array(
+            'br_career_file' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/career/company/file/:name[/]',
@@ -229,12 +229,12 @@ return array(
                         'name'     => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'career_company',
+                        'controller' => 'br_career_company',
                         'action'     => 'file',
                     ),
                 ),
             ),
-            'corporate_index' => array(
+            'br_corporate_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/corporate[/:action][/]',
@@ -245,12 +245,12 @@ return array(
                         'image'    => '[a-zA-Z0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'corporate_index',
+                        'controller' => 'br_corporate_index',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'corporate_cv' => array(
+            'br_corporate_cv' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/corporate/cv[/:action[/type/:type][/string/:string][/min/:min][/max/:max][/image/:image][/:academicyear]][/]',
@@ -265,12 +265,12 @@ return array(
                         'max'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'corporate_cv',
+                        'controller' => 'br_corporate_cv',
                         'action'     => 'grouped',
                     ),
                 ),
             ),
-            'corporate_auth' => array(
+            'br_corporate_auth' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/corporate/auth[/:action][/]',
@@ -280,12 +280,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'corporate_auth',
+                        'controller' => 'br_corporate_auth',
                         'action'     => 'login',
                     ),
                 ),
             ),
-            'cv_index' => array(
+            'br_cv_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cv[/:action][/]',
@@ -294,7 +294,7 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'cv_index',
+                        'controller' => 'br_cv_index',
                         'action'     => 'cv',
                     ),
                 ),
@@ -359,25 +359,25 @@ return array(
         'invokables' => array(
             'br_install'               => 'BrBundle\Controller\Admin\InstallController',
 
-            'admin_company'            => 'BrBundle\Controller\Admin\CompanyController',
-            'admin_company_event'      => 'BrBundle\Controller\Admin\Company\EventController',
-            'admin_company_job'        => 'BrBundle\Controller\Admin\Company\JobController',
-            'admin_company_user'       => 'BrBundle\Controller\Admin\Company\UserController',
-            'admin_company_logo'       => 'BrBundle\Controller\Admin\Company\LogoController',
-            'admin_cv_entry'           => 'BrBundle\Controller\Admin\CvController',
-            'admin_section'            => 'BrBundle\Controller\Admin\SectionController',
+            'br_admin_company'         => 'BrBundle\Controller\Admin\CompanyController',
+            'br_admin_company_event'   => 'BrBundle\Controller\Admin\Company\EventController',
+            'br_admin_company_job'     => 'BrBundle\Controller\Admin\Company\JobController',
+            'br_admin_company_user'    => 'BrBundle\Controller\Admin\Company\UserController',
+            'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
+            'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
+            'br_admin_section'         => 'BrBundle\Controller\Admin\SectionController',
 
-            'corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
-            'corporate_cv'             => 'BrBundle\Controller\Corporate\CvController',
-            'corporate_auth'           => 'BrBundle\Controller\Corporate\AuthController',
+            'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
+            'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',
+            'br_corporate_auth'        => 'BrBundle\Controller\Corporate\AuthController',
 
-            'career_index'             => 'BrBundle\Controller\Career\IndexController',
-            'career_vacancy'           => 'BrBundle\Controller\Career\VacancyController',
-            'career_internship'        => 'BrBundle\Controller\Career\InternshipController',
-            'career_event'             => 'BrBundle\Controller\Career\EventController',
-            'career_company'           => 'BrBundle\Controller\Career\CompanyController',
+            'br_career_index'          => 'BrBundle\Controller\Career\IndexController',
+            'br_career_vacancy'        => 'BrBundle\Controller\Career\VacancyController',
+            'br_career_internship'     => 'BrBundle\Controller\Career\InternshipController',
+            'br_career_event'          => 'BrBundle\Controller\Career\EventController',
+            'br_career_company'        => 'BrBundle\Controller\Career\CompanyController',
 
-            'cv_index'                 => 'BrBundle\Controller\CvController',
+            'br_cv_index'              => 'BrBundle\Controller\CvController',
         ),
     ),
     'assetic_configuration' => array(
