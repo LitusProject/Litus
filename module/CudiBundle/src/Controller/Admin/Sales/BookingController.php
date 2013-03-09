@@ -45,15 +45,21 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $bookings = $this->_search($activePeriod);
 
         if (!isset($bookings)) {
-            $bookings = $this->getEntityManager()
+            list($records, $totalNumber) = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
-                ->findAllActiveByPeriod($activePeriod);
-        }
+                ->findAllActiveByPeriodPaginator($activePeriod, $this->getParam('page'), $this->paginator()->getItemsPerPage());
 
-        $paginator = $this->paginator()->createFromArray(
-            $bookings,
-            $this->getParam('page')
-        );
+            $paginator = $this->paginator()->createFromPaginatorRepository(
+                $records,
+                $this->getParam('page'),
+                $totalNumber
+            );
+        } else {
+            $paginator = $this->paginator()->createFromArray(
+                $bookings,
+                $this->getParam('page')
+            );
+        }
 
         $periods = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -81,16 +87,21 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (null !== $this->getParam('field'))
             $bookings = $this->_search($activePeriod);
 
-        if (!isset($bookings)) {
-            $bookings = $this->getEntityManager()
+        if (!isset($bookings)) {list($records, $totalNumber) = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
-                ->findAllInactiveByPeriod($activePeriod);
-        }
+                ->findAllInactiveByPeriodPaginator($activePeriod, $this->getParam('page'), $this->paginator()->getItemsPerPage());
 
-        $paginator = $this->paginator()->createFromArray(
-            $bookings,
-            $this->getParam('page')
-        );
+            $paginator = $this->paginator()->createFromPaginatorRepository(
+                $records,
+                $this->getParam('page'),
+                $totalNumber
+            );
+        } else {
+            $paginator = $this->paginator()->createFromArray(
+                $bookings,
+                $this->getParam('page')
+            );
+        }
 
         $periods = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
