@@ -13,7 +13,7 @@
             <img src="{{ piwik['visitsSummary'].getDataUri(1000, 200) }}" alt="Visits Summary" class="full_width" />
         {% endif %}
 
-        {% if hasAccess('admin_prof_action', 'manage') and profActions|length > 0 %}
+        {% if hasAccess('cudi_admin_prof_action', 'manage') and profActions|length > 0 %}
             <h1>Last Prof Actions</h1>
     	    <table>
     	        <tr>
@@ -29,8 +29,8 @@
     	                <td>{{ action.getEntityName()|capitalize }} {{ action.getAction()|capitalize }}</td>
     	                <td>{{ action.getTimestamp().format('d/m/Y H:i') }}</td>
     	                <td>
-    	                    {% if hasAccess('admin_prof_action', 'view') %}
-    	                        <a href="{{ url('admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
+    	                    {% if hasAccess('cudi_admin_prof_action', 'view') %}
+    	                        <a href="{{ url('cudi_admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
     	                    {% endif %}
     	                </td>
     	            </tr>

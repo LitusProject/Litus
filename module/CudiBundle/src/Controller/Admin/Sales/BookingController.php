@@ -178,7 +178,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_booking',
+                    'cudi_admin_sales_booking',
                     array(
                         'action' => 'manage'
                     )
@@ -230,7 +230,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         );
 
         $mailForm = new MailForm($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName());
-        $mailForm->setAttribute('action', $this->url()->fromRoute('admin_cudi_mail'));
+        $mailForm->setAttribute('action', $this->url()->fromRoute('cudi_admin_mail'));
 
         return new ViewModel(
             array(
@@ -262,7 +262,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         );
 
         $this->redirect()->toRoute(
-            'admin_sales_booking',
+            'cudi_admin_sales_booking',
             array(
                 'action' => 'manage'
             )
@@ -612,7 +612,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_booking',
+                'cudi_admin_sales_booking',
                 array(
                     'action' => 'manage'
                 )
@@ -636,7 +636,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_booking',
+                'cudi_admin_sales_booking',
                 array(
                     'action' => 'manage'
                 )
@@ -659,7 +659,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_booking',
+                'cudi_admin_sales_booking',
                 array(
                     'action' => 'manage'
                 )
@@ -691,7 +691,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_booking',
+                'cudi_admin_sales_booking',
                 array(
                     'action' => 'person'
                 )
@@ -723,7 +723,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_booking',
+                'cudi_admin_sales_booking',
                 array(
                     'action' => 'article'
                 )
@@ -747,7 +747,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_booking',
+                'cudi_admin_sales_booking',
                 array(
                     'action' => 'manage'
                 )
@@ -770,7 +770,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_booking',
+                'cudi_admin_sales_booking',
                 array(
                     'action' => 'manage'
                 )

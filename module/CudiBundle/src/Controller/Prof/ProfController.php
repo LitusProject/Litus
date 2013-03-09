@@ -66,7 +66,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                 );
 
                 $this->redirect()->toRoute(
-                    'prof_subject',
+                    'cudi_prof_subject',
                     array(
                         'action' => 'subject',
                         'id' => $subject->getId(),
@@ -154,7 +154,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -183,7 +183,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -208,7 +208,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -232,7 +232,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),

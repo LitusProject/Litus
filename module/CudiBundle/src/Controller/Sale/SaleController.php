@@ -124,7 +124,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 }
 
                 $this->redirect()->toRoute(
-                    'sale_sale',
+                    'cudi_sale_sale',
                     array(
                         'action' => 'return',
                         'session' => $session->getId(),

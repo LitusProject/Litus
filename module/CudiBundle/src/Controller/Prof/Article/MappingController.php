@@ -77,7 +77,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
                 );
 
                 $this->redirect()->toRoute(
-                    'prof_subject',
+                    'cudi_prof_subject',
                     array(
                         'action' => 'subject',
                         'id' => $subject->getId(),
@@ -146,7 +146,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -174,7 +174,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -202,7 +202,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -230,7 +230,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -257,7 +257,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -281,7 +281,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),

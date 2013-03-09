@@ -63,13 +63,13 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('admin_stock_period', 'search') %}
+            {% if hasAccess('cudi_admin_stock_period', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#stock_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                url: '{{ url('admin_stock_period', {'action': 'search', 'id': period.getId()}) }}',
+                url: '{{ url('cudi_admin_stock_period', {'action': 'search', 'id': period.getId()}) }}',
                 display: function (data) {
                     $('#stock_search table').find('tr.item').remove();
                     $(data).each(function () {

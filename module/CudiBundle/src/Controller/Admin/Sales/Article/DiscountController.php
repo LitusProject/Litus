@@ -71,7 +71,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_article_discount',
+                    'cudi_admin_sales_article_discount',
                     array(
                         'action' => 'manage',
                         'id' => $article->getId(),
@@ -124,7 +124,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -147,7 +147,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -171,7 +171,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -194,7 +194,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )

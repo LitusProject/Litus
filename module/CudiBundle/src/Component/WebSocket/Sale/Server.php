@@ -109,7 +109,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     foreach ($authSession->getPerson()->getRoles() as $role) {
                         if (
                             $role->isAllowed(
-                                $acl, 'sale_sale', 'sale'
+                                $acl, 'cudi_sale_sale', 'sale'
                             )
                         ) {
                             $allowed = true;

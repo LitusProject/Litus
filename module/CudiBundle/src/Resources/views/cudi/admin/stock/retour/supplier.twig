@@ -37,7 +37,7 @@
                     <td>{{ retour.getNumber() }}</td>
                     <td>&euro; {{ (retour.getPrice()/100)|number_format(2) }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_stock_retour', 'delete') %}
+                        {% if hasAccess('cudi_admin_stock_retour', 'delete') %}
                             <a href="#" class="delete" data-id="{{ retour.getId() }}" data-title="{{ retour.getArticle().getMainArticle().getTitle() }}" data-number="{{ retour.getNumber() }}">Delete</a>
                         {% endif %}
                     </td>
@@ -49,7 +49,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_stock_retour', 'add') %}
+        {% if hasAccess('cudi_admin_stock_retour', 'add') %}
             <div class="sidebox">
                 <div class="title">New Retour</div>
                 <div class="content">
@@ -57,7 +57,7 @@
                         <i>Please hit the link below to add a retour!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_stock_retour', {"action": "add"}) }}">&rarr; Add Retour</a>
+                        <a href="{{ url('cudi_admin_stock_retour', {"action": "add"}) }}">&rarr; Add Retour</a>
                     </p>
                 </div>
             </div>
@@ -100,7 +100,7 @@
             removeRetour.find('.retourNumber').html($(this).data('number'));
             var id = $this.data('id');
             removeRetour.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_stock_retour', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('cudi_admin_stock_retour', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.retour_removed_success').removeClass('hide');

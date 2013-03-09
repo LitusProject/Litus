@@ -22,16 +22,16 @@
                 <td>{{ article.getYearPublished() }}</td>
                 <td>{{ article.getISBN() }}</td>
                 <td class="actions">
-                    {% if hasAccess('prof_article', 'edit') %}
-                        <a href="{{ url("prof_article", {"action": "edit", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+                    {% if hasAccess('cudi_prof_article', 'edit') %}
+                        <a href="{{ url("cudi_prof_article", {"action": "edit", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
                     {% endif %}
                 </td>
             </tr>
         {% endfor %}
     </table>
     <div class="pull-right">
-        {% if hasAccess("prof_article", "add") %}
-            <a href="{{ url("prof_article", {"action": "add", "language": language.getAbbrev()}) }}" class="btn btn-success" data-toggle="modal">{{ translate('Create Article') }}</a>
+        {% if hasAccess("cudi_prof_article", "add") %}
+            <a href="{{ url("cudi_prof_article", {"action": "add", "language": language.getAbbrev()}) }}" class="btn btn-success" data-toggle="modal">{{ translate('Create Article') }}</a>
         {% endif %}
     </div>
     <br class="clear" />

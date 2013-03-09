@@ -99,7 +99,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
             if($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($formData['article_id']);
@@ -117,7 +117,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_stock_retour',
+                    'cudi_admin_stock_retour',
                     array(
                         'action' => 'supplier',
                         'id'     => $article->getSupplier()->getId(),
@@ -182,7 +182,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_retour',
+                'cudi_admin_stock_retour',
                 array(
                     'action' => 'manage'
                 )
@@ -205,7 +205,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_retour',
+                'cudi_admin_stock_retour',
                 array(
                     'action' => 'manage'
                 )
@@ -229,7 +229,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_retour',
+                'cudi_admin_stock_retour',
                 array(
                     'action' => 'manage'
                 )
@@ -252,7 +252,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_retour',
+                'cudi_admin_stock_retour',
                 array(
                     'action' => 'manage'
                 )

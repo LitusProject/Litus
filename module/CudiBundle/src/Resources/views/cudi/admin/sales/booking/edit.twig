@@ -49,8 +49,8 @@
                     <td class="status">{{ booking.getStatus()|capitalize }}</td>
                         <td>&euro; {{ (booking.getArticle().getSellPrice() * booking.getNumber()/100)|number_format(2) }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_sales_booking', 'edit') %}
-                            <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
+                        {% if hasAccess('cudi_admin_sales_booking', 'edit') %}
+                            <a href="{{ url('cudi_admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -61,7 +61,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_cudi_mail', 'send') %}
+        {% if hasAccess('cudi_admin_mail', 'send') %}
             <div class="sidebox">
                 <div class="title">Send Mail</div>
                 <div class="content">
@@ -74,7 +74,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if booking.getStatus() == 'booked' and hasAccess('admin_sales_booking', 'assign') %}
+        {% if booking.getStatus() == 'booked' and hasAccess('cudi_admin_sales_booking', 'assign') %}
             <div class="sidebox">
                 <div class="title">Assign Booking</div>
                 <div class="content">
@@ -87,7 +87,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if booking.getStatus() == 'assigned' and hasAccess('admin_sales_booking', 'unassign') %}
+        {% if booking.getStatus() == 'assigned' and hasAccess('cudi_admin_sales_booking', 'unassign') %}
             <div class="sidebox">
                 <div class="title">Unassign Booking</div>
                 <div class="content">
@@ -100,7 +100,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if booking.getStatus() == 'assigned' and hasAccess('admin_sales_booking', 'expire') %}
+        {% if booking.getStatus() == 'assigned' and hasAccess('cudi_admin_sales_booking', 'expire') %}
             <div class="sidebox">
                 <div class="title">Expire Booking</div>
                 <div class="content">
@@ -113,7 +113,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if booking.getStatus() == 'assigned' and hasAccess('admin_sales_booking', 'extend') %}
+        {% if booking.getStatus() == 'assigned' and hasAccess('cudi_admin_sales_booking', 'extend') %}
             <div class="sidebox">
                 <div class="title">Extend Booking</div>
                 <div class="content">
@@ -126,7 +126,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if (booking.getStatus() == 'booked' or booking.getStatus() == 'assigned') and hasAccess('admin_sales_booking', 'delete') %}
+        {% if (booking.getStatus() == 'booked' or booking.getStatus() == 'assigned') and hasAccess('cudi_admin_sales_booking', 'delete') %}
             <div class="sidebox">
                 <div class="title">Remove Booking</div>
                 <div class="content">
@@ -305,7 +305,7 @@
             e.preventDefault();
             var removeBooking = $('#removeBooking');
             removeBooking.find('.delete').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_sales_booking', {"action": "delete", "id": booking.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "delete", "id": booking.getId()})}}';
             });
             removeBooking.modal();
         }
@@ -316,7 +316,7 @@
             e.preventDefault();
             var assignBooking = $('#assignBooking');
             assignBooking.find('.assign').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_sales_booking', {"action": "assign", "id": booking.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "assign", "id": booking.getId()})}}';
             });
             assignBooking.modal();
         }
@@ -327,7 +327,7 @@
             e.preventDefault();
             var unassignBooking = $('#unassignBooking');
             unassignBooking.find('.unassign').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}';
             });
             unassignBooking.modal();
         }
@@ -338,7 +338,7 @@
             e.preventDefault();
             var expireBooking = $('#expireBooking');
             expireBooking.find('.expire').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_sales_booking', {"action": "expire", "id": booking.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "expire", "id": booking.getId()})}}';
             });
             expireBooking.modal();
         }
@@ -349,7 +349,7 @@
             e.preventDefault();
             var expireBooking = $('#extendBooking');
             expireBooking.find('.extend').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_sales_booking', {"action": "extend", "id": booking.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "extend", "id": booking.getId()})}}';
             });
             expireBooking.modal();
         }

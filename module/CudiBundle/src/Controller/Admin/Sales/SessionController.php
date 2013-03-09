@@ -98,7 +98,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_session',
+                    'cudi_admin_sales_session',
                     array(
                         'action' => 'edit',
                         'id' => $session->getId(),
@@ -144,7 +144,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_session',
+                    'cudi_admin_sales_session',
                     array(
                         'action' => 'edit',
                         'id' => $session->getId(),
@@ -220,7 +220,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_session',
+                    'cudi_admin_sales_session',
                     array(
                         'action' => 'edit',
                         'id' => $session->getId(),
@@ -289,13 +289,13 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        "SUCCESS",
-                        "The session was successfully closed!"
+                        'SUCCESS',
+                        'The session was successfully closed!'
                     )
                 );
 
                    $this->redirect()->toRoute(
-                       'admin_sales_session',
+                       'cudi_admin_sales_session',
                        array(
                            'action' => 'edit',
                            'id' => $session->getId(),
@@ -339,7 +339,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -356,7 +356,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_session',
+                'cudi_admin_sales_session',
                 array(
                     'action' => 'manage'
                 )
@@ -379,7 +379,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_session',
+                'cudi_admin_sales_session',
                 array(
                     'action' => 'manage'
                 )
@@ -403,7 +403,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_session',
+                'cudi_admin_sales_session',
                 array(
                     'action' => 'manage'
                 )
@@ -426,7 +426,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_session',
+                'cudi_admin_sales_session',
                 array(
                     'action' => 'manage'
                 )
