@@ -108,7 +108,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             $this->redirect()->toUrl($shibbolethLogoutUrl);
         } else {
             $this->redirect()->toRoute(
-                'index',
+                'common_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )

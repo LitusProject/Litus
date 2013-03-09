@@ -19,7 +19,7 @@
             <p><time datetime="{{ now.iso8601 }}">{{ now.display }}</time></p>
             <p id="tag">
                 Welcome, {% if authenticatedPerson is null %} Guest {% else %} {{ authenticatedPerson.getFirstName() }} {% endif %} |
-                <a href="{{ url('admin_auth', {"action": "logout"}) }}">Logout</a>
+                <a href="{{ url('common_admin_auth', {"action": "logout"}) }}">Logout</a>
             </p>
         </header>
 
@@ -28,43 +28,43 @@
                 <li>
                     <div class="title">Admin</div>
 
-                    {% if hasAccess('admin_index', 'index') %}
+                    {% if hasAccess('common_admin_index', 'index') %}
                         <ul>
-                            {% if hasAccess('admin_index', 'index') %}
-                                <li><a href="{{ url('admin_index') }}">Dashboard</a></li>
+                            {% if hasAccess('common_admin_index', 'index') %}
+                                <li><a href="{{ url('common_admin_index') }}">Dashboard</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}
 
-                    {% if hasAccess('api_admin_key', 'manage') or hasAccess('admin_cache', 'manage') or hasAccess('admin_config', 'manage') %}
+                    {% if hasAccess('api_admin_key', 'manage') or hasAccess('common_admin_cache', 'manage') or hasAccess('common_admin_config', 'manage') %}
                         <ul>
                             {% if hasAccess('api_admin_key', 'manage') %}
                                 <li><a href="{{ url('api_admin_key') }}">API Keys</a></li>
                             {% endif %}
-                            {% if hasAccess('admin_cache', 'manage') %}
-                                <li><a href="{{ url('admin_cache') }}">Cache</a></li>
+                            {% if hasAccess('common_admin_cache', 'manage') %}
+                                <li><a href="{{ url('common_admin_cache') }}">Cache</a></li>
                             {% endif %}
-                            {% if hasAccess('admin_config', 'manage') %}
-                                <li><a href="{{ url('admin_config') }}">Configuration</a></li>
-                            {% endif %}
-                        </ul>
-                    {% endif %}
-
-                    {% if hasAccess('admin_academic', 'manage') or hasAccess('admin_role', 'manage') %}
-                        <ul>
-                            {% if hasAccess('admin_academic', 'manage') %}
-                                <li><a href="{{ url('admin_academic') }}">Academic</a></li>
-                            {% endif %}
-                            {% if hasAccess('admin_role', 'manage') %}
-                                <li><a href="{{ url('admin_role') }}">Groups</a></li>
+                            {% if hasAccess('common_admin_config', 'manage') %}
+                                <li><a href="{{ url('common_admin_config') }}">Configuration</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}
 
-                    {% if hasAccess('admin_location', 'manage') %}
+                    {% if hasAccess('common_admin_academic', 'manage') or hasAccess('common_admin_role', 'manage') %}
                         <ul>
-                            {% if hasAccess('admin_location', 'manage') %}
-                                <li><a href="{{ url('admin_location') }}">Locations</a></li>
+                            {% if hasAccess('common_admin_academic', 'manage') %}
+                                <li><a href="{{ url('common_admin_academic') }}">Academic</a></li>
+                            {% endif %}
+                            {% if hasAccess('common_admin_role', 'manage') %}
+                                <li><a href="{{ url('common_admin_role') }}">Groups</a></li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+
+                    {% if hasAccess('common_admin_location', 'manage') %}
+                        <ul>
+                            {% if hasAccess('common_admin_location', 'manage') %}
+                                <li><a href="{{ url('common_admin_location') }}">Locations</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}

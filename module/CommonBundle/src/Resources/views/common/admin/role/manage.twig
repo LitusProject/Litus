@@ -32,10 +32,10 @@
                     <tr class="item item-{{ role.getName() }}">
                         <td>{{ role.getName() }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_role', 'edit') %}
-                                <a href="{{ url('admin_role', {"action": "edit", "name": role.getName()}) }}" class="edit">Edit</a>
+                            {% if hasAccess('common_admin_role', 'edit') %}
+                                <a href="{{ url('common_admin_role', {"action": "edit", "name": role.getName()}) }}" class="edit">Edit</a>
                             {% endif %}
-                            {% if not role.getSystem() and hasAccess('admin_role', 'delete') %}
+                            {% if not role.getSystem() and hasAccess('common_admin_role', 'delete') %}
                             	<a href="#" data-name="{{ role.getName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -84,7 +84,7 @@
             });
             var name = $this.data('name');
             removeRole.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_role', {"action": "delete"})}}/name/' + name, function (data) {
+                $.post('{{ url('common_admin_role', {"action": "delete"})}}/name/' + name, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.role_removed_success').removeClass('hide');

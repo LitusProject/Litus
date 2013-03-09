@@ -96,10 +96,10 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     {
         return array(
             'action'         => 'login',
-            'controller'     => 'auth',
+            'controller'     => 'common_auth',
 
-            'auth_route'     => 'admin_auth',
-            'redirect_route' => 'admin_index'
+            'auth_route'     => 'common_admin_auth',
+            'redirect_route' => 'common_admin_index'
         );
     }
 

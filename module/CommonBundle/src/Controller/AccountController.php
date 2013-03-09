@@ -58,7 +58,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return new ViewModel();
@@ -112,7 +112,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return new ViewModel();
@@ -499,7 +499,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return new ViewModel();
@@ -537,7 +537,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return new ViewModel();
@@ -600,7 +600,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return new ViewModel();
@@ -638,7 +638,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'account',
+                    'common_account',
                     array(
                         'action' => 'subjects',
                     )
@@ -706,7 +706,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return new ViewModel();
@@ -774,7 +774,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'index'
+                    'common_index'
                 );
 
                 return new ViewModel();
@@ -823,7 +823,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return new ViewModel();
@@ -887,7 +887,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                         );
 
                         $this->redirect()->toRoute(
-                            'account',
+                            'common_account',
                             array(
                                 'action' => 'fileServer',
                             )
@@ -1000,7 +1000,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                         );
 
                         $this->redirect()->toRoute(
-                            'account',
+                            'common_account',
                             array(
                                 'action' => 'fileServer',
                             )
@@ -1039,7 +1039,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return;
@@ -1059,7 +1059,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'index'
+                'common_index'
             );
 
             return;
@@ -1071,7 +1071,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     private function _doRedirect() {
         if (null === $this->getParam('return')) {
             $this->redirect()->toRoute(
-                'account'
+                'common_account'
             );
         } else {
             $this->redirect()->toRoute(

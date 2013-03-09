@@ -54,7 +54,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     $this->redirect()->toRoute(
-                        'index',
+                        'common_index',
                         array(
                             'language' => $this->getLanguage()->getAbbrev(),
                         )
@@ -69,7 +69,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     $this->redirect()->toRoute(
-                        'index',
+                        'common_index',
                         array(
                             'action' => 'index'
                         )
@@ -99,7 +99,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toUrl($shibbolethLogoutUrl);
         } else {
             $this->redirect()->toRoute(
-                'index',
+                'common_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
@@ -138,7 +138,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                     if ($authentication->isAuthenticated()) {
                         $this->redirect()->toRoute(
-                            'index'
+                            'common_index'
                         );
                     } else {
                         $this->redirect()->toRoute(

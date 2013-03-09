@@ -49,7 +49,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController
     {
         return array(
             'action'         => 'index',
-            'controller'     => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'run_index',
             'redirect_route' => 'run_index'
