@@ -3,14 +3,14 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_prof_action', 'refused') %}
-                <li><a {% if 'refused' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_prof_action', {"action": "refused"}) }}">Refused</a></li>
+            {% if hasAccess('cudi_admin_prof_action', 'refused') %}
+                <li><a {% if 'refused' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_prof_action', {"action": "refused"}) }}">Refused</a></li>
             {% endif %}
-            {% if hasAccess('admin_prof_action', 'completed') %}
-                <li><a {% if 'completed' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_prof_action', {"action": "completed"}) }}">Completed</a></li>
+            {% if hasAccess('cudi_admin_prof_action', 'completed') %}
+                <li><a {% if 'completed' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_prof_action', {"action": "completed"}) }}">Completed</a></li>
             {% endif %}
-            {% if hasAccess('admin_prof_action', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_prof_action') }}">Uncompleted</a></li>
+            {% if hasAccess('cudi_admin_prof_action', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_prof_action') }}">Uncompleted</a></li>
             {% endif %}
         </ul>
     </nav>

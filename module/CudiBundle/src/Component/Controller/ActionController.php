@@ -110,7 +110,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_period',
+                'cudi_admin_stock_period',
                 array(
                     'action' => 'manage'
                 )

@@ -3,26 +3,26 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_stock', 'export') %}
-                <li><a{% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock', {"action": "export"}) }}">Export</a></li>
+            {% if hasAccess('cudi_admin_stock', 'export') %}
+                <li><a{% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_stock', {"action": "export"}) }}">Export</a></li>
             {% endif %}
-            {% if hasAccess('admin_stock_period', 'manage') %}
-                <li><a{% if 'admin_stock_period' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock_period') }}">Periods</a></li>
+            {% if hasAccess('cudi_admin_stock_period', 'manage') %}
+                <li><a{% if 'cudi_admin_stock_period' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_stock_period') }}">Periods</a></li>
             {% endif %}
-            {% if hasAccess('admin_stock_order', 'manage') %}
-                <li><a{% if 'admin_stock_order' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock_order') }}">Orders</a></li>
+            {% if hasAccess('cudi_admin_stock_order', 'manage') %}
+                <li><a{% if 'cudi_admin_stock_order' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_stock_order') }}">Orders</a></li>
             {% endif %}
-            {% if hasAccess('admin_stock_delivery', 'manage') %}
-                <li><a{% if 'admin_stock_delivery' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock_delivery') }}">Deliveries</a></li>
+            {% if hasAccess('cudi_admin_stock_delivery', 'manage') %}
+                <li><a{% if 'cudi_admin_stock_delivery' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_stock_delivery') }}">Deliveries</a></li>
             {% endif %}
-            {% if hasAccess('admin_stock_retour', 'manage') %}
-                <li><a{% if 'admin_stock_retour' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock_retour') }}">Retours</a></li>
+            {% if hasAccess('cudi_admin_stock_retour', 'manage') %}
+                <li><a{% if 'cudi_admin_stock_retour' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_stock_retour') }}">Retours</a></li>
             {% endif %}
-            {% if hasAccess('admin_stock', 'notDelivered') %}
-                <li><a{% if 'admin_stock' == getParam('controller') and 'notDelivered' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock', {'action': 'notDelivered'}) }}">Not Delivered</a></li>
+            {% if hasAccess('cudi_admin_stock', 'notDelivered') %}
+                <li><a{% if 'cudi_admin_stock' == getParam('controller') and 'notDelivered' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_stock', {'action': 'notDelivered'}) }}">Not Delivered</a></li>
             {% endif %}
-            {% if hasAccess('admin_stock', 'manage') %}
-                <li><a{% if 'admin_stock' == getParam('controller') and 'notDelivered' != getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock') }}">Overview</a></li>
+            {% if hasAccess('cudi_admin_stock', 'manage') %}
+                <li><a{% if 'cudi_admin_stock' == getParam('controller') and 'notDelivered' != getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_stock') }}">Overview</a></li>
             {% endif %}
         </ul>
     </nav>

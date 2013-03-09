@@ -107,8 +107,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             'action'         => 'index',
             'controller'     => 'common_index',
 
-            'auth_route'     => 'prof_index',
-            'redirect_route' => 'prof_index'
+            'auth_route'     => 'cudi_prof_index',
+            'redirect_route' => 'cudi_prof_index'
         );
     }
 

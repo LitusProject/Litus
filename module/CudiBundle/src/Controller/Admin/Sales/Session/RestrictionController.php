@@ -62,7 +62,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_session_restriction',
+                    'cudi_admin_sales_session_restriction',
                     array(
                         'action' => 'manage',
                         'id' => $session->getId(),
@@ -111,7 +111,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_session',
+                'cudi_admin_sales_session',
                 array(
                     'action' => 'manage'
                 )
@@ -134,7 +134,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_session',
+                'cudi_admin_sales_session',
                 array(
                     'action' => 'manage'
                 )
@@ -158,7 +158,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_session',
+                'cudi_admin_sales_session',
                 array(
                     'action' => 'manage'
                 )
@@ -181,7 +181,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_session',
+                'cudi_admin_sales_session',
                 array(
                     'action' => 'manage'
                 )

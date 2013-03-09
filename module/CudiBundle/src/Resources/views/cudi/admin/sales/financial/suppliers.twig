@@ -19,11 +19,11 @@
                 <tr>
                     <td>{{ supplier.getName() }}</td>
                     <td>
-                        {% if hasAccess('admin_sales_financial', 'deliveries') %}
-                            <a href="{{ url('admin_sales_financial', {"action": "deliveries", "id": supplier.getId()}) }}" class="view">Deliveries</a>
+                        {% if hasAccess('cudi_admin_sales_financial', 'deliveries') %}
+                            <a href="{{ url('cudi_admin_sales_financial', {"action": "deliveries", "id": supplier.getId()}) }}" class="view">Deliveries</a>
                         {% endif %}
-                        {% if hasAccess('admin_sales_financial', 'retours') %}
-                            <a href="{{ url('admin_sales_financial', {"action": "retours", "id": supplier.getId()}) }}" class="view">Retours</a>
+                        {% if hasAccess('cudi_admin_sales_financial', 'retours') %}
+                            <a href="{{ url('cudi_admin_sales_financial', {"action": "retours", "id": supplier.getId()}) }}" class="view">Retours</a>
                         {% endif %}
                     </td>
                 </tr>

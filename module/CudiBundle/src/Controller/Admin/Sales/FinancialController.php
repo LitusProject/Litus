@@ -21,7 +21,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * FinancialController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  */
 class FinancialController extends \CudiBundle\Component\Controller\ActionController
 {
@@ -164,7 +163,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_financial',
+                'cudi_admin_sales_financial',
                 array(
                     'action' => 'suppliers'
                 )
@@ -187,7 +186,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_financial',
+                'cudi_admin_sales_financial',
                 array(
                     'action' => 'suppliers'
                 )

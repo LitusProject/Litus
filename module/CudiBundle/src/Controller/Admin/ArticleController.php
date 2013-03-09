@@ -150,7 +150,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_article',
+                    'cudi_admin_article',
                     array(
                         'action' => 'edit',
                         'id' => $article->getId(),
@@ -230,7 +230,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_article',
+                    'cudi_admin_article',
                     array(
                         'action' => 'manage'
                     )
@@ -407,7 +407,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_article',
+                    'cudi_admin_article',
                     array(
                         'action' => 'edit',
                         'id' => $article->getId(),
@@ -433,7 +433,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         if (!$previous->isInternal()) {
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'edit',
                     'id' => $previous->getId(),
@@ -495,7 +495,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
 
         $this->redirect()->toRoute(
-            'admin_article',
+            'cudi_admin_article',
             array(
                 'action' => 'edit',
                 'id' => $article->getId(),
@@ -512,7 +512,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         if ($previous->isInternal()) {
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'edit',
                     'id' => $previous->getId(),
@@ -590,7 +590,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
 
         $this->redirect()->toRoute(
-            'admin_article',
+            'cudi_admin_article',
             array(
                 'action' => 'edit',
                 'id' => $article->getId(),
@@ -634,7 +634,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -657,7 +657,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )

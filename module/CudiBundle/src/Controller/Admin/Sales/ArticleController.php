@@ -93,7 +93,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         if (null !== $article->getSaleArticle($previousAcademicYear)) {
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'activate',
                     'id' => $article->getSaleArticle($previousAcademicYear)->getId(),
@@ -149,7 +149,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_article',
+                    'cudi_admin_sales_article',
                     array(
                         'action' => 'manage'
                     )
@@ -229,7 +229,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_article',
+                    'cudi_admin_sales_article',
                     array(
                         'action' => 'manage'
                     )
@@ -429,7 +429,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_article',
+                    'cudi_admin_sales_article',
                     array(
                         'action' => 'edit',
                         'id' => $saleArticle->getId(),
@@ -480,7 +480,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -503,7 +503,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -527,7 +527,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -550,7 +550,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )

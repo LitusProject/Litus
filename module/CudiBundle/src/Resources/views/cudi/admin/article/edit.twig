@@ -43,7 +43,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_article', 'duplicate') %}
+        {% if hasAccess('cudi_admin_article', 'duplicate') %}
             <div class="sidebox">
                 <div class="title">Create Duplicate</div>
                 <div class="content">
@@ -51,12 +51,12 @@
                         <i>Please hit the link below to create a duplicate of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_article', {"action": "duplicate", "id": article.getId()}) }}">&rarr; Create Duplicate</a>
+                        <a href="{{ url('cudi_admin_article', {"action": "duplicate", "id": article.getId()}) }}">&rarr; Create Duplicate</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if saleArticle is not null and hasAccess('admin_sales_article', 'edit') %}
+        {% if saleArticle is not null and hasAccess('cudi_admin_sales_article', 'edit') %}
             <div class="sidebox">
                 <div class="title">Edit Sale Article</div>
                 <div class="content">
@@ -64,11 +64,11 @@
                         <i>Please hit the link below to edit the sale article for this!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_article', {"action": "edit", "id": saleArticle.getId()}) }}">&rarr; Edit Sale Article</a>
+                        <a href="{{ url('cudi_admin_sales_article', {"action": "edit", "id": saleArticle.getId()}) }}">&rarr; Edit Sale Article</a>
                     </p>
                 </div>
             </div>
-        {% elseif saleArticle is null and hasAccess('admin_sales_article', 'add') %}
+        {% elseif saleArticle is null and hasAccess('cudi_admin_sales_article', 'add') %}
             <div class="sidebox">
                 <div class="title">Create Sale Article</div>
                 <div class="content">
@@ -76,12 +76,12 @@
                         <i>Please hit the link below to create a sale article for this!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_article', {"action": "add", "id": article.getId()}) }}">&rarr; Create Sale Article</a>
+                        <a href="{{ url('cudi_admin_sales_article', {"action": "add", "id": article.getId()}) }}">&rarr; Create Sale Article</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_article_subject', 'manage') %}
+        {% if hasAccess('cudi_admin_article_subject', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Subject Mapping</div>
                 <div class="content">
@@ -89,12 +89,12 @@
                         <i>Please hit the link below to manage the mapping of this article to subjects!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_article_subject', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Mapping</a>
+                        <a href="{{ url('cudi_admin_article_subject', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Mapping</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if article.isInternal() and hasAccess('admin_article_file', 'manage') %}
+        {% if article.isInternal() and hasAccess('cudi_admin_article_file', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Files</div>
                 <div class="content">
@@ -102,12 +102,12 @@
                         <i>Please hit the link below to manage the files of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_article_file', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Files</a>
+                        <a href="{{ url('cudi_admin_article_file', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Files</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_article_comment', 'manage') %}
+        {% if hasAccess('cudi_admin_article_comment', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Comments</div>
                 <div class="content">
@@ -115,12 +115,12 @@
                         <i>Please hit the link below to manage the comments of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_article_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
+                        <a href="{{ url('cudi_admin_article_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_article', 'history') %}
+        {% if hasAccess('cudi_admin_article', 'history') %}
             <div class="sidebox">
                 <div class="title">View History</div>
                 <div class="content">
@@ -128,12 +128,12 @@
                         <i>Please hit the link below to view the history of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_article', {"action": "history", "id": article.getId()}) }}">&rarr; View History</a>
+                        <a href="{{ url('cudi_admin_article', {"action": "history", "id": article.getId()}) }}">&rarr; View History</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_article', 'convertToExternal') and article.isInternal() %}
+        {% if hasAccess('cudi_admin_article', 'convertToExternal') and article.isInternal() %}
             <div class="sidebox">
                 <div class="title">Convert To External</div>
                 <div class="content">
@@ -146,7 +146,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_article', 'convertToInternal') and not article.isInternal() %}
+        {% if hasAccess('cudi_admin_article', 'convertToInternal') and not article.isInternal() %}
             <div class="sidebox">
                 <div class="title">Convert To Internal</div>
                 <div class="content">
@@ -224,14 +224,14 @@
             toggleInternal();
             $('.item .viewComment').click(openViewModal);
 
-            {% if hasAccess('admin_article', 'convertToExternal') %}
+            {% if hasAccess('cudi_admin_article', 'convertToExternal') %}
                 $('#convertToExternal .convert').click(function () {
-                    window.location = "{{ url('admin_article', {"action": "convertToExternal", "id": article.getId()}) }}";
+                    window.location = "{{ url('cudi_admin_article', {"action": "convertToExternal", "id": article.getId()}) }}";
                 });
             {% endif %}
-            {% if hasAccess('admin_article', 'convertToInternal') %}
+            {% if hasAccess('cudi_admin_article', 'convertToInternal') %}
                 $('#convertToInternal .convert').click(function () {
-                    window.location = "{{ url('admin_article', {"action": "convertToInternal", "id": article.getId()}) }}";
+                    window.location = "{{ url('cudi_admin_article', {"action": "convertToInternal", "id": article.getId()}) }}";
                 });
             {% endif %}
         });

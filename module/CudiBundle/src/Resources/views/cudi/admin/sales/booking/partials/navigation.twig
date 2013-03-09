@@ -3,29 +3,29 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_sales_booking', 'assignments') %}
-                <li><a {% if 'assignments' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "assignments"}) }}">Assignments</a></li>
+            {% if hasAccess('cudi_admin_sales_booking', 'assignments') %}
+                <li><a {% if 'assignments' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_booking', {"action": "assignments"}) }}">Assignments</a></li>
             {% endif %}
-            {% if hasAccess('admin_sales_booking', 'expireAll') %}
+            {% if hasAccess('cudi_admin_sales_booking', 'expireAll') %}
                 <li><a href="#" class="expireAll">Expire All</a></li>
             {% endif %}
-            {% if hasAccess('admin_sales_booking', 'assignAll') %}
+            {% if hasAccess('cudi_admin_sales_booking', 'assignAll') %}
                 <li><a href="#" class="assignAll">Assign All</a></li>
             {% endif %}
-            {% if hasAccess('admin_sales_booking', 'person') %}
-                <li><a {% if 'person' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "person"}) }}">By Person</a></li>
+            {% if hasAccess('cudi_admin_sales_booking', 'person') %}
+                <li><a {% if 'person' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_booking', {"action": "person"}) }}">By Person</a></li>
             {% endif %}
-            {% if hasAccess('admin_sales_booking', 'article') %}
-                <li><a {% if 'article' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "article"}) }}">By Article</a></li>
+            {% if hasAccess('cudi_admin_sales_booking', 'article') %}
+                <li><a {% if 'article' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_booking', {"action": "article"}) }}">By Article</a></li>
             {% endif %}
-            {% if hasAccess('admin_sales_booking', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('cudi_admin_sales_booking', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_booking', {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_sales_booking', 'inactive') %}
-                <li><a {% if 'inactive' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "inactive"}) }}">Inactive</a></li>
+            {% if hasAccess('cudi_admin_sales_booking', 'inactive') %}
+                <li><a {% if 'inactive' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_booking', {"action": "inactive"}) }}">Inactive</a></li>
             {% endif %}
-            {% if hasAccess('admin_sales_booking', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "manage"}) }}">Active</a></li>
+            {% if hasAccess('cudi_admin_sales_booking', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_booking', {"action": "manage"}) }}">Active</a></li>
             {% endif %}
         </ul>
     </nav>
@@ -77,7 +77,7 @@
             e.preventDefault();
             var assignAllBooking = $('#assignAllBooking');
             assignAllBooking.find('.delete').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_sales_booking', {"action": "assignAll"})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "assignAll"})}}';
             });
             assignAllBooking.modal();
         }
@@ -88,7 +88,7 @@
             e.preventDefault();
             var expireAllBooking = $('#expireAllBooking');
             expireAllBooking.find('.delete').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_sales_booking', {"action": "expireAll"})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "expireAll"})}}';
             });
             expireAllBooking.modal();
         }

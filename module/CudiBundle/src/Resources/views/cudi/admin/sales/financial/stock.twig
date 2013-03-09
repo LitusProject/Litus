@@ -27,8 +27,8 @@
                     <td>&euro; {{ (article.getSellPrice()*article.getStockValue()/100)|number_format(2) }}</td>
                     <td>&euro; {{ (article.getPurchasePrice()*article.getStockValue()/100)|number_format(2) }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_stock', 'edit') %}
-                            <a href="{{ url("admin_stock", {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
+                        {% if hasAccess('cudi_admin_stock', 'edit') %}
+                            <a href="{{ url("cudi_admin_stock", {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                     </td>
                 </tr>

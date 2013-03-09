@@ -25,7 +25,7 @@
         <p>Publisher: <b>{{ article.getPublishers() }}</b></p>
         <br />
 
-        {% if hasAccess('admin_article_file', 'upload') %}
+        {% if hasAccess('cudi_admin_article_file', 'upload') %}
             {% import 'admin/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
             <br style="clear:both"/>
@@ -47,8 +47,8 @@
                     <td>Front page of this article</td>
                     <td style="text-align: center;">&times;</td>
                     <td class="actions">
-                        {% if hasAccess('admin_article_file', 'front') %}
-                            <a href="#" class="downloadFile view" data-file="{{ url('admin_article_file', {"action": "front", "id": saleArticle.getId()}) }}">Download</a>
+                        {% if hasAccess('cudi_admin_article_file', 'front') %}
+                            <a href="#" class="downloadFile view" data-file="{{ url('cudi_admin_article_file', {"action": "front", "id": saleArticle.getId()}) }}">Download</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -60,13 +60,13 @@
                     <td>{{ mapping.getFile().getDescription() }}</td>
                     <td style="text-align: center;">{% if mapping.isPrintable() %}&times;{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_article_file', 'download') %}
-                            <a href="#" class="downloadFile view" data-file="{{ url('admin_article_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
+                        {% if hasAccess('cudi_admin_article_file', 'download') %}
+                            <a href="#" class="downloadFile view" data-file="{{ url('cudi_admin_article_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
                         {% endif %}
-                        {% if hasAccess('admin_article_file', 'edit') %}
-                            <a href="{{ url('admin_article_file', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
+                        {% if hasAccess('cudi_admin_article_file', 'edit') %}
+                            <a href="{{ url('cudi_admin_article_file', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
-                        {% if hasAccess('admin_article_file', 'delete') %}
+                        {% if hasAccess('cudi_admin_article_file', 'delete') %}
                             <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">Delete</a>
                         {% endif %}
                     </td>
@@ -121,7 +121,7 @@
             });
 
             $('#uploadFile').formUploadProgress({
-                url: '{{ url('admin_article_file', {"action": "progress"}) }}',
+                url: '{{ url('cudi_admin_article_file', {"action": "progress"}) }}',
                 name: '{{ uploadProgressId }}',
                 uploadProgressName: '{{ uploadProgressName }}',
                 interval: 1000,
@@ -168,7 +168,7 @@
             removeFile.find('.fileDescription').html($(this).data('description'));
             var id = $this.data('id');
             removeFile.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_article_file', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('cudi_admin_article_file', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.file_removed_success').removeClass('hide');

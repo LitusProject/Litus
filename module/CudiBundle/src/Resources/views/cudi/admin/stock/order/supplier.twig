@@ -23,11 +23,11 @@
                     <td>{{ order.getPerson().getFullName() }}</td>
                     <td>&euro; {{ (order.getPrice()/100)|number_format(2) }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_stock_order', 'edit') %}
+                        {% if hasAccess('cudi_admin_stock_order', 'edit') %}
                             {% if order.isPlaced() %}
-                                <a href="{{ url('admin_stock_order', {"action": "edit", "id": order.getId()}) }}" class="view">View</a>
+                                <a href="{{ url('cudi_admin_stock_order', {"action": "edit", "id": order.getId()}) }}" class="view">View</a>
                             {% else %}
-                                <a href="{{ url('admin_stock_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
+                                <a href="{{ url('cudi_admin_stock_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                         {% endif %}
                     </td>
@@ -39,7 +39,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_stock_order', 'add') %}
+        {% if hasAccess('cudi_admin_stock_order', 'add') %}
             <div class="sidebox">
                 <div class="title">New Order</div>
                 <div class="content">
@@ -47,7 +47,7 @@
                         <i>Please hit the link below to add a new order item!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+                        <a href="{{ url('cudi_admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
                     </p>
                 </div>
             </div>

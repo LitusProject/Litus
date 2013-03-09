@@ -141,7 +141,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 );
 
                 $this->redirect()->toRoute(
-                    'prof_article',
+                    'cudi_prof_article',
                     array(
                         'action' => 'manage',
                         'language' => $this->getLanguage()->getAbbrev(),
@@ -273,7 +273,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 );
 
                 $this->redirect()->toRoute(
-                    'prof_article',
+                    'cudi_prof_article',
                     array(
                         'action' => 'manage',
                         'language' => $this->getLanguage()->getAbbrev(),
@@ -327,7 +327,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_article',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -351,7 +351,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_article',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),

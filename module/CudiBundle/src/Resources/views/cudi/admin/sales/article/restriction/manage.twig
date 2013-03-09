@@ -42,7 +42,7 @@
                     <td>{{ restriction.getType() }}</td>
                     <td>{{ restriction.getValue() }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_sales_article_restriction', 'delete') %}
+                        {% if hasAccess('cudi_admin_sales_article_restriction', 'delete') %}
                             <a href="#" class="delete" data-id="{{ restriction.getId() }}" data-restriction="{{ restriction.getType() }}">Delete</a>
                         {% endif %}
                     </td>
@@ -96,7 +96,7 @@
             removeRestriction.find('.restriction').html($(this).data('restriction'));
             var id = $this.data('id');
             removeRestriction.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_sales_article_restriction', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('cudi_admin_sales_article_restriction', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.restriction_removed_success').removeClass('hide');

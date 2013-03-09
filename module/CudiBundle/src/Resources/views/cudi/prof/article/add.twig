@@ -28,7 +28,7 @@
 
             $('#subjectSearch').typeaheadRemote(
                 {
-                    source: '{{ url("prof_subject_typeahead", {"language": language.getAbbrev()})}}',
+                    source: '{{ url("cudi_prof_subject_typeahead", {"language": language.getAbbrev()})}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

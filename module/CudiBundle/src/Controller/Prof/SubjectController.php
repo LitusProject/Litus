@@ -98,7 +98,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 );
 
                 $this->redirect()->toRoute(
-                    'prof_subject',
+                    'cudi_prof_subject',
                     array(
                         'action' => 'subject',
                         'id' => $subject->getId(),
@@ -160,7 +160,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -188,7 +188,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_subject',
+                'cudi_prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
