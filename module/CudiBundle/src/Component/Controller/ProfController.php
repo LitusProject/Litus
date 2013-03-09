@@ -105,7 +105,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         return array(
             'action'         => 'index',
-            'controller'     => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'prof_index',
             'redirect_route' => 'prof_index'

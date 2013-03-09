@@ -32,7 +32,7 @@
                 <div class="span3">
                     <div class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px;">
                         {% if authenticatedPerson.getPhotoPath() %}
-                            <img src="{{ url('account', {'action': 'photo', 'image': authenticatedPerson.getPhotoPath()}) }}" alt="">
+                            <img src="{{ url('common_account', {'action': 'photo', 'image': authenticatedPerson.getPhotoPath()}) }}" alt="">
                         {% else %}
                             <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
                         {% endif %}
@@ -84,7 +84,7 @@
                 {% endfor %}
             {% endfor %}
             <div class="form-actions hidden-phone" style="text-align: center;">
-                <a href="{{ url('account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+                <a href="{{ url('common_account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
             </div>
         </div>
     </div>

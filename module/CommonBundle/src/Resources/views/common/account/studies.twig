@@ -23,12 +23,12 @@
             <h2>
                 {{ translate('Choose Your Study') }}
                 <div class="pull-right">
-                    <a href="{{ url('account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+                    <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
                 </div>
             </h2>
             {{ _self.displayStudies(studies, enrollments) }}
             <div class="form-actions" style="text-align: center;">
-                <a href="{{ url('account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+                <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
             </div>
         </div>
     </div>
@@ -97,7 +97,7 @@
             $('.study_enroll.active').each(function () {
                 studies.push($(this).data('id'));
             });
-            $.post('{{ url('account', {"action": "saveStudies"})}}', {"studies": studies}, function (data) {
+            $.post('{{ url('common_account', {"action": "saveStudies"})}}', {"studies": studies}, function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').removeClass('in');
                     $('#studies_saved_success').addClass('in');

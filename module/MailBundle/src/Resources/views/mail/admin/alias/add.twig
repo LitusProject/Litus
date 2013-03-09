@@ -18,7 +18,7 @@
         $(document).ready(function () {
             $('#personSearch').typeaheadRemote(
                 {
-                    source: '{{ url('admin_academic_typeahead', {})}}',
+                    source: '{{ url('common_admin_academic_typeahead', {})}}',
                     items: 20,
                 }
             ).change(function (e) {

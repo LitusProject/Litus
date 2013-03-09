@@ -894,7 +894,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
 
                 $this->redirect()->toRoute(
-                    'account',
+                    'common_account',
                     array(
                         'action' => 'subjects',
                     )

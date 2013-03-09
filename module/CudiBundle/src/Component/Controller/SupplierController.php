@@ -67,7 +67,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     {
         return array(
             'action'         => 'index',
-            'controller'     => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'supplier_index',
             'redirect_route' => 'supplier_index'
