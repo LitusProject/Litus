@@ -19,32 +19,32 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail' => array(
+        'mail_admin_mail' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail_bakske' => array(
+        'mail_admin_mail_bakske' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail_prof' => array(
+        'mail_admin_mail_prof' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail_study' => array(
+        'mail_admin_mail_study' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail_bakske' => array(
+        'mail_admin_mail_bakske' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail_list' => array(
+        'mail_admin_mail_list' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -52,7 +52,7 @@ return array(
             '@bootstrap_js_modal',
             '@common_typeahead_remote',
         ),
-        'admin_mail_alias' => array(
+        'mail_admin_mail_alias' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',

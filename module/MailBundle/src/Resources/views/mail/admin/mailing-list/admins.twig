@@ -40,7 +40,7 @@
                     <td>{{ admin.getAcademic().getFullName() }}</td>
                     <td>{% if admin.isEditAdmin() %}X{% endif %}</td>
                     <td>
-                        {% if hasAccess('admin_mail_list', 'deleteAdmin') %}
+                        {% if hasAccess('mail_admin_mail_list', 'deleteAdmin') %}
                             <a href="#" data-id="{{ admin.getId() }}" data-name="{{ admin.getAcademic().getFullName() }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
@@ -96,7 +96,7 @@
             removeAdmin.find('.adminName').html($(this).data('name'));
             var id = $this.data('id');
             removeAdmin.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_mail_list', {"action": "deleteAdmin"})}}' + id, function (data) {
+                $.post('{{ url('mail_admin_mail_list', {"action": "deleteAdmin"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.admin_removed_success').removeClass('hide');

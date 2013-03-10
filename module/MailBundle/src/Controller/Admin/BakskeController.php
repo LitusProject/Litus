@@ -94,7 +94,7 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_mail_bakske',
+                    'mail_admin_mail_bakske',
                     array(
                         'action' => 'send'
                     )

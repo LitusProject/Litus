@@ -21,7 +21,7 @@
 	        <b>Body:</b>
 	        <pre style="border: 1px solid #ccc;margin: 5px;padding: 5px;background: #ddd;word-break: normal;">{{ mail }}</pre>
 	    </p>
-	    {% if hasAccess('admin_mail_prof', 'send') %}
+	    {% if hasAccess('mail_admin_mail_prof', 'send') %}
 	        {% import 'admin/partials/form.twig' as forms %}
 	        {{ forms.renderForm(form) }}
 	    {% endif %}
