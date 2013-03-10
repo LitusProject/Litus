@@ -42,7 +42,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -79,7 +79,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -146,7 +146,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                 }
 
                 $this->redirect()->toRoute(
-                    'admin_form_viewer',
+                    'form_admin_form_viewer',
                     array(
                         'action' => 'manage',
                         'id' => $formSpecification->getId(),
@@ -183,7 +183,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -214,7 +214,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage'
                 )
@@ -237,7 +237,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage'
                 )
@@ -261,7 +261,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -284,7 +284,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )

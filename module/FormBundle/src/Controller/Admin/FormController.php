@@ -134,7 +134,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_form',
+                    'form_admin_form',
                     array(
                         'action' => 'manage'
                     )
@@ -167,7 +167,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -246,7 +246,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_form',
+                    'form_admin_form',
                     array(
                         'action' => 'manage'
                     )
@@ -282,7 +282,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -353,7 +353,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage'
                 )
@@ -376,7 +376,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage'
                 )
