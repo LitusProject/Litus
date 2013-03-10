@@ -251,7 +251,7 @@
                                     Calendar, News &amp; Pages
                                 </div>
                                 <ul
-                                    {% if 'banner_admin_banner' == getParam('controller') or 'admin_news' == getParam('controller') or 'admin_notification' == getParam('controller') or 'calendar_admin_calendar' == getParam('controller') or 'admin_page' == getParam('controller') or 'admin_page_category' == getParam('controller') or 'admin_page_link' == getParam('controller') or 'form_admin_form' == getParam('controller') or 'form_admin_form_field' == getParam('controller') or 'form_admin_viewer' == getParam('controller') %}
+                                    {% if 'banner_admin_banner' == getParam('controller') or 'admin_news' == getParam('controller') or 'admin_notification' == getParam('controller') or 'calendar_admin_calendar' == getParam('controller') or 'admin_page' == getParam('controller') or 'admin_page_category' == getParam('controller') or 'admin_page_link' == getParam('controller') or 'form_admin_form' == getParam('controller') or 'form_admin_form_field' == getParam('controller') or 'form_admin_viewer' == getParam('controller') or 'gallery_admin_gallery' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
@@ -264,8 +264,8 @@
                                     {% if hasAccess('form_admin_form', 'manage') %}
                                         <li><a href="{{ url('form_admin_form') }}">Forms</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_gallery', 'manage') %}
-                                        <li><a href="{{ url('admin_gallery') }}">Gallery</a></li>
+                                    {% if hasAccess('gallery_admin_gallery', 'manage') %}
+                                        <li><a href="{{ url('gallery_admin_gallery') }}">Gallery</a></li>
                                     {% endif %}
                                     {% if hasAccess('admin_news', 'manage') %}
                                         <li><a href="{{ url('admin_news') }}">News</a></li>
