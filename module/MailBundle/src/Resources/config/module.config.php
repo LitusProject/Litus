@@ -25,7 +25,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_mail' => array(
+            'mail_admin_mail' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/mail/groups[/:action[/:type/:group]][/]',
@@ -34,12 +34,12 @@ return array(
                         'group'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_mail',
+                        'controller' => 'mail_admin_mail',
                         'action'     => 'groups',
                     ),
                 ),
             ),
-            'admin_mail_bakske' => array(
+            'mail_admin_mail_bakske' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/mail/bakske[/:action][/]',
@@ -47,12 +47,12 @@ return array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_mail_bakske',
+                        'controller' => 'mail_admin_mail_bakske',
                         'action'     => 'send',
                     ),
                 ),
             ),
-            'admin_mail_prof' => array(
+            'mail_admin_mail_prof' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/mail/prof[/:action][/]',
@@ -60,12 +60,12 @@ return array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_mail_prof',
+                        'controller' => 'mail_admin_mail_prof',
                         'action'     => 'cudi',
                     ),
                 ),
             ),
-            'admin_mail_study' => array(
+            'mail_admin_mail_study' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/mail/study[/:action][/]',
@@ -73,12 +73,12 @@ return array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_mail_study',
+                        'controller' => 'mail_admin_mail_study',
                         'action'     => 'send',
                     ),
                 ),
             ),
-            'admin_mail_bakske' => array(
+            'mail_admin_mail_bakske' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/mail/bakske[/:action[/:id][/page/:page]][/]',
@@ -88,12 +88,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_mail_bakske',
+                        'controller' => 'mail_admin_mail_bakske',
                         'action'     => 'send',
                     ),
                 ),
             ),
-            'admin_mail_list' => array(
+            'mail_admin_mail_list' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/mail/list[/:action[/:id][/page/:page]][/]',
@@ -103,12 +103,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_mail_list',
+                        'controller' => 'mail_admin_mail_list',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_mail_alias' => array(
+            'mail_admin_mail_alias' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/mail/alias[/:action[/:id][/page/:page]][/]',
@@ -118,7 +118,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_mail_alias',
+                        'controller' => 'mail_admin_mail_alias',
                         'action'     => 'manage',
                     ),
                 ),
@@ -156,14 +156,14 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'mail_install'      => 'MailBundle\Controller\Admin\InstallController',
-            'admin_mail'        => 'MailBundle\Controller\Admin\MailController',
-            'admin_mail_alias'  => 'MailBundle\Controller\Admin\AliasController',
-            'admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
-            'admin_mail_prof'   => 'MailBundle\Controller\Admin\ProfController',
-            'admin_mail_study'  => 'MailBundle\Controller\Admin\StudyController',
-            'admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
-            'admin_mail_list'   => 'MailBundle\Controller\Admin\MailingListController',
+            'mail_install'           => 'MailBundle\Controller\Admin\InstallController',
+            'mail_admin_mail'        => 'MailBundle\Controller\Admin\MailController',
+            'mail_admin_mail_alias'  => 'MailBundle\Controller\Admin\AliasController',
+            'mail_admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
+            'mail_admin_mail_prof'   => 'MailBundle\Controller\Admin\ProfController',
+            'mail_admin_mail_study'  => 'MailBundle\Controller\Admin\StudyController',
+            'mail_admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
+            'mail_admin_mail_list'   => 'MailBundle\Controller\Admin\MailingListController',
         ),
     ),
 );
