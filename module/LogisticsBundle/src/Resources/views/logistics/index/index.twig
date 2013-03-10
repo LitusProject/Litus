@@ -51,21 +51,21 @@
             <dd class="driver driver_value"></dd>
         </dl>
 
-        {% if has_access('admin_van_reservation', 'edit') or has_access('admin_van_reservation', 'delete') %}
+        {% if has_access('logistics_admin_van_reservation', 'edit') or has_access('logistics_admin_van_reservation', 'delete') %}
         <hr />
         {% endif %}
 
-        {% if has_access('admin_van_reservation', 'delete') %}
+        {% if has_access('logistics_admin_van_reservation', 'delete') %}
             <a class="delete btn btn-danger pull-right" href="#" style="margin-left: 10px;">{{ translate('Delete') }}</a>
         {% endif %}
-        {% if has_access('admin_van_reservation', 'edit') %}
+        {% if has_access('logistics_admin_van_reservation', 'edit') %}
             <a class="edit btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
         {% endif %}
     </div>
 
     <div id="add_popover_content" class="hide">
         <div  id="add_popover_content_internal">
-            {% if has_access('admin_van_reservation', 'add') %}
+            {% if has_access('logistics_admin_van_reservation', 'add') %}
                 {% import 'site/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}
             {% endif %}
@@ -82,7 +82,7 @@
 
             $(".popover-content a.delete").live('click', function() {
                 var dbid = $(this).data('dbid');
-                $.post('{{ url('admin_van_reservation', {"action": "delete"})}}' + dbid, function (data) {
+                $.post('{{ url('logistics_admin_van_reservation', {"action": "delete"})}}' + dbid, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         hidePopover(poppedElement);
@@ -205,7 +205,7 @@
 
                     var pop_content = $('#popover_content').clone();
 
-                    pop_content.find("a.edit").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}' + event.dbid + '/return/logistics_index');
+                    pop_content.find("a.edit").attr("href", '{{ url('logistics_admin_van_reservation', {'action': 'edit'}) }}' + event.dbid + '/return/logistics_index');
 
                     pop_content.find("a.delete").attr('data-id', event.id);
                     pop_content.find("a.delete").attr('data-dbid', event.dbid);
@@ -241,7 +241,7 @@
                     hideAll();
                 },
 
-                {% if has_access('admin_van_reservation', 'add') %}
+                {% if has_access('logistics_admin_van_reservation', 'add') %}
                 selectable: true,
                 select : function( startDate, endDate, allDay, jsEvent, view ) {
 

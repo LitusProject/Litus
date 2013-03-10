@@ -43,9 +43,9 @@
 					<tr class="item item-{{ reservation.getId() }}">
 						<td>{{ reservation.getReason() }}</td>
 						<td class="driverdata">
-						    {% if hasAccess('admin_van_reservation', 'edit') and null == reservation.getDriver().getPerson() and isDriverLoggedIn %}
+						    {% if hasAccess('logistics_admin_van_reservation', 'edit') and null == reservation.getDriver().getPerson() and isDriverLoggedIn %}
 						    	None: <i><a href="#" class="assignme" data-id="{{ reservation.getId() }}">Assign Me</a></i>
-						    {% elseif hasAccess('admin_van_reservation', 'edit') and currentUser.getUserName() != "" and currentUser.getUsername() == reservation.getDriver().getPerson().getUsername() %}
+						    {% elseif hasAccess('logistics_admin_van_reservation', 'edit') and currentUser.getUserName() != "" and currentUser.getUsername() == reservation.getDriver().getPerson().getUsername() %}
 								{{ reservation.getDriver().getPerson().getFullName() }} - <i><a href="#" class="unassignme" data-id="{{ reservation.getId() }}">Unassign Me</a></i>
 							{% else %}
 								{{ reservation.getDriver().getPerson().getFullName() }}
@@ -55,10 +55,10 @@
 						<td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
 						<td>{{ reservation.getEndDate().format('d/m/Y H:i') }}</td>
 						<td class="actions">
-						    {% if hasAccess('admin_van_reservation', 'edit') %}
-		                        <a href="{{ url('admin_van_reservation', {"action": "edit", "id": reservation.getId()}) }}" class="edit">Edit</a>
+						    {% if hasAccess('logistics_admin_van_reservation', 'edit') %}
+		                        <a href="{{ url('logistics_admin_van_reservation', {"action": "edit", "id": reservation.getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
-						    {% if hasAccess('admin_van_reservation', 'delete') %}
+						    {% if hasAccess('logistics_admin_van_reservation', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ reservation.getId() }}" data-reason="{{ reservation.getReason() }}">Delete</a>
 		                    {% endif %}
 		                    <a href="#" class="moreinfo"
@@ -143,7 +143,7 @@
 
 			var id = $(this).data('id');
 
-			$.post('{{ url('admin_van_reservation', {"action": "assignme"})}}' + id, function (data) {
+			$.post('{{ url('logistics_admin_van_reservation', {"action": "assignme"})}}' + id, function (data) {
 			    if (data && 'success' == data.status) {
 					$('.flashmessage').addClass('hide');
 					$('.item-' + id + ' .driverdata').html(data.driver + ' - <i><a href="#" class="unassignme" data-id=' + id + '>Unassign Me</a></i>');
@@ -160,7 +160,7 @@
 
 			var id = $(this).data('id');
 
-			$.post('{{ url('admin_van_reservation', {"action": "unassignme"})}}' + id, function (data) {
+			$.post('{{ url('logistics_admin_van_reservation', {"action": "unassignme"})}}' + id, function (data) {
 			    if (data && 'success' == data.status) {
 					$('.flashmessage').addClass('hide');
 					$('.item-' + id + ' .driverdata').html('None: <i><a href="#" class="assignme" data-id=' + id + '>Assign Me</a></i>');
@@ -194,7 +194,7 @@
 			removeReservation.find('.reservationReason').html($(this).data('reason'));
 			var id = $this.data('id');
 			removeReservation.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_van_reservation', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('logistics_admin_van_reservation', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.reservation_removed_success').removeClass('hide');

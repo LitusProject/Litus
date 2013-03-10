@@ -145,22 +145,22 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_driver', 'manage') or hasAccess('admin_van_reservation', 'manage') %}
+                        {% if hasAccess('logistics_admin_driver', 'manage') or hasAccess('logistics_admin_van_reservation', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Logistics</b><br />
                                     Drivers &amp; Van Reservations
                                 </div>
                                 <ul
-                                    {% if 'admin_driver' == getParam('controller') or 'admin_van_reservation' == getParam('controller') %}
+                                    {% if 'logistics_admin_driver' == getParam('controller') or 'logistics_admin_van_reservation' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_driver', 'manage') %}
-                                        <li><a href="{{ url('admin_driver') }}">Drivers</a></li>
+                                    {% if hasAccess('logistics_admin_driver', 'manage') %}
+                                        <li><a href="{{ url('logistics_admin_driver') }}">Drivers</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_van_reservation', 'manage') %}
-                                        <li><a href="{{ url('admin_van_reservation') }}">Van Reservations</a></li>
+                                    {% if hasAccess('logistics_admin_van_reservation', 'manage') %}
+                                        <li><a href="{{ url('logistics_admin_van_reservation') }}">Van Reservations</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
