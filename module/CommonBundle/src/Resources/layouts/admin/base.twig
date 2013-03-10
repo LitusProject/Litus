@@ -244,14 +244,14 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('banner_admin_banner', 'manage') or hasAccess('calendar_admin_calendar', 'manage') or hasAccess('admin_news', 'manage') or hasAccess('admin_notification', 'manage') or hasAccess('admin_page', 'manage') or hasAccess('form_admin_form', 'manage') %}
+                        {% if hasAccess('banner_admin_banner', 'manage') or hasAccess('calendar_admin_calendar', 'manage') or hasAccess('news_admin_news', 'manage') or hasAccess('admin_notification', 'manage') or hasAccess('admin_page', 'manage') or hasAccess('form_admin_form', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Site</b><br />
                                     Calendar, News &amp; Pages
                                 </div>
                                 <ul
-                                    {% if 'banner_admin_banner' == getParam('controller') or 'admin_news' == getParam('controller') or 'admin_notification' == getParam('controller') or 'calendar_admin_calendar' == getParam('controller') or 'admin_page' == getParam('controller') or 'admin_page_category' == getParam('controller') or 'admin_page_link' == getParam('controller') or 'form_admin_form' == getParam('controller') or 'form_admin_form_field' == getParam('controller') or 'form_admin_viewer' == getParam('controller') or 'gallery_admin_gallery' == getParam('controller') %}
+                                    {% if 'banner_admin_banner' == getParam('controller') or 'news_admin_news' == getParam('controller') or 'admin_notification' == getParam('controller') or 'calendar_admin_calendar' == getParam('controller') or 'admin_page' == getParam('controller') or 'admin_page_category' == getParam('controller') or 'admin_page_link' == getParam('controller') or 'form_admin_form' == getParam('controller') or 'form_admin_form_field' == getParam('controller') or 'form_admin_viewer' == getParam('controller') or 'gallery_admin_gallery' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
@@ -267,8 +267,8 @@
                                     {% if hasAccess('gallery_admin_gallery', 'manage') %}
                                         <li><a href="{{ url('gallery_admin_gallery') }}">Gallery</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_news', 'manage') %}
-                                        <li><a href="{{ url('admin_news') }}">News</a></li>
+                                    {% if hasAccess('news_admin_news', 'manage') %}
+                                        <li><a href="{{ url('news_admin_news') }}">News</a></li>
                                     {% endif %}
                                     {% if hasAccess('admin_notification', 'manage') %}
                                         <li><a href="{{ url('admin_notification') }}">Notifications</a></li>
