@@ -25,7 +25,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_gallery',
+                        'controller' => 'gallery_admin_gallery',
                         'action'     => 'manage',
                     ),
                 ),
