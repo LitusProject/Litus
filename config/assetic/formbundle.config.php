@@ -19,7 +19,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_form' => array(
+        'form_admin_form' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_tab',
@@ -29,7 +29,7 @@ return array(
             '@gollum_js',
             '@admin_css',
         ),
-        'admin_form_field' => array(
+        'form_admin_form_field' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -37,7 +37,7 @@ return array(
             '@bootstrap_js_modal',
             '@bootstrap_js_transition',
         ),
-        'admin_form_viewer' => array(
+        'form_admin_form_viewer' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
