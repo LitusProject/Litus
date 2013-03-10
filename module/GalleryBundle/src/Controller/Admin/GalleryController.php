@@ -76,7 +76,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_gallery',
+                    'gallery_admin_gallery',
                     array(
                         'action' => 'addPhotos',
                         'id' => $album->getId(),
@@ -139,7 +139,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_gallery',
+                    'gallery_admin_gallery',
                     array(
                         'action' => 'manage'
                     )
@@ -388,7 +388,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_gallery',
+                'gallery_admin_gallery',
                 array(
                     'action' => 'manage'
                 )
@@ -411,7 +411,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_gallery',
+                'gallery_admin_gallery',
                 array(
                     'action' => 'manage'
                 )
@@ -435,7 +435,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_gallery',
+                'gallery_admin_gallery',
                 array(
                     'action' => 'manage'
                 )
@@ -458,7 +458,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_gallery',
+                'gallery_admin_gallery',
                 array(
                     'action' => 'manage'
                 )

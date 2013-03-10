@@ -19,7 +19,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_gallery' => array(
+        'gallery_admin_gallery' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
