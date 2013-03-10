@@ -90,7 +90,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_news',
+                    'news_admin_news',
                     array(
                         'action' => 'manage'
                     )
@@ -157,7 +157,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_news',
+                    'news_admin_news',
                     array(
                         'action' => 'manage'
                     )
@@ -206,7 +206,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_news',
+                'news_admin_news',
                 array(
                     'action' => 'manage'
                 )
@@ -229,7 +229,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_news',
+                'news_admin_news',
                 array(
                     'action' => 'manage'
                 )
