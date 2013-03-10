@@ -341,7 +341,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         if (null === $controller) {
 
-            $controller = 'admin_van_reservation';
+            $controller = 'logistics_admin_van_reservation';
         }
 
         $params = array();
