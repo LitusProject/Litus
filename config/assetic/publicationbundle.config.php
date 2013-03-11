@@ -19,24 +19,14 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_publication' => array(
+        'publication_admin_publication' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_edition_pdf' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-            '@common_form_upload_progress',
-            '@common_download_file',
-            '@common_permanent_modal',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_modal',
-        ),
-        'admin_edition_html' => array(
+        'publication_admin_edition_pdf' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -46,7 +36,17 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'archive' => array(
+        'publication_admin_edition_html' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@common_form_upload_progress',
+            '@common_download_file',
+            '@common_permanent_modal',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'publication_archive' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -58,7 +58,7 @@ return array(
             '@bootstrap_js_alert',
             '@archive_css',
         ),
-        'edition_html' => array(
+        'publication_edition_html' => array(
         ),
     ),
     'routes' => array(),

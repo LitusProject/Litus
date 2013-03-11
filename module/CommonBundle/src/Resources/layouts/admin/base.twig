@@ -199,19 +199,19 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_publication', 'manage') or hasAccess('mail_admin_mail_bakske', 'send') %}
+                        {% if hasAccess('publication_admin_publication', 'manage') or hasAccess('mail_admin_mail_bakske', 'send') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Pulications</b><br />
                                     Editions &amp; Publications
                                 </div>
                                 <ul
-                                    {% if 'admin_publication' == getParam('controller') or 'admin_edition_html' == getParam('controller') or 'admin_edition_pdf' == getParam('controller') %}
+                                    {% if 'publication_admin_publication' == getParam('controller') or 'publication_admin_edition_html' == getParam('controller') or 'publication_admin_edition_pdf' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_publication', 'manage') %}
-                                        <li><a href="{{ url('admin_publication') }}">Publications</a></li>
+                                    {% if hasAccess('publication_admin_publication', 'manage') %}
+                                        <li><a href="{{ url('publication_admin_publication') }}">Publications</a></li>
                                     {% endif %}
                                 </ul>
                             </li>

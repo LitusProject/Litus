@@ -72,7 +72,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_publication',
+                    'publication_admin_publication',
                     array(
                         'action' => 'manage',
                     )
@@ -114,7 +114,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_publication',
+                    'publication_admin_publication',
                     array(
                         'action' => 'manage'
                     )
@@ -160,7 +160,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'admin_publication',
+                'publication_admin_publication',
                 array(
                     'action' => 'manage'
                 )
@@ -183,7 +183,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'admin_publication',
+                'publication_admin_publication',
                 array(
                     'action' => 'manage'
                 )
