@@ -69,10 +69,10 @@
                         </ul>
                     {% endif %}
 
-                    {% if hasAccess('admin_slug', 'manage') %}
+                    {% if hasAccess('on_admin_slug', 'manage') %}
                         <ul>
-                            {% if hasAccess('admin_slug', 'manage') %}
-                                <li><a href="{{ url('admin_slug') }}">Slugs</a></li>
+                            {% if hasAccess('on_admin_slug', 'manage') %}
+                                <li><a href="{{ url('on_admin_slug') }}">Slugs</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}

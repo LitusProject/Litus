@@ -29,7 +29,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'onbundle' => array(
-                    'admin_slug' => array(
+                    'on_admin_slug' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'on_redirect' => array(
