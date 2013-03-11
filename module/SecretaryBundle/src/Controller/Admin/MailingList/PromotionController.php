@@ -106,7 +106,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         }
 
         $this->redirect()->toRoute(
-            'admin_mail_promotion',
+            'secretary_admin_mail_promotion',
             array(
                 'action' => 'manage',
             )

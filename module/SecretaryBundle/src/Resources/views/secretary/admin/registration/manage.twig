@@ -36,11 +36,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#searchString').focus();
-            {% if hasAccess('admin_secretary_registration', 'search') %}
+            {% if hasAccess('secretary_admin_registration', 'search') %}
             $.searchDatabase({
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                url: '{{ url('admin_secretary_registration', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('secretary_admin_registration', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#registration_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -52,11 +52,11 @@
                             .append('<td>' + this.barcode + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
 
-                        {% if hasAccess('admin_secretary_registration', 'barcode') %}
-                            actions.append('<a href="{{ url('admin_secretary_registration', {"action": "barcode"}) }}' + this.id +'" class="edit">Barcode</a>');
+                        {% if hasAccess('secretary_admin_registration', 'barcode') %}
+                            actions.append('<a href="{{ url('secretary_admin_registration', {"action": "barcode"}) }}' + this.id +'" class="edit">Barcode</a>');
                         {% endif %}
-                        {% if hasAccess('admin_secretary_registration', 'edit') %}
-                            actions.append('<a href="{{ url('admin_secretary_registration', {"action": "edit"}) }}' + this.id +'" class="edit">Edit</a>');
+                        {% if hasAccess('secretary_admin_registration', 'edit') %}
+                            actions.append('<a href="{{ url('secretary_admin_registration', {"action": "edit"}) }}' + this.id +'" class="edit">Edit</a>');
                         {% endif %}
                     });
                     $('#registration_search table').change();

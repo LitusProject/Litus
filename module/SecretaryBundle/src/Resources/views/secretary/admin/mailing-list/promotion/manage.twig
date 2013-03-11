@@ -33,11 +33,11 @@
                     <tr class="item item-{{ list.getId() }}">
                         <td>{{ list.getName() }}</td>
                         <td class="actions">
-                            {% if hasAccess('mail_admin_mail_list', 'entries') %}
-                                <a href="{{ url('mail_admin_mail_list', {"action": "entries", "id": list.getId()}) }}" class="mail_list_entry">Entries</a>
+                            {% if hasAccess('secretary_admin_mail_promotion', 'entries') %}
+                                <a href="{{ url('secretary_admin_mail_promotion', {"action": "entries", "id": list.getId()}) }}" class="mail_list_entry">Entries</a>
                             {% endif %}
-                            {% if hasAccess('mail_admin_mail_list', 'admins') and list.canBeEditedBy(person, entityManager, true) %}
-                                <a href="{{ url('mail_admin_mail_list', {"action": "admins", "id": list.getId()}) }}" class="mail_list_entry">Admins</a>
+                            {% if hasAccess('secretary_admin_mail_promotion', 'admins') and list.canBeEditedBy(person, entityManager, true) %}
+                                <a href="{{ url('secretary_admin_mail_promotion', {"action": "admins", "id": list.getId()}) }}" class="mail_list_entry">Admins</a>
                             {% endif %}
                             {% if hasAccess('mail_admin_mail_list', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ list.getId() }}" data-name="{{ list.getName() }}">Delete</a>
