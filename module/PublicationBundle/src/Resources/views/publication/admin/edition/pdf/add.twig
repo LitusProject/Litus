@@ -32,7 +32,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#uploadFile').formUploadProgress({
-                url: '{{ url('admin_edition_pdf', {"action": "progress"}) }}',
+                url: '{{ url('publication_admin_edition_pdf', {"action": "progress"}) }}',
                 name: '{{ uploadProgressId }}',
                 uploadProgressName: '{{ uploadProgressName }}',
                 interval: 1000,
@@ -50,7 +50,7 @@
                             $('#uploadFile').find('#' + element).parent().parent().after(list);
                         }
                     } else if (data.info) {
-                        window.location.href = '{{ url('admin_edition_pdf', {'action': 'manage', 'id': publication.getId()}) }}';
+                        window.location.href = '{{ url('publication_admin_edition_pdf', {'action': 'manage', 'id': publication.getId()}) }}';
                     }
                     var progressModal = $('#progressModal');
                     progressModal.permanentModal('hide');

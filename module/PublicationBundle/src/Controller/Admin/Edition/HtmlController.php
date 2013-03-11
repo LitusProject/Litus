@@ -62,7 +62,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'admin_edition_html',
+                'publication_admin_edition_html',
                 array(
                     'action' => 'upload',
                     'id' => $publication->getId(),
@@ -220,7 +220,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_publication',
+                'publication_admin_publication',
                 array(
                     'action' => 'manage'
                 )
@@ -243,7 +243,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_publication',
+                'publication_admin_publication',
                 array(
                     'action' => 'manage'
                 )
@@ -266,7 +266,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_publication',
+                'publication_admin_publication',
                 array(
                     'action' => 'manage'
                 )
@@ -289,7 +289,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_publication',
+                'publication_admin_publication',
                 array(
                     'action' => 'manage'
                 )
