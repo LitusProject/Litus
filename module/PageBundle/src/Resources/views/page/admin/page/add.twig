@@ -22,8 +22,8 @@
             }).trigger('change');
 
             $('textarea').gollum({
-                uploadURL: '{{ url('admin_page', {'action': 'upload'}) }}',
-                progressURL: '{{ url('admin_page', {'action': 'uploadProgress'}) }}',
+                uploadURL: '{{ url('page_admin_page', {'action': 'upload'}) }}',
+                progressURL: '{{ url('page_admin_page', {'action': 'uploadProgress'}) }}',
                 uploadProgressName: '{{ uploadProgressName }}',
                 progressId: '{{ uploadProgressId }}',
             });

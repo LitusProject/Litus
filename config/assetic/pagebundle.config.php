@@ -20,7 +20,7 @@ return array(
             '@admin_js',
         ),
 
-        'admin_page' => array(
+        'page_admin_page' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_tab',
@@ -31,7 +31,7 @@ return array(
             '@gollum_js',
             '@admin_css',
         ),
-        'admin_page_category' => array(
+        'page_admin_category' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_tab',
@@ -39,7 +39,7 @@ return array(
             '@bootstrap_js_modal',
             '@admin_css',
         ),
-        'admin_page_link' => array(
+        'page_admin_link' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_tab',
