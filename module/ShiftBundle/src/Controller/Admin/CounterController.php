@@ -304,7 +304,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'shift_admin_shift_counter',
                 array(
                     'action' => 'index'
                 )
@@ -328,7 +328,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'shift_admin_shift_counter',
                 array(
                     'action' => 'index'
                 )
@@ -351,7 +351,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'shift_admin_shift_counter',
                 array(
                     'action' => 'index'
                 )
