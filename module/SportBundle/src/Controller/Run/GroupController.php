@@ -129,7 +129,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                         );
 
                         $this->redirect()->toRoute(
-                            'run_index',
+                            'sport_run_index',
                             array(
                                 'action' => 'index'
                             )
@@ -219,7 +219,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
             );
 
             $this->redirect()->toRoute(
-                'run_index',
+                'sport_run_index',
                 array(
                     'action' => 'index'
                 )

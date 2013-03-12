@@ -71,19 +71,19 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'sportbundle' => array(
-                    'admin_run' => array(
+                    'sport_admin_run' => array(
                         'edit', 'groups', 'identification', 'queue', 'update', 'laps', 'killSocket'
                     ),
-                    'run_group' => array(
+                    'sport_run_group' => array(
                         'add', 'getName'
                     ),
-                    'run_index' => array(
+                    'sport_run_index' => array(
                         'index'
                     ),
-                    'run_queue' => array(
+                    'sport_run_queue' => array(
                         'index', 'getName'
                     ),
-                    'run_screen' => array(
+                    'sport_run_screen' => array(
                         'index'
                     ),
                 ),
@@ -97,10 +97,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'parents' => array(
                     ),
                     'actions' => array(
-                        'run_group' => array(
+                        'sport_run_group' => array(
                             'add', 'getName'
                         ),
-                        'run_index' => array(
+                        'sport_run_index' => array(
                             'index'
                         ),
                     ),
