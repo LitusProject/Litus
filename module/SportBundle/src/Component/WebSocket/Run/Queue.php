@@ -115,7 +115,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     foreach ($authSession->getPerson()->getRoles() as $role) {
                         if (
                             $role->isAllowed(
-                                $acl, 'run_screen', 'index'
+                                $acl, 'sport_run_screen', 'index'
                             )
                         ) {
                             $allowed = true;

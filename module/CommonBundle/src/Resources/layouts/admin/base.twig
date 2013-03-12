@@ -302,7 +302,7 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_run', 'queue') %}
+                        {% if hasAccess('sport_admin_run', 'queue') %}
                             <li>
                                 <div class="subtitle">
                                         <b>Sport</b><br />
@@ -310,12 +310,12 @@
                                 </div>
 
                                 <ul
-                                    {% if 'admin_run' == getParam('controller') %}
+                                    {% if 'sport_admin_run' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_run', 'queue') %}
-                                        <li><a href="{{ url('admin_run') }}">24h-Run</a></li>
+                                    {% if hasAccess('sport_admin_run', 'queue') %}
+                                        <li><a href="{{ url('sport_admin_run') }}">24h-Run</a></li>
                                     {% endif %}
                                 </ul>
                             </li>

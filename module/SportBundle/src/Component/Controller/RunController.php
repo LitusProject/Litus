@@ -51,8 +51,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController
             'action'         => 'index',
             'controller'     => 'common_index',
 
-            'auth_route'     => 'run_index',
-            'redirect_route' => 'run_index'
+            'auth_route'     => 'sport_run_index',
+            'redirect_route' => 'sport_run_index'
         );
     }
 }

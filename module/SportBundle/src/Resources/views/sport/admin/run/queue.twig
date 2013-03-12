@@ -40,7 +40,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_run', 'next') %}
+        {% if hasAccess('sport_admin_run', 'next') %}
             <div class="sidebox">
                 <div class="title">New Lap</div>
                 <div class="content">
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        {% if hasAccess('admin_run', 'update') %}
+        {% if hasAccess('sport_admin_run', 'update') %}
             <div class="sidebox">
                 <div class="title">Update Manager</div>
                 <div class="content">
@@ -77,13 +77,13 @@
                     </p>
 
                     <p>
-                        <a href="{{ url('admin_run', {'action': 'update'}) }}">&rarr; Update Manager</a>
+                        <a href="{{ url('sport_admin_run', {'action': 'update'}) }}">&rarr; Update Manager</a>
                     </p>
                 </div>
             </div>
         {% endif %}
 
-        {% if hasAccess('admin_run', 'killSocket') %}
+        {% if hasAccess('sport_admin_run', 'killSocket') %}
             <div class="sidebox">
                 <div class="title">Restart Socket</div>
                 <div class="content">
@@ -131,10 +131,10 @@
                 displayLaps: displayLaps
             });
 
-            {% if hasAccess('admin_run', 'killSocket') %}
+            {% if hasAccess('sport_admin_run', 'killSocket') %}
             $('#killSocket').click(function(e) {
                 e.preventDefault();
-                $.post('{{ url('admin_run', {"action": "killSocket"})}}', function (data) {
+                $.post('{{ url('sport_admin_run', {"action": "killSocket"})}}', function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('#socket_killed_success').removeClass('hide');
@@ -149,12 +149,12 @@
             });
             {% endif %}
 
-            {% if hasAccess('admin_run', 'next') %}
+            {% if hasAccess('sport_admin_run', 'next') %}
                 $(document).on('keypress.space', spacePressed);
             {% endif %}
         });
 
-        {% if hasAccess('admin_run', 'next') %}
+        {% if hasAccess('sport_admin_run', 'next') %}
         function spacePressed(e) {
             if (e.which == 32) {
                 e.preventDefault();
@@ -177,7 +177,7 @@
             if (data.officialResults)
                 $('#nbOfficialLaps').html(data.officialResults.nbLaps);
 
-            {% if hasAccess('admin_run', 'next') %}
+            {% if hasAccess('sport_admin_run', 'next') %}
             $('#nextLap, #stopLap').unbind('click').click(function () {$('#queue').runQueue('startLap')});
             {% endif %}
 
@@ -207,7 +207,7 @@
                 }
 
                 if (lap.state != 'previous') {
-                    {% if hasAccess('admin_run', 'delete') %}
+                    {% if hasAccess('sport_admin_run', 'delete') %}
                     actions.append(
                         $('<a>', {'class': 'delete', 'href': '#'}).html('Delete').data({
                             id: lap.id,
