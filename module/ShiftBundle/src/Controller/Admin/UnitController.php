@@ -76,7 +76,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_unit',
+                    'shift_admin_unit',
                     array(
                         'action' => 'manage'
                     )
@@ -120,7 +120,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_unit',
+                    'shift_admin_unit',
                     array(
                         'action' => 'manage'
                     )
@@ -169,7 +169,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_unit',
+                'shift_admin_unit',
                 array(
                     'action' => 'manage'
                 )
@@ -192,7 +192,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_unit',
+                'shift_admin_unit',
                 array(
                     'action' => 'manage'
                 )

@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_shift' => array(
+            'shift_admin_shift' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/shift[/:action[/:id][/page/:page]][/]',
@@ -37,12 +37,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_shift',
+                        'controller' => 'shift_admin_shift',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_shift_counter' => array(
+            'shift_admin_shift_counter' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/shift/counter[/:action[/:id[/:person[/:payed]]]][/:academicyear][/:field/:string][/]',
@@ -56,12 +56,12 @@ return array(
                         'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_shift_counter',
+                        'controller' => 'shift_admin_shift_counter',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'admin_shift_ranking' => array(
+            'shift_admin_shift_ranking' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/shift/ranking[/:action][/:academicyear][/]',
@@ -70,12 +70,12 @@ return array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_shift_ranking',
+                        'controller' => 'shift_admin_shift_ranking',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'admin_shift_subscription' => array(
+            'shift_admin_shift_subscription' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/shift/subscription[/:action[/:id][/type/:type][/page/:page]][/]',
@@ -86,12 +86,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_shift_subscription',
+                        'controller' => 'shift_admin_shift_subscription',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_unit' => array(
+            'shift_admin_unit' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/unit[/:action[/:id][/page/:page]][/]',
@@ -101,7 +101,7 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_unit',
+                        'controller' => 'shift_admin_unit',
                         'action'     => 'manage',
                     ),
                 ),
@@ -182,14 +182,14 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'shift_install'            => 'ShiftBundle\Controller\Admin\InstallController',
-            'admin_shift'              => 'ShiftBundle\Controller\Admin\ShiftController',
-            'admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
-            'admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
-            'admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
-            'admin_unit'               => 'ShiftBundle\Controller\Admin\UnitController',
+            'shift_install'                  => 'ShiftBundle\Controller\Admin\InstallController',
+            'shift_admin_shift'              => 'ShiftBundle\Controller\Admin\ShiftController',
+            'shift_admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
+            'shift_admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
+            'shift_admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
+            'shift_admin_unit'               => 'ShiftBundle\Controller\Admin\UnitController',
 
-            'shift'                    => 'ShiftBundle\Controller\ShiftController',
+            'shift'                          => 'ShiftBundle\Controller\ShiftController',
         ),
     ),
 );

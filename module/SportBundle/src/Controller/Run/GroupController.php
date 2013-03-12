@@ -219,7 +219,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'run_index',
                 array(
                     'action' => 'index'
                 )

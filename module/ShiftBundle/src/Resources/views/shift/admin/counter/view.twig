@@ -51,7 +51,7 @@
                         <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>
-                            {% if hasAccess('admin_shift_counter', 'delete') %}
+                            {% if hasAccess('shift_admin_shift_counter', 'delete') %}
                                 <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -84,7 +84,7 @@
                             <input type="checkbox" id="{{ shift.getId() }}" {% if payed[shift.getId()] %}checked="checked"{% endif %} />
                         </td>
                         <td>
-                            {% if hasAccess('admin_shift', 'delete') %}
+                            {% if hasAccess('shift_admin_shift', 'delete') %}
                                 <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -123,7 +123,7 @@
         });
 
         function changePayed(e) {
-            $.get('{{ url('admin_shift_counter', {"action": "payed"}) }}' +  $(this).attr('id') + '/{{ person }}/' + $(this).is(':checked') + '/', function (data) {
+            $.get('{{ url('shift_admin_shift_counter', {"action": "payed"}) }}' +  $(this).attr('id') + '/{{ person }}/' + $(this).is(':checked') + '/', function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').addClass('hide');
                     $('.change_payed_success').removeClass('hide');
@@ -150,7 +150,7 @@
             });
             var id = $this.data('id');
             removeShift.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_shift_counter', {"action": "delete"})}}' + id + '/{{ person }}/', function (data) {
+                $.post('{{ url('shift_admin_shift_counter', {"action": "delete"})}}' + id + '/{{ person }}/', function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.shift_removed_success').removeClass('hide');

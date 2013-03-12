@@ -279,7 +279,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'run_index',
                 array(
                     'action' => 'index'
                 )
