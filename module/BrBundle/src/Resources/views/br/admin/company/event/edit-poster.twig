@@ -13,7 +13,7 @@
         <br />
         <h1>Current Poster</h1>
         {% if event.getEvent().getPoster() %}
-            <img src="{{ url('admin_calendar', {'action': 'poster', 'id': event.getPoster()}) }}" alt="{{ event.getTitle(language) }}" style="max-height: 200px">
+            <img src="{{ url('calendar_admin_calendar', {'action': 'poster', 'id': event.getPoster()}) }}" alt="{{ event.getTitle(language) }}" style="max-height: 200px">
         {% else %}
             <i>This event currently has no poster.</i>
         {% endif %}

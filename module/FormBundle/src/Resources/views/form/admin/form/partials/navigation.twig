@@ -3,11 +3,14 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_form', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_form", {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('form_admin_form', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("form_admin_form", {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_form', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_form", {"action": "manage"}) }}">Manage</a></li>
+            {% if hasAccess('form_admin_form', 'old') %}
+                <li><a {% if 'old' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("form_admin_form", {"action": "old"}) }}">Old</a></li>
+            {% endif %}
+            {% if hasAccess('form_admin_form', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("form_admin_form", {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

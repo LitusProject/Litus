@@ -46,7 +46,7 @@ class CacheController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         $this->redirect()->toRoute(
-            'admin_cache',
+            'common_admin_cache',
             array(
                 'action' => 'manage',
             )

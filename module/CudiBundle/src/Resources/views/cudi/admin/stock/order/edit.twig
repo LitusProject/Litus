@@ -38,7 +38,7 @@
                     <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
                     <td>{{ item.getNumber() }}</td>
                     <td class="actions">
-                        {% if not order.isOrdered() and hasAccess('admin_stock_order', 'delete') %}
+                        {% if not order.isOrdered() and hasAccess('cudi_admin_stock_order', 'delete') %}
                             <a href="#" class="delete" data-id="{{ item.getId() }}" data-title="{{ item.getArticle().getMainArticle().getTitle() }}" data-number="{{ item.getNumber() }}">Delete</a>
                         {% endif %}
                     </td>
@@ -49,7 +49,7 @@
 
     <aside>
         {% if not order.isOrdered() %}
-            {% if hasAccess('admin_stock_order', 'place') %}
+            {% if hasAccess('cudi_admin_stock_order', 'place') %}
                 <div class="sidebox">
                     <div class="title">Place Order</div>
                     <div class="content">
@@ -57,12 +57,12 @@
                             <i>Please hit the link below to place this order!</i>
                         </p>
                         <p>
-                            <a href="{{ url('admin_stock_order', {"action": "place", "id": order.getId()}) }}">&rarr; Place Order</a>
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "place", "id": order.getId()}) }}">&rarr; Place Order</a>
                         </p>
                     </div>
                 </div>
             {% endif %}
-            {% if hasAccess('admin_stock_order', 'add') %}
+            {% if hasAccess('cudi_admin_stock_order', 'add') %}
                 <div class="sidebox">
                     <div class="title">New Order Item</div>
                     <div class="content">
@@ -70,13 +70,13 @@
                             <i>Please hit the link below to add a new order item!</i>
                         </p>
                         <p>
-                            <a href="{{ url('admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
                         </p>
                     </div>
                 </div>
             {% endif %}
         {% else %}
-            {% if hasAccess('admin_stock_order', 'cancel') %}
+            {% if hasAccess('cudi_admin_stock_order', 'cancel') %}
                 <div class="sidebox">
                     <div class="title">Cancel Order</div>
                     <div class="content">
@@ -89,7 +89,7 @@
                     </div>
                 </div>
             {% endif %}
-            {% if hasAccess('admin_stock_order', 'pdf') %}
+            {% if hasAccess('cudi_admin_stock_order', 'pdf') %}
                 <div class="sidebox">
                     <div class="title">Print Order</div>
                     <div class="content">
@@ -102,7 +102,7 @@
                     </div>
                 </div>
             {% endif %}
-            {% if hasAccess('admin_stock_order', 'export') %}
+            {% if hasAccess('cudi_admin_stock_order', 'export') %}
                 <div class="sidebox">
                     <div class="title">Export Order</div>
                     <div class="content">
@@ -211,13 +211,13 @@
                         return;
                     }
                     modal.find('.errors').addClass('hide');
-                    $(this).unbind('click').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date).trigger('click');
+                    $(this).unbind('click').downloadFile('{{ url('cudi_admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date).trigger('click');
 
                     modal.modal('hide');
                 });
                 modal.modal();
             });
-            $('#printOrder').downloadFile('{{ url('admin_stock_order', {"action": "pdf", "id": order.getId()}) }}');
+            $('#printOrder').downloadFile('{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId()}) }}');
 
             $('.item .delete').click(openModalRemove);
             $('#cancelOrder').click(openModalCancel);
@@ -229,7 +229,7 @@
             e.preventDefault();
             var cancelOrder = $('#cancelOrderModal');
             cancelOrder.find('.cancelOrder').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_stock_order', {'action': 'cancel', 'id': order.getId()}) }}';
+                window.location.href = '{{ url('cudi_admin_stock_order', {'action': 'cancel', 'id': order.getId()}) }}';
             });
             cancelOrder.modal();
         }
@@ -243,7 +243,7 @@
             removeOrder.find('.orderNumber').html($(this).data('number'));
             var id = $this.data('id');
             removeOrder.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_stock_order', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('cudi_admin_stock_order', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.order_removed_success').removeClass('hide');

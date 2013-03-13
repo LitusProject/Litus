@@ -25,8 +25,8 @@
                     <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i')}}{% endif %}</td>
                     <td>&euro; {% if session.isOpen() %}{{ -session.getOpenRegister().getTotalAmount()/100|number_format(2)}}{% else %}{{ (session.getCloseRegister().getTotalAmount() - session.getOpenRegister().getTotalAmount())/100|number_format(2)}}{% endif %}
                     <td class="actions">
-                        {% if hasAccess('admin_sales_session', 'edit') %}
-                            <a href="{{ url("admin_sales_session", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
+                        {% if hasAccess('cudi_admin_sales_session', 'edit') %}
+                            <a href="{{ url("cudi_admin_sales_session", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                     </td>
                 </tr>

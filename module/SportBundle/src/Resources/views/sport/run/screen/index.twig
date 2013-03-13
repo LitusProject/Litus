@@ -122,6 +122,8 @@
         $(document).ready(function () {
             $(document).runQueue({
                 url: '{{ socketUrl }}',
+                key: '{{ key }}',
+                authSession: '{{ authSession.getId() }}',
                 errorDialog: $('#loading_queue_error'),
                 displayLaps: displayLaps
             });
@@ -175,7 +177,6 @@
 
                     if (data.officialResults)
                         $('#currentLapInfo .bar').css('width', (data.officialResults.lapsPerSecond * lapTime * 100) + '%');
-                        //$('#currentLapInfo .bar').css('width', data.officialResults.position + '%');
 
                     foundCurrent = true;
                 } else if (lap.state == 'previous') {

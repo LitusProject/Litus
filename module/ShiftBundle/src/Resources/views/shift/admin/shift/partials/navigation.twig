@@ -3,14 +3,14 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_shift', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_shift", {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('shift_admin_shift', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_shift', 'old') %}
-                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_shift", {"action": "old"}) }}">Old</a></li>
+            {% if hasAccess('shift_admin_shift', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "old"}) }}">Old</a></li>
             {% endif %}
-            {% if hasAccess('admin_shift', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_shift", {"action": "manage"}) }}">Manage</a></li>
+            {% if hasAccess('shift_admin_shift', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

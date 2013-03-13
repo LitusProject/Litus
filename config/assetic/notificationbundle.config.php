@@ -20,7 +20,7 @@ return array(
             '@admin_js',
         ),
 
-        'admin_notification' => array(
+        'notification_admin_notification' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_tab',

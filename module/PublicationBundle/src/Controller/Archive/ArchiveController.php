@@ -92,7 +92,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'archive',
+                'publication_archive',
                 array(
                     'action' => 'overview'
                 )
@@ -115,7 +115,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'archive',
+                'publication_archive',
                 array(
                     'action' => 'overview'
                 )
@@ -139,7 +139,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'archive',
+                'publication_archive',
                 array(
                     'action' => 'overview'
                 )
@@ -162,7 +162,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'archive',
+                'publication_archive',
                 array(
                     'action' => 'overview'
                 )

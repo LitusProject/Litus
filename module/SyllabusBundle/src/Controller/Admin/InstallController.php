@@ -46,6 +46,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The host used for the websocket of the syllabus update',
                 ),
                 array(
+                    'key'         => 'syllabus.queue_socket_key',
+                    'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
+                    'description' => 'The key used for the websocket of the queue',
+                ),
+                array(
                     'key'         => 'search_max_results',
                     'value'       => '30',
                     'description' => 'The maximum number of search results shown',

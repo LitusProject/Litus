@@ -10,7 +10,7 @@
         {{ forms.renderForm(form) }}
 	</div>
 	<aside>
-	    {% if hasAccess('admin_form_field', 'manage') %}
+	    {% if hasAccess('form_admin_form_field', 'manage') %}
 	    	<div class="sidebox">
 	    	    <div class="title">Manage Fields</div>
 	    	   	<div class="content">
@@ -18,12 +18,12 @@
 	    	        	<i>Please hit the link below to manage the fields of this form!</i>
 	    	        </p>
 	    	        <p>
-						<a href="{{ url('admin_form_field', {"action": "manage", "id": formSpecification.getId()}) }}">&rarr; Edit Fields</a>
+						<a href="{{ url('form_admin_form_field', {"action": "manage", "id": formSpecification.getId()}) }}">&rarr; Edit Fields</a>
 	    	        </p>
 	    	    </div>
 	    	</div>
 	    {% endif %}
-	    {% if hasAccess('admin_form_viewer', 'manage') %}
+	    {% if hasAccess('form_admin_form_viewer', 'manage') %}
 	    	<div class="sidebox">
 	    	    <div class="title">Manage View Access</div>
 	    	   	<div class="content">
@@ -31,7 +31,7 @@
 	    	        	<i>Please hit the link below to manage who can view the results of this form!</i>
 	    	        </p>
 	    	        <p>
-						<a href="{{ url('admin_form_viewer', {"action": "manage", "id": formSpecification.getId()}) }}">&rarr; Edit Result Viewers</a>
+						<a href="{{ url('form_admin_form_viewer', {"action": "manage", "id": formSpecification.getId()}) }}">&rarr; Edit Result Viewers</a>
 	    	        </p>
 	    	    </div>
 	    	</div>

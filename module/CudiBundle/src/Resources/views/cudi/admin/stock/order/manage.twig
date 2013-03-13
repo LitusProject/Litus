@@ -19,8 +19,8 @@
                 <tr>
                     <td>{{ supplier.getName() }}</td>
                     <td>
-                        {% if hasAccess('admin_stock_order', 'supplier') %}
-                            <a href="{{ url('admin_stock_order', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+                        {% if hasAccess('cudi_admin_stock_order', 'supplier') %}
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -29,7 +29,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_stock_order', 'add') %}
+        {% if hasAccess('cudi_admin_stock_order', 'add') %}
             <div class="sidebox">
                 <div class="title">New Order</div>
                 <div class="content">
@@ -37,12 +37,12 @@
                         <i>Please hit the link below to add a new order item!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+                        <a href="{{ url('cudi_admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_stock_order', 'overview') %}
+        {% if hasAccess('cudi_admin_stock_order', 'overview') %}
             <div class="sidebox">
                 <div class="title">Overview Orders</div>
                 <div class="content">
@@ -50,7 +50,7 @@
                         <i>Please hit the link below to view all the past orders!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_stock_order', {"action": "overview"}) }}">&rarr; Overview Orders</a>
+                        <a href="{{ url('cudi_admin_stock_order', {"action": "overview"}) }}">&rarr; Overview Orders</a>
                     </p>
                 </div>
             </div>

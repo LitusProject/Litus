@@ -142,7 +142,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_academic',
+                    'common_admin_academic',
                     array(
                         'action' => 'add'
                     )
@@ -308,7 +308,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_academic',
+                    'common_admin_academic',
                     array(
                         'action' => 'manage',
                     )
@@ -348,7 +348,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
 
         $this->redirect()->toRoute(
-            'admin_academic',
+            'common_admin_academic',
             array(
                 'action' => 'edit',
                 'id' => $academic->getId(),
@@ -471,7 +471,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_academic',
+                'common_admin_academic',
                 array(
                     'action' => 'manage'
                 )
@@ -494,7 +494,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_academic',
+                'common_admin_academic',
                 array(
                     'action' => 'manage'
                 )

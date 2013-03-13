@@ -84,7 +84,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_driver',
+                    'logistics_admin_driver',
                     array(
                         'action' => 'manage',
                     )
@@ -138,7 +138,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_driver',
+                    'logistics_admin_driver',
                     array(
                         'action' => 'manage'
                     )
@@ -184,7 +184,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_driver',
+                'logistics_admin_driver',
                 array(
                     'action' => 'manage'
                 )
@@ -207,7 +207,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_driver',
+                'logistics_admin_driver',
                 array(
                     'action' => 'manage'
                 )

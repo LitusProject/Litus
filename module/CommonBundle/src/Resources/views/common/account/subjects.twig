@@ -75,7 +75,7 @@
                 subjects.push($(this).data('id'));
             });
 
-            $.post('{{ url('account', {"action": "saveSubjects"})}}', {"subjects": subjects}, function (data) {
+            $.post('{{ url('common_account', {"action": "saveSubjects"})}}', {"subjects": subjects}, function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').removeClass('in');
                     $('#subjects_saved_success').addClass('in');

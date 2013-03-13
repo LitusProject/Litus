@@ -73,7 +73,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'booking',
+                'cudi_booking',
                 array(
                     'action' => 'view',
                 )
@@ -296,7 +296,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'booking',
+                    'cudi_booking',
                     array(
                         'action' => 'view',
                     )

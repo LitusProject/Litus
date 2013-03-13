@@ -20,7 +20,7 @@ return array(
             '@admin_js',
         ),
 
-        'admin_slug' => array(
+        'on_admin_slug' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_transition',

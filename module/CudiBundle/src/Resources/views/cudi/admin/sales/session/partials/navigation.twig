@@ -3,11 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_sales_session', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_session', {"action": "add"}) }}">New</a></li>
+            {% if hasAccess('cudi_admin_sales_session', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_session', {"action": "add"}) }}">New</a></li>
             {% endif %}
-            {% if hasAccess('admin_sales_session', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'editRegister' == getParam('action') or 'close' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_session', {"action": "manage"}) }}">Manage</a></li>
+            {% if hasAccess('cudi_admin_sales_session', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'editRegister' == getParam('action') or 'close' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_session', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

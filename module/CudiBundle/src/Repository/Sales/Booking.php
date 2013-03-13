@@ -49,6 +49,58 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllActiveByPeriodPaginator(Period $period, $currentPage, $itemsPerPage)
+    {
+        $currentPage = $currentPage == 0 ? $currentPage = 1 : $currentPage;
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->eq('b.status', '\'booked\''),
+                        $query->expr()->eq('b.status', '\'assigned\'')
+                    ),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate());
+
+            if (!$period->isOpen())
+                $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+            ->setMaxResults($itemsPerPage)
+            ->setFirstResult(($currentPage - 1) * $itemsPerPage)
+            ->getQuery()
+            ->getResult();
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('COUNT(b.id)')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->eq('b.status', '\'booked\''),
+                        $query->expr()->eq('b.status', '\'assigned\'')
+                    ),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate());
+
+            if (!$period->isOpen())
+                $query->setParameter('endDate', $period->getEndDate());
+
+        $totalNumber = $query->getQuery()
+            ->getSingleScalarResult();
+
+        return array($resultSet, $totalNumber);
+    }
+
     public function findAllByPersonAndPeriod(Person $person, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -153,6 +205,62 @@ class Booking extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    public function findAllInactiveByPeriodPaginator(Period $period, $currentPage, $itemsPerPage)
+    {
+        $currentPage = $currentPage == 0 ? $currentPage = 1 : $currentPage;
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->not(
+                        $query->expr()->orX(
+                            $query->expr()->eq('b.status', '\'booked\''),
+                            $query->expr()->eq('b.status', '\'assigned\'')
+                        )
+                    ),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate());
+
+            if (!$period->isOpen())
+                $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+            ->setMaxResults($itemsPerPage)
+            ->setFirstResult(($currentPage - 1) * $itemsPerPage)
+            ->getQuery()
+            ->getResult();
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('COUNT(b.id)')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->not(
+                        $query->expr()->orX(
+                            $query->expr()->eq('b.status', '\'booked\''),
+                            $query->expr()->eq('b.status', '\'assigned\'')
+                        )
+                    ),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate());
+
+            if (!$period->isOpen())
+                $query->setParameter('endDate', $period->getEndDate());
+
+        $totalNumber = $query->getQuery()
+            ->getSingleScalarResult();
+
+        return array($resultSet, $totalNumber);
     }
 
     public function findAllByPersonNameAndTypeAndPeriod($person, $type, Period $period)

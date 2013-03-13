@@ -9,7 +9,7 @@
         <nav id="controller_sub_nav">
             <ul id="supplier_nav">
                 {% for academicYear in academicYears %}
-                    <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("admin_shift_counter", {"action": "index", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                    <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("shift_admin_shift_counter", {"action": "index", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
                 {% endfor %}
             </ul>
         </nav>
@@ -43,11 +43,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#searchString').focus();
-            {% if hasAccess('admin_shift_counter', 'search') %}
+            {% if hasAccess('shift_admin_shift_counter', 'search') %}
             $.searchDatabase({
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                url: '{{ url('admin_shift_counter', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('shift_admin_shift_counter', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#shift_counter_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -57,8 +57,8 @@
                             .append('<td>' + this.count + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
 
-                        {% if hasAccess('admin_shift_counter', 'view') %}
-                            actions.append('<a href="{{ url('admin_shift_counter', {"action": "view"}) }}' + this.id +'" class="view">View</a>');
+                        {% if hasAccess('shift_admin_shift_counter', 'view') %}
+                            actions.append('<a href="{{ url('shift_admin_shift_counter', {"action": "view"}) }}' + this.id +'" class="view">View</a>');
                         {% endif %}
                     });
                     $('#shift_counter_search table').change();

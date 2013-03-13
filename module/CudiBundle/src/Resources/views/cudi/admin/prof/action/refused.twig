@@ -20,8 +20,8 @@
                     <td>{{ action.getEntityName()|capitalize }} {{ action.getAction()|capitalize }}</td>
                     <td>{{ action.getTimestamp().format('d/m/Y H:i') }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_prof_action', 'edit') %}
-                            <a href="{{ url('admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
+                        {% if hasAccess('cudi_admin_prof_action', 'edit') %}
+                            <a href="{{ url('cudi_admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
                         {% endif %}
                     </td>
                 </tr>

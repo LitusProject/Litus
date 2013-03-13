@@ -19,7 +19,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_article' => array(
+        'cudi_admin_article' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -27,7 +27,7 @@ return array(
             '@bootstrap_js_modal',
             '@common_typeahead_remote',
         ),
-        'admin_article_subject' => array(
+        'cudi_admin_article_subject' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -35,14 +35,14 @@ return array(
             '@bootstrap_js_modal',
             '@common_typeahead_remote',
         ),
-        'admin_article_comment' => array(
+        'cudi_admin_article_comment' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_article_file' => array(
+        'cudi_admin_article_file' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -52,7 +52,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_sales_article' => array(
+        'cudi_admin_sales_article' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -60,28 +60,28 @@ return array(
             '@bootstrap_js_modal',
             '@common_download_file',
         ),
-        'admin_sales_article_discount' => array(
+        'cudi_admin_sales_article_discount' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_sales_article_barcode' => array(
+        'cudi_admin_sales_article_barcode' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_sales_article_restriction' => array(
+        'cudi_admin_sales_article_restriction' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_sales_booking' => array(
+        'cudi_admin_sales_booking' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -90,46 +90,38 @@ return array(
             '@common_jquery_form',
             '@common_typeahead_remote',
         ),
-        'admin_sales_session' => array(
+        'cudi_admin_sales_session' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_sales_session_restriction' => array(
+        'cudi_admin_sales_session_restriction' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_sales_financial' => array(
+        'cudi_admin_sales_financial' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_supplier' => array(
+        'cudi_admin_supplier' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_supplier_user' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_modal',
-        ),
-        'admin_stock' => array(
+        'cudi_admin_supplier_user' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_download_file',
         ),
-        'admin_stock_period' => array(
+        'cudi_admin_stock' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -137,7 +129,15 @@ return array(
             '@bootstrap_js_modal',
             '@common_download_file',
         ),
-        'admin_stock_order' => array(
+        'cudi_admin_stock_period' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_download_file',
+        ),
+        'cudi_admin_stock_order' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -147,7 +147,7 @@ return array(
             '@supplier_nav',
             '@common_typeahead_remote',
         ),
-        'admin_stock_delivery' => array(
+        'cudi_admin_stock_delivery' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -157,7 +157,7 @@ return array(
             '@common_typeahead_remote',
             '@common_download_file',
         ),
-        'admin_stock_retour' => array(
+        'cudi_admin_stock_retour' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -167,13 +167,13 @@ return array(
             '@common_typeahead_remote',
             '@common_download_file',
         ),
-        'admin_prof_action' => array(
+        'cudi_admin_prof_action' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@common_download_file',
         ),
-        'sale_sale' => array(
+        'cudi_sale_sale' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@sale_js',
@@ -186,7 +186,7 @@ return array(
             '@common_permanent_modal',
             '@common_socket',
         ),
-        'sale_queue' => array(
+        'cudi_sale_queue' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@sale_css',
@@ -194,28 +194,28 @@ return array(
             '@bootstrap_js_alert',
             '@common_socket',
         ),
-        'supplier_index' => array(
+        'cudi_supplier_index' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
             '@supplier_css',
         ),
-        'supplier_article' => array(
+        'cudi_supplier_article' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
             '@supplier_css',
         ),
-        'prof_index' => array(
+        'cudi_prof_index' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
             '@prof_css',
         ),
-        'prof_subject' => array(
+        'cudi_prof_subject' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -224,7 +224,7 @@ return array(
             '@bootstrap_js_modal',
             '@prof_css',
         ),
-        'prof_article' => array(
+        'cudi_prof_article' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -234,7 +234,7 @@ return array(
             '@common_typeahead_remote',
             '@prof_css',
         ),
-        'prof_article_mapping' => array(
+        'cudi_prof_article_mapping' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -242,7 +242,7 @@ return array(
             '@common_typeahead_remote',
             '@prof_css',
         ),
-        'prof_file' => array(
+        'cudi_prof_file' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@common_download_file',
@@ -254,7 +254,7 @@ return array(
             '@bootstrap_js_modal',
             '@prof_css',
         ),
-        'prof_article_comment' => array(
+        'cudi_prof_article_comment' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -263,7 +263,7 @@ return array(
             '@bootstrap_js_modal',
             '@prof_css',
         ),
-        'prof_subject_comment' => array(
+        'cudi_prof_subject_comment' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -272,7 +272,7 @@ return array(
             '@bootstrap_js_modal',
             '@prof_css',
         ),
-        'prof_prof' => array(
+        'cudi_prof_prof' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -280,7 +280,7 @@ return array(
             '@common_typeahead_remote',
             '@prof_css',
         ),
-        'prof_help' => array(
+        'cudi_prof_help' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -288,7 +288,7 @@ return array(
             '@bootstrap_js_affix',
             '@prof_css',
         ),
-        'booking' => array(
+        'cudi_booking' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',

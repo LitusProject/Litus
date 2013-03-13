@@ -3,14 +3,14 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_gallery', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_gallery', {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('gallery_admin_gallery', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('gallery_admin_gallery', {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_gallery', 'manage') %}
+            {% if hasAccess('gallery_admin_gallery', 'manage') %}
                 <li>
                     <a
                         {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('admin_gallery', {"action": "manage"}) }}"
+                        href="{{ url('gallery_admin_gallery', {"action": "manage"}) }}"
                     >
                         Manage
                     </a>

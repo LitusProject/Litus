@@ -33,10 +33,10 @@
 	                    <td>{{ key.getHost() }}</td>
 	                    <td>{{ key.getCode() }}</td>
 	                    <td class="actions">
-	                        {% if hasAccess('admin_key', 'edit') %}
-	                            <a href="{{ url('admin_key', {"action": "edit", "id": key.getId()}) }}" class="edit">Edit</a>
+	                        {% if hasAccess('api_admin_key', 'edit') %}
+	                            <a href="{{ url('api_admin_key', {"action": "edit", "id": key.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
-	                        {% if hasAccess('admin_key', 'delete') %}
+	                        {% if hasAccess('api_admin_key', 'delete') %}
 	                            <a href="#" data-id="{{ key.getId() }}" data-host="{{ key.getHost() }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
@@ -85,7 +85,7 @@
 			});
 			var id = $this.data('id');
 			removeKey.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_key', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('api_admin_key', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.key_removed_success').removeClass('hide');

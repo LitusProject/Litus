@@ -18,7 +18,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_article', 'edit') %}
+        {% if hasAccess('cudi_admin_article', 'edit') %}
             <div class="sidebox">
                 <div class="title">Edit Article</div>
                 <div class="content">
@@ -26,12 +26,12 @@
                         <i>Please hit the link below to edit the common information of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_article', {"action": "edit", "id": article.getMainArticle().getId()}) }}">&rarr; Edit Article</a>
+                        <a href="{{ url('cudi_admin_article', {"action": "edit", "id": article.getMainArticle().getId()}) }}">&rarr; Edit Article</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_article_discount', 'manage') %}
+        {% if hasAccess('cudi_admin_sales_article_discount', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Article Discounts</div>
                 <div class="content">
@@ -39,12 +39,12 @@
                         <i>Please hit the link below to manage the discounts of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_article_discount', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Discount</a>
+                        <a href="{{ url('cudi_admin_sales_article_discount', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Discount</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_article_barcode', 'manage') %}
+        {% if hasAccess('cudi_admin_sales_article_barcode', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Article Barcodes</div>
                 <div class="content">
@@ -52,12 +52,12 @@
                         <i>Please hit the link below to manage the barcodes of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_article_barcode', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Barcodes</a>
+                        <a href="{{ url('cudi_admin_sales_article_barcode', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Barcodes</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_article_restriction', 'manage') %}
+        {% if hasAccess('cudi_admin_sales_article_restriction', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Article Restrictions</div>
                 <div class="content">
@@ -65,12 +65,12 @@
                         <i>Please hit the link below to manage the restrictions of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_article_restriction', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Restrictions</a>
+                        <a href="{{ url('cudi_admin_sales_article_restriction', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Restrictions</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_article', 'sellProf') %}
+        {% if hasAccess('cudi_admin_sales_article', 'sellProf') %}
             <div class="sidebox">
                 <div class="title">Sell Prof Version</div>
                 <div class="content">
@@ -83,7 +83,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_article_file', 'front') and article.getMainArticle().isInternal() %}
+        {% if hasAccess('cudi_admin_article_file', 'front') and article.getMainArticle().isInternal() %}
             <div class="sidebox">
                 <div class="title">Download Front Page</div>
                 <div class="content">
@@ -91,12 +91,12 @@
                         <i>Please hit the link below to download the front page of this article!</i>
                     </p>
                     <p>
-                        <a href="#" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "front", "id": article.getId()}) }}">&rarr; Download Front Page</a>
+                        <a href="#" class="downloadFile" data-file="{{ url('cudi_admin_article_file', {"action": "front", "id": article.getId()}) }}">&rarr; Download Front Page</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_article', 'history') %}
+        {% if hasAccess('cudi_admin_sales_article', 'history') %}
             <div class="sidebox">
                 <div class="title">View History</div>
                 <div class="content">
@@ -104,12 +104,12 @@
                         <i>Please hit the link below to view the history of this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_article', {"action": "history", "id": article.getId()}) }}">&rarr; View History</a>
+                        <a href="{{ url('cudi_admin_sales_article', {"action": "history", "id": article.getId()}) }}">&rarr; View History</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_article', 'mail') %}
+        {% if hasAccess('cudi_admin_sales_article', 'mail') %}
             <div class="sidebox">
                 <div class="title">Send Mail</div>
                 <div class="content">
@@ -117,7 +117,7 @@
                         <i>Please hit the link below to send a mail to academics related to this article!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_sales_article', {"action": "mail", "id": article.getId()}) }}">&rarr; Send Mail</a>
+                        <a href="{{ url('cudi_admin_sales_article', {"action": "mail", "id": article.getId()}) }}">&rarr; Send Mail</a>
                     </p>
                 </div>
             </div>
@@ -184,7 +184,7 @@
             e.preventDefault();
             var assignAllBooking = $('#sellProfVersion');
             assignAllBooking.find('.sell').unbind('click').click(function () {
-                window.location.href = '{{ url('admin_sales_article', {"action": "sellProf", "id": article.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_article', {"action": "sellProf", "id": article.getId()})}}';
             });
             assignAllBooking.modal();
         }

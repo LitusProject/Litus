@@ -31,13 +31,13 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'formBundle' => array(
-                    'admin_form' => array(
-                        'add', 'delete', 'edit', 'manage'
+                    'form_admin_form' => array(
+                        'add', 'delete', 'edit', 'manage', 'old'
                     ),
-                    'admin_form_field' => array(
+                    'form_admin_form_field' => array(
                         'add', 'delete', 'manage'
                     ),
-                    'admin_form_viewer' => array(
+                    'form_admin_form_viewer' => array(
                         'add', 'delete', 'manage'
                     ),
                     'form_view' => array(

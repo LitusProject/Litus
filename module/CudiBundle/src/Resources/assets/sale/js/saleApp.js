@@ -5,6 +5,7 @@ var currentView = 'selectPaydesk';
         socketName: 'saleApp',
         socketUrl: '',
         sessionId: 0,
+        authSession: 0,
         authKey: '',
         membershipArticle: 0,
 
@@ -235,6 +236,7 @@ var currentView = 'selectPaydesk';
                     'session': settings.sessionId,
                     'paydesk': $(this).data('code'),
                     'key': settings.authKey,
+                    'authSession': settings.authSession,
                 })
             });
             modal.permanentModal('hide');

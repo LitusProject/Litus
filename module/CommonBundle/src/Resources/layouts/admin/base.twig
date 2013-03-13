@@ -19,7 +19,7 @@
             <p><time datetime="{{ now.iso8601 }}">{{ now.display }}</time></p>
             <p id="tag">
                 Welcome, {% if authenticatedPerson is null %} Guest {% else %} {{ authenticatedPerson.getFirstName() }} {% endif %} |
-                <a href="{{ url('admin_auth', {"action": "logout"}) }}">Logout</a>
+                <a href="{{ url('common_admin_auth', {"action": "logout"}) }}">Logout</a>
             </p>
         </header>
 
@@ -28,51 +28,51 @@
                 <li>
                     <div class="title">Admin</div>
 
-                    {% if hasAccess('admin_index', 'index') %}
+                    {% if hasAccess('common_admin_index', 'index') %}
                         <ul>
-                            {% if hasAccess('admin_index', 'index') %}
-                                <li><a href="{{ url('admin_index') }}">Dashboard</a></li>
+                            {% if hasAccess('common_admin_index', 'index') %}
+                                <li><a href="{{ url('common_admin_index') }}">Dashboard</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}
 
-                    {% if hasAccess('admin_key', 'manage') or hasAccess('admin_cache', 'manage') or hasAccess('admin_config', 'manage') %}
+                    {% if hasAccess('api_admin_key', 'manage') or hasAccess('common_admin_cache', 'manage') or hasAccess('common_admin_config', 'manage') %}
                         <ul>
-                            {% if hasAccess('admin_key', 'manage') %}
-                                <li><a href="{{ url('admin_key') }}">API Keys</a></li>
+                            {% if hasAccess('api_admin_key', 'manage') %}
+                                <li><a href="{{ url('api_admin_key') }}">API Keys</a></li>
                             {% endif %}
-                            {% if hasAccess('admin_cache', 'manage') %}
-                                <li><a href="{{ url('admin_cache') }}">Cache</a></li>
+                            {% if hasAccess('common_admin_cache', 'manage') %}
+                                <li><a href="{{ url('common_admin_cache') }}">Cache</a></li>
                             {% endif %}
-                            {% if hasAccess('admin_config', 'manage') %}
-                                <li><a href="{{ url('admin_config') }}">Configuration</a></li>
+                            {% if hasAccess('common_admin_config', 'manage') %}
+                                <li><a href="{{ url('common_admin_config') }}">Configuration</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}
 
-                    {% if hasAccess('admin_academic', 'manage') or hasAccess('admin_role', 'manage') %}
+                    {% if hasAccess('common_admin_academic', 'manage') or hasAccess('common_admin_role', 'manage') %}
                         <ul>
-                            {% if hasAccess('admin_academic', 'manage') %}
-                                <li><a href="{{ url('admin_academic') }}">Academic</a></li>
+                            {% if hasAccess('common_admin_academic', 'manage') %}
+                                <li><a href="{{ url('common_admin_academic') }}">Academic</a></li>
                             {% endif %}
-                            {% if hasAccess('admin_role', 'manage') %}
-                                <li><a href="{{ url('admin_role') }}">Groups</a></li>
-                            {% endif %}
-                        </ul>
-                    {% endif %}
-
-                    {% if hasAccess('admin_location', 'manage') %}
-                        <ul>
-                            {% if hasAccess('admin_location', 'manage') %}
-                                <li><a href="{{ url('admin_location') }}">Locations</a></li>
+                            {% if hasAccess('common_admin_role', 'manage') %}
+                                <li><a href="{{ url('common_admin_role') }}">Groups</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}
 
-                    {% if hasAccess('admin_slug', 'manage') %}
+                    {% if hasAccess('common_admin_location', 'manage') %}
                         <ul>
-                            {% if hasAccess('admin_slug', 'manage') %}
-                                <li><a href="{{ url('admin_slug') }}">Slugs</a></li>
+                            {% if hasAccess('common_admin_location', 'manage') %}
+                                <li><a href="{{ url('common_admin_location') }}">Locations</a></li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+
+                    {% if hasAccess('on_admin_slug', 'manage') %}
+                        <ul>
+                            {% if hasAccess('on_admin_slug', 'manage') %}
+                                <li><a href="{{ url('on_admin_slug') }}">Slugs</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}
@@ -84,7 +84,7 @@
                     <div class="title">Divisions</div>
 
                     <ul class="subsubmenu">
-                        {% if hasAccess('admin_company', 'manage') or hasAccess('admin_section', 'manage') or hasAccess('admin_contract', 'manage') or hasAccess('admin_cv_entry', 'manage') %}
+                        {% if hasAccess('br_admin_company', 'manage') or hasAccess('br_admin_cv_entry', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Corporate Relations</b><br />
@@ -92,201 +92,195 @@
                                 </div>
 
                                 <ul
-                                    {% if 'admin_company' == getParam('controller') or 'admin_company_event' == getParam('controller') or 'admin_company_job' == getParam('controller') or 'admin_company_logo' == getParam('controller') or 'admin_section' == getParam('controller') or 'admin_contract' == getParam('controller') or 'admin_cv_entry' == getParam('controller') %}
+                                    {% if 'br_admin_company' == getParam('controller') or 'br_admin_company_event' == getParam('controller') or 'br_admin_company_job' == getParam('controller') or 'br_admin_company_logo' == getParam('controller') or 'br_admin_cv_entry' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_company', 'manage') %}
-                                        <li><a href="{{ url('admin_company') }}">Companies</a></li>
+                                    {% if hasAccess('br_admin_company', 'manage') %}
+                                        <li><a href="{{ url('br_admin_company') }}">Companies</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_cv_entry', 'manage') %}
-                                        <li><a href="{{ url('admin_cv_entry') }}">CVs</a></li>
-                                    {% endif %}
-                                    {% if hasAccess('admin_section', 'manage') %}
-                                        <li><a href="{{ url('admin_section') }}">Sections</a></li>
-                                    {% endif %}
-                                    {% if hasAccess('admin_contract', 'manage') %}
-                                        <li><a href="{{ url('admin_index') }}">Contracts</a></li>
+                                    {% if hasAccess('br_admin_cv_entry', 'manage') %}
+                                        <li><a href="{{ url('br_admin_cv_entry') }}">CVs</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_article', 'manage') or hasAccess('admin_sales_article', 'manage') or hasAccess('admin_sales_booking', 'manage') or hasAccess('admin_sales_session', 'manage') or hasAccess('admin_sales_financial', 'sales') or hasAccess('admin_stock', 'manage') or hasAccess('admin_supplier', 'manage') or hasAccess('admin_prof_action', 'manage') %}
+                        {% if hasAccess('cudi_admin_article', 'manage') or hasAccess('cudi_admin_sales_article', 'manage') or hasAccess('cudi_admin_sales_booking', 'manage') or hasAccess('cudi_admin_sales_session', 'manage') or hasAccess('cudi_admin_sales_financial', 'sales') or hasAccess('cudi_admin_stock', 'manage') or hasAccess('cudi_admin_supplier', 'manage') or hasAccess('cudi_admin_prof_action', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>CuDi</b><br />
                                     Articles, Financial &amp; Stock
                                 </div>
                                 <ul
-                                    {% if 'admin_article' == getParam('controller') or 'admin_article_subject' == getParam('controller') or 'admin_article_comment' == getParam('controller') or 'admin_article_file' == getParam('controller') or 'admin_sales_article' == getParam('controller') or 'admin_sales_article_discount' == getParam('controller') or 'admin_sales_article_barcode' == getParam('controller') or 'admin_sales_article_restriction' == getParam('controller') or 'admin_sales_booking' == getParam('controller') or 'admin_sales_session' == getParam('controller') or 'admin_sales_financial' == getParam('controller') or 'admin_supplier' == getParam('controller') or 'admin_supplier_user' == getParam('controller') or 'admin_stock' == getParam('controller') or 'admin_stock_period' == getParam('controller') or 'admin_stock_order' == getParam('controller') or 'admin_stock_delivery' == getParam('controller') or 'admin_stock_retour' == getParam('controller') or 'admin_prof_action' == getParam('controller') %}
+                                    {% if 'cudi_admin_article' == getParam('controller') or 'cudi_admin_article_subject' == getParam('controller') or 'cudi_admin_article_comment' == getParam('controller') or 'cudi_admin_article_file' == getParam('controller') or 'cudi_admin_sales_article' == getParam('controller') or 'cudi_admin_sales_article_discount' == getParam('controller') or 'cudi_admin_sales_article_barcode' == getParam('controller') or 'cudi_admin_sales_article_restriction' == getParam('controller') or 'cudi_admin_sales_booking' == getParam('controller') or 'cudi_admin_sales_session' == getParam('controller') or 'cudi_admin_sales_financial' == getParam('controller') or 'cudi_admin_supplier' == getParam('controller') or 'cudi_admin_supplier_user' == getParam('controller') or 'cudi_admin_stock' == getParam('controller') or 'cudi_admin_stock_period' == getParam('controller') or 'cudi_admin_stock_order' == getParam('controller') or 'cudi_admin_stock_delivery' == getParam('controller') or 'cudi_admin_stock_retour' == getParam('controller') or 'cudi_admin_prof_action' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_article', 'manage') %}
-                                        <li><a href="{{ url('admin_article') }}">Articles</a></li>
+                                    {% if hasAccess('cudi_admin_article', 'manage') %}
+                                        <li><a href="{{ url('cudi_admin_article') }}">Articles</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_sales_article', 'manage') %}
-                                        <li><a href="{{ url('admin_sales_article') }}">Sale Articles</a></li>
+                                    {% if hasAccess('cudi_admin_sales_article', 'manage') %}
+                                        <li><a href="{{ url('cudi_admin_sales_article') }}">Sale Articles</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_sales_booking', 'manage') %}
-                                        <li><a href="{{ url('admin_sales_booking') }}">Bookings</a></li>
+                                    {% if hasAccess('cudi_admin_sales_booking', 'manage') %}
+                                        <li><a href="{{ url('cudi_admin_sales_booking') }}">Bookings</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_sales_session', 'manage') %}
-                                        <li><a href="{{ url('admin_sales_session') }}">Sale Sessions</a></li>
+                                    {% if hasAccess('cudi_admin_sales_session', 'manage') %}
+                                        <li><a href="{{ url('cudi_admin_sales_session') }}">Sale Sessions</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_sales_financial', 'sales') %}
-                                        <li><a href="{{ url('admin_sales_financial') }}">Financial</a></li>
+                                    {% if hasAccess('cudi_admin_sales_financial', 'sales') %}
+                                        <li><a href="{{ url('cudi_admin_sales_financial') }}">Financial</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_stock', 'manage') %}
-                                        <li><a href="{{ url('admin_stock') }}">Stock</a></li>
+                                    {% if hasAccess('cudi_admin_stock', 'manage') %}
+                                        <li><a href="{{ url('cudi_admin_stock') }}">Stock</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_supplier', 'manage') %}
-                                        <li><a href="{{ url('admin_supplier') }}">Suppliers</a></li>
+                                    {% if hasAccess('cudi_admin_supplier', 'manage') %}
+                                        <li><a href="{{ url('cudi_admin_supplier') }}">Suppliers</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_prof_action', 'manage') %}
-                                        <li><a href="{{ url('admin_prof_action') }}">Prof Actions</a></li>
+                                    {% if hasAccess('cudi_admin_prof_action', 'manage') %}
+                                        <li><a href="{{ url('cudi_admin_prof_action') }}">Prof Actions</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_driver', 'manage') or hasAccess('admin_van_reservation', 'manage') %}
+                        {% if hasAccess('logistics_admin_driver', 'manage') or hasAccess('logistics_admin_van_reservation', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Logistics</b><br />
                                     Drivers &amp; Van Reservations
                                 </div>
                                 <ul
-                                    {% if 'admin_driver' == getParam('controller') or 'admin_van_reservation' == getParam('controller') %}
+                                    {% if 'logistics_admin_driver' == getParam('controller') or 'logistics_admin_van_reservation' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_driver', 'manage') %}
-                                        <li><a href="{{ url('admin_driver') }}">Drivers</a></li>
+                                    {% if hasAccess('logistics_admin_driver', 'manage') %}
+                                        <li><a href="{{ url('logistics_admin_driver') }}">Drivers</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_van_reservation', 'manage') %}
-                                        <li><a href="{{ url('admin_van_reservation') }}">Van Reservations</a></li>
+                                    {% if hasAccess('logistics_admin_van_reservation', 'manage') %}
+                                        <li><a href="{{ url('logistics_admin_van_reservation') }}">Van Reservations</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_mail', 'groups') or hasAccess('admin_mail_bakske', 'send') or hasAccess('admin_mail_prof', 'cudi') or hasAccess('admin_mail_study', 'send') or hasAccess('admin_mail_list', 'manage') %}
+                        {% if hasAccess('mail_admin_mail', 'groups') or hasAccess('mail_admin_mail_bakske', 'send') or hasAccess('mail_admin_mail_prof', 'cudi') or hasAccess('mail_admin_mail_study', 'send') or hasAccess('mail_admin_mail_list', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Mail</b><br />
                                     Aliases, Lists &amp; Mass Mail
                                 </div>
                                 <ul
-                                    {% if 'admin_mail' == getParam('controller') or 'admin_mail_bakske' == getParam('controller') or 'admin_mail_prof' == getParam('controller') or 'admin_mail_study' == getParam('controller') or 'admin_mail_list' == getParam('controller') or 'admin_mail_alias' == getParam('controller') %}
+                                    {% if 'mail_admin_mail' == getParam('controller') or 'mail_admin_mail_bakske' == getParam('controller') or 'mail_admin_mail_prof' == getParam('controller') or 'mail_admin_mail_study' == getParam('controller') or 'mail_admin_mail_list' == getParam('controller') or 'mail_admin_mail_alias' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_mail_alias', 'manage') %}
-                                        <li><a href="{{ url('admin_mail_alias') }}">Aliases</a></li>
+                                    {% if hasAccess('mail_admin_mail_alias', 'manage') %}
+                                        <li><a href="{{ url('mail_admin_mail_alias') }}">Aliases</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_mail_bakske', 'send') %}
-                                        <li><a href="{{ url('admin_mail_bakske') }}">Het Bakske</a></li>
+                                    {% if hasAccess('mail_admin_mail_bakske', 'send') %}
+                                        <li><a href="{{ url('mail_admin_mail_bakske') }}">Het Bakske</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_mail', 'groups') %}
-                                        <li><a href="{{ url('admin_mail') }}">Groups</a></li>
+                                    {% if hasAccess('mail_admin_mail', 'groups') %}
+                                        <li><a href="{{ url('mail_admin_mail') }}">Groups</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_mail_list', 'manage') %}
-                                        <li><a href="{{ url('admin_mail_list') }}">Lists</a></li>
+                                    {% if hasAccess('mail_admin_mail_list', 'manage') %}
+                                        <li><a href="{{ url('mail_admin_mail_list') }}">Lists</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_mail_prof', 'cudi') %}
-                                        <li><a href="{{ url('admin_mail_prof', {'action': 'cudi'}) }}">Prof</a></li>
+                                    {% if hasAccess('mail_admin_mail_prof', 'cudi') %}
+                                        <li><a href="{{ url('mail_admin_mail_prof', {'action': 'cudi'}) }}">Prof</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_mail_study', 'send') %}
-                                        <li><a href="{{ url('admin_mail_study') }}">Student</a></li>
+                                    {% if hasAccess('mail_admin_mail_study', 'send') %}
+                                        <li><a href="{{ url('mail_admin_mail_study') }}">Student</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_publication', 'manage') or hasAccess('admin_mail_bakske', 'send') %}
+                        {% if hasAccess('publication_admin_publication', 'manage') or hasAccess('mail_admin_mail_bakske', 'send') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Pulications</b><br />
                                     Editions &amp; Publications
                                 </div>
                                 <ul
-                                    {% if 'admin_publication' == getParam('controller') or 'admin_edition_html' == getParam('controller') or 'admin_edition_pdf' == getParam('controller') %}
+                                    {% if 'publication_admin_publication' == getParam('controller') or 'publication_admin_edition_html' == getParam('controller') or 'publication_admin_edition_pdf' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_publication', 'manage') %}
-                                        <li><a href="{{ url('admin_publication') }}">Publications</a></li>
+                                    {% if hasAccess('publication_admin_publication', 'manage') %}
+                                        <li><a href="{{ url('publication_admin_publication') }}">Publications</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_shift', 'manage') or hasAccess('admin_unit', 'manage') %}
+                        {% if hasAccess('shift_admin_shift', 'manage') or hasAccess('shift_admin_unit', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Shifts</b><br />
                                     Shifts &amp; Units
                                 </div>
                                 <ul
-                                    {% if 'admin_shift' == getParam('controller') or 'admin_shift_counter' == getParam('controller') or 'admin_shift_ranking' == getParam('controller') or 'admin_unit' == getParam('controller') %}
+                                    {% if 'shift_admin_shift' == getParam('controller') or 'shift_admin_shift_counter' == getParam('controller') or 'shift_admin_shift_ranking' == getParam('controller') or 'shift_admin_unit' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_shift_counter', 'index') %}
-                                        <li><a href="{{ url('admin_shift_counter') }}">Counter</a></li>
+                                    {% if hasAccess('shift_admin_shift_counter', 'index') %}
+                                        <li><a href="{{ url('shift_admin_shift_counter') }}">Counter</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_shift', 'manage') %}
-                                        <li><a href="{{ url('admin_shift') }}">Shifts</a></li>
+                                    {% if hasAccess('shift_admin_shift', 'manage') %}
+                                        <li><a href="{{ url('shift_admin_shift') }}">Shifts</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_shift_ranking', 'index') %}
-                                        <li><a href="{{ url('admin_shift_ranking') }}">Ranking</a></li>
+                                    {% if hasAccess('shift_admin_shift_ranking', 'index') %}
+                                        <li><a href="{{ url('shift_admin_shift_ranking') }}">Ranking</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_unit', 'manage') %}
-                                        <li><a href="{{ url('admin_unit') }}">Units</a></li>
+                                    {% if hasAccess('shift_admin_unit', 'manage') %}
+                                        <li><a href="{{ url('shift_admin_unit') }}">Units</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_banner', 'manage') or hasAccess('admin_calendar', 'manage') or hasAccess('admin_news', 'manage') or hasAccess('admin_notification', 'manage') or hasAccess('admin_page', 'manage') or hasAccess('admin_form', 'manage') %}
+                        {% if hasAccess('banner_admin_banner', 'manage') or hasAccess('calendar_admin_calendar', 'manage') or hasAccess('news_admin_news', 'manage') or hasAccess('notification_admin_notification', 'manage') or hasAccess('page_admin_page', 'manage') or hasAccess('form_admin_form', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Site</b><br />
                                     Calendar, News &amp; Pages
                                 </div>
                                 <ul
-                                    {% if 'admin_banner' == getParam('controller') or 'admin_news' == getParam('controller') or 'admin_notification' == getParam('controller') or 'admin_calendar' == getParam('controller') or 'admin_page' == getParam('controller') or 'admin_page_category' == getParam('controller') or 'admin_page_link' == getParam('controller') or 'admin_form' == getParam('controller') %}
+                                    {% if 'banner_admin_banner' == getParam('controller') or 'news_admin_news' == getParam('controller') or 'notification_admin_notification' == getParam('controller') or 'calendar_admin_calendar' == getParam('controller') or 'page_admin_page' == getParam('controller') or 'page_admin_category' == getParam('controller') or 'page_admin_link' == getParam('controller') or 'form_admin_form' == getParam('controller') or 'form_admin_form_field' == getParam('controller') or 'form_admin_viewer' == getParam('controller') or 'gallery_admin_gallery' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_banner', 'manage') %}
-                                        <li><a href="{{ url('admin_banner') }}">Banner</a></li>
+                                    {% if hasAccess('banner_admin_banner', 'manage') %}
+                                        <li><a href="{{ url('banner_admin_banner') }}">Banner</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_calendar', 'manage') %}
-                                        <li><a href="{{ url('admin_calendar') }}">Calendar</a></li>
+                                    {% if hasAccess('calendar_admin_calendar', 'manage') %}
+                                        <li><a href="{{ url('calendar_admin_calendar') }}">Calendar</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_form', 'manage') %}
-                                        <li><a href="{{ url('admin_form') }}">Forms</a></li>
+                                    {% if hasAccess('form_admin_form', 'manage') %}
+                                        <li><a href="{{ url('form_admin_form') }}">Forms</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_gallery', 'manage') %}
-                                        <li><a href="{{ url('admin_gallery') }}">Gallery</a></li>
+                                    {% if hasAccess('gallery_admin_gallery', 'manage') %}
+                                        <li><a href="{{ url('gallery_admin_gallery') }}">Gallery</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_news', 'manage') %}
-                                        <li><a href="{{ url('admin_news') }}">News</a></li>
+                                    {% if hasAccess('news_admin_news', 'manage') %}
+                                        <li><a href="{{ url('news_admin_news') }}">News</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_notification', 'manage') %}
-                                        <li><a href="{{ url('admin_notification') }}">Notifications</a></li>
+                                    {% if hasAccess('notification_admin_notification', 'manage') %}
+                                        <li><a href="{{ url('notification_admin_notification') }}">Notifications</a></li>
                                     {% endif %}
-                                    {% if hasAccess('admin_page', 'manage') %}
-                                        <li><a href="{{ url('admin_page') }}">Pages</a></li>
+                                    {% if hasAccess('page_admin_page', 'manage') %}
+                                        <li><a href="{{ url('page_admin_page') }}">Pages</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_secretary_registration', 'manage') %}
+                        {% if hasAccess('secretary_admin_registration', 'manage') or hasAccess('secretary_admin_mail_promotion', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                         <b>Secretary</b><br />
@@ -294,18 +288,21 @@
                                 </div>
 
                                 <ul
-                                    {% if 'admin_secretary_registration' == getParam('controller') %}
+                                    {% if 'secretary_admin_registration' == getParam('controller') or 'secretary_admin_mail_promotion' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_secretary_registration', 'manage') %}
-                                        <li><a href="{{ url('admin_secretary_registration') }}">Registrations</a></li>
+                                    {% if hasAccess('secretary_admin_registration', 'manage') %}
+                                        <li><a href="{{ url('secretary_admin_registration') }}">Registrations</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('secretary_admin_mail_promotion', 'manage') %}
+                                        <li><a href="{{ url('secretary_admin_mail_promotion') }}">Promotion Lists</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('admin_run', 'queue') %}
+                        {% if hasAccess('sport_admin_run', 'queue') %}
                             <li>
                                 <div class="subtitle">
                                         <b>Sport</b><br />
@@ -313,12 +310,12 @@
                                 </div>
 
                                 <ul
-                                    {% if 'admin_run' == getParam('controller') %}
+                                    {% if 'sport_admin_run' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
-                                    {% if hasAccess('admin_run', 'queue') %}
-                                        <li><a href="{{ url('admin_run') }}">24h-Run</a></li>
+                                    {% if hasAccess('sport_admin_run', 'queue') %}
+                                        <li><a href="{{ url('sport_admin_run') }}">24h-Run</a></li>
                                     {% endif %}
                                 </ul>
                             </li>

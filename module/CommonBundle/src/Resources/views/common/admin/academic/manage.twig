@@ -61,10 +61,10 @@
                             <td>{{ academic.getFullName() }}</td>
                             <td>{{ academic.getEmail() }}</td>
                             <td class="actions">
-                                {% if hasAccess('admin_academic', 'edit') %}
-                                    <a href="{{ url('admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
+                                {% if hasAccess('common_admin_academic', 'edit') %}
+                                    <a href="{{ url('common_admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
                                 {% endif %}
-                                {% if hasAccess('admin_academic', 'delete') %}
+                                {% if hasAccess('common_admin_academic', 'delete') %}
                                     <a href="#" class="delete" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Delete</a>
                                 {% endif %}
                             </td>
@@ -101,14 +101,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('admin_academic', 'search') %}
+            {% if hasAccess('common_admin_academic', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#student_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_academic', {'action': 'manage'}) }}manage/',
-                url: '{{ url('admin_academic', {'action': 'search'}) }}',
+                searchPage: '{{ url('common_admin_academic', {'action': 'manage'}) }}manage/',
+                url: '{{ url('common_admin_academic', {'action': 'search'}) }}',
                 display: function (data) {
                     $('#student_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -119,7 +119,7 @@
                             .append('<td>' + this.email + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
-                                    .append('<a href="{{ url('admin_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                    .append('<a href="{{ url('common_admin_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
                                 );
                             deleteButton.data({
@@ -149,7 +149,7 @@
             });
             var id = $this.data('id');
             removeAcademic.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_academic', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('common_admin_academic', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.academic_removed_success').removeClass('hide');

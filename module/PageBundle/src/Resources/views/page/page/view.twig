@@ -30,8 +30,8 @@
                                             {% endif %}
 
                                             {% if 'link' == categoryItem.type %}
-                                                {% if hasAccess('link', 'view') %}
-                                                    <li><a href="{{ url('link', {"id": categoryItem.id}) }}">{{ categoryItem.name }}</a></li>
+                                                {% if hasAccess('page_link', 'view') %}
+                                                    <li><a href="{{ url('page_link', {"id": categoryItem.id}) }}">{{ categoryItem.name }}</a></li>
                                                 {% endif %}
                                             {% endif %}
                                         {% endfor %}
@@ -45,8 +45,8 @@
                                 {% endif %}
 
                                 {% if 'link' == item.type %}
-                                    {% if hasAccess('link', 'view') %}
-                                        <li><a href="{{ url('link', {"id": item.id}) }}">{{ item.name }}</a></li>
+                                    {% if hasAccess('page_link', 'view') %}
+                                        <li><a href="{{ url('page_link', {"id": item.id}) }}">{{ item.name }}</a></li>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}

@@ -92,7 +92,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         );
 
         $this->redirect()->toRoute(
-            'admin_stock_period',
+            'cudi_admin_stock_period',
             array(
                 'action' => 'manage'
             )
@@ -186,7 +186,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_period',
+                'cudi_admin_stock_period',
                 array(
                     'action' => 'manage'
                 )
@@ -209,7 +209,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_period',
+                'cudi_admin_stock_period',
                 array(
                     'action' => 'manage'
                 )

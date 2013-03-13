@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_banner' => array(
+            'banner_admin_banner' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/banner[/:action[/:id][/page/:page]][/]',
@@ -37,7 +37,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_banner',
+                        'controller' => 'banner_admin_banner',
                         'action'     => 'manage',
                     ),
                 ),
@@ -79,9 +79,10 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'banner_install' => 'BannerBundle\Controller\Admin\InstallController',
-            'admin_banner'   => 'BannerBundle\Controller\Admin\BannerController',
-            'banner'         => 'BannerBundle\Controller\BannerController'
+            'banner_install'      => 'BannerBundle\Controller\Admin\InstallController',
+            'banner_admin_banner' => 'BannerBundle\Controller\Admin\BannerController',
+
+            'banner'              => 'BannerBundle\Controller\BannerController'
         ),
     ),
 );

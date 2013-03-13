@@ -39,10 +39,10 @@
 						{% endfor %}
 						</td>
 						<td class="actions">
-						    {% if hasAccess('admin_driver', 'edit') %}
-		                        <a href="{{ url('admin_driver', {"action": "edit", "id": driver.getPerson().getId()}) }}" class="edit">Edit</a>
+						    {% if hasAccess('logistics_admin_driver', 'edit') %}
+		                        <a href="{{ url('logistics_admin_driver', {"action": "edit", "id": driver.getPerson().getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
-						    {% if hasAccess('admin_driver', 'delete') %}
+						    {% if hasAccess('logistics_admin_driver', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ driver.getPerson().getId() }}" data-name="{{ driver.getPerson().getFullName() }}">Delete</a>
 		                    {% endif %}
 						</td>
@@ -92,7 +92,7 @@
 			removeDriver.find('.driverName').html($(this).data('name'));
 			var id = $this.data('id');
 			removeDriver.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_driver', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('logistics_admin_driver', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.driver_removed_success').removeClass('hide');

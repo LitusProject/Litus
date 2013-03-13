@@ -54,7 +54,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'index',
+                'common_index',
                 array(
                     'action' => 'index'
                 )

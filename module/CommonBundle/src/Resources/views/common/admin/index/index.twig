@@ -13,7 +13,7 @@
             <img src="{{ piwik['visitsSummary'].getDataUri(1000, 200) }}" alt="Visits Summary" class="full_width" />
         {% endif %}
 
-        {% if hasAccess('admin_prof_action', 'manage') and profActions|length > 0 %}
+        {% if hasAccess('cudi_admin_prof_action', 'manage') and profActions|length > 0 %}
             <h1>Last Prof Actions</h1>
     	    <table>
     	        <tr>
@@ -29,8 +29,8 @@
     	                <td>{{ action.getEntityName()|capitalize }} {{ action.getAction()|capitalize }}</td>
     	                <td>{{ action.getTimestamp().format('d/m/Y H:i') }}</td>
     	                <td>
-    	                    {% if hasAccess('admin_prof_action', 'view') %}
-    	                        <a href="{{ url('admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
+    	                    {% if hasAccess('cudi_admin_prof_action', 'view') %}
+    	                        <a href="{{ url('cudi_admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
     	                    {% endif %}
     	                </td>
     	            </tr>
@@ -97,7 +97,7 @@
                     <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
                     <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_session', 'expire') and session.getId() != currentSession.getId() %}
+                        {% if hasAccess('common_admin_session', 'expire') and session.getId() != currentSession.getId() %}
                             <a href="#" class="delete" data-id="{{ session.getId() }}">Expire</a></li>
                         {% endif %}
                     </td>
@@ -151,7 +151,7 @@
             var $this = $(this);
             e.preventDefault();
             var id = $this.data('id');
-            $.get('{{ url('admin_session', {"action": "expire"})}}' + id, function (data) {
+            $.get('{{ url('common_admin_session', {"action": "expire"})}}' + id, function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').addClass('hide');
                     $('.session_expire_success').removeClass('hide');

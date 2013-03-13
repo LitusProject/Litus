@@ -48,10 +48,10 @@
                 <td>{{ mapping.getFile().getName() }}</td>
                 <td>{{ mapping.getFile().getDescription() }}</td>
                 <td class="actions">
-                    {% if hasAccess('prof_file', 'download') %}
-                        <a href="#" class="btn btn-info downloadFile" data-file="{{ url('prof_file', {"action": "download", "id": mapping.getId(), "language": language.getAbbrev()}) }}">{{ translate('Download') }}</a>
+                    {% if hasAccess('cudi_prof_file', 'download') %}
+                        <a href="#" class="btn btn-info downloadFile" data-file="{{ url('cudi_prof_file', {"action": "download", "id": mapping.getId(), "language": language.getAbbrev()}) }}">{{ translate('Download') }}</a>
                     {% endif %}
-                    {% if hasAccess('prof_file', 'delete') %}
+                    {% if hasAccess('cudi_prof_file', 'delete') %}
                         <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">{{ translate('Delete') }}</a>
                     {% endif %}
                 </td>
@@ -129,7 +129,7 @@
             });
 
             $('#uploadFile').formUploadProgress({
-                url: '{{ url('prof_file', {"action": "progress", "language": language.getAbbrev()}) }}',
+                url: '{{ url('cudi_prof_file', {"action": "progress", "language": language.getAbbrev()}) }}',
                 name: '{{ uploadProgressId }}',
                 uploadProgressName: '{{ uploadProgressName }}',
                 interval: 1000,
@@ -176,7 +176,7 @@
             removeFile.find('.fileName').html($(this).data('name'));
             removeFile.find('.fileDescription').html($(this).data('description'));
             removeFile.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('prof_file', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_file', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#file_removed_success').addClass('in');

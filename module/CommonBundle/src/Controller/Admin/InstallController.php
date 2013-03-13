@@ -187,43 +187,43 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
         $this->installAcl(
             array(
                 'commonbundle' => array(
-                    'admin_academic' => array(
+                    'common_admin_academic' => array(
                         'activate', 'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
                     ),
-                    'admin_auth' => array(
+                    'common_admin_auth' => array(
                         'authenticate', 'login', 'logout', 'shibboleth'
                     ),
-                    'admin_cache' => array(
+                    'common_admin_cache' => array(
                         'manage', 'flush'
                     ),
-                    'admin_config' => array(
+                    'common_admin_config' => array(
                         'edit', 'manage'
                     ),
-                    'admin_index' => array(
+                    'common_admin_index' => array(
                         'index'
                     ),
-                    'admin_location' => array(
+                    'common_admin_location' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
-                    'admin_person' => array(
+                    'common_admin_person' => array(
                         'typeahead'
                     ),
-                    'admin_role' => array(
+                    'common_admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
-                    'admin_session' => array(
+                    'common_admin_session' => array(
                         'expire'
                     ),
-                    'account' => array(
+                    'common_account' => array(
                         'activate', 'edit', 'fileServer', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
-                    'session' => array(
+                    'common_session' => array(
                         'manage', 'expire'
                     ),
-                    'auth' => array(
+                    'common_auth' => array(
                         'login', 'logout', 'shibboleth'
                     ),
-                    'index' => array(
+                    'common_index' => array(
                         'index'
                     ),
 
@@ -301,23 +301,23 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'parents' => array(
                     ),
                     'actions' => array(
-                        'admin_auth' => array(
+                        'common_admin_auth' => array(
                             'authenticate', 'login', 'logout', 'shibboleth'
                         ),
-                        'auth' => array(
+                        'common_auth' => array(
                             'login', 'logout', 'shibboleth'
                         ),
-                        'index' => array(
+                        'common_index' => array(
                             'index'
                         ),
-                        'account' => array(
+                        'common_account' => array(
                             'activate'
                         ),
                     ),
                 ),
                 'student' => array(
                     'actions' => array(
-                        'account' => array(
+                        'common_account' => array(
                             'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',
                         ),
                     ),
