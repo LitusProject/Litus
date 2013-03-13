@@ -120,7 +120,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($asVolunteer as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person)
-                    $payed[$shift->getUnit()->getId()] = $volunteer->getPayed();
+                    $payed[$shift->getId()] = $volunteer->getPayed();
             }
         }
 
