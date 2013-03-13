@@ -3,11 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_syllabus_academic', 'manage') %}
+            {% if hasAccess('syllabus_admin_academic', 'manage') %}
                 <li>
                     <a
                         {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('admin_syllabus_academic', {"action": "manage"}) }}"
+                        href="{{ url('syllabus_admin_academic', {"action": "manage"}) }}"
                     >
                         Manage
                     </a>

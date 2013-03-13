@@ -77,7 +77,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )

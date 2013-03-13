@@ -47,7 +47,7 @@
 	                <td>{{ comment.getType()|capitalize }}</td>
 					<td class="actions">
 						<a href="#" class="view" data-text="{{ comment.getText() }}">View</a>
-						{% if hasAccess('admin_subject_comment', 'delete') %}
+						{% if hasAccess('syllabus_admin_subject_comment', 'delete') %}
 						    <a href="#" class="delete" data-id="{{ comment.getId() }}" data-author="{{ comment.getPerson().getFullName() }}">Delete</a>
 						{% endif %}
 	                </td>
@@ -115,7 +115,7 @@
 			removeComment.find('.author').html($(this).data('author'));
 			var id = $this.data('id');
 			removeComment.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_subject_comment', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('syllabus_admin_subject_comment', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.comment_removed_success').removeClass('hide');

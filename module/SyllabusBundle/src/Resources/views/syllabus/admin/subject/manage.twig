@@ -47,8 +47,8 @@
                         <td>{{ subject.getSemester() }}</td>
                         <td>{{ subject.getCredits() }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_subject', 'edit') %}
-                                <a href="{{ url('admin_subject', {"action": "edit", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
+                            {% if hasAccess('syllabus_admin_subject', 'edit') %}
+                                <a href="{{ url('syllabus_admin_subject', {"action": "edit", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -63,14 +63,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('admin_subject', 'search') %}
+            {% if hasAccess('syllabus_admin_subject', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#subject_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_subject', {'action': 'manage', 'academicyear': currentAcademicYear.getCode()}) }}',
-                url: '{{ url('admin_subject', {'action': 'search', 'academicyear': currentAcademicYear.getCode()}) }}',
+                searchPage: '{{ url('syllabus_admin_subject', {'action': 'manage', 'academicyear': currentAcademicYear.getCode()}) }}',
+                url: '{{ url('syllabus_admin_subject', {'action': 'search', 'academicyear': currentAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#subject_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -80,8 +80,8 @@
                             .append('<td>' + this.semester + '</td>')
                             .append('<td>' + this.credits + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
-                        {% if hasAccess('admin_subject', 'edit') %}
-                            actions.append('<a href="{{ url('admin_subject') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+                        {% if hasAccess('syllabus_admin_subject', 'edit') %}
+                            actions.append('<a href="{{ url('syllabus_admin_subject') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
                         {% endif %}
                     });
                     $('#subject_search table').change();

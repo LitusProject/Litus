@@ -25,7 +25,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_update_syllabus' => array(
+            'syllabus_admin_update' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/update[/:action[/:id]][/]',
@@ -34,12 +34,12 @@ return array(
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_update_syllabus',
+                        'controller' => 'syllabus_admin_update',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'admin_syllabus_academic' => array(
+            'syllabus_admin_academic' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/academic[/:action[/:id][/page/:page][/:academicyear][/:field/:string]][/]',
@@ -52,12 +52,12 @@ return array(
                         'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_syllabus_academic',
+                        'controller' => 'syllabus_admin_academic',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_syllabus_group' => array(
+            'syllabus_admin_group' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/group[/:action[/:id][/page/:page][/:academicyear]][/]',
@@ -68,12 +68,12 @@ return array(
                         'page'         => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_syllabus_group',
+                        'controller' => 'syllabus_admin_group',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_study' => array(
+            'syllabus_admin_study' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/study[/:action[/:id][/:academicyear][/:field/:string][/page/:page]][/]',
@@ -86,12 +86,12 @@ return array(
                         'page'         => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_study',
+                        'controller' => 'syllabus_admin_study',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_study_typeahead' => array(
+            'syllabus_admin_study_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/study/typeahead/:academicyear[/:string][/]',
@@ -100,12 +100,12 @@ return array(
                         'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_study',
+                        'controller' => 'syllabus_admin_study',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'admin_subject' => array(
+            'syllabus_admin_subject' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/subject[/:action[/:id][/:academicyear][/:field/:string][/page/:page]][/]',
@@ -118,12 +118,12 @@ return array(
                         'page'         => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_subject',
+                        'controller' => 'syllabus_admin_subject',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_subject_comment' => array(
+            'syllabus_admin_subject_comment' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/subject/comments[/:action[/:id][/:academicyear][/page/:page]][/]',
@@ -134,12 +134,12 @@ return array(
                         'page'         => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_subject_comment',
+                        'controller' => 'syllabus_admin_subject_comment',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_subject_typeahead' => array(
+            'syllabus_admin_subject_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/subject/typeahead/:academicyear[/:string][/]',
@@ -148,12 +148,12 @@ return array(
                         'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_subject',
+                        'controller' => 'syllabus_admin_subject',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'admin_prof' => array(
+            'syllabus_admin_prof' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/prof[/:action[/:id]][/:academicyear][/]',
@@ -163,12 +163,12 @@ return array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_prof',
+                        'controller' => 'syllabus_admin_prof',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_prof_typeahead' => array(
+            'syllabus_admin_prof_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/syllabus/prof/typeahead[/:string][/]',
@@ -176,7 +176,7 @@ return array(
                         'string'  => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_prof',
+                        'controller' => 'syllabus_admin_prof',
                         'action'     => 'typeahead',
                     ),
                 ),
@@ -218,16 +218,16 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'syllabus_install'        => 'SyllabusBundle\Controller\Admin\InstallController',
+            'syllabus_install'               => 'SyllabusBundle\Controller\Admin\InstallController',
 
-            'admin_update_syllabus'   => 'SyllabusBundle\Controller\Admin\UpdateController',
-            'admin_syllabus_academic' => 'SyllabusBundle\Controller\Admin\AcademicController',
-            'admin_syllabus_group'    => 'SyllabusBundle\Controller\Admin\GroupController',
-            'admin_study'             => 'SyllabusBundle\Controller\Admin\StudyController',
-            'admin_subject'           => 'SyllabusBundle\Controller\Admin\SubjectController',
-            'admin_subject_comment'   => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
-            'admin_prof'              => 'SyllabusBundle\Controller\Admin\ProfController',
-            'syllabus_subject'        => 'SyllabusBundle\Controller\SubjectController',
+            'syllabus_admin_update'          => 'SyllabusBundle\Controller\Admin\UpdateController',
+            'syllabus_admin_academic'        => 'SyllabusBundle\Controller\Admin\AcademicController',
+            'syllabus_admin_group'           => 'SyllabusBundle\Controller\Admin\GroupController',
+            'syllabus_admin_study'           => 'SyllabusBundle\Controller\Admin\StudyController',
+            'syllabus_admin_subject'         => 'SyllabusBundle\Controller\Admin\SubjectController',
+            'syllabus_admin_subject_comment' => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
+            'syllabus_admin_prof'            => 'SyllabusBundle\Controller\Admin\ProfController',
+            'syllabus_subject'               => 'SyllabusBundle\Controller\SubjectController',
         ),
     ),
 );

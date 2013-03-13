@@ -44,7 +44,7 @@
 		                <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
 		                <td>{{ mapping.getProf().getFullName() }}</td>
 		                <td class="actions">
-		                    {% if hasAccess('admin_prof', 'delete') %}
+		                    {% if hasAccess('syllabus_admin_prof', 'delete') %}
 		                        <a href="#" data-id="{{ mapping.getId() }}" data-docent="{{ mapping.getProf().getFullName() }}" data-subject="{{ subject.getName() }}" class="delete">Delete</a>
 		                    {% endif %}
 		                </td>
@@ -75,7 +75,7 @@
 	</div>
 
 	<aside>
-	    {% if hasAccess('admin_prof', 'add') %}
+	    {% if hasAccess('syllabus_admin_prof', 'add') %}
 			<div class="sidebox">
 			    <div class="title">Add Docent</div>
 			    <div class="content">
@@ -83,12 +83,12 @@
 			            <i>Please hit the link below to add a docent to this subject!</i>
 			        </p>
 			    	<p>
-			    		<a href="{{ url("admin_prof", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Docent</a>
+			    		<a href="{{ url("syllabus_admin_prof", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Docent</a>
 			    	</p>
 			    </div>
 			</div>
 		{% endif %}
-		{% if hasAccess('admin_subject_comment', 'subject') %}
+		{% if hasAccess('syllabus_admin_subject_comment', 'subject') %}
 			<div class="sidebox">
 			    <div class="title">View Comments</div>
 			    <div class="content">
@@ -96,7 +96,7 @@
 			            <i>Please hit the link below to view the comments to this subject!</i>
 			        </p>
 			    	<p>
-			    		<a href="{{ url("admin_subject_comment", {"action": "subject", "id": subject.getId()}) }}">&rarr; View Comments</a>
+			    		<a href="{{ url("syllabus_admin_subject_comment", {"action": "subject", "id": subject.getId()}) }}">&rarr; View Comments</a>
 			    	</p>
 			    </div>
 			</div>
@@ -139,7 +139,7 @@
 			removeMapping.find('.docentName').html($(this).data('docent'));
 			var id = $this.data('id');
 			removeMapping.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_prof', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('syllabus_admin_prof', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.mapping_removed_success').removeClass('hide');
