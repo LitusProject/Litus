@@ -40,8 +40,8 @@
                         <td>{{ mapping.getStudy().getFullTitle() }}</td>
                         <td>{{ mapping.getStudy().getPhase() }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_study', 'edit') %}
-                                <a href="{{ url('admin_study', {'action': 'edit', 'id': mapping.getStudy().getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="view">View</a>
+                            {% if hasAccess('syllabus_admin_study', 'edit') %}
+                                <a href="{{ url('syllabus_admin_study', {'action': 'edit', 'id': mapping.getStudy().getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="view">View</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -56,14 +56,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('admin_study', 'search') %}
+            {% if hasAccess('syllabus_admin_study', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#study_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_study', {'action': 'manage', 'academicyear': currentAcademicYear.getCode()}) }}',
-                url: '{{ url('admin_study', {'action': 'search', 'academicyear': currentAcademicYear.getCode()}) }}',
+                searchPage: '{{ url('syllabus_admin_study', {'action': 'manage', 'academicyear': currentAcademicYear.getCode()}) }}',
+                url: '{{ url('syllabus_admin_study', {'action': 'search', 'academicyear': currentAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#study_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -74,8 +74,8 @@
                                 actions = $('<td>', {'class': 'actions'})
                             );
 
-                            {% if hasAccess('admin_subject', 'manage') %}
-                                actions.append('<a href="{{ url('admin_subject') }}manage/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+                            {% if hasAccess('syllabus_admin_subject', 'manage') %}
+                                actions.append('<a href="{{ url('syllabus_admin_subject') }}manage/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
                             {% endif %}
                     });
                     $('#study_search table').change();

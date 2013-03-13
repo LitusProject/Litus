@@ -38,7 +38,7 @@
     	    </table>
 	    {% endif %}
 
-        {% if hasAccess('admin_subject_comment', 'manage') and subjectComments|length > 0 %}
+        {% if hasAccess('syllabus_admin_subject_comment', 'manage') and subjectComments|length > 0 %}
             <h1>Last Subject Comments</h1>
             <table class="manage">
                 <tr>
@@ -54,11 +54,11 @@
                         <td>{{ comment.getPerson().getFullName() }}</td>
                         <td>{{ comment.getText() }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_subject', 'edit') %}
-                                <a href="{{ url('admin_subject', {'action': 'edit', 'id': comment.getSubject().getId()}) }}" class="view">View Subject</a>
+                            {% if hasAccess('syllabus_admin_subject', 'edit') %}
+                                <a href="{{ url('syllabus_admin_subject', {'action': 'edit', 'id': comment.getSubject().getId()}) }}" class="view">View Subject</a>
                             {% endif %}
-                            {% if hasAccess('admin_subject_comment', 'subject') %}
-                                <a href="{{ url('admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
+                            {% if hasAccess('syllabus_admin_subject_comment', 'subject') %}
+                                <a href="{{ url('syllabus_admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
                             {% endif %}
                         </td>
                     </tr>

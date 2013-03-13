@@ -45,8 +45,8 @@
                             <td>{{ academic.getUniversityIdentification() }}
                             <td>{{ academic.getEmail() }}</td>
                             <td class="actions">
-                                {% if hasAccess('admin_syllabus_academic', 'edit') %}
-                                    <a href="{{ url('admin_syllabus_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
+                                {% if hasAccess('syllabus_admin_academic', 'edit') %}
+                                    <a href="{{ url('syllabus_admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
                                 {% endif %}
                             </td>
                         </tr>
@@ -62,14 +62,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('admin_syllabus_academic', 'search') %}
+            {% if hasAccess('syllabus_admin_academic', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#student_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_syllabus_academic', {'action': 'manage'}) }}manage/',
-                url: '{{ url('admin_syllabus_academic', {'action': 'search'}) }}',
+                searchPage: '{{ url('syllabus_admin_academic', {'action': 'manage'}) }}manage/',
+                url: '{{ url('syllabus_admin_academic', {'action': 'search'}) }}',
                 display: function (data) {
                     $('#student_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -79,7 +79,7 @@
                             .append('<td>' + this.email + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
-                                    .append('<a href="{{ url('admin_syllabus_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                    .append('<a href="{{ url('syllabus_admin_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                 );
                     });
                     $('#student_search table').change();

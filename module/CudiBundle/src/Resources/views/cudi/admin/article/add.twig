@@ -23,7 +23,7 @@
 
             $('#subjectSearch').typeaheadRemote(
                 {
-                    source: '{{ url("admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                    source: '{{ url("syllabus_admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

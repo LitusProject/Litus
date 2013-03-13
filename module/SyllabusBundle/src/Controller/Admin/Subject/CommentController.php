@@ -91,7 +91,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_subject_comment',
+                    'syllabus_admin_subject_comment',
                     array(
                         'action' => 'manage',
                         'id' => $subject->getId(),
@@ -142,7 +142,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -165,7 +165,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -189,7 +189,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -212,7 +212,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -247,7 +247,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_subject_comment',
+                'syllabus_admin_subject_comment',
                 array(
                     'action' => 'manage'
                 )
