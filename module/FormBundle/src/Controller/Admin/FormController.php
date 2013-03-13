@@ -34,8 +34,28 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'FormBundle\Entity\Nodes\Form',
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Nodes\Form')
+                ->findAllActive(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'entityManager' => $this->getEntityManager(),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Nodes\Form')
+                ->findAllOld(),
             $this->getParam('page')
         );
 
@@ -114,7 +134,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_form',
+                    'form_admin_form',
                     array(
                         'action' => 'manage'
                     )
@@ -147,7 +167,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -226,7 +246,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_form',
+                    'form_admin_form',
                     array(
                         'action' => 'manage'
                     )
@@ -262,7 +282,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -333,7 +353,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage'
                 )
@@ -356,7 +376,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage'
                 )

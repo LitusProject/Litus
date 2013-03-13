@@ -83,7 +83,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_supplier',
+                    'cudi_admin_supplier',
                     array(
                         'action' => 'manage'
                     )
@@ -136,7 +136,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_supplier',
+                    'cudi_admin_supplier',
                     array(
                         'action' => 'manage'
                     )
@@ -165,7 +165,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_supplier',
+                'cudi_admin_supplier',
                 array(
                     'action' => 'manage'
                 )
@@ -188,7 +188,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_supplier',
+                'cudi_admin_supplier',
                 array(
                     'action' => 'manage'
                 )

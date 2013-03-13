@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_news' => array(
+            'news_admin_news' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/news[/:action[/:id][/page/:page]][/]',
@@ -37,7 +37,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_news',
+                        'controller' => 'news_admin_news',
                         'action'     => 'manage',
                     ),
                 ),
@@ -95,10 +95,10 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'news_install' => 'NewsBundle\Controller\Admin\InstallController',
-            'admin_news'   => 'NewsBundle\Controller\Admin\NewsController',
+            'news_install'    => 'NewsBundle\Controller\Admin\InstallController',
+            'news_admin_news' => 'NewsBundle\Controller\Admin\NewsController',
 
-            'news'  => 'NewsBundle\Controller\NewsController',
+            'news'            => 'NewsBundle\Controller\NewsController',
         ),
     ),
 );

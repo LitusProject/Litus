@@ -75,7 +75,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_mail_alias',
+                    'mail_admin_mail_alias',
                     array(
                         'action' => 'manage',
                     )
@@ -121,7 +121,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_mail_alias',
+                'mail_admin_mail_alias',
                 array(
                     'action' => 'manage'
                 )
@@ -144,7 +144,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_mail_alias',
+                'mail_admin_mail_alias',
                 array(
                     'action' => 'manage'
                 )

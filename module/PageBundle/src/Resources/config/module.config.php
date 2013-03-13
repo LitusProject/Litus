@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_page' => array(
+            'page_admin_page' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/page[/:action[/:id][/page/:page]][/]',
@@ -37,12 +37,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_page',
+                        'controller' => 'page_admin_page',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_page_category' => array(
+            'page_admin_category' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/page/category[/:action[/:id][/page/:page]][/]',
@@ -52,12 +52,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_page_category',
+                        'controller' => 'page_admin_category',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_page_link' => array(
+            'page_admin_link' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/page/link[/:action[/:id][/page/:page]][/]',
@@ -67,13 +67,13 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_page_link',
+                        'controller' => 'page_admin_link',
                         'action'     => 'manage',
                     ),
                 ),
             ),
 
-            'link' => array(
+            'page_link' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/link[/:id][/]',
@@ -82,7 +82,7 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'link',
+                        'controller' => 'page_link',
                         'action'     => 'view',
                     ),
                 ),
@@ -154,11 +154,11 @@ return array(
         'invokables' => array(
             'page_install'        => 'PageBundle\Controller\Admin\InstallController',
 
-            'admin_page'          => 'PageBundle\Controller\Admin\PageController',
-            'admin_page_category' => 'PageBundle\Controller\Admin\CategoryController',
-            'admin_page_link'     => 'PageBundle\Controller\Admin\LinkController',
+            'page_admin_page'     => 'PageBundle\Controller\Admin\PageController',
+            'page_admin_category' => 'PageBundle\Controller\Admin\CategoryController',
+            'page_admin_link'     => 'PageBundle\Controller\Admin\LinkController',
 
-            'link'                => 'PageBundle\Controller\LinkController',
+            'page_link'           => 'PageBundle\Controller\LinkController',
             'page'                => 'PageBundle\Controller\PageController',
         ),
     ),

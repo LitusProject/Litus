@@ -329,109 +329,109 @@ VTK Cudi
         $this->installAcl(
             array(
                 'cudibundle' => array(
-                    'admin_article' => array(
+                    'cudi_admin_article' => array(
                         'add', 'convertToExternal', 'convertToInternal', 'delete', 'duplicate', 'edit', 'history', 'manage', 'search'
                     ),
-                    'admin_article_comment' => array(
+                    'cudi_admin_article_comment' => array(
                         'delete', 'manage'
                     ),
-                    'admin_article_file' => array(
+                    'cudi_admin_article_file' => array(
                         'delete', 'download', 'edit', 'front', 'manage', 'progress', 'upload'
                     ),
-                    'admin_article_subject' => array(
+                    'cudi_admin_article_subject' => array(
                         'delete', 'manage'
                     ),
-                    'admin_cudi_mail' => array(
+                    'cudi_admin_mail' => array(
                         'send'
                     ),
-                    'admin_prof_action' => array(
+                    'cudi_admin_prof_action' => array(
                         'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
                     ),
-                    'admin_sales_article' => array(
+                    'cudi_admin_sales_article' => array(
                         'activate', 'add', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead'
                     ),
-                    'admin_sales_article_barcode' => array(
+                    'cudi_admin_sales_article_barcode' => array(
                         'delete', 'manage'
                     ),
-                    'admin_sales_booking' => array(
+                    'cudi_admin_sales_booking' => array(
                         'add', 'article', 'assign', 'assignAll', 'assignments', 'delete', 'edit', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
                     ),
-                    'admin_sales_article_discount' => array(
+                    'cudi_admin_sales_article_discount' => array(
                         'delete', 'manage'
                     ),
-                    'admin_sales_financial' => array(
+                    'cudi_admin_sales_financial' => array(
                         'deliveries', 'retours', 'sales', 'stock', 'suppliers'
                     ),
-                    'admin_sales_session' => array(
+                    'cudi_admin_sales_session' => array(
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
                     ),
-                    'admin_sales_session_restriction' => array(
+                    'cudi_admin_sales_session_restriction' => array(
                         'delete', 'manage'
                     ),
-                    'admin_stock' => array(
+                    'cudi_admin_stock' => array(
                         'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
                     ),
-                    'admin_stock_delivery' => array(
+                    'cudi_admin_stock_delivery' => array(
                         'add', 'delete', 'manage', 'supplier', 'typeahead'
                     ),
-                    'admin_stock_order' => array(
+                    'cudi_admin_stock_order' => array(
                         'add', 'cancel', 'delete', 'edit', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier'
                     ),
-                    'admin_stock_period' => array(
+                    'cudi_admin_stock_period' => array(
                         'manage', 'new', 'search', 'view'
                     ),
-                    'admin_stock_retour' => array(
+                    'cudi_admin_stock_retour' => array(
                         'add', 'delete', 'manage', 'supplier'
                     ),
-                    'admin_supplier' => array(
+                    'cudi_admin_supplier' => array(
                         'add', 'edit', 'manage'
                     ),
-                    'admin_supplier_user' => array(
+                    'cudi_admin_supplier_user' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
-                    'prof_auth' => array(
+                    'cudi_prof_auth' => array(
                         'login', 'logout', 'shibboleth',
                     ),
-                    'prof_article' => array(
+                    'cudi_prof_article' => array(
                         'add', 'edit', 'manage', 'typeahead'
                     ),
-                    'prof_article_mapping' => array(
+                    'cudi_prof_article_mapping' => array(
                         'add', 'delete'
                     ),
-                    'prof_article_comment' => array(
+                    'cudi_prof_article_comment' => array(
                         'delete', 'manage'
                     ),
-                    'prof_subject_comment' => array(
+                    'cudi_prof_subject_comment' => array(
                         'delete', 'manage'
                     ),
-                    'prof_file' => array(
+                    'cudi_prof_file' => array(
                         'delete', 'download', 'manage', 'progress', 'upload'
                     ),
-                    'prof_index' => array(
+                    'cudi_prof_index' => array(
                         'index'
                     ),
-                    'prof_prof' => array(
+                    'cudi_prof_prof' => array(
                         'add', 'delete', 'typeahead'
                     ),
-                    'prof_subject' => array(
+                    'cudi_prof_subject' => array(
                         'manage', 'subject', 'typeahead'
                     ),
-                    'prof_help' => array(
+                    'cudi_prof_help' => array(
                         'index'
                     ),
-                    'sale_queue' => array(
+                    'cudi_sale_queue' => array(
                         'overview', 'screen', 'signin'
                     ),
-                    'sale_sale' => array(
+                    'cudi_sale_sale' => array(
                         'return', 'sale'
                     ),
-                    'supplier_article' => array(
+                    'cudi_supplier_article' => array(
                         'manage'
                     ),
-                    'supplier_index' => array(
+                    'cudi_supplier_index' => array(
                         'index'
                     ),
-                    'booking' => array(
+                    'cudi_booking' => array(
                         'book', 'bookSearch', 'cancel', 'search', 'view'
                     ),
                 )
@@ -446,10 +446,10 @@ VTK Cudi
                         'guest',
                     ),
                     'actions' => array(
-                        'supplier_article' => array(
+                        'cudi_supplier_article' => array(
                             'manage'
                         ),
-                        'supplier_index' => array(
+                        'cudi_supplier_index' => array(
                             'index'
                         ),
                     )
@@ -460,25 +460,25 @@ VTK Cudi
                         'guest',
                     ),
                     'actions' => array(
-                        'prof_article' => array(
+                        'cudi_prof_article' => array(
                             'add', 'edit', 'manage', 'typeahead'
                         ),
-                        'prof_article_mapping' => array(
+                        'cudi_prof_article_mapping' => array(
                             'add', 'delete'
                         ),
-                        'prof_article_comment' => array(
+                        'cudi_prof_article_comment' => array(
                             'delete', 'manage'
                         ),
-                        'prof_file' => array(
+                        'cudi_prof_file' => array(
                             'delete', 'download', 'manage', 'progress', 'upload'
                         ),
-                        'prof_index' => array(
+                        'cudi_prof_index' => array(
                             'index'
                         ),
-                        'prof_prof' => array(
+                        'cudi_prof_prof' => array(
                             'add', 'delete', 'typeahead'
                         ),
-                        'prof_subject' => array(
+                        'cudi_prof_subject' => array(
                             'manage', 'subject', 'typeahead'
                         ),
                     )
@@ -489,7 +489,7 @@ VTK Cudi
                         'guest',
                     ),
                     'actions' => array(
-                        'booking' => array(
+                        'cudi_booking' => array(
                             'book', 'cancel', 'view',
                         ),
                     ),

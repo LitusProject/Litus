@@ -35,10 +35,10 @@
                         <td>{{ edition.getTitle() }}</td>
                         <td>{{ edition.getDate().format('d/m/Y') }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_edition_pdf', 'view') %}
-                                <a href="#" class="downloadFile view" data-file="{{ url('admin_edition_pdf', {"action": "view", "id": edition.getId()}) }}">View</a>
+                            {% if hasAccess('publication_admin_edition_pdf', 'view') %}
+                                <a href="#" class="downloadFile view" data-file="{{ url('publication_admin_edition_pdf', {"action": "view", "id": edition.getId()}) }}">View</a>
                             {% endif %}
-                            {% if hasAccess('admin_edition_pdf', 'delete') %}
+                            {% if hasAccess('publication_admin_edition_pdf', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ edition.getId() }}" data-title="{{ edition.getTitle() }}" data-publication-title="{{ publication.getTitle() }}">Delete</a>
                             {% endif %}
                         </td>
@@ -95,7 +95,7 @@
             removeEdition.find('.editionTitle').html($(this).data('title'));
             var id = $this.data('id');
             removeEdition.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_edition_pdf', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('publication_admin_edition_pdf', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.edition_removed_success').removeClass('hide');

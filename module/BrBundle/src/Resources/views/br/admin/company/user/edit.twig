@@ -23,7 +23,7 @@
 
     </div>
 
-    {% if hasAccess('admin_company_user', 'activate') %}
+    {% if hasAccess('br_admin_company_user', 'activate') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Send Activation</div>
@@ -32,7 +32,7 @@
                         <i>Please hit the link below to send an activation code to the person!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_company_user', {"action": "activate", "id": user.getId()}) }}">&rarr; Send Activation</a>
+                        <a href="{{ url('br_admin_company_user', {"action": "activate", "id": user.getId()}) }}">&rarr; Send Activation</a>
                     </p>
                 </div>
             </div>

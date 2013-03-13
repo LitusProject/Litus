@@ -15,7 +15,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_gallery' => array(
+            'gallery_admin_gallery' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/gallery[/:action[/:id]][/page/:page][/]',
@@ -25,7 +25,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_gallery',
+                        'controller' => 'gallery_admin_gallery',
                         'action'     => 'manage',
                     ),
                 ),
@@ -54,10 +54,10 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'gallery_install'  => 'GalleryBundle\Controller\Admin\InstallController',
-            'admin_gallery'    => 'GalleryBundle\Controller\Admin\GalleryController',
+            'gallery_install'       => 'GalleryBundle\Controller\Admin\InstallController',
+            'gallery_admin_gallery' => 'GalleryBundle\Controller\Admin\GalleryController',
 
-            'gallery'   => 'GalleryBundle\Controller\GalleryController',
+            'gallery'               => 'GalleryBundle\Controller\GalleryController',
         ),
     ),
     'doctrine' => array(

@@ -58,6 +58,16 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     }
 
     /**
+     * Get the number of items per page.
+     *
+     * @return integer
+     */
+    public function getItemsPerPage()
+    {
+        return $this->_itemsPerPage;
+    }
+
+    /**
      * Create a paginator from a given array.
      *
      * @param array $records The array containing the paginated records
@@ -117,6 +127,46 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
                 $this->getLocator()->get('doctrine.entitymanager.orm_default')->getRepository($entity)->findBy($conditions, $orderBy),
             $currentPage
         );
+    }
+
+    /**
+     * Create a paginator for a given entity.
+     *
+     * @param string $entity The name of the entity that should be paginated
+     * @param int $currentPage The page we now are on
+     * @param array $conditions These conditions will be passed to the Repository call
+     * @param array $oderBy An array containing constraints on how to order the results
+     * @param int $itemsPerPage The number of items on each page
+     * @return \Zend\Paginator\Paginator
+     */
+    public function createFromPaginatorRepository(array $records, $currentPage, $totalNumber)
+    {
+        $currentPage = $currentPage == 0 ? $currentPage = 1 : $currentPage;
+
+        $prefix = array();
+        if ($currentPage > 1)
+            $prefix = array_fill(0, $this->_itemsPerPage * ($currentPage - 1), true);
+
+        $suffix = array();
+        if ($totalNumber - ($this->_itemsPerPage * ($currentPage)) > 0)
+            $suffix = array_fill(0, $totalNumber - ($this->_itemsPerPage * ($currentPage)), true);
+
+        $data = array_merge(
+            $prefix,
+            $records,
+            $suffix
+        );
+
+        $this->_paginator = new ZendPaginator(
+            new ArrayAdapter($data)
+        );
+
+        $this->_paginator->setCurrentPageNumber($currentPage);
+        $this->_paginator->setItemCountPerPage(
+            $this->_itemsPerPage
+        );
+
+        return $this->_paginator;
     }
 
     /**

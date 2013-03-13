@@ -13,31 +13,31 @@
     <![endif]-->
 </head>
 
-<body{% if 'prof_help' == getParam('controller') %} data-spy="scroll" data-target=".bs-docs-sidebar"{% endif %}>
+<body{% if 'cudi_prof_help' == getParam('controller') %} data-spy="scroll" data-target=".bs-docs-sidebar"{% endif %}>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
             <a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
             <ul class="nav">
-                {% if hasAccess('prof_index', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'prof_index' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                {% if hasAccess('cudi_prof_index', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'cudi_prof_index' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("cudi_prof_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                     </li>
                 {% endif %}
-                {% if hasAccess('prof_subject', 'manage') %}
-                    <li {% if 'prof_subject' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("prof_subject", {"language": language.getAbbrev()}) }}">{{ translate('Subjects') }}</a>
+                {% if hasAccess('cudi_prof_subject', 'manage') %}
+                    <li {% if 'cudi_prof_subject' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("cudi_prof_subject", {"language": language.getAbbrev()}) }}">{{ translate('Subjects') }}</a>
                     </li>
                 {% endif %}
-                {% if hasAccess('prof_article', 'manage') %}
-                    <li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("prof_article", {"language": language.getAbbrev()}) }}">{{ translate('Articles') }}</a>
+                {% if hasAccess('cudi_prof_article', 'manage') %}
+                    <li {% if 'cudi_prof_article' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("cudi_prof_article", {"language": language.getAbbrev()}) }}">{{ translate('Articles') }}</a>
                     </li>
                 {% endif %}
-                {% if hasAccess('prof_help', 'index') %}
-                    <li {% if 'prof_help' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("prof_help", {"language": language.getAbbrev()}) }}">{{ translate('Help') }}</a>
+                {% if hasAccess('cudi_prof_help', 'index') %}
+                    <li {% if 'cudi_prof_help' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("cudi_prof_help", {"language": language.getAbbrev()}) }}">{{ translate('Help') }}</a>
                     </li>
                 {% endif %}
             </ul>
@@ -49,7 +49,7 @@
                     <ul class="dropdown-menu">
                         {% for language in languages %}
                             <li>
-                                <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                                <a href="{{ url("cudi_prof_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -73,7 +73,7 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="{{ url("prof_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                <a href="{{ url("cudi_prof_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                             </li>
                         </ul>
                     </li>

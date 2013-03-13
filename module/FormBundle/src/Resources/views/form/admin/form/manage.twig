@@ -48,10 +48,10 @@
 		                        {% endif %}
                     		{% endif %}
                     		{% if form.canBeEditedBy(authenticatedPerson) %}
-		                        {% if hasAccess('admin_form', 'edit') %}
-		                            <a href="{{ url('admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>
+		                        {% if hasAccess('form_admin_form', 'edit') %}
+		                            <a href="{{ url('form_admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>
 		                        {% endif %}
-		                        {% if hasAccess('admin_form', 'delete') %}
+		                        {% if hasAccess('form_admin_form', 'delete') %}
 		                            <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getTitle(language) }}" class="delete">Delete</a>
 		                        {% endif %}
 	                        {% endif %}
@@ -101,7 +101,7 @@
 			});
 			var id = $this.data('id');
 			removeForm.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_form', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('form_admin_form', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.form_removed_success').removeClass('hide');

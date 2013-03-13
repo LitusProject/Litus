@@ -54,7 +54,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'prof_file',
+                'cudi_prof_file',
                 array(
                     'action' => 'upload',
                     'id' => $article->getId(),
@@ -257,7 +257,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_article',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -281,7 +281,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_article',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -306,7 +306,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_article',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -330,7 +330,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             );
 
             $this->redirect()->toRoute(
-                'prof_article',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),

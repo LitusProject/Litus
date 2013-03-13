@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Acl\Acl,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     DateTime,
@@ -76,7 +77,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         switch($command->command) {
             case 'action':
-                $this->_gotAction($user, $command);
+                if ($this->isAuthenticated($user->getSocket()))
+                    $this->_gotAction($user, $command);
                 break;
             case 'queueUpdated':
                 $this->sendQueueToAll();
@@ -88,12 +90,48 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
                     return;
                 }
+
+                if (!isset($command->authSession)) {
+                    $this->removeUser($user);
+                    $now = new DateTime();
+                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                    return;
+                }
+
+                $authSession = $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\Users\Session')
+                    ->findOneById($command->authSession);
+
+                if ($authSession) {
+                    $acl = new Acl($this->_entityManager);
+
+                    $allowed = false;
+                    foreach ($authSession->getPerson()->getRoles() as $role) {
+                        if (
+                            $role->isAllowed(
+                                $acl, 'cudi_sale_sale', 'sale'
+                            )
+                        ) {
+                            $allowed = true;
+                        }
+                    }
+                }
+
+                if (null == $authSession || !$allowed) {
+                    $this->removeUser($user);
+                    $now = new DateTime();
+                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                    return;
+                }
+
                 if (isset($command->session) && is_numeric($command->session))
                     $user->setExtraData('session', $command->session);
                 if (isset($command->queueType))
                     $user->setExtraData('queueType', $command->queueType);
                 if (isset($command->paydesk))
                     $user->setExtraData('paydesk', $command->paydesk);
+
+                $this->addAuthenticated($user->getSocket());
                 $this->sendQueue($user);
                 break;
         }

@@ -35,13 +35,13 @@
                         <td>{{ dateLocalized(album.getDate(), 'dd/MM/y') }}</td>
                         <td>{{ album.getCreatePerson().getFullName() }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_gallery', 'edit') %}
-                                <a href="{{ url('admin_gallery', {"action": "edit", "id": album.getId()}) }}" class="edit">Edit</a>
+                            {% if hasAccess('gallery_admin_gallery', 'edit') %}
+                                <a href="{{ url('gallery_admin_gallery', {"action": "edit", "id": album.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
-                            {% if hasAccess('admin_gallery', 'photos') %}
-                                <a href="{{ url('admin_gallery', {"action": "photos", "id": album.getId()}) }}" class="gallery_photos">Photos</a>
+                            {% if hasAccess('gallery_admin_gallery', 'photos') %}
+                                <a href="{{ url('gallery_admin_gallery', {"action": "photos", "id": album.getId()}) }}" class="gallery_photos">Photos</a>
                             {% endif %}
-                            {% if hasAccess('admin_gallery', 'delete') %}
+                            {% if hasAccess('gallery_admin_gallery', 'delete') %}
                                 <a href="#" data-id="{{ album.getId() }}" data-title="{{ album.getTitle(language) }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -87,7 +87,7 @@
 			removeAlbum.find('.title').html($(this).data('title'));
             var id = $(this).data('id');
 			removeAlbum.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_gallery', {"action": "delete"})}}' + $this.data('id'), function  (data) {
+				$.post('{{ url('gallery_admin_gallery', {"action": "delete"})}}' + $this.data('id'), function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.album_removed_success').removeClass('hide');

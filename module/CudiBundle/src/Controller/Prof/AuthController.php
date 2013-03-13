@@ -65,7 +65,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $this->redirect()->toRoute(
-            'prof_index',
+            'cudi_prof_index',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
@@ -86,7 +86,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toUrl($shibbolethLogoutUrl);
         } else {
             $this->redirect()->toRoute(
-                'prof_index',
+                'cudi_prof_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
@@ -125,7 +125,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
 
                     if ($authentication->isAuthenticated()) {
                         $this->redirect()->toRoute(
-                            'prof_index'
+                            'cudi_prof_index'
                         );
                     }
                 }

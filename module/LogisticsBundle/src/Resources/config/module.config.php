@@ -25,7 +25,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_driver' => array(
+            'logistics_admin_driver' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/driver[/:action[/:id][/page/:page]][/]',
@@ -35,12 +35,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_driver',
+                        'controller' => 'logistics_admin_driver',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_van_reservation' => array(
+            'logistics_admin_van_reservation' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/return/:return]][/]',
@@ -51,7 +51,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_van_reservation',
+                        'controller' => 'logistics_admin_van_reservation',
                         'action'     => 'manage',
                     ),
                 ),
@@ -188,11 +188,12 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'logistics_install'            => 'LogisticsBundle\Controller\Admin\InstallController',
-            'admin_driver'                 => 'LogisticsBundle\Controller\Admin\DriverController',
-            'admin_van_reservation'        => 'LogisticsBundle\Controller\Admin\VanReservationController',
-            'logistics_index'              => 'LogisticsBundle\Controller\IndexController',
-            'logistics_auth'               => 'LogisticsBundle\Controller\AuthController',
+            'logistics_install'               => 'LogisticsBundle\Controller\Admin\InstallController',
+            'logistics_admin_driver'          => 'LogisticsBundle\Controller\Admin\DriverController',
+            'logistics_admin_van_reservation' => 'LogisticsBundle\Controller\Admin\VanReservationController',
+
+            'logistics_index'                 => 'LogisticsBundle\Controller\IndexController',
+            'logistics_auth'                  => 'LogisticsBundle\Controller\AuthController',
         ),
     ),
 );

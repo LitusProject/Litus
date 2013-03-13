@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_notification' => array(
+            'notification_admin_notification' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/notification[/:action[/:id][/page/:page]][/]',
@@ -37,7 +37,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_notification',
+                        'controller' => 'notification_admin_notification',
                         'action'     => 'manage',
                     ),
                 ),
@@ -65,8 +65,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'notification_install' => 'NotificationBundle\Controller\Admin\InstallController',
-            'admin_notification'   => 'NotificationBundle\Controller\Admin\NotificationController',
+            'notification_install'            => 'NotificationBundle\Controller\Admin\InstallController',
+            'notification_admin_notification' => 'NotificationBundle\Controller\Admin\NotificationController',
         ),
     ),
 );

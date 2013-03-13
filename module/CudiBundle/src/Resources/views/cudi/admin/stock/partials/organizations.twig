@@ -11,18 +11,18 @@
             <li>
                 <a {% if not found %} class="active" {% endif %}
                     href="{% if currentSemester != 0 %}
-                        {{ url('admin_stock', {'action': 'manage', 'semester': currentSemester}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': currentSemester}) }}
                     {% else %}
-                        {{ url('admin_stock', {'action': 'manage'}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage'}) }}
                     {% endif %}">All</a>
             </li>
             {% for organization in organizations %}
                 <li>
                     <a {% if currentOrganization.getId() == organization.getId() %} class="active" {% endif %}
                     href="{% if currentSemester != 0 %}
-                        {{ url('admin_stock', {'action': 'manage', 'semester': currentSemester, 'organization': organization.getId()}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': currentSemester, 'organization': organization.getId()}) }}
                     {% else %}
-                        {{ url('admin_stock', {'action': 'manage', 'organization': organization.getId()}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage', 'organization': organization.getId()}) }}
                     {% endif %}">{{ organization.getName() }}</a>
                 </li>
             {% endfor %}

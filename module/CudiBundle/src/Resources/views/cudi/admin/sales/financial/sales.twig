@@ -48,8 +48,8 @@
                         <td class="organization organization-{{ organization.getId() }}" style="display: none;">&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</td>
                     {% endfor %}
                     <td class="actions">
-                        {% if hasAccess('admin_sales_session', 'edit') %}
-                            <a href="{{ url("admin_sales_session", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
+                        {% if hasAccess('cudi_admin_sales_session', 'edit') %}
+                            <a href="{{ url("cudi_admin_sales_session", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                     </td>
                 </tr>

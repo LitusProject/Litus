@@ -88,7 +88,16 @@
                 function (e) {
                     e.preventDefault();
                     $('#updateSyllabus').permanentModal('open');
-                    $.webSocket('send', {name: 'updateSyllabus', text: 'update'});
+                    $.webSocket('send', {
+                        'name': 'updateSyllabus',
+                        'text': JSON.stringify(
+                            {
+                                'command': 'update',
+                                'key': '{{ key }}',
+                                'authSession': '{{ authSession.getId() }}'
+                            }
+                        )
+                    });
                 }
             );
         });

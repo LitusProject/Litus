@@ -7,9 +7,9 @@
             {% for internship in paginator %}
                 <tr>
                     <td width="120">
-                        <a href="{{ url('career_internship', {'action': 'view', 'id': internship.getId() }) }}">
+                        <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
                             {% if internship.getCompany().getLogo() %}
-                                    <img width="120" src="{{ url('career_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
+                                    <img width="120" src="{{ url('br_career_company', {'action': 'logo', 'id': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}">
                             {% endif %}
                         </a>
                     </td>

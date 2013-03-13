@@ -39,10 +39,10 @@
 	                    <td>{{ notification.getCreationPerson().getFullName() }}</td>
 	                    <td>{% if notification.isActive() %} X {% endif %}</td>
 	                    <td class="actions">
-	                        {% if hasAccess('admin_notification', 'edit') %}
-	                            <a href="{{ url('admin_notification', {"action": "edit", "id": notification.getId()}) }}" class="edit">Edit</a>
+	                        {% if hasAccess('notification_admin_notification', 'edit') %}
+	                            <a href="{{ url('notification_admin_notification', {"action": "edit", "id": notification.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
-	                        {% if hasAccess('admin_notification', 'delete') %}
+	                        {% if hasAccess('notification_admin_notification', 'delete') %}
 	                            <a href="#" data-id="{{ notification.getId() }}" data-content="{{ notification.getContent() }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
@@ -91,7 +91,7 @@
 			});
 			var id = $this.data('id');
 			removeNotification.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_notification', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('notification_admin_notification', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.notification_removed_success').removeClass('hide');

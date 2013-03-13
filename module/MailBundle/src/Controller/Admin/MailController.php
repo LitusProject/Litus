@@ -102,7 +102,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_mail',
+                    'mail_admin_mail',
                     array(
                         'action' => 'groups'
                     )
@@ -133,7 +133,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_mail',
+                'mail_admin_mail',
                 array(
                     'action' => 'groups'
                 )
@@ -154,7 +154,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_mail',
+                'mail_admin_mail',
                 array(
                     'action' => 'groups'
                 )
@@ -178,7 +178,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_mail',
+                'mail_admin_mail',
                 array(
                     'action' => 'groups'
                 )
@@ -199,7 +199,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_mail',
+                'mail_admin_mail',
                 array(
                     'action' => 'groups'
                 )
@@ -223,7 +223,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_mail',
+                'mail_admin_mail',
                 array(
                     'action' => 'groups'
                 )
@@ -244,7 +244,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_mail',
+                'mail_admin_mail',
                 array(
                     'action' => 'groups'
                 )

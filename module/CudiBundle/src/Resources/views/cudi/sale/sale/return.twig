@@ -10,7 +10,7 @@
         $(document).ready(function () {
             $('#personSearch').typeaheadRemote(
                 {
-                    source: '{{ url("admin_academic_typeahead")}}',
+                    source: '{{ url("common_admin_academic_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

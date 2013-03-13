@@ -88,7 +88,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company_job',
+                    'br_admin_company_job',
                     array(
                         'action' => 'manage',
                         'id' => $company->getId(),
@@ -141,7 +141,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company_job',
+                    'br_admin_company_job',
                     array(
                         'action' => 'manage',
                         'id' => $job->getCompany()->getId(),
@@ -189,7 +189,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -212,7 +212,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -236,7 +236,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -259,7 +259,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )

@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_run' => array(
+            'sport_admin_run' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/run[/:action[/:id]][/page/:page][/]',
@@ -37,12 +37,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_run',
+                        'controller' => 'sport_admin_run',
                         'action'     => 'queue',
                     ),
                 ),
             ),
-            'run_index' => array(
+            'sport_run_index' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/run[/:action][/]',
@@ -51,12 +51,12 @@ return array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'run_index',
+                        'controller' => 'sport_run_index',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'run_group' => array(
+            'sport_run_group' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/run/group[/:action[/:university_identification]][/]',
@@ -66,12 +66,12 @@ return array(
                         'university_identification' => '[a-z]{1}[0-9]{7}',
                     ),
                     'defaults' => array(
-                        'controller' => 'run_group',
+                        'controller' => 'sport_run_group',
                         'action'     => 'add',
                     ),
                 ),
             ),
-            'run_queue' => array(
+            'sport_run_queue' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/run/queue[/:action[/:university_identification]][/]',
@@ -81,12 +81,12 @@ return array(
                         'university_identification' => '[a-z]{1}[0-9]{7}',
                     ),
                     'defaults' => array(
-                        'controller' => 'run_queue',
+                        'controller' => 'sport_run_queue',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'run_screen' => array(
+            'sport_run_screen' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/run/screen[/:action][/]',
@@ -95,7 +95,7 @@ return array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'run_screen',
+                        'controller' => 'sport_run_screen',
                         'action'     => 'index',
                     ),
                 ),
@@ -138,14 +138,13 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'sport_install' => 'SportBundle\Controller\Admin\InstallController',
+            'sport_install'    => 'SportBundle\Controller\Admin\InstallController',
+            'sport_admin_run'  => 'SportBundle\Controller\Admin\RunController',
 
-            'admin_run'     => 'SportBundle\Controller\Admin\RunController',
-
-            'run_index'     => 'SportBundle\Controller\Run\IndexController',
-            'run_group'     => 'SportBundle\Controller\Run\GroupController',
-            'run_queue'     => 'SportBundle\Controller\Run\QueueController',
-            'run_screen'    => 'SportBundle\Controller\Run\ScreenController',
+            'sport_run_index'  => 'SportBundle\Controller\Run\IndexController',
+            'sport_run_group'  => 'SportBundle\Controller\Run\GroupController',
+            'sport_run_queue'  => 'SportBundle\Controller\Run\QueueController',
+            'sport_run_screen' => 'SportBundle\Controller\Run\ScreenController',
         ),
     ),
     'assetic_configuration' => array(

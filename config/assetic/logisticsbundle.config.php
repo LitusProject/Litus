@@ -19,7 +19,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_driver' => array(
+        'logistics_admin_driver' => array(
             '@common_jquery',
             '@common_typeahead_remote',
             '@admin_css',
@@ -29,7 +29,7 @@ return array(
             '@minicolor_css',
             '@minicolor_js',
         ),
-        'admin_van_reservation' => array(
+        'logistics_admin_van_reservation' => array(
             '@common_jquery',
             '@common_typeahead_remote',
             '@admin_css',

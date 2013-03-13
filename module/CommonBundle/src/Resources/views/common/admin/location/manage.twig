@@ -38,10 +38,10 @@
                             {{ location.getAddress().getCountry() }}
                         </td>
                         <td class="actions">
-                            {% if hasAccess('admin_location', 'edit') %}
-                                <a href="{{ url('admin_location', {"action": "edit", "id": location.getId()}) }}" class="edit">Edit</a>
+                            {% if hasAccess('common_admin_location', 'edit') %}
+                                <a href="{{ url('common_admin_location', {"action": "edit", "id": location.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
-                            {% if hasAccess('admin_location', 'delete') %}
+                            {% if hasAccess('common_admin_location', 'delete') %}
                             	<a href="#" data-id="{{ location.getId() }}" data-name="{{ location.getName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -90,7 +90,7 @@
             });
             var id = $this.data('id');
             removeLocation.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_location', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('common_admin_location', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.location_removed_success').removeClass('hide');

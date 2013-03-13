@@ -19,7 +19,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_run' => array(
+        'sport_admin_run' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -28,7 +28,7 @@ return array(
             '@run_js',
             '@common_socket',
         ),
-        'run_index' => array(
+        'sport_run_index' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -36,7 +36,7 @@ return array(
             '@run_css',
             '@run_js',
         ),
-        'run_group' => array(
+        'sport_run_group' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -44,7 +44,7 @@ return array(
             '@run_css',
             '@run_js',
         ),
-        'run_queue' => array(
+        'sport_run_queue' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
@@ -53,7 +53,7 @@ return array(
             '@run_js',
             '@common_socket',
         ),
-        'run_screen' => array(
+        'sport_run_screen' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',

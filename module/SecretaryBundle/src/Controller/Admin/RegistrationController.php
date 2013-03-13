@@ -99,7 +99,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_secretary_registration',
+                    'secretary_admin_registration',
                     array(
                         'action' => 'manage',
                     )
@@ -198,7 +198,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_secretary_registration',
+                    'secretary_admin_registration',
                     array(
                         'action' => 'edit',
                         'id' => $registration->getId(),
@@ -331,7 +331,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_secretary_registration',
+                'secretary_admin_registration',
                 array(
                     'action' => 'manage'
                 )
@@ -355,7 +355,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_secretary_registration',
+                'secretary_admin_registration',
                 array(
                     'action' => 'manage'
                 )
@@ -378,7 +378,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_secretary_registration',
+                'secretary_admin_registration',
                 array(
                     'action' => 'manage'
                 )

@@ -64,14 +64,14 @@
             $('#controller_nav .assignAll').click(openAssignAllModal);
             $('#controller_nav .expireAll').click(openExpireAllModal);
 
-            {% if hasAccess('admin_sales_booking', 'search') %}
+            {% if hasAccess('cudi_admin_sales_booking', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#booking_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_sales_booking', {'action': 'inactive', 'type': 'active'}) }}',
-                url: '{{ url('admin_sales_booking', {'action': 'search', 'period': activePeriod.getId(), 'type': 'inactive'}) }}',
+                searchPage: '{{ url('cudi_admin_sales_booking', {'action': 'inactive', 'type': 'active'}) }}',
+                url: '{{ url('cudi_admin_sales_booking', {'action': 'search', 'period': activePeriod.getId(), 'type': 'inactive'}) }}',
                 display: function (data) {
                     $('#booking_search table').find('tr.item').remove();
                     $(data).each(function () {

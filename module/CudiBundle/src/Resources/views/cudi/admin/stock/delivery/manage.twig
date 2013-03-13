@@ -19,8 +19,8 @@
                 <tr>
                     <td>{{ supplier.getName() }}</td>
                     <td>
-                        {% if hasAccess('admin_stock_delivery', 'supplier') %}
-                            <a href="{{ url('admin_stock_delivery', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+                        {% if hasAccess('cudi_admin_stock_delivery', 'supplier') %}
+                            <a href="{{ url('cudi_admin_stock_delivery', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -29,7 +29,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_stock_delivery', 'add') %}
+        {% if hasAccess('cudi_admin_stock_delivery', 'add') %}
             <div class="sidebox">
                 <div class="title">New Delivery</div>
                 <div class="content">
@@ -37,7 +37,7 @@
                         <i>Please hit the link below to add a delivery!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_stock_delivery', {"action": "add"}) }}">&rarr; Add Delivery</a>
+                        <a href="{{ url('cudi_admin_stock_delivery', {"action": "add"}) }}">&rarr; Add Delivery</a>
                     </p>
                 </div>
             </div>

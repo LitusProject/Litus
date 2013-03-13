@@ -16,19 +16,23 @@
             return this;
         },
         startLap: function (options) {
-            _sendToSocket('action: startLap');
+            _sendToSocket(JSON.stringify({'command': 'action', 'action': 'startLap'}));
             return this;
         },
         deleteLap: function (options) {
-            _sendToSocket('action: deleteLap ' + options);
+            options.command = 'action';
+            options.action = 'deleteLap';
+            _sendToSocket(JSON.stringify(options));
             return this;
         },
         reloadQueue: function (options) {
-            _sendToSocket('reloadQueue');
+            _sendToSocket(JSON.stringify({'command': 'action', 'action': 'reloadQueue'}));
             return this;
         },
         addToQueue: function (options) {
-            _sendToSocket('action: addToQueue ' + JSON.stringify(options));
+            options.command = 'action';
+            options.action = 'addToQueue';
+            _sendToSocket(JSON.stringify(options));
             return this;
         }
     }
@@ -52,6 +56,14 @@
                 url: options.url,
                 open: function (e) {
                     options.errorDialog.addClass('hide');
+
+                    $.webSocket('send', {name: 'runQueue', text:
+                        JSON.stringify({
+                            'command': 'initialize',
+                            'key': options.key,
+                            'authSession': options.authSession,
+                        })
+                    });
                 },
                 message: function (e, data) {
                     options.errorDialog.addClass('hide');

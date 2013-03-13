@@ -21,7 +21,7 @@
 
             $('#articleSearch').typeaheadRemote(
                 {
-                    source: '{{ url("admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                    source: '{{ url("cudi_admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
@@ -32,7 +32,7 @@
             });
             $('#personSearch').typeaheadRemote(
                 {
-                    source: '{{ url("admin_academic_typeahead")}}',
+                    source: '{{ url("common_admin_academic_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

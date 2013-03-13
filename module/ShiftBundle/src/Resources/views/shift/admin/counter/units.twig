@@ -9,7 +9,7 @@
         <nav id="controller_sub_nav">
             <ul id="supplier_nav">
                 {% for academicYear in academicYears %}
-                    <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("admin_shift_counter", {"action": "units", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                    <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("shift_admin_shift_counter", {"action": "units", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
                 {% endfor %}
             </ul>
         </nav>
@@ -17,7 +17,7 @@
 
     <div id="controller_action">
         {% for unit, shifts in result %}
-            <h1>{{ units[unit].getName() }}</h1>
+            <h1>{{ units[unit] }}</h1>
 
             <table class="full_width manage">
                 <tr>

@@ -43,7 +43,9 @@
                     <td>{{ entry.getLastName() }}</td>
                     <td>{{ entry.getEmailAddress() }}</td>
                     <td>
-                        <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getFirstName() }} {{ entry.getLastName() }}" class="delete">Delete</a>
+                        {% if hasAccess('mail_admin_mail_list', 'deleteEntry') %}
+                            <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getFirstName() }} {{ entry.getLastName() }}" class="delete">Delete</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -76,7 +78,7 @@
         $(document).ready(function () {
             $('#personSearch').typeaheadRemote(
                 {
-                    source: '{{ url('admin_academic_typeahead', {})}}',
+                    source: '{{ url('common_admin_academic_typeahead', {})}}',
                     items: 20,
                 }
             ).change(function (e) {
@@ -97,7 +99,7 @@
             removeEntry.find('.entryName').html($(this).data('name'));
             var id = $this.data('id');
             removeEntry.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_mail_list', {"action": "deleteEntry"})}}' + id, function (data) {
+                $.post('{{ url('mail_admin_mail_list', {"action": "deleteEntry"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.entry_removed_success').removeClass('hide');

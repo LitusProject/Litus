@@ -102,14 +102,14 @@
             Filename: <b>{{ action.getEntity().getFile().getName() }}</b><br />
             Description: <b>{{ action.getEntity().getFile().getDescription() }}</b><br />
             <br />
-            {% if hasAccess('admin_article_file', 'download') %}
-                <input type="button" class="download downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": action.getEntity().getId()}) }}" value="Download " />
+            {% if hasAccess('cudi_admin_article_file', 'download') %}
+                <input type="button" class="download downloadFile" data-file="{{ url('cudi_admin_article_file', {"action": "download", "id": action.getEntity().getId()}) }}" value="Download " />
             {% endif %}
         {% endif %}
     </div>
 
     <aside>
-        {% if hasAccess('admin_prof_action', 'refuse') and action.isUnCompleted() %}
+        {% if hasAccess('cudi_admin_prof_action', 'refuse') and action.isUnCompleted() %}
             <div class="sidebox">
                 <div class="title">Refuse Action</div>
                 <div class="content">
@@ -117,12 +117,12 @@
                         <i>Please hit the link below to refuse this action!</i>
                     </p>
                     <p>
-                        <a href="{{ url("admin_prof_action", {"action": "refuse", "id": action.getId()}) }}" id="updateNow">&rarr; Refuse</a>
+                        <a href="{{ url("cudi_admin_prof_action", {"action": "refuse", "id": action.getId()}) }}" id="updateNow">&rarr; Refuse</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_prof_action', 'confirm') and (action.isUnCompleted() or action.isRefused()) %}
+        {% if hasAccess('cudi_admin_prof_action', 'confirm') and (action.isUnCompleted() or action.isRefused()) %}
             <div class="sidebox">
                 <div class="title">Confirm Action</div>
                 <div class="content">
@@ -130,7 +130,7 @@
                         <i>Please hit the link below to confirm this action!</i>
                     </p>
                     <p>
-                        <a href="{{ url("admin_prof_action", {"action": "confirm", "id": action.getId()}) }}" id="updateNow">&rarr; Confirm</a>
+                        <a href="{{ url("cudi_admin_prof_action", {"action": "confirm", "id": action.getId()}) }}" id="updateNow">&rarr; Confirm</a>
                     </p>
                 </div>
             </div>

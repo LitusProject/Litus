@@ -31,10 +31,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'logisticsbundle' => array(
-                    'admin_driver' => array(
+                    'logistics_admin_driver' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
-                    'admin_van_reservation' => array(
+                    'logistics_admin_van_reservation' => array(
                         'add', 'addasync', 'delete', 'edit', 'manage', 'old'
                     ),
                     'logistics_index' => array(

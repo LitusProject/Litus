@@ -34,7 +34,7 @@
                         <td>{{ cv.getAcademic().getFullName() }}</td>
                         <td class="actions">
                             <ul>
-                                {% if hasAccess('admin_cv_entry', 'delete') %}
+                                {% if hasAccess('br_admin_cv_entry', 'delete') %}
                                     <li><a href="#" class="delete" data-id="{{ cv.getId() }}" data-name="{{ cv.getAcademic().getFullName() }}">Delete</a></li>
                                 {% endif %}
                             </ul>
@@ -48,7 +48,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_cv_entry', 'export') %}
+        {% if hasAccess('br_admin_cv_entry', 'export') %}
             <div class="sidebox">
                 <div class="title">Export CV's</div>
                 <div class="content">
@@ -61,7 +61,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_cv_entry', 'exportAcademics') %}
+        {% if hasAccess('br_admin_cv_entry', 'exportAcademics') %}
             <div class="sidebox">
                 <div class="title">Export Academics</div>
                 <div class="content">
@@ -101,10 +101,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.exportCVS').each(function () {
-                $(this).downloadFile('{{ url('admin_cv_entry', {"action": "export", "academicyear": activeAcademicYear.getCode()}) }}');
+                $(this).downloadFile('{{ url('br_admin_cv_entry', {"action": "export", "academicyear": activeAcademicYear.getCode()}) }}');
             });
             $('.exportAcademics').each(function () {
-                $(this).downloadFile('{{ url('admin_cv_entry', {"action": "exportAcademics", "academicyear": activeAcademicYear.getCode()}) }}');
+                $(this).downloadFile('{{ url('br_admin_cv_entry', {"action": "exportAcademics", "academicyear": activeAcademicYear.getCode()}) }}');
             });
             $('.item .delete').click(openModal);
         });
@@ -117,7 +117,7 @@
             removeCv.find('.academicName').html($(this).data('name'));
             var id = $this.data('id');
             removeCv.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_cv_entry', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('br_admin_cv_entry', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.cv_removed_success').removeClass('hide');

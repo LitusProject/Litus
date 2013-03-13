@@ -33,17 +33,17 @@
 					<tr class="item item-{{ publication.getId() }}">
 						<td>{{ publication.getTitle() }}</td>
 						<td class="actions">
-						    {% if hasAccess('admin_publication', 'edit') %}
-		                        <a href="{{ url('admin_publication', {"action": "edit", "id": publication.getId() }) }}" class="edit">Edit</a>
+						    {% if hasAccess('publication_admin_publication', 'edit') %}
+		                        <a href="{{ url('publication_admin_publication', {"action": "edit", "id": publication.getId() }) }}" class="edit">Edit</a>
 		                    {% endif %}
-						    {% if hasAccess('admin_publication', 'delete') %}
+						    {% if hasAccess('publication_admin_publication', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ publication.getId() }}" data-title="{{ publication.getTitle() }}">Delete</a>
 		                    {% endif %}
-						    {% if hasAccess('admin_edition_pdf', 'manage') %}
-		                        <a href="{{ url('admin_edition_pdf', {"action": "manage", "id": publication.getId() }) }}" class="pdf">PDFs</a>
+						    {% if hasAccess('publication_admin_edition_pdf', 'manage') %}
+		                        <a href="{{ url('publication_admin_edition_pdf', {"action": "manage", "id": publication.getId() }) }}" class="pdf">PDFs</a>
 		                    {% endif %}
-						    {% if hasAccess('admin_edition_html', 'manage') %}
-		                        <a href="{{ url('admin_edition_html', {"action": "manage", "id": publication.getId() }) }}" class="html">HTMLs</a>
+						    {% if hasAccess('publication_admin_edition_html', 'manage') %}
+		                        <a href="{{ url('publication_admin_edition_html', {"action": "manage", "id": publication.getId() }) }}" class="html">HTMLs</a>
 		                    {% endif %}
 						</td>
 					</tr>
@@ -95,7 +95,7 @@
 			removePublication.find('.publicationTitle').html($(this).data('title'));
 			var id = $this.data('id');
 			removePublication.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_publication', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('publication_admin_publication', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.publication_removed_success').removeClass('hide');

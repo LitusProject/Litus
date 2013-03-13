@@ -37,7 +37,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_academic' => array(
+            'common_admin_academic' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/academic[/:action[/:id][/:field/:string][/page/:page]][/]',
@@ -49,12 +49,12 @@ return array(
                         'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_academic',
+                        'controller' => 'common_admin_academic',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_academic_typeahead' => array(
+            'common_admin_academic_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/academic/typeahead[/:string][/]',
@@ -62,12 +62,12 @@ return array(
                         'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_academic',
+                        'controller' => 'common_admin_academic',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'admin_person_typeahead' => array(
+            'common_admin_person_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/person/typeahead[/:string][/]',
@@ -75,12 +75,12 @@ return array(
                         'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_person',
+                        'controller' => 'common_admin_person',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'admin_auth' => array(
+            'common_admin_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
@@ -90,12 +90,12 @@ return array(
                         'hash'           => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_auth',
+                        'controller' => 'common_admin_auth',
                         'action'     => 'login',
                     ),
                 ),
             ),
-            'admin_cache' => array(
+            'common_admin_cache' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/cache[/:action][/]',
@@ -103,12 +103,12 @@ return array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_cache',
+                        'controller' => 'common_admin_cache',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_config' => array(
+            'common_admin_config' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/config[/:action[/key/:key]][/]',
@@ -117,22 +117,22 @@ return array(
                         'key'    => '[a-zA-Z][\.a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_config',
+                        'controller' => 'common_admin_config',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_index' => array(
+            'common_admin_index' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin[/]',
                     'defaults' => array(
-                        'controller' => 'admin_index',
+                        'controller' => 'common_admin_index',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'admin_location' => array(
+            'common_admin_location' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/location[/:action[/:id][/page/:page]][/]',
@@ -142,12 +142,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_location',
+                        'controller' => 'common_admin_location',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_role' => array(
+            'common_admin_role' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/role[/:action[/name/:name][/page/:page]][/]',
@@ -157,12 +157,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_role',
+                        'controller' => 'common_admin_role',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_session' => array(
+            'common_admin_session' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/session/:action[/:id][/]',
@@ -171,12 +171,12 @@ return array(
                         'id'     => '[a-z0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_session',
+                        'controller' => 'common_admin_session',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'index' => array(
+            'common_index' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language][/]',
@@ -184,12 +184,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'index',
+                        'controller' => 'common_index',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'account' => array(
+            'common_account' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/account[/:action[/code/:code][/image/:image][/return/:return]][/]',
@@ -202,12 +202,12 @@ return array(
                         'return'   => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'account',
+                        'controller' => 'common_account',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'session' => array(
+            'common_session' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/session[/:action[/:id]][/]',
@@ -217,12 +217,12 @@ return array(
                         'id'       => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'session',
+                        'controller' => 'common_session',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'auth' => array(
+            'common_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
@@ -233,7 +233,7 @@ return array(
                         'language'       => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'auth',
+                        'controller' => 'common_auth',
                         'action'     => 'login',
                     ),
                 ),
@@ -324,23 +324,23 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'common_install' => 'CommonBundle\Controller\Admin\InstallController',
-            'all_install'    => 'CommonBundle\Controller\Admin\AllInstallController',
+            'common_install'        => 'CommonBundle\Controller\Admin\InstallController',
+            'all_install'           => 'CommonBundle\Controller\Admin\AllInstallController',
 
-            'admin_academic' => 'CommonBundle\Controller\Admin\AcademicController',
-            'admin_auth'     => 'CommonBundle\Controller\Admin\AuthController',
-            'admin_config'   => 'CommonBundle\Controller\Admin\ConfigController',
-            'admin_cache'    => 'CommonBundle\Controller\Admin\CacheController',
-            'admin_index'    => 'CommonBundle\Controller\Admin\IndexController',
-            'admin_location' => 'CommonBundle\Controller\Admin\LocationController',
-            'admin_person'   => 'CommonBundle\Controller\Admin\PersonController',
-            'admin_role'     => 'CommonBundle\Controller\Admin\RoleController',
-            'admin_session'  => 'CommonBundle\Controller\Admin\SessionController',
+            'common_admin_academic' => 'CommonBundle\Controller\Admin\AcademicController',
+            'common_admin_auth'     => 'CommonBundle\Controller\Admin\AuthController',
+            'common_admin_config'   => 'CommonBundle\Controller\Admin\ConfigController',
+            'common_admin_cache'    => 'CommonBundle\Controller\Admin\CacheController',
+            'common_admin_index'    => 'CommonBundle\Controller\Admin\IndexController',
+            'common_admin_location' => 'CommonBundle\Controller\Admin\LocationController',
+            'common_admin_person'   => 'CommonBundle\Controller\Admin\PersonController',
+            'common_admin_role'     => 'CommonBundle\Controller\Admin\RoleController',
+            'common_admin_session'  => 'CommonBundle\Controller\Admin\SessionController',
 
-            'index'          => 'CommonBundle\Controller\IndexController',
-            'account'        => 'CommonBundle\Controller\AccountController',
-            'session'        => 'CommonBundle\Controller\SessionController',
-            'auth'           => 'CommonBundle\Controller\AuthController',
+            'common_index'          => 'CommonBundle\Controller\IndexController',
+            'common_account'        => 'CommonBundle\Controller\AccountController',
+            'common_session'        => 'CommonBundle\Controller\SessionController',
+            'common_auth'           => 'CommonBundle\Controller\AuthController',
         ),
     ),
     'view_manager' => array(

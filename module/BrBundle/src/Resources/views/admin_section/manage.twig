@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_section/partials/navigation.twig' %}
+	{% include 'admin/section/partials/navigation.twig' %}
 
 	<div id="controller_action">
 		{% include 'admin/partials/flashMessenger.twig' %}
@@ -24,8 +24,8 @@
 	                    <td>{{ section.getYear() }}</td>
 	                    <td>
 	                        <ul>
-	                            <li><a href="{{ url('admin_section', {"action": "edit", "id": section.getId()}) }}" class="edit">Edit</a></li>
-	                            <li><a href="{{ url('admin_section', {"action": "delete", "id": section.getId()}) }}" class="delete">Delete</a></li>
+	                            <li><a href="{{ url('br_admin_section', {"action": "edit", "id": section.getId()}) }}" class="edit">Edit</a></li>
+	                            <li><a href="{{ url('br_admin_section', {"action": "delete", "id": section.getId()}) }}" class="delete">Delete</a></li>
 	                        </ul>
 	                    </td>
 	                </tr>

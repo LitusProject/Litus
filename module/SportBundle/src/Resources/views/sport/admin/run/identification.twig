@@ -19,8 +19,8 @@
                     <tr>
                         <td>{{ runner.getFullName() }}</td>
                         <td>
-                            {% if hasAccess('admin_run', 'edit') %}
-                                <a href="{{ url('admin_run', {'action': 'edit', 'id': runner.getId()}) }}" class="edit">Edit</a>
+                            {% if hasAccess('sport_admin_run', 'edit') %}
+                                <a href="{{ url('sport_admin_run', {'action': 'edit', 'id': runner.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                         </td>
                     </tr>

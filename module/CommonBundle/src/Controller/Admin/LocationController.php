@@ -90,7 +90,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_location',
+                    'common_admin_location',
                     array(
                         'action' => 'manage'
                     )
@@ -147,7 +147,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_location',
+                    'common_admin_location',
                     array(
                         'action' => 'manage'
                     )
@@ -196,7 +196,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_location',
+                'common_admin_location',
                 array(
                     'action' => 'manage'
                 )
@@ -219,7 +219,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_location',
+                'common_admin_location',
                 array(
                     'action' => 'manage'
                 )

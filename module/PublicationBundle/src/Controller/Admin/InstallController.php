@@ -52,20 +52,20 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'publicationbundle' => array(
-                    'admin_publication' => array(
+                    'publication_admin_publication' => array(
                         'add', 'delete', 'edit', 'manage',
                     ),
-                    'admin_edition_html' => array(
+                    'publication_admin_edition_html' => array(
                         'add', 'delete', 'manage', 'progress', 'upload'
                     ),
-                    'admin_edition_pdf' => array(
+                    'publication_admin_edition_pdf' => array(
                         'add', 'delete', 'manage', 'progress', 'upload', 'view'
                     ),
 
-                    'edition_html' => array(
+                    'publication_edition_html' => array(
                         'view',
                     ),
-                    'archive' => array(
+                    'publication_archive' => array(
                         'overview', 'view', 'year',
                     ),
                 )

@@ -143,7 +143,7 @@
 
 <script type="text/javascript">
     function doLogin() {
-        $.post('{{ url('admin_auth', {"action": "authenticate"}) }}', {formData: $('#login').serialize()}, function(data) {
+        $.post('{{ url('common_admin_auth', {"action": "authenticate"}) }}', {formData: $('#login').serialize()}, function(data) {
             if (!data.result) {
                 if ('USERNAME_PASSWORD' == data.reason) {
                     $('#error_message').html(
@@ -158,7 +158,7 @@
                     });
                 });
             } else {
-                window.location.replace('{{ url('admin_index') }}');
+                window.location.replace('{{ url('common_admin_index') }}');
             }
         },
         'json');

@@ -64,7 +64,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_article_comment',
+                    'cudi_admin_article_comment',
                     array(
                         'action' => 'manage',
                         'id' => $article->getId(),
@@ -115,7 +115,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -138,7 +138,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -162,7 +162,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -185,7 +185,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )

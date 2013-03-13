@@ -40,16 +40,16 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'pagebundle' => array(
-                    'admin_page' => array(
+                    'page_admin_page' => array(
                         'add', 'delete', 'edit', 'manage', 'upload', 'uploadProgress'
                     ),
-                    'admin_page_category' => array(
+                    'page_admin_category' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
-                    'admin_page_link' => array(
+                    'page_admin_link' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
-                    'link' => array(
+                    'page_link' => array(
                         'view'
                     ),
                     'page' => array(
@@ -65,7 +65,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'system' => true,
                     'parents' => array(),
                     'actions' => array(
-                        'admin_page' => array(
+                        'page_admin_page' => array(
                             'add', 'delete', 'edit', 'manage', 'upload', 'uploadProgress'
                         ),
                     )
@@ -74,7 +74,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'system' => true,
                     'parents' => array(),
                     'actions' => array(
-                        'link' => array(
+                        'page_link' => array(
                             'view'
                         ),
                         'page' => array(

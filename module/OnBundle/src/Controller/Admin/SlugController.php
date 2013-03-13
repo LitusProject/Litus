@@ -80,7 +80,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_slug',
+                    'on_admin_slug',
                     array(
                         'action' => 'manage'
                     )
@@ -125,7 +125,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_slug',
+                    'on_admin_slug',
                     array(
                         'action' => 'manage'
                     )
@@ -185,7 +185,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_slug',
+                'on_admin_slug',
                 array(
                     'action' => 'manage'
                 )
@@ -208,7 +208,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_slug',
+                'on_admin_slug',
                 array(
                     'action' => 'manage'
                 )

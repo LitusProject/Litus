@@ -61,8 +61,15 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Unit')
             ->findAllActive();
 
+        $unitsArray = array();
+        foreach ($units as $unit)
+            $unitsArray[$unit->getId()] = $unit->getName();
+
         $result = array();
         foreach ($shifts as $shift) {
+            if (!array_key_exists($shift->getUnit()->getId(), $unitsArray))
+                continue;
+
             foreach ($shift->getResponsibles() as $responsible) {
                 if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
                     $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
@@ -91,7 +98,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
                 'result' => $result,
-                'units' => $units
+                'units' => $unitsArray
             )
         );
     }
@@ -297,7 +304,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'shift_admin_shift_counter',
                 array(
                     'action' => 'index'
                 )
@@ -321,7 +328,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'shift_admin_shift_counter',
                 array(
                     'action' => 'index'
                 )
@@ -344,7 +351,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'shift_admin_shift_counter',
                 array(
                     'action' => 'index'
                 )

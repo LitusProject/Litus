@@ -3,11 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_publication', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_publication', {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('publication_admin_publication', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('publication_admin_publication', {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_publication', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_publication', {"action": "manage"}) }}">Manage</a></li>
+            {% if hasAccess('publication_admin_publication', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('publication_admin_publication', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

@@ -4,7 +4,7 @@
 
     <div class="span2">
         {% if page.getCompany().getLogo() %}
-            <img src="{{ url('career_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
+            <img src="{{ url('br_career_company', {'action': 'logo', 'id': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}">
 
         <hr/>
         {% else %}
@@ -57,7 +57,7 @@
                                 {% for event in events %}
                                     <tr>
                                         <td>
-                                            <a href="{{ url('career_event', {'action': 'view', 'id': event.getId() }) }}">
+                                            <a href="{{ url('br_career_event', {'action': 'view', 'id': event.getId() }) }}">
                                                 <strong>{{ event.getEvent().getTitle(language) }}</strong>
                                                 <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM y HH:mm') }}</strong></div>
                                             </a>
@@ -83,7 +83,7 @@
                             {% for vacancy in vacancies %}
                                 <tr>
                                     <td>
-                                        <a href="{{ url('career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                                        <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
                                             <strong>{{ vacancy.getName() }}</strong>
                                             <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                                         </a>
@@ -109,7 +109,7 @@
                             {% for internship in internships %}
                                 <tr>
                                     <td>
-                                        <a href="{{ url('career_internship', {'action': 'view', 'id': internship.getId() }) }}">
+                                        <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
                                             <strong>{{ internship.getName() }}</strong>
                                             <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                                         </a>

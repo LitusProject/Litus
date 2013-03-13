@@ -96,7 +96,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page_category',
+                    'page_admin_category',
                     array(
                         'action' => 'manage'
                     )
@@ -168,7 +168,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page_category',
+                    'page_admin_category',
                     array(
                         'action' => 'manage'
                     )
@@ -217,7 +217,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_page_category',
+                'page_admin_category',
                 array(
                     'action' => 'manage'
                 )
@@ -240,7 +240,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_page_category',
+                'page_admin_category',
                 array(
                     'action' => 'manage'
                 )

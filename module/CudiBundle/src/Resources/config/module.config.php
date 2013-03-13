@@ -25,7 +25,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_article' => array(
+            'cudi_admin_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/article[/:action[/:id][/page/:page][/:field/:string]][/]',
@@ -37,12 +37,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_article',
+                        'controller' => 'cudi_admin_article',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_article_subject'=> array(
+            'cudi_admin_article_subject'=> array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/article/subject[/:action[/:id]][/:academicyear][/]',
@@ -52,12 +52,12 @@ return array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_article_subject',
+                        'controller' => 'cudi_admin_article_subject',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_article_comment' => array(
+            'cudi_admin_article_comment' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/article/comment[/:action[/:id[/:article]]][/]',
@@ -66,12 +66,12 @@ return array(
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_article_comment',
+                        'controller' => 'cudi_admin_article_comment',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_article_file' => array(
+            'cudi_admin_article_file' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/article/file[/:action[/:id]][/]',
@@ -80,12 +80,12 @@ return array(
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_article_file',
+                        'controller' => 'cudi_admin_article_file',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_article' => array(
+            'cudi_admin_sales_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/semester/:semester][/page/:page][/:field/:string]][/]',
@@ -99,12 +99,12 @@ return array(
                         'semester'     => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_article',
+                        'controller' => 'cudi_admin_sales_article',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_article_typeahead' => array(
+            'cudi_admin_sales_article_typeahead' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/article/:academicyear/typeahead[/:string][/]',
@@ -113,12 +113,12 @@ return array(
                         'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_article',
+                        'controller' => 'cudi_admin_sales_article',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'admin_sales_article_discount' => array(
+            'cudi_admin_sales_article_discount' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/article/discount[/:action[/:id]][/]',
@@ -127,12 +127,12 @@ return array(
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_article_discount',
+                        'controller' => 'cudi_admin_sales_article_discount',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_article_barcode' => array(
+            'cudi_admin_sales_article_barcode' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/article/barcode[/:action[/:id]][/]',
@@ -141,12 +141,12 @@ return array(
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_article_barcode',
+                        'controller' => 'cudi_admin_sales_article_barcode',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_article_restriction' => array(
+            'cudi_admin_sales_article_restriction' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/article/restriction[/:action[/:id]][/]',
@@ -155,12 +155,12 @@ return array(
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_article_restriction',
+                        'controller' => 'cudi_admin_sales_article_restriction',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_booking' => array(
+            'cudi_admin_sales_booking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/:type[/:field/:string]][/page/:page]][/]',
@@ -174,12 +174,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_booking',
+                        'controller' => 'cudi_admin_sales_booking',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_session' => array(
+            'cudi_admin_sales_session' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/session[/:action[/:id][/page/:page]][/]',
@@ -189,12 +189,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_session',
+                        'controller' => 'cudi_admin_sales_session',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_session_restriction' => array(
+            'cudi_admin_sales_session_restriction' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/session/restriction[/:action[/:id]][/]',
@@ -203,12 +203,12 @@ return array(
                         'id'     => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_session_restriction',
+                        'controller' => 'cudi_admin_sales_session_restriction',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_sales_financial' => array(
+            'cudi_admin_sales_financial' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/sales/financial[/:action[/:id][/page/:page]][/]',
@@ -218,12 +218,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_sales_financial',
+                        'controller' => 'cudi_admin_sales_financial',
                         'action'     => 'sales',
                     ),
                 ),
             ),
-            'admin_supplier' => array(
+            'cudi_admin_supplier' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/supplier[/:action[/:id][/page/:page]][/]',
@@ -233,12 +233,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_supplier',
+                        'controller' => 'cudi_admin_supplier',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_supplier_user' => array(
+            'cudi_admin_supplier_user' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/supplier/user[/:action[/:id][/page/:page]][/]',
@@ -248,12 +248,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_supplier_user',
+                        'controller' => 'cudi_admin_supplier_user',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_stock' => array(
+            'cudi_admin_stock' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/stock[/:action[/:id][/semester/:semester][/organization/:organization][/page/:page][/:field/:string]][/]',
@@ -267,12 +267,12 @@ return array(
                         'organization' => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_stock',
+                        'controller' => 'cudi_admin_stock',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_stock_period' => array(
+            'cudi_admin_stock_period' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/stock/period[/:action[/:id[/:field/:string]][/page/:page]][/]',
@@ -284,12 +284,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_stock_period',
+                        'controller' => 'cudi_admin_stock_period',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_stock_order' => array(
+            'cudi_admin_stock_order' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/stock/order[/:action[/:id[/:date]][/page/:page][/:field/:string]][/]',
@@ -302,12 +302,12 @@ return array(
                         'date'    => '[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_stock_order',
+                        'controller' => 'cudi_admin_stock_order',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_stock_delivery' => array(
+            'cudi_admin_stock_delivery' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/stock/delivery[/:action[/:id][/page/:page]][/]',
@@ -317,12 +317,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_stock_delivery',
+                        'controller' => 'cudi_admin_stock_delivery',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_stock_delivery_typeahead' => array(
+            'cudi_admin_stock_delivery_typeahead' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/stock/article/:academicyear/typeahead[/:string][/]',
@@ -331,12 +331,12 @@ return array(
                         'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_stock_delivery',
+                        'controller' => 'cudi_admin_stock_delivery',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'admin_stock_retour' => array(
+            'cudi_admin_stock_retour' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/stock/retour[/:action[/:id][/page/:page]][/]',
@@ -346,12 +346,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_stock_retour',
+                        'controller' => 'cudi_admin_stock_retour',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_prof_action' => array(
+            'cudi_admin_prof_action' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/prof/actions[/:action[/:id][/page/:page]][/]',
@@ -361,24 +361,24 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_prof_action',
+                        'controller' => 'cudi_admin_prof_action',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_cudi_mail' => array(
+            'cudi_admin_mail' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/cudi/mail[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_cudi_mail',
+                        'controller' => 'cudi_admin_mail',
                         'action'     => 'send',
                     ),
                 ),
             ),
-            'sale_queue' => array(
+            'cudi_sale_queue' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/cudi/queue[[/:action]/:session][/]',
@@ -387,12 +387,12 @@ return array(
                         'session' => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'sale_queue',
+                        'controller' => 'cudi_sale_queue',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'sale_sale' => array(
+            'cudi_sale_sale' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/cudi/sale[/:action[/:session[/:id]]][/]',
@@ -402,12 +402,12 @@ return array(
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'sale_sale',
+                        'controller' => 'cudi_sale_sale',
                         'action'     => 'sale',
                     ),
                 ),
             ),
-            'supplier_index' => array(
+            'cudi_supplier_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/supplier[/:action][/]',
@@ -417,12 +417,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'supplier_index',
+                        'controller' => 'cudi_supplier_index',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'supplier_auth' => array(
+            'cudi_supplier_auth' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/supplier/auth[/:action][/]',
@@ -432,12 +432,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'supplier_auth',
+                        'controller' => 'cudi_supplier_auth',
                         'action'     => 'login',
                     ),
                 ),
             ),
-            'supplier_article' => array(
+            'cudi_supplier_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/supplier/article[/:action][/]',
@@ -447,12 +447,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'supplier_article',
+                        'controller' => 'cudi_supplier_article',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'prof_index' => array(
+            'cudi_prof_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof[/:action[/page/:page]][/]',
@@ -462,12 +462,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_index',
+                        'controller' => 'cudi_prof_index',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'prof_auth' => array(
+            'cudi_prof_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
@@ -478,12 +478,12 @@ return array(
                         'language'       => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_auth',
+                        'controller' => 'cudi_prof_auth',
                         'action'     => 'login',
                     ),
                 ),
             ),
-            'prof_subject' => array(
+            'cudi_prof_subject' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/subject[/:action[/:id]][/]',
@@ -493,12 +493,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_subject',
+                        'controller' => 'cudi_prof_subject',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'prof_subject_typeahead' => array(
+            'cudi_prof_subject_typeahead' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/subject/typeahead[/:string][/]',
@@ -507,12 +507,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_subject',
+                        'controller' => 'cudi_prof_subject',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'prof_article' => array(
+            'cudi_prof_article' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/article[/:action[/:id]][/]',
@@ -522,12 +522,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_article',
+                        'controller' => 'cudi_prof_article',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'prof_article_typeahead' => array(
+            'cudi_prof_article_typeahead' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/article/typeahead[/:string][/]',
@@ -536,12 +536,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_article',
+                        'controller' => 'cudi_prof_article',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'prof_article_mapping' => array(
+            'cudi_prof_article_mapping' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/article/mapping[/:action[/:id]][/]',
@@ -551,12 +551,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_article_mapping',
+                        'controller' => 'cudi_prof_article_mapping',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'prof_file' => array(
+            'cudi_prof_file' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/files[/:action[/:id]][/]',
@@ -566,12 +566,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_file',
+                        'controller' => 'cudi_prof_file',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'prof_article_comment' => array(
+            'cudi_prof_article_comment' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/article/comments[/:action[/:id]][/]',
@@ -581,12 +581,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_article_comment',
+                        'controller' => 'cudi_prof_article_comment',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'prof_subject_comment' => array(
+            'cudi_prof_subject_comment' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/subject/comments[/:action[/:id]][/]',
@@ -596,12 +596,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_subject_comment',
+                        'controller' => 'cudi_prof_subject_comment',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'prof_prof' => array(
+            'cudi_prof_prof' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/prof[/:action[/:id]][/]',
@@ -611,12 +611,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_prof',
+                        'controller' => 'cudi_prof_prof',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'prof_help' => array(
+            'cudi_prof_help' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/help[/:action][/]',
@@ -625,12 +625,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_help',
+                        'controller' => 'cudi_prof_help',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'prof_typeahead' => array(
+            'cudi_prof_typeahead' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/prof/prof/typeahead[/:string][/]',
@@ -639,12 +639,12 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'prof_prof',
+                        'controller' => 'cudi_prof_prof',
                         'action'     => 'typeahead',
                     ),
                 ),
             ),
-            'booking' => array(
+            'cudi_booking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/booking[/:action[/:id]][/]',
@@ -654,7 +654,7 @@ return array(
                         'id'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'booking',
+                        'controller' => 'cudi_booking',
                         'action'     => 'view',
                     ),
                 ),
@@ -719,47 +719,47 @@ return array(
         'invokables' => array(
             'cudi_install'                    => 'CudiBundle\Controller\Admin\InstallController',
 
-            'admin_article'                   => 'CudiBundle\Controller\Admin\ArticleController',
-            'admin_article_subject'           => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
-            'admin_article_comment'           => 'CudiBundle\Controller\Admin\Article\CommentController',
-            'admin_article_file'              => 'CudiBundle\Controller\Admin\Article\FileController',
-            'admin_sales_article'             => 'CudiBundle\Controller\Admin\Sales\ArticleController',
-            'admin_sales_article_barcode'     => 'CudiBundle\Controller\Admin\Sales\Article\BarcodeController',
-            'admin_sales_article_discount'    => 'CudiBundle\Controller\Admin\Sales\Article\DiscountController',
-            'admin_sales_article_restriction' => 'CudiBundle\Controller\Admin\Sales\Article\RestrictionController',
-            'admin_sales_booking'             => 'CudiBundle\Controller\Admin\Sales\BookingController',
-            'admin_sales_session'             => 'CudiBundle\Controller\Admin\Sales\SessionController',
-            'admin_sales_session_restriction' => 'CudiBundle\Controller\Admin\Sales\Session\RestrictionController',
-            'admin_sales_financial'           => 'CudiBundle\Controller\Admin\Sales\FinancialController',
-            'admin_supplier'                  => 'CudiBundle\Controller\Admin\SupplierController',
-            'admin_supplier_user'             => 'CudiBundle\Controller\Admin\Supplier\UserController',
-            'admin_stock'                     => 'CudiBundle\Controller\Admin\StockController',
-            'admin_stock_period'              => 'CudiBundle\Controller\Admin\Stock\PeriodController',
-            'admin_stock_delivery'            => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
-            'admin_stock_retour'              => 'CudiBundle\Controller\Admin\Stock\RetourController',
-            'admin_stock_order'               => 'CudiBundle\Controller\Admin\Stock\OrderController',
-            'admin_prof_action'               => 'CudiBundle\Controller\Admin\Prof\ActionController',
-            'admin_cudi_mail'                 => 'CudiBundle\Controller\Admin\MailController',
+            'cudi_admin_article'                   => 'CudiBundle\Controller\Admin\ArticleController',
+            'cudi_admin_article_subject'           => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
+            'cudi_admin_article_comment'           => 'CudiBundle\Controller\Admin\Article\CommentController',
+            'cudi_admin_article_file'              => 'CudiBundle\Controller\Admin\Article\FileController',
+            'cudi_admin_sales_article'             => 'CudiBundle\Controller\Admin\Sales\ArticleController',
+            'cudi_admin_sales_article_barcode'     => 'CudiBundle\Controller\Admin\Sales\Article\BarcodeController',
+            'cudi_admin_sales_article_discount'    => 'CudiBundle\Controller\Admin\Sales\Article\DiscountController',
+            'cudi_admin_sales_article_restriction' => 'CudiBundle\Controller\Admin\Sales\Article\RestrictionController',
+            'cudi_admin_sales_booking'             => 'CudiBundle\Controller\Admin\Sales\BookingController',
+            'cudi_admin_sales_session'             => 'CudiBundle\Controller\Admin\Sales\SessionController',
+            'cudi_admin_sales_session_restriction' => 'CudiBundle\Controller\Admin\Sales\Session\RestrictionController',
+            'cudi_admin_sales_financial'           => 'CudiBundle\Controller\Admin\Sales\FinancialController',
+            'cudi_admin_supplier'                  => 'CudiBundle\Controller\Admin\SupplierController',
+            'cudi_admin_supplier_user'             => 'CudiBundle\Controller\Admin\Supplier\UserController',
+            'cudi_admin_stock'                     => 'CudiBundle\Controller\Admin\StockController',
+            'cudi_admin_stock_period'              => 'CudiBundle\Controller\Admin\Stock\PeriodController',
+            'cudi_admin_stock_delivery'            => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
+            'cudi_admin_stock_retour'              => 'CudiBundle\Controller\Admin\Stock\RetourController',
+            'cudi_admin_stock_order'               => 'CudiBundle\Controller\Admin\Stock\OrderController',
+            'cudi_admin_prof_action'               => 'CudiBundle\Controller\Admin\Prof\ActionController',
+            'cudi_admin_mail'                      => 'CudiBundle\Controller\Admin\MailController',
 
-            'sale_sale'                       => 'CudiBundle\Controller\Sale\SaleController',
-            'sale_queue'                      => 'CudiBundle\Controller\Sale\QueueController',
+            'cudi_sale_sale'                       => 'CudiBundle\Controller\Sale\SaleController',
+            'cudi_sale_queue'                      => 'CudiBundle\Controller\Sale\QueueController',
 
-            'supplier_index'                  => 'CudiBundle\Controller\Supplier\IndexController',
-            'supplier_article'                => 'CudiBundle\Controller\Supplier\ArticleController',
-            'supplier_auth'                   => 'CudiBundle\Controller\Supplier\AuthController',
+            'cudi_supplier_index'                  => 'CudiBundle\Controller\Supplier\IndexController',
+            'cudi_supplier_article'                => 'CudiBundle\Controller\Supplier\ArticleController',
+            'cudi_supplier_auth'                   => 'CudiBundle\Controller\Supplier\AuthController',
 
-            'prof_index'                      => 'CudiBundle\Controller\Prof\IndexController',
-            'prof_auth'                       => 'CudiBundle\Controller\Prof\AuthController',
-            'prof_article'                    => 'CudiBundle\Controller\Prof\ArticleController',
-            'prof_article_mapping'            => 'CudiBundle\Controller\Prof\Article\MappingController',
-            'prof_file'                       => 'CudiBundle\Controller\Prof\Article\FileController',
-            'prof_article_comment'            => 'CudiBundle\Controller\Prof\Article\CommentController',
-            'prof_prof'                       => 'CudiBundle\Controller\Prof\ProfController',
-            'prof_subject'                    => 'CudiBundle\Controller\Prof\SubjectController',
-            'prof_subject_comment'            => 'CudiBundle\Controller\Prof\Subject\CommentController',
-            'prof_help'                       => 'CudiBundle\Controller\Prof\HelpController',
+            'cudi_prof_index'                      => 'CudiBundle\Controller\Prof\IndexController',
+            'cudi_prof_auth'                       => 'CudiBundle\Controller\Prof\AuthController',
+            'cudi_prof_article'                    => 'CudiBundle\Controller\Prof\ArticleController',
+            'cudi_prof_article_mapping'            => 'CudiBundle\Controller\Prof\Article\MappingController',
+            'cudi_prof_file'                       => 'CudiBundle\Controller\Prof\Article\FileController',
+            'cudi_prof_article_comment'            => 'CudiBundle\Controller\Prof\Article\CommentController',
+            'cudi_prof_prof'                       => 'CudiBundle\Controller\Prof\ProfController',
+            'cudi_prof_subject'                    => 'CudiBundle\Controller\Prof\SubjectController',
+            'cudi_prof_subject_comment'            => 'CudiBundle\Controller\Prof\Subject\CommentController',
+            'cudi_prof_help'                       => 'CudiBundle\Controller\Prof\HelpController',
 
-            'booking'                         => 'CudiBundle\Controller\BookingController',
+            'cudi_booking'                         => 'CudiBundle\Controller\BookingController',
         ),
     ),
     'assetic_configuration' => array(
