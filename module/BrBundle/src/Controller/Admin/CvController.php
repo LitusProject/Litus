@@ -93,14 +93,24 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
         $file = new CsvFile();
         $language = $this->getLanguage();
-        $heading = array('First Name', 'Last Name', 'Email');
+        $heading = array('First Name', 'Last Name', 'Email', 'Address', 'Phone', 'Study');
 
         $results = array();
         foreach($entries as $entry) {
+
+            $address = $entry->getAddress();
+            $addressString = $address->getStreet() . ' ' . $address->getNumber();
+            if ($address->getMailbox())
+                $addressString = $addressString . ' (' . $address->getMailbox() . ')';
+            $addressString = $addressString . ', ' . $address->getPostal() . ' ' . $address->getCity() . ' ' . $address->getCountry();
+
             $results[] = array(
                 $entry->getFirstName(),
                 $entry->getLastName(),
-                $entry->getEmail()
+                $entry->getEmail(),
+                $addressString,
+                $entry->getPhoneNumber(),
+                $entry->getStudy()->getFullTitle()
             );
         }
 
