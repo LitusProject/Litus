@@ -130,6 +130,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
+                    'validators' => array(
+                        array(
+                            'name' => 'StringLength',
+                            'options' => array(
+                                'max' => '50',
+                            ),
+                        ),
+                    ),
                 )
             )
         );
