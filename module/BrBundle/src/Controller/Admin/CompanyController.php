@@ -127,7 +127,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company',
+                    'br_admin_company',
                     array(
                         'action' => 'manage'
                     )
@@ -210,7 +210,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company',
+                    'br_admin_company',
                     array(
                         'action' => 'manage'
                     )
