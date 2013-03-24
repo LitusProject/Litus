@@ -48,7 +48,7 @@ class Job
     /**
      * @var string The job's name
      *
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=100)
      */
     private $name;
 

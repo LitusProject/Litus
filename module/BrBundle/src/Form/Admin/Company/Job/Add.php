@@ -134,7 +134,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'StringLength',
                             'options' => array(
-                                'max' => '50',
+                                'max' => '100',
                             ),
                         ),
                     ),
