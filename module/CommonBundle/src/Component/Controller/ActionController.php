@@ -71,6 +71,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
         $result = parent::onDispatch($e);
 
+        $result->unionShortName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('union_short_name');
         $result->language = $this->getLanguage();
         $result->languages = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')

@@ -109,6 +109,9 @@ return array(
     'Are you sure you want to remove the following docent' => 'Are you sure you want to remove the following docent',
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.',
 
+    'Textbook from Other Publisher' => 'Textbook from Other Publisher',
+    'Published by {{ unionShortName }}' => 'Published by {{ unionShortName }}',
+
     'URL' => 'URL',
     'Downloadable (on Toledo)' => 'Downloadable (on Toledo)',
     'Same As Previous Year' => 'Same As Previous Year',
@@ -160,10 +163,6 @@ return array(
     'No mapping with the given ID was found!' => 'No mapping with the given ID was found!',
     'The student enrollment was successfully updated!' => 'The student enrollment was successfully updated!',
 
-    'If this is an article that will be published by us, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'If this is an article that will be published by us, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.',
-
-    'An internal article is an article published by us. By checking this checkbox you can attach files to the article.' => 'An internal article is an article published by us. By checking this checkbox you can attach files to the article.',
-
     'How To Start' => 'How To Start',
     'Your first time here?' => 'Your first time here?',
 
@@ -174,8 +173,9 @@ return array(
     'On this page you can view all the articles (the books) attached to this subject. There is a button to add other articles to the subject. Existing articles can be edited and/or removed.' => 'On this page you can view all the articles (the books) attached to this subject. There is a button to add other articles to the subject. Existing articles can be edited and/or removed.',
     'At the bottom of this page you can view all the other docents of the course, they can also edit the subject, add articles, etc. You can remove them or add new ones.' => 'At the bottom of this page you can view all the other docents of the course, they can also edit the subject, add articles, etc. You can remove them or add new ones.',
     'Here you can manage all your articles (or books). You can edit existing ones or add new.' => 'Here you can manage all your articles (or books). You can edit existing ones or add new.',
-    'To create an article you first need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.' => 'To create an article you first need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.',
-    'If the article isn\'t a textbook pressed by an extern publisher, you probably need to check <em>Internal Article</em>. By checking this box, you can add files to the article and they will be published by us. Afther checking that box, you can choose the binding and printing options.' => 'If the article isn\'t a textbook pressed by an extern publisher, you probably need to check <em>Internal Article</em>. By checking this box, you can add files to the article and they will be published by us. Afther checking that box, you can choose the binding and printing options.',
+    'To create an article you first need to choose between an article published by {{ unionShortName }} or one published by another publisher. An article published by {{ unionShortName }} has the ability to add files.' => 'To create an article you first need to choose between an article published by {{ unionShortName }} or one published by another publisher. An article published by {{ unionShortName }} has the ability to add files.',
+    'After selecting the type of article, you need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.' => 'After selecting the type of article, you need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.',
+    'If the article will be published by {{ unionShortName }}, you can choose the binding and printing options.' => 'If the article will be published by {{ unionShortName }}, you can choose the binding and printing options.',
     'The last part of creating an article is selecting a subject (or course) for the article. You can choose any of your courses.' => 'The last part of creating an article is selecting a subject (or course) for the article. You can choose any of your courses.',
     'Here you can change (nearly) everything you entered while creating the article.' => 'Here you can change (nearly) everything you entered while creating the article.',
     'You can also view and manage the comments of the article.' => 'You can also view and manage the comments of the article.',
