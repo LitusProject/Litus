@@ -55,10 +55,13 @@
                 </p>
                 <h3>{{ translate('Add') }}</h3>
                 <p>
-                    {{ translate('To create an article you first need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.') }}
+                    {{ translate('To create an article you first need to choose between an article published by {{ unionShortName }} or one published by another publisher. An article published by {{ unionShortName }} has the ability to add files.')|replace({'{{ unionShortName }}': unionShortName}) }}
                 </p>
                 <p>
-                    {{ translate('If the article isn\'t a textbook pressed by an extern publisher, you probably need to check <em>Internal Article</em>. By checking this box, you can add files to the article and they will be published by us. Afther checking that box, you can choose the binding and printing options.') }}
+                    {{ translate('After selecting the type of article, you need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.') }}
+                </p>
+                <p>
+                    {{ translate('If the article will be published by {{ unionShortName }}, you can choose the binding and printing options.')|replace({'{{ unionShortName }}': unionShortName}) }}
                 </p>
                 <p>
                     {{ translate('The last part of creating an article is selecting a subject (or course) for the article. You can choose any of your courses.') }}

@@ -109,6 +109,9 @@ return array(
     'Are you sure you want to remove the following docent' => 'Ben je zeker dat je volgende docent wil verwijderen',
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'Er zijn geen artikels die je kan toevoegen. Gelieve ze eerst aan te maken door in het menu op <i>Artikels</i> te klikken.',
 
+    'Textbook from Other Publisher' => 'Handboek van Andere Uitgever',
+    'Published by {{ unionShortName }}' => 'Gedrukt bij {{ unionShortName }}',
+
     'URL' => 'URL',
     'Downloadable (on Toledo)' => 'Downloadbaar (op Toledo)',
     'Same As Previous Year' => 'Zelfde Als Vorig Jaar',
@@ -158,10 +161,6 @@ return array(
     'The docent was successfully added!' => 'De docent is succesvol toegevoegd!',
     'The student enrollment was successfully updated!' => 'De student inschrijving is succesvol aangepast!',
 
-    'If this is an article that will be published by us, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'Als dit een artikel is dat uitgegeven wordt door ons, gelieve dan <i>Intern Artikel</i> aan te vinken. Als het een handboek is, gelieve dat niet aan te vinken. Bij een <i>Intern Artikel</i> heb je de mogelijkheid om bestanden te uploaden.',
-
-    'An internal article is an article published by us. By checking this checkbox you can attach files to the article.' => 'Een intern artikel is een artikel dat wordt gepubliceerd door ons. Door dit aan te vinken kan je bestanden aan dit artikel toevoegen.',
-
     'How To Start' => 'Hoe Starten',
     'Your first time here?' => 'Je eerste keer hier?',
 
@@ -172,8 +171,9 @@ return array(
     'On this page you can view all the articles (the books) attached to this subject. There is a button to add other articles to the subject. Existing articles can be edited and/or removed.' => 'Op deze pagina kan je alle artikels (de boeken) zien die verbonden zijn met dit vak. Er is een knop om andere artikels toe te voegen aan dit vak. Bestaande artikels kunnen bewerken en/of verwijderd worden.',
     'At the bottom of this page you can view all the other docents of the course, they can also edit the subject, add articles, etc. You can remove them or add new ones.' => 'Onderaan de pagina kan u alle andere docenten van dit vak, deze kunnen ook het vak bewerken, artikels toevoegen, etc. U kan deze verwijderen of nieuwe toevoegen.',
     'Here you can manage all your articles (or books). You can edit existing ones or add new.' => 'Hier kan u alle artikels (of boeken) beheren. U kan bestaande wijzigen of nieuwe toevoegen.',
-    'To create an article you first need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.' => 'Om een nieuw artikel aan the maken moet u eerst algemene informatie invullen zoals titel, auteur, uitgever, etc. Als uw studenten het boek of slides ook kunnen downloaden van Toledo, moet u het vakje <em>Downloadbaar (op Toledo)</em> aanvinken. Als alle informatie dezelfde is als vorig jaar, moet u het vakje <em>Zelfde Als Vorig Jaar</em> aanvinken, wij zullen dan alle informatie voor u invullen.',
-    'If the article isn\'t a textbook pressed by an extern publisher, you probably need to check <em>Internal Article</em>. By checking this box, you can add files to the article and they will be published by us. Afther checking that box, you can choose the binding and printing options.' => 'Als het artikel gaan handboek is gedrukt door een externe uitgever, moet u waarschijnlijk <em>Intern Artikel</em> aanvinken. Door dit vakje aan te vinken, kan u bestanden aan het artikel hangen en deze zullen dan uitgegeven worden door ons. Na het aanvinken kan u de inbinding en andere print opties kiezen.',
+    'To create an article you first need to choose between an article published by {{ unionShortName }} or one published by another publisher. An article published by {{ unionShortName }} has the ability to add files.' => 'Om een nieuw artikel aan the maken moet u eerst kiezen tussen een artikel uitgegeven door {{ unionShortName }} of een uitgegeven door een andere uitgever. Een artikel uitgegeven door {{ unionShortName }} heeft de mogelijkheid om bestanden toe te voegen.',
+    'After selecting the type of article, you need to enter the general information like title, author, publisher, etc. If your students can download the book or slides from Toledo as well, you need to check the box <em>Downloadable (on Toledo)</em>. When all the information is the same as previous year, you need to check the box <em>Same As Previous Year</em>, we will then enter all the information for you.' => 'Na het kiezen van type artikel moet u algemene informatie invullen zoals titel, auteur, uitgever, etc. Als uw studenten het boek of slides ook kunnen downloaden van Toledo, moet u het vakje <em>Downloadbaar (op Toledo)</em> aanvinken. Als alle informatie dezelfde is als vorig jaar, moet u het vakje <em>Zelfde Als Vorig Jaar</em> aanvinken, wij zullen dan alle informatie voor u invullen.',
+    'If the article will be published by {{ unionShortName }}, you can choose the binding and printing options.' => 'Als het artikel zal uitgegeven worden door {{ unionShortName }}, kan u de inbinding en andere print opties kiezen.',
     'The last part of creating an article is selecting a subject (or course) for the article. You can choose any of your courses.' => 'Het laatste deel voor het aanmaken van een artikel is het vak selecteren. Hier kan u elk van uw vakken selecteren.',
     'Here you can change (nearly) everything you entered while creating the article.' => 'Hier kan u (bijna) alles wijzigen wat u invulde bij het aanmaken van het artikel.',
     'You can also view and manage the comments of the article.' => 'U kan ook commentaren van het artikel bekijken en beheren.',

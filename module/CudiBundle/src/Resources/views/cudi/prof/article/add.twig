@@ -4,27 +4,56 @@
     <div class="page-header">
         <h2>{{ translate('Add Article') }}</h2>
     </div>
-    {% autoescape false %}
-        {{ translate('If this is an article that will be published by us, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.') }}
-    {% endautoescape %}
-    {% import 'site/partials/form.twig' as forms %}
-    {{ forms.renderForm(form) }}
+    <div class="row">
+        <div class="span6 offset3" id="article_select">
+            <ul style="list-style:none;">
+                <li style="margin-bottom: 10px;">
+                    <a class="thumbnail" id="external_article" href="#" style="padding: 20px;text-decoration: none;">
+                        <span style="margin-right: 10px">
+                            <img src="/_cudi/img/icon-external.png" />
+                        </span>
+                        <span>
+                            {{ translate('Textbook from Other Publisher') }}
+                        </span>
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a class="thumbnail" id="internal_article" href="#" style="padding: 20px;text-decoration: none;">
+                        <span style="margin-right: 10px">
+                            <img src="/_cudi/img/icon-internal.png" />
+                        </span>
+                        <span>
+                            {{ translate('Published by {{ unionShortName }}')|replace({'{{ unionShortName }}': unionShortName}) }}
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="article_form" style="display: none;">
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#internal').parent().append(
-                $('<span>', {'class': 'icon-question-sign'}).popover({
-                    'placement': 'right',
-                    'title': '{{ translate('Internal Article') }}',
-                    'content': '{{ translate('An internal article is an article published by us. By checking this checkbox you can attach files to the article.') }}',
-                    'trigger': 'hover',
-                    'html': true
-                })
-            );
-            $('#internal').click(toggleInternal);
-            toggleInternal();
+            $('#external_article').click(function (e) {
+                e.preventDefault();
+
+                $('#article_select').hide();
+                $('#internal').prop('checked', false).closest('.control-group').hide();
+                toggleInternal();
+            });
+
+            $('#internal_article').click(function (e) {
+                e.preventDefault();
+
+                $('#article_select').hide();
+                $('#internal').prop('checked', true).closest('.control-group').hide();
+                toggleInternal();
+            });
 
             $('#subjectSearch').typeaheadRemote(
                 {
@@ -44,6 +73,8 @@
                 $('#internal_form').show();
             else
                 $('#internal_form').hide();
+
+            $('#article_form').show();
         }
     </script>
 {% endblock %}
