@@ -45,7 +45,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'entityManager' => $this->getEntityManager(),
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -63,7 +63,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'entityManager' => $this->getEntityManager(),
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
