@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     CudiBundle\Entity\Supplier,
@@ -54,6 +55,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('VAT Number');
         $this->add($field);
 
+        $field = new Select('template');
+        $field->setLabel('Template')
+            ->setAttribute('options', Supplier::$POSSIBLE_TEMPLATES)
+            ->setRequired();
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'supplier_add');
@@ -66,6 +73,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name' => $supplier->getName(),
             'phone_number' => $supplier->getPhoneNumber(),
             'vat_number' => $supplier->getVatNumber(),
+            'template' => $supplier->getTemplate(),
             'address_address_street' => $supplier->getAddress()->getStreet(),
             'address_address_number' => $supplier->getAddress()->getNumber(),
             'address_address_mailbox' => $supplier->getAddress()->getMailbox(),
@@ -111,6 +119,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         new PhoneNumberValidator(),
                     ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'template',
+                    'required' => true,
                 )
             )
         );
