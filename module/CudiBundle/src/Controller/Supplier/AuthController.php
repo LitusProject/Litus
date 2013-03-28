@@ -61,7 +61,7 @@ class AuthController extends \CudiBundle\Component\Controller\SupplierController
         }
 
         $this->redirect()->toRoute(
-            'supplier_index',
+            'cudi_supplier_index',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
@@ -83,7 +83,7 @@ class AuthController extends \CudiBundle\Component\Controller\SupplierController
         );
 
         $this->redirect()->toRoute(
-            'supplier_index',
+            'cudi_supplier_index',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )

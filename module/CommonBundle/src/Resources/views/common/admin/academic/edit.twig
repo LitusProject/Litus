@@ -10,7 +10,7 @@
         {{ forms.renderForm(form) }}
     </div>
 
-    {% if hasAccess('admin_academic', 'activate') %}
+    {% if hasAccess('common_admin_academic', 'activate') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Send Activation</div>
@@ -19,7 +19,7 @@
                         <i>Please hit the link below to send an activation code to the person!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_academic', {"action": "activate", "id": academic.getId()}) }}">&rarr; Send Activation</a>
+                        <a href="{{ url('common_admin_academic', {"action": "activate", "id": academic.getId()}) }}">&rarr; Send Activation</a>
                     </p>
                 </div>
             </div>

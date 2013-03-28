@@ -220,7 +220,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -243,7 +243,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -278,7 +278,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )

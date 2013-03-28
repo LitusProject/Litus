@@ -86,7 +86,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_config',
+                    'common_admin_config',
                     array(
                         'action' => 'manage'
                     )
@@ -116,7 +116,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_config',
+                'common_admin_config',
                 array(
                     'action' => 'manage'
                 )
@@ -139,7 +139,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_config',
+                'common_admin_config',
                 array(
                     'action' => 'manage'
                 )

@@ -95,7 +95,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company_user',
+                    'br_admin_company_user',
                     array(
                         'action' => 'manage',
                         'id' => $company->getId(),
@@ -145,7 +145,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company_user',
+                    'br_admin_company_user',
                     array(
                         'action' => 'manage',
                         'id' => $user->getCompany()->getId()
@@ -189,7 +189,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         );
 
         $this->redirect()->toRoute(
-            'admin_company_user',
+            'br_admin_company_user',
             array(
                 'action' => 'edit',
                 'id' => $user->getId(),
@@ -228,7 +228,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -251,7 +251,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -275,7 +275,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -298,7 +298,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )

@@ -32,7 +32,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#uploadBanner').formUploadProgress({
-                url: '{{ url('admin_banner', {"action": "progress"}) }}',
+                url: '{{ url('banner_admin_banner', {"action": "progress"}) }}',
                 name: '{{ uploadProgressId }}',
                 uploadProgressName: '{{ uploadProgressName }}',
                 interval: 1000,
@@ -50,7 +50,7 @@
                             $('#uploadBanner').find('#' + element).parent().parent().after(list);
                         }
                     } else if (data.info) {
-                        window.location.href = '{{ url('admin_banner', {"action": "manage"}) }}';
+                        window.location.href = '{{ url('banner_admin_banner', {"action": "manage"}) }}';
                     }
                     var progressModal = $('#progressModal');
                     progressModal.permanentModal('hide');

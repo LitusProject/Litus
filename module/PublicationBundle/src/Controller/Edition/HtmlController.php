@@ -52,7 +52,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'archive',
+                'publication_archive',
                 array(
                     'action' => 'overview'
                 )
@@ -75,7 +75,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'archive',
+                'publication_archive',
                 array(
                     'action' => 'overview'
                 )

@@ -82,7 +82,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 $this->redirect()->toRoute(
-                    'admin_shift_subscription',
+                    'shift_admin_shift_subscription',
                     array(
                         'action' => 'manage',
                         'id' => $shift->getId(),
@@ -188,7 +188,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_shift',
+                    'shift_admin_shift',
                     array(
                         'action' => 'manage'
                     )
@@ -207,7 +207,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_shift',
+                'shift_admin_shift',
                 array(
                     'action' => 'manage'
                 )
@@ -228,7 +228,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_shift',
+                'shift_admin_shift',
                 array(
                     'action' => 'manage'
                 )
@@ -252,7 +252,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_shift',
+                'shift_admin_shift',
                 array(
                     'action' => 'manage'
                 )
@@ -275,7 +275,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_shift',
+                'shift_admin_shift',
                 array(
                     'action' => 'manage'
                 )
@@ -297,7 +297,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
 
         $this->redirect()->toRoute(
-            'admin_shift_subscription',
+            'shift_admin_shift_subscription',
             array(
                 'action' => 'manage',
                 'id' => $shift->getId(),

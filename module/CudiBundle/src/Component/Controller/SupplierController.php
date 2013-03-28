@@ -42,7 +42,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         $result->supplier = $this->getSupplier();
         $result->loginForm = new LoginForm(
             $this->url()->fromRoute(
-                'supplier_auth',
+                'cudi_supplier_auth',
                 array(
                     'action' => 'login'
                 )
@@ -67,10 +67,10 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     {
         return array(
             'action'         => 'index',
-            'controller'     => 'index',
+            'controller'     => 'common_index',
 
-            'auth_route'     => 'supplier_index',
-            'redirect_route' => 'supplier_index'
+            'auth_route'     => 'cudi_supplier_index',
+            'redirect_route' => 'cudi_supplier_index'
         );
     }
 

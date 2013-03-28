@@ -76,7 +76,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_notification',
+                    'notification_admin_notification',
                     array(
                         'action' => 'manage'
                     )
@@ -123,7 +123,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_notification',
+                    'notification_admin_notification',
                     array(
                         'action' => 'manage'
                     )
@@ -172,7 +172,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_notification',
+                'notification_admin_notification',
                 array(
                     'action' => 'manage'
                 )
@@ -195,7 +195,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_notification',
+                'notification_admin_notification',
                 array(
                     'action' => 'manage'
                 )

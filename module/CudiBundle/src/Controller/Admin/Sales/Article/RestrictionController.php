@@ -61,7 +61,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_article_restriction',
+                    'cudi_admin_sales_article_restriction',
                     array(
                         'action' => 'manage',
                         'id' => $article->getId(),
@@ -114,7 +114,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -137,7 +137,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -161,7 +161,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
@@ -184,7 +184,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_sales_article',
+                'cudi_admin_sales_article',
                 array(
                     'action' => 'manage'
                 )

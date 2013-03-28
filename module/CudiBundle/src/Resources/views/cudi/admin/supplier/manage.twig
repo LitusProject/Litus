@@ -24,11 +24,11 @@
                             <td>{{ supplier.getPhoneNumber() }}</td>
                             <td>{{ supplier.getAddress().getCity() }}</td>
                             <td class="actions">
-                                {% if hasAccess('admin_supplier', 'edit') %}
-                                    <a href="{{ url('admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
+                                {% if hasAccess('cudi_admin_supplier', 'edit') %}
+                                    <a href="{{ url('cudi_admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
                                 {% endif %}
-                                {% if hasAccess('admin_supplier_user', 'manage') %}
-                                    <a href="{{ url('admin_supplier_user', {"action": "manage", "id": supplier.getId()}) }}" class="view">Users</a>
+                                {% if hasAccess('cudi_admin_supplier_user', 'manage') %}
+                                    <a href="{{ url('cudi_admin_supplier_user', {"action": "manage", "id": supplier.getId()}) }}" class="view">Users</a>
                                 {% endif %}
                             </td>
                         </tr>

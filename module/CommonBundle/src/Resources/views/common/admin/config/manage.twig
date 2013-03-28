@@ -26,8 +26,8 @@
 		                    <td>{{ key }}</td>
 		                    <td>{{ value.value }}
 		                    <td>
-		                        {% if hasAccess('admin_config', 'edit') %}
-								    <a href="{{ url('admin_config', {"action": "edit", "key": value.fullKey }) }}" class="edit">Edit</a></li>
+		                        {% if hasAccess('common_admin_config', 'edit') %}
+								    <a href="{{ url('common_admin_config', {"action": "edit", "key": value.fullKey }) }}" class="edit">Edit</a></li>
 								{% endif %}
 		                    </td>
 		                </tr>

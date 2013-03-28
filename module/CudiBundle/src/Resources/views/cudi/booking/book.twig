@@ -12,7 +12,7 @@
             {% if authenticatedPerson == null %}
                 {{ translate('Please login to book textbooks.') }}
             {% else %}
-                {% if hasAccess('booking', 'search') %}
+                {% if hasAccess('cudi_booking', 'search') %}
                     <div class="row">
                         <div class="pull-right">
                             <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
@@ -44,7 +44,7 @@
                             </tbody>
                         </table>
 
-                        <a class="btn pull-left" href="{{ url('booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                        <a class="btn pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
                         <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
                     </div>
                 {% endif %}
@@ -138,7 +138,7 @@
 
                         </table>
 
-                        <a class="btn pull-left" href="{{ url('booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                        <a class="btn pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
 
                         {% if form.get('submit') %}
                             {{ formElement(form.get('submit')) }}
@@ -165,7 +165,7 @@
                 });
             });
 
-            {% if hasAccess('booking', 'search') %}
+            {% if hasAccess('cudi_booking', 'search') %}
             $('#searchArticles').click(function (e) {
                 e.preventDefault();
                 var view = $(this).data('view') == undefined ? 'view' : $(this).data('view');
@@ -200,7 +200,7 @@
                     }
 
                     $.ajax({
-                        url: '{{ url('booking', {'action': 'search'}) }}' + $this.val(),
+                        url: '{{ url('cudi_booking', {'action': 'search'}) }}' + $this.val(),
                         method: 'get',
                         dataType: 'json',
                         success: function (e) {
@@ -277,11 +277,11 @@
                     if ($(this).val() > 0)
                         data[$(this).data('id')] = $(this).val();
                 });
-                $.post('{{ url('booking', {'action': 'bookSearch'}) }}', data, function (e) {
+                $.post('{{ url('cudi_booking', {'action': 'bookSearch'}) }}', data, function (e) {
                     if (e.status == 'success')
-                        window.location.href = '{{ url('booking', {'action': 'view'}) }}';
+                        window.location.href = '{{ url('cudi_booking', {'action': 'view'}) }}';
                     else
-                        window.location.href = '{{ url('booking', {'action': 'book'}) }}';
+                        window.location.href = '{{ url('cudi_booking', {'action': 'book'}) }}';
                 }, 'json');
             });
             {% endif %}

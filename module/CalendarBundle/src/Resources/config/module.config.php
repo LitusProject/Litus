@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_calendar' => array(
+            'calendar_admin_calendar' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/calendar[/:action[/:id][/page/:page]][/]',
@@ -37,12 +37,12 @@ return array(
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_calendar',
+                        'controller' => 'calendar_admin_calendar',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_calendar_registration' => array(
+            'calendar_admin_calendar_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/site/calendar/registration[/:action][/]',
@@ -50,7 +50,7 @@ return array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_calendar_registration',
+                        'controller' => 'calendar_admin_calendar_registration',
                         'action'     => 'manage',
                     ),
                 ),
@@ -120,11 +120,11 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'calendar_install'            => 'CalendarBundle\Controller\Admin\InstallController',
-            'admin_calendar'              => 'CalendarBundle\Controller\Admin\CalendarController',
-            'admin_calendar_registration' => 'CalendarBundle\Controller\Admin\RegistrationController',
+            'calendar_install'                     => 'CalendarBundle\Controller\Admin\InstallController',
+            'calendar_admin_calendar'              => 'CalendarBundle\Controller\Admin\CalendarController',
+            'calendar_admin_calendar_registration' => 'CalendarBundle\Controller\Admin\RegistrationController',
 
-            'calendar'  => 'CalendarBundle\Controller\CalendarController',
+            'calendar'                             => 'CalendarBundle\Controller\CalendarController',
         ),
     ),
     'assetic_configuration' => array(

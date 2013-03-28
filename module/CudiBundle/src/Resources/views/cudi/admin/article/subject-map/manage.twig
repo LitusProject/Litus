@@ -49,7 +49,9 @@
                     <td>{{ mapping.getSubject().getCredits() }}</td>
                     <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
-                        <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-article="{{ article.getTitle() }}" data-subject="{{ mapping.getSubject().getName() }}">Delete</a>
+                        {% if hasAccess('cudi_admin_article_subject', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-article="{{ article.getTitle() }}" data-subject="{{ mapping.getSubject().getName() }}">Delete</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -84,7 +86,7 @@
 
             $('#subjectSearch').typeaheadRemote(
                 {
-                    source: '{{ url("admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                    source: '{{ url("syllabus_admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
@@ -104,7 +106,7 @@
             removeMapping.find('.subjectName').html($(this).data('subject'));
             var id = $this.data('id');
             removeMapping.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_article_subject', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('cudi_admin_article_subject', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.mapping_removed_success').removeClass('hide');

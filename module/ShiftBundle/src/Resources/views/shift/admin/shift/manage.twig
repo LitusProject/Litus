@@ -38,15 +38,15 @@
 	                    <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
 	                    <td class="actions">
 		                	{% if shift.canBeEditedBy(authenticatedPerson) %}
-		                        {% if hasAccess('admin_shift', 'edit') %}
-		                            <a href="{{ url('admin_shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
+		                        {% if hasAccess('shift_admin_shift', 'edit') %}
+		                            <a href="{{ url('shift_admin_shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
 		                        {% endif %}
-		                        {% if hasAccess('admin_shift', 'delete') %}
+		                        {% if hasAccess('shift_admin_shift', 'delete') %}
 		                            <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
 		                        {% endif %}
 	                        {% endif %}
-	                        {% if hasAccess('admin_shift_subscription', 'manage') %}
-	                            <a href="{{ url('admin_shift_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
+	                        {% if hasAccess('shift_admin_shift_subscription', 'manage') %}
+	                            <a href="{{ url('shift_admin_shift_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>
@@ -94,7 +94,7 @@
 			});
 			var id = $this.data('id');
 			removeShift.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_shift', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('shift_admin_shift', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.shift_removed_success').removeClass('hide');

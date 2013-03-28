@@ -39,7 +39,7 @@
                         <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
                         <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_session', 'expire') and session.getId() != currentSession.getId() %}
+                            {% if hasAccess('common_session', 'expire') and session.getId() != currentSession.getId() %}
                                 <a href="#" class="btn btn-danger expireSession" data-id="{{ session.getId() }}">{{ translate('Expire') }}</a></li>
                             {% endif %}
                         </td>
@@ -60,7 +60,7 @@
             var $this = $(this);
 
             e.preventDefault();
-            $.post('{{ url('session', {"action": "expire"})}}' + $this.data('id'), function (data) {
+            $.post('{{ url('common_session', {"action": "expire"})}}' + $this.data('id'), function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').removeClass('in');
                     $('#session_removed_success').addClass('in');

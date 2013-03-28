@@ -42,7 +42,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             );
 
             $this->redirect()->toRoute(
-                'corporate_index',
+                'br_corporate_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
@@ -63,7 +63,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             );
 
             $this->redirect()->toRoute(
-                'corporate_index',
+                'br_corporate_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
@@ -96,7 +96,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             );
 
             $this->redirect()->toRoute(
-                'corporate_index',
+                'br_corporate_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
@@ -117,7 +117,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             );
 
             $this->redirect()->toRoute(
-                'corporate_index',
+                'br_corporate_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
@@ -152,7 +152,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             );
 
             $this->redirect()->toRoute(
-                'corporate_index',
+                'br_corporate_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
@@ -173,7 +173,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             );
 
             $this->redirect()->toRoute(
-                'corporate_index',
+                'br_corporate_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )

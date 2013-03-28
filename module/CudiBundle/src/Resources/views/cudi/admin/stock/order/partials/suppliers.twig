@@ -2,7 +2,7 @@
     <nav id="controller_sub_nav">
         <ul id="supplier_nav">
             {% for supp in suppliers %}
-                <li><a {% if supp.getId() == supplier.getId() %} class="active" {% endif %}href="{{ url("admin_stock_order", {"action": "supplier", "id": supp.getId()}) }}">{{ supp.getName() }}</a></li>
+                <li><a {% if supp.getId() == supplier.getId() %} class="active" {% endif %}href="{{ url("cudi_admin_stock_order", {"action": "supplier", "id": supp.getId()}) }}">{{ supp.getName() }}</a></li>
             {% endfor %}
         </ul>
     </nav>

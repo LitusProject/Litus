@@ -66,7 +66,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         $isAuthenticated = $this->getAuthentication()->isAuthenticated();
 
         if ($isAuthenticated) {
-            $this->redirect()->toRoute('admin_index');
+            $this->redirect()->toRoute('common_admin_index');
 
             return new ViewModel();
         }
@@ -92,7 +92,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toUrl($shibbolethLogoutUrl);
         } else {
             $this->redirect()->toRoute(
-                'admin_auth'
+                'common_admin_auth'
             );
         }
 
@@ -126,7 +126,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                     if ($authentication->isAuthenticated()) {
                         $this->redirect()->toRoute(
-                            'admin_index'
+                            'common_admin_index'
                         );
                     }
                 }

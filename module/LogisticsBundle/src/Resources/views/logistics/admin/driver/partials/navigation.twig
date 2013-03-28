@@ -3,11 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_driver', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_driver', {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('logistics_admin_driver', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_driver', {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_driver', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_driver', {"action": "manage"}) }}">Manage</a></li>
+            {% if hasAccess('logistics_admin_driver', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_driver', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

@@ -41,14 +41,14 @@
 	                    <td>{{ event.getEvent().getEndDate().format('d/m/Y H:i') }}</td>
 	                    <td class="actions">
 	                        <ul>
-	                        	{% if hasAccess('admin_company_event', 'editPoster') %}
-	                            	<li><a href="{{ url('admin_company_event', {"action": "editPoster", "id": event.getId()}) }}" class="calendar_edit">Poster</a></li>
+	                        	{% if hasAccess('br_admin_company_event', 'editPoster') %}
+	                            	<li><a href="{{ url('br_admin_company_event', {"action": "editPoster", "id": event.getId()}) }}" class="calendar_edit">Poster</a></li>
                                 {% endif %}
-	                        	{% if hasAccess('admin_company_event', 'delete') %}
+	                        	{% if hasAccess('br_admin_company_event', 'delete') %}
 	                            	<li><a href="#" class="delete" data-id="{{ event.getId() }}" data-name="{{ event.getEvent().getTitle(language) }}">Delete</a></li>
 	                            {% endif %}
-                            	{% if hasAccess('admin_company_event', 'edit') %}
-                                	<li><a href="{{ url('admin_company_event', {"action": "edit", "id": event.getId()}) }}" class="calendar_edit">Edit</a></li>
+                            	{% if hasAccess('br_admin_company_event', 'edit') %}
+                                	<li><a href="{{ url('br_admin_company_event', {"action": "edit", "id": event.getId()}) }}" class="calendar_edit">Edit</a></li>
                                 {% endif %}
 	                        </ul>
 	                    </td>
@@ -95,7 +95,7 @@
 			removeEvent.find('.eventName').html($(this).data('name'));
 			var id = $this.data('id');
 			removeEvent.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_company_event', {"action": "delete"}) }}' + id, function (data) {
+				$.post('{{ url('br_admin_company_event', {"action": "delete"}) }}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.event_removed_success').removeClass('hide');

@@ -25,7 +25,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_publication' => array(
+            'publication_admin_publication' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/publication[/:action[/:id][/page/:page]][/]',
@@ -35,12 +35,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_publication',
+                        'controller' => 'publication_admin_publication',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_edition_pdf' => array(
+            'publication_admin_edition_pdf' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/edition/pdf[/:action[/:id][/page/:page]][/]',
@@ -50,12 +50,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_edition_pdf',
+                        'controller' => 'publication_admin_edition_pdf',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_edition_html' => array(
+            'publication_admin_edition_html' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/edition/html[/:action[/:id][/page/:page]][/]',
@@ -65,12 +65,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_edition_html',
+                        'controller' => 'publication_admin_edition_html',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'archive' => array(
+            'publication_archive' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/archive[/:action[/:publication[/:year]]][/]',
@@ -80,12 +80,12 @@ return array(
                         'year'        => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'archive',
+                        'controller' => 'publication_archive',
                         'action'     => 'overview',
                     ),
                 ),
             ),
-            'edition_html' => array(
+            'publication_edition_html' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/archive/html[/:action[/:id]][/]',
@@ -94,7 +94,7 @@ return array(
                         'id'          => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'edition_html',
+                        'controller' => 'publication_edition_html',
                         'action'     => 'view',
                     ),
                 ),
@@ -136,14 +136,14 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'publication_install' => 'PublicationBundle\Controller\Admin\InstallController',
+            'publication_install'             => 'PublicationBundle\Controller\Admin\InstallController',
 
-            'admin_publication'   => 'PublicationBundle\Controller\Admin\PublicationController',
-            'admin_edition_pdf'   => 'PublicationBundle\Controller\Admin\Edition\PdfController',
-            'admin_edition_html'  => 'PublicationBundle\Controller\Admin\Edition\HtmlController',
+            'publication_admin_publication'   => 'PublicationBundle\Controller\Admin\PublicationController',
+            'publication_admin_edition_pdf'   => 'PublicationBundle\Controller\Admin\Edition\PdfController',
+            'publication_admin_edition_html'  => 'PublicationBundle\Controller\Admin\Edition\HtmlController',
 
-            'archive'             => 'PublicationBundle\Controller\Archive\ArchiveController',
-            'edition_html'        => 'PublicationBundle\Controller\Edition\HtmlController',
+            'publication_archive'             => 'PublicationBundle\Controller\Archive\ArchiveController',
+            'publication_edition_html'        => 'PublicationBundle\Controller\Edition\HtmlController',
         ),
     ),
     'assetic_configuration' => array(

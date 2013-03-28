@@ -11,7 +11,7 @@
                 {% for year in years %}
                     <li>
                         <center>
-                            <a class="thumbnail span2" style="height: 70px;line-height: 70px" href="{{ url('archive', { 'action': 'view', 'publication': publication.getId(), 'year': year.getId() }) }}">{{ year.getCode() }}</a>
+                            <a class="thumbnail span2" style="height: 70px;line-height: 70px" href="{{ url('publication_archive', { 'action': 'view', 'publication': publication.getId(), 'year': year.getId() }) }}">{{ year.getCode() }}</a>
                         </center>
                     </li>
                 {% endfor %}

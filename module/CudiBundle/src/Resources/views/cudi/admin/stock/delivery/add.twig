@@ -39,7 +39,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_stock_delivery', 'manage') %}
+        {% if hasAccess('cudi_admin_stock_delivery', 'manage') %}
             <div class="sidebox">
                 <div class="title">Overview Deliveries</div>
                 <div class="content">
@@ -47,7 +47,7 @@
                         <i>Please hit the link below to view all deliveries!</i>
                     </p>
                     <p>
-                        <a href="{{ url("admin_stock_delivery", {"action": "manage"}) }}">&rarr; Overview Deliveries</a>
+                        <a href="{{ url("cudi_admin_stock_delivery", {"action": "manage"}) }}">&rarr; Overview Deliveries</a>
                     </p>
                 </div>
             </div>
@@ -83,7 +83,7 @@
         $(document).ready(function () {
             $('#articleSearch').typeaheadRemote(
                 {
-                    source: '{{ url("admin_stock_delivery_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                    source: '{{ url("cudi_admin_stock_delivery_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

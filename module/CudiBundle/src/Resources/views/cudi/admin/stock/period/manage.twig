@@ -23,8 +23,8 @@
                     <td>{{ period.getStartDate().format('Y-m-d H:i') }}</td>
                     <td>{% if not period.isOpen() %}{{ period.getEndDate().format('Y-m-d H:i')}}{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_stock_period', 'view') %}
-                            <a href="{{ url("admin_stock_period", {"action": "view", "id": period.getId()}) }}" class="view">View</a>
+                        {% if hasAccess('cudi_admin_stock_period', 'view') %}
+                            <a href="{{ url("cudi_admin_stock_period", {"action": "view", "id": period.getId()}) }}" class="view">View</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -35,7 +35,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_stock_period', 'new') %}
+        {% if hasAccess('cudi_admin_stock_period', 'new') %}
             <div class="sidebox">
                 <div class="title">New Stock Period</div>
                 <div class="content">
@@ -75,7 +75,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#newPeriod .new').click(function () {
-                window.location = "{{ url("admin_stock_period", {"action": "new"}) }}";
+                window.location = "{{ url("cudi_admin_stock_period", {"action": "new"}) }}";
             });
         });
     </script>

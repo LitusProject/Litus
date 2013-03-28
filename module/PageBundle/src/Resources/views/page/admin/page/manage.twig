@@ -18,7 +18,7 @@
     </div>
 
 	<div id="controller_action">
-	    <table class="{% if not hasAccess('admin_page_category', 'manage') %} full_width {% endif %} manage">
+	    <table class="{% if not hasAccess('page_admin_category', 'manage') %} full_width {% endif %} manage">
 	        <thead>
 	            <tr>
 	                <th>Title</th>
@@ -38,10 +38,10 @@
 	                    <td>{{ page.getCreationPerson().getFullName() }}</td>
 		                <td class="actions">
 		                	{% if page.canBeEditedBy(authenticatedPerson) %}
-		                        {% if hasAccess('admin_page', 'edit') %}
-		                            <a href="{{ url('admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
+		                        {% if hasAccess('page_admin_page', 'edit') %}
+		                            <a href="{{ url('page_admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
 		                        {% endif %}
-		                        {% if hasAccess('admin_page', 'delete') %}
+		                        {% if hasAccess('page_admin_page', 'delete') %}
 		                            <a href="#" data-id="{{ page.getId() }}" data-title="{{ page.getTitle(language) }}" class="delete">Delete</a>
 		                        {% endif %}
 		                	{% endif %}
@@ -55,7 +55,7 @@
 	</div>
 
 	<aside>
-		{% if hasAccess('admin_page_category', 'manage') %}
+		{% if hasAccess('page_admin_category', 'manage') %}
 			<div class="sidebox">
 			    <div class="title">Categories</div>
 			    <div class="content">
@@ -63,13 +63,13 @@
 			            <i>Please hit the link below to manage and create categories!</i>
 			        </p>
 			    	<p>
-			    		<a href="{{ url('admin_page_category', {"action": "manage"}) }}">&rarr; Categories</a>
+			    		<a href="{{ url('page_admin_category', {"action": "manage"}) }}">&rarr; Categories</a>
 			    	</p>
 			    </div>
 			</div>
 		{% endif %}
 
-		{% if hasAccess('admin_page_link', 'manage') %}
+		{% if hasAccess('page_admin_link', 'manage') %}
 			<div class="sidebox">
 			    <div class="title">Links</div>
 			    <div class="content">
@@ -77,7 +77,7 @@
 			            <i>Please hit the link below to manage and create links!</i>
 			        </p>
 			    	<p>
-			    		<a href="{{ url('admin_page_link', {"action": "manage"}) }}">&rarr; Links</a>
+			    		<a href="{{ url('page_admin_link', {"action": "manage"}) }}">&rarr; Links</a>
 			    	</p>
 			    </div>
 			</div>
@@ -121,7 +121,7 @@
 			});
 			var id = $this.data('id');
 			removePage.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_page', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('page_admin_page', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.page_removed_success').removeClass('hide');

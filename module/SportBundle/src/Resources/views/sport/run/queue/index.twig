@@ -66,7 +66,7 @@
         function getName() {
             var $this = $(this);
             if (8 == $(this).val().length) {
-                $.get('{{ url('run_queue', {"action": "getName"})}}' +  $(this).val(), function (data) {
+                $.get('{{ url('sport_run_queue', {"action": "getName"})}}' +  $(this).val(), function (data) {
                     if (data && 'success' == data.status) {
                         var fieldSet = $this.closest('fieldset');
 

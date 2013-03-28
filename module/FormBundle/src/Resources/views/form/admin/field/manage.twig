@@ -37,7 +37,7 @@
                     <td>{{ field.getOrder() }}</td>
                     <td>{% if field.isRequired() %}&times;{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_form_field', 'delete') %}
+                        {% if hasAccess('form_admin_form_field', 'delete') %}
                             <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
                         {% endif %}
                     </td>
@@ -49,7 +49,7 @@
 	</div>
 
 	<aside>
-	    {% if hasAccess('admin_form_field', 'add') %}
+	    {% if hasAccess('form_admin_form_field', 'add') %}
     		<div class="sidebox">
     	        <div class="title">Add Field</div>
     	       	<div class="content">
@@ -57,7 +57,7 @@
     		        	<i>Please hit the link below to add a field!</i>
     		        </p>
     		        <p>
-    		           	<a href="{{ url('admin_form_field', {"action": "add", "id": formSpecification.getId() }) }}">&rarr; Add Field</a>
+    		           	<a href="{{ url('form_admin_form_field', {"action": "add", "id": formSpecification.getId() }) }}">&rarr; Add Field</a>
     		        </p>
     		    </div>
     		</div>
@@ -100,7 +100,7 @@
 			removeField.find('.formSpecification').html($(this).data('form'));
 			var id = $this.data('id');
 			removeField.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_form_field', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('form_admin_form_field', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
     					$('.field_removed_success').show();

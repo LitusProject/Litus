@@ -131,7 +131,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page',
+                    'page_admin_page',
                     array(
                         'action' => 'manage'
                     )
@@ -161,7 +161,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 ->findOneByName($page->getName());
 
             $this->redirect()->toRoute(
-                    'admin_page',
+                    'page_admin_page',
                     array(
                         'action' => 'edit',
                         'id'     => $activeVersion->getId()
@@ -254,7 +254,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page',
+                    'page_admin_page',
                     array(
                         'action' => 'manage'
                     )
@@ -355,7 +355,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_page',
+                'page_admin_page',
                 array(
                     'action' => 'manage'
                 )
@@ -378,7 +378,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_page',
+                'page_admin_page',
                 array(
                     'action' => 'manage'
                 )
@@ -397,7 +397,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_page',
+                'page_admin_page',
                 array(
                     'action' => 'manage'
                 )

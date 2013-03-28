@@ -77,7 +77,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\A
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'br_admin_cv_entry',
                 array(
                     'action' => 'manage'
                 )

@@ -7,7 +7,7 @@
             <div class="subnav nav-collapse">
                 <ul class="nav">
                     {% for year in authenticatedPerson.getCompany().getCvBookYears() %}
-                        <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a href="{{ url('corporate_cv', {"action": getParam("action"), "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a></li>
+                        <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a href="{{ url('br_corporate_cv', {"action": getParam("action"), "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -18,11 +18,11 @@
         <div class="navbar-inner">
             <div class="subnav nav-collapse">
                 <ul class="nav">
-                    {% if hasAccess('corporate_cv', 'grouped') %}
-                        <li {% if getParam("action") == "grouped" %}class="active"{% endif %}><a href="{{ url('corporate_cv', {"action": "grouped", "academicyear": getParam('year')}) }}">{{ translate('By Study') }}</a></li>
+                    {% if hasAccess('br_corporate_cv', 'grouped') %}
+                        <li {% if getParam("action") == "grouped" %}class="active"{% endif %}><a href="{{ url('br_corporate_cv', {"action": "grouped", "academicyear": getParam('year')}) }}">{{ translate('By Study') }}</a></li>
                     {% endif %}
-                    {% if hasAccess('corporate_cv', 'list') %}
-                        <li {% if getParam("action") == "list" %}class="active"{% endif %}><a href="{{ url('corporate_cv', {"action": "list", "academicyear": getParam('year')}) }}">{{ translate('Alphabetically') }}</a></li>
+                    {% if hasAccess('br_corporate_cv', 'list') %}
+                        <li {% if getParam("action") == "list" %}class="active"{% endif %}><a href="{{ url('br_corporate_cv', {"action": "list", "academicyear": getParam('year')}) }}">{{ translate('Alphabetically') }}</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -90,7 +90,7 @@
         }
 
         function performSearch(text) {
-            $.post('{{ url('corporate_cv', {"action": "search"})}}string/' + text, function (data) {
+            $.post('{{ url('br_corporate_cv', {"action": "search"})}}string/' + text, function (data) {
                 $('.accordion-group-entry').hide();
                 $('.accordion-group-study').show();
                 $.each(data, function(index, element) {
@@ -103,7 +103,7 @@
         }
 
         function filterGrade(min, max) {
-            $.post('{{ url('corporate_cv', {"action": "search"})}}min/' + min + '/max/' + max, function (data) {
+            $.post('{{ url('br_corporate_cv', {"action": "search"})}}min/' + min + '/max/' + max, function (data) {
                 $('.accordion-group-entry').hide();
                 $('.accordion-group-study').show();
                 $.each(data, function(index, element) {

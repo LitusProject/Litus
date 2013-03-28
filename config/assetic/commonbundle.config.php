@@ -25,48 +25,48 @@ return array(
             '@admin_js',
         ),
 
-        'admin_academic' => array(
+        'common_admin_academic' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_auth' => array(
+        'common_admin_auth' => array(
             '@common_jquery',
         ),
-        'admin_config' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_modal',
-        ),
-        'admin_cache' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-        'admin_index' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-        'admin_location' => array(
+        'common_admin_config' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_person' => array(
+        'common_admin_cache' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'common_admin_index' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'common_admin_location' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_role' => array(
+        'common_admin_person' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'common_admin_role' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -74,7 +74,7 @@ return array(
             '@bootstrap_js_modal',
         ),
 
-        'account' => array(
+        'common_account' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -91,7 +91,7 @@ return array(
             '@common_typeahead_remote',
             '@common_holder_js',
         ),
-        'session' => array(
+        'common_session' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -102,7 +102,7 @@ return array(
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
         ),
-        'auth' => array(
+        'common_auth' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -115,7 +115,7 @@ return array(
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
         ),
-        'index' => array(
+        'common_index' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',

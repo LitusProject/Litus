@@ -27,8 +27,8 @@
             <tr>
                 <td></td>
                 <td>
-                    {% if hasAccess('admin_sales_session', 'editRegister') %}
-                        <a href="{{ url("admin_sales_session", {"action": "editRegister", "id": session.getOpenRegister().getId()}) }}">(edit)</a></td>
+                    {% if hasAccess('cudi_admin_sales_session', 'editRegister') %}
+                        <a href="{{ url("cudi_admin_sales_session", {"action": "editRegister", "id": session.getOpenRegister().getId()}) }}">(edit)</a></td>
                     {% endif %}
             </tr>
             {% for unit in units %}
@@ -60,8 +60,8 @@
                 <tr>
                     <td></td>
                     <td>
-                        {% if hasAccess('admin_sales_session', 'editRegister') %}
-                            <a href="{{ url("admin_sales_session", {"action": "editRegister", "id": session.getCloseRegister().getId()}) }}">(edit)</a></td>
+                        {% if hasAccess('cudi_admin_sales_session', 'editRegister') %}
+                            <a href="{{ url("cudi_admin_sales_session", {"action": "editRegister", "id": session.getCloseRegister().getId()}) }}">(edit)</a></td>
                         {% endif %}
                 </tr>
                 {% for unit in units %}
@@ -91,7 +91,7 @@
 
     <aside>
         {% if session.isOpen() %}
-            {% if hasAccess('admin_sales_session', 'close') %}
+            {% if hasAccess('cudi_admin_sales_session', 'close') %}
                 <div class="sidebox">
                     <div class="title">Close Session</div>
                     <div class="content">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             {% endif %}
-            {% if hasAccess('sale_sale', 'sale') %}
+            {% if hasAccess('cudi_sale_sale', 'sale') %}
                 <div class="sidebox">
                     <div class="title">Sale Application</div>
                     <div class="content">
@@ -112,13 +112,13 @@
                             <i>Please hit the link below to open the sale application for regular users!</i>
                         </p>
                         <p>
-                            <a href="{{ url("sale_sale", {"action": "sale", "session": session.getId()}) }}">&rarr; Pay Desk Application</a>
+                            <a href="{{ url("cudi_sale_sale", {"action": "sale", "session": session.getId()}) }}">&rarr; Pay Desk Application</a>
                         </p>
                     </div>
                 </div>
             {% endif %}
         {% endif %}
-        {% if hasAccess('admin_sales_session', 'queueItems') %}
+        {% if hasAccess('cudi_admin_sales_session', 'queueItems') %}
             <div class="sidebox">
                 <div class="title">Queue Items</div>
                 <div class="content">
@@ -126,12 +126,12 @@
                         <i>Please hit the link below to view the queue items!</i>
                     </p>
                     <p>
-                        <a href="{{ url("admin_sales_session", {"action": "queueItems", "id": session.getId()}) }}">&rarr; Queue Items</a>
+                        <a href="{{ url("cudi_admin_sales_session", {"action": "queueItems", "id": session.getId()}) }}">&rarr; Queue Items</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_session', 'killSocket') %}
+        {% if hasAccess('cudi_admin_sales_session', 'killSocket') %}
             <div class="sidebox">
                 <div class="title">Restart Socket</div>
                 <div class="content">
@@ -145,7 +145,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('admin_sales_session_restriction', 'manage') %}
+        {% if hasAccess('cudi_admin_sales_session_restriction', 'manage') %}
             <div class="sidebox">
                 <div class="title">Restrictions</div>
                 <div class="content">
@@ -153,7 +153,7 @@
                         <i>Please hit the link below to view the restrictions of this session!</i>
                     </p>
                     <p>
-                        <a href="{{ url("admin_sales_session_restriction", {"action": "manage", "id": session.getId()}) }}">&rarr; Restrictions</a>
+                        <a href="{{ url("cudi_admin_sales_session_restriction", {"action": "manage", "id": session.getId()}) }}">&rarr; Restrictions</a>
                     </p>
                 </div>
             </div>
@@ -186,10 +186,10 @@
         $(document).ready(function () {
             $('.closeSession').click(openModal);
 
-            {% if hasAccess('admin_sales_session', 'killSocket') %}
+            {% if hasAccess('cudi_admin_sales_session', 'killSocket') %}
             $('#killSocket').click(function(e) {
                 e.preventDefault();
-                $.post('{{ url('admin_sales_session', {"action": "killSocket"})}}', function (data) {
+                $.post('{{ url('cudi_admin_sales_session', {"action": "killSocket"})}}', function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('#socket_killed_success').removeClass('hide');
@@ -211,7 +211,7 @@
             e.preventDefault();
             var closeSession = $('#closeSession');
             closeSession.find('.yes').unbind('click').click(function () {
-                window.location.href = '{{ url("admin_sales_session", {"action": "close", "id": session.getId()}) }}';
+                window.location.href = '{{ url("cudi_admin_sales_session", {"action": "close", "id": session.getId()}) }}';
             });
             closeSession.modal();
         }

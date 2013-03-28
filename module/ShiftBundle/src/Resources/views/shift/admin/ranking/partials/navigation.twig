@@ -4,7 +4,7 @@
     <nav id="controller_nav">
         <ul>
             {% for academicYear in academicYears %}
-                <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("admin_shift_ranking", {"action": "index", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("shift_admin_shift_ranking", {"action": "index", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
             {% endfor %}
         </ul>
     </nav>

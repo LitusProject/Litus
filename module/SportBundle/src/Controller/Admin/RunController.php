@@ -113,7 +113,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_run',
+                    'sport_admin_run',
                     array(
                         'action' => 'identification'
                     )
@@ -179,7 +179,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_run',
+                'sport_admin_run',
                 array(
                     'action' => 'identification'
                 )
@@ -202,7 +202,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_run',
+                'sport_admin_run',
                 array(
                     'action' => 'identification'
                 )
@@ -279,7 +279,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_shift_counter',
+                'sport_run_index',
                 array(
                     'action' => 'index'
                 )

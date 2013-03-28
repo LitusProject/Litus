@@ -3,8 +3,8 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_study', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_study') }}">Manage</a></li>
+            {% if hasAccess('syllabus_admin_study', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('syllabus_admin_study') }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

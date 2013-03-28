@@ -47,7 +47,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -82,7 +82,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -173,7 +173,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_form_field',
+                    'form_admin_form_field',
                     array(
                         'action' => 'manage',
                         'id' => $formSpecification->getId(),
@@ -210,7 +210,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -249,7 +249,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage'
                 )
@@ -272,7 +272,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage'
                 )
@@ -296,7 +296,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )
@@ -319,7 +319,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_form',
+                'form_admin_form',
                 array(
                     'action' => 'manage',
                 )

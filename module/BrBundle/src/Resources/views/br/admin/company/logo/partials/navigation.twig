@@ -3,14 +3,14 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_company_logo', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_company_logo', {"action": "add", "id": company.getId()}) }}">Add</a></li>
+            {% if hasAccess('br_admin_company_logo', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_company_logo', {"action": "add", "id": company.getId()}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_company_logo', 'manage') %}
+            {% if hasAccess('br_admin_company_logo', 'manage') %}
                 <li>
                     <a
                         {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('admin_company_logo', {"action": "manage", "id": company.getId()}) }}"
+                        href="{{ url('br_admin_company_logo', {"action": "manage", "id": company.getId()}) }}"
                     >
                         Manage
                     </a>

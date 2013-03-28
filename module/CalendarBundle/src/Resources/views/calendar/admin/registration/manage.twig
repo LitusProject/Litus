@@ -8,8 +8,8 @@
     <div id="controller_action">
         <p>Download a web page for scanning the incoming persons by events. This way you can check whether they are member or not.</p>
         <p>&nbsp;</p>
-        {% if hasAccess('admin_calendar_registration', 'export') %}
-        <p><a href="#" class="download downloadFile" style="text-decoration: none;color: inherit;padding-left:16px;" data-file="{{ url('admin_calendar_registration', {"action": "export"}) }}">Download</a></p>
+        {% if hasAccess('calendar_admin_calendar_registration', 'export') %}
+        <p><a href="#" class="download downloadFile" style="text-decoration: none;color: inherit;padding-left:16px;" data-file="{{ url('calendar_admin_calendar_registration', {"action": "export"}) }}">Download</a></p>
         {% endif %}
     </div>
 {% endblock %}

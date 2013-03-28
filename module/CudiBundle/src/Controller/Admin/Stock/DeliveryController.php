@@ -127,7 +127,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_stock_delivery',
+                    'cudi_admin_stock_delivery',
                     array(
                         'action' => 'supplier',
                         'id'     => $article->getSupplier()->getId(),
@@ -225,7 +225,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_delivery',
+                'cudi_admin_stock_delivery',
                 array(
                     'action' => 'manage'
                 )
@@ -248,7 +248,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_delivery',
+                'cudi_admin_stock_delivery',
                 array(
                     'action' => 'manage'
                 )
@@ -272,7 +272,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_delivery',
+                'cudi_admin_stock_delivery',
                 array(
                     'action' => 'manage'
                 )
@@ -295,7 +295,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_stock_delivery',
+                'cudi_admin_stock_delivery',
                 array(
                     'action' => 'manage'
                 )

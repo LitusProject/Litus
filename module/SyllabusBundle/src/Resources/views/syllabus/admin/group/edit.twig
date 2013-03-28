@@ -12,7 +12,7 @@
         {{ forms.renderForm(form) }}
     </div>
 
-    {% if hasAccess('admin_syllabus_group', 'studies') %}
+    {% if hasAccess('syllabus_admin_group', 'studies') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Manage Studies</div>
@@ -21,7 +21,7 @@
                         <i>Please hit the link below to manage the studies of this group!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_syllabus_group', {'action': 'studies', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Manage Studies</a>
+                        <a href="{{ url('syllabus_admin_group', {'action': 'studies', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Manage Studies</a>
                     </p>
                 </div>
             </div>

@@ -57,7 +57,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
     {
         return array(
             'action'         => 'index',
-            'controller'     => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'logistics_index',
             'redirect_route' => 'logistics_index'

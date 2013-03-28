@@ -33,21 +33,21 @@
                     <td>{{ photo.getFilePath() }}</td>
                     <td>{% if photo.isCensored() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_gallery', 'viewPhoto') %}
+                        {% if hasAccess('gallery_admin_gallery', 'viewPhoto') %}
                             <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="view">View</a>
                         {% endif %}
 
                         {% if not photo.isCensored() %}
-                            {% if hasAccess('admin_gallery', 'censorPhoto') %}
-                                <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="delete censor">Censor</a>
+                            {% if hasAccess('gallery_admin_gallery', 'censorPhoto') %}
+                                <a href="{{ url('gallery_admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="delete censor">Censor</a>
                             {% endif %}
                         {% else %}
-                            {% if hasAccess('admin_gallery', 'unCensorPhoto') %}
-                                <a href="{{ url('admin_gallery', {"action": "unCensorPhoto", "id": photo.getId()}) }}" class="add">Uncensor</a>
+                            {% if hasAccess('gallery_admin_gallery', 'unCensorPhoto') %}
+                                <a href="{{ url('gallery_admin_gallery', {"action": "unCensorPhoto", "id": photo.getId()}) }}" class="add">Uncensor</a>
                             {% endif %}
                         {% endif %}
 
-                        {% if hasAccess('admin_gallery', 'deletePhoto') %}
+                        {% if hasAccess('gallery_admin_gallery', 'deletePhoto') %}
                             <a href="#" class="delete deletePhoto" data-id="{{ photo.getId() }}" data-name="{{ photo.getFilePath() }}">Delete</a>
                         {% endif %}
                     </td>
@@ -57,7 +57,7 @@
     	{% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    {% if hasAccess('admin_gallery', 'addPhotos') %}
+    {% if hasAccess('gallery_admin_gallery', 'addPhotos') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Add Photo's</div>
@@ -66,7 +66,7 @@
                         <i>Please hit the link below to add photo's to this album!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_gallery', {"action": "addPhotos", "id": album.getId()}) }}">&rarr; Add Photo's</a>
+                        <a href="{{ url('gallery_admin_gallery', {"action": "addPhotos", "id": album.getId()}) }}">&rarr; Add Photo's</a>
                     </p>
                 </div>
             </div>
@@ -135,7 +135,7 @@
             removePhoto.find('.name').html($(this).data('name'));
             var id = $(this).data('id');
             removePhoto.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_gallery', {"action": "deletePhoto"})}}' + $this.data('id'), function  (data) {
+                $.post('{{ url('gallery_admin_gallery', {"action": "deletePhoto"})}}' + $this.data('id'), function  (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.photo_removed_success').removeClass('hide');

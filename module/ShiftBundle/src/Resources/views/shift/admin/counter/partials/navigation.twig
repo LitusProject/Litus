@@ -2,11 +2,11 @@
     <div class="title"><span class="counter">Counter</span></div>
 
     <nav id="controller_nav">
-        {% if hasAccess('admin_shift_counter', 'units') %}
-            <li><a {% if 'units' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_shift_counter', {"action": "units"}) }}">Units</a></li>
+        {% if hasAccess('shift_admin_shift_counter', 'units') %}
+            <li><a {% if 'units' == getParam('action') %} class="active" {% endif %} href="{{ url('shift_admin_shift_counter', {"action": "units"}) }}">Units</a></li>
         {% endif %}
-        {% if hasAccess('admin_shift_counter', 'index') %}
-            <li><a {% if 'index' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_shift_counter', {"action": "index"}) }}">People</a></li>
+        {% if hasAccess('shift_admin_shift_counter', 'index') %}
+            <li><a {% if 'index' == getParam('action') %} class="active" {% endif %} href="{{ url('shift_admin_shift_counter', {"action": "index"}) }}">People</a></li>
         {% endif %}
     </nav>
 </header>

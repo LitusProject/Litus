@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_slug' => array(
+            'on_admin_slug' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/on/slug[/:action[/:id][/page/:page]][/]',
@@ -37,7 +37,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_slug',
+                        'controller' => 'on_admin_slug',
                         'action'     => 'manage',
                     ),
                 ),
@@ -78,10 +78,10 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'on_install'  => 'OnBundle\Controller\Admin\InstallController',
-            'admin_slug'  => 'OnBundle\Controller\Admin\SlugController',
+            'on_install'    => 'OnBundle\Controller\Admin\InstallController',
+            'on_admin_slug' => 'OnBundle\Controller\Admin\SlugController',
 
-            'on_redirect' => 'OnBundle\Controller\RedirectController',
+            'on_redirect'   => 'OnBundle\Controller\RedirectController',
         ),
     ),
 );

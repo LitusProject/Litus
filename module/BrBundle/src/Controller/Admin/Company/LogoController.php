@@ -116,7 +116,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_company_logo',
+                        'br_admin_company_logo',
                         array(
                             'action' => 'manage',
                             'id' => $company->getId(),
@@ -172,7 +172,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -195,7 +195,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -219,7 +219,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -242,7 +242,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )

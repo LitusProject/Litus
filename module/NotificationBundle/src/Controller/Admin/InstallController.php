@@ -31,7 +31,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'notifcationBundle' => array(
-                    'admin_notification' => array(
+                    'notification_admin_notification' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
                 ),

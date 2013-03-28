@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_form' => array(
+            'form_admin_form' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/form[/:action[/:id][/page/:page]][/]',
@@ -37,12 +37,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_form',
+                        'controller' => 'form_admin_form',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_form_field' => array(
+            'form_admin_form_field' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/form/field[/:action[/:id][/page/:page]][/]',
@@ -52,12 +52,12 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_form_field',
+                        'controller' => 'form_admin_form_field',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_form_viewer' => array(
+            'form_admin_form_viewer' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/form/viewer[/:action[/:id][/page/:page]][/]',
@@ -67,7 +67,7 @@ return array(
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_form_viewer',
+                        'controller' => 'form_admin_form_viewer',
                         'action'     => 'manage',
                     ),
                 ),
@@ -141,13 +141,14 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'form_install'      => 'FormBundle\Controller\Admin\InstallController',
-            'admin_form'        => 'FormBundle\Controller\Admin\FormController',
-            'admin_form_field'  => 'FormBundle\Controller\Admin\FieldController',
-            'admin_form_viewer' => 'FormBundle\Controller\Admin\ViewerController',
-            'form_view'         => 'FormBundle\Controller\FormController',
-            'form_manage'       => 'FormBundle\Controller\Manage\FormController',
-            'form_manage_auth'  => 'FormBundle\Controller\Manage\AuthController',
+            'form_install'           => 'FormBundle\Controller\Admin\InstallController',
+            'form_admin_form'        => 'FormBundle\Controller\Admin\FormController',
+            'form_admin_form_field'  => 'FormBundle\Controller\Admin\FieldController',
+            'form_admin_form_viewer' => 'FormBundle\Controller\Admin\ViewerController',
+
+            'form_view'              => 'FormBundle\Controller\FormController',
+            'form_manage'            => 'FormBundle\Controller\Manage\FormController',
+            'form_manage_auth'       => 'FormBundle\Controller\Manage\AuthController',
         ),
     ),
     'translator' => array(
