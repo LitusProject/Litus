@@ -25,7 +25,6 @@ use CommonBundle\Component\Form\Admin\Element\Textarea,
  *
  * (named so because php complains when 'Return' is used)
  *
- * @author Alan Szepieniec <alan.szepieniec@litus.cc> (copied & adapted from Kristof's Add.php)
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
