@@ -70,7 +70,7 @@
         $(document).ready(function () {
             $('#studySearch').typeaheadRemote(
                 {
-                    source: '{{ url('admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
+                    source: '{{ url('syllabus_admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
                     items: 30,
                 }
             ).change(function (e) {
@@ -91,7 +91,7 @@
             removeMapping.find('.studyName').html($(this).data('study'));
             var id = $this.data('id');
             removeMapping.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_syllabus_group', {"action": "deleteStudy"})}}' + id, function (data) {
+                $.post('{{ url('syllabus_admin_group', {"action": "deleteStudy"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.mapping_removed_success').removeClass('hide');

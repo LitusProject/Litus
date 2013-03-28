@@ -43,16 +43,16 @@
         });
 
         function performSearch(text) {
-            $.post('{{ url('career_company', {"action": "search"})}}' + text, function (data) {
+            $.post('{{ url('br_career_company', {"action": "search"})}}' + text, function (data) {
                 $('#companies').html('');
                 $.each(data, function(index, element) {
 
                     $('#companies').append(
                         '<li class="span2">\
-                            <a class="company-container thumbnail" href="{{ url("career_company", {"action": "view"}) }}' + element.slug + '">\
+                            <a class="company-container thumbnail" href="{{ url("br_career_company", {"action": "view"}) }}' + element.slug + '">\
                                     <div class="company-logo">'
                                         + (element.logo ?
-                                            '<img src="{{ url("career_company", {"action": "logo"}) }}id/' + element.logo + '" alt="' + element.name + '"/>'
+                                            '<img src="{{ url("br_career_company", {"action": "logo"}) }}id/' + element.logo + '" alt="' + element.name + '"/>'
                                         :
                                             '<h1 class="company-logo-replacement">' + element.name + '</h1>')
                                         + '</div><div class="name-container"><center><span class="company-name">' + element.name + '</span></center></div></a></li>'

@@ -181,7 +181,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_syllabus_academic',
+                    'syllabus_admin_academic',
                     array(
                         'action' => 'edit',
                         'id' => $academic->getId(),
@@ -249,7 +249,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_syllabus_academic',
+                    'syllabus_admin_academic',
                     array(
                         'action' => 'edit',
                         'id' => $academic->getId(),
@@ -337,7 +337,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_academic',
+                'syllabus_admin_academic',
                 array(
                     'action' => 'manage'
                 )
@@ -360,7 +360,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_academic',
+                'syllabus_admin_academic',
                 array(
                     'action' => 'manage'
                 )
@@ -384,7 +384,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_academic',
+                'syllabus_admin_academic',
                 array(
                     'action' => 'manage'
                 )
@@ -407,7 +407,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_academic',
+                'syllabus_admin_academic',
                 array(
                     'action' => 'manage'
                 )
@@ -431,7 +431,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_academic',
+                'syllabus_admin_academic',
                 array(
                     'action' => 'manage'
                 )
@@ -454,7 +454,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_academic',
+                'syllabus_admin_academic',
                 array(
                     'action' => 'manage'
                 )
@@ -489,7 +489,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )

@@ -7,9 +7,9 @@
             {% for vacancy in paginator %}
                 <tr>
                     <td width="120">
-                        <a href="{{ url('career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                        <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
                             {% if vacancy.getCompany().getLogo() %}
-                                    <img width="120" src="{{ url('career_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
+                                    <img width="120" src="{{ url('br_career_company', {'action': 'logo', 'id': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}">
                             {% endif %}
                         </a>
                     </td>

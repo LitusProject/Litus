@@ -15,8 +15,8 @@
 
         <h1>File</h1>
         <p>Name: <b>{{ file.getName() }}</b></p>
-        {% if hasAccess('admin_article_file', 'download') %}
-            <input type="button" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": file.getId()}) }}" value="Download&nbsp;" />
+        {% if hasAccess('cudi_admin_article_file', 'download') %}
+            <input type="button" class="downloadFile" data-file="{{ url('cudi_admin_article_file', {"action": "download", "id": file.getId()}) }}" value="Download&nbsp;" />
         {% endif %}
 
         {% import 'admin/partials/form.twig' as forms %}

@@ -102,7 +102,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_role',
+                    'common_admin_role',
                     array(
                         'action' => 'add'
                     )
@@ -167,7 +167,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_role',
+                    'common_admin_role',
                     array(
                         'action' => 'manage'
                     )
@@ -225,7 +225,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_role',
+                'common_admin_role',
                 array(
                     'action' => 'manage'
                 )
@@ -248,7 +248,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_role',
+                'common_admin_role',
                 array(
                     'action' => 'manage'
                 )

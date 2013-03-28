@@ -4,25 +4,25 @@
             <li>
                 <a {% if currentSemester != 1 and currentSemester != 2 %} class="active" {% endif %}
                     href="{% if currentOrganization %}
-                        {{ url('admin_stock', {'action': 'manage', 'organization': currentOrganization.getId()}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage', 'organization': currentOrganization.getId()}) }}
                     {% else %}
-                        {{ url('admin_stock', {'action': 'manage'}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage'}) }}
                     {% endif %}">All</a>
             </li>
             <li>
                 <a {% if currentSemester == 1 %} class="active" {% endif %}
                     href="{% if currentOrganization %}
-                        {{ url('admin_stock', {'action': 'manage', 'semester': 1, 'organization': currentOrganization.getId()}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': 1, 'organization': currentOrganization.getId()}) }}
                     {% else %}
-                        {{ url('admin_stock', {'action': 'manage', 'semester': 1}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': 1}) }}
                     {% endif %}">Semester 1</a>
             </li>
             <li>
                 <a {% if currentSemester == 2 %} class="active" {% endif %}
                     href="{% if currentOrganization %}
-                        {{ url('admin_stock', {'action': 'manage', 'semester': 2, 'organization': currentOrganization.getId()}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': 2, 'organization': currentOrganization.getId()}) }}
                     {% else %}
-                        {{ url('admin_stock', {'action': 'manage', 'semester': 2}) }}
+                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': 2}) }}
                     {% endif %}">Semester 2</a>
             </li>
         </ul>

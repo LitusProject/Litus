@@ -64,7 +64,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             );
 
             $this->redirect()->toRoute(
-                'career_vacancy',
+                'br_career_vacancy',
                 array(
                     'action' => 'overview'
                 )
@@ -87,7 +87,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             );
 
             $this->redirect()->toRoute(
-                'career_vacancy',
+                'br_career_vacancy',
                 array(
                     'action' => 'overview'
                 )

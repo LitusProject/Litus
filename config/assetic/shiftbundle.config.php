@@ -20,7 +20,7 @@ return array(
             '@admin_js',
         ),
 
-        'admin_shift' => array(
+        'shift_admin_shift' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_transition',
@@ -29,19 +29,19 @@ return array(
             '@common_jquery_form',
             '@common_typeahead_remote',
         ),
-        'admin_shift_counter' => array(
+        'shift_admin_shift_counter' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_shift_ranking' => array(
+        'shift_admin_shift_ranking' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_shift_subscription' => array(
+        'shift_admin_shift_subscription' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_transition',
@@ -50,7 +50,7 @@ return array(
             '@common_jquery_form',
             '@common_typeahead_remote',
         ),
-        'admin_unit' => array(
+        'shift_admin_unit' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_transition',

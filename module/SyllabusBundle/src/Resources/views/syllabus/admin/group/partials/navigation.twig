@@ -3,11 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_syllabus_group', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_syllabus_group', {'action': 'add', 'academicyear': currentAcademicYear.getCode()}) }}">Add</a></li>
+            {% if hasAccess('syllabus_admin_group', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('syllabus_admin_group', {'action': 'add', 'academicyear': currentAcademicYear.getCode()}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_syllabus_group', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_syllabus_group', {'academicyear': currentAcademicYear.getCode()}) }}">Manage</a></li>
+            {% if hasAccess('syllabus_admin_group', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('syllabus_admin_group', {'academicyear': currentAcademicYear.getCode()}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

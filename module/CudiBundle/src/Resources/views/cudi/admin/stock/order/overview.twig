@@ -59,8 +59,8 @@
                         <td>{% if period.getNbOrdered(order.getArticle()) - period.getNbDelivered(order.getArticle()) < 0 %}0{% else %}{{ period.getNbOrdered(order.getArticle()) - period.getNbDelivered(order.getArticle()) }}{% endif %}</td>
                         <td>{{ period.getNbBooked(order.getArticle()) + period.getNbAssigned(order.getArticle()) }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_stock', 'edit') %}
-                                <a href="{{ url('admin_stock', {"action": "edit", "id": order.getArticle().getId()}) }}" class="edit">Edit</a>
+                            {% if hasAccess('cudi_admin_stock', 'edit') %}
+                                <a href="{{ url('cudi_admin_stock', {"action": "edit", "id": order.getArticle().getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -75,14 +75,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('admin_stock_order', 'search') %}
+            {% if hasAccess('cudi_admin_stock_order', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#stock_order_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('admin_stock_order', {'action': 'overview'}) }}',
-                url: '{{ url('admin_stock_order', {'action': 'search'}) }}',
+                searchPage: '{{ url('cudi_admin_stock_order', {'action': 'overview'}) }}',
+                url: '{{ url('cudi_admin_stock_order', {'action': 'search'}) }}',
                 display: function (data) {
                     $('#stock_order_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -95,7 +95,7 @@
                             .append('<td>' + this.nbInStock + '</td>')
                             .append('<td>' + this.nbNotDelivered + '</td>')
                             .append('<td>' + this.nbReserved + '</td>')
-                            .append('<td class="actions"><a href="{{ url('admin_stock', {"action": "edit"}) }}' + this.articleId + '" class="edit">Edit</a></td>');
+                            .append('<td class="actions"><a href="{{ url('cudi_admin_stock', {"action": "edit"}) }}' + this.articleId + '" class="edit">Edit</a></td>');
                     });
                     $('#stock_order_search table').change();
                 }

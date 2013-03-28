@@ -18,7 +18,7 @@
         </table>
     </div>
 
-    {% if hasAccess('admin_cache', 'flush') %}
+    {% if hasAccess('common_admin_cache', 'flush') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Clear Cache</div>
@@ -27,7 +27,7 @@
                         <i>Please hit the link below to clear the cache!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_cache', {"action": "flush"}) }}">&rarr; Clear Cache</a>
+                        <a href="{{ url('common_admin_cache', {"action": "flush"}) }}">&rarr; Clear Cache</a>
                     </p>
                 </div>
             </div>

@@ -3,8 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_mail_promotion', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_mail_promotion", {"action": "manage"}) }}">Manage</a></li>
+            {% if hasAccess('secretary_admin_mail_promotion', 'generate') %}
+                <li><a href="{{ url("secretary_admin_mail_promotion", {"action": "generate"}) }}">Generate</a></li>
+            {% endif %}
+            {% if hasAccess('secretary_admin_mail_promotion', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("secretary_admin_mail_promotion", {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

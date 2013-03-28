@@ -22,8 +22,8 @@
                     <td>{% if group.getCvBook() %}X{% endif %}</td>
                     <td>{{ group.getNbStudents(currentAcademicYear) }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_syllabus_group', 'edit') %}
-                            <a href="{{ url('admin_syllabus_group', {'action': 'edit', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="edit">Edit</a>
+                        {% if hasAccess('syllabus_admin_group', 'edit') %}
+                            <a href="{{ url('syllabus_admin_group', {'action': 'edit', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="edit">Edit</a>
                         {% endif %}
                     </td>
                 </tr>

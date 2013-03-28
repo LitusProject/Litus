@@ -86,25 +86,25 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'syllabusbundle' => array(
-                    'admin_prof' => array(
+                    'syllabus_admin_prof' => array(
                         'add', 'delete', 'typeahead'
                     ),
-                    'admin_syllabus_academic' => array(
+                    'syllabus_admin_academic' => array(
                         'addStudy', 'addSubject', 'deleteStudy', 'deleteSubject', 'edit', 'manage', 'search'
                     ),
-                    'admin_syllabus_group' => array(
+                    'syllabus_admin_group' => array(
                         'add', 'deleteStudy', 'edit', 'manage', 'studies'
                     ),
-                    'admin_study' => array(
+                    'syllabus_admin_study' => array(
                         'edit', 'manage', 'search', 'searchSubject', 'typeahead'
                     ),
-                    'admin_subject' => array(
+                    'syllabus_admin_subject' => array(
                         'edit', 'manage', 'search', 'typeahead'
                     ),
-                    'admin_subject_comment' => array(
+                    'syllabus_admin_subject_comment' => array(
                         'delete', 'manage', 'subject'
                     ),
-                    'admin_update_syllabus' => array(
+                    'syllabus_admin_update' => array(
                         'index', 'updateNow'
                     ),
                     'syllabus_subject' => array(

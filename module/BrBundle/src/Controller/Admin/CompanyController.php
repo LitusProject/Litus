@@ -127,7 +127,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company',
+                    'br_admin_company',
                     array(
                         'action' => 'manage'
                     )
@@ -210,7 +210,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company',
+                    'br_admin_company',
                     array(
                         'action' => 'manage'
                     )
@@ -272,7 +272,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $upload->receive();
 
             $url = $this->url()->fromRoute(
-                'career_file',
+                'br_career_file',
                 array(
                     'name' => $fileName,
                 )
@@ -346,7 +346,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_company',
+                    'br_admin_company',
                     array(
                         'action' => 'editLogo',
                         'id' => $company->getId(),
@@ -403,7 +403,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -426,7 +426,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -450,7 +450,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )
@@ -473,7 +473,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'admin_company',
+                'br_admin_company',
                 array(
                     'action' => 'manage'
                 )

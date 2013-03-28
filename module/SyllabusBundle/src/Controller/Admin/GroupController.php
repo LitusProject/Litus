@@ -85,7 +85,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_syllabus_group',
+                    'syllabus_admin_group',
                     array(
                         'action' => 'manage',
                         'academicyear' => $academicYear->getCode(),
@@ -139,7 +139,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_syllabus_group',
+                    'syllabus_admin_group',
                     array(
                         'action' => 'edit',
                         'id' => $group->getId(),
@@ -213,7 +213,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 $this->redirect()->toRoute(
-                    'admin_syllabus_group',
+                    'syllabus_admin_group',
                     array(
                         'action' => 'studies',
                         'id' => $group->getId(),
@@ -288,7 +288,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -312,7 +312,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_group',
+                'syllabus_admin_group',
                 array(
                     'action' => 'manage'
                 )
@@ -335,7 +335,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_group',
+                'syllabus_admin_group',
                 array(
                     'action' => 'manage'
                 )
@@ -361,7 +361,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_group',
+                'syllabus_admin_group',
                 array(
                     'action' => 'manage'
                 )
@@ -384,7 +384,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'admin_syllabus_group',
+                'syllabus_admin_group',
                 array(
                     'action' => 'manage'
                 )

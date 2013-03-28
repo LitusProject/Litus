@@ -41,4 +41,37 @@ class Form extends EntityRepository
 
         return null;
     }
+
+    public function findAllActive()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Nodes\Form', 'f')
+            ->where(
+                $query->expr()->gt('f.endDate', ':now')
+            )
+            ->orderBy('f.creationTime', 'DESC')
+            ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllOld()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Nodes\Form', 'f')
+            ->where(
+                $query->expr()->lt('f.endDate', ':now')
+            )
+            ->orderBy('f.creationTime', 'DESC')
+            ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
 }

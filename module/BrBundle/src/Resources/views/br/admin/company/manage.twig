@@ -34,20 +34,20 @@
                         <td>{{ company.getVatNumber() }}</td>
                         <td class="actions">
                             <ul>
-                                {% if hasAccess('admin_company_job', 'manage') %}
-                                    <li><a href="{{ url('admin_company_job', {"action": "manage", "id": company.getId()}) }}" class="view">Job</a></li>
+                                {% if hasAccess('br_admin_company_job', 'manage') %}
+                                    <li><a href="{{ url('br_admin_company_job', {"action": "manage", "id": company.getId()}) }}" class="view">Job</a></li>
                                 {% endif %}
-                                {% if hasAccess('admin_company_event', 'manage') %}
-                                    <li><a href="{{ url('admin_company_event', {"action": "manage", "id": company.getId()}) }}" class="view">Events</a></li>
+                                {% if hasAccess('br_admin_company_event', 'manage') %}
+                                    <li><a href="{{ url('br_admin_company_event', {"action": "manage", "id": company.getId()}) }}" class="view">Events</a></li>
                                 {% endif %}
-                                {% if hasAccess('admin_company', 'edit') %}
-                                    <li><a href="{{ url('admin_company', {"action": "edit", "id": company.getId()}) }}" class="edit">Edit</a></li>
+                                {% if hasAccess('br_admin_company', 'edit') %}
+                                    <li><a href="{{ url('br_admin_company', {"action": "edit", "id": company.getId()}) }}" class="edit">Edit</a></li>
                                 {% endif %}
-                                {% if hasAccess('admin_company', 'delete') %}
+                                {% if hasAccess('br_admin_company', 'delete') %}
                                     <li><a href="#" class="delete" data-id="{{ company.getId() }}" data-name="{{ company.getName() }}">Delete</a></li>
                                 {% endif %}
-                                {% if hasAccess('admin_company_user', 'manage') %}
-                                    <a href="{{ url('admin_company_user', {"action": "manage", "id": company.getId()}) }}" class="corporate_user">Users</a>
+                                {% if hasAccess('br_admin_company_user', 'manage') %}
+                                    <a href="{{ url('br_admin_company_user', {"action": "manage", "id": company.getId()}) }}" class="corporate_user">Users</a>
                                 {% endif %}
                             </ul>
                         </td>
@@ -94,7 +94,7 @@
             removeCompany.find('.companyName').html($(this).data('name'));
             var id = $this.data('id');
             removeCompany.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_company', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('br_admin_company', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.company_removed_success').removeClass('hide');

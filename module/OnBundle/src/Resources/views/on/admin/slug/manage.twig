@@ -35,10 +35,10 @@
 	                    <td>{{ slug.getUrl() }}</td>
 	                    <td>{{ slug.getHits() }}</td>
 	                    <td class="actions">
-	                        {% if hasAccess('admin_slug', 'edit') %}
-	                            <a href="{{ url('admin_slug', {"action": "edit", "id": slug.getId()}) }}" class="edit">Edit</a>
+	                        {% if hasAccess('on_admin_slug', 'edit') %}
+	                            <a href="{{ url('on_admin_slug', {"action": "edit", "id": slug.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
-	                        {% if hasAccess('admin_slug', 'delete') %}
+	                        {% if hasAccess('on_admin_slug', 'delete') %}
 	                            <a href="#" data-id="{{ slug.getId() }}" data-url="{{ slug.getUrl() }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
@@ -87,7 +87,7 @@
 			});
 			var id = $this.data('id');
 			removeSlug.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_slug', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('on_admin_slug', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.slug_removed_success').removeClass('hide');

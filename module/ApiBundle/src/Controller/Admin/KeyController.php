@@ -82,7 +82,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_key',
+                    'api_admin_key',
                     array(
                         'action' => 'manage'
                     )
@@ -125,7 +125,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_key',
+                    'api_admin_key',
                     array(
                         'action' => 'manage'
                     )
@@ -174,7 +174,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_key',
+                'api_admin_key',
                 array(
                     'action' => 'manage'
                 )
@@ -197,7 +197,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'admin_key',
+                'api_admin_key',
                 array(
                     'action' => 'manage'
                 )

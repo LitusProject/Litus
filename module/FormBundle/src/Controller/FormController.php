@@ -210,7 +210,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'index',
+                'common_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
@@ -233,7 +233,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'index',
+                'common_index',
                 array(
                     'language' => $this->getLanguage()->getAbbrev(),
                 )

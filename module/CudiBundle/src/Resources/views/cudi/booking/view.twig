@@ -69,7 +69,7 @@
                     </tr>
                 </table>
 
-                <a href={{ url('booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>
+                <a href={{ url('cudi_booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>
 
             {% endif %}
         </div>
@@ -106,7 +106,7 @@
             cancelBooking.find('.articleTitle').html($(this).data('title'));
             var id = $this.data('id');
             cancelBooking.find('.continue').unbind('click').click(function () {
-                $.post('{{ url('booking', {"action": "cancel"})}}' + id, function (data) {
+                $.post('{{ url('cudi_booking', {"action": "cancel"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.item-' + id).remove();

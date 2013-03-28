@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="title hidden-desktop" href="{{ url('index') }}">{{ translate('VTK Leuven vzw') }}</a>
+                <a class="title hidden-desktop" href="{{ url('common_index') }}">{{ translate('VTK Leuven vzw') }}</a>
                 <div class="main-nav nav-collapse collapse">
         			<ul class="nav">
                         {% for item in menu %}
@@ -44,8 +44,8 @@
                                             {% endif %}
 
                                             {% if 'link' == categoryItem.type %}
-                                                {% if hasAccess('link', 'view') %}
-                                                    <li><a href="{{ url('link', {"id": categoryItem.id}) }}">{{ categoryItem.name }}</a></li>
+                                                {% if hasAccess('page_link', 'view') %}
+                                                    <li><a href="{{ url('page_link', {"id": categoryItem.id}) }}">{{ categoryItem.name }}</a></li>
                                                 {% endif %}
                                             {% endif %}
                                         {% endfor %}
@@ -61,14 +61,14 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        {% if hasAccess('account', 'index') %}
-                                            <a href="{{ url('account') }}">
-                                            {% else %}
-                                                <div style="padding: 3px 20px;">
-                                            {% endif %}
-                                                <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                                <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
-                                            {% if hasAccess('account', 'index') %}
+                                        {% if hasAccess('common_account', 'index') %}
+                                            <a href="{{ url('common_account') }}">
+                                        {% else %}
+                                            <div style="padding: 3px 20px;">
+                                        {% endif %}
+                                        <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                        <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
+                                        {% if hasAccess('common_account', 'index') %}
                                             </a>
                                         {% else %}
                                             </div>
@@ -77,10 +77,10 @@
 
                                     <li class="divider"></li>
 
-                                    {% if hasAccess('booking', 'view') or hasAccess('shift', 'index') %}
+                                    {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
                                         <li>
-                                            {% if hasAccess('booking', 'view') %}
-                                                <a href="{{ url('booking') }}">{{ translate('My Bookings') }}</a>
+                                            {% if hasAccess('cudi_booking', 'view') %}
+                                                <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
                                             {% endif %}
                                             {% if hasAccess('shift', 'index') %}
                                                 <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
@@ -90,16 +90,16 @@
                                         <li class="divider"></li>
                                     {% endif %}
 
-                                    {% if hasAccess('admin_index', 'index') %}
+                                    {% if hasAccess('common_admin_index', 'index') %}
                                         <li>
-                                            <a href="{{ url('admin_index') }}">{{ translate('Admin') }}</a>
+                                            <a href="{{ url('common_admin_index') }}">{{ translate('Admin') }}</a>
                                         </li>
 
                                         <li class="divider"></li>
                                     {% endif %}
 
                                     <li>
-                                        <a href="{{ url("auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                        <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -133,24 +133,24 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    {% if hasAccess('account', 'index') %}
-                                    <a href="{{ url('account') }}">
+                                    {% if hasAccess('common_account', 'index') %}
+                                    <a href="{{ url('common_account') }}">
                                     {% else %}
                                         <div style="padding: 3px 20px;">
                                     {% endif %}
                                         <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
                                         <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
-                                    {% if hasAccess('account', 'index') %}
+                                    {% if hasAccess('common_account', 'index') %}
                                     </a>
                                     {% else %}
                                         </div>
                                     {% endif %}
                                 </li>
                                 <li class="divider"></li>
-                                {% if hasAccess('booking', 'view') or hasAccess('shift', 'index') %}
+                                {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
                                     <li>
-                                        {% if hasAccess('booking', 'view') %}
-                                            <a href="{{ url('booking') }}">{{ translate('My Bookings') }}</a>
+                                        {% if hasAccess('cudi_booking', 'view') %}
+                                            <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
                                         {% endif %}
                                         {% if hasAccess('shift', 'index') %}
                                             <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
@@ -159,15 +159,15 @@
 
                                     <li class="divider"></li>
                                 {% endif %}
-                                {% if hasAccess('admin_index', 'index') %}
+                                {% if hasAccess('common_admin_index', 'index') %}
                                     <li>
-                                        <a href="{{ url('admin_index') }}">{{ translate('Admin') }}</a>
+                                        <a href="{{ url('common_admin_index') }}">{{ translate('Admin') }}</a>
                                     </li>
 
                                     <li class="divider"></li>
                                 {% endif %}
                                 <li>
-                                    <a href="{{ url("auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                    <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -185,7 +185,7 @@
         <header>
         	<div class="inner">
         		<div class="container">
-                    <a class="site-link" href="{{ url('index') }}">
+                    <a class="site-link" href="{{ url('common_index') }}">
         			    <img class="site-logo" src="/_site/img/logo.png" />
         			    <h1 class="site-name">{{ translate('Vlaamse Technische Kring Leuven') }}</h1>
                     </a>

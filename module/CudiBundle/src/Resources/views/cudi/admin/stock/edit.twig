@@ -82,7 +82,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('admin_stock', 'delta') %}
+        {% if hasAccess('cudi_admin_stock', 'delta') %}
             <div class="sidebox">
                 <div class="title">View Delta's</div>
                 <div class="content">
@@ -90,7 +90,7 @@
                         <i>Please hit the link below to view the delta's!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_stock', {"action": "delta", "id": article.getId()}) }}">&rarr; View Delta's</a>
+                        <a href="{{ url('cudi_admin_stock', {"action": "delta", "id": article.getId()}) }}">&rarr; View Delta's</a>
                     </p>
                 </div>
             </div>

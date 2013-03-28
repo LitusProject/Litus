@@ -53,7 +53,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 if ($entry) {
                     $messages = array('');
                     $this->redirect()->toRoute(
-                        'cv_index',
+                        'br_cv_index',
                         array(
                             'action' => 'edit',
                         )
@@ -148,7 +148,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
-                    'cv_index',
+                    'br_cv_index',
                     array(
                         'action' => 'complete',
                     )
@@ -195,7 +195,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 if (!$entry) {
                     $messages = array('');
                     $this->redirect()->toRoute(
-                        'cv_index',
+                        'br_cv_index',
                         array(
                             'action' => 'cv',
                         )
@@ -295,7 +295,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
-                    'cv_index',
+                    'br_cv_index',
                     array(
                         'action' => 'complete',
                     )
@@ -341,7 +341,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         }
 
         $address = $person->getSecondaryAddress();
-        if ($address === null || '' == $address->getStreet() || '' == $address->getNumber() 
+        if ($address === null || '' == $address->getStreet() || '' == $address->getNumber()
                 || '' == $address->getPostal() || '' == $address->getCity() || '' == $address->getCountryCode()) {
             $messages[] = '<li>';
             $messages[] = 'Your address';

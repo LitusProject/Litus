@@ -83,7 +83,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_article_subject',
+                    'cudi_admin_article_subject',
                     array(
                         'action' => 'manage',
                         'id' => $article->getId(),
@@ -154,7 +154,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_article_subject',
+                'cudi_admin_article_subject',
                 array(
                     'action' => 'manage'
                 )
@@ -177,7 +177,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_article_subject',
+                'cudi_admin_article_subject',
                 array(
                     'action' => 'manage'
                 )
@@ -201,7 +201,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -224,7 +224,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )

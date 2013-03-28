@@ -62,17 +62,44 @@ class Supplier
     private $vatNumber;
 
     /**
+     * @var string The template used for orders
+     *
+     * @ORM\Column(type="string")
+     */
+    private $template;
+
+    /**
+     * @var array The possible templates
+     */
+    public static $POSSIBLE_TEMPLATES = array(
+        'default' => 'Default',
+    );
+
+    /**
      * @param string $name
      * @param string $phoneNumber
      * @param \CommonBundle\Entity\General\Address $address
      * @param string $vatNumber
+     * @param strign $template
      */
-    public function __construct($name, $phoneNumber, Address $address, $vatNumber)
+    public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template)
     {
+        if (!self::isValidTemplate($template))
+            throw new \InvalidArgumentException('The template is not valid.');
+
         $this->setName($name)
             ->setPhoneNumber($phoneNumber)
             ->setAddress($address)
-            ->setVatNumber($vatNumber);
+            ->setVatNumber($vatNumber)
+            ->setTemplate($template);
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function isValidTemplate($template)
+    {
+        return array_key_exists($template, self::$POSSIBLE_TEMPLATES);
     }
 
     /**
@@ -156,6 +183,28 @@ class Supplier
     public function setVatNumber($vatNumber)
     {
         $this->vatNumber = $vatNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * @param string $template
+     *
+     * @return \CudiBundle\Entity\Supplier
+     */
+    public function setTemplate($template)
+    {
+        if (!self::isValidTemplate($template))
+            throw new \InvalidArgumentException('The template is not valid.');
+
+        $this->template = $template;
         return $this;
     }
 }

@@ -45,7 +45,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
 
         $loginForm = new LoginForm(
             $this->url()->fromRoute(
-                'corporate_auth',
+                'br_corporate_auth',
                 array(
                     'action' => 'login'
                 )
@@ -117,7 +117,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'br_corporate_index',
                 array(
                     'action' => 'manage'
                 )
@@ -139,10 +139,10 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     {
         return array(
             'action'         => 'index',
-            'controller'     => 'index',
+            'controller'     => 'common_index',
 
-            'auth_route'     => 'corporate_index',
-            'redirect_route' => 'corporate_index'
+            'auth_route'     => 'br_corporate_index',
+            'redirect_route' => 'br_corporate_index'
         );
     }
 }

@@ -27,7 +27,7 @@ return array(
                     ),
                 ),
             ),
-            'admin_mail_promotion' => array(
+            'secretary_admin_mail_promotion' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/secretary/promotion[/:action[/:id]][/]',
@@ -36,12 +36,12 @@ return array(
                         'id'           => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_mail_promotion',
+                        'controller' => 'secretary_admin_mail_promotion',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'admin_secretary_registration' => array(
+            'secretary_admin_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/secretary/registration[/:action[/:id]][/:academicyear][/:field/:string][/]',
@@ -53,7 +53,7 @@ return array(
                         'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_secretary_registration',
+                        'controller' => 'secretary_admin_registration',
                         'action'     => 'manage',
                     ),
                 ),
@@ -111,10 +111,11 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'secretary_install'            => 'SecretaryBundle\Controller\Admin\InstallController',
-            'admin_mail_promotion'         => 'SecretaryBundle\Controller\Admin\MailingList\PromotionController',
-            'admin_secretary_registration' => 'SecretaryBundle\Controller\Admin\RegistrationController',
-            'secretary_registration'       => 'SecretaryBundle\Controller\RegistrationController',
+            'secretary_install'              => 'SecretaryBundle\Controller\Admin\InstallController',
+            'secretary_admin_mail_promotion' => 'SecretaryBundle\Controller\Admin\MailingList\PromotionController',
+            'secretary_admin_registration'   => 'SecretaryBundle\Controller\Admin\RegistrationController',
+
+            'secretary_registration'         => 'SecretaryBundle\Controller\RegistrationController',
         ),
     ),
     'assetic_configuration' => array(

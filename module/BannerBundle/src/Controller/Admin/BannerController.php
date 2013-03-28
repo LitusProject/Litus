@@ -61,7 +61,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'admin_banner',
+                'banner_admin_banner',
                 array(
                     'action' => 'upload',
                 )
@@ -86,7 +86,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'admin_banner',
+                'banner_admin_banner',
                 array(
                     'action' => 'upload',
                     'id' => $banner->getId(),
@@ -313,7 +313,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_banner',
+                    'banner_admin_banner',
                     array(
                         'action' => 'manage'
                     )
@@ -338,7 +338,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_banner',
+                    'banner_admin_banner',
                     array(
                         'action' => 'manage'
                     )

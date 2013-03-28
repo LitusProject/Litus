@@ -56,14 +56,14 @@
             </div>
 
             <div class="span3">
-                {% if hasAccess('prof_help', 'index') %}
+                {% if hasAccess('cudi_prof_help', 'index') %}
                     <div class="page-header">
                         <h3>{{ translate('How To Start') }}</h3>
                     </div>
                     <p>
                         {{ translate('Your first time here?') }}
                     </p>
-                    <a href="{{ url('prof_help') }}" class="btn">&rarr; {{ translate('Help') }}</a>
+                    <a href="{{ url('cudi_prof_help') }}" class="btn">&rarr; {{ translate('Help') }}</a>
                 {% endif %}
             </div>
         </div>

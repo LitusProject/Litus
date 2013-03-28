@@ -62,14 +62,15 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                     $formData['name'],
                     $formData['phone_number'],
                     new Address(
-                        $formData['address_street'],
-                        $formData['address_number'],
-                        $formData['address_mailbox'],
-                        $formData['address_postal'],
-                        $formData['address_city'],
-                        $formData['address_country']
+                        $formData['address_address_street'],
+                        $formData['address_address_number'],
+                        $formData['address_address_mailbox'],
+                        $formData['address_address_postal'],
+                        $formData['address_address_city'],
+                        $formData['address_address_country']
                     ),
-                    $formData['vat_number']
+                    $formData['vat_number'],
+                    $formData['template']
                 );
                 $this->getEntityManager()->persist($supplier);
                 $this->getEntityManager()->flush();
@@ -83,7 +84,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_supplier',
+                    'cudi_admin_supplier',
                     array(
                         'action' => 'manage'
                     )
@@ -117,13 +118,14 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 $supplier->setName($formData['name'])
                     ->setPhoneNumber($formData['phone_number'])
                     ->setVatNumber($formData['vat_number'])
+                    ->setTemplate($formData['template'])
                     ->getAddress()
-                        ->setStreet($formData['address_street'])
-                        ->setNumber($formData['address_number'])
-                        ->setMailbox($formData['address_mailbox'])
-                        ->setPostal($formData['address_postal'])
-                        ->setCity($formData['address_city'])
-                        ->setCountry($formData['address_country']);
+                        ->setStreet($formData['address_address_street'])
+                        ->setNumber($formData['address_address_number'])
+                        ->setMailbox($formData['address_address_mailbox'])
+                        ->setPostal($formData['address_address_postal'])
+                        ->setCity($formData['address_address_city'])
+                        ->setCountry($formData['address_address_country']);
 
                 $this->getEntityManager()->flush();
 
@@ -136,7 +138,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_supplier',
+                    'cudi_admin_supplier',
                     array(
                         'action' => 'manage'
                     )
@@ -165,7 +167,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_supplier',
+                'cudi_admin_supplier',
                 array(
                     'action' => 'manage'
                 )
@@ -188,7 +190,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'admin_supplier',
+                'cudi_admin_supplier',
                 array(
                     'action' => 'manage'
                 )

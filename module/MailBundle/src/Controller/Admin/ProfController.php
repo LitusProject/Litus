@@ -139,7 +139,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_mail_prof',
+                    'mail_admin_mail_prof',
                     array(
                         'action' => 'cudi'
                     )

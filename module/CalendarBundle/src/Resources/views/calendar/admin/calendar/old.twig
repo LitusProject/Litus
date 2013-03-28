@@ -37,16 +37,16 @@
                         <td>{{ event.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>{{ event.getLocation(language) }}</td>
                         <td class="actions">
-                            {% if hasAccess('admin_calendar', 'pdf') %}
+                            {% if hasAccess('calendar_admin_calendar', 'pdf') %}
                                 <a href="#" id="printShiftList_{{ event.getId() }}" class="printer">Shift List</a>
                             {% endif %}
-                            {% if hasAccess('admin_calendar', 'poster') %}
-                                <a href="{{ url('admin_calendar', {"action": "editPoster", "id": event.getId()}) }}" class="image_edit">Poster</a>
+                            {% if hasAccess('calendar_admin_calendar', 'poster') %}
+                                <a href="{{ url('calendar_admin_calendar', {"action": "editPoster", "id": event.getId()}) }}" class="image_edit">Poster</a>
                             {% endif %}
-                            {% if hasAccess('admin_calendar', 'edit') %}
-                                <a href="{{ url('admin_calendar', {"action": "edit", "id": event.getId()}) }}" class="calendar_edit">Edit</a>
+                            {% if hasAccess('calendar_admin_calendar', 'edit') %}
+                                <a href="{{ url('calendar_admin_calendar', {"action": "edit", "id": event.getId()}) }}" class="calendar_edit">Edit</a>
                             {% endif %}
-                            {% if hasAccess('admin_calendar', 'delete') %}
+                            {% if hasAccess('calendar_admin_calendar', 'delete') %}
                                 <a href="#" data-id="{{ event.getId() }}" data-title="{{ game.getTitle(language) }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -83,7 +83,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             {% for event in paginator %}
-                $('#printShiftList_{{ event.getId() }}').downloadFile('{{ url('admin_calendar', {"action": "pdf", "id": event.getId()}) }}');
+                $('#printShiftList_{{ event.getId() }}').downloadFile('{{ url('calendar_admin_calendar', {"action": "pdf", "id": event.getId()}) }}');
             {% endfor %}
 
             $('.item .delete').click(openModal);
@@ -96,7 +96,7 @@
             var removeEvent = $('#removeEvent');
             removeEvent.find('.title').html($(this).data('title'));
             removeEvent.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_calendar', {"action": "delete"})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('calendar_admin_calendar', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('.event_removed_success').addClass('in');

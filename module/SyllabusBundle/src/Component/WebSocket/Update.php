@@ -101,7 +101,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
             foreach ($authSession->getPerson()->getRoles() as $role) {
                 if (
                     $role->isAllowed(
-                        $acl, 'admin_update_syllabus', 'updateNow'
+                        $acl, 'syllabus_admin_update', 'updateNow'
                     )
                 ) {
                     $allowed = true;

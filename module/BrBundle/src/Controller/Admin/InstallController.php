@@ -92,52 +92,52 @@ The VTK Corporate Team',
         $this->installAcl(
             array(
                 'brbundle' => array(
-                    'admin_company' => array(
+                    'br_admin_company' => array(
                         'add', 'delete', 'editLogo', 'edit', 'logo', 'manage'
                     ),
-                    'admin_company_event' => array(
+                    'br_admin_company_event' => array(
                         'add', 'delete', 'edit', 'editPoster', 'manage'
                     ),
-                    'admin_company_job' => array(
+                    'br_admin_company_job' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
-                    'admin_company_user' => array(
+                    'br_admin_company_user' => array(
                         'add', 'delete', 'edit', 'manage', 'activate'
                     ),
-                    'admin_company_logo' => array(
+                    'br_admin_company_logo' => array(
                         'manage', 'add', 'delete'
                     ),
-                    'admin_cv_entry' => array(
+                    'br_admin_cv_entry' => array(
                         'manage', 'delete', 'export', 'exportAcademics'
                     ),
 
-                    'career_index' => array(
+                    'br_career_index' => array(
                         'index'
                     ),
-                    'career_company' => array(
+                    'br_career_company' => array(
                         'view', 'overview', 'file', 'search', 'logo',
                     ),
-                    'career_event' => array(
+                    'br_career_event' => array(
                         'view', 'overview'
                     ),
-                    'career_vacancy' => array(
+                    'br_career_vacancy' => array(
                         'view', 'overview'
                     ),
-                    'career_internship' => array(
+                    'br_career_internship' => array(
                         'view', 'overview'
                     ),
 
-                    'cv_index' => array(
+                    'br_cv_index' => array(
                         'cv', 'edit', 'complete',
                     ),
 
-                    'corporate_auth' => array(
+                    'br_corporate_auth' => array(
                         'login', 'logout',
                     ),
-                    'corporate_index' => array(
+                    'br_corporate_index' => array(
                         'index',
                     ),
-                    'corporate_cv' => array(
+                    'br_corporate_cv' => array(
                         'grouped', 'list', 'search', 'cvPhoto',
                     ),
                 )

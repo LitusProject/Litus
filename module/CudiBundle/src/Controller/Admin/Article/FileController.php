@@ -48,7 +48,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'admin_article_file',
+                'cudi_admin_article_file',
                 array(
                     'action' => 'upload',
                     'id' => $article->getId(),
@@ -190,7 +190,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_article_file',
+                    'cudi_admin_article_file',
                     array(
                         'action' => 'manage',
                         'id' => $mapping->getArticle()->getId(),
@@ -303,7 +303,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -326,7 +326,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -350,7 +350,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -373,7 +373,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -397,7 +397,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )
@@ -420,7 +420,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_article',
+                'cudi_admin_article',
                 array(
                     'action' => 'manage'
                 )

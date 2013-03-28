@@ -20,7 +20,7 @@ return array(
             '@admin_js',
         ),
 
-        'admin_banner' => array(
+        'banner_admin_banner' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_tab',

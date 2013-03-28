@@ -151,7 +151,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             );
 
             $this->redirect()->toRoute(
-                'career_company',
+                'br_career_company',
                 array(
                     'action' => 'overview'
                 )
@@ -174,7 +174,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             );
 
             $this->redirect()->toRoute(
-                'career_company',
+                'br_career_company',
                 array(
                     'action' => 'overview'
                 )
@@ -199,7 +199,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             );
 
             $this->redirect()->toRoute(
-                'career_company',
+                'br_career_company',
                 array(
                     'action' => 'overview'
                 )
@@ -222,7 +222,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             );
 
             $this->redirect()->toRoute(
-                'career_company',
+                'br_career_company',
                 array(
                     'action' => 'overview'
                 )

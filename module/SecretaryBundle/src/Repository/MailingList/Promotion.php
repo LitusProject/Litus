@@ -2,7 +2,8 @@
 
 namespace SecretaryBundle\Repository\MailingList;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Promotion
@@ -26,6 +27,23 @@ class Promotion extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    public function findOneByAcademicYear(AcademicYear $academicYear) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SecretaryBundle\Entity\MailingList\Promotion', 'l')
+            ->innerJoin('l.promotion', 'p')
+            ->where(
+                $query->expr()->eq('p.academicYear', ':year')
+            )
+            ->setParameter('year', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        return null;
     }
 
 }

@@ -50,7 +50,7 @@
                     <td>{{ study.getStudy().getFullTitle() }}</td>
                     <td>{{ study.getStudy().getPhase() }}</td>
                     <td>
-                        {% if hasAccess('admin_syllabus_academic', 'deleteStudy') %}
+                        {% if hasAccess('syllabus_admin_academic', 'deleteStudy') %}
                             <a href="#" data-id="{{ study.getId() }}" data-study="{{ study.getStudy().getFullTitle() }}" class="delete">Delete</a></li>
                         {% endif %}
                     </td>
@@ -74,7 +74,7 @@
                     <td>{{ subject.getSubject().getSemester() }}</td>
                     <td>{{ subject.getSubject().getCredits() }}</td>
                     <td>
-                        {% if hasAccess('admin_syllabus_academic', 'deleteSubject') %}
+                        {% if hasAccess('syllabus_admin_academic', 'deleteSubject') %}
                             <a href="#" data-id="{{ subject.getId() }}" data-subject="{{ subject.getSubject().getName() }}" class="delete">Delete</a></li>
                         {% endif %}
                     </td>
@@ -83,7 +83,7 @@
         </table>
     </div>
 
-    {% if hasAccess('admin_syllabus_academic', 'addStudy') %}
+    {% if hasAccess('syllabus_admin_academic', 'addStudy') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Add Study</div>
@@ -92,14 +92,14 @@
                         <i>Please hit the link below to add a study!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_syllabus_academic', {'action': 'addStudy', 'id': academic.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Study</a>
+                        <a href="{{ url('syllabus_admin_academic', {'action': 'addStudy', 'id': academic.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Study</a>
                     </p>
                 </div>
             </div>
         </aside>
     {% endif %}
 
-    {% if hasAccess('admin_syllabus_academic', 'addSubject') %}
+    {% if hasAccess('syllabus_admin_academic', 'addSubject') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Add Subject</div>
@@ -108,7 +108,7 @@
                         <i>Please hit the link below to add a subject!</i>
                     </p>
                     <p>
-                        <a href="{{ url('admin_syllabus_academic', {'action': 'addSubject', 'id': academic.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Subject</a>
+                        <a href="{{ url('syllabus_admin_academic', {'action': 'addSubject', 'id': academic.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Subject</a>
                     </p>
                 </div>
             </div>
@@ -171,7 +171,7 @@
             removeStudy.find('.studyName').html($(this).data('study'));
             var id = $this.data('id');
             removeStudy.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_syllabus_academic', {"action": "deleteStudy"})}}' + id, function (data) {
+                $.post('{{ url('syllabus_admin_academic', {"action": "deleteStudy"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.study_removed_success').removeClass('hide');
@@ -199,7 +199,7 @@
             removeSubject.find('.subjectName').html($(this).data('subject'));
             var id = $this.data('id');
             removeSubject.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_syllabus_academic', {"action": "deleteSubject"})}}' + id, function (data) {
+                $.post('{{ url('syllabus_admin_academic', {"action": "deleteSubject"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.subject_removed_success').removeClass('hide');

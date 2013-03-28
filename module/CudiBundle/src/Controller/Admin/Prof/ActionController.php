@@ -108,7 +108,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
 
         $this->redirect()->toRoute(
-            'admin_prof_action',
+            'cudi_admin_prof_action',
             array(
                 'action' => 'refused'
             )
@@ -127,7 +127,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         if ($action->getEntityName() == 'article') {
             if ($action->getAction() == 'add') {
                 $this->redirect()->toRoute(
-                    'admin_prof_action',
+                    'cudi_admin_prof_action',
                     array(
                         'action' => 'confirmArticle',
                         'id' => $action->getId(),
@@ -183,7 +183,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         } elseif ($action->getEntityName() == 'file') {
             if ($action->getAction() == 'add') {
                 $this->redirect()->toRoute(
-                    'admin_prof_action',
+                    'cudi_admin_prof_action',
                     array(
                         'action' => 'confirmFile',
                         'id' => $action->getId(),
@@ -208,7 +208,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         );
 
         $this->redirect()->toRoute(
-            'admin_prof_action',
+            'cudi_admin_prof_action',
             array(
                 'action' => 'completed'
             )
@@ -279,7 +279,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
-                    'admin_prof_action',
+                    'cudi_admin_prof_action',
                     array(
                         'action' => 'completed'
                     )
@@ -322,7 +322,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
-                    'admin_prof_action',
+                    'cudi_admin_prof_action',
                     array(
                         'action' => 'completed'
                     )
@@ -350,7 +350,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_prof_action',
+                'cudi_admin_prof_action',
                 array(
                     'action' => 'manage'
                 )
@@ -373,7 +373,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_prof_action',
+                'cudi_admin_prof_action',
                 array(
                     'action' => 'manage'
                 )

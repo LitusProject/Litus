@@ -71,7 +71,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_subject',
+                    'syllabus_admin_subject',
                     array(
                         'action' => 'edit',
                         'id' => $subject->getId(),
@@ -146,7 +146,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -169,7 +169,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -193,7 +193,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -216,7 +216,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )
@@ -251,7 +251,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_study',
+                'syllabus_admin_study',
                 array(
                     'action' => 'manage'
                 )

@@ -58,21 +58,19 @@ class Server
      */
     private function createSocket()
     {
-        $this->master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        $context = stream_context_create();
 
-        if (!$this->master)
-            throw new Exception('Socket could not be created: ' . socket_last_error());
+        stream_context_set_option($context, 'ssl', 'local_cert', '/etc/apache2/ssl/server.pem');
 
+        stream_context_set_option($context, 'ssl', 'allow_self_signed', true);
+        stream_context_set_option($context, 'ssl', 'verify_peer', false);
+
+        $err = $errno = 0;
+        $this->master = stream_socket_server('tcp://' . $this->_address . ':' . $this->_port, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
         $this->_sockets[] = $this->master;
 
-        if (!socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1))
-            throw new Exception('Socket options could not be set: ' . socket_last_error());
-
-        if (!socket_bind($this->master, $this->_address, $this->_port))
-            throw new Exception('Socket could not be binded to given address: ' . socket_last_error());
-
-        if (!socket_listen($this->master, 20))
-            throw new Exception('Could not listen to socket: ' . socket_last_error());
+        if ($this->master == false)
+            throw new Exception('Socket could not be created: ' . $err);
     }
 
     /**
@@ -88,15 +86,15 @@ class Server
             }
 
             $changed = $this->_sockets;
-            socket_select($changed, $write, $except, null);
+            stream_select($changed, $write, $except, null);
 
             foreach($changed as $socket){
                 if ($socket == $this->master) {
-                    $this->_addUserSocket(socket_accept($this->master));
+                    $this->_addUserSocket(stream_socket_accept($this->master));
                 } else {
-                    $bytes = @socket_recv($socket, $buffer, 2048, 0);
-                    
-                    if ($bytes == 0) {
+                    $buffer = fread($socket, 2048);
+
+                    if (false == $buffer || strlen($buffer) == 0) {
                         $this->_removeUserSocket($socket);
                     } else {
                         $user = $this->getUserBySocket($socket);

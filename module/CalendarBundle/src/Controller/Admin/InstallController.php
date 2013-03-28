@@ -32,10 +32,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'calendarbundle' => array(
-                    'admin_calendar' => array(
+                    'calendar_admin_calendar' => array(
                         'add', 'delete', 'edit', 'editPoster', 'manage', 'old', 'pdf', 'poster'
                     ),
-                    'admin_calendar_registration' => array(
+                    'calendar_admin_calendar_registration' => array(
                         'export', 'manage'
                     ),
                     'calendar' => array(

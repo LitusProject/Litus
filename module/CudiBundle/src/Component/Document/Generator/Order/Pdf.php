@@ -46,9 +46,9 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.pdf_generator_path');
 
-           parent::__construct(
-               $entityManager,
-            $filePath . '/order/order.xsl',
+        parent::__construct(
+            $entityManager,
+            $filePath . '/order/templates/' . $order->getSupplier()->getTemplate() . '.xsl',
             $file->getFilename()
         );
         $this->_order = $order;

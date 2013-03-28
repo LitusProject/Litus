@@ -102,7 +102,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_supplier_user',
+                    'cudi_admin_supplier_user',
                     array(
                         'action' => 'manage',
                         'id' => $supplier->getId(),
@@ -134,7 +134,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                
+
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
@@ -152,7 +152,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_supplier_user',
+                    'cudi_admin_supplier_user',
                     array(
                         'action' => 'manage',
                         'id' => $user->getSupplier()->getId()
@@ -200,7 +200,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_supplier',
+                'cudi_admin_supplier',
                 array(
                     'action' => 'manage'
                 )
@@ -223,7 +223,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_supplier',
+                'cudi_admin_supplier',
                 array(
                     'action' => 'manage'
                 )
@@ -247,7 +247,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_supplier',
+                'cudi_admin_supplier',
                 array(
                     'action' => 'manage'
                 )
@@ -270,7 +270,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_supplier',
+                'cudi_admin_supplier',
                 array(
                     'action' => 'manage'
                 )

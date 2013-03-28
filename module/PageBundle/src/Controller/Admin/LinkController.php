@@ -98,7 +98,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page_link',
+                    'page_admin_link',
                     array(
                         'action' => 'manage'
                     )
@@ -178,7 +178,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page_link',
+                    'page_admin_link',
                     array(
                         'action' => 'manage'
                     )
@@ -227,7 +227,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_page_link',
+                'page_admin_link',
                 array(
                     'action' => 'manage'
                 )
@@ -250,7 +250,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_page_link',
+                'page_admin_link',
                 array(
                     'action' => 'manage'
                 )

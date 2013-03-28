@@ -43,7 +43,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $loginForm = new LoginForm(
             $this->url()->fromRoute(
-                'auth',
+                'common_auth',
                 array(
                     'action' => 'login'
                 )
@@ -80,10 +80,10 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     {
         return array(
             'action'         => 'login',
-            'controller'     => 'auth',
+            'controller'     => 'common_auth',
 
-            'auth_route'     => 'auth',
-            'redirect_route' => 'index'
+            'auth_route'     => 'common_auth',
+            'redirect_route' => 'common_index'
         );
     }
 

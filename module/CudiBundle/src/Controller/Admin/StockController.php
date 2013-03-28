@@ -236,7 +236,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_stock',
+                        'cudi_admin_stock',
                         array(
                             'action' => 'edit',
                             'id' => $article->getId(),
@@ -265,7 +265,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_stock',
+                        'cudi_admin_stock',
                         array(
                             'action' => 'edit',
                             'id' => $article->getId(),
@@ -299,7 +299,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_stock',
+                        'cudi_admin_stock',
                         array(
                             'action' => 'edit',
                             'id' => $article->getId(),
@@ -354,7 +354,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     {
         $form = new ExportForm(
             $this->url()->fromRoute(
-                'admin_stock',
+                'cudi_admin_stock',
                 array(
                     'action' => 'download'
                 )
@@ -445,7 +445,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_stock',
+                'cudi_admin_stock',
                 array(
                     'action' => 'manage'
                 )
@@ -468,7 +468,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'admin_stock',
+                'cudi_admin_stock',
                 array(
                     'action' => 'manage'
                 )

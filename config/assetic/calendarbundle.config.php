@@ -19,7 +19,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_calendar' => array(
+        'calendar_admin_calendar' => array(
             '@common_jquery',
             '@admin_js',
             '@bootstrap_js_tab',
@@ -31,7 +31,7 @@ return array(
             '@gollum_js',
             '@admin_css',
         ),
-        'admin_calendar_registration' => array(
+        'calendar_admin_calendar_registration' => array(
             '@common_jquery',
             '@admin_js',
             '@admin_css',

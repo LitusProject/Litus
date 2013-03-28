@@ -63,10 +63,10 @@
                 <td>{{ mapping.getArticle().getPublishers() }}</td>
                 <td>{{ mapping.getArticle().getYearPublished() }}</td>
                 <td class="actions">
-                    {% if hasAccess('prof_article', 'edit') %}
-                        <a href="{{ url('prof_article', {'action': 'edit', 'id': mapping.getArticle().getId()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+                    {% if hasAccess('cudi_prof_article', 'edit') %}
+                        <a href="{{ url('cudi_prof_article', {'action': 'edit', 'id': mapping.getArticle().getId()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
                     {% endif %}
-                    {% if hasAccess('prof_article_mapping', 'delete') %}
+                    {% if hasAccess('cudi_prof_article_mapping', 'delete') %}
                         <a href="#" class="btn btn-danger removeArticle" data-id="{{ mapping.getId() }}" data-article="{{ mapping.getArticle().getTitle() }}">{{ translate('Remove') }}</a>
                     {% endif %}
                 </td>
@@ -74,8 +74,8 @@
         {% endfor %}
     </table>
     <div class="pull-right">
-        {% if hasAccess('prof_article', 'add') %}
-            <a href="{{ url('prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Article') }}</a>
+        {% if hasAccess('cudi_prof_article', 'add') %}
+            <a href="{{ url('cudi_prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Article') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
@@ -93,7 +93,7 @@
                 <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
                 <td>{{ mapping.getProf().getFullName() }}</td>
                 <td class="actions">
-                    {% if hasAccess('prof_prof', 'delete') and mapping.getProf().getId() != authenticatedPerson.getId() %}
+                    {% if hasAccess('cudi_prof_prof', 'delete') and mapping.getProf().getId() != authenticatedPerson.getId() %}
                         <a href="#" class="btn btn-danger removeProf" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getProf().getFullName() }}">{{ translate('Remove') }}</a>
                     {% endif %}
                 </td>
@@ -101,8 +101,8 @@
         {% endfor %}
     </table>
     <div class="pull-right">
-        {% if hasAccess('prof_prof', 'add') %}
-            <a href="{{ url('prof_prof', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Docent') }}</a>
+        {% if hasAccess('cudi_prof_prof', 'add') %}
+            <a href="{{ url('cudi_prof_prof', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Docent') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
@@ -150,7 +150,7 @@
             var removeArticle = $('#modalRemoveArticle');
             removeArticle.find('.articleTitle').html($(this).data('article'));
             removeArticle.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('prof_article_mapping', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_article_mapping', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#article_removed_success').addClass('in');
@@ -177,7 +177,7 @@
             var removeProf = $('#modalRemoveProf');
             removeProf.find('.profName').html($(this).data('name'));
             removeProf.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('prof_prof', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_prof', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#prof_removed_success').addClass('in');

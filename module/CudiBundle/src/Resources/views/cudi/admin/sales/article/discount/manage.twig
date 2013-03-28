@@ -48,7 +48,7 @@
                     <td>{{ discount.getRounding() }}</td>
                     <td>{% if discount.applyOnce() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_sales_article_discount', 'delete') %}
+                        {% if hasAccess('cudi_admin_sales_article_discount', 'delete') %}
                             <a href="#" class="delete" data-id="{{ discount.getId() }}" data-type="{{ discount.getType()|capitalize }}" data-discount="{% if discount.getMethod() == 'percentage' %}-{{ (discount.getValue()/100)|number_format(2) }}%{% elseif discount.getMethod() == 'fixed' %}- &euro; {{ (discount.getValue()/100)|number_format(2) }}{% else %}&euro; {{ (discount.getValue()/100)|number_format(2) }}{% endif %}">Delete</a>
                         {% endif %}
                     </td>
@@ -110,7 +110,7 @@
             removeDiscount.find('.discount').html($(this).data('discount'));
             var id = $this.data('id');
             removeDiscount.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_sales_article_discount', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('cudi_admin_sales_article_discount', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.discount_removed_success').removeClass('hide');
