@@ -387,10 +387,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.reservation_extend_time');
 
-        $date = clone $booking->getExpirationDate();
-        $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
-        $this->getEntityManager()->flush();
-
+        if ($booking->getExpirationDate()) {
+            $date = clone $booking->getExpirationDate();
+            $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
+            $this->getEntityManager()->flush();
+        }
+        
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
@@ -444,6 +446,34 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $message = 'There is <b>one</b> booking expired!';
         else
             $message = 'There are <b>' . $number . '</b> bookings expired!';
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                $message
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
+    }
+
+    public function extendAllAction()
+    {
+        $number = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->extendAllBookings();
+
+        $this->getEntityManager()->flush();
+
+        if (0 == $number)
+            $message = 'No booking could be extended!';
+        elseif (1 == $number)
+            $message = 'There is <b>one</b> booking extended!';
+        else
+            $message = 'There are <b>' . $number . '</b> bookings extended!';
 
         $this->flashMessenger()->addMessage(
             new FlashMessage(

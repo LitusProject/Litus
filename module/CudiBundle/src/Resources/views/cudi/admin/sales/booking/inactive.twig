@@ -63,6 +63,7 @@
         $(document).ready(function () {
             $('#controller_nav .assignAll').click(openAssignAllModal);
             $('#controller_nav .expireAll').click(openExpireAllModal);
+            $('#controller_nav .extendAll').click(openExtendAllModal);
 
             {% if hasAccess('cudi_admin_sales_booking', 'search') %}
             $.searchDatabase({
