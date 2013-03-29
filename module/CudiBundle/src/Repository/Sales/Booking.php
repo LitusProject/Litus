@@ -10,6 +10,7 @@ use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
     DateTime,
+    DateInterval,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     Zend\Mail\Transport\TransportInterface;
@@ -877,6 +878,32 @@ class Booking extends EntityRepository
                $booking->setStatus('expired', $this->getEntityManager());
         }
         return sizeof($bookings);
+    }
+
+    public function extendAllBookings()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $bookings = $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->eq('b.status', '\'assigned\'')
+            )
+            ->getQuery()
+            ->getResult();
+
+        $extendTime = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.reservation_extend_time');
+
+        $number = 0;
+        foreach($bookings as $booking) {
+            if ($booking->getExpirationDate()) {
+                $date = clone $booking->getExpirationDate();
+                $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
+                $number++;
+            }
+        }
+        return $number;
     }
 
     public function findLastAssignedByArticle(ArticleEntity $article)
