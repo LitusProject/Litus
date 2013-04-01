@@ -880,14 +880,18 @@ class Booking extends EntityRepository
         return sizeof($bookings);
     }
 
-    public function extendAllBookings()
+    public function extendAllBookings(DateTime $date)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $bookings = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
-                $query->expr()->eq('b.status', '\'assigned\'')
+                $query->expr()->andX(
+                    $query->expr()->eq('b.status', '\'assigned\''),
+                    $query->expr()->lt('b.expirationDate', ':date')
+                )
             )
+            ->setParameter('date', $date)
             ->getQuery()
             ->getResult();
 
