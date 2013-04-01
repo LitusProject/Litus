@@ -82,6 +82,9 @@
             You are about to extend all the possible bookings!
         </p>
         <p>
+            Extend all booking expiring before (and including): <input type="text" id="extendAllBookingsDate" placeholder="dd/mm/yyyy" />
+        </p>
+        <p>
             Are you sure you want to continue?
         </p>
         <div class="footer">
@@ -119,9 +122,14 @@
             var $this = $(this);
 
             e.preventDefault();
+
             var extendAllBooking = $('#extendAllBooking');
             extendAllBooking.find('.delete').unbind('click').click(function () {
-                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "extendAll"})}}';
+                var date = $('#extendAllBookingsDate').val().replace(/\//g, '-');
+                var pattern = /^[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}$/;
+                if (!pattern.test(date))
+                    return;
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "extendAll"})}}date/' + date;
             });
             extendAllBooking.modal();
         }

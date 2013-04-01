@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Booking\Article as ArticleForm,
     CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
+    DateTime,
     DateInterval,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -392,7 +393,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
             $this->getEntityManager()->flush();
         }
-        
+
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
@@ -462,11 +463,17 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function extendAllAction()
     {
-        $number = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
-            ->extendAllBookings();
+        $date = DateTime::createFromFormat('d#m#Y H:i', $this->getParam('date') . ' 0:00');
+        $date->add(new DateInterval('P1D'));
 
-        $this->getEntityManager()->flush();
+        $number = 0;
+        if ($date) {
+            $number = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->extendAllBookings($date);
+
+            $this->getEntityManager()->flush();
+        }
 
         if (0 == $number)
             $message = 'No booking could be extended!';

@@ -163,7 +163,7 @@ return array(
             'cudi_admin_sales_booking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/:type[/:field/:string]][/page/:page]][/]',
+                    'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/:type[/:field/:string]][/page/:page][/date/:date]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -172,6 +172,7 @@ return array(
                         'string'  => '[%a-zA-Z0-9:.,_-]*',
                         'type'    => '[a-zA-Z][%a-zA-Z0-9_-]*',
                         'page'    => '[0-9]*',
+                        'date'    => '[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_sales_booking',
