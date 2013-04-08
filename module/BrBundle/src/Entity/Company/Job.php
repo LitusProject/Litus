@@ -23,7 +23,7 @@ use BrBundle\Entity\Company,
  * This is the entity for an job.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Job")
- * @ORM\Table(name="br.companies_job")
+ * @ORM\Table(name="br.companies_jobs")
  */
 class Job
 {

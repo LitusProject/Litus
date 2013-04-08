@@ -26,7 +26,7 @@ use CommonBundle\Entity\General\Language,
  * An abstract class that stores a number of options.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\OptionSelector")
- * @ORM\Table(name="forms.field_options")
+ * @ORM\Table(name="forms.fields_options")
  */
 abstract class OptionSelector extends Field
 {

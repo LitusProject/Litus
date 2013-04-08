@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * A reservation is associated with a certain resource and locks it from a given start date to a given end date.
  *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\VanReservation")
- * @ORM\Table(name="logistics.reservation_van")
+ * @ORM\Table(name="logistics.reservations_van")
  */
 class VanReservation extends Reservation
 {

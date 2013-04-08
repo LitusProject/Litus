@@ -21,7 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\GuestInfo")
- * @ORM\Table(name="forms.guest_info")
+ * @ORM\Table(name="forms.guests_info")
  */
 class GuestInfo
 {

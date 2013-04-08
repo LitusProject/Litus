@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Photo")
- * @ORM\Table(name="gallery.photo")
+ * @ORM\Table(name="gallery.photos")
  */
 class Photo
 {
