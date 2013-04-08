@@ -91,7 +91,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
         $upload = new FileUpload();
         $upload->addValidator(new SizeValidator(array('max' => '50MB')));
-        // $upload->addValidator(new ExtensionValidator('pdf')); // Awaiting ZF Fix
+        $upload->addValidator(new ExtensionValidator('pdf'));
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
