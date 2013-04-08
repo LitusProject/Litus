@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a language specification on a cv.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Cv\Language")
- * @ORM\Table(name="br.cv_language")
+ * @ORM\Table(name="br.cv_languages")
  */
 class Language
 {

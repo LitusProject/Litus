@@ -10,7 +10,7 @@ use CommonBundle\Component\Util\Url,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\OptionTranslation")
- * @ORM\Table(name="forms.option_translation")
+ * @ORM\Table(name="forms.fields_options_translations")
  */
 class OptionTranslation
 {

@@ -25,7 +25,7 @@ use BrBundle\Entity\Users\People\Corporate,
  * This is the entity for a company's page.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Page")
- * @ORM\Table(name="br.companies_page")
+ * @ORM\Table(name="br.companies_pages")
  */
 class Page
 {

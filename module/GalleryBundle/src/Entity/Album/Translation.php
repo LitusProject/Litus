@@ -10,7 +10,7 @@ use CommonBundle\Component\Util\Url,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Translation")
- * @ORM\Table(name="gallery.translation")
+ * @ORM\Table(name="gallery.translations")
  */
 class Translation
 {

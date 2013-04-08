@@ -26,7 +26,7 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\Checkbox")
- * @ORM\Table(name="forms.field_checkbox")
+ * @ORM\Table(name="forms.fields_checkboxes")
  */
 class Checkbox extends Field
 {

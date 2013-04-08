@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Person,
  * This is the entity for a driver.
  *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Driver")
- * @ORM\Table(name="logistics.driver")
+ * @ORM\Table(name="logistics.drivers")
  */
 class Driver
 {
@@ -38,7 +38,7 @@ class Driver
 
     /**
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
-     * @ORM\JoinTable(name="logistics.driver_years",
+     * @ORM\JoinTable(name="logistics.drivers_years",
      *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="person")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year_id", referencedColumnName="id")}
      * )

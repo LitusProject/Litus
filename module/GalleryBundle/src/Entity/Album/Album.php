@@ -11,7 +11,7 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the album item.
  *
  * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Album")
- * @ORM\Table(name="gallery.album")
+ * @ORM\Table(name="gallery.albums")
  */
 class Album
 {
