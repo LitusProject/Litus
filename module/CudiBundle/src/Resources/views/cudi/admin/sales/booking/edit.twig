@@ -168,6 +168,15 @@
                 You are about to delete the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
                 Please note that this operation cannot be undone!
             </p>
+            {% if booking.getNumber() > 1 %}
+                <p>
+                    Only delete <select id="removeNbBookings">
+                        {% for i in 1..booking.getNumber() %}
+                            <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select> bookings
+                </p>
+            {% endif %}
             <p>
                 Are you sure you want to continue?
             </p>
@@ -186,6 +195,15 @@
             <p>
                 You are about to assign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
             </p>
+            {% if booking.getNumber() > 1 %}
+                <p>
+                    Only assign <select id="assignNbBookings">
+                        {% for i in 1..booking.getNumber() %}
+                            <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select> bookings
+                </p>
+            {% endif %}
             <p>
                 Are you sure you want to continue?
             </p>
@@ -204,6 +222,15 @@
             <p>
                 You are about to unassign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
             </p>
+            {% if booking.getNumber() > 1 %}
+                <p>
+                    Only unassign <select id="unassignNbBookings">
+                        {% for i in 1..booking.getNumber() %}
+                            <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select> bookings
+                </p>
+            {% endif %}
             <p>
                 Are you sure you want to continue?
             </p>
@@ -306,7 +333,7 @@
             e.preventDefault();
             var removeBooking = $('#removeBooking');
             removeBooking.find('.delete').unbind('click').click(function () {
-                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "delete", "id": booking.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "delete", "id": booking.getId()})}}number/' + removeBooking.find('#removeNbBookings').val();
             });
             removeBooking.modal();
         }
@@ -317,7 +344,7 @@
             e.preventDefault();
             var assignBooking = $('#assignBooking');
             assignBooking.find('.assign').unbind('click').click(function () {
-                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "assign", "id": booking.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "assign", "id": booking.getId()})}}number/' +assignBooking.find('#assignNbBookings').val();
             });
             assignBooking.modal();
         }
@@ -328,7 +355,7 @@
             e.preventDefault();
             var unassignBooking = $('#unassignBooking');
             unassignBooking.find('.unassign').unbind('click').click(function () {
-                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}';
+                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}number/' + unassignBooking.find('#unassignNbBookings').val();
             });
             unassignBooking.modal();
         }

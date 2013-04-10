@@ -262,7 +262,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($booking = $this->_getBooking()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($booking);
+        if ($this->getParam('number') < $booking->getNumber()) {
+            $booking->setNumber($booking->getNumber() - $this->getParam('number'));
+        } else {
+            $this->getEntityManager()->remove($booking);
+        }
+
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(
@@ -306,6 +311,20 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
+        if ($this->getParam('number') < $booking->getNumber()) {
+            $new = new Booking(
+                $this->getEntityManager(),
+                $booking->getPerson(),
+                $booking->getArticle(),
+                'booked',
+                $booking->getNumber() - $this->getParam('number')
+            );
+            $this->getEntityManager()->persist($new);
+            $booking->setNumber($this->getParam('number'));
+        } else {
+            $number = $booking->getNumber();
+        }
+
         if ($available < $booking->getNumber()) {
             $new = new Booking(
                 $this->getEntityManager(),
@@ -342,7 +361,20 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($booking = $this->_getBooking()))
             return new ViewModel();
 
-        $booking->setStatus('booked', $this->getEntityManager());
+        if ($this->getParam('number') < $booking->getNumber()) {
+            $new = new Booking(
+                $this->getEntityManager(),
+                $booking->getPerson(),
+                $booking->getArticle(),
+                'booked',
+                $this->getParam('number')
+            );
+            $this->getEntityManager()->persist($new);
+            $booking->setNumber($booking->getNumber() - $this->getParam('number'));
+        } else {
+            $booking->setStatus('booked', $this->getEntityManager());
+        }
+
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(
