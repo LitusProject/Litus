@@ -68,17 +68,20 @@ class Title extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $parent = null;
+        $realParent = null;
+        $parentName = null;
         if (isset($context['parent_' . $context['category']]) && '' != $context['parent_' . $context['category']]) {
-            $parent = $this->_entityManager
+            $realParent = $this->_entityManager
                 ->getRepository('PageBundle\Entity\Nodes\Page')
                 ->findOneById($context['parent_' . $context['category']]);
+
+            $parentName = $realParent->getName();
         }
 
         $page = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByName(
-                Url::createSlug($value), $parent
+            ->findOneByNames(
+                Url::createSlug($value), Url::createSlug($parentName)
             );
 
         if (null === $page || $page->getName() == $this->_exclude)

@@ -163,14 +163,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         if (null === $this->getParam('name'))
             return;
 
-        $parent = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByName($this->getParam('parent'));
-
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByName(
-                $this->getParam('name'), $parent
+            ->findOneByNames(
+                $this->getParam('name'), $this->getParam('parent')
             );
 
         if (null === $page)
