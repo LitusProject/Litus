@@ -101,6 +101,9 @@ Jorn Hendrickx',
                     'mail_admin_mail_bakske' => array(
                         'send'
                     ),
+                    'mail_admin_mail_contributor' => array(
+                        'send'
+                    ),
                 )
             )
         );
