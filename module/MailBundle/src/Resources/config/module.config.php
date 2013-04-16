@@ -123,6 +123,19 @@ return array(
                     ),
                 ),
             ),
+            'mail_admin_mail_contributor' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/mail/study[/:action][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'mail_admin_mail_contributor',
+                        'action'     => 'send',
+                    ),
+                ),
+            ),
         ),
     ),
     'doctrine' => array(
@@ -164,6 +177,7 @@ return array(
             'mail_admin_mail_study'  => 'MailBundle\Controller\Admin\StudyController',
             'mail_admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
             'mail_admin_mail_list'   => 'MailBundle\Controller\Admin\MailingListController',
+            'mail_admin_mail_contributor'  => 'MailBundle\Controller\Admin\ContributorController',
         ),
     ),
 );
