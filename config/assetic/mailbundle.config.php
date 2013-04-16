@@ -60,6 +60,11 @@ return array(
             '@bootstrap_js_modal',
             '@common_typeahead_remote',
         ),
+        'mail_admin_mail_contributor' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        )
     ),
     'routes' => array(),
 );
