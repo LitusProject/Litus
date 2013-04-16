@@ -31,6 +31,62 @@ class Volunteer extends EntityRepository
         return null;
     }
 
+    public function findAllByCountMinimum(AcademicYear $academicYear, $minimum)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
+            ->from('ShiftBundle\Entity\Shifts\Volunteer', 'v')
+            ->innerJoin('v.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('v.signupTime', ':startAcademicYear'),
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear')
+                )
+            )
+            ->groupBy('p.id')
+            ->orderBy('shiftCount')
+            ->having(
+                $query->expr()->gt('COUNT(p.id)', ':min')
+            )
+            ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
+            ->setParameter('min', $minimum)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByCountLimits(AcademicYear $academicYear, $minimum, $maximum)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
+            ->from('ShiftBundle\Entity\Shifts\Volunteer', 'v')
+            ->innerJoin('v.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('v.signupTime', ':startAcademicYear'),
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear')
+                )
+            )
+            ->groupBy('p.id')
+            ->orderBy('shiftCount')
+            ->having(
+                $query->expr()->andX(
+                    $query->expr()->gte('COUNT(p.id)', ':min'),
+                    $query->expr()->lt('COUNT(p.id)', ':max')
+                )
+            )
+            ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
+            ->setParameter('min', $minimum)
+            ->setParameter('max', $maximum)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllByAcademicYear(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
