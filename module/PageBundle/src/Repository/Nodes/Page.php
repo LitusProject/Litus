@@ -39,6 +39,35 @@ class Page extends EntityRepository
             ->findBy(array('parent' => $parent, 'endTime' => null));
     }
 
+    public function findOneByNames($name, $parentName)
+    {
+        if ($parentName === null)
+            return $this->findOneByName($name, null);
+
+        $query = $this->_em->createQueryBuilder();
+        $query->select('p')
+            ->from('PageBundle\Entity\Nodes\Page', 'p')
+            ->innerJoin('p.parent', 'par')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.name', ':name'),
+                    $query->expr()->eq('par.name', ':parentName'),
+                    $query->expr()->isNull('p.endTime')
+                )
+            )
+            ->setParameter('name', $name)
+            ->setParameter('parentName', $parentName);
+
+        $resultSet = $query->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findOneByName($name, PageEntity $parent = null)
     {
         $query = $this->_em->createQueryBuilder();
