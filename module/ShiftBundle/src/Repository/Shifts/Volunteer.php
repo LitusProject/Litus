@@ -46,7 +46,7 @@ class Volunteer extends EntityRepository
             ->groupBy('p.id')
             ->orderBy('shiftCount')
             ->having(
-                $query->expr()->gt('COUNT(p.id)', ':min')
+                $query->expr()->gte('COUNT(p.id)', ':min')
             )
             ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
             ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
