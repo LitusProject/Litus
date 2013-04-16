@@ -275,6 +275,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'publication_install' => array(
                         'index'
                     ),
+                    'quiz_install' => array(
+                        'index'
+                    ),
                     'secretary_install' => array(
                         'index'
                     ),
