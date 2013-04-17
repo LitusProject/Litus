@@ -64,15 +64,9 @@ class VolunteerController extends \CommonBundle\Component\Controller\ActionContr
 
                 $mail->addTo($formData['from']);
 
-                $rankingCriteria = unserialize(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('shift.ranking_criteria')
-                );
-
                 $volunteers = $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shifts\Volunteer')
-                    ->findAllByCountMinimum($currentYear, $rankingCriteria[0]['limit']);
+                    ->findAllByCountMinimum($currentYear, 1);
 
                 foreach ($volunteers as $volunteer) {
                     $person = $this->getEntityManager()
