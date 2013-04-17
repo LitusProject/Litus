@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Form\Admin\Contributor;
+namespace MailBundle\Form\Admin\Volunteer;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,

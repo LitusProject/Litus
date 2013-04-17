@@ -15,7 +15,7 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Form\Admin\Contributor\Mail as MailForm,
+    MailBundle\Form\Admin\Volunteer\Mail as MailForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Mail\Message,
     Zend\Mime\Part,
@@ -27,11 +27,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 
 
 /**
- * ContributorController
+ * VolunteerController
  *
  * @autor Niels Avonds <niels.avonds@litus.cc>>
  */
-class ContributorController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class VolunteerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 
     public function sendAction()
@@ -96,7 +96,7 @@ class ContributorController extends \CommonBundle\Component\Controller\ActionCon
                 );
 
                 $this->redirect()->toRoute(
-                    'mail_admin_mail_contributor',
+                    'mail_admin_mail_volunteer',
                     array(
                         'action' => 'send'
                     )

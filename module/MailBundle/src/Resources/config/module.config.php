@@ -123,15 +123,15 @@ return array(
                     ),
                 ),
             ),
-            'mail_admin_mail_contributor' => array(
+            'mail_admin_mail_volunteer' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/study[/:action][/]',
+                    'route' => '/admin/mail/volunteer[/:action][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'mail_admin_mail_contributor',
+                        'controller' => 'mail_admin_mail_volunteer',
                         'action'     => 'send',
                     ),
                 ),
@@ -169,15 +169,15 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'mail_install'           => 'MailBundle\Controller\Admin\InstallController',
-            'mail_admin_mail'        => 'MailBundle\Controller\Admin\MailController',
-            'mail_admin_mail_alias'  => 'MailBundle\Controller\Admin\AliasController',
-            'mail_admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
-            'mail_admin_mail_prof'   => 'MailBundle\Controller\Admin\ProfController',
-            'mail_admin_mail_study'  => 'MailBundle\Controller\Admin\StudyController',
-            'mail_admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
-            'mail_admin_mail_list'   => 'MailBundle\Controller\Admin\MailingListController',
-            'mail_admin_mail_contributor'  => 'MailBundle\Controller\Admin\ContributorController',
+            'mail_install'              => 'MailBundle\Controller\Admin\InstallController',
+            'mail_admin_mail'           => 'MailBundle\Controller\Admin\MailController',
+            'mail_admin_mail_alias'     => 'MailBundle\Controller\Admin\AliasController',
+            'mail_admin_mail_bakske'    => 'MailBundle\Controller\Admin\BakskeController',
+            'mail_admin_mail_prof'      => 'MailBundle\Controller\Admin\ProfController',
+            'mail_admin_mail_study'     => 'MailBundle\Controller\Admin\StudyController',
+            'mail_admin_mail_bakske'    => 'MailBundle\Controller\Admin\BakskeController',
+            'mail_admin_mail_list'      => 'MailBundle\Controller\Admin\MailingListController',
+            'mail_admin_mail_volunteer' => 'MailBundle\Controller\Admin\VolunteerController',
         ),
     ),
 );
