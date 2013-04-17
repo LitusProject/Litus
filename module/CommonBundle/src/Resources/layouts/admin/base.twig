@@ -166,14 +166,14 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('mail_admin_mail', 'groups') or hasAccess('mail_admin_mail_bakske', 'send') or hasAccess('mail_admin_mail_prof', 'cudi') or hasAccess('mail_admin_mail_study', 'send') or hasAccess('mail_admin_mail_list', 'manage') or hasAccess('mail_admin_mail_contributor', 'send') %}
+                        {% if hasAccess('mail_admin_mail', 'groups') or hasAccess('mail_admin_mail_bakske', 'send') or hasAccess('mail_admin_mail_prof', 'cudi') or hasAccess('mail_admin_mail_study', 'send') or hasAccess('mail_admin_mail_list', 'manage') or hasAccess('mail_admin_mail_volunteer', 'send') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Mail</b><br />
                                     Aliases, Lists &amp; Mass Mail
                                 </div>
                                 <ul
-                                    {% if 'mail_admin_mail' == getParam('controller') or 'mail_admin_mail_bakske' == getParam('controller') or 'mail_admin_mail_prof' == getParam('controller') or 'mail_admin_mail_study' == getParam('controller') or 'mail_admin_mail_list' == getParam('controller') or 'mail_admin_mail_alias' == getParam('controller') or ' mail_admin_mail_contributor' == getParam('controller') %}
+                                    {% if 'mail_admin_mail' == getParam('controller') or 'mail_admin_mail_bakske' == getParam('controller') or 'mail_admin_mail_prof' == getParam('controller') or 'mail_admin_mail_study' == getParam('controller') or 'mail_admin_mail_list' == getParam('controller') or 'mail_admin_mail_alias' == getParam('controller') or 'mail_admin_mail_volunteer' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
@@ -195,8 +195,8 @@
                                     {% if hasAccess('mail_admin_mail_study', 'send') %}
                                         <li><a href="{{ url('mail_admin_mail_study') }}">Student</a></li>
                                     {% endif %}
-                                    {% if hasAccess('mail_admin_mail_contributor', 'send') %}
-                                        <li><a href="{{ url('mail_admin_mail_contributor') }}">Contributors</a></li>
+                                    {% if hasAccess('mail_admin_mail_volunteer', 'send') %}
+                                        <li><a href="{{ url('mail_admin_mail_volunteer') }}">Volunteers</a></li>
                                     {% endif %}
                                 </ul>
                             </li>

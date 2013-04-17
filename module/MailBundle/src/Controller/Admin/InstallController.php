@@ -101,7 +101,7 @@ Jorn Hendrickx',
                     'mail_admin_mail_bakske' => array(
                         'send'
                     ),
-                    'mail_admin_mail_contributor' => array(
+                    'mail_admin_mail_volunteer' => array(
                         'send'
                     ),
                 )
