@@ -1,3 +1,0 @@
-[submodule "module/CommonBundle/src/Resources/assets/bootstrap"]
-	path = module/CommonBundle/src/Resources/assets/bootstrap
-	url = git://github.com/twitter/bootstrap.git

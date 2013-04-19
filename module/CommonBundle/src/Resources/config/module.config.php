@@ -495,119 +495,14 @@ return array(
                         ),
                     ),
 
-                    'bootstrap_css' => array(
-                        'assets' => array(
-                            'bootstrap/less/bootstrap.less',
-                        ),
-                        'filters' => array(
-                            'bootstrap_less' => array(
-                                'name' => '\Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
-                            ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_css.css',
-                        ),
-                    ),
-                    'bootstrap_responsive_css' => array(
-                        'assets' => array(
-                            'bootstrap/less/responsive.less',
-                        ),
-                        'filters' => array(
-                            'bootstrap_responsive_less' => array(
-                                'name' => '\Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => false,
-                                ),
-                            ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_responsive_css.css',
-                        ),
-                    ),
-                    'bootstrap_js_affix' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-affix.js',
-                        ),
-                    ),
-                    'bootstrap_js_alert' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-alert.js',
-                        ),
-                    ),
-                    'bootstrap_js_button' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-button.js',
-                        ),
-                    ),
-                    'bootstrap_js_carousel' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-carousel.js',
-                        ),
-                    ),
-                    'bootstrap_js_collapse' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-collapse.js',
-                        ),
-                    ),
-                    'bootstrap_js_custom_collapse' => array(
-                        'assets'  => array(
-                            'common/js/bootstrap-custom-collapse.js',
-                        ),
-                    ),
-                    'bootstrap_js_dropdown' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-dropdown.js',
-                        ),
-                    ),
-                    'bootstrap_js_modal' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-modal.js',
-                        ),
-                    ),
-                    'bootstrap_js_popover' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-popover.js',
-                        ),
-                    ),
                     'bootstrap_js_rowlink' => array(
                         'assets'  => array(
                             'common/js/bootstrap-rowlink.js',
                         ),
                     ),
-                    'bootstrap_js_scrollspy' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-scrollspy.js',
-                        ),
-                    ),
-                    'bootstrap_js_tab' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-tab.js',
-                        ),
-                    ),
-                    'bootstrap_js_tooltip' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-tooltip.js',
-                        ),
-                    ),
-                    'bootstrap_js_transition' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-transition.js',
-                        ),
-                    ),
-                    'bootstrap_js_typeahead' => array(
-                        'assets' => array(
-                            'bootstrap/js/bootstrap-typeahead.js',
+                    'bootstrap_js_custom_collapse' => array(
+                        'assets'  => array(
+                            'common/js/bootstrap-custom-collapse.js',
                         ),
                     ),
 

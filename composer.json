@@ -18,6 +18,7 @@
 
         "EvanDotPro/EdpMarkdown": "@dev",
         "widmogrod/zf2-assetic-module": "@dev",
-        "zf-commons/zfc-twig": "@dev"
+        "zf-commons/zfc-twig": "@dev",
+        "twitter/bootstrap": "2.3.*"
     }
 }

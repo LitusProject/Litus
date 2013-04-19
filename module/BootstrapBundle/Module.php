@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle;
+namespace BootstrapBundle;
 
 use Zend\Mvc\ModuleRouteListener;
 
