@@ -74,36 +74,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The name of the mail sender',
                 ),
                 array(
-                    'key'         => 'union_short_name',
-                    'value'       => 'VTK',
-                    'description' => 'The short name of this union',
-                ),
-                array(
-                    'key'         => 'union_name',
-                    'value'       => 'VTK vzw',
-                    'description' => 'The full name of this union',
-                ),
-                array(
-                    'key'         => 'union_logo',
-                    'value'       => 'data/images/logo/logo.svg',
-                    'description' => 'The path to the logo of the union',
-                ),
-                array(
-                    'key'         => 'union_url',
-                    'value'       => 'http://vtk.be',
-                    'description' => 'The URL of the union',
-                ),
-                array(
-                    'key'         => 'university',
-                    'value'       => 'KU Leuven',
-                    'description' => 'The name of the university',
-                ),
-                array(
-                    'key'         => 'faculty',
-                    'value'       => 'Faculty of Engineering',
-                    'description' => 'The name of the faculty',
-                ),
-                array(
                     'key'         => 'cudi.name',
                     'value'       => 'Cudi',
                     'description' => 'The name of the cudi',
