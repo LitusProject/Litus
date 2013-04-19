@@ -14,7 +14,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use Zend\Mvc\MvcEvent,
+    Zend\View\Model\ViewModel;
 
 /**
  * AllInstallController calls all other installations.
@@ -25,12 +26,17 @@ class AllInstallController extends \CommonBundle\Component\Controller\ActionCont
 {
     public function indexAction()
     {
+        $commonBundle = new InstallController();
+        $commonBundle->setServiceLocator($this->getServiceLocator());
+        $commonBundle->setEvent(clone $this->getEvent());
+        $commonBundle->dispatch($this->getRequest());
+        $commonBundle->indexAction();
+
         $bundles = array(
             'api',
             'banner',
             'br',
             'calendar',
-            'common',
             'cudi',
             'form',
             'gallery',
