@@ -718,7 +718,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'cudi_install'                    => 'CudiBundle\Controller\Admin\InstallController',
+            'cudi_install'                         => 'CudiBundle\Controller\Admin\InstallController',
 
             'cudi_admin_article'                   => 'CudiBundle\Controller\Admin\ArticleController',
             'cudi_admin_article_subject'           => 'CudiBundle\Controller\Admin\Article\SubjectMapController',

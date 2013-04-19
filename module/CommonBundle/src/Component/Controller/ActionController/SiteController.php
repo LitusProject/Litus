@@ -41,16 +41,6 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $result->menu = $this->_buildMenu();
 
-        $loginForm = new LoginForm(
-            $this->url()->fromRoute(
-                'common_auth',
-                array(
-                    'action' => 'login'
-                )
-            )
-        );
-
-        $result->loginForm = $loginForm;
         $result->shibbolethUrl = $this->_getShibbolethUrl();
 
         $result->banners = $this->getEntityManager()

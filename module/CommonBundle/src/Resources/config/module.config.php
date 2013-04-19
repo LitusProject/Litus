@@ -266,7 +266,7 @@ return array(
                     $serviceManager->get('authentication_sessionstorage'),
                     'Litus_Auth',
                     'Session',
-                    'authentication_action'
+                    $serviceManager->get('authentication_action')
                 );
                 return $service;
             },
