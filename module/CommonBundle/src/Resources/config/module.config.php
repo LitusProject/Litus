@@ -242,24 +242,26 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
+            'doctrine.cache.apc' => function($serviceManager) {
+                return new \Doctrine\Common\Cache\ApcCache();
+            },
             'translator' => 'CommonBundle\Component\I18n\TranslatorServiceFactory',
+
             'authentication' => function ($serviceManager) {
-                $authentication = new \CommonBundle\Component\Authentication\Authentication(
+                return new \CommonBundle\Component\Authentication\Authentication(
                     $serviceManager->get('authentication_credentialadapter'),
                     $serviceManager->get('authentication_doctrineservice')
                 );
-                return $authentication;
             },
             'authentication_credentialadapter' => function ($serviceManager) {
-                $adapter = new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
+                return new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
                     $serviceManager->get('doctrine.entitymanager.orm_default'),
                     'CommonBundle\Entity\Users\Person',
                     'username'
                 );
-                return $adapter;
             },
             'authentication_doctrineservice' => function ($serviceManager) {
-                $service = new \CommonBundle\Component\Authentication\Service\Doctrine(
+                return new \CommonBundle\Component\Authentication\Service\Doctrine(
                     $serviceManager->get('doctrine.entitymanager.orm_default'),
                     'CommonBundle\Entity\Users\Session',
                     2678400,
@@ -268,21 +270,18 @@ return array(
                     'Session',
                     $serviceManager->get('authentication_action')
                 );
-                return $service;
             },
             'authentication_action' => function ($serviceManager) {
-                $authentication = new \CommonBundle\Component\Authentication\Action\Doctrine(
+                return new \CommonBundle\Component\Authentication\Action\Doctrine(
                     $serviceManager->get('doctrine.entitymanager.orm_default'),
                     $serviceManager->get('mail_transport')
                 );
-                return $authentication;
             },
             'authentication_sessionstorage' => function ($serviceManager) {
-                $storage = new \Zend\Authentication\Storage\Session(
+                return new \Zend\Authentication\Storage\Session(
                     'Litus_Auth'
                 );
-                return $storage;
-            }
+            },
         ),
         'invokables' => array(
             'mail_transport' => 'Zend\Mail\Transport\Sendmail',

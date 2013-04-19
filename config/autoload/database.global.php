@@ -35,6 +35,10 @@ return array(
             'orm_default' => array(
                 'generate_proxies' => ('development' == getenv('APPLICATION_ENV')),
                 'proxyDir'         => 'data/proxies/',
+
+                'metadataCache'    => 'apc',
+                'queryCache'       => 'apc',
+                'resultCache'      => 'apc',
             )
         ),
         'connection' => array(
