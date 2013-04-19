@@ -21,6 +21,8 @@ return array(
         'DoctrineMongoODMModule',
         'ZfcTwig',
 
+        'BootstrapBundle',
+
         'CommonBundle',
 
         'BrBundle',
