@@ -29,7 +29,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->_installLanguages();
         $this->_installCities();
-
+        
         $this->installConfig(
             array(
                 array(
@@ -77,6 +77,36 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'key'         => 'system_mail_name',
                     'value'       => 'VTK',
                     'description' => 'The system mail name',
+                ),
+                array(
+                    'key'         => 'union_short_name',
+                    'value'       => 'VTK',
+                    'description' => 'The short name of this union',
+                ),
+                array(
+                    'key'         => 'union_name',
+                    'value'       => 'VTK vzw',
+                    'description' => 'The full name of this union',
+                ),
+                array(
+                    'key'         => 'union_logo',
+                    'value'       => 'data/images/logo/logo.svg',
+                    'description' => 'The path to the logo of the union',
+                ),
+                array(
+                    'key'         => 'union_url',
+                    'value'       => 'http://vtk.be',
+                    'description' => 'The URL of the union',
+                ),
+                array(
+                    'key'         => 'university',
+                    'value'       => 'KU Leuven',
+                    'description' => 'The name of the university',
+                ),
+                array(
+                    'key'         => 'faculty',
+                    'value'       => 'Faculty of Engineering',
+                    'description' => 'The name of the faculty',
                 ),
                 array(
                     'key'         => 'start_organization_year',
