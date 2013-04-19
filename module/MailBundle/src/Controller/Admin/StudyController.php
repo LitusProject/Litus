@@ -33,7 +33,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class StudyController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function sendAction()
     {
         $currentYear = $this->getCurrentAcademicYear();
