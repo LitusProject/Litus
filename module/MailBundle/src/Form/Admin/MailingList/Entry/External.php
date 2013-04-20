@@ -45,7 +45,7 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $external = new Collection('external');
-        $external->setLabel('Add External Address');
+        $external->setLabel('Add External');
         $this->add($external);
 
         $field = new Text('first_name');
