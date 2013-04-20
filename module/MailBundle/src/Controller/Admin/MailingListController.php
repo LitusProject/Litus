@@ -21,8 +21,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Entity\MailingList\AdminMap as ListAdmin,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
     MailBundle\Form\Admin\MailingList\Admin as AdminForm,
+    MailBundle\Form\Admin\MailingList\Entry\Academic as AcademicForm,
     MailBundle\Form\Admin\MailingList\Entry\External as ExternalForm,
-    MailBundle\Form\Admin\MailingList\Entry\Member as MemberForm,
     Zend\View\Model\ViewModel;
 
 class MailingListController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -118,7 +118,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
 
         $externalForm = new ExternalForm($this->getEntityManager());
-        $memberForm = new MemberForm($this->getEntityManager());
+        $academicForm = new AcademicForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -127,8 +127,8 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 $externalForm->setData($formData);
                 $form = $externalForm;
             } else {
-                $memberForm->setData($formData);
-                $form = $memberForm;
+                $academicForm->setData($formData);
+                $form = $academicForm;
             }
 
             if ($form->isValid()) {
@@ -227,7 +227,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             array(
                 'list' => $list,
                 'externalForm' => $externalForm,
-                'memberForm' => $memberForm,
+                'academicForm' => $academicForm,
                 'entries' => $entries,
             )
         );
