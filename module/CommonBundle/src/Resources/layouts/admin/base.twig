@@ -53,7 +53,7 @@
                     {% if hasAccess('common_admin_academic', 'manage') or hasAccess('common_admin_role', 'manage') %}
                         <ul>
                             {% if hasAccess('common_admin_academic', 'manage') %}
-                                <li><a href="{{ url('common_admin_academic') }}">Academic</a></li>
+                                <li><a href="{{ url('common_admin_academic') }}">Academics</a></li>
                             {% endif %}
                             {% if hasAccess('common_admin_role', 'manage') %}
                                 <li><a href="{{ url('common_admin_role') }}">Groups</a></li>
@@ -205,7 +205,7 @@
                         {% if hasAccess('publication_admin_publication', 'manage') or hasAccess('mail_admin_mail_bakske', 'send') %}
                             <li>
                                 <div class="subtitle">
-                                    <b>Pulications</b><br />
+                                    <b>Publications</b><br />
                                     Editions &amp; Publications
                                 </div>
                                 <ul
