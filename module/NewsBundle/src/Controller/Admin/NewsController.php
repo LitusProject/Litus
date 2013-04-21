@@ -34,7 +34,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     {
         $paginator = $this->paginator()->createFromEntity(
             'NewsBundle\Entity\Nodes\News',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array(
+                'creationTime' => 'DESC',
+            )
         );
 
         return new ViewModel(
@@ -56,8 +60,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
+                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+
                 $news = new News(
-                    $this->getAuthentication()->getPersonObject()
+                    $this->getAuthentication()->getPersonObject(),
+                    $endDate ? $endDate : null
                 );
                 $this->getEntityManager()->persist($news);
 
@@ -120,6 +127,12 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
+
+                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+                if ($endDate)
+                    $news->setEndDate($endDate);
+                else
+                    $news->setEndDate(null);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')

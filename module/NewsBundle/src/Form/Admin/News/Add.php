@@ -78,6 +78,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add($tabContent);
 
+        $field = new Text('end_date');
+        $field->setLabel('End Date')
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'news_add');
@@ -124,6 +129,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 )
             );
         }
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'end_date',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        )
+                    )
+                )
+            )
+        );
 
         return $inputFilter;
     }

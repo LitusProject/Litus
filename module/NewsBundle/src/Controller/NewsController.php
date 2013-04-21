@@ -29,13 +29,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'NewsBundle\Entity\Nodes\News',
-            $this->getParam('page'),
-            array(),
-            array(
-                'creationTime' => 'DESC',
-            )
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('NewsBundle\Entity\Nodes\News')
+                ->findAllSite(),
+            $this->getParam('page')
         );
 
         return new ViewModel(

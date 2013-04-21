@@ -48,7 +48,9 @@ class Edit extends Add
 
     private function _populateFromNews(News $news)
     {
-        $data = array();
+        $data = array(
+            'end_date' => $news->getEndDate() ? $news->getEndDate()->format('d/m/Y H:i') : '',
+        );
         foreach($this->getLanguages() as $language) {
             $data['content_' . $language->getAbbrev()] = $news->getContent($language, false);
             $data['title_' . $language->getAbbrev()] = $news->getTitle($language, false);
