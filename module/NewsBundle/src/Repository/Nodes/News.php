@@ -24,4 +24,43 @@ class News extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllSite()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('NewsBundle\Entity\Nodes\News', 'n')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->gte('n.endDate', ':now'),
+                    $query->expr()->isNull('n.endDate')
+                )
+            )
+            ->setParameter('now', new \DateTime())
+            ->orderBy('n.creationTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findNbSite($nbResults = 3)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('NewsBundle\Entity\Nodes\News', 'n')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->gte('n.endDate', ':now'),
+                    $query->expr()->isNull('n.endDate')
+                )
+            )
+            ->setParameter('now', new \DateTime())
+            ->orderBy('n.creationTime', 'DESC')
+            ->setMaxResults($nbResults)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

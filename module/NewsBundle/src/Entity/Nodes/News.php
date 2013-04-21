@@ -17,6 +17,7 @@ namespace NewsBundle\Entity\Nodes;
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     CommonBundle\Component\Util\Url,
+    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -43,15 +44,41 @@ class News extends \CommonBundle\Entity\Nodes\Node
     private $name;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
-     * @param string $category
+     * @var \DateTime The date this newsitem will disappear
+     *
+     * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
-    public function __construct(Person $person)
+    private $endDate;
+
+    /**
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \DateTime $endDate
+     */
+    public function __construct(Person $person, DateTime $endDate = null)
     {
         parent::__construct($person);
 
         $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s');
         $this->translations = new ArrayCollection();
+        $this->endDate = $endDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * @param \DateTime $endDate
+     * @return \NewsBundle\Entity\Nodes\News
+     */
+    public function setEndDate(DateTime $endDate = null)
+    {
+        $this->endDate = $endDate;
+        return $this;
     }
 
     /**
