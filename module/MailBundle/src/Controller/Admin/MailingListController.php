@@ -78,7 +78,17 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 $list = new NamedList($formData['name']);
                 $this->getEntityManager()->persist($list);
 
-                $admin = new ListAdmin($list, $this->getAuthentication()->getPersonObject(), true);
+                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->findOneByUsername($formData['person_name']);
+                } else {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->findOneById($formData['person_id']);
+                }
+
+                $admin = new ListAdmin($list, $academic, true);
                 $this->getEntityManager()->persist($admin);
 
                 $this->getEntityManager()->flush();
