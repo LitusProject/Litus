@@ -36,9 +36,9 @@ return array(
                 'generate_proxies' => ('development' == getenv('APPLICATION_ENV')),
                 'proxyDir'         => 'data/proxies/',
 
-                'metadataCache'    => 'apc',
-                'queryCache'       => 'apc',
-                'resultCache'      => 'apc',
+                'metadataCache'    => ('development' == getenv('APPLICATION_ENV') ? 'array' : 'apc'),
+                'queryCache'       => ('development' == getenv('APPLICATION_ENV') ? 'array' : 'apc'),
+                'resultCache'      => ('development' == getenv('APPLICATION_ENV') ? 'array' : 'apc'),
             )
         ),
         'connection' => array(
