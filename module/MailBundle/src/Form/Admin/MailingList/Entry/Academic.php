@@ -30,10 +30,10 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Member extends \CommonBundle\Component\Form\Admin\Form
+class Academic extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var \Doctrine\ORM\EntityManager The EntityManager instanc
      */
     protected $_entityManager = null;
 
@@ -45,9 +45,9 @@ class Member extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($name);
 
-        $member = new Collection('member');
-        $member->setLabel('Add Member');
-        $this->add($member);
+        $academic = new Collection('academic');
+        $academic->setLabel('Add Academic');
+        $this->add($academic);
 
         $this->_entityManager = $entityManager;
 
@@ -57,16 +57,16 @@ class Member extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('id', 'personSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead');
-        $member->add($field);
+        $academic->add($field);
 
         $field = new Hidden('person_id');
         $field->setAttribute('id', 'personId');
-        $member->add($field);
+        $academic->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'mail_add');
-        $member->add($field);
+        $academic->add($field);
     }
 
     public function getInputFilter()
