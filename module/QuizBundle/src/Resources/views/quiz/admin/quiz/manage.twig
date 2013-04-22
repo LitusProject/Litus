@@ -1,0 +1,42 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'quiz/admin/quiz/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div id="controller_action">
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="150px">Date</th>
+                    <th width="160px">Person</th>
+                    <th width="100px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for quiz in paginator %}
+                    <tr class="item">
+                        <td>{{ quiz.getName() }}</td>
+                        <td>{{ dateLocalized(quiz.getTimeStamp(), 'dd/MM/y') }}</td>
+                        <td>{{ quiz.getPerson().getFullName() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('quiz_admin_quiz', 'edit') %}
+                                <a href="{{ url('quiz_admin_quiz', {"action": "edit", "id": quiz.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('quiz_admin_quiz', 'moderate') %}
+                                <a href="{{ url('quiz_admin_quiz', {"action": "moderate", "id": quiz.getId()}) }}">Moderate</a>
+                            {% endif %}
+                            {% if hasAccess('quiz_admin_quiz', 'delete') %}
+                                <a href="{{ url('quiz_admin_quiz', {"action": "delete", "id": quiz.getId()}) }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+{% endblock %}
