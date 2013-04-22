@@ -338,6 +338,9 @@ VTK Cudi
                     'cudi_admin_sales_session_restriction' => array(
                         'delete', 'manage'
                     ),
+                    'cudi_admin_sales_session_openinghour' => array(
+                        'add', 'edit', 'delete', 'manage', 'old'
+                    ),
                     'cudi_admin_stock' => array(
                         'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
                     ),

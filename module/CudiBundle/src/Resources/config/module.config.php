@@ -209,6 +209,20 @@ return array(
                     ),
                 ),
             ),
+            'cudi_admin_sales_session_openinghour' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/session/restriction[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_session_openinghour',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'cudi_admin_sales_financial' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -731,6 +745,7 @@ return array(
             'cudi_admin_sales_booking'             => 'CudiBundle\Controller\Admin\Sales\BookingController',
             'cudi_admin_sales_session'             => 'CudiBundle\Controller\Admin\Sales\SessionController',
             'cudi_admin_sales_session_restriction' => 'CudiBundle\Controller\Admin\Sales\Session\RestrictionController',
+            'cudi_admin_sales_session_openinghour' => 'CudiBundle\Controller\Admin\Sales\Session\OpeningHourController',
             'cudi_admin_sales_financial'           => 'CudiBundle\Controller\Admin\Sales\FinancialController',
             'cudi_admin_supplier'                  => 'CudiBundle\Controller\Admin\SupplierController',
             'cudi_admin_supplier_user'             => 'CudiBundle\Controller\Admin\Supplier\UserController',
