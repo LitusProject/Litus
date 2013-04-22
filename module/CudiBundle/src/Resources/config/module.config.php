@@ -212,7 +212,7 @@ return array(
             'cudi_admin_sales_session_openinghour' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/session/restriction[/:action[/:id]][/]',
+                    'route' => '/admin/sales/session/openinghours[/:action[/:id]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
