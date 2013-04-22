@@ -17,6 +17,7 @@ namespace MailBundle\Form\Admin\MailingList;
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\Academic as AcademicValidator,
     MailBundle\Component\Validator\NamedList as NameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -50,6 +51,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(true);
         $this->add($field);
 
+        $field = new Text('person_name');
+        $field->setLabel('Admin')
+            ->setRequired(true)
+            ->setAttribute('id', 'personSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead');
+        $this->add($field);
+
+        $field = new Hidden('person_id');
+        $field->setAttribute('id', 'personId');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'mail_add');
@@ -77,6 +90,48 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
+
+        if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name' => 'person_name',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new AcademicValidator(
+                                $this->_entityManager,
+                                array(
+                                    'byId' => false,
+                                )
+                            )
+                        ),
+                    )
+                )
+            );
+        } else {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name' => 'person_id',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new AcademicValidator(
+                                $this->_entityManager,
+                                array(
+                                    'byId' => true,
+                                )
+                            )
+                        ),
+                    )
+                )
+            );
+        }
 
         return $inputFilter;
     }
