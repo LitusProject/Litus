@@ -17,4 +17,4 @@ Because we spent a great deal of time on this project, we thought it would be ni
 Wrote a nice new feature? Solved a bug? Just shoot us a pull request and we'll review it! However, when contributing some code to the project, please take a look at our [Coding Style](https://github.com/LitusProject/Litus/wiki/Style) first.
 
 ## Authors
-Built by [@nielsavonds](https://github.com/nielsavonds), [@pmaene](https://github.com/pmaene)and [@krmarien](https://github.com/krmarien) with all the love in the world. If you have any questions, don't hesitate to contact us.
+Built by [@nielsavonds](https://github.com/nielsavonds), [@pmaene](https://github.com/pmaene) and [@krmarien](https://github.com/krmarien) with all the love in the world. If you have any questions, don't hesitate to contact us.

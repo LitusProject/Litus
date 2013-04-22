@@ -233,7 +233,7 @@ abstract class Person
     }
 
     /**
-     * @return boolean true if and only if this user has an active account
+     * @return bool
      */
     public function hasCredential()
     {
