@@ -3,4 +3,14 @@
 return array(
     'QuizBundle\Module'                             => __DIR__ . '/Module.php',
     'QuizBundle\Controller\Admin\InstallController' => __DIR__ . '/src/Controller/Admin/InstallController.php',
+    'QuizBundle\Controller\Admin\QuizController'    => __DIR__ . '/src/Controller/Admin/QuizController.php',
+    'QuizBundle\Form\Admin\Quiz\Add'                => __DIR__ . '/src/Form/Admin/Quiz/Add.php',
+    'QuizBundle\Repository\Team'                    => __DIR__ . '/src/Repository/Team.php',
+    'QuizBundle\Repository\Round'                   => __DIR__ . '/src/Repository/Round.php',
+    'QuizBundle\Repository\Point'                   => __DIR__ . '/src/Repository/Point.php',
+    'QuizBundle\Repository\Quiz'                    => __DIR__ . '/src/Repository/Quiz.php',
+    'QuizBundle\Entity\Team'                        => __DIR__ . '/src/Entity/Team.php',
+    'QuizBundle\Entity\Round'                       => __DIR__ . '/src/Entity/Round.php',
+    'QuizBundle\Entity\Point'                       => __DIR__ . '/src/Entity/Point.php',
+    'QuizBundle\Entity\Quiz'                        => __DIR__ . '/src/Entity/Quiz.php',
 );
