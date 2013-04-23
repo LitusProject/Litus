@@ -19,6 +19,11 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'quiz_admin_quiz' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
     ),
     'routes' => array(),
 );
