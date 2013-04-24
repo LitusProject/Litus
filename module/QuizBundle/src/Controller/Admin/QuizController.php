@@ -122,6 +122,30 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function roundsAction()
+    {
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel;
+
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Round')
+                ->findAllFromQuiz($quiz),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'quiz' => $quiz,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
+            )
+        );
+    }
+
+    /**
+     * @return null|\QuizBundle\Entity\Quiz
+     */
     private function _getQuiz()
     {
         if($this->getParam('id') === null) {

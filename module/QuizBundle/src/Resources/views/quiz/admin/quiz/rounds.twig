@@ -1,0 +1,56 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'quiz/admin/quiz/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div id="controller_action">
+        <h1>{{ quiz.getName() }}</h1>
+        <table class="manage">
+            <thead>
+                <tr>
+                    <th width="50px">#</th>
+                    <th>Name</th>
+                    <th width="100px">Max. Points</th>
+                    <th width="100px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for round in paginator %}
+                    <tr class="item">
+                        <td>{{ round.getOrder() }}</td>
+                        <td>{{ round.getName() }}</td>
+                        <td>{{ round.getMaxPoints() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('quiz_admin_quiz', 'editRound') %}
+                                <a href="{{ url('quiz_admin_quiz', {"action": "editRound", "id": round.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('quiz_admin_quiz', 'deleteRound') %}
+                                <a href="{{ url('quiz_admin_quiz', {"action": "deleteRound", "id": round.getId()}) }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+    
+    {% if hasAccess('quiz_admin_quiz', 'addRounds') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Add Rounds</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add rounds to this quiz!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_quiz', {"action": "addRounds", "id": quiz.getId()}) }}">&rarr; Add Rounds</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
+{% endblock %}
