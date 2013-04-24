@@ -4,7 +4,9 @@ namespace QuizBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     QuizBundle\Entity\Quiz,
+    QuizBundle\Entity\Round,
     QuizBundle\Form\Admin\Quiz\Add as AddForm,
+    QuizBundle\Form\Admin\Round\Add as AddRoundForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -72,5 +74,98 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 'form' => $form,
             )
         );
+    }
+
+    public function addRoundsAction()
+    {
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel;
+
+        $form = new AddRoundForm($this->getEntityManager());
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $round = new Round($quiz, $formData['name'], $formData['order']);
+                $this->getEntityManager()->persist($round);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The round was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'quiz_admin_quiz',
+                    array(
+                        'action' => 'addRounds',
+                        'id' => $quiz->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'quiz' => $quiz,
+                'form' => $form,
+            )
+        );
+    }
+
+    private function _getQuiz()
+    {
+        if($this->getParam('id') === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        $quiz = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Quiz')
+            ->findOneById($this->getParam('id'));
+
+        if($quiz === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No quiz with the given id was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $quiz;
     }
 }

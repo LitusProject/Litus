@@ -19,7 +19,7 @@ use CommonBundle\Entity\Users\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * This is the entity for a promotion year.
+ * This is the entity for a quiz round.
  *
  * @ORM\Entity(repositoryClass="QuizBundle\Repository\Round")
  * @ORM\Table(name="quiz.rounds")
