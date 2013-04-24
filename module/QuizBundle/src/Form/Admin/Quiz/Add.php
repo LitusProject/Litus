@@ -6,12 +6,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
-    CommonBundle\Component\Validator\Academic as AcademicValidator,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\VanReservation,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -28,11 +23,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private $_entityManager = null;
 
     /**
-     * @var \QuizBundle\Entity\Quiz The quiz being added
-     */
-    protected $quiz = null;
-
-    /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @var null|string|int $name Optional name for the form
      */
@@ -43,6 +33,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $field = new Text('name');
+        $field->setLabel('Name');
         $field->setRequired();
         $this->add($field);
 
@@ -65,7 +56,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'name' => 'name',
                     'required' => true,
                     'filters' => array(
-                        array('name' => 'stringTrim'),
+                        array('name' => 'StringTrim'),
                     ),
                 )
             )
