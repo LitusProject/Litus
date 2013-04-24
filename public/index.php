@@ -6,8 +6,8 @@ if ('development' == getenv('APPLICATION_ENV')) {
 }
 
 set_error_handler(
-    function ($errno, $errstr, $errfile, $errline ) {
-        throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+    function ($errorNb, $errorString, $errorFile, $errorLine ) {
+        throw new ErrorException($errorString, $errorNb, 0, $errorFile, $errorLine);
     }
 );
 
