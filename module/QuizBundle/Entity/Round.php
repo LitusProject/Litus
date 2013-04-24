@@ -53,7 +53,7 @@ class Round
     /**
      * @var int The order of the round
      *
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(name="round_order", type="smallint")
      */
     private $order;
 
