@@ -2,7 +2,8 @@
 
 namespace QuizBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository,
+    QuizBundle\Entity\Quiz as QuizEntity;
 
 /**
  * Round
@@ -12,4 +13,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class Round extends EntityRepository
 {
+    /**
+     * Gets all rounds belonging to a quiz
+     * @param QuizBundle\Entity\Quiz $quiz The quiz the rounds must belong to
+     */
+    public function findAllFromQuiz(QuizEntity $quiz)
+    {
+        $query = $this->_em->createQueryBuilder();
+
+        return $query->select('round')
+            ->from('QuizBundle\Entity\Round', 'round')
+            ->where(
+                $query->expr()->eq('round.quiz', ':quiz')
+            )
+            ->orderBy('round.order', 'ASC')
+            ->setParameter('quiz', $quiz->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }
