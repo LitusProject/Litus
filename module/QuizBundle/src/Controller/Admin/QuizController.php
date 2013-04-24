@@ -89,7 +89,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $round = new Round($quiz, $formData['name'], $formData['order']);
+                $round = new Round($quiz, $formData['name'], $formData['max_points'], $formData['order']);
                 $this->getEntityManager()->persist($round);
 
                 $this->getEntityManager()->flush();

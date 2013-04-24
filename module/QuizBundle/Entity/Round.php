@@ -69,10 +69,11 @@ class Round
      * @param string $name
      * @param integer $order
      */
-    public function __construct(Quiz $quiz, $name, $order)
+    public function __construct(Quiz $quiz, $name, $maxPoints, $order)
     {
         $this->quiz = $quiz;
         $this->name = $name;
+        $this->maxPoints = $maxPoints;
         $this->order = $order;
     }
 
