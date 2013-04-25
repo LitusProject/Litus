@@ -251,6 +251,26 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function deleteRoundAction()
+    {
+        $this->initAjax();
+
+        if (!($round = $this->_getRound()))
+            return new ViewModel;
+
+        $this->getEntityManager()->remove($round);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     /**
      * @return null|\QuizBundle\Entity\Quiz
      */

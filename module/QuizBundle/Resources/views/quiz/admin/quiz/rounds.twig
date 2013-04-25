@@ -4,6 +4,20 @@
     {% include 'quiz/admin/quiz/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
+    
+    <div class="flashmessage success_message full_width round_remove_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The round was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width round_remove_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the round.</p>
+        </div>
+    </div>
+    
     <div id="controller_action">
         <h1>{{ quiz.getName() }}</h1>
         <table class="manage">
@@ -18,7 +32,7 @@
 
             <tbody>
                 {% for round in paginator %}
-                    <tr class="item">
+                    <tr class="item" data-id="{{ round.getId() }}">
                         <td>{{ round.getOrder() }}</td>
                         <td>{{ round.getName() }}</td>
                         <td>{{ round.getMaxPoints() }}</td>
@@ -27,7 +41,7 @@
                                 <a href="{{ url('quiz_admin_quiz', {"action": "editRound", "id": round.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('quiz_admin_quiz', 'deleteRound') %}
-                                <a href="{{ url('quiz_admin_quiz', {"action": "deleteRound", "id": round.getId()}) }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ round.getId() }}" data-name="{{ round.getName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -53,4 +67,60 @@
         </aside>
     {% endif %}
 
+    <div class="modal hide fade" id="removeRound">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Round
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following round: <b class="name"></b>?
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeRound = $('#removeRound');
+            removeRound.find('.name').html($(this).data('name'));
+            var id = $(this).data('id');
+            removeRound.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('quiz_admin_quiz', {"action": "deleteRound"})}}' + $this.data('id'), function  (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.round_remove_success').removeClass('hide');
+                        $('.item[data-id='+id+']').remove();
+                        removeRound.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeRound.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.round_remove_error').removeClass('hide');
+            $('#removeRound').modal('hide');
+        }
+    </script>
 {% endblock %}
