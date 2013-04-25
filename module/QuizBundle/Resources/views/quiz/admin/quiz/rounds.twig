@@ -37,16 +37,16 @@
     {% include 'admin/partials/paginationControl.twig' %}
     </div>
     
-    {% if hasAccess('quiz_admin_quiz', 'addRounds') %}
+    {% if hasAccess('quiz_admin_quiz', 'addRound') %}
         <aside>
             <div class="sidebox">
-                <div class="title">Add Rounds</div>
+                <div class="title">Add Round</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to add rounds to this quiz!</i>
+                        <i>Please hit the link below to add a round to this quiz!</i>
                     </p>
                     <p>
-                        <a href="{{ url('quiz_admin_quiz', {"action": "addRounds", "id": quiz.getId()}) }}">&rarr; Add Rounds</a>
+                        <a href="{{ url('quiz_admin_quiz', {"action": "addRound", "id": quiz.getId()}) }}">&rarr; Add Round</a>
                     </p>
                 </div>
             </div>
