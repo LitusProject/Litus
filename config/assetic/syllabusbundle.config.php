@@ -18,7 +18,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'admin_update_syllabus' => array(
+        'syllabus_admin_update' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -27,7 +27,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_syllabus_academic' => array(
+        'syllabus_admin_academic' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -35,7 +35,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_syllabus_group' => array(
+        'syllabus_admin_group' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -43,26 +43,26 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_study' => array(
+        'syllabus_admin_study' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_subject' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_modal',
-        ),
-        'admin_subject_comment' => array(
+        'syllabus_admin_subject' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_prof' => array(
+        'syllabus_admin_subject_comment' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'syllabus_admin_prof' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',

@@ -5,6 +5,12 @@ if ('development' == getenv('APPLICATION_ENV')) {
     error_reporting(E_ALL);
 }
 
+set_error_handler(
+    function ($errorNb, $errorString, $errorFile, $errorLine ) {
+        throw new ErrorException($errorString, $errorNb, 0, $errorFile, $errorLine);
+    }
+);
+
 /**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
