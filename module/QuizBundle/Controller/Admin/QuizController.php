@@ -8,6 +8,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     QuizBundle\Form\Admin\Quiz\Add as AddForm,
     QuizBundle\Form\Admin\Quiz\Edit as EditForm,
     QuizBundle\Form\Admin\Round\Add as AddRoundForm,
+    QuizBundle\Form\Admin\Round\Edit as EditRoundForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -206,6 +207,49 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function editRoundAction()
+    {
+        if(!($round = $this->_getRound()))
+            return new ViewModel;
+
+        $form  = new EditRoundForm($this->getEntityManager(), $round);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $round->setName($formData['name']);
+                $round->setMaxPoints($formData['max_points']);
+                $round->setOrder($formData['order']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The round was successfully edited!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'quiz_admin_quiz',
+                    array(
+                        'action' => 'rounds',
+                        'id' => $round->getQuiz()->getId()
+                    )
+                );
+            }
+        }
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
 
     /**
      * @return null|\QuizBundle\Entity\Quiz
@@ -255,5 +299,55 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $quiz;
+    }
+
+    /**
+     * @return null|\QuizBundle\Entity\Round
+     */
+    private function _getRound()
+    {
+        if($this->getParam('id') === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the round!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'rounds',
+                )
+            );
+
+            return;
+        }
+
+        $round = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Round')
+            ->findOneById($this->getParam('id'));
+
+        if($round === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No round with the given id was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'rounds'
+                )
+            );
+
+            return;
+        }
+
+        return $round;
     }
 }
