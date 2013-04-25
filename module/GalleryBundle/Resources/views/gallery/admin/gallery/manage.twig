@@ -91,7 +91,7 @@
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.album_removed_success').removeClass('hide');
-                        $('.item-' + id).remove();
+                        $('.item[data-id='+id+']').remove();
     					removeAlbum.modal('hide');
     				} else {
     				    errorRemove();
