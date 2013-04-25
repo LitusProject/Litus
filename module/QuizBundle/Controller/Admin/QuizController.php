@@ -6,6 +6,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     QuizBundle\Entity\Quiz,
     QuizBundle\Entity\Round,
     QuizBundle\Form\Admin\Quiz\Add as AddForm,
+    QuizBundle\Form\Admin\Quiz\Edit as EditForm,
     QuizBundle\Form\Admin\Round\Add as AddRoundForm,
     Zend\View\Model\ViewModel;
 
@@ -76,6 +77,48 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function editAction()
+    {
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel;
+
+        $form  = new EditForm($this->getEntityManager(), $quiz);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $quiz->setName($formData['name']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The quiz was successfully edited!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'quiz_admin_quiz',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
     public function addRoundsAction()
     {
         if(!($quiz = $this->_getQuiz()))
@@ -105,7 +148,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'quiz_admin_quiz',
                     array(
-                        'action' => 'addRounds',
+                        'action' => 'rounds',
                         'id' => $quiz->getId(),
                     )
                 );
