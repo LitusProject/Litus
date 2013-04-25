@@ -16,6 +16,7 @@ namespace QuizBundle\Entity;
 
 use CommonBundle\Entity\Users\Person,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -58,6 +59,13 @@ class Team
     private $number;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The points scored by this team
+     *
+     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Point", mappedBy="team", cascade="remove")
+     */
+    private $points;
+
+    /**
      * @param \QuizBundle\Entity\Quiz $quiz
      * @param string $name
      * @param integer $order
@@ -67,6 +75,7 @@ class Team
         $this->quiz = $quiz;
         $this->name = $name;
         $this->number = $number;
+        $this->points = new ArrayCollection;
     }
 
     /**
