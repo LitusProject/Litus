@@ -51,8 +51,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     public function onDispatch(MvcEvent $e)
     {
-        $startExecutionTime = microtime(true);
-
         $this->getServiceLocator()
             ->get('Zend\View\Renderer\PhpRenderer')
             ->plugin('headMeta')
@@ -82,10 +80,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $result->authenticatedPerson = $authenticatedPerson;
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->environment = getenv('APPLICATION_ENV');
-        $result->developmentInformation = array(
-            'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
-            'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
-        );
         $result->setTerminal(true);
 
         $e->setResult($result);

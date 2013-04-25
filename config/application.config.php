@@ -19,6 +19,7 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'DoctrineMongoODMModule',
+        'ZendDeveloperTools',
         'ZfcTwig',
 
         'BootstrapBundle',

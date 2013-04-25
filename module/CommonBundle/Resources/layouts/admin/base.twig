@@ -371,12 +371,6 @@
 
 <footer>
     Litus Admin | Code by <a href="http://litus.cc">Litus</a> | Design by <a href="http://www.serayo.com">Robin de Bruin</a>
-
-    {% if 'production' != environment %}
-        <span class="development_information">
-            Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
-        </span>
-    {% endif %}
 </footer>
 
 {{ inlineScript() }}

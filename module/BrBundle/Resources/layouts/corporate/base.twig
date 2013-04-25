@@ -131,12 +131,6 @@
 
     <footer>
         Litus Corporate | Code by <a href="http://litus.cc">Litus</a>
-
-        {% if 'production' != environment %}
-            <span class="development_information">
-                Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
-            </span>
-        {% endif %}
     </footer>
 </div>
 
