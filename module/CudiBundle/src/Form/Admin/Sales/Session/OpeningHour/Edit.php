@@ -12,35 +12,33 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Sales\Session;
+namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
-use CommonBundle\Entity\General\Bank\CashRegister,
-    Doctrine\ORM\EntityManager,
+use CudiBundle\Entity\Sales\Session\OpeningHour,
     Zend\Form\Element\Submit;
 
 /**
- * Edit Sale Session content
+ * Edit Opening Hour
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\Bank\CashRegister $cashRegister
+     * @param \CudiBundle\Entity\Sales\Session\OpeningHour $openingHour
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $name = null )
+    public function __construct(OpeningHour $openingHour, $name = null )
     {
-        parent::__construct($entityManager, $name);
+        parent::__construct($name);
 
         $this->remove('submit');
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'sale_edit');
+            ->setAttribute('class', 'clock_edit');
         $this->add($field);
 
-        $this->populateFromCashRegister($cashRegister);
+        $this->populateFromOpeningHour($openingHour);
     }
 }

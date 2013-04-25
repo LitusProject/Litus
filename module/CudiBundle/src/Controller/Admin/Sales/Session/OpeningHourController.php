@@ -17,6 +17,7 @@ namespace CudiBundle\Controller\Admin\Sales\Session;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\Session\OpeningHour,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Add as AddForm,
+    CudiBundle\Form\Admin\Sales\Session\OpeningHour\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -28,27 +29,144 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        return new ViewModel();
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+                ->findAllActive(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     public function oldAction()
     {
-        return new ViewModel();
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+                ->findAllOld(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     public function addAction()
     {
-        return new ViewModel();
+        $form = new AddForm();
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $openingHour = new OpeningHour(
+                    \DateTime::createFromFormat('d#m#Y H#i', $formData['start']),
+                    \DateTime::createFromFormat('d#m#Y H#i', $formData['end']),
+                    $this->getAuthentication()->getPersonObject()
+                );
+                $this->getEntityManager()->persist($openingHour);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The opening hour was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'cudi_admin_sales_session_openinghour',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function editAction()
     {
-        return new ViewModel();
+        if (!($openingHour = $this->_getOpeningHour()))
+            return new ViewModel();
+
+        $form = new EditForm($openingHour);
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $openingHour->setStart(\DateTime::createFromFormat('d#m#Y H#i', $formData['start']))
+                    ->setEnd(\DateTime::createFromFormat('d#m#Y H#i', $formData['end']));
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The opening hour was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'cudi_admin_sales_session_openinghour',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function deleteAction()
     {
-        return new ViewModel();
+        $this->initAjax();
+
+        if (!($openingHour = $this->_getOpeningHour()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($openingHour);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
     }
 
     private function _getOpeningHour()
@@ -63,7 +181,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_sales_session',
+                'cudi_admin_sales_session_openinghour',
                 array(
                     'action' => 'manage'
                 )
@@ -86,7 +204,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_sales_session',
+                'cudi_admin_sales_session_openinghour',
                 array(
                     'action' => 'manage'
                 )

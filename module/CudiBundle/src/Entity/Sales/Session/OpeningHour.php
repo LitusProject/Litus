@@ -36,21 +36,22 @@ class OpeningHour
     /**
      * @var \DateTime The start time of this period
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="start_date", type="datetime")
      */
-    private $start;
+    private $startDate;
 
     /**
      * @var \DateTime The end time of this period
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="end_date", type="datetime")
      */
-    private $end;
+    private $endDate;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created this entity
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
@@ -62,14 +63,14 @@ class OpeningHour
     private $timestamp;
 
     /**
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
      * @param \CommonBundle\Entity\Users\Person $person
      */
-    public function __construct(DateTime $start, DateTime $end, Person $person)
+    public function __construct(DateTime $startDate, DateTime $endDate, Person $person)
     {
-        $this->start = $start;
-        $this->end = $end;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
         $this->person = $person;
         $this->timestamp = new DateTime();
     }
@@ -87,16 +88,16 @@ class OpeningHour
      */
     public function getStart()
     {
-        return $this->start;
+        return $this->startDate;
     }
 
     /**
-     * @param \DateTime $start
+     * @param \DateTime $startDate
      * @return \CudiBundle\Entity\Sales\Session\OpeningHour
      */
-    public function setStart(DateTime $start)
+    public function setStart(DateTime $startDate)
     {
-        $this->start = $start;
+        $this->startDate = $startDate;
         return $this;
     }
 
@@ -105,16 +106,16 @@ class OpeningHour
      */
     public function getEnd()
     {
-        return $this->end;
+        return $this->endDate;
     }
 
     /**
-     * @param \DateTime $end
+     * @param \DateTime $endDate
      * @return \CudiBundle\Entity\Sales\Session\OpeningHour
      */
-    public function setEnd(DateTime $end)
+    public function setEnd(DateTime $endDate)
     {
-        $this->end = $end;
+        $this->endDate = $endDate;
         return $this;
     }
 
