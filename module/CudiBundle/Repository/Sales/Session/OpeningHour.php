@@ -41,4 +41,26 @@ class OpeningHour extends EntityRepository
 
        return $resultSet;
     }
+
+    public function findCurrent()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('CudiBundle\Entity\Sales\Session\OpeningHour', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->lt('o.startDate', ':now'),
+                    $query->expr()->gt('o.endDate', ':now')
+                )
+            )
+            ->setParameter('now', new \DateTime())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

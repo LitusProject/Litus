@@ -64,6 +64,22 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             $calendarItems[$date]->events[] = $event;
         }
 
+        $cudi = array();
+        $cudi['currentOpeningHour'] = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+            ->findCurrent();
+
+        $sessions = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->findOpen();
+        if (sizeof($sessions) == 1) {
+            $cudi['currentSession'] = $sessions[0];
+
+            $cudi['currentStudents'] = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                ->findNbBySession($cudi['currentSession']);
+        }
+
         return new ViewModel(
             array(
                 'notifications' => $notifications,
@@ -71,6 +87,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'newsItems' => $newsItems,
                 'calendarItems' => $calendarItems,
                 'sportInfo' => $this->_getSportResults(),
+                'cudi' => $cudi,
             )
         );
     }
