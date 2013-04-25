@@ -2,11 +2,9 @@
 
 namespace QuizBundle\Form\Admin\Quiz;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
+    QuizBundle\Entity\Quiz,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -24,7 +22,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @var null|string|int $name Optional name for the form
+     * @param null|string|int $name Optional name for the form
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -63,5 +61,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         return $inputFilter;
+    }
+
+    /**
+     * Populates the form with values from the entity
+     *
+     * @param \QuizBundle\Entity\Quiz $quiz
+     */
+    public function populateFromQuiz(Quiz $quiz)
+    {
+        $data = array(
+            'name' => $quiz->getName()
+        );
+
+        $this->setData($data);
     }
 }
