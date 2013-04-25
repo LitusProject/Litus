@@ -7,13 +7,13 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Quiz,
+    QuizBundle\Entity\Round,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Add a new quiz
+ * Add a new round
  * @author Lars Vierbergen <vierbergenlars@gmail.com>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
@@ -25,7 +25,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @var \QuizBundle\Entity\Quiz $quiz The quiz the round will be added to
      * @var null|string|int $name Optional name for the form
      */
     public function __construct(EntityManager $entityManager, $name = null)
@@ -105,5 +104,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         return $inputFilter;
+    }
+
+    /**
+     * Populates the form with values from the entity
+     *
+     * @param \QuizBundle\Entity\Round $round
+     */
+    public function populateFromRound(Round $round)
+    {
+        $data = array(
+            'name' => $round->getName(),
+            'max_points' => $round->getMaxPoints(),
+            'order' => $round->getOrder(),
+        );
+
+        $this->setData($data);
     }
 }
