@@ -12,15 +12,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Sales\Session;
+namespace CudiBundle\Entity\Sales\Session\OpeningHours;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Session\OpeningHour")
- * @ORM\Table(name="cudi.sales_session_openinghour")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Session\OpeningHours\OpeningHour")
+ * @ORM\Table(name="cudi.sales_session_openinghours")
  */
 class OpeningHour
 {
@@ -63,6 +64,13 @@ class OpeningHour
     private $timestamp;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this opening hour
+     *
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Session\OpeningHours\Translation", mappedBy="openingHour", cascade={"remove"})
+     */
+    private $translations;
+
+    /**
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      * @param \CommonBundle\Entity\Users\Person $person
@@ -93,7 +101,7 @@ class OpeningHour
 
     /**
      * @param \DateTime $startDate
-     * @return \CudiBundle\Entity\Sales\Session\OpeningHour
+     * @return \CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHours
      */
     public function setStart(DateTime $startDate)
     {
@@ -111,7 +119,7 @@ class OpeningHour
 
     /**
      * @param \DateTime $endDate
-     * @return \CudiBundle\Entity\Sales\Session\OpeningHour
+     * @return \CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour
      */
     public function setEnd(DateTime $endDate)
     {
@@ -125,5 +133,40 @@ class OpeningHour
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return \CudiBundle\Entity\Sales\Session\OpeningHours\Translation
+     */
+    public function getTranslation(Language $language = null, $allowFallback = true)
+    {
+        foreach($this->translations as $translation) {
+            if (null !== $language && $translation->getLanguage() == $language)
+                return $translation;
+
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+                $fallbackTranslation = $translation;
+        }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
+    public function getComment(Language $language, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getComment();
+
+        return '';
     }
 }

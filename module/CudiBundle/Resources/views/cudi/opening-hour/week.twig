@@ -1,5 +1,21 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Opening Hours') }}</h1>
+    </div>
 
+    <p>
+        {{ translate('The opening hours for next week are:') }}
+    </p>
+
+    <noscript>
+        {% for openingHour in openingHours %}
+            <span class="label label-info">{{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}</span> {{ dateLocalized(openingHour.getStart(), 'H:mm') }} - {{ dateLocalized(openingHour.getEnd(), 'H:mm') }}
+            {% if openingHour.getComment(language)|length > 0 %}
+                <br><small style="margin-left: 20px;">{{ openingHour.getComment(language) }}</small>
+            {% endif %}
+            <br>
+        {% endfor %}
+    </noscript>
 {% endblock %}

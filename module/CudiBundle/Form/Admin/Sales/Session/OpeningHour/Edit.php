@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
-use CudiBundle\Entity\Sales\Session\OpeningHour,
+use CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour,
+    Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
 /**
@@ -26,11 +27,12 @@ class Edit extends Add
 {
     /**
      * @param \CudiBundle\Entity\Sales\Session\OpeningHour $openingHour
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(OpeningHour $openingHour, $name = null )
+    public function __construct(OpeningHour $openingHour, EntityManager $entityManager, $name = null )
     {
-        parent::__construct($name);
+        parent::__construct($entityManager, $name);
 
         $this->remove('submit');
 

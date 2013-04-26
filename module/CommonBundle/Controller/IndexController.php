@@ -66,7 +66,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $cudi = array();
         $cudi['currentOpeningHour'] = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
             ->findCurrent();
 
         $sessions = $this->getEntityManager()
@@ -81,7 +81,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $cudi['openingHours'] = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
             ->findCurrentWeek();
 
         return new ViewModel(

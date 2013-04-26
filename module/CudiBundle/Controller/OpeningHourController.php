@@ -18,7 +18,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
- * BookingController
+ * OpeningHourController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -26,7 +26,14 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function weekAction()
     {
-        
-        return new ViewModel();
+        $openingHours = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->findCurrentWeek();
+
+        return new ViewModel(
+            array(
+                'openingHours' => $openingHours,
+            )
+        );
     }
 }

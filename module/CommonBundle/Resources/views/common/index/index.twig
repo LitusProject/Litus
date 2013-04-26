@@ -63,7 +63,7 @@
         </div>
 
         <div class="span3">
-            <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
+            <a href="{{ url('cudi_booking') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
 
             <h2>{{ translate('Book Store') }}</h2>
 
@@ -72,7 +72,12 @@
             {% if cudi.currentOpeningHour %}
                 <h3>{{ translate('Open Session') }}</h3>
                 {% autoescape false %}
-                    <p>{{ translate('Cudi is open until <span class="badge badge-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}</p>
+                    <p>
+                        {{ translate('Cudi is open until <span class="badge badge-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}
+                        {% if cudi.currentOpeningHour.getComment(language)|length > 0 %}
+                            <br><small style="margin-left: 20px;">{{ cudi.currentOpeningHour.getComment(language) }}</small>
+                        {% endif %}
+                    </p>
                 {% endautoescape %}
 
                 {% if cudi.currentSession %}
@@ -92,7 +97,11 @@
                 <h3>{{ translate('Opening Hours') }}</h3>
 
                 {% for openingHour in cudi.openingHours %}
-                    <span class="label label-info">{{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}</span> {{ dateLocalized(openingHour.getStart(), 'H:mm') }} - {{ dateLocalized(openingHour.getEnd(), 'H:mm') }}<br>
+                    <span class="label label-info">{{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}</span> {{ dateLocalized(openingHour.getStart(), 'H:mm') }} - {{ dateLocalized(openingHour.getEnd(), 'H:mm') }}
+                    {% if openingHour.getComment(language)|length > 0 %}
+                        <br><small style="margin-left: 20px;">{{ openingHour.getComment(language) }}</small>
+                    {% endif %}
+                    <br>
                 {% endfor %}
             {% endif %}
         </div>
