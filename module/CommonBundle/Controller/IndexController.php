@@ -80,6 +80,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findNbBySession($cudi['currentSession']);
         }
 
+        $cudi['openingHours'] = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+            ->findCurrentWeek();
+
         return new ViewModel(
             array(
                 'notifications' => $notifications,

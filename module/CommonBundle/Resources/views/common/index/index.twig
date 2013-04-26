@@ -65,7 +65,7 @@
         <div class="span3">
             <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
 
-            <h2>{{ translate('Cudi') }}</h2>
+            <h2>{{ translate('Book Store') }}</h2>
 
             <p><a href="{{ url('cudi_booking') }}" class="btn btn-primary">&raquo; {{ translate('Reservations') }}</a></p>
 
@@ -88,7 +88,13 @@
                 {% endif %}
             {% endif %}
 
-            <h3>{{ translate('Opening Hours') }}</h3>
+            {% if cudi.openingHours|length > 0 %}
+                <h3>{{ translate('Opening Hours') }}</h3>
+
+                {% for openingHour in cudi.openingHours %}
+                    <span class="label label-info">{{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}</span> {{ dateLocalized(openingHour.getStart(), 'H:mm') }} - {{ dateLocalized(openingHour.getEnd(), 'H:mm') }}<br>
+                {% endfor %}
+            {% endif %}
         </div>
 
         <div class="span5">

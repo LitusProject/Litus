@@ -2,7 +2,9 @@
 
 namespace CudiBundle\Repository\Sales\Session;
 
-use Doctrine\ORM\EntityRepository;
+use DateInterval,
+    DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * OpeningHour
@@ -20,7 +22,7 @@ class OpeningHour extends EntityRepository
             ->where(
                 $query->expr()->gte('o.endDate', ':now')
             )
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->getQuery()
             ->getResult();
 
@@ -35,7 +37,32 @@ class OpeningHour extends EntityRepository
             ->where(
                 $query->expr()->lt('o.endDate', ':now')
             )
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+
+       return $resultSet;
+    }
+
+    public function findCurrentWeek()
+    {
+        $start = new DateTime();
+        $start->sub(new DateInterval('P' . ($start->format('N') - 1) .'D'));
+        $end = clone $start;
+        $end->add(new DateInterval('P7D'));
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('CudiBundle\Entity\Sales\Session\OpeningHour', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('o.startDate', ':start'),
+                    $query->expr()->lt('o.endDate', ':end')
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->orderBy('o.startDate')
             ->getQuery()
             ->getResult();
 
@@ -53,7 +80,7 @@ class OpeningHour extends EntityRepository
                     $query->expr()->gt('o.endDate', ':now')
                 )
             )
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
