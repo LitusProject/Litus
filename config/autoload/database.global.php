@@ -22,6 +22,11 @@ $databaseConfig = include __DIR__ . '/../database.config.php';
 
 return array(
     'doctrine' => array(
+        'cache' => array(
+            'apc' => array(
+                'namespace' => 'LitusDoctrine',
+            ),
+        ),
         'configuration' => array(
             'odm_default' => array(
                   'generate_proxies'   => ('development' == getenv('APPLICATION_ENV')),
