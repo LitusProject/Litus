@@ -38,8 +38,14 @@
                             {% if hasAccess('quiz_admin_quiz', 'edit') %}
                                 <a href="{{ url('quiz_admin_quiz', {"action": "edit", "id": quiz.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
+                            {% if hasAccess('quiz_admin_quiz', 'rounds') %}
+                                <a href="{{ url('quiz_admin_quiz', {"action": "rounds", "id": quiz.getId()}) }}" class="quiz_rounds">Rounds</a>
+                            {% endif %}
+                            {% if hasAccess('quiz_admin_quiz', 'teams') %}
+                                <a href="{{ url('quiz_admin_quiz', {"action": "teams", "id": quiz.getId()}) }}" class="group">Teams</a>
+                            {% endif %}
                             {% if hasAccess('quiz_admin_quiz', 'moderate') %}
-                                <a href="{{ url('quiz_admin_quiz', {"action": "moderate", "id": quiz.getId()}) }}">Moderate</a>
+                                <a href="{{ url('quiz_admin_quiz', {"action": "moderate", "id": quiz.getId()}) }}" class="quiz_moderate">Moderate</a>
                             {% endif %}
                             {% if hasAccess('quiz_admin_quiz', 'delete') %}
                                 <a href="#" data-id="{{ quiz.getId() }}" data-name="{{ quiz.getName() }}" class="delete">Delete</a>
