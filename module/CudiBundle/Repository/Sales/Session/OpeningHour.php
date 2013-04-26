@@ -47,7 +47,12 @@ class OpeningHour extends EntityRepository
     public function findCurrentWeek()
     {
         $start = new DateTime();
-        $start->sub(new DateInterval('P' . ($start->format('N') - 1) .'D'));
+        $start->setTime(0, 0);
+        if ($start->format('N') > 5)
+            $start->add(new DateInterval('P' . (8 - $start->format('N')) .'D'));
+        else
+            $start->sub(new DateInterval('P' . ($start->format('N') - 1) .'D'));
+
         $end = clone $start;
         $end->add(new DateInterval('P7D'));
 

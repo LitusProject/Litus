@@ -44,6 +44,7 @@ return array(
     'CudiBundle\Controller\Admin\Supplier\UserController'              => __DIR__ . '/Controller/Admin/Supplier/UserController.php',
     'CudiBundle\Controller\Admin\SupplierController'                   => __DIR__ . '/Controller/Admin/SupplierController.php',
     'CudiBundle\Controller\BookingController'                          => __DIR__ . '/Controller/BookingController.php',
+    'CudiBundle\Controller\OpeningHourController'                      => __DIR__ . '/Controller/OpeningHourController.php',
     'CudiBundle\Controller\Prof\Article\CommentController'             => __DIR__ . '/Controller/Prof/Article/CommentController.php',
     'CudiBundle\Controller\Prof\Article\FileController'                => __DIR__ . '/Controller/Prof/Article/FileController.php',
     'CudiBundle\Controller\Prof\Article\MappingController'             => __DIR__ . '/Controller/Prof/Article/MappingController.php',

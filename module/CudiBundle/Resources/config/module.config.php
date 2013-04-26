@@ -674,6 +674,21 @@ return array(
                     ),
                 ),
             ),
+            'cudi_opening_hour' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/cudi/opening_hours[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                        'id'       => '[%a-zA-Z0-9:.,_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_opening_hour',
+                        'action'     => 'week',
+                    ),
+                ),
+            ),
         ),
     ),
     'translator' => array(
@@ -776,6 +791,7 @@ return array(
             'cudi_prof_help'                       => 'CudiBundle\Controller\Prof\HelpController',
 
             'cudi_booking'                         => 'CudiBundle\Controller\BookingController',
+            'cudi_opening_hour'                   => 'CudiBundle\Controller\OpeningHourController',
         ),
     ),
     'assetic_configuration' => array(
