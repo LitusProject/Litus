@@ -2,7 +2,8 @@
 
 namespace QuizBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use QuizBundle\Entity\Quiz as QuizEntity,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Team
@@ -12,4 +13,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class Team extends EntityRepository
 {
+    /**
+     * Gets all teams belonging to a quiz
+     * @param QuizBundle\Entity\Quiz $quiz The team the rounds must belong to
+     */
+    public function findAllFromQuiz(QuizEntity $quiz)
+    {
+        $query = $this->_em->createQueryBuilder();
+
+        return $query->select('team')
+            ->from('QuizBundle\Entity\Team', 'team')
+            ->where(
+                $query->expr()->eq('team.quiz', ':quiz')
+            )
+            ->orderBy('team.number', 'ASC')
+            ->setParameter('quiz', $quiz->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }

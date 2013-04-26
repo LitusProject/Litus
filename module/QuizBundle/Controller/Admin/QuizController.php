@@ -5,10 +5,13 @@ namespace QuizBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     QuizBundle\Entity\Quiz,
     QuizBundle\Entity\Round,
+    QuizBundle\Entity\Team,
     QuizBundle\Form\Admin\Quiz\Add as AddForm,
     QuizBundle\Form\Admin\Quiz\Edit as EditForm,
     QuizBundle\Form\Admin\Round\Add as AddRoundForm,
     QuizBundle\Form\Admin\Round\Edit as EditRoundForm,
+    QuizBundle\Form\Admin\Team\Add as AddTeamForm,
+    QuizBundle\Form\Admin\Team\Edit as EditTeamForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -271,6 +274,136 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function teamsAction()
+    {
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel;
+
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Team')
+                ->findAllFromQuiz($quiz),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'quiz' => $quiz,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
+            )
+        );
+    }
+
+    public function addTeamAction()
+    {
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel;
+
+        $form = new AddTeamForm($this->getEntityManager());
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $team = new Team($quiz, $formData['name'], $formData['number']);
+                $this->getEntityManager()->persist($team);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The team was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'quiz_admin_quiz',
+                    array(
+                        'action' => 'teams',
+                        'id' => $quiz->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'quiz' => $quiz,
+                'form' => $form,
+            )
+        );
+    }
+
+    public function editTeamAction()
+    {
+        if(!($team = $this->_getTeam()))
+            return new ViewModel;
+
+        $form  = new EditTeamForm($this->getEntityManager(), $team);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $team->setName($formData['name']);
+                $team->setNumber($formData['number']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The team was successfully edited!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'quiz_admin_quiz',
+                    array(
+                        'action' => 'teams',
+                        'id' => $team->getQuiz()->getId()
+                    )
+                );
+            }
+        }
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function deleteTeamAction()
+    {
+        $this->initAjax();
+
+        if (!($team = $this->_getTeam()))
+            return new ViewModel;
+
+        $this->getEntityManager()->remove($team);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     /**
      * @return null|\QuizBundle\Entity\Quiz
      */
@@ -369,5 +502,55 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $round;
+    }
+
+    /**
+     * @return null|\QuizBundle\Entity\Team
+     */
+    private function _getTeam()
+    {
+        if($this->getParam('id') === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the team!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'teams',
+                )
+            );
+
+            return;
+        }
+
+        $team = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Team')
+            ->findOneById($this->getParam('id'));
+
+        if($team === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No team with the given id was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'teams'
+                )
+            );
+
+            return;
+        }
+
+        return $team;
     }
 }

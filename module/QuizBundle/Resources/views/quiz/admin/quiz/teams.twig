@@ -1,0 +1,124 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'quiz/admin/quiz/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    
+    <div class="flashmessage success_message full_width team_remove_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The team was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width team_remove_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the team.</p>
+        </div>
+    </div>
+    
+    <div id="controller_action">
+        <h1>{{ quiz.getName() }}</h1>
+        <table class="manage">
+            <thead>
+                <tr>
+                    <th width="50px">#</th>
+                    <th>Name</th>
+                    <th width="100px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for team in paginator %}
+                    <tr class="item" data-id="{{ team.getId() }}">
+                        <td>{{ team.getNumber() }}</td>
+                        <td>{{ team.getName() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('quiz_admin_quiz', 'editTeam') %}
+                                <a href="{{ url('quiz_admin_quiz', {"action": "editTeam", "id": team.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('quiz_admin_quiz', 'deleteTeam') %}
+                                <a href="#" data-id="{{ team.getId() }}" data-name="{{ team.getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+    
+    {% if hasAccess('quiz_admin_quiz', 'addTeam') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Add Team</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a team to this quiz!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_quiz', {"action": "addTeam", "id": quiz.getId()}) }}">&rarr; Add Team</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
+    <div class="modal hide fade" id="removeTeam">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Team
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following team: <b class="name"></b>?
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeTeam = $('#removeTeam');
+            removeTeam.find('.name').html($(this).data('name'));
+            var id = $(this).data('id');
+            removeTeam.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('quiz_admin_quiz', {"action": "deleteTeam"})}}' + $this.data('id'), function  (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.team_remove_success').removeClass('hide');
+                        $('.item[data-id='+id+']').remove();
+                        removeTeam.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeTeam.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.team_remove_error').removeClass('hide');
+            $('#removeTeam').modal('hide');
+        }
+    </script>
+{% endblock %}
