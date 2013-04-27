@@ -81,4 +81,12 @@ return array(
     'You have already activated your account on our server.' => 'Je hebt je account op onze server reeds geactiveerd.',
     'Your password was succesfully changed!' => 'Je nieuw wachtwoord is opgeslagen!',
     'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.' => 'Je account werd geactiveerd! Het kan echter enkele minuten duren voordat je kan inloggen op de server.',
+
+    'Book Store' => 'Cudi',
+    'Reservations' => 'Reservaties',
+    'Open Session' => 'Open Sessie',
+    'Cudi is open until <span class="badge badge-warning">%time%</span>.' => 'Cudi is open tot <span class="badge badge-warning">%time%</span>.',
+    'Currently there is <span class="badge badge-info">%number%</span> student in the queue at Cudi.' => 'Momenteel is er <span class="badge badge-info">%number%</span> student in de rij bij Cudi.',
+    'Currently there are <span bij="badge badge-info">%number%</span> students in the queue at Cudi.' => 'Momenteel zijn er <span class="badge badge-info">%number%</span> studenten in de rij bij Cudi.',
+    'Opening Hours' => 'Openingsuren',
 );

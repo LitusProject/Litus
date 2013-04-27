@@ -82,4 +82,12 @@ return array(
     'You have already activated your account on our server.' => 'You have already activated your account on our server.',
     'Your password was succesfully changed!' => 'Your password was succesfully changed!',
     'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.' => 'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.',
+
+    'Book Store' => 'Book Store',
+    'Reservations' => 'Reservations',
+    'Open Session' => 'Open Session',
+    'Cudi is open until <span class="badge badge-warning">%time%</span>.' => 'Cudi is open until <span class="badge badge-warning">%time%</span>.',
+    'Currently there is <span class="badge badge-info">%number%</span> student in the queue at Cudi.' => 'Currently there is <span class="badge badge-info">%number%</span> student in the queue at Cudi.',
+    'Currently there are <span class="badge badge-info">%number%</span> students in the queue at Cudi.' => 'Currently there are <span class="badge badge-info">%number%</span> students in the queue at Cudi.',
+    'Opening Hours' => 'Opening Hours',
 );

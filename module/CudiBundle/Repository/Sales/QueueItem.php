@@ -94,6 +94,26 @@ class QueueItem extends EntityRepository
         return $resultSet;
     }
 
+    public function findNbBySession(SessionEntity $session)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('COUNT(i)')
+            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->where($query->expr()->andX(
+                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->neq('i.status', ':sold'),
+                    $query->expr()->neq('i.status', ':cancelled')
+                )
+            )
+            ->setParameter('session', $session->getId())
+            ->setParameter('sold', 'sold')
+            ->setParameter('cancelled', 'cancelled')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $resultSet;
+    }
+
     public function findOneSoldByPersonAndSession(Person $person, SessionEntity $session)
     {
         $query = $this->_em->createQueryBuilder();

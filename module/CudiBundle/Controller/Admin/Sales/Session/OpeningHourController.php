@@ -15,7 +15,8 @@
 namespace CudiBundle\Controller\Admin\Sales\Session;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Session\OpeningHour,
+    CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour,
+    CudiBundle\Entity\Sales\Session\OpeningHours\Translation,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -31,7 +32,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+                ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
                 ->findAllActive(),
             $this->getParam('page')
         );
@@ -63,7 +64,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -78,6 +79,22 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                     $this->getAuthentication()->getPersonObject()
                 );
                 $this->getEntityManager()->persist($openingHour);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    if ('' != $formData['comment_' . $language->getAbbrev()]) {
+                        $translation = new Translation(
+                            $openingHour,
+                            $language,
+                            $formData['comment_' . $language->getAbbrev()]
+                        );
+
+                        $this->getEntityManager()->persist($translation);
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -112,7 +129,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         if (!($openingHour = $this->_getOpeningHour()))
             return new ViewModel();
 
-        $form = new EditForm($openingHour);
+        $form = new EditForm($openingHour, $this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -191,7 +208,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         $openingHour = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
             ->findOneById($this->getParam('id'));
 
         if (null === $openingHour) {

@@ -21,9 +21,10 @@
         <table class="full_width manage">
 
             <tr>
-                <th>Person</th>
+                <th width="180px">Person</th>
                 <th width="180px">Start</th>
                 <th width="180px">End</th>
+                <th>Comment</th>
                 <th width="90px">Action</th>
             </tr>
 
@@ -32,6 +33,7 @@
                     <td>{{ openingHour.getPerson().getFullName() }}</td>
                     <td>{{ openingHour.getStart().format('Y-m-d H:i') }}</td>
                     <td>{{ openingHour.getEnd().format('Y-m-d H:i') }}</td>
+                    <td>{{ openingHour.getComment(language) }}</td>
                     <td class="actions">
                         {% if hasAccess('cudi_admin_sales_session_openinghour', 'edit') %}
                             <a href="{{ url("cudi_admin_sales_session_openinghour", {"action": "edit", "id": openingHour.getId()}) }}" class="clock_edit">Edit</a>

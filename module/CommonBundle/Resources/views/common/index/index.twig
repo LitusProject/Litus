@@ -38,7 +38,7 @@
     {% endfor %}
 
     <div class="row-fluid">
-        <div class="span6">
+        <div class="span4">
             <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-calendar.png" /></a>
 
             <h2>{{ translate('Calendar') }}</h2>
@@ -62,7 +62,51 @@
             {% endfor %}
         </div>
 
-        <div class="span6">
+        <div class="span3">
+            <a href="{{ url('cudi_booking') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
+
+            <h2>{{ translate('Book Store') }}</h2>
+
+            <p><a href="{{ url('cudi_booking') }}" class="btn btn-primary">&raquo; {{ translate('Reservations') }}</a></p>
+
+            {% if cudi.currentOpeningHour %}
+                <h3>{{ translate('Open Session') }}</h3>
+                {% autoescape false %}
+                    <p>
+                        {{ translate('Cudi is open until <span class="badge badge-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}
+                        {% if cudi.currentOpeningHour.getComment(language)|length > 0 %}
+                            <br><small style="margin-left: 20px;">{{ cudi.currentOpeningHour.getComment(language) }}</small>
+                        {% endif %}
+                    </p>
+                {% endautoescape %}
+
+                {% if cudi.currentSession %}
+                    {% autoescape false %}
+                        <p>
+                            {% if cudi.currentStudents == 1 %}
+                                {{ translate('Currently there is <span class="badge badge-info">%number%</span> student in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                            {% else %}
+                                {{ translate('Currently there are <span class="badge badge-info">%number%</span> students in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                            {% endif %}
+                        </p>
+                    {% endautoescape %}
+                {% endif %}
+            {% endif %}
+
+            {% if cudi.openingHours|length > 0 %}
+                <h3>{{ translate('Opening Hours') }}</h3>
+
+                {% for openingHour in cudi.openingHours %}
+                    <span class="label label-info">{{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}</span> {{ dateLocalized(openingHour.getStart(), 'H:mm') }} - {{ dateLocalized(openingHour.getEnd(), 'H:mm') }}
+                    {% if openingHour.getComment(language)|length > 0 %}
+                        <br><small style="margin-left: 20px;">{{ openingHour.getComment(language) }}</small>
+                    {% endif %}
+                    <br>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="span5">
             <a href="{{ url('news') }}"><img class="heading-icon" src="/_site/img/glyphicons-news.png" /></a>
             <h2>{{ translate('News') }}</h2>
 

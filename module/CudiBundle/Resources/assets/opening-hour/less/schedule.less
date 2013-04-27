@@ -1,0 +1,64 @@
+.schedule {
+    margin-top: 25px;
+
+    .schedule-header {
+        height: 20px;
+        margin: 0 0 0 150px;
+        position: relative;
+
+        .schedule-label {
+            width: 20px;
+            position: absolute;
+            float: left;
+            text-align: center;
+            overflow: visible;
+        }
+
+        .schedule-splitter {
+            position: absolute;
+            bottom: 0;
+            border-left: 2px solid #ccc;
+            height: 4px;
+        }
+    }
+
+    .schedule-day {
+        height: 30px;
+
+        .schedule-label {
+            float: left;
+            width: 150px;
+            text-align: right;
+            line-height: 30px;
+        }
+
+        .schedule-timeline {
+            float: left;
+            border: 1px solid #ccc;
+            margin: 3px 0 0 10px;
+            height: 24px;
+            position: relative;
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+
+            .schedule-period {
+                height: 24px;
+                background: #1293ee;
+                position: absolute;
+                border-radius: 4px;
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                color: #fff;
+                line-height: 24px;
+                overflow: hidden;
+            }
+
+            .schedule-closed {
+                width: 100%;
+                background: #ccc;
+                text-align: center;
+            }
+        }
+    }
+}

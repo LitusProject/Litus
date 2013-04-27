@@ -15,8 +15,12 @@
 namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Tabs,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CudiBundle\Entity\Sales\Session\OpeningHour,
+    CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour,
+    Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -29,11 +33,19 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($name = null )
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
+
+        $this->_entityManager = $entityManager;
 
         $field = new Text('start');
         $field->setLabel('Start')
@@ -47,6 +59,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm');
         $this->add($field);
 
+        $tabs = new Tabs('languages');
+        $this->add($tabs);
+
+        $tabContent = new TabContent('tab_content');
+
+        foreach($this->getLanguages() as $language) {
+            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('tab_' . $language->getAbbrev());
+
+            $field = new Text('comment_' . $language->getAbbrev());
+            $field->setLabel('Comment');
+
+            $pane->add($field);
+
+            $tabContent->add($pane);
+        }
+
+        $this->add($tabContent);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'clock_add');
@@ -55,12 +87,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function populateFromOpeningHour(OpeningHour $openingHour)
     {
-        $this->setData(
-            array(
-                'start' => $openingHour->getStart()->format('d/m/Y H:i'),
-                'end' => $openingHour->getEnd()->format('d/m/Y H:i'),
-            )
+        $data = array(
+            'start' => $openingHour->getStart()->format('d/m/Y H:i'),
+            'end' => $openingHour->getEnd()->format('d/m/Y H:i'),
         );
+        foreach($this->getLanguages() as $language) {
+            $data['comment_' . $language->getAbbrev()] = $openingHour->getComment($language, false);
+        }
+
+        $this->setData($data);
+    }
+
+    protected function getLanguages()
+    {
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
     }
 
     public function getInputFilter()
@@ -108,6 +150,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
+
+        foreach($this->getLanguages() as $language) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'comment_' . $language->getAbbrev(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault(),
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+        }
 
         return $inputFilter;
     }

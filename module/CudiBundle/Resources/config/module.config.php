@@ -674,6 +674,21 @@ return array(
                     ),
                 ),
             ),
+            'cudi_opening_hour' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/cudi/opening_hours[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                        'id'       => '[%a-zA-Z0-9:.,_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_opening_hour',
+                        'action'     => 'week',
+                    ),
+                ),
+            ),
         ),
     ),
     'translator' => array(
@@ -776,6 +791,7 @@ return array(
             'cudi_prof_help'                       => 'CudiBundle\Controller\Prof\HelpController',
 
             'cudi_booking'                         => 'CudiBundle\Controller\BookingController',
+            'cudi_opening_hour'                   => 'CudiBundle\Controller\OpeningHourController',
         ),
     ),
     'assetic_configuration' => array(
@@ -876,6 +892,31 @@ return array(
                         ),
                         'options' => array(
                             'output' => 'booking_css.css',
+                        ),
+                    ),
+                    'opening_hour_css' => array(
+                        'assets' => array(
+                            'opening-hour/less/schedule.less',
+                        ),
+                        'filters' => array(
+                            'opening_hour_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'opening_hour_css.css',
+                        ),
+                    ),
+                    'opening_hour_js' => array(
+                        'assets' => array(
+                            'opening-hour/js/*.js',
                         ),
                     ),
                 ),
