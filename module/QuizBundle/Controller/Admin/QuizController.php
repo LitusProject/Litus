@@ -403,6 +403,27 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             )
         );
     }
+    
+    public function moderateAction()
+    {
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel;
+
+        $rounds = $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Round')
+                ->findAllByQuiz($quiz);
+        $teams = $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Team')
+                ->findAllByQuiz($quiz);
+
+        return new ViewModel(
+            array(
+                'quiz' => $quiz,
+                'rounds' => $rounds,
+                'teams' => $teams,
+            )
+        );
+    }
 
     /**
      * @return null|\QuizBundle\Entity\Quiz
