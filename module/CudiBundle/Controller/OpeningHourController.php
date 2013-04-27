@@ -34,9 +34,11 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.opening_hours_page');
 
-            $page = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Nodes\Page')
+            $link = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Link')
                 ->findOneById($id);
+
+            $page = $link->getParent();
         } catch(\Exception $e) {}
 
         if (isset($page)) {
@@ -87,6 +89,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                 'endHour' => $endHour,
                 'submenu' => isset($submenu) ? $submenu : null,
                 'page' => isset($page) ? $page : null,
+                'link' => isset($link) ? $link : null,
             )
         );
     }

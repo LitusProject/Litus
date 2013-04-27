@@ -156,7 +156,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $factory->createInput(
                     array(
                         'name'     => 'comment_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),

@@ -150,7 +150,7 @@ class OpeningHour
                 $fallbackTranslation = $translation;
         }
 
-        if ($allowFallback)
+        if ($allowFallback && isset($fallbackTranslation))
             return $fallbackTranslation;
 
         return null;

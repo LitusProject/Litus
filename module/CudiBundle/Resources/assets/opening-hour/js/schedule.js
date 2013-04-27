@@ -68,7 +68,7 @@
         for (var i = 0 ; i < 5 ; i++) {
             var timeline = schedule.find('.day' + i + ' > .schedule-timeline');
             if (options.data[i]) {
-                if (options.data[i] !== '') {
+                if (options.data[i] != '') {
                     $(options.data[i]).each(function () {
                         var block = $('<div>', {'class': "schedule-period"})
                             .css({

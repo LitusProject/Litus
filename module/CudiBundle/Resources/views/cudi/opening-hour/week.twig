@@ -12,9 +12,7 @@
                 <a class="brand hidden-desktop" href="#">{{ page.getTitle(language) }}</a>
                 <div class="subnav nav-collapse">
                     <ul class="nav">
-                        {% if page.getParent() is not null %}
-                            <li><a href="{{ url('page', {"parent": page.getParent().getParent().getName(), "name": page.getParent().getName()}) }}"><i class="icon-arrow-left"></i> {{ page.getParent().getTitle(language) }}</a></li>
-                        {% endif %}
+                        <li><a href="{{ url('page', {"parent": page.getParent().getName(), "name": page.getName()}) }}"><i class="icon-arrow-left"></i> {{ page.getTitle(language) }}</a></li>
                         {% for item in submenu %}
                             {% if 'category' == item.type %}
                                 <li class="dropdown">
@@ -40,13 +38,13 @@
                             {% else %}
                                 {% if 'page' == item.type %}
                                     {% if hasAccess('page', 'view') %}
-                                        <li {% if item.name == page.getName() %}class="active"{% endif %}><a href="{{ url('page', {"parent": item.parent, "name": item.name}) }}">{{ item.title }}</a></li>
+                                        <li><a href="{{ url('page', {"parent": item.parent, "name": item.name}) }}">{{ item.title }}</a></li>
                                     {% endif %}
                                 {% endif %}
 
                                 {% if 'link' == item.type %}
                                     {% if hasAccess('page_link', 'view') %}
-                                        <li><a href="{{ url('page_link', {"id": item.id}) }}">{{ item.name }}</a></li>
+                                        <li {% if item.id == link.getId() %}class="active"{% endif %}><a href="{{ url('page_link', {"id": item.id}) }}">{{ item.name }}</a></li>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
