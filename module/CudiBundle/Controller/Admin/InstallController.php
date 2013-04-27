@@ -282,6 +282,11 @@ VTK Cudi
                     'value'       => '50',
                     'description' => 'The number of queue items shown in sale app',
                 ),
+                array(
+                    'key'         => 'cudi.opening_hours_page',
+                    'value'       => '0',
+                    'description' => 'The id of the opening hour page',
+                )
             )
         );
 
@@ -407,6 +412,9 @@ VTK Cudi
                     'cudi_booking' => array(
                         'book', 'bookSearch', 'cancel', 'search', 'view'
                     ),
+                    'cudi_opening_hour' => array(
+                        'week'
+                    )
                 )
             )
         );

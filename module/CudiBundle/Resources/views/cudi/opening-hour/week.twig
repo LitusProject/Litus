@@ -1,6 +1,62 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
+    {% if submenu is not empty %}
+        <div class="navbar">
+            <div class="navbar-inner">
+                <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".subnav">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="brand hidden-desktop" href="#">{{ page.getTitle(language) }}</a>
+                <div class="subnav nav-collapse">
+                    <ul class="nav">
+                        {% if page.getParent() is not null %}
+                            <li><a href="{{ url('page', {"parent": page.getParent().getParent().getName(), "name": page.getParent().getName()}) }}"><i class="icon-arrow-left"></i> {{ page.getParent().getTitle(language) }}</a></li>
+                        {% endif %}
+                        {% for item in submenu %}
+                            {% if 'category' == item.type %}
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
+                                        {{ item.name }} <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% for categoryItem in item.items %}
+                                            {% if 'page' == categoryItem.type %}
+                                                {% if hasAccess('page', 'view') %}
+                                                    <li><a href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></li>
+                                                {% endif %}
+                                            {% endif %}
+
+                                            {% if 'link' == categoryItem.type %}
+                                                {% if hasAccess('page_link', 'view') %}
+                                                    <li><a href="{{ url('page_link', {"id": categoryItem.id}) }}">{{ categoryItem.name }}</a></li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% else %}
+                                {% if 'page' == item.type %}
+                                    {% if hasAccess('page', 'view') %}
+                                        <li {% if item.name == page.getName() %}class="active"{% endif %}><a href="{{ url('page', {"parent": item.parent, "name": item.name}) }}">{{ item.title }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if 'link' == item.type %}
+                                    {% if hasAccess('page_link', 'view') %}
+                                        <li><a href="{{ url('page_link', {"id": item.id}) }}">{{ item.name }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="page-header">
         <h1>{{ translate('Opening Hours') }}</h1>
     </div>
@@ -9,7 +65,7 @@
         {{ translate('The opening hours for next week are:') }}
     </p>
 
-    <noscript>
+    <div class="hidden-desktop">
         {% for openingHour in openingHours %}
             <span class="label label-info">{{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}</span> {{ dateLocalized(openingHour.getStart(), 'H:mm') }} - {{ dateLocalized(openingHour.getEnd(), 'H:mm') }}
             {% if openingHour.getComment(language)|length > 0 %}
@@ -17,5 +73,45 @@
             {% endif %}
             <br>
         {% endfor %}
-    </noscript>
+    </div>
+    <div id="schedule" class="visible-desktop"></div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#schedule').schedule({
+                startHour: {{ startHour }},
+                endHour: {{ endHour }},
+                days: [
+                    {% for day in week %}
+                        '{{ dateLocalized(day, 'EEEE (d/M)') }}'{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                data: [
+                    {% for day in openingHoursTimeline %}
+                        [
+                            {% for openingHour in day %}
+                                {
+                                    'startTime': {
+                                        'hours': {{ openingHour.getStart().format('H') }},
+                                        'minutes': {{ openingHour.getStart().format('i') }},
+                                        'text': '{{ dateLocalized(openingHour.getStart(), 'H:mm') }}',
+                                    },
+                                    'endTime': {
+                                        'hours': {{ openingHour.getEnd().format('H') }},
+                                        'minutes': {{ openingHour.getEnd().format('i') }},
+                                        'text': '{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}',
+                                    },
+                                    'comment': '{{ openingHour.getComment(language) }}'
+                                }{% if not loop.last %},{% endif %}
+                            {% else %}
+                                ''
+                            {% endfor %}
+                        ],
+                    {% endfor %}
+                ]
+            });
+        });
+    </script>
 {% endblock %}

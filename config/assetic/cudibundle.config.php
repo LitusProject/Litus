@@ -323,6 +323,8 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@opening_hour_css',
+            '@opening_hour_js',
         ),
     ),
     'routes' => array(),

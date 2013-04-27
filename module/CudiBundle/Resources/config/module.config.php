@@ -894,6 +894,31 @@ return array(
                             'output' => 'booking_css.css',
                         ),
                     ),
+                    'opening_hour_css' => array(
+                        'assets' => array(
+                            'opening-hour/less/schedule.less',
+                        ),
+                        'filters' => array(
+                            'opening_hour_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'opening_hour_css.css',
+                        ),
+                    ),
+                    'opening_hour_js' => array(
+                        'assets' => array(
+                            'opening-hour/js/*.js',
+                        ),
+                    ),
                 ),
             ),
         ),

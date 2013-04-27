@@ -56,4 +56,6 @@ return array(
     'Stop Search' => 'Stop Search',
     'Search String' => 'Search String',
     'No Articles Found' => 'No Articles Found',
+
+    'The opening hours for next week are:' => 'The opening hours for next week are:',
 );
