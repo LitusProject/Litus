@@ -403,7 +403,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function moderateAction()
     {
         if(!($quiz = $this->_getQuiz()))
@@ -411,10 +411,10 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         $rounds = $this->getEntityManager()
                 ->getRepository('QuizBundle\Entity\Round')
-                ->findAllByQuiz($quiz);
+                ->findByQuiz($quiz);
         $teams = $this->getEntityManager()
                 ->getRepository('QuizBundle\Entity\Team')
-                ->findAllByQuiz($quiz);
+                ->findByQuiz($quiz);
 
         return new ViewModel(
             array(

@@ -17,7 +17,7 @@ class Round extends EntityRepository
      * Gets all rounds belonging to a quiz
      * @param QuizBundle\Entity\Quiz $quiz The quiz the rounds must belong to
      */
-    public function findAllFromQuiz(QuizEntity $quiz)
+    public function findByQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
 
