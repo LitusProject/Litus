@@ -471,7 +471,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'rounds',
+                    'action' => 'manage',
                 )
             );
 
@@ -494,7 +494,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'rounds'
+                    'action' => 'manage'
                 )
             );
 
@@ -521,7 +521,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'teams',
+                    'action' => 'manage',
                 )
             );
 
@@ -544,7 +544,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'teams'
+                    'action' => 'manage'
                 )
             );
 
