@@ -38,7 +38,8 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                 ->getRepository('PageBundle\Entity\Link')
                 ->findOneById($id);
 
-            $page = $link->getParent();
+            if (null !== $link)
+                $page = $link->getParent();
         } catch(\Exception $e) {}
 
         if (isset($page)) {

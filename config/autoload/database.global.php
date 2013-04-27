@@ -24,7 +24,7 @@ return array(
     'doctrine' => array(
         'cache' => array(
             'apc' => array(
-                'namespace' => 'LitusDoctrine',
+                'namespace' => 'Litus',
             ),
         ),
         'configuration' => array(
