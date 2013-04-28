@@ -152,7 +152,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('QuizBundle\Entity\Round')
-                ->findAllFromQuiz($quiz),
+                ->findByQuiz($quiz),
             $this->getParam('page')
         );
 
@@ -284,7 +284,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('QuizBundle\Entity\Team')
-                ->findAllFromQuiz($quiz),
+                ->findByQuiz($quiz),
             $this->getParam('page')
         );
 
