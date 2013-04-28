@@ -141,6 +141,28 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                 $openingHour->setStart(\DateTime::createFromFormat('d#m#Y H#i', $formData['start']))
                     ->setEnd(\DateTime::createFromFormat('d#m#Y H#i', $formData['end']));
 
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    $translation = $openingHour->getTranslation($language, false);
+
+                    if (null !== $translation) {
+                        $translation->setComment($formData['comment_' . $language->getAbbrev()]);
+                    } else {
+                        if ('' != $formData['comment_' . $language->getAbbrev()]) {
+                            $translation = new Translation(
+                                $openingHour,
+                                $language,
+                                $formData['comment_' . $language->getAbbrev()]
+                            );
+
+                            $this->getEntityManager()->persist($translation);
+                        }
+                    }
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(

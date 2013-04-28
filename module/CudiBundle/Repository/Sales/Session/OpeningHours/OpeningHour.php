@@ -23,6 +23,7 @@ class OpeningHour extends EntityRepository
                 $query->expr()->gte('o.endDate', ':now')
             )
             ->setParameter('now', new DateTime())
+            ->orderBy('o.startDate', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -38,6 +39,7 @@ class OpeningHour extends EntityRepository
                 $query->expr()->lt('o.endDate', ':now')
             )
             ->setParameter('now', new DateTime())
+            ->orderBy('o.startDate', 'DESC')
             ->getQuery()
             ->getResult();
 
