@@ -250,6 +250,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
         return new ViewModel(
             array(
+                'quiz' => $round->getQuiz(),
                 'form' => $form,
             )
         );
@@ -380,6 +381,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
         return new ViewModel(
             array(
+                'quiz' => $team->getQuiz(),
                 'form' => $form,
             )
         );

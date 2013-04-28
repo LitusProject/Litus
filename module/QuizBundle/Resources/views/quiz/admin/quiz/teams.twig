@@ -4,7 +4,7 @@
     {% include 'quiz/admin/quiz/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
-    
+
     <div class="flashmessage success_message full_width team_remove_success hide">
         <div class="title">Success</div>
         <div class="content">
@@ -17,9 +17,9 @@
             <p>An error occurred while trying to delete the team.</p>
         </div>
     </div>
-    
+
     <div id="controller_action">
-        <h1>{{ quiz.getName() }}</h1>
+        <h1>{{ quiz.getName() }}: Teams</h1>
         <table class="manage">
             <thead>
                 <tr>
@@ -48,7 +48,7 @@
         </table>
     {% include 'admin/partials/paginationControl.twig' %}
     </div>
-    
+
     {% if hasAccess('quiz_admin_quiz', 'addTeam') %}
         <aside>
             <div class="sidebox">
