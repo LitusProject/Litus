@@ -42,6 +42,39 @@ return array(
                     ),
                 ),
             ),
+            // TODO: Redirecting /admin/quiz/:quizid to /admin/quiz/edit/:quizid for URL hackers
+            'quiz_admin_round' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/quiz/:quizid/round[/:action[/:id]][/page/:page][/]',
+                    'constraints' => array(
+                        'quizid'  => '[0-9]+',
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'quiz_admin_round',
+                        'action' => 'manage',
+                    ),
+                ),
+            ),
+            'quiz_admin_team' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/quiz/:quizid/team[/:action[/:id]][/page/:page][/]',
+                    'constraints' => array(
+                        'quizid'  => '[0-9]+',
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'quiz_admin_team',
+                        'action' => 'manage',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -81,6 +114,8 @@ return array(
         'invokables' => array(
             'quiz_install'              => 'QuizBundle\Controller\Admin\InstallController',
             'quiz_admin_quiz'           => 'QuizBundle\Controller\Admin\QuizController',
+            'quiz_admin_round'          => 'QuizBundle\Controller\Admin\RoundController',
+            'quiz_admin_team'           => 'QuizBundle\Controller\Admin\TeamController',
         ),
     ),
     'assetic_configuration' => array(
