@@ -18,14 +18,14 @@ bin/Doctrine/doctrine-module odm:generate:proxies data/proxies/
 bin/Doctrine/doctrine-module odm:generate:hydrators data/hydrators/
 
 # Making sure our LESS stylesheets are recompiled
-touch module/CommonBundle/src/Resources/assets/admin/less/admin.less
-touch module/CommonBundle/src/Resources/assets/bootstrap/less/bootstrap.less
-touch module/CommonBundle/src/Resources/assets/site/less/base.less
+touch module/CommonBundle/Resources/assets/admin/less/admin.less
+touch module/CommonBundle/Resources/assets/bootstrap/less/bootstrap.less
+touch module/CommonBundle/Resources/assets/site/less/base.less
 
-touch module/CudiBundle/src/Resources/assets/prof/less/base.less
-touch module/CudiBundle/src/Resources/assets/sale/less/base.less
-touch module/CudiBundle/src/Resources/assets/supplier/less/base.less
+touch module/CudiBundle/Resources/assets/prof/less/base.less
+touch module/CudiBundle/Resources/assets/sale/less/base.less
+touch module/CudiBundle/Resources/assets/supplier/less/base.less
 
-touch module/LogisticsBundle/src/Resources/assets/logistics/less/base.less
+touch module/LogisticsBundle/Resources/assets/logistics/less/base.less
 
-touch module/SportBundle/src/Resources/assets/run/less/base.less
+touch module/SportBundle/Resources/assets/run/less/base.less
