@@ -16,6 +16,7 @@ namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityManager,
+    IntlDateFormatter,
     Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface;
 
@@ -51,13 +52,31 @@ class Booking
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail_name');
 
+        $openingHours = $entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->findWeekFromNow();
+
+        $language = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+        $openingHourText = '';
+        foreach($openingHours as $openingHour) {
+            $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
+
+            if (strlen($openingHour->getComment($language)) > 0)
+                $openingHourText .= ' (' . $openingHour->getComment($language) . ')';
+
+            $openingHourText .= "\r\n";
+        }
+
         $list = '';
         foreach($bookings as $booking) {
             $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . " " . ($booking->getExpirationDate() ? "(expires " . $booking->getExpirationDate()->format('d M Y') : "") . ")\r\n";
         }
 
         $mail = new Message();
-        $mail->setBody(str_replace('{{ bookings }}', $list, $message))
+        $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
             ->addTo($person->getEmail(), $person->getFullName())
             ->addCc($mailAddress, $mailName)

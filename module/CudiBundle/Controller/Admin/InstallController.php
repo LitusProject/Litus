@@ -124,6 +124,9 @@ These reservations will expire after the first sale session after its expiration
 
 Please cancel a reservation if you don\'t need the article, this way we can help other students.
 
+The opening hours of Cudi are:
+{{ openingHours }}
+
 VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
