@@ -55,7 +55,7 @@
                         <td>{{ team.getName() }}</td>
                         {# XXX: Probably needs some love #}
                         {% for round in rounds %}
-                            <td data-round-id="{{ round.getId() }}" data-team-id="{{ team.getId() }}" data-max-points="{{ round.getMaxPoints() }}" contenteditable>...</td>
+                            <td data-round-id="{{ round.getId() }}" data-team-id="{{ team.getId() }}" data-max-points="{{ round.getMaxPoints() }}" contenteditable onfocus="setTimeout(function() {document.execCommand('selectall', false, null);}, 10);">...</td>
                         {% endfor %}
                         <td data-team-id="{{ team.getId() }}" class="total">...</td>
                     </tr>
@@ -86,8 +86,12 @@
                 else
                     key = 40; // Arrow down
             }
+            if(key == 13) {// Enter key
+                e.preventDefault();
+                key = 40;
+            }
 
-           switch(key) {
+            switch(key) {
                 case 40: // Arrow down
                     position_y++;
                     break;
