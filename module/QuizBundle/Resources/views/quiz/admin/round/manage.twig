@@ -37,10 +37,10 @@
                         <td>{{ round.getName() }}</td>
                         <td>{{ round.getMaxPoints() }}</td>
                         <td class="actions">
-                            {% if hasAccess('quiz_admin_quiz', 'editRound') %}
-                                <a href="{{ url('quiz_admin_quiz', {"action": "editRound", "id": round.getId()}) }}" class="edit">Edit</a>
+                            {% if hasAccess('quiz_admin_round', 'edit') %}
+                                <a href="{{ url('quiz_admin_round', {"action": "edit", "id": round.getId(), "quizid": quiz.getId() }) }}" class="edit">Edit</a>
                             {% endif %}
-                            {% if hasAccess('quiz_admin_quiz', 'deleteRound') %}
+                            {% if hasAccess('quiz_admin_round', 'delete') %}
                                 <a href="#" data-id="{{ round.getId() }}" data-name="{{ round.getName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -51,7 +51,7 @@
     {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    {% if hasAccess('quiz_admin_quiz', 'addRound') %}
+    {% if hasAccess('quiz_admin_round', 'add') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Add Round</div>
@@ -60,14 +60,14 @@
                         <i>Please hit the link below to add a round to this quiz!</i>
                     </p>
                     <p>
-                        <a href="{{ url('quiz_admin_quiz', {"action": "addRound", "id": quiz.getId()}) }}">&rarr; Add Round</a>
+                        <a href="{{ url('quiz_admin_round', {"action": "add", "quizid": quiz.getId()}) }}">&rarr; Add Round</a>
                     </p>
                 </div>
             </div>
         </aside>
     {% endif %}
 
-    {% if hasAccess('quiz_admin_quiz', 'addTeam') %}
+    {% if hasAccess('quiz_admin_team', 'add') %}
         <aside>
             <div class="sidebox">
                 <div class="title">Add Team</div>
@@ -76,7 +76,7 @@
                         <i>Please hit the link below to add a team to this quiz!</i>
                     </p>
                     <p>
-                        <a href="{{ url('quiz_admin_quiz', {"action": "addTeam", "id": quiz.getId()}) }}">&rarr; Add Team</a>
+                        <a href="{{ url('quiz_admin_team', {"action": "add", "quizid": quiz.getId()}) }}">&rarr; Add Team</a>
                     </p>
                 </div>
             </div>
@@ -119,7 +119,7 @@
             removeRound.find('.name').html($(this).data('name'));
             var id = $(this).data('id');
             removeRound.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('quiz_admin_quiz', {"action": "deleteRound"})}}' + $this.data('id'), function  (data) {
+                $.post('{{ url('quiz_admin_round', {"action": "delete", "quizid": quiz.getId()})}}' + $this.data('id'), function  (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.round_remove_success').removeClass('hide');

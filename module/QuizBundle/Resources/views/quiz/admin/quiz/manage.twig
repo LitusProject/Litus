@@ -4,7 +4,7 @@
     {% include 'quiz/admin/quiz/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
-    
+
     <div class="flashmessage success_message full_width quiz_remove_success hide">
         <div class="title">Success</div>
         <div class="content">
@@ -38,11 +38,11 @@
                             {% if hasAccess('quiz_admin_quiz', 'edit') %}
                                 <a href="{{ url('quiz_admin_quiz', {"action": "edit", "id": quiz.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
-                            {% if hasAccess('quiz_admin_quiz', 'rounds') %}
-                                <a href="{{ url('quiz_admin_quiz', {"action": "rounds", "id": quiz.getId()}) }}" class="quiz_rounds">Rounds</a>
+                            {% if hasAccess('quiz_admin_round', 'manage') %}
+                                <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()}) }}" class="quiz_rounds">Rounds</a>
                             {% endif %}
-                            {% if hasAccess('quiz_admin_quiz', 'teams') %}
-                                <a href="{{ url('quiz_admin_quiz', {"action": "teams", "id": quiz.getId()}) }}" class="group">Teams</a>
+                            {% if hasAccess('quiz_admin_team', 'manage') %}
+                                <a href="{{ url('quiz_admin_quiz', {"quizid": quiz.getId()}) }}" class="group">Teams</a>
                             {% endif %}
                             {% if hasAccess('quiz_admin_quiz', 'moderate') %}
                                 <a href="{{ url('quiz_admin_quiz', {"action": "moderate", "id": quiz.getId()}) }}" class="quiz_moderate">Moderate</a>
@@ -57,7 +57,7 @@
         </table>
     {% include 'admin/partials/paginationControl.twig' %}
     </div>
-    
+
     <div class="modal hide fade" id="removeQuiz">
         <div class="modal-header">
             <span>Litus Admin</span>
