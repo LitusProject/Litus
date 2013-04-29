@@ -66,10 +66,10 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'quiz_admin_quiz',
+                    'quiz_admin_route',
                     array(
-                        'action' => 'addRound',
-                        'id' => $quiz->getId(),
+                        'action' => 'add',
+                        'quizid' => $quiz->getId(),
                     )
                 );
 
