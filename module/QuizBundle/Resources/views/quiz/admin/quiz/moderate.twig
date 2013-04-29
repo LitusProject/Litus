@@ -43,6 +43,9 @@
                     {% for round in rounds %}
                         <th data-round-id="{{ round.getId() }}" data-max-points="{{ round.getMaxPoints() }}" title="Maximum points: {{ round.getMaxPoints() }}">{{ round.getName() }}</th>
                     {% endfor %}
+                    <th width="40px">
+                        Sum
+                    </th>
                 </tr>
             </thead>
 
@@ -54,6 +57,7 @@
                         {% for round in rounds %}
                             <td data-round-id="{{ round.getId() }}" data-team-id="{{ team.getId() }}" data-max-points="{{ round.getMaxPoints() }}" contenteditable>...</td>
                         {% endfor %}
+                        <td data-team-id="{{ team.getId() }}" class="total">...</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -63,7 +67,7 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        $(document).ready(getPoints());
+        $(document).ready(getPoints);
         $('#controller_action td[contenteditable]').on('blur', function() { updatePoint($(this)); });
         $(document).on('keydown', function(e) {
            var key = e.keyCode;
@@ -112,12 +116,13 @@
         });
         function getPoints() {
             $.getJSON('{{ url('quiz_admin_quiz', {'action': 'points', 'id': quiz.getId()}) }}', function(data) {
-                $('#controller_action td[contenteditable]').text('0');
+                $('#controller_action td[contenteditable]').text('0').data('saved-points', 0);
                 for(var i in data) {
                     var point = data[i];
                     $('#controller_action td[data-team-id="'+point.team+'"][data-round-id="'+point.round+'"]')
                             .text(point.value)
                             .data('saved-points', point.value);
+                    calculateTotal();
                 }
                 $('.points_loading').addClass('hide');
             }).error(errorLoad);
@@ -126,6 +131,7 @@
             $elem.attr('contenteditable', false);
             $elem.addClass('quiz_saving');
             $elem.removeClass('quiz_save_error');
+            $elem.parent().find('.total').addClass('quiz_saving');
             var round_id = $elem.data('round-id');
             var team_id = $elem.data('team-id');
             var max_points = $elem.data('max-points');
@@ -157,11 +163,24 @@
             ).error(function() { errorUpdate($elem); });
         }
 
+        function calculateTotal() {
+            var $tr = $('#controller_action tbody tr');
+            $tr.each(function() {
+                $this = $(this);
+                var sum = 0;
+                $this.find('td[data-round-id]').each(function() {
+                    sum += parseInt($(this).data('saved-points'), 10);
+                });
+                $this.find('.total').text(sum);
+            });
+        }
+
         function errorText($elem, text) {
             $elem.attr('contenteditable', true);
             $elem.removeClass('quiz_saving');
             $elem.addClass('quiz_save_error');
             $elem.attr('title', text);
+            $elem.parent().find('.total').removeClass('quiz_saving');
             $('.flashmessage').addClass('hide');
             $('.points_generic_error').removeClass('hide');
             $('.points_generic_error .err_msg').text(text);
@@ -180,6 +199,8 @@
             $elem.attr('title', '');
             $elem.attr('contenteditable', true);
             $elem.data('saved-points', points);
+            calculateTotal();
+            $elem.parent().find('.total').removeClass('quiz_saving');
         }
 
         function errorLoad() {
@@ -188,11 +209,11 @@
         }
     </script>
     <style type="text/css">
-            .quiz_saving {
+            #controller_action .quiz_saving {
                 background-color: orange !important;
                 cursor: progress;
             }
-            .quiz_save_error {
+            #controller_action .quiz_save_error {
                 background-color: red !important;
             }
     </style>
