@@ -64,6 +64,52 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(getPoints());
+        $('#controller_action td[contenteditable]').on('blur', function() { updatePoint($(this)); });
+        $(document).on('keydown', function(e) {
+           var key = e.keyCode;
+           var $cell = $(e.srcElement);
+           var $tbody = $('#controller_action tbody')
+           if(!$tbody.find($cell)) // Cell not in our table
+               return;
+
+           var position_x = $cell.prevAll().length;
+           var position_y = $cell.parent().prevAll().length +1 ; // Note: top row is not counted
+
+            if(key == 9) { // Tab key
+                e.preventDefault();
+                if(e.shiftKey)
+                    key = 38; // Arrow up
+                else
+                    key = 40; // Arrow down
+            }
+
+           switch(key) {
+                case 40: // Arrow down
+                    position_y++;
+                    break;
+                case 38: // Arrow up
+                    position_y--;
+                    break;
+                case 37: // Arrow left
+                    position_x--;
+                    break;
+                case 39: // Arrow right
+                    position_x++;
+                    break;
+           }
+
+           if(position_x < 0 || position_y < 0) // We don't want to move off the grid
+               return;
+
+
+
+           if(position_y > $tbody.children().length) { // Going too far down, wrap to next column
+               position_y = 1;
+               position_x++;
+           }
+           $tbody.find('tr:nth-child('+(position_y)+') td[contenteditable]:nth-child('+(position_x+1)+')').focus();
+
+        });
         function getPoints() {
             $.getJSON('{{ url('quiz_admin_quiz', {'action': 'points', 'id': quiz.getId()}) }}', function(data) {
                 $('#controller_action td[contenteditable]').text('0');
@@ -74,7 +120,6 @@
                 $('.points_loading').addClass('hide');
             }).error(errorLoad);
         }
-        $('#controller_action td[contenteditable]').on('blur', function() { updatePoint($(this)); });
         function updatePoint($elem) {
             $elem.addClass('quiz_saving');
             $elem.removeClass('quiz_save_error');
@@ -85,7 +130,7 @@
 
             if(!points.match(/^\d+$/))
                 return errorText($elem, 'The points should be a positive integer!');
-            if(points >= max_points)
+            if(points > max_points)
                 return errorText($elem, 'The points should not be greater than the maximum number of points possible for this round!');
 
             $.post(
