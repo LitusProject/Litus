@@ -76,6 +76,32 @@ class OpeningHour extends EntityRepository
        return $resultSet;
     }
 
+    public function findWeekFromNow()
+    {
+        $start = new DateTime();
+        $start->setTime(0, 0);
+
+        $end = clone $start;
+        $end->add(new DateInterval('P7D'));
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('o.endDate', ':start'),
+                    $query->expr()->lt('o.endDate', ':end')
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->orderBy('o.startDate')
+            ->getQuery()
+            ->getResult();
+
+       return $resultSet;
+    }
+
     public function findCurrent()
     {
         $query = $this->_em->createQueryBuilder();

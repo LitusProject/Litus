@@ -82,7 +82,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $cudi['openingHours'] = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
-            ->findCurrentWeek();
+            ->findWeekFromNow();
 
         return new ViewModel(
             array(
