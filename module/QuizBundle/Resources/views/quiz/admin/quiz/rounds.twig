@@ -67,6 +67,22 @@
         </aside>
     {% endif %}
 
+    {% if hasAccess('quiz_admin_quiz', 'addTeam') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Add Team</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a team to this quiz!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_quiz', {"action": "addTeam", "id": quiz.getId()}) }}">&rarr; Add Team</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
     <div class="modal hide fade" id="removeRound">
         <div class="modal-header">
             <span>Litus Admin</span>
