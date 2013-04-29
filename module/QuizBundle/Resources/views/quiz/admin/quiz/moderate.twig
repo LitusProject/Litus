@@ -14,7 +14,7 @@
     <div class="flashmessage error_message full_width points_update_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to update the points.</p>
+            <p>An error occurred while trying to save the points.</p>
         </div>
     </div>
     <div class="flashmessage error_message full_width points_load_error hide">
@@ -23,13 +23,20 @@
             <p>An error occurred while trying to load the points.</p>
         </div>
     </div>
+    <div class="flashmessage error_message full_width points_generic_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to update the points.</p>
+            <p class="err_msg"></p>
+        </div>
+    </div>
     <div id="controller_action">
         <table class="full_width manage">
             <thead>
                 <tr>
                     <th>Team</th>
                     {% for round in rounds %}
-                        <th data-round-id="{{ round.getId() }}">{{ round.getName() }}</th>
+                        <th data-round-id="{{ round.getId() }}" data-max-points="{{ round.getMaxPoints() }}" title="Maximum points: {{ round.getMaxPoints() }}">{{ round.getName() }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -40,7 +47,7 @@
                         <td>{{ team.getName() }}</td>
                         {# XXX: Probably needs some love #}
                         {% for round in rounds %}
-                            <td data-round-id="{{ round.getId() }}" data-team-id="{{ team.getId() }}" contenteditable>...</td>
+                            <td data-round-id="{{ round.getId() }}" data-team-id="{{ team.getId() }}" data-max-points="{{ round.getMaxPoints() }}" contenteditable>...</td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
@@ -69,18 +76,27 @@
             $elem.removeClass('quiz_save_error');
             var round_id = $elem.data('round-id');
             var team_id = $elem.data('team-id');
+            var max_points = $elem.data('max-points');
+            var points = $elem.text();
+
+            if(!points.match(/^\d+$/))
+                return errorText($elem, 'The points should be a positive integer!');
+            if(points >= max_points)
+                return errorText($elem, 'The points should not be greater than the maximum number of points possible for this round!');
+
             $.post(
                     '{{ url('quiz_admin_quiz', {'action': 'addPoint', 'id': quiz.getId() }) }}',
                     {
                         'round': round_id,
                         'team': team_id,
-                        'points': $elem.text()
+                        'points': points
                     },
                     function (data) {
                         if(data && data.status === "success") {
                             $('.flashmessage').addClass('hide');
                             $('.points_update_succcess').removeClass('hide');
                             $elem.removeClass('quiz_saving');
+                            $elem.attr('title', '');
                         }
                         else {
                             errorUpdate($elem);
@@ -90,9 +106,17 @@
             ).error(function() { errorUpdate($elem); });
         }
 
-        function errorUpdate($elem) {
+        function errorText($elem, text) {
             $elem.removeClass('quiz_saving');
             $elem.addClass('quiz_save_error');
+            $elem.attr('title', text);
+            $('.flashmessage').addClass('hide');
+            $('.points_generic_error').removeClass('hide');
+            $('.points_generic_error .err_msg').text(text);
+        }
+
+        function errorUpdate($elem) {
+            errorText($elem, 'Error saving points!');
             $('.flashmessage').addClass('hide');
             $('.points_update_error').removeClass('hide');
         }
