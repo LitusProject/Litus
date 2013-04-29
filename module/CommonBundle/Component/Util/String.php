@@ -46,4 +46,19 @@ class String
         }
         return substr($string, 0, $length = min(strlen($string),  $length + $i)) . (count($tags = array_reverse($tags)) ? '</' . implode('></', $tags) . '>' : '') . (strlen($string) > $length ? $suffix : '');
     }
+
+    /**
+     * Truncates a string removing HTML tags
+     *
+     * @static
+     * @param string $string The string that will be truncated
+     * @param string $delimiter The delimiter used to replace spaces
+     * @return string
+     */
+    public static function truncateNoHtml($string, $length, $suffix = '...')
+    {
+        $string = strip_tags($string);
+
+        return substr($string, 0, $length = min(strlen($string), $length)) . (strlen($string) > $length ? $suffix : '');
+    }
 }
