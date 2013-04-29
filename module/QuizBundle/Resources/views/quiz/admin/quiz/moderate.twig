@@ -4,7 +4,12 @@
     {% include 'quiz/admin/quiz/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
-
+    <div class="flashmessage info_message full_width points_loading">
+        <div class="title">Info</div>
+        <div class="content">
+            <p>The points are loading, please wait for a moment.</p>
+        </div>
+    </div>
     <div class="flashmessage success_message full_width points_update_success hide">
         <div class="title">Success</div>
         <div class="content">
@@ -60,14 +65,13 @@
     <script type="text/javascript">
         $(document).ready(getPoints());
         function getPoints() {
-            $('#controller_action').addClass('quiz_loading');
             $.getJSON('{{ url('quiz_admin_quiz', {'action': 'points', 'id': quiz.getId()}) }}', function(data) {
                 $('#controller_action td[contenteditable]').text('0');
                 for(var i in data) {
                     var point = data[i];
                     $('#controller_action td[data-team-id="'+point.team+'"][data-round-id="'+point.round+'"]').text(point.value);
                 }
-                $('#controller_action').removeClass('quiz_loading');
+                $('.points_loading').addClass('hide');
             }).error(errorLoad);
         }
         $('#controller_action td[contenteditable]').on('blur', function() { updatePoint($(this)); });
@@ -127,9 +131,6 @@
         }
     </script>
     <style type="text/css">
-            .quiz_loading {
-                cursor: wait;
-            }
             .quiz_saving {
                 background-color: orange !important;
                 cursor: progress;
