@@ -42,7 +42,20 @@ return array(
                     ),
                 ),
             ),
-            // TODO: Redirecting /admin/quiz/:quizid to /admin/quiz/edit/:quizid for URL hackers
+            // Alias: /admin/quiz/:id -> /admin/quiz/edit/:id
+            array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/quiz/:id[/]',
+                    'constraints' => array(
+                        'id'      => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'quiz_admin_quiz',
+                        'action'     => 'edit',
+                    ),
+                ),
+            ),
             'quiz_admin_round' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
