@@ -69,10 +69,13 @@
         });
 
         function toggleInternal() {
-            if ($('#internal').is(':checked'))
+            if ($('#internal').is(':checked')) {
                 $('#internal_form').show();
-            else
+                $('#article_form #publisher').val('VTK').closest('.control-group').hide();
+            } else {
                 $('#internal_form').hide();
+                $('#article_form #publisher').val('').closest('.control-group').show();
+            }
 
             $('#article_form').show();
         }
