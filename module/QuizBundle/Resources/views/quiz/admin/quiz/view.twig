@@ -1,0 +1,47 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'quiz/admin/quiz/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div id="controller_action">
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    {% for round in rounds %}
+                        <th title="Maximum points: {{ round.getMaxPoints() }}">{{ round.getName() }}</th>
+                    {% endfor %}
+                    <th width="40px">
+                        Sum
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for team in teams %}
+                    <tr class="item">
+                        <td>{{ team.getName() }}</td>
+                        {# XXX: Probably needs some love #}
+                        {% for round in rounds %}
+                            <td>
+                                {% if points[team.getId()][round.getId()] is empty %}
+                                    0
+                                {% else %}
+                                    {{ points[team.getId()][round.getId()] }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td class="total">
+                            {% if points[team.getId()] is empty %}
+                                0
+                            {% else %}
+                                {{ points[team.getId()]['total'] }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

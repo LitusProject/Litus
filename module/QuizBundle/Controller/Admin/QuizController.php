@@ -167,6 +167,40 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function viewAction()
+    {
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel;
+
+        $rounds = $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Round')
+                ->findByQuiz($quiz);
+        $teams = $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Team')
+                ->findByQuiz($quiz);
+        $allPoints = $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Point')
+                ->findByQuiz($quiz);
+
+        $points = array();
+        foreach($allPoints as $point) {
+            $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
+        }
+
+        foreach($points as $teamId => $teamPoints) {
+            $points[$teamId]['total'] = array_sum($teamPoints);
+        }
+
+        return new ViewModel(
+            array(
+                'quiz' => $quiz,
+                'rounds' => $rounds,
+                'teams' => $teams,
+                'points' => $points,
+            )
+        );
+    }
+
     public function pointsAction()
     {
 
