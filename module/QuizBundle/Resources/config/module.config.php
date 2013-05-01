@@ -43,7 +43,7 @@ return array(
                 ),
             ),
             // Alias: /admin/quiz/:id -> /admin/quiz/edit/:id
-            /*array(
+            array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/admin/quiz/:id[/]',
@@ -55,11 +55,11 @@ return array(
                         'action'     => 'edit',
                     ),
                 ),
-            ),*/
+            ),
             'quiz_admin_round' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/quiz/round/:quizid[/:action[/:id]][/page/:page][/]',
+                    'route' => '/admin/quiz/:quizid/round[/:action[/:id]][/page/:page][/]',
                     'constraints' => array(
                         'quizid'  => '[0-9]+',
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -75,7 +75,7 @@ return array(
             'quiz_admin_team' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/quiz/team/:quizid[/:action[/:id]][/page/:page][/]',
+                    'route' => '/admin/quiz/:quizid/team[/:action[/:id]][/page/:page][/]',
                     'constraints' => array(
                         'quizid'  => '[0-9]+',
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
