@@ -36,7 +36,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
