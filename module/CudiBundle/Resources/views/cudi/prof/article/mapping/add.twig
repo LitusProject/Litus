@@ -4,9 +4,8 @@
     {% if nbArticles == 0 %}
         <div class="flashmessage alert alert-error" id="comment_removed_error">
             <a class="close" data-dismiss="alert">&times;</a>
-            <div class="title">{{ translate('Error') }}</div>
             <div class="content">
-                <p>{% autoescape false %}{{ translate('There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.') }}{% endautoescape %}</p>
+                {% autoescape false %}{{ translate('There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.') }}{% endautoescape %}
             </div>
         </div>
     {% endif %}
