@@ -4,6 +4,7 @@ namespace QuizBundle\Form\Admin\Point;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Quiz,
     Zend\InputFilter\InputFilter,
@@ -109,6 +110,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
+                        new PositiveNumberValidator(false),
                     )
                 )
             )

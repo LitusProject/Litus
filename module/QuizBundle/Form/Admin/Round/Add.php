@@ -6,6 +6,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Round,
     Zend\InputFilter\InputFilter,
@@ -83,6 +84,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
+                        new PositiveNumberValidator,
                     )
                 )
             )
@@ -98,6 +100,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
+                        new PositiveNumberValidator,
                     )
                 )
             )
