@@ -16,6 +16,7 @@ namespace CommonBundle\Form\Admin\Address;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\NotZero as NotZeroValidator,
     Doctrine\ORM\EntityManager,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
@@ -226,6 +227,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
                             'allowWhiteSpace' => true,
                         ),
                     ),
+                    new NotZeroValidator(),
                 ),
             )
         );

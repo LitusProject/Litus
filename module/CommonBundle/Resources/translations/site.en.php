@@ -90,4 +90,6 @@ return array(
     'Currently there is <span class="badge badge-info">%number%</span> student in the queue at Cudi.' => 'Currently there is <span class="badge badge-info">%number%</span> student in the queue at Cudi.',
     'Currently there are <span class="badge badge-info">%number%</span> students in the queue at Cudi.' => 'Currently there are <span class="badge badge-info">%number%</span> students in the queue at Cudi.',
     'Opening Hours' => 'Opening Hours',
+
+    'The value may not be zero' => 'The value may not be zero',
 );

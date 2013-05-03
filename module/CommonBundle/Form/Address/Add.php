@@ -16,6 +16,7 @@ namespace CommonBundle\Form\Address;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Validator\NotZero as NotZeroValidator,
     CommonBundle\Entity\General\Address,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -119,6 +120,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                             'allowWhiteSpace' => true,
                         ),
                     ),
+                    new NotZeroValidator(),
                 ),
             )
         );

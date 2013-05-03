@@ -90,6 +90,7 @@ return array(
     'CommonBundle\Component\Validator\Decimal'                                         => __DIR__ . '/Component/Validator/Decimal.php',
     'CommonBundle\Component\Validator\FieldLength'                                     => __DIR__ . '/Component/Validator/FieldLength.php',
     'CommonBundle\Component\Validator\FieldLineLength'                                 => __DIR__ . '/Component/Validator/FieldLineLength.php',
+    'CommonBundle\Component\Validator\NotZero'                                         => __DIR__ . '/Component/Validator/NotZero.php',
     'CommonBundle\Component\Validator\Person\Barcode'                                  => __DIR__ . '/Component/Validator/Person/Barcode.php',
     'CommonBundle\Component\Validator\PhoneNumber'                                     => __DIR__ . '/Component/Validator/PhoneNumber.php',
     'CommonBundle\Component\Validator\Price'                                           => __DIR__ . '/Component/Validator/Price.php',
