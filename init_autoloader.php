@@ -24,7 +24,7 @@ if (file_exists('vendor/autoload.php')) {
 // Support for ZF2_PATH environment variable or git submodule
 if (($zf2Path = getenv('ZF2_PATH') ?: (is_dir('vendor/zendframework/zendframework/library') ? 'vendor/zendframework/zendframework/library' : false)) !== false) {
     if (isset($loader)) {
-        $loader->add('Zend', $zf2Path . '/Zend');
+        $loader->add('Zend', $zf2Path);
     } else {
         include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
         Zend\Loader\AutoloaderFactory::factory(array(

@@ -2,7 +2,6 @@
     var defaults = {
         url: '',
         name: '',
-        uploadProgressName: '',
         interval: 200,
         onProgress: function () {},
         onSubmitted: function () {},
@@ -34,33 +33,10 @@
     function _init($this) {
         var settings = $this.data('formUploadProgress');
 
-        $this.prepend($('<input>', {type: 'hidden', name: settings.uploadProgressName, value: settings.name}));
-
-        $('body').append(frame = $('<iframe>', {name: 'upload_' + settings.name, id: 'upload_' + settings.name}));
-        frame.css('display', 'none');
-        $this.attr('target', 'upload_' + settings.name);
-        $this.submit(function () {_startUpload($this)});
-
-        if ($.browser.msie)
-            frame.bind('readystatechange', function (e) {_completeUpload($this, e)});
-        else
-            frame.bind('load', function (e) {_completeUpload($this, e)});
-    }
-
-    function _completeUpload($this, e)
-    {
-        var settings = $this.data('formUploadProgress');
-        if (!settings)
-            return;
-
-        if (e.type && ( e.type == 'load' || e.type == "readystatechange")) {
-            try {
-                var output = $.parseJSON($.trim($('#upload_' + settings.name).contents().find('body').html()));
-                settings.onSubmitted(output);
-            } catch (err) {
-                settings.onError();
-            }
-        }
+        $this.on('submit', function (e) {
+            e.preventDefault();
+            _startUpload($this);
+        });
     }
 
     function _startUpload($this)
@@ -70,10 +46,21 @@
             return;
 
         settings.onSubmit();
-        _load($this);
+
+        $this.ajaxSubmit({
+            target: '#output',
+            success: function (output) {
+                settings.onSubmitted(output);
+            },
+            error: function(a, b, c) {
+                settings.onError();
+            }
+        });
+
+        _startProgress($this);
     }
 
-    function _load($this) {
+    function _startProgress($this) {
         var settings = $this.data('formUploadProgress');
         if (!settings)
             return;
@@ -82,7 +69,7 @@
             if (!data)
                 return;
             settings.onProgress(data);
-            setTimeout(function () {_load($this);}, settings.interval);
+            setTimeout(function () {_startProgress($this);}, settings.interval);
         }, 'json');
     }
 }) (jQuery);

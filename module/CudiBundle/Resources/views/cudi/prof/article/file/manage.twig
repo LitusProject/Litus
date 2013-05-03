@@ -127,11 +127,10 @@
 
             $('#uploadFile').formUploadProgress({
                 url: '{{ url('cudi_prof_file', {"action": "progress", "language": language.getAbbrev()}) }}',
-                name: '{{ uploadProgressId }}',
-                uploadProgressName: '{{ uploadProgressName }}',
+                name: $('#progress_key').val(),
                 interval: 1000,
                 onProgress: function (data) {
-                    $('#progressModal').find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+                    $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
                 },
                 onSubmitted: function (data) {
                     if (data.errors) {

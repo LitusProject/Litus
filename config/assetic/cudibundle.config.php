@@ -255,6 +255,7 @@ return array(
             '@bootstrap_css',
             '@common_download_file',
             '@common_permanent_modal',
+            '@common_jquery_form',
             '@common_form_upload_progress',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
