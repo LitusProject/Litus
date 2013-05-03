@@ -102,12 +102,14 @@ class QueueItem extends EntityRepository
             ->where($query->expr()->andX(
                     $query->expr()->eq('i.session', ':session'),
                     $query->expr()->neq('i.status', ':sold'),
-                    $query->expr()->neq('i.status', ':cancelled')
+                    $query->expr()->neq('i.status', ':cancelled'),
+                    $query->expr()->neq('i.status', ':hold')
                 )
             )
             ->setParameter('session', $session->getId())
             ->setParameter('sold', 'sold')
             ->setParameter('cancelled', 'cancelled')
+            ->setParameter('hold', 'hold')
             ->getQuery()
             ->getSingleScalarResult();
 
