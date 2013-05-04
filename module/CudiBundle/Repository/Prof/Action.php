@@ -169,24 +169,24 @@ class Action extends EntityRepository
     }
 
     public function findAllByEntityAndEntityIdAndAction($entity, $entityId, $action)
-        {
-            $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('a')
-                ->from('CudiBundle\Entity\Prof\Action', 'a')
-                ->where(
-                    $query->expr()->andX(
-                        $query->expr()->eq('a.entity', ':entity'),
-                        $query->expr()->eq('a.entityId', ':entityId'),
-                        $query->expr()->eq('a.action', ':action')
-                    )
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.entity', ':entity'),
+                    $query->expr()->eq('a.entityId', ':entityId'),
+                    $query->expr()->eq('a.action', ':action')
                 )
-                ->setParameter('entity', $entity)
-                ->setParameter('entityId', $entityId)
-                ->setParameter('action', $action)
-                ->orderBy('a.timestamp', 'DESC')
-                ->getQuery()
-                ->getResult();
+            )
+            ->setParameter('entity', $entity)
+            ->setParameter('entityId', $entityId)
+            ->setParameter('action', $action)
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
 
-            return $resultSet;
-        }
+        return $resultSet;
+    }
 }

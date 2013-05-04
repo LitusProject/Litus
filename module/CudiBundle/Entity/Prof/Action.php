@@ -119,6 +119,7 @@ class Action
         $this->previousId = $previousId;
         $this->action = $action;
         $this->timestamp = new DateTime();
+        $this->isDraft = false;
     }
 
     /**

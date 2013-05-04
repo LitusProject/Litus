@@ -97,6 +97,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 }
 
                 $article->setIsProf(true);
+                if ($formData['draft'])
+                    $article->setIsDraft(true);
 
                 $this->getEntityManager()->persist($article);
 
@@ -240,6 +242,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     if ($edited) {
                         $this->getEntityManager()->persist($duplicate);
                         $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $duplicate->getId(), 'edit', $article->getId());
+                        if ($formData['draft'])
+                            $article->setIsDraft(true);
                         $this->getEntityManager()->persist($action);
                     }
                 } else {
@@ -261,6 +265,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                             ->setIsRectoVerso($formData['rectoverso'])
                             ->setIsPerforated($formData['perforated']);
                     }
+
+                    if ($formData['draft'])
+                        $article->setIsDraft(true);
+                    else
+                        $article->setIsDraft(false);
+
                 }
                 $this->getEntityManager()->flush();
 

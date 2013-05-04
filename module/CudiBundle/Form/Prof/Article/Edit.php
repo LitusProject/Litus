@@ -36,10 +36,16 @@ class Edit extends Add
 
         $this->remove('subject');
         $this->remove('submit');
+        $this->remove('draft');
 
         $field = new Submit('submit');
         $field->setValue('Save')
             ->setAttribute('class', 'btn btn-primary');
+        $this->add($field);
+
+        $field = new Submit('draft');
+        $field->setValue('Save As Draft')
+            ->setAttribute('class', 'btn btn-info');
         $this->add($field);
 
         $this->populateFromArticle($article);

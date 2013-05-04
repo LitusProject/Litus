@@ -111,6 +111,13 @@ abstract class Article
     private $isProf;
 
     /**
+     * @var boolean Flag whether this action is a draft
+     *
+     * @ORM\Column(name="is_draft", type="boolean")
+     */
+    private $isDraft;
+
+    /**
      * @var boolean The flag whether the article is downloadable
      *
      * @ORM\Column(type="boolean")
@@ -389,6 +396,28 @@ abstract class Article
     {
         $this->isProf = $isProf;
         return $this;
+    }
+
+    /**
+     * @param boolean $isDraft
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setIsDraft($isDraft)
+    {
+        if ($isDraft)
+            $this->setIsProf(true);
+        
+        $this->isDraft = $isDraft;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDraft()
+    {
+        return $this->isDraft;
     }
 
     /**

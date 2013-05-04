@@ -6,6 +6,7 @@
     </div>
     <table class="table table-bordered table-striped">
         <tr>
+            <th>{{ translate('Draft') }}</th>
             <th>{{ translate('Title') }}</th>
             <th width="120px">{{ translate('Authors') }}</th>
             <th width="220px">{{ translate('Publisher') }}</th>
@@ -16,6 +17,7 @@
 
         {% for article in articles %}
             <tr>
+                <td style="text-align: center;">{% if article.isDraft() %}&times;{% endif %}</td>
                 <td>{{ article.getTitle() }}</td>
                 <td>{{ article.getAuthors() }}</td>
                 <td>{{ article.getPublishers() }}</td>

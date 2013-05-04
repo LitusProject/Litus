@@ -151,6 +151,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setValue('Add')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
+
+        $field = new Submit('draft');
+        $field->setValue('Save As Draft')
+            ->setAttribute('class', 'btn btn-info');
+        $this->add($field);
     }
 
     private function _getBindings()

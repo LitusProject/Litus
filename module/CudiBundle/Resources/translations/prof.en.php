@@ -130,6 +130,8 @@ return array(
     'Update' => 'Update',
     'The uri is not valid' => 'The uri is not valid',
     'The given year is not valid' => 'The given year is not valid',
+    'Draft' => 'Draft',
+    'Save As Draft' => 'Save As Draft',
 
     'Other' => 'Other',
     'Exercises' => 'Exercises',

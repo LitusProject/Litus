@@ -224,6 +224,25 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
         $action->setEntityManager($this->getEntityManager());
 
+        if ($action->getEntity()->isDraft()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No action with was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_prof_action',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $form = new ArticleForm($this->getEntityManager(), $action->getEntity());
 
         if($this->getRequest()->isPost()) {

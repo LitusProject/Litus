@@ -18,7 +18,8 @@
             {% endif %}</b><br />
         {% if action.getEntityName() == 'article' %}
             Type: <b>{% if action.getAction() == 'add' %}Added{% else %}Edited{% endif %} Article</b><br />
-            Article: <b>{{ action.getEntity().getTitle() }}</b><br /><br />
+            Article: <b>{{ action.getEntity().getTitle() }}</b><br />
+            Draft: <b>{% if action.getEntity().isDraft() %}yes{% else %}no{% endif %}</b><br /><br />
             {% if action.getAction() == 'edit' %}
                 <table>
                     <tr>
@@ -109,31 +110,33 @@
     </div>
 
     <aside>
-        {% if hasAccess('cudi_admin_prof_action', 'refuse') and action.isUnCompleted() %}
-            <div class="sidebox">
-                <div class="title">Refuse Action</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to refuse this action!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url("cudi_admin_prof_action", {"action": "refuse", "id": action.getId()}) }}" id="updateNow">&rarr; Refuse</a>
-                    </p>
+        {% if action.getEntityName() == 'article' and not action.getEntity().isDraft() %}
+            {% if hasAccess('cudi_admin_prof_action', 'refuse') and action.isUnCompleted() %}
+                <div class="sidebox">
+                    <div class="title">Refuse Action</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to refuse this action!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url("cudi_admin_prof_action", {"action": "refuse", "id": action.getId()}) }}" id="updateNow">&rarr; Refuse</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
-        {% if hasAccess('cudi_admin_prof_action', 'confirm') and (action.isUnCompleted() or action.isRefused()) %}
-            <div class="sidebox">
-                <div class="title">Confirm Action</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to confirm this action!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url("cudi_admin_prof_action", {"action": "confirm", "id": action.getId()}) }}" id="updateNow">&rarr; Confirm</a>
-                    </p>
+            {% endif %}
+            {% if hasAccess('cudi_admin_prof_action', 'confirm') and (action.isUnCompleted() or action.isRefused()) %}
+                <div class="sidebox">
+                    <div class="title">Confirm Action</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to confirm this action!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url("cudi_admin_prof_action", {"action": "confirm", "id": action.getId()}) }}" id="updateNow">&rarr; Confirm</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         {% endif %}
     </aside>
 {% endblock %}
