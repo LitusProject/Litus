@@ -47,6 +47,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+        $this->setAttribute('data-upload', 'progress');
 
         $tabs = new Tabs('languages');
         $this->add($tabs);

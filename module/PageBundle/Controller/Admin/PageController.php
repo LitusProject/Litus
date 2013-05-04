@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PageBundle\Form\Admin\Page\Add as AddForm,
     PageBundle\Form\Admin\Page\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\ProgressBar\Upload\SessionProgress,
     Zend\View\Model\ViewModel;
 
 /**
@@ -144,8 +145,6 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -334,11 +333,11 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadProgressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+        $progress = new SessionProgress();
 
         return new ViewModel(
             array(
-                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
             )
         );
     }
