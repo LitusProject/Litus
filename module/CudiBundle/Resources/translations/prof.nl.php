@@ -66,6 +66,7 @@ return array(
     'No' => 'Neen',
 
     'The file was successfully uploaded!' => 'Het bestand is succesvol geupload!',
+    'An error occurred while uploading the file.' => 'Er is een fout opgetreden tijdens het uploaden van het bestand.',
     'The file was successfully removed.' => 'Het bestand is succesvol verwijderd.',
     'An error occurred while removing the file.' => 'Er is een fout opgetreden tijdens het verwijderen van het bestand.',
     'Name' => 'Naam',

@@ -48,7 +48,6 @@
         settings.onSubmit();
 
         $this.ajaxSubmit({
-            target: '#output',
             success: function (output) {
                 settings.onSubmitted(output);
                 _stopProgress($this);
@@ -56,7 +55,8 @@
             error: function(a, b, c) {
                 settings.onError();
                 _stopProgress($this);
-            }
+            },
+            dataType: 'json'
         });
 
         _startProgress($this);

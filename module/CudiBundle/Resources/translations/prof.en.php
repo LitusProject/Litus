@@ -66,6 +66,7 @@ return array(
     'No' => 'No',
 
     'The file was successfully uploaded!' => 'The file was successfully uploaded!',
+    'An error occurred while uploading the file.' => 'An error occurred while uploading the file.',
     'The file was successfully removed.' => 'The file was successfully removed.',
     'An error occurred while removing the file.' => 'An error occurred while removing the file.',
     'Name' => 'Name',

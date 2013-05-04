@@ -1,10 +1,16 @@
 {% extends 'prof/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-success fade" id="file_uploaded">
+    <div class="flashmessage alert alert-success fade" id="file_upload_success">
         <a class="close" data-dismiss="alert">&times;</a>
         <div class="content">
             {{ translate('The file was successfully uploaded.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="file_upload_error">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while uploading the file.') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="file_removed_success">
@@ -34,26 +40,30 @@
     </p>
 
     <table class="table table-bordered table-striped" id="articleFiles">
-        <tr>
-            <th width="200px">{{ translate('Name') }}</th>
-            <th>{{ translate('Description') }}</th>
-            <th width="200px">{{ translate('Actions') }}</th>
-        </tr>
-
-        {% for mapping in mappings %}
-            <tr class="item">
-                <td>{{ mapping.getFile().getName() }}</td>
-                <td>{{ mapping.getFile().getDescription() }}</td>
-                <td class="actions">
-                    {% if hasAccess('cudi_prof_file', 'download') %}
-                        <a href="#" class="btn btn-info downloadFile" data-file="{{ url('cudi_prof_file', {"action": "download", "id": mapping.getId(), "language": language.getAbbrev()}) }}">{{ translate('Download') }}</a>
-                    {% endif %}
-                    {% if hasAccess('cudi_prof_file', 'delete') %}
-                        <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">{{ translate('Delete') }}</a>
-                    {% endif %}
-                </td>
+        <thead>
+            <tr>
+                <th width="200px">{{ translate('Name') }}</th>
+                <th>{{ translate('Description') }}</th>
+                <th width="200px">{{ translate('Actions') }}</th>
             </tr>
-        {% endfor %}
+        </thead>
+
+        <tbody>
+            {% for mapping in mappings %}
+                <tr class="item">
+                    <td>{{ mapping.getFile().getName() }}</td>
+                    <td>{{ mapping.getFile().getDescription() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('cudi_prof_file', 'download') %}
+                            <a href="#" class="btn btn-info downloadFile" data-file="{{ url('cudi_prof_file', {"action": "download", "id": mapping.getId(), "language": language.getAbbrev()}) }}">{{ translate('Download') }}</a>
+                        {% endif %}
+                        {% if hasAccess('cudi_prof_file', 'delete') %}
+                            <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">{{ translate('Delete') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
     <div class="pull-right">
         <a href="#addFile" class="btn btn-success" data-toggle="modal">{{ translate('Add File') }}</a>
@@ -134,7 +144,8 @@
                 },
                 onSubmitted: function (data) {
                     if (data.errors) {
-                        $('#file_uploaded').removeClass('in');
+                        $('.flashmessage').removeClass('in');
+                        $('#file_upload_error').addClass('in');
                         $('#uploadFile').find('ul.errors').remove();
                         $('#uploadFile').find('.control-group').removeClass('error');
                         for(element in data.errors) {
@@ -147,17 +158,42 @@
                         $('#progressModal').permanentModal('hide');
                         $('#addFile').permanentModal('open');
                     } else if (data.info) {
-                        document.location.reload();
+                        $('.flashmessage').removeClass('in');
+                        $('#file_upload_success').addClass('in');
+                        $('#articleFiles tbody').append(
+                            $('<tr>', {'class': 'item'}).append(
+                                $('<td>').html(data.info.name),
+                                $('<td>').html(data.info.description),
+                                actions = $('<td>', {'class': 'actions'})
+                            )
+                        );
+
+                        {% if hasAccess('cudi_prof_file', 'download') %}
+                            actions.append(
+                                $('<a>', {'href': '#', 'class': 'btn btn-info downloadFile'}).html('{{ translate('Download') }}').downloadFile('{{ url('cudi_prof_file', {"action": "download", "language": language.getAbbrev()}) }}' + data.info.mappingId),
+                                ' '
+                            );
+                        {% endif %}
+
+                        {% if hasAccess('cudi_prof_file', 'download') %}
+                            actions.append(
+                                $('<a>', {'href': '#', 'class': 'btn btn-danger delete', 'data-id': data.info.mappingId, 'data-name': data.info.name, 'data-description': data.info.description}).html('{{ translate('Delete') }}').click(openDeleteModal)
+                            );
+                        {% endif %}
+                        $('#progressModal').permanentModal('hide');
+                        $('#addFile form')[0].reset();
                     }
                 },
                 onSubmit: function () {
-                    $('#file_uploaded').removeClass('in');
+                    $('.flashmessage').removeClass('in');
                     var progressModal = $('#progressModal');
                     $('#addFile').modal('hide');
+                    $('#progressModal').find('.bar').width('100%');
                     progressModal.permanentModal('open');
                 },
                 onError: function () {
-                    $('#file_uploaded').removeClass('in');
+                    $('.flashmessage').removeClass('in');
+                    $('#file_upload_error').addClass('in');
                     var progressModal = $('#progressModal');
                     progressModal.permanentModal('hide');
                 }

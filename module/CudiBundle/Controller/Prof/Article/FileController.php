@@ -155,14 +155,6 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
             $this->getEntityManager()->flush();
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'SUCCESS',
-                    'The file was successfully uploaded!'
-                )
-            );
-
             return new ViewModel(
                 array(
                     'status' => 'success',
@@ -171,6 +163,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                             'name' => $file->getName(),
                             'description' => $file->getDescription(),
                             'id' => $file->getId(),
+                            'mappingId' => $mapping->getId(),
                         )
                     ),
                 )
