@@ -51,7 +51,7 @@ class Url extends \Zend\View\Helper\Url
      * @throws Exception\RuntimeException  If no RouteMatch was provided
      * @throws Exception\RuntimeException  If RouteMatch didn't contain a matched route name
      */
-    public function __invoke($name = null, $params = array(), $options = array(), $reuseMatchedParams = false)
+    public function __invoke($name = null, array $params = array(), $options = array(), $reuseMatchedParams = false)
     {
         if (!isset($params['language']) && $this->_language)
             $params['language'] = $this->_language->getAbbrev();
