@@ -283,6 +283,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 )
             );
         }
+        return new ViewModel();
     }
 
     public function uploadProgressAction()

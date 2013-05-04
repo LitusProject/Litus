@@ -1,9 +1,9 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'banner/admin/banner/partials/navigation.twig' %}
+    {% include 'banner/admin/banner/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage error_message full_width banner_upload_error hide">
         <div class="title">Error</div>
         <div class="content">
@@ -11,10 +11,10 @@
         </div>
     </div>
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 
     <div class="modal hide fade" id="progressModal">
         <div class="modal-header">

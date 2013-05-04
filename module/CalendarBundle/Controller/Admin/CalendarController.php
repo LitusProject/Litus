@@ -14,6 +14,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ShiftBundle\Component\Document\Generator\EventPdf as EventPdfGenerator,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\ProgressBar\Upload\SessionProgress,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
@@ -229,65 +230,92 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
 
         $form = new PosterForm();
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $filePath = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('calendar.poster_path');
-
-                $upload = new FileTransfer();
-                $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-                $upload->addValidator(new ImageValidator());
-
-                if ($upload->isValid()) {
-                    $upload->receive();
-
-                    $image = new Imagick($upload->getFileName());
-
-                    if ($event->getPoster() != '' || $event->getPoster() !== null) {
-                        $fileName = '/' . $event->getPoster();
-                    } else {
-                        $fileName = '';
-                        do{
-                            $fileName = '/' . sha1(uniqid());
-                        } while (file_exists($filePath . $fileName));
-                    }
-                    $image->writeImage($filePath . $fileName);
-                    $event->setPoster($fileName);
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The event\'s poster has successfully been updated!'
-                        )
-                    );
-
-                    $this->redirect()->toRoute(
-                        'calendar_admin_calendar',
-                        array(
-                            'action' => 'editPoster',
-                            'id' => $event->getId(),
-                        )
-                    );
-
-                    return new ViewModel();
-                }
-            }
-        }
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'calendar_admin_calendar',
+                array(
+                    'action' => 'upload',
+                    'id' => $event->getId(),
+                )
+            )
+        );
 
         return new ViewModel(
             array(
                 'event' => $event,
                 'form' => $form,
+            )
+        );
+    }
+
+    public function uploadAction()
+    {
+        if (!($event = $this->_getEvent()))
+            return new ViewModel();
+
+        if ($this->getRequest()->isPost()) {
+            $filePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('calendar.poster_path');
+
+            $upload = new FileTransfer();
+            $upload->addValidator(new SizeValidator(array('max' => '10MB')));
+            $upload->addValidator(new ImageValidator());
+
+            if ($upload->isValid()) {
+                $upload->receive();
+
+                $image = new Imagick($upload->getFileName());
+
+                if ($event->getPoster() != '' || $event->getPoster() !== null) {
+                    $fileName = '/' . $event->getPoster();
+                } else {
+                    $fileName = '';
+                    do{
+                        $fileName = '/' . sha1(uniqid());
+                    } while (file_exists($filePath . $fileName));
+                }
+                $image->writeImage($filePath . $fileName);
+                $event->setPoster($fileName);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The event\'s poster has successfully been updated!'
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info' => array(
+                            'info' => array(
+                                'name' => $fileName,
+                            )
+                        )
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'status' => 'error',
+            )
+        );
+    }
+
+    public function progressAction()
+    {
+        $progress = new SessionProgress();
+
+        return new ViewModel(
+            array(
+                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
             )
         );
     }

@@ -3,6 +3,14 @@
 {% block content %}
     {% include 'br/admin/company/event/partials/navigation.twig' %}
 
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage error_message full_width poster_upload_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while uploading the banner.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <h1>Event</h1>
 
@@ -12,7 +20,7 @@
         <p>Location: <b>{{ event.getLocation(language) }}</b></p>
         <br />
         <h1>Current Poster</h1>
-        {% if event.getEvent().getPoster() %}
+        {% if event.getPoster() %}
             <img src="{{ url('calendar_admin_calendar', {'action': 'poster', 'id': event.getPoster()}) }}" alt="{{ event.getTitle(language) }}" style="max-height: 200px">
         {% else %}
             <i>This event currently has no poster.</i>
@@ -21,4 +29,65 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
+
+    <div class="modal hide fade" id="progressModal">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Upload Banner
+        </div>
+        <div class="modal-body">
+            <p>
+                Your files are being uploaded.
+            </p>
+            <p>
+                <div class="progress progress-striped active">
+                    <div class="bar" style="width: 100%;"></div>
+                </div>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#uploadPoster').formUploadProgress({
+                url: '{{ url('br_admin_company_event', {"action": "progress"}) }}',
+                name: $('#progress_key').val(),
+                interval: 1000,
+                onProgress: function (data) {
+                    $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
+                },
+                onSubmitted: function (data) {
+                    if (data.errors) {
+                        $('.flashmessage').addClass('hide');
+                        $('.poster_upload_error').removeClass('hide');
+                        $('#uploadBanner').find('ul.errors').remove();
+                        for(element in data.errors) {
+                            var list = $('<ul>', {class: 'errors'})
+                            for (error in data.errors[element])
+                                list.append($('<li>').html(data.errors[element][error]));
+                            $('#uploadBanner').find('#' + element).parent().parent().after(list);
+                        }
+                    } else if (data.info) {
+                        window.location.reload();
+                    }
+                    var progressModal = $('#progressModal');
+                    progressModal.permanentModal('hide');
+                },
+                onSubmit: function () {
+                    $('.flashmessage').addClass('hide');
+                    var progressModal = $('#progressModal');
+                    progressModal.find('.bar').width('100%');
+                    progressModal.permanentModal('open');
+                },
+                onError: function () {
+                    $('.flashmessage').addClass('hide');
+                    $('.poster_upload_error').removeClass('hide');
+                    var progressModal = $('#progressModal');
+                    progressModal.permanentModal('hide');
+                }
+            });
+        });
+    </script>
 {% endblock %}
