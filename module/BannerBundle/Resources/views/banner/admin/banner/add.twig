@@ -39,8 +39,7 @@
         $(document).ready(function () {
             $('#uploadBanner').formUploadProgress({
                 url: '{{ url('banner_admin_banner', {"action": "progress"}) }}',
-                name: '{{ uploadProgressId }}',
-                uploadProgressName: '{{ uploadProgressName }}',
+                name: $('#progress_key').val(),
                 interval: 1000,
                 onProgress: function (data) {
                     $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');

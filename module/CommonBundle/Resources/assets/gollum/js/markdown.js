@@ -59,6 +59,7 @@ var LanguageDefinition = {
                                     ),
                                     $('<div>', {'class': 'modal-body'}).append(
                                         form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
+                                            $('<input>', {'type': 'hidden', 'name': uploadProgressName}).val(progressId),
                                             $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'file'}),
                                             $('<b>').html('Link Text'),
                                             $('<br />'),
@@ -100,10 +101,9 @@ var LanguageDefinition = {
                                 form.formUploadProgress({
                                     url: progressURL,
                                     name: progressId,
-                                    uploadProgressName: uploadProgressName,
                                     interval: 1000,
                                     onProgress: function (data) {
-                                        progress.find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+                                        progress.find('.bar').width(((data.current / data.total) * 100) + '%');
                                     },
                                     onSubmitted: function (data) {
                                         if (data && data.name) {
@@ -118,12 +118,12 @@ var LanguageDefinition = {
                                         form.hide();
                                         progress.show();
                                         progress.find('.bar').width('100%');
-                                        footer.find('.btn').hide();
+                                        footer.find('input').hide();
                                     },
                                     onError: function () {
                                         form.show();
                                         progress.hide();
-                                        footer.find('.btn').show();
+                                        footer.find('input').show();
                                     }
                                 });
                                 modal.modal()
@@ -153,6 +153,7 @@ var LanguageDefinition = {
                                     ),
                                     $('<div>', {'class': 'modal-body'}).append(
                                         form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
+                                            $('<input>', {'type': 'hidden', 'name': uploadProgressName}).val(progressId),
                                             $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'image'}),
                                             $('<b>').html('Alternative Text'),
                                             $('<br />'),
@@ -179,10 +180,9 @@ var LanguageDefinition = {
                                 form.formUploadProgress({
                                     url: progressURL,
                                     name: progressId,
-                                    uploadProgressName: uploadProgressName,
                                     interval: 1000,
                                     onProgress: function (data) {
-                                        progress.find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+                                        progress.find('.bar').width(((data.current / data.total) * 100) + '%');
                                     },
                                     onSubmitted: function (data) {
                                         if (data && data.name) {
@@ -197,12 +197,12 @@ var LanguageDefinition = {
                                         form.hide();
                                         progress.show();
                                         progress.find('.bar').width('100%');
-                                        footer.find('.btn').hide();
+                                        footer.find('input').hide();
                                     },
                                     onError: function () {
                                         form.show();
                                         progress.hide();
-                                        footer.find('.btn').show();
+                                        footer.find('input').show();
                                     }
                                 });
                                 modal.modal()

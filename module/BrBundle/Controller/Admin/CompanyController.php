@@ -25,6 +25,7 @@ use BrBundle\Entity\Company,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\ProgressBar\Upload\SessionProgress,
     Zend\View\Model\ViewModel;
 
 /**
@@ -140,8 +141,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'form' => $form,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -224,8 +223,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'form' => $form,
                 'company' => $company,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -290,11 +287,11 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function uploadProgressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+        $progress = new SessionProgress();
 
         return new ViewModel(
             array(
-                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
             )
         );
     }

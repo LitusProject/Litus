@@ -72,8 +72,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'form' => $form,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -98,8 +96,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'form' => $form,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }

@@ -67,7 +67,6 @@
 {% block content_script %}
     <script type="text/javascript">
 	    $(document).ready(function () {
-
             $('textarea#description').gollum({
                 uploadURL: '{{ url('br_admin_company', {'action': 'upload'}) }}',
                 progressURL: '{{ url('br_admin_company', {'action': 'uploadProgress'}) }}',
@@ -91,6 +90,5 @@
                 width: '500px',
             });
 	    });
-
     </script>
 {% endblock %}

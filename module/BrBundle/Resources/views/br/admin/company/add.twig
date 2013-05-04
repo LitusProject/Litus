@@ -16,8 +16,8 @@
             $('textarea#description').gollum({
                 uploadURL: '{{ url('br_admin_company', {'action': 'upload'}) }}',
                 progressURL: '{{ url('br_admin_company', {'action': 'uploadProgress'}) }}',
-                uploadProgressName: '{{ uploadProgressName }}',
-                progressId: '{{ uploadProgressId }}',
+                uploadProgressName: $('#progress_key').attr('name'),
+                progressId: $('#progress_key').val(),
             });
             $('textarea#summary').gollum({
                 toolbar: {

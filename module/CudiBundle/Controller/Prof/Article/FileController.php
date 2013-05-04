@@ -69,8 +69,6 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 'form' => $form,
                 'article' => $article,
                 'mappings' => $fileMappings,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }
