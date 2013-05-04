@@ -51,13 +51,21 @@
             target: '#output',
             success: function (output) {
                 settings.onSubmitted(output);
+                _stopProgress($this);
             },
             error: function(a, b, c) {
                 settings.onError();
+                _stopProgress($this);
             }
         });
 
         _startProgress($this);
+    }
+
+    function _stopProgress($this) {
+        clearTimeout($this.data('formUploadProgress').timer);
+        if ($this.data('formUploadProgress').request)
+            $this.data('formUploadProgress').request.abort();
     }
 
     function _startProgress($this) {
@@ -65,11 +73,11 @@
         if (!settings)
             return;
 
-        $.post(settings.url, {upload_id: settings.name}, function (data) {
+        $this.data('formUploadProgress').request = $.post(settings.url, {upload_id: settings.name}, function (data) {
             if (!data)
                 return;
             settings.onProgress(data);
-            setTimeout(function () {_startProgress($this);}, settings.interval);
+            $this.data('formUploadProgress').timer = setTimeout(function () {_startProgress($this);}, settings.interval);
         }, 'json');
     }
 }) (jQuery);
