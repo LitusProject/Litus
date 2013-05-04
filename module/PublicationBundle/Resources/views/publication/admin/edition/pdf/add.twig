@@ -4,6 +4,12 @@
     {% include 'publication/admin/edition/pdf/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage error_message full_width file_upload_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while uploading the file.</p>
+        </div>
+    </div>
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
@@ -33,15 +39,15 @@
         $(document).ready(function () {
             $('#uploadFile').formUploadProgress({
                 url: '{{ url('publication_admin_edition_pdf', {"action": "progress"}) }}',
-                name: '{{ uploadProgressId }}',
-                uploadProgressName: '{{ uploadProgressName }}',
+                name: $('#progress_key').val(),
                 interval: 1000,
                 onProgress: function (data) {
-                    $('#progressModal').find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+                    $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
                 },
                 onSubmitted: function (data) {
                     if (data.errors) {
                         $('.flashmessage').addClass('hide');
+                        $('.file_upload_error').removeClass('hide');
                         $('#uploadFile').find('ul.errors').remove();
                         for(element in data.errors) {
                             var list = $('<ul>', {class: 'errors'})
@@ -58,10 +64,12 @@
                 onSubmit: function () {
                     $('.flashmessage').addClass('hide');
                     var progressModal = $('#progressModal');
+                    progressModal.find('.bar').width('100%');
                     progressModal.permanentModal('open');
                 },
                 onError: function () {
                     $('.flashmessage').addClass('hide');
+                    $('.file_upload_error').removeClass('hide');
                     var progressModal = $('#progressModal');
                     progressModal.permanentModal('hide');
                 }

@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Entity\Editions\Html as HtmlEdition,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\ProgressBar\Upload\SessionProgress,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
     Zend\View\Model\ViewModel,
@@ -74,8 +75,6 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'publication' => $publication,
                 'form' => $form,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -181,11 +180,11 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function progressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+        $progress = new SessionProgress();
 
         return new ViewModel(
             array(
-                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
             )
         );
     }

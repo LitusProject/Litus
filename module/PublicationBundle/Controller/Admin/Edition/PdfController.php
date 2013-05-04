@@ -23,6 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
     Zend\Http\Headers,
+    Zend\ProgressBar\Upload\SessionProgress,
     Zend\View\Model\ViewModel;
 
 /**
@@ -74,8 +75,6 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'publication' => $publication,
                 'form' => $form,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -155,11 +154,11 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function progressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+        $progress = new SessionProgress();
 
         return new ViewModel(
             array(
-                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
             )
         );
     }
