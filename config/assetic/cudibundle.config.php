@@ -46,6 +46,7 @@ return array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@common_jquery_form',
             '@common_form_upload_progress',
             '@common_download_file',
             '@common_permanent_modal',

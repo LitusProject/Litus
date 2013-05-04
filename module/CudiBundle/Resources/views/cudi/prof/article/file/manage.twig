@@ -188,7 +188,7 @@
                     $('.flashmessage').removeClass('in');
                     var progressModal = $('#progressModal');
                     $('#addFile').modal('hide');
-                    $('#progressModal').find('.bar').width('100%');
+                    progressModal.find('.bar').width('100%');
                     progressModal.permanentModal('open');
                 },
                 onError: function () {

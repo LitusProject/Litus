@@ -4,6 +4,18 @@
     {% include 'cudi/admin/article/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width file_upload_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The file was successfully uploaded!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width file_upload_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while uploading the file.</p>
+        </div>
+    </div>
     <div class="flashmessage success_message full_width file_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
@@ -34,44 +46,48 @@
         <br style="clear:both"/>
 
         <table class="full_width manage" id="articleFiles">
-            <tr>
-                <th width="200px">Name</th>
-                <th>Description</th>
-                <th width="80px">Printable</th>
-                <th width="70px">Action</th>
-            </tr>
-
-            {% if article.isInternal() and saleArticle is not null %}
-                <tr class="item">
-                    <td>front.pdf</td>
-                    <td>Front page of this article</td>
-                    <td style="text-align: center;">&times;</td>
-                    <td class="actions">
-                        {% if hasAccess('cudi_admin_article_file', 'front') %}
-                            <a href="#" class="downloadFile view" data-file="{{ url('cudi_admin_article_file', {"action": "front", "id": saleArticle.getId()}) }}">Download</a>
-                        {% endif %}
-                    </td>
+            <thead>
+                <tr>
+                    <th width="200px">Name</th>
+                    <th>Description</th>
+                    <th width="80px">Printable</th>
+                    <th width="70px">Action</th>
                 </tr>
-            {% endif %}
+            </thead>
 
-            {% for mapping in mappings %}
-                <tr class="item item-{{ mapping.getId() }}">
-                    <td>{{ mapping.getFile().getName() }}</td>
-                    <td>{{ mapping.getFile().getDescription() }}</td>
-                    <td style="text-align: center;">{% if mapping.isPrintable() %}&times;{% endif %}</td>
-                    <td class="actions">
-                        {% if hasAccess('cudi_admin_article_file', 'download') %}
-                            <a href="#" class="downloadFile view" data-file="{{ url('cudi_admin_article_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
-                        {% endif %}
-                        {% if hasAccess('cudi_admin_article_file', 'edit') %}
-                            <a href="{{ url('cudi_admin_article_file', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
-                        {% endif %}
-                        {% if hasAccess('cudi_admin_article_file', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">Delete</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
+            <tbody>
+                {% if article.isInternal() and saleArticle is not null %}
+                    <tr class="item">
+                        <td>front.pdf</td>
+                        <td>Front page of this article</td>
+                        <td style="text-align: center;">&times;</td>
+                        <td class="actions">
+                            {% if hasAccess('cudi_admin_article_file', 'front') %}
+                                <a href="#" class="downloadFile view" data-file="{{ url('cudi_admin_article_file', {"action": "front", "id": saleArticle.getId()}) }}">Download</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% for mapping in mappings %}
+                    <tr class="item item-{{ mapping.getId() }}">
+                        <td>{{ mapping.getFile().getName() }}</td>
+                        <td>{{ mapping.getFile().getDescription() }}</td>
+                        <td style="text-align: center;">{% if mapping.isPrintable() %}&times;{% endif %}</td>
+                        <td class="actions">
+                            {% if hasAccess('cudi_admin_article_file', 'download') %}
+                                <a href="#" class="downloadFile view" data-file="{{ url('cudi_admin_article_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
+                            {% endif %}
+                            {% if hasAccess('cudi_admin_article_file', 'edit') %}
+                                <a href="{{ url('cudi_admin_article_file', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('cudi_admin_article_file', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 
@@ -123,14 +139,14 @@
             $('#uploadFile').formUploadProgress({
                 url: '{{ url('cudi_admin_article_file', {"action": "progress"}) }}',
                 name: '{{ uploadProgressId }}',
-                uploadProgressName: '{{ uploadProgressName }}',
                 interval: 1000,
                 onProgress: function (data) {
-                    $('#progressModal').find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+                    $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
                 },
                 onSubmitted: function (data) {
                     if (data.errors) {
                         $('.flashmessage').addClass('hide');
+                        $('.file_upload_error').removeClass('hide');
                         $('#uploadFile').find('ul.errors').remove();
                         for(element in data.errors) {
                             var list = $('<ul>', {class: 'errors'})
@@ -139,7 +155,39 @@
                             $('#uploadFile').find('#' + element).parent().parent().after(list);
                         }
                     } else if (data.info) {
-                        document.location.reload();
+                        console.log(data.info);
+                        $('.flashmessage').addClass('hide');
+                        $('.file_upload_success').removeClass('hide');
+                        $('#articleFiles tbody').append(
+                            $('<tr>', {'class': 'item item-' + data.info.mappingId}).append(
+                                $('<td>').html(data.info.name),
+                                $('<td>').html(data.info.description),
+                                $('<td>', {'style': 'text-align: center;'}).html((data.info.printable == '1' ? '&times;' : '')),
+                                actions = $('<td>', {'class': 'actions'})
+                            )
+                        );
+
+                        {% if hasAccess('cudi_admin_article_file', 'download') %}
+                            actions.append(
+                                $('<a>', {'href': '#', 'class': 'downloadFile view'}).html('Download').downloadFile('{{ url('cudi_admin_article_file', {"action": "download"}) }}' + data.info.mappingId),
+                                ' '
+                            );
+                        {% endif %}
+
+                        {% if hasAccess('cudi_admin_article_file', 'edit') %}
+                            actions.append(
+                                $('<a>', {'href': '{{ url('cudi_admin_article_file', {"action": "edit"}) }}' + data.info.mappingId, 'class': 'edit'}).html('Edit'),
+                                ' '
+                            );
+                        {% endif %}
+
+                        {% if hasAccess('cudi_prof_file', 'download') %}
+                            actions.append(
+                                $('<a>', {'href': '#', 'class': 'delete', 'data-id': data.info.mappingId, 'data-name': data.info.name, 'data-description': data.info.description}).html('Delete').click(openDeleteModal)
+                            );
+                        {% endif %}
+                        $('#articleFiles').change();
+                        $('#uploadFile')[0].reset();
                     }
                     var progressModal = $('#progressModal');
                     progressModal.permanentModal('hide');
@@ -147,10 +195,12 @@
                 onSubmit: function () {
                     $('.flashmessage').addClass('hide');
                     var progressModal = $('#progressModal');
+                    progressModal.find('.bar').width('100%');
                     progressModal.permanentModal('open');
                 },
                 onError: function () {
                     $('.flashmessage').addClass('hide');
+                    $('.file_upload_error').removeClass('hide');
                     var progressModal = $('#progressModal');
                     progressModal.permanentModal('hide');
                 }

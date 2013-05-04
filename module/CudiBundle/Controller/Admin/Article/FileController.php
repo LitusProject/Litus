@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Article\File\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
+    Zend\ProgressBar\Upload\SessionProgress,
     Zend\View\Model\ViewModel;
 
 /**
@@ -62,8 +63,6 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 'article' => $article,
                 'saleArticle' => $saleArticle,
                 'mappings' => $mappings,
-                'uploadProgressName' => ini_get('session.upload_progress.name'),
-                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -259,11 +258,11 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function progressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+        $progress = new SessionProgress();
 
         return new ViewModel(
             array(
-                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
             )
         );
     }

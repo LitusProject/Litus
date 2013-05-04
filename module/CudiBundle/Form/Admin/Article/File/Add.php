@@ -35,6 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'uploadFile');
         $this->setAttribute('enctype', 'multipart/form-data');
+        $this->setAttribute('data-upload', 'progress');
 
         $field = new Text('description');
         $field->setLabel('Description')
