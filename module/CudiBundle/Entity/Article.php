@@ -179,6 +179,7 @@ abstract class Article
             ->setIsDownloadable($downloadable)
             ->setIsSameAsPreviousYear($sameAsPreviousYear);
         $this->timestamp = new DateTime();
+        $this->isDraft = false;
     }
 
     /**
