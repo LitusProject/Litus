@@ -1,0 +1,61 @@
+{% extends 'moderate/base.twig' %}
+
+{% block content %}
+    <header class="subhead">
+        <h1>{{ quiz.getName() }}</h1>
+    </header>
+    <ul class="nav nav-tabs" id="rounds_tab">
+        {% for round in rounds %}
+            <li>
+                <a href="#round{{ round.getId() }}" data-toggle="tab">{{ round.getName() }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content" id="rounds_tab-content">
+        {% for round in rounds %}
+            <div id="round{{ round.getId() }}" class="tab-pane fade in form-horizontal">
+                {% for team in teams %}
+                    <div class="control-group">
+                        <label class="control-label">{{ team.getName() }}</label>
+                        <div class="controls">
+                            <input type="text" data-team="{{ team.getId() }}" data-round="{{ round.getId() }}" class="input-xlarge roundScore" value="{% if points[team.getId()][round.getId()] is not defined %}0{% else %}{{ points[team.getId()][round.getId()] }}{% endif %}">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script>
+    $(document).ready(function () {
+        $('#rounds_tab li:first').addClass('active');
+        $('#rounds_tab-content .tab-pane:first').addClass('active');
+
+        $('.roundScore').keyup(function (e) {
+            if (e.keyCode == 13) {
+                var next = $(this).parent().parent().next().find('.roundScore');
+                next.focus().select();
+                if (next.find('.roundScore').length == 0)
+                    $(this).blur();
+            }
+        }).blur(function () {
+            var field = $(this);
+            var url = '{{ url('quiz_admin_moderate', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team')
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {score: $(this).val()},
+                dataType: 'json',
+                success: function () {
+                    field.parent().parent().addClass('success');
+                },
+                error: function () {
+                    field.parent().parent().addClass('error');
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

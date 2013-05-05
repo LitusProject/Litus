@@ -88,10 +88,27 @@ return array(
                     ),
                 ),
             ),
+            'quiz_admin_moderate' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/quiz/:quizid/moderate[/:action[/:roundid/:teamid]][/]',
+                    'constraints' => array(
+                        'quizid'  => '[0-9]+',
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'roundid'      => '[0-9]*',
+                        'teamid'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'quiz_admin_moderate',
+                        'action' => 'manage',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
         'template_path_stack' => array(
+            'quiz_layout' => __DIR__ . '/../layouts',
             'quiz_view' => __DIR__ . '/../views',
         ),
     ),
@@ -129,6 +146,7 @@ return array(
             'quiz_admin_quiz'           => 'QuizBundle\Controller\Admin\QuizController',
             'quiz_admin_round'          => 'QuizBundle\Controller\Admin\RoundController',
             'quiz_admin_team'           => 'QuizBundle\Controller\Admin\TeamController',
+            'quiz_admin_moderate'       => 'QuizBundle\Controller\Admin\ModerateController',
         ),
     ),
     'assetic_configuration' => array(
