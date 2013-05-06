@@ -44,11 +44,8 @@
                             {% if hasAccess('quiz_admin_team', 'manage') %}
                                 <a href="{{ url('quiz_admin_team', {"quizid": quiz.getId()}) }}" class="group">Teams</a>
                             {% endif %}
-                            {% if hasAccess('quiz_admin_quiz', 'moderate') %}
-                                <a href="{{ url('quiz_admin_quiz', {"action": "moderate", "id": quiz.getId()}) }}" class="quiz_moderate">Moderate</a>
-                            {% endif %}
-                            {% if hasAccess('quiz_admin_quiz', 'view') %}
-                                <a href="{{ url('quiz_admin_quiz', {"action": "view", "id": quiz.getId()}) }}" class="view">View</a>
+                            {% if hasAccess('quiz_admin_moderate', 'manage') %}
+                                <a href="{{ url('quiz_admin_moderate', {"quizid": quiz.getId()}) }}" class="quiz_moderate">Moderate</a>
                             {% endif %}
                             {% if hasAccess('quiz_admin_quiz', 'delete') %}
                                 <a href="#" data-id="{{ quiz.getId() }}" data-name="{{ quiz.getName() }}" class="delete">Delete</a>
