@@ -29,6 +29,7 @@
 
 {% block content_script %}
     <script>
+    var ajax_requests_pending = 0;
     $(document).ready(function () {
         $('#rounds_tab li:first').addClass('active');
         $('#rounds_tab-content .tab-pane:first').addClass('active');
@@ -47,6 +48,7 @@
                 field.parent().parent().addClass('error');
                 return;
             }
+            ajax_requests_pending++;
             var url = '{{ url('quiz_admin_moderate', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team')
             $.ajax({
                 url: url,
@@ -55,12 +57,19 @@
                 dataType: 'json',
                 success: function () {
                     field.parent().parent().addClass('success');
+                    ajax_requests_pending--;
                 },
                 error: function () {
                     field.parent().parent().addClass('error');
+                    ajax_requests_pending--;
                 }
             });
         });
+    });
+
+    $(window).on('beforeunload', function() {
+        if(ajax_requests_pending > 0)
+            return 'Not all scores have been saved. Are you sure you want to leave this page?';
     });
     </script>
 {% endblock %}
