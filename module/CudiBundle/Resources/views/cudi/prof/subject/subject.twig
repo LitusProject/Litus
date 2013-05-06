@@ -70,8 +70,11 @@
         {% endfor %}
     </table>
     <div class="pull-right">
-        {% if hasAccess('cudi_prof_article', 'add') %}
-            <a href="{{ url('cudi_prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Article') }}</a>
+        {% if hasAccess('cudi_prof_article', 'addFromSubject') %}
+            <a href="{{ url('cudi_prof_article', {"action": "addFromSubject", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add New Article') }}</a>
+        {% endif %}
+        {% if hasAccess('cudi_prof_article_mapping', 'add') %}
+            <a href="{{ url('cudi_prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Existing Article') }}</a>
         {% endif %}
     </div>
     <br class="clear" />

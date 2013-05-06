@@ -22,6 +22,8 @@ return array(
     'Login' => 'Login',
 
     'Add Article' => 'Add Article',
+    'Add Existing Article' => 'Add Existing Article',
+    'Add New Article' => 'Add New Article',
     'Comments' => 'Comments',
     'View comments on this article and add one.' => 'View comments on this article and add one.',
     'Files' => 'Files',

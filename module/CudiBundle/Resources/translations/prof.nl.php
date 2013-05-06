@@ -22,6 +22,8 @@ return array(
     'Login' => 'Aanmelden',
 
     'Add Article' => 'Artikel Toevoegen',
+    'Add Existing Article' => 'Bestaand Artikel Toevoegen',
+    'Add New Article' => 'Nieuw Artikel Toevoegen',
     'Comments' => 'Commentaar',
     'View comments on this article and add one.' => 'Bekijk commentaar op dit artikel en voeg er toe.',
     'Files' => 'Bestanden',

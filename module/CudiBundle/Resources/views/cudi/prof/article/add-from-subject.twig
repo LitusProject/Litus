@@ -4,6 +4,9 @@
     <div class="page-header">
         <h2>{{ translate('Add Article') }}</h2>
     </div>
+    <p>
+        {{ translate('Subject') }}: <b>{{ subject.getName() }} (<em>{{ subject.getCode() }}</em>)</b>
+    </p>
     <div class="row">
         <div class="span6 offset3" id="article_select">
             <ul style="list-style:none;">

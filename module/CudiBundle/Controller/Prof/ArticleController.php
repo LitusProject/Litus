@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\Article\Add as AddForm,
     CudiBundle\Form\Prof\Article\Edit as EditForm,
+    CudiBundle\Form\Prof\Article\AddWithSubject as AddWithSubjectForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -157,6 +158,132 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         return new ViewModel(
             array(
                 'form' => $form,
+                'isPost' => $this->getRequest()->isPost(),
+                'isInternalPost' => $formData['internal'] ? true : false,
+            )
+        );
+    }
+
+    public function addFromSubjectAction()
+    {
+        if (!($academicYear = $this->getAcademicYear()))
+            return new ViewModel();
+
+        if (!($subject = $this->_getSubject()))
+            return new ViewModel();
+
+        $form = new AddWithSubjectForm($this->getEntityManager(), $subject);
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if ($formData['internal']) {
+                    $binding = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->findOneById($formData['binding']);
+
+                    $article = new Internal(
+                        $formData['title'],
+                        $formData['author'],
+                        $formData['publisher'],
+                        $formData['year_published'],
+                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['url'],
+                        $formData['type'],
+                        $formData['downloadable'],
+                        $formData['same_as_previous_year'],
+                        0,
+                        0,
+                        $binding,
+                        true,
+                        $formData['rectoverso'],
+                        null,
+                        $formData['perforated'],
+                        $formData['colored']
+                    );
+                } else {
+                    $article = new External(
+                        $formData['title'],
+                        $formData['author'],
+                        $formData['publisher'],
+                        $formData['year_published'],
+                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['url'],
+                        $formData['type'],
+                        $formData['downloadable'],
+                        $formData['same_as_previous_year']
+                    );
+                }
+
+                $article->setIsProf(true);
+                if ($formData['draft'])
+                    $article->setIsDraft(true);
+
+                $this->getEntityManager()->persist($article);
+
+                $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $article->getId(), 'add');
+                $this->getEntityManager()->persist($action);
+
+                $subject = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                    ->findOneBySubjectIdAndProfAndAcademicYear(
+                        $formData['subject_id'],
+                        $this->getAuthentication()->getPersonObject(),
+                        $academicYear
+                    );
+
+                $mapping = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                    ->findOneByArticleAndSubjectAndAcademicYear($article, $subject->getSubject(), $academicYear, true);
+
+                if (null === $mapping) {
+                    $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
+                    $mapping->setIsProf(true);
+                    $this->getEntityManager()->persist($mapping);
+
+                    $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'add');
+                    $this->getEntityManager()->persist($action);
+                } else {
+                    $actions = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Prof\Action')
+                        ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
+                    foreach ($actions as $action)
+                        $this->getEntityManager()->remove($action);
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The article was successfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'cudi_prof_subject',
+                    array(
+                        'action' => 'subject',
+                        'id' => $subject->getId(),
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'subject' => $subject,
+                'isPost' => $this->getRequest()->isPost(),
+                'isInternalPost' => $formData['internal'] ? true : false,
             )
         );
     }
@@ -372,5 +499,61 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         }
 
         return $article;
+    }
+
+    private function _getSubject()
+    {
+        if (!($academicYear = $this->getAcademicYear()))
+            return;
+
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No ID was given to identify the subject!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_prof_subject',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return;
+        }
+
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findOneBySubjectIdAndProfAndAcademicYear(
+                $this->getParam('id'),
+                $this->getAuthentication()->getPersonObject(),
+                $academicYear
+            );
+
+        if (null === $mapping) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No subject with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_prof_subject',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return;
+        }
+
+        return $mapping->getSubject();
     }
 }

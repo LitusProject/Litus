@@ -141,6 +141,7 @@ return array(
     'CudiBundle\Form\Booking\Booking'                                  => __DIR__ . '/Form/Booking/Booking.php',
     'CudiBundle\Form\Booking\Search'                                   => __DIR__ . '/Form/Booking/Search.php',
     'CudiBundle\Form\Prof\Article\Add'                                 => __DIR__ . '/Form/Prof/Article/Add.php',
+    'CudiBundle\Form\Prof\Article\AddWithSubject'                      => __DIR__ . '/Form/Prof/Article/AddWithSubject.php',
     'CudiBundle\Form\Prof\Article\Edit'                                => __DIR__ . '/Form/Prof/Article/Edit.php',
     'CudiBundle\Form\Prof\Comment\Add'                                 => __DIR__ . '/Form/Prof/Comment/Add.php',
     'CudiBundle\Form\Prof\File\Add'                                    => __DIR__ . '/Form/Prof/File/Add.php',

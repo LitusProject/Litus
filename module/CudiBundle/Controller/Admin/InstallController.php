@@ -374,7 +374,7 @@ VTK Cudi
                         'login', 'logout', 'shibboleth',
                     ),
                     'cudi_prof_article' => array(
-                        'add', 'edit', 'manage', 'typeahead'
+                        'add', 'addFromSubject', 'edit', 'manage', 'typeahead'
                     ),
                     'cudi_prof_article_mapping' => array(
                         'add', 'delete'
@@ -445,7 +445,7 @@ VTK Cudi
                     ),
                     'actions' => array(
                         'cudi_prof_article' => array(
-                            'add', 'edit', 'manage', 'typeahead'
+                            'add', 'addFromSubject', 'edit', 'manage', 'typeahead'
                         ),
                         'cudi_prof_article_mapping' => array(
                             'add', 'delete'
