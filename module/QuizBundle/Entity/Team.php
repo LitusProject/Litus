@@ -14,9 +14,7 @@
 
 namespace QuizBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
+use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**

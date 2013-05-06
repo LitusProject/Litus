@@ -36,18 +36,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
 
         $field = new Text('name');
-        $field->setLabel('Name');
-        $field->setRequired();
+        $field->setLabel('Name')
+            ->setRequired();
         $this->add($field);
 
         $field = new Text('max_points');
-        $field->setLabel('Maximum points');
-        $field->setRequired();
+        $field->setLabel('Maximum points')
+            ->setRequired();
         $this->add($field);
 
         $field = new Text('order');
-        $field->setLabel('Round number');
-        $field->setRequired();
+        $field->setLabel('Round number')
+            ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');

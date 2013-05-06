@@ -31,8 +31,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $field = new Text('name');
-        $field->setLabel('Name');
-        $field->setRequired();
+        $field->setLabel('Name')
+            ->setRequired();
         $this->add($field);
 
         // XXX: Edit role: In form?

@@ -36,13 +36,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
 
         $field = new Text('name');
-        $field->setLabel('Name');
-        $field->setRequired();
+        $field->setLabel('Name')
+            ->setRequired();
         $this->add($field);
 
         $field = new Text('number');
-        $field->setLabel('Team number');
-        $field->setRequired();
+        $field->setLabel('Team number')
+            ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
