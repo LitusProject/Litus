@@ -68,7 +68,7 @@
             <h2>{{ translate('Bookstore') }}</h2>
 
             {% if hasAccess('cudi_booking', 'view') %}
-                <p><a href="{{ url('cudi_booking') }}" class="btn btn-primary">&raquo; {{ translate('Reservations') }}</a></p>
+                <p><a href="{{ url('cudi_booking') }}" class="btn btn-primary">{{ translate('Reservations') }}</a></p>
             {% endif %}
 
             {% if cudi.currentOpeningHour %}
