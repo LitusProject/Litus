@@ -154,6 +154,26 @@ return array(
             'quizbundle' => array(
                 'root_path' => __DIR__ . '/../assets',
                 'collections' => array(
+                    'moderate_css' => array(
+                        'assets' => array(
+                            'moderate/less/base.less',
+                        ),
+                        'filters' => array(
+                            'moderate_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'moderate_css.css',
+                        ),
+                    ),
                 ),
             ),
         ),

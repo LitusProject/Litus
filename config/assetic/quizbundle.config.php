@@ -45,6 +45,7 @@ return array(
             '@bootstrap_css',
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
+            '@moderate_css',
         )
     ),
     'routes' => array(),

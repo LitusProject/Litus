@@ -83,36 +83,49 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        return $this->manageAction();
-    }
-
-    public function resultsAction()
-    {
         if(!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
+        $rounds = $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Round')
+                ->findByQuiz($quiz);
         $teams = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entities\Team')
+                ->getRepository('QuizBundle\Entity\Team')
                 ->findByQuiz($quiz);
         $allPoints = $this->getEntityManager()
                 ->getRepository('QuizBundle\Entity\Point')
                 ->findByQuiz($quiz);
 
+        $points = array();
         $totals = array();
-
         foreach($allPoints as $point) {
+            $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
+            if(!isset($totals[$point->getTeam()->getId()])) // If no point yet counted, set to zero
+                $totals[$point->getTeam()->getId()] = 0;
             $totals[$point->getTeam()->getId()] += $point->getPoint();
         }
 
         arsort($totals); // Reverse sort of the totals (highest points first)
 
+        $teams_indexed = array();
+        foreach($teams as $team) {
+            $teams_indexed[$team->getId()] = $team;
+        }
+
         return new ViewModel(
             array(
                 'quiz' => $quiz,
-                'teams' => $teams,
-                'totals' => $totals,
+                'rounds' => $rounds,
+                'teams' => $teams_indexed,
+                'points' => $points,
+                'total_points' => $totals,
             )
         );
+    }
+
+    public function resultsAction()
+    {
+        return $this->viewAction();
     }
 
     /**
