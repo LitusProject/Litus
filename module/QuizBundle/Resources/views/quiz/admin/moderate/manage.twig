@@ -43,7 +43,7 @@
         }).blur(function () {
             var field = $(this);
             field.parent().parent().removeClass('success').removeClass('error');
-            if(field.val() > field.attr('max')) {
+            if(parseInt(field.val(),10) > parseInt(field.attr('max'),10)) {
                 field.parent().parent().addClass('error');
                 return;
             }
