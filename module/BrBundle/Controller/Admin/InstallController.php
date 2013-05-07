@@ -96,7 +96,7 @@ The VTK Corporate Team',
                         'add', 'delete', 'editLogo', 'edit', 'logo', 'manage'
                     ),
                     'br_admin_company_event' => array(
-                        'add', 'delete', 'edit', 'editPoster', 'manage'
+                        'add', 'delete', 'edit', 'editPoster', 'manage', 'progress', 'upload'
                     ),
                     'br_admin_company_job' => array(
                         'add', 'delete', 'edit', 'manage'

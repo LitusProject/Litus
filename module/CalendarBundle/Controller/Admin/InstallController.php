@@ -33,7 +33,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'calendarbundle' => array(
                     'calendar_admin_calendar' => array(
-                        'add', 'delete', 'edit', 'editPoster', 'manage', 'old', 'pdf', 'poster'
+                        'add', 'delete', 'edit', 'editPoster', 'manage', 'old', 'pdf', 'poster', 'progress', 'upload'
                     ),
                     'calendar_admin_calendar_registration' => array(
                         'export', 'manage'
