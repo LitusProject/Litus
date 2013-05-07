@@ -35,7 +35,7 @@
         } else if (typeof method === 'object' || ! method) {
             return methods.open.apply(this, arguments);
         } else {
-            $.error('Method ' +  method + ' does not exist on $.formUploadProgress');
+            $.error('Method ' +  method + ' does not exist on $.permanentModal');
         }
     };
 }) (jQuery);

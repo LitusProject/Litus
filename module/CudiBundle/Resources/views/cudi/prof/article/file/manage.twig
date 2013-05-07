@@ -143,7 +143,10 @@
                     $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
                 },
                 onSubmitted: function (data) {
-                    if (data.errors) {
+                    if (data == undefined) {
+                        $('.flashmessage').addClass('hide');
+                        $('.file_upload_error').removeClass('hide');
+                    } else if (data.errors) {
                         $('.flashmessage').removeClass('in');
                         $('#file_upload_error').addClass('in');
                         $('#uploadFile').find('ul.errors').remove();

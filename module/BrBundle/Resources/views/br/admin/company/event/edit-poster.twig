@@ -7,7 +7,7 @@
     <div class="flashmessage error_message full_width poster_upload_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while uploading the banner.</p>
+            <p>An error occurred while uploading the poster.</p>
         </div>
     </div>
 
@@ -59,15 +59,18 @@
                     $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
                 },
                 onSubmitted: function (data) {
-                    if (data.errors) {
+                    if (data == undefined) {
                         $('.flashmessage').addClass('hide');
                         $('.poster_upload_error').removeClass('hide');
-                        $('#uploadBanner').find('ul.errors').remove();
+                    } else if (data.errors) {
+                        $('.flashmessage').addClass('hide');
+                        $('.poster_upload_error').removeClass('hide');
+                        $('#uploadPoster').find('ul.errors').remove();
                         for(element in data.errors) {
                             var list = $('<ul>', {class: 'errors'})
                             for (error in data.errors[element])
                                 list.append($('<li>').html(data.errors[element][error]));
-                            $('#uploadBanner').find('#' + element).parent().parent().after(list);
+                            $('#uploadPoster').find('#' + element).parent().parent().after(list);
                         }
                     } else if (data.info) {
                         window.location.reload();
