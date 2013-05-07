@@ -15,6 +15,10 @@
     <script type="text/javascript">
 
 	    $(document).ready(function () {
+            $('#start_date, #end_date').datetimepicker({
+                timeFormat: "HH:mm",
+                dateFormat: "dd/mm/yy",
+            });
 	        $('textarea').gollum({
 	            toolbar: {
 					"bold": ["bold", "Bold", "bold"],

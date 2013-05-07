@@ -22,6 +22,8 @@ return array(
 
         'notification_admin_notification' => array(
             '@common_jquery',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
             '@admin_js',
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
