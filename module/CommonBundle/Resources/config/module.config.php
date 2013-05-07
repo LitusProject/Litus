@@ -392,13 +392,28 @@ return array(
                 'collections' => array(
                     'common_jquery' => array(
                         'assets'  => array(
-                            'common/js/jquery-1.7.2.min.js',
+                            'common/js/jquery-1.9.1.min.js',
                             'common/js/bootstrap-fileupload.min.js',
                         ),
                     ),
                     'common_jqueryui' => array(
                         'assets'  => array(
-                            'common/js/jqueryui-1.8.16.min.js',
+                            'common/js/jquery-ui-1.10.3.min.js',
+                        ),
+                    ),
+                    'common_jqueryui_css' => array(
+                        'assets' => array(
+                            'common/css/jquery-ui-1.10.3.min.css',
+                        ),
+                    ),
+                    'common_jqueryui_datepicker' => array(
+                        'assets' => array(
+                            'common/js/jquery-ui-timepicker-addon.js',
+                        ),
+                    ),
+                    'common_jqueryui_datepicker_css' => array(
+                        'assets' => array(
+                            'common/css/jquery-ui-timepicker-addon.css',
                         ),
                     ),
                     'common_jquery_form' => array(
