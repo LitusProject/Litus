@@ -96,22 +96,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     private function _getReservations()
     {
         if (null === $this->getParam('start') || null === $this->getParam('end')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No start or end date was given to identify the reservations!'
-                )
-            );
-
-            // @TODO probably should not redirect to the page that causes the problem
-            $this->redirect()->toRoute(
-                'logistics_index',
-                array(
-                    'action' => 'index'
-                )
-            );
-
+            $this->getResponse()->setStatusCode(404);
             return;
         }
 

@@ -392,13 +392,13 @@ return array(
                 'collections' => array(
                     'common_jquery' => array(
                         'assets'  => array(
-                            'common/js/jquery-1.7.2.min.js',
+                            'common/js/jquery.min.js',
                             'common/js/bootstrap-fileupload.min.js',
                         ),
                     ),
                     'common_jqueryui' => array(
                         'assets'  => array(
-                            'common/js/jqueryui-1.8.16.min.js',
+                            'common/js/jquery-ui.min.js',
                         ),
                     ),
                     'common_jquery_form' => array(

@@ -41,7 +41,7 @@ return array(
             '@common_jquery',
             '@common_typeahead_remote',
             '@fullcalendar_css',
-            '@fullcalendar_js',
+            '@logistics_js',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',

@@ -167,9 +167,10 @@ return array(
                             'logistics/fullcalendar/fullcalendar.css',
                         ),
                     ),
-                    'fullcalendar_js' => array(
+                    'logistics_js' => array(
                         'assets' => array(
-                            'logistics/fullcalendar/fullcalendar.min.js',
+                            'logistics/js/logistics.js',
+                            'logistics/fullcalendar/fullcalendar.js',
                         ),
                     ),
                     'minicolor_css' => array(

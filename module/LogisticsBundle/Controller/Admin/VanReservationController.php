@@ -87,46 +87,6 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
-        if($this->_handleAdd($form)) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'SUCCES',
-                    'The reservation was succesfully created!'
-                )
-            );
-
-            $this->_doRedirect($reservation);
-
-            return new ViewModel();
-        }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
-    }
-
-    public function addasyncAction()
-    {
-        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
-        $this->initAjax();
-
-        if ($this->_handleAdd($form)) {
-
-            return new ViewModel(
-                array(
-                    'result' => (object) array("status" => "success"),
-                )
-            );
-        }
-
-        return new ViewModel();
-    }
-
-    private function _handleAdd(AddForm $form)
-    {
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -170,11 +130,30 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
 
-                return true;
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCES',
+                        'The reservation was succesfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'logistics_admin_van_reservation',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
             }
         }
 
-        return false;
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function editAction()
@@ -222,7 +201,12 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     )
                 );
 
-                $this->_doRedirect($reservation);
+                $this->redirect()->toRoute(
+                    'logistics_admin_van_reservation',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
 
                 return new ViewModel();
             }
@@ -308,7 +292,12 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 )
             );
 
-            $this->_doRedirect();
+            $this->redirect()->toRoute(
+                'logistics_admin_van_reservation',
+                array(
+                    'action' => 'manage',
+                )
+            );
 
             return;
         }
@@ -326,35 +315,16 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 )
             );
 
-            $this->_doRedirect();
+            $this->redirect()->toRoute(
+                'logistics_admin_van_reservation',
+                array(
+                    'action' => 'manage',
+                )
+            );
 
             return;
         }
 
         return $reservation;
-    }
-
-    private function _doRedirect($reservation = null)
-    {
-
-        $controller = $this->getParam('return');
-
-        if (null === $controller) {
-
-            $controller = 'logistics_admin_van_reservation';
-        }
-
-        $params = array();
-        if ($reservation) {
-            $date = $reservation->getStartDate();
-            $params['date'] = $date->format('Y') . '-' . ($date->format('n') - 1) . '-' . $date->format('j');
-        }
-
-        $this->redirect()->toRoute(
-            $controller,
-            $params
-        );
-
-        return;
     }
 }
