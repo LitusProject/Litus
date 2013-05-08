@@ -1,341 +1,105 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-
     <div class="flashmessage alert alert-error fade in load_error hide">
         <a class="close" data-dismiss="alert">&times;</a>
         <div class="content">
-            There was an error while loading the reservations.
+            {{ translate('There was an error while loading the reservations.') }}
         </div>
     </div>
 
     <div class="flashmessage alert alert-error fade in remove_error hide">
         <a class="close" data-dismiss="alert">&times;</a>
         <div class="content">
-            There was an error while deleting the reservations.
+            {{ translate('There was an error while deleting the reservations.') }}
         </div>
     </div>
 
     <div class="flashmessage alert alert-error fade in add_error hide">
         <a class="close" data-dismiss="alert">&times;</a>
         <div class="content">
-            There was an error while adding the reservation. Please refresh the page to verify.
+            {{ translate('There was an error while adding the reservation. Please refresh the page to verify.') }}
         </div>
     </div>
 
     <div id="calendar"></div>
-
-    <div id="popover_header" class="hide">
-        <b class="reason"></b>
-        <div class="pull-right"><a class="close">&times;</a></div>
-    </div>
-
-    <div id="popover_content" class="hide">
-        <dl class="dl-horizontal">
-            <dt class="start">Start</dt>
-            <dd class="start start_value"></dd>
-
-            <dt class="end">End</dt>
-            <dd class="end end_value"></dd>
-
-            <dt class="load">Load</dt>
-            <dd class="load load_value"></dd>
-
-            <dt class="additional">Additional Info</dt>
-            <dd class="additional additional_value"></dd>
-
-            <dt class="passenger">Passenger</dt>
-            <dd class="passenger passenger_value"></dd>
-
-            <dt class="driver">Driver</dt>
-            <dd class="driver driver_value"></dd>
-        </dl>
-
-        {% if has_access('logistics_admin_van_reservation', 'edit') or has_access('logistics_admin_van_reservation', 'delete') %}
-        <hr />
-        {% endif %}
-
-        {% if has_access('logistics_admin_van_reservation', 'delete') %}
-            <a class="delete btn btn-danger pull-right" href="#" style="margin-left: 10px;">{{ translate('Delete') }}</a>
-        {% endif %}
-        {% if has_access('logistics_admin_van_reservation', 'edit') %}
-            <a class="edit btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
-        {% endif %}
-    </div>
-
-    <div id="add_popover_content" class="hide">
-        <div  id="add_popover_content_internal">
-            {% if has_access('logistics_admin_van_reservation', 'add') %}
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(form) }}
-            {% endif %}
-        </div>
-    </div>
-
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
-        var poppedElement = null;
-
         $(document).ready(function() {
-
-            $(".popover-content a.delete").live('click', function() {
-                var dbid = $(this).data('dbid');
-                $.post('{{ url('logistics_admin_van_reservation', {"action": "delete"})}}' + dbid, function (data) {
-                    if (data && 'success' == data.status) {
-                        $('.flashmessage').addClass('hide');
-                        hidePopover(poppedElement);
-                        $('#calendar').fullCalendar('removeEvents', function(el) {
-                            return el.dbid == dbid;
-                        });
-                    } else {
-                        errorRemove();
-                    }
-                }, 'json').error(errorRemove);
-            });
-
-            $(".popover-content form").live('submit', function() {
-                $.post($(this).attr('action'), $(this).serialize(), function(response){
-                    $('#calendar').fullCalendar('refetchEvents');
-                    hideAll();
-                },'json').fail(function() {
-                    errorAdd();
-                    $('#calendar').fullCalendar('refetchEvents');
-                    hideAll();
-                });
-                return false;
-            });
-
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
-
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                editable: false,
-                slotMinutes: 15,
-                theme: true,
-                allDaySlot: false,
-                allDayDefault: false,
-                firstHour: 7,
-                firstDay: 1,
-                lazyFetching: false,
-                defaultView: 'agendaWeek',
-
-                timeFormat: {
-                    agenda: 'H:mm{ - H:mm}',
-                    '': 'H:mm'
-                },
-                columnFormat: {
-                    month: 'ddd',    // Mon
-                    week: 'ddd d/M', // Mon 9/7
-                    day: 'dddd d/M'  // Monday 9/7
-                },
-                axisFormat: 'H:mm',
-
-                eventSources: [
-                    {
-                        events: function(start, end, callback) {
-
-                            $('.load_error').addClass('hide');
-
-                            // Use UNIX Timestamps
-                            start = Math.round(start.getTime() / 1000);
-                            end = Math.round(end.getTime() / 1000);
-
-                            $.post('{{ url('logistics_reservation_fetch', {}) }}' + start + '/' + end, function (data) {
-                                if (data && 'success' == data.status) {
-                                    reservations = data.reservations;
-
-                                    var events = [];
-                                    var firstHour = 7;
-
-                                    firstHour = 24;
-                                    for (index in reservations) {
-
-                                        var reservation = reservations[index];
-                                        firstHour = Math.min(firstHour, new Date(reservation.start*1000).getHours());
-
-                                        events.push({
-                                            title: reservation.reason,
-                                            start: reservation.start,
-                                            end: reservation.end,
-                                            color: reservation.driver.color,
-
-                                            // Custom Properties
-                                            driver: reservation.driver.name,
-                                            passenger: reservation.passenger,
-                                            load: reservation.load,
-                                            additional: reservation.additionalInfo,
-                                            dbid: reservation.id,
-
-                                        });
-                                    }
-
-                                    callback(events);
-
-                                    $('#calendar').fullCalendar('option', 'firstHour', firstHour);
-
-                                } else {
-                                    errorFetch();
-                                }
-                            }, 'json').error(errorFetch);
-
-                        }
-                    }
-
+            $('#calendar').logisticsCalendar({
+                fetchUrl: '{{ url('logistics_reservation_fetch') }}',
+                editable: {% if has_access('logistics_admin_van_reservation', 'add') %}true{% else %}false {% endif %},
+                monthNames: [
+                    '{{ translate('January') }}',
+                    '{{ translate('February') }}',
+                    '{{ translate('March') }}',
+                    '{{ translate('April') }}',
+                    '{{ translate('May') }}',
+                    '{{ translate('June') }}',
+                    '{{ translate('July') }}',
+                    '{{ translate('August') }}',
+                    '{{ translate('September') }}',
+                    '{{ translate('October') }}',
+                    '{{ translate('November') }}',
+                    '{{ translate('December') }}'
                 ],
-
-                loading: function(isLoading, view) {
-                    if (isLoading) {
-                        $('#calendar').addClass('loading');
-                    } else {
-                        $('#calendar').removeClass('loading');
-                    }
+                monthNamesShort: [
+                    '{{ translate('Jan') }}',
+                    '{{ translate('Feb') }}',
+                    '{{ translate('Mar') }}',
+                    '{{ translate('Apr') }}',
+                    '{{ translate('May') }}',
+                    '{{ translate('Jun') }}',
+                    '{{ translate('Jul') }}',
+                    '{{ translate('Aug') }}',
+                    '{{ translate('Sep') }}',
+                    '{{ translate('Oct') }}',
+                    '{{ translate('Nov') }}',
+                    '{{ translate('Dec') }}'
+                ],
+                dayNames: [
+                    '{{ translate('Sunday') }}',
+                    '{{ translate('Monday') }}',
+                    '{{ translate('Tuesday') }}',
+                    '{{ translate('Wednesday') }}',
+                    '{{ translate('Thursday') }}',
+                    '{{ translate('Friday') }}',
+                    '{{ translate('Saturday') }}'
+                ],
+                dayNamesShort: [
+                    '{{ translate('Sun') }}',
+                    '{{ translate('Mon') }}',
+                    '{{ translate('Tue') }}',
+                    '{{ translate('Wed') }}',
+                    '{{ translate('Thu') }}',
+                    '{{ translate('Fri') }}',
+                    '{{ translate('Sat') }}'
+                ],
+                buttonText: {
+                    today:    '{{ translate('today') }}',
+                    month:    '{{ translate('month') }}',
+                    week:     '{{ translate('week') }}',
+                    day:      '{{ translate('day') }}'
                 },
-
-                eventAfterRender: function(event, element, view) {
-                    $('#popover_header .reason').text(event.title);
-
-                    var pop_content = $('#popover_content').clone();
-
-                    pop_content.find("a.edit").attr("href", '{{ url('logistics_admin_van_reservation', {'action': 'edit'}) }}' + event.dbid + '/return/logistics_index');
-
-                    pop_content.find("a.delete").attr('data-id', event.id);
-                    pop_content.find("a.delete").attr('data-dbid', event.dbid);
-
-                    pop_content.find('.start_value').text(formatDate(event.start));
-                    pop_content.find('.end_value').text(formatDate(event.end));
-                    if (event.load == '')
-                        pop_content.find('.load').remove();
-                    else
-                        pop_content.find('.load_value').text(event.load);
-                    if (event.passenger == '')
-                        pop_content.find('.passenger').remove();
-                    else
-                        pop_content.find('.passenger_value').text(event.passenger);
-                    if (event.additional == '')
-                        pop_content.find('.additional').remove();
-                    else
-                        pop_content.find('.additional_value').text(event.additional);
-                    if (event.driver == '')
-                        pop_content.find('.driver').remove();
-                    else
-                        pop_content.find('.driver_value').text(event.driver);
-
-                    element.popover({'placement': 'right', 'title': $('#popover_header').html(), 'content':pop_content.html(), 'trigger': 'manual', 'html': true, 'container': 'body'});
+                loadError: function () {
+                    $('.flashmessage').addClass('hide');
+                    $('.load_error').addClass('hide');
                 },
-
-                eventClick : function(event, jsEvent, view) {
-
-                    showPopover($(this));
+                removeError: function () {
+                    $('.flashmessage').addClass('hide');
+                    $('.remove_error').addClass('hide');
                 },
-
-                viewDisplay : function(view) {
-                    hideAll();
+                addError: function () {
+                    $('.flashmessage').addClass('hide');
+                    $('.add_error').addClass('hide');
                 },
-
-                {% if has_access('logistics_admin_van_reservation', 'add') %}
-                selectable: true,
-                select : function( startDate, endDate, allDay, jsEvent, view ) {
-
-                    if (poppedElement != null) {
-                        poppedElement.popover('destroy');
-                        poppedElement = null;
-                    }
-
-                    $('#popover_header .reason').html('New Event');
-
-                    $(jsEvent.target).popover({
-                        placement: startDate.getDay() < 4 && startDate.getDay() > 0 ? 'right' : 'left',
-                        title: $('#popover_header').html(),
-                        content: $('#add_popover_content').html(),
-                        trigger: 'manual',
-                        html: true,
-                        container: 'body'
-                    });
-                    showPopover($(jsEvent.target));
-
-                    $('#add_popover_content_internal .start').val(formatDate(startDate));
-                    $('#add_popover_content_internal .end').val(formatDate(endDate));
-
-                    $('#passengerSearch').typeaheadRemote(
-                        {
-                            source: '{{ url("common_admin_academic_typeahead", {}) }}',
-                        }
-                    ).change(function(e) {
-                        if ($(this).data('value')) {
-                            $('#passengerId').val($(this).data('value').id);
-                        } else {
-                            $('#passengerId').val('');
-                        }
-                    });
+                hideErrors: function () {
+                    $('.flashmessage').addClass('hide');
                 },
-
-                {% endif %}
-
+                
             });
-
-            {% if date %}
-            var dateArray = '{{ date }}'.split('-');
-            $('#calendar').fullCalendar( 'gotoDate', dateArray[0], dateArray[1], dateArray[2]);
-            {% endif %}
-
-            $('.popover .close').live('click',function(){
-                hidePopover(poppedElement);
-            });
-
         });
-
-        function formatDate(date) {
-            return $.fullCalendar.formatDate(date, 'dd/MM/yyyy H:mm')
-        }
-
-        function hidePopover(element) {
-            element.popover('hide');
-            if (poppedElement != null && poppedElement.is(element)) {
-                poppedElement = null;
-            }
-        }
-
-        function showPopover(element) {
-            if (poppedElement != null) {
-                poppedElement.popover('hide');
-            }
-
-            if (poppedElement != null && poppedElement.is(element)) {
-                poppedElement = null;
-            } else {
-                element.popover('show');
-                poppedElement = element;
-            }
-        }
-
-        function hideAll() {
-            $('.popover').remove();
-        }
-
-        function errorFetch() {
-            $('.flashmessage').addClass('hide');
-            $('#calendar').removeClass('loading');
-            $('.load_error').removeClass('hide');
-        }
-
-        function errorRemove() {
-            $('.flashmessage').addClass('hide');
-            $('.remove_error').removeClass('hide');
-        }
-
-        function errorAdd() {
-            $('.flashmessage').addClass('hide');
-            $('.add_error').removeClass('hide');
-        }
-
     </script>
 {% endblock %}
