@@ -642,7 +642,6 @@ function Calendar(element, options, eventSources) {
         }
         if (name == 'firstHour') {
             options[name] = value;
-            console.log(currentView);
             if (currentView.resetScroll) {
                 currentView.resetScroll();
             }

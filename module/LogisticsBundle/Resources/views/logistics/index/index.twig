@@ -1,24 +1,38 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-error fade in load_error hide">
+    <div class="flashmessage alert alert-error fade load_error">
         <a class="close" data-dismiss="alert">&times;</a>
         <div class="content">
             {{ translate('There was an error while loading the reservations.') }}
         </div>
     </div>
 
-    <div class="flashmessage alert alert-error fade in remove_error hide">
+    <div class="flashmessage alert alert-error fade remove_error">
         <a class="close" data-dismiss="alert">&times;</a>
         <div class="content">
             {{ translate('There was an error while deleting the reservations.') }}
         </div>
     </div>
 
-    <div class="flashmessage alert alert-error fade in add_error hide">
+    <div class="flashmessage alert alert-error fade add_error">
         <a class="close" data-dismiss="alert">&times;</a>
         <div class="content">
             {{ translate('There was an error while adding the reservation. Please refresh the page to verify.') }}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-error fade update_error">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="content">
+            {{ translate('There was an error while updating the reservations.') }}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-success fade update_success">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="content">
+            {{ translate('The reservation was successfully updated.') }}
         </div>
     </div>
 
@@ -30,6 +44,7 @@
         $(document).ready(function() {
             $('#calendar').logisticsCalendar({
                 fetchUrl: '{{ url('logistics_reservation_fetch') }}',
+                moveUrl: '{{ url('logistics_index', {'action': 'move'}) }}',
                 editable: {% if has_access('logistics_admin_van_reservation', 'add') %}true{% else %}false {% endif %},
                 monthNames: [
                     '{{ translate('January') }}',
@@ -84,21 +99,28 @@
                     day:      '{{ translate('day') }}'
                 },
                 loadError: function () {
-                    $('.flashmessage').addClass('hide');
-                    $('.load_error').addClass('hide');
+                    $('.flashmessage').removeClass('in');
+                    $('.load_error').addClass('in');
                 },
                 removeError: function () {
-                    $('.flashmessage').addClass('hide');
-                    $('.remove_error').addClass('hide');
+                    $('.flashmessage').removeClass('in');
+                    $('.remove_error').addClass('in');
                 },
                 addError: function () {
-                    $('.flashmessage').addClass('hide');
-                    $('.add_error').addClass('hide');
+                    $('.flashmessage').removeClass('in');
+                    $('.add_error').addClass('in');
+                },
+                updateError: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.update_error').addClass('in');
+                },
+                updateSuccess: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.update_success').addClass('in');
                 },
                 hideErrors: function () {
-                    $('.flashmessage').addClass('hide');
+                    $('.flashmessage').removeClass('in');
                 },
-                
             });
         });
     </script>

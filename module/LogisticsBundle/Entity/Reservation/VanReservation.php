@@ -51,35 +51,69 @@ class VanReservation extends Reservation
      */
     private $load;
 
+    /**
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param string $reason
+     * @param string $load
+     * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
+     * @param string $additionalInfo
+     * @param \CommonBundle\Entity\Users\Person $creator
+     */
     public function __construct($startDate, $endDate, $reason, $load, ReservableResource $resource, $additionalInfo, $creator) {
         parent::__construct($startDate, $endDate, $reason, $resource, $additionalInfo, $creator);
+
         $this->driver = null;
         $this->passenger = null;
         $this->load = $load;
     }
 
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
     public function getDriver() {
         return $this->driver;
     }
 
+    /**
+     * @param \CommonBundle\Entity\Users\Person $driver
+     *
+     * @return \LogisticsBundle\Entity\Reservation\VanReservation
+     */
     public function setDriver($driver) {
         $this->driver = $driver;
         return $this;
     }
 
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
     public function getPassenger() {
         return $this->passenger;
     }
 
+    /**
+     * @param \CommonBundle\Entity\Users\Person $passenger
+     *
+     * @return \LogisticsBundle\Entity\Reservation\VanReservation
+     */
     public function setPassenger($passenger) {
         $this->passenger = $passenger;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getLoad() {
         return $this->load;
     }
 
+    /**
+     * @param string $load
+     *
+     * @return \LogisticsBundle\Entity\Reservation\VanReservation
+     */
     public function setLoad($load) {
         $this->load = $load;
         return $this;
