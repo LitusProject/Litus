@@ -1,6 +1,7 @@
 (function($) {
     var defaults = {
         fetchUrl: '',
+        moveUrl: '',
         editable: false,
         monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -11,6 +12,8 @@
         loadError: function () {},
         removeError: function () {},
         addError: function () {},
+        updateError: function () {},
+        updateSuccess: function () {},
         hideErrors: function () {},
     };
 
@@ -44,7 +47,9 @@
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            editable: false,
+            editable: true,
+            disableResizing: false,
+            disableDragging: false,
             slotMinutes: 15,
             allDaySlot: false,
             allDayDefault: false,
@@ -88,7 +93,20 @@
             select: function (startDate, endDate, allDay, jsEvent, view) {
                 if (!settings.editable)
                     return;
-                _addEvent(startDate, endDate, allDay, jsEvent, view);
+                _addEvent($this, startDate, endDate, allDay, jsEvent, view);
+            },
+            eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+                if (!settings.editable)
+                    return;
+                _movedEvent($this, event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
+            },
+            eventResize: function (event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
+                if (!settings.editable)
+                    return;
+                _resizedEvent($this, event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view);
+            },
+            eventClick: function (event, jsEvent, view) {
+                _clickedEvent($this, event, jsEvent, view);
             }
         });
     }
@@ -128,14 +146,34 @@
                 callback(events);
 
                 $this.fullCalendar('option', 'firstHour', firstHour);
-                console.log(firstHour);
             } else {
                 settings.loadError();
             }
         }, 'json').error(settings.loadError);
     }
 
-    function _addEvent(startDate, endDate, allDay, jsEvent, view) {
+    function _addEvent($this, startDate, endDate, allDay, jsEvent, view) {
         console.log('add Event');
+    }
+
+    function _movedEvent($this, event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+        var settings = $this.data('logisticsCalendar');
+        $.post(settings.moveUrl + event.dbid, {start: Math.round(event.start.getTime() / 1000), end: Math.round(event.end.getTime() / 1000)}, function (data) {
+            if (data && data.status == 'success') {
+                settings.updateSuccess();
+            } else {
+                settings.updateError();
+            }
+        }, 'json').error(settings.updateError);
+    }
+
+    function _resizedEvent($this, event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
+        var settings = $this.data('logisticsCalendar');
+        $.post(settings.moveUrl + event.dbid, {start: Math.round(event.start.getTime() / 1000), end: Math.round(event.end.getTime() / 1000)});
+    }
+
+    function _clickedEvent($this, event, jsEvent, view) {
+        console.log('clicked Event');
+        console.log(event);
     }
 }) (jQuery);

@@ -84,6 +84,14 @@ class Reservation
      */
     private $endDate;
 
+    /**
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param string $reason
+     * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
+     * @param string $additionalInfo
+     * @param \CommonBundle\Entity\Users\Person $creator
+     */
     public function __construct($startDate, $endDate, $reason, ReservableResource $resource, $additionalInfo, $creator) {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
@@ -93,31 +101,48 @@ class Reservation
         $this->creator = $creator;
     }
 
+    /**
+     * @return integer
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * @return \LogisticsBundle\Entity\Reservation\ReservableResource
+     */
     public function getResource() {
         return $this->resource;
     }
 
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
     public function getCreator() {
         return $this->creator;
     }
 
+    /**
+     * @param string $reason
+     *
+     * @return \LogisticsBundle\Entity\Reservation\Reservation
+     */
     public function setReason($reason) {
         $this->reason = $reason;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getReason() {
         return $this->reason;
     }
 
     /**
-     * @param DateTime $startDate
+     * @param \DateTime $startDate
      *
-     * @return \NotificationBundle\Entity\Nodes\Notification
+     * @return \LogisticsBundle\Entity\Reservation\Reservation
      */
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
@@ -125,16 +150,16 @@ class Reservation
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getStartDate() {
         return $this->startDate;
     }
 
     /**
-     * @param DateTime $endDate
+     * @param \DateTime $endDate
      *
-     * @return \NotificationBundle\Entity\Nodes\Notification
+     * @return \LogisticsBundle\Entity\Reservation\Reservation
      */
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
@@ -142,17 +167,25 @@ class Reservation
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getEndDate() {
         return $this->endDate;
     }
 
+    /**
+     * @param string $additionalInfo
+     *
+     * @return \LogisticsBundle\Entity\Reservation\Reservation
+     */
     public function setAdditionalInfo($additionalInfo) {
         $this->additionalInfo = $additionalInfo;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getAdditionalInfo() {
         return $this->additionalInfo;
     }

@@ -18,7 +18,7 @@ use LogisticsBundle\Form\VanReservation\Add as AddForm,
     LogisticsBundle\Entity\Driver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel,
-    \DateTime;
+    DateTime;
 
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -33,6 +33,30 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             array(
                 'form' => $form,
                 'date' => $this->getParam('date'),
+            )
+        );
+    }
+
+    public function moveAction()
+    {
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+
+        $start = new DateTime();
+        $start->setTimeStamp($this->getRequest()->getPost('start'));
+        $end = new DateTime();
+        $end->setTimeStamp($this->getRequest()->getPost('end'));
+
+        $reservation->setStartDate($start)
+            ->setEndDate($end);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                )
             )
         );
     }
@@ -90,7 +114,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 )
             )
         );
-
     }
 
     private function _getReservations()
@@ -114,5 +137,24 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $reservations = array();
 
         return $reservations;
+    }
+
+    private function _getReservation()
+    {
+        if (null === $this->getParam('id')) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $reservation = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->findOneById($this->getParam('id'));
+
+        if (null == $reservation) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        return $reservation;
     }
 }
