@@ -84,7 +84,7 @@
             });
             var name = $this.data('name');
             removeRole.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('common_admin_role', {"action": "delete"})}}/name/' + name, function (data) {
+                $.post('{{ url('common_admin_role', {"action": "delete"})}}name/' + name, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.role_removed_success').removeClass('hide');
