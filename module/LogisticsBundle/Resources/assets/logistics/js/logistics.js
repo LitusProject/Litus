@@ -169,7 +169,13 @@
 
     function _resizedEvent($this, event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
         var settings = $this.data('logisticsCalendar');
-        $.post(settings.moveUrl + event.dbid, {start: Math.round(event.start.getTime() / 1000), end: Math.round(event.end.getTime() / 1000)});
+        $.post(settings.moveUrl + event.dbid, {start: Math.round(event.start.getTime() / 1000), end: Math.round(event.end.getTime() / 1000)}, function (data) {
+            if (data && data.status == 'success') {
+                settings.updateSuccess();
+            } else {
+                settings.updateError();
+            }
+        }, 'json').error(settings.updateError);
     }
 
     function _clickedEvent($this, event, jsEvent, view) {
