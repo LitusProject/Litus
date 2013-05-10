@@ -100,10 +100,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $passenger = ('' == $formData['passenger_id'])
                     ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
 
-                $repository = $this->getEntityManager()
-                   ->getRepository('LogisticsBundle\Entity\Driver');
-
-                $driver = $repository->findOneById($formData['driver']);
+                $driver = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Driver')
+                    ->findOneById($formData['driver']);
 
                 $van = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
@@ -178,10 +177,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $passenger = ('' == $formData['passenger_id'])
                     ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
 
-                $repository = $this->getEntityManager()
-                   ->getRepository('LogisticsBundle\Entity\Driver');
-
-                $driver = $repository->findOneById($formData['driver']);
+                $driver = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Driver')
+                    ->findOneById($formData['driver']);
 
                 $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))

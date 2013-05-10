@@ -24,6 +24,7 @@
         updateSuccess: function () {},
         hideErrors: function () {},
         tNewReservation: 'New Reservation',
+        tEditReservation: 'Edit Reservation',
         tStartDate: 'Start Date',
         tEndDate: 'End Date',
         tLoad: 'Load',
@@ -153,10 +154,12 @@
                         color: reservation.driver.color,
 
                         driver: reservation.driver.name,
+                        driverId: reservation.driver.id,
                         passenger: reservation.passenger,
+                        passengerId: reservation.passengerId,
                         load: reservation.load,
                         additional: reservation.additionalInfo,
-                        dbid: reservation.id,
+                        dbid: reservation.id
                     });
                 }
 
@@ -172,19 +175,10 @@
     function _addEvent($this, startDate, endDate, allDay, jsEvent, view) {
         var settings = $this.data('logisticsCalendar');
 
-        var placement = 'rigth';
-        if (view.name == 'month') {
-            placement = startDate.getDay() < 4 && startDate.getDay() > 0 ? 'right' : 'left';
-        } else if (view.name == 'agendaWeek') {
-            placement = startDate.getDay() < 4 && startDate.getDay() > 0 ? 'right' : 'left';
-        } else if (view.name == 'agendaDay') {
-            placement = 'right';
-        }
-
         if ($this.data('currentPopover'))
             $this.data('currentPopover').popover('destroy');
         $(jsEvent.target).popover({
-            placement: placement,
+            placement: _getPopoverPlacement(startDate, view),
             title: $('<div>').append(
                 $('<b>', {'class': 'reason'}).html(settings.tNewReservation),
                 $('<div>', {'class': 'pull-right'}).append(
@@ -201,6 +195,7 @@
 
         $('.popover .start').val(_formatDate(startDate));
         $('.popover .end').val(_formatDate(endDate));
+        $('.popover .reservation_edit').hide();
 
         $('.popover #passengerSearch').typeaheadRemote(
             {
@@ -219,7 +214,8 @@
             success: function (data) {
                 if (data && data.status == 'success') {
                     settings.addSuccess();
-                    $(jsEvent.target).popover('destroy');
+                    if ($this.data('currentPopover'))
+                        $this.data('currentPopover').popover('destroy');
                     $('.typeahead').remove();
 
                     $this.fullCalendar('renderEvent', {
@@ -229,7 +225,9 @@
                         color: data.reservation.driver.color,
 
                         driver: data.reservation.driver.name,
+                        driverId: data.reservation.driver.id,
                         passenger: data.reservation.passenger,
+                        passengerId: data.reservation.passengerId,
                         load: data.reservation.load,
                         additional: data.reservation.additionalInfo,
                         dbid: data.reservation.id
@@ -279,15 +277,6 @@
 
     function _clickedEvent($this, event, jsEvent, view) {
         var settings = $this.data('logisticsCalendar');
-
-        var placement = 'rigth';
-        if (view.name == 'month') {
-            placement = event.start.getDay() < 4 && event.start.getDay() > 0 ? 'right' : 'left';
-        } else if (view.name == 'agendaWeek') {
-            placement = event.start.getDay() < 4 && event.start.getDay() > 0 ? 'right' : 'left';
-        } else if (view.name == 'agendaDay') {
-            placement = 'right';
-        }
 
         var content = $('<div>').append(
             $('<dl>', {'class': 'dl-horizontal'}).append(
@@ -345,7 +334,7 @@
         if ($this.data('currentPopover'))
             $this.data('currentPopover').popover('destroy');
         $(jsEvent.target).popover({
-            placement: placement,
+            placement: _getPopoverPlacement(event.start, view),
             title: $('<div>').append(
                 $('<b>', {'class': 'reason'}).html(event.title),
                 $('<div>', {'class': 'pull-right'}).append(
@@ -360,14 +349,14 @@
         $(jsEvent.target).popover('show');
         $this.data('currentPopover', $(jsEvent.target));
         $('.popover .delete').click(function () {
-            _deleteEvent($this, event);
+            _deleteEvent($this, event, jsEvent, view);
         });
         $('.popover .edit').click(function () {
-            console.log('edit');
+            _editEvent($this, event, jsEvent, view);
         });
     }
 
-    function _deleteEvent($this, event) {
+    function _deleteEvent($this, event, jsEvent, view) {
         var settings = $this.data('logisticsCalendar');
 
         $.post(settings.deleteUrl + event.dbid, function (data) {
@@ -376,7 +365,7 @@
 
                 if ($this.data('currentPopover'))
                     $this.data('currentPopover').popover('destroy');
-                
+
                 $this.fullCalendar('removeEvents', event._id);
             } else {
                 settings.removeError();
@@ -384,7 +373,108 @@
         }, 'json').error(settings.removeError);
     }
 
+    function _editEvent($this, event, jsEvent, view) {
+        var settings = $this.data('logisticsCalendar');
+
+        if ($this.data('currentPopover'))
+            $this.data('currentPopover').popover('destroy');
+
+        $(jsEvent.target).popover({
+            placement: _getPopoverPlacement(event.start, view),
+            title: $('<div>').append(
+                $('<b>', {'class': 'reason'}).html(settings.tEditReservation),
+                $('<div>', {'class': 'pull-right'}).append(
+                    $('<a>', {'class': 'close'}).html('&times;').click(function () {$(jsEvent.target).popover('destroy')})
+                )
+            ),
+            content: settings.form.html(),
+            trigger: 'manual',
+            html: true,
+            container: 'body'
+        });
+        $(jsEvent.target).popover('show');
+        $this.data('currentPopover', $(jsEvent.target));
+
+        $('.popover .start').val(_formatDate(event.start));
+        $('.popover .end').val(_formatDate(event.end));
+        $('.popover .reason').val(event.title);
+        $('.popover .load').val(event.load);
+        $('.popover .additional').html(event.additional);
+        $('.popover .driver').val(event.driverId);
+        $('.popover #passengerId').val(event.passengerId);
+        $('.popover .passenger').val(event.passenger);
+        $('.popover .reservation_add').hide();
+
+        $('.popover #passengerSearch').typeaheadRemote(
+            {
+                source: settings.passengerTypeaheadUrl,
+            }
+        ).change(function(e) {
+            if ($(this).data('value')) {
+                $('.popover #passengerId').val($(this).data('value').id);
+            } else {
+                $('.popover #passengerId').val('');
+            }
+        });
+
+        $('.popover form').ajaxForm({
+            url: settings.editUrl + event.dbid,
+            success: function (data) {
+                if (data && data.status == 'success') {
+                    settings.updateSuccess();
+                    if ($this.data('currentPopover'))
+                        $this.data('currentPopover').popover('destroy');
+                    $('.typeahead').remove();
+
+                    $this.fullCalendar('removeEvents', event._id);
+                    $this.fullCalendar('renderEvent', {
+                        title: data.reservation.reason,
+                        start: data.reservation.start,
+                        end: data.reservation.end,
+                        color: data.reservation.driver.color,
+
+                        driver: data.reservation.driver.name,
+                        driverId: data.reservation.driver.id,
+                        passenger: data.reservation.passenger,
+                        passengerId: data.reservation.passengerId,
+                        load: data.reservation.load,
+                        additional: data.reservation.additionalInfo,
+                        dbid: data.reservation.id
+                    });
+                } else {
+                    settings.updateError();
+                    $('.popover form').find('ul.errors').remove();
+                    if (data && data.errors) {
+                        for(element in data.errors) {
+                            var list = $('<ul>', {'class': 'errors'});
+                            for (error in data.errors[element])
+                                list.append($('<li>').html(data.errors[element][error]));
+                            var div = $('<div>', {'class': 'help-inline'}).append(list);
+                            $('.popover form').find('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
+                        }
+                    }
+                }
+            },
+            error: function(a, b, c) {
+                settings.updateError();
+            },
+            dataType: 'json'
+        });
+    }
+
     function _formatDate(date) {
         return $.fullCalendar.formatDate(date, 'dd/MM/yyyy H:mm')
+    }
+
+    function _getPopoverPlacement(startDay, view) {
+        var placement = 'rigth';
+        if (view.name == 'month') {
+            placement = startDay.getDay() < 4 && startDay.getDay() > 0 ? 'right' : 'left';
+        } else if (view.name == 'agendaWeek') {
+            placement = startDay.getDay() < 4 && startDay.getDay() > 0 ? 'right' : 'left';
+        } else if (view.name == 'agendaDay') {
+            placement = 'right';
+        }
+        return placement;
     }
 }) (jQuery);

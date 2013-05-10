@@ -18,6 +18,7 @@ return array(
     'LogisticsBundle\Form\Admin\VanReservation\Add'                    => __DIR__ . '/Form/Admin/VanReservation/Add.php',
     'LogisticsBundle\Form\Admin\VanReservation\Edit'                   => __DIR__ . '/Form/Admin/VanReservation/Edit.php',
     'LogisticsBundle\Form\VanReservation\Add'                          => __DIR__ . '/Form/VanReservation/Add.php',
+    'LogisticsBundle\Form\VanReservation\Edit'                         => __DIR__ . '/Form/VanReservation/Edit.php',
     'LogisticsBundle\Module'                                           => __DIR__ . '/Module.php',
     'LogisticsBundle\Repository\Driver'                                => __DIR__ . '/Repository/Driver.php',
     'LogisticsBundle\Repository\Reservation\ReservableResource'        => __DIR__ . '/Repository/Reservation/ReservableResource.php',

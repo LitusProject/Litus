@@ -30,7 +30,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Reservation
 {
-
     /**
      * @var The reservation's unique identifier
      *

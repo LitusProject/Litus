@@ -54,4 +54,12 @@ return array(
     'Passenger' => 'Passenger',
     'Add' => 'Add',
     'New Reservation' => 'New Reservation',
+
+    'There was an error while loading the reservations.' => 'There was an error while loading the reservations.',
+    'There was an error while deleting the reservation.' => 'There was an error while deleting the reservation.',
+    'The reservation was successfully removed.' => 'The reservation was successfully removed.',
+    'There was an error while adding the reservation.' => 'There was an error while adding the reservation.',
+    'The reservation was successfully added.' => 'The reservation was successfully added.',
+    'There was an error while updating the reservation.' => 'There was an error while updating the reservation.',
+    'The reservation was successfully updated.' => 'The reservation was successfully updated.',
 );

@@ -26,7 +26,6 @@ use CommonBundle\Entity\Users\Person,
  */
 class Driver
 {
-
     /**
      * @var \CommonBundle\Entity\Users\Person The person this driver represents
      *

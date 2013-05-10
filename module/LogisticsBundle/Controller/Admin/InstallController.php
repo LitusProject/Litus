@@ -38,7 +38,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage', 'old'
                     ),
                     'logistics_index' => array(
-                        'fetch', 'index'
+                        'add', 'delete', 'edit', 'fetch', 'index', 'move'
                     ),
                     'logistics_auth' => array(
                         'login', 'logout', 'shibboleth',

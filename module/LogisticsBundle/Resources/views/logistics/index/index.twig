@@ -11,7 +11,7 @@
     <div class="flashmessage alert alert-error fade remove_error">
         <a class="close">&times;</a>
         <div class="content">
-            {{ translate('There was an error while deleting the reservations.') }}
+            {{ translate('There was an error while deleting the reservation.') }}
         </div>
     </div>
 
@@ -25,7 +25,7 @@
     <div class="flashmessage alert alert-error fade add_error">
         <a class="close">&times;</a>
         <div class="content">
-            {{ translate('There was an error while adding the reservation. Please refresh the page to verify.') }}
+            {{ translate('There was an error while adding the reservation.') }}
         </div>
     </div>
 
@@ -39,7 +39,7 @@
     <div class="flashmessage alert alert-error fade update_error">
         <a class="close">&times;</a>
         <div class="content">
-            {{ translate('There was an error while updating the reservations.') }}
+            {{ translate('There was an error while updating the reservation.') }}
         </div>
     </div>
 
@@ -160,6 +160,7 @@
                     $('.flashmessage').removeClass('in');
                 },
                 tNewReservation: '{{ translate('New Reservation') }}',
+                tEditReservation: '{{ translate('Edit Reservation') }}',
                 tStartDate: '{{ translate('Start Date') }}',
                 tEndDate: '{{ translate('End Date') }}',
                 tLoad: '{{ translate('Load') }}',

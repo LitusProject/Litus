@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\VanReservation;
+namespace LogisticsBundle\Form\VanReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\AcademicYear,
@@ -26,7 +26,7 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
 /**
  * This form allows the user to edit the reservation.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends \LogisticsBundle\Form\Admin\VanReservation\Add
 {
@@ -46,34 +46,6 @@ class Edit extends \LogisticsBundle\Form\Admin\VanReservation\Add
         parent::__construct($entityManager, $currentYear, $name);
 
         $this->_reservation = $reservation;
-
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'reservation_edit');
-        $this->add($field);
-
-        $this->_populateFromReservation($reservation);
-    }
-
-    private function _populateFromReservation(VanReservation $reservation)
-    {
-        $data = array(
-            'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
-            'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
-            'reason' => $reservation->getReason(),
-            'load' => $reservation->getLoad(),
-            'additional_info' => $reservation->getAdditionalInfo(),
-            'driver' => $reservation->getDriver() === null ? -1 : $reservation->getDriver()->getPerson()->getId(),
-        );
-
-        if (null !== $reservation->getPassenger()) {
-            $data['passenger_id'] = $reservation->getPassenger()->getId();
-            $data['passenger'] = $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification();
-        }
-
-        $this->setData($data);
     }
 
     public function getInputFilter() {

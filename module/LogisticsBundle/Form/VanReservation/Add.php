@@ -99,9 +99,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('data-provide', 'typeahead');
         $this->add($field);
 
-        $field = new Submit('submit');
+        $field = new Submit('add');
         $field->setValue('Add')
             ->setAttribute('class', 'reservation_add btn btn-primary');
+        $this->add($field);
+
+        $field = new Submit('edit');
+        $field->setValue('Edit')
+            ->setAttribute('class', 'reservation_edit btn btn-primary');
         $this->add($field);
     }
 

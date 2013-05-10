@@ -16,6 +16,7 @@ namespace LogisticsBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Form\VanReservation\Add as AddForm,
+    LogisticsBundle\Form\VanReservation\Edit as EditForm,
     LogisticsBundle\Entity\Driver,
     LogisticsBundle\Entity\Reservation\ReservableResource,
     LogisticsBundle\Entity\Reservation\VanReservation,
@@ -82,6 +83,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 'name' => ''
             );
             if (null !== $driver) {
+                $driverArray['id'] = $driver->getPerson()->getId();
                 $driverArray['color'] = $driver->getColor();
                 $driverArray['name'] = $driver->getPerson()->getFullname();
             }
@@ -89,8 +91,11 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $passenger = $reservation->getPassenger();
 
             $passengerName = '';
-            if (null !== $passenger)
+            $passengerId = '';
+            if (null !== $passenger) {
                 $passengerName = $passenger->getFullname();
+                $passengerId = $passenger->getId();
+            }
 
             $result[] = array (
                 'start' => $reservation->getStartDate()->getTimeStamp(),
@@ -98,6 +103,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 'reason' => $reservation->getReason(),
                 'driver' => $driverArray,
                 'passenger' => $passengerName,
+                'passengerId' => $passengerId,
                 'load' => $reservation->getLoad(),
                 'additionalInfo' => $reservation->getAdditionalInfo(),
                 'id' => $reservation->getId()
@@ -131,8 +137,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
 
                 $driver = $this->getEntityManager()
-                   ->getRepository('LogisticsBundle\Entity\Driver')
-                   ->findOneById($formData['driver']);
+                    ->getRepository('LogisticsBundle\Entity\Driver')
+                    ->findOneById($formData['driver']);
 
                 $van = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
@@ -164,6 +170,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'name' => ''
                 );
                 if (null !== $driver) {
+                    $driverArray['id'] = $driver->getPerson()->getId();
                     $driverArray['color'] = $driver->getColor();
                     $driverArray['name'] = $driver->getPerson()->getFullname();
                 }
@@ -171,8 +178,11 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 $passenger = $reservation->getPassenger();
 
                 $passengerName = '';
-                if (null !== $passenger)
+                $passengerId = '';
+                if (null !== $passenger) {
                     $passengerName = $passenger->getFullname();
+                    $passengerId = $passenger->getId();
+                }
 
                 $result = array (
                     'start' => $reservation->getStartDate()->getTimeStamp(),
@@ -180,6 +190,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'reason' => $reservation->getReason(),
                     'driver' => $driverArray,
                     'passenger' => $passengerName,
+                    'passengerId' => $passengerId,
                     'load' => $reservation->getLoad(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
                     'id' => $reservation->getId()
@@ -241,6 +252,114 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         return new ViewModel(
             array(
                 'result' => array('status' => 'success'),
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        $this->initAjax();
+
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+
+        if ($this->getRequest()->isPost()) {
+            $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $reservation);
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+
+                $passenger = ('' == $formData['passenger_id'])
+                    ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
+
+                $driver = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Driver')
+                    ->findOneById($formData['driver']);
+
+                $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    ->setReason($formData['reason'])
+                    ->setLoad($formData['load'])
+                    ->setAdditionalInfo($formData['additional_info'])
+                    ->setDriver($driver)
+                    ->setPassenger($passenger);
+
+                $this->getEntityManager()->persist($reservation);
+                $this->getEntityManager()->flush();
+
+                $driverArray = array(
+                    'color' => '#444444',
+                    'name' => ''
+                );
+                if (null !== $driver) {
+                    $driverArray['id'] = $driver->getPerson()->getId();
+                    $driverArray['color'] = $driver->getColor();
+                    $driverArray['name'] = $driver->getPerson()->getFullname();
+                }
+
+                $passenger = $reservation->getPassenger();
+
+                $passengerName = '';
+                $passengerId = '';
+                if (null !== $passenger) {
+                    $passengerName = $passenger->getFullname();
+                    $passengerId = $passenger->getId();
+                }
+
+                $result = array (
+                    'start' => $reservation->getStartDate()->getTimeStamp(),
+                    'end' => $reservation->getEndDate()->getTimeStamp(),
+                    'reason' => $reservation->getReason(),
+                    'driver' => $driverArray,
+                    'passenger' => $passengerName,
+                    'passengerId' => $passengerId,
+                    'load' => $reservation->getLoad(),
+                    'additionalInfo' => $reservation->getAdditionalInfo(),
+                    'id' => $reservation->getId()
+                );
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'success',
+                            'reservation' => $result,
+                        )
+                    )
+                );
+            } else {
+                $errors = $form->getMessages();
+                $formErrors = array();
+
+                foreach ($form->getElements() as $key => $element) {
+                    if (!isset($errors[$element->getName()]))
+                        continue;
+
+                    $formErrors[$element->getAttribute('id')] = array();
+
+                    foreach ($errors[$element->getName()] as $error) {
+                        $formErrors[$element->getAttribute('id')][] = $error;
+                    }
+                }
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'error',
+                            'errors' => $formErrors,
+                        )
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'error',
+                )
             )
         );
     }
