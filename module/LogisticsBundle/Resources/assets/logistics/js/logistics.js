@@ -43,6 +43,10 @@
             _init($(this));
 
             return this;
+        },
+        gotoDate: function (year, month, day) {
+            $(this).fullCalendar('gotoDate', year, month-1, day);
+            return this;
         }
     };
 
@@ -65,7 +69,7 @@
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            editable: true,
+            editable: settings.editable,
             disableResizing: false,
             disableDragging: false,
             slotMinutes: 15,

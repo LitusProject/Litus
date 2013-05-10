@@ -170,6 +170,10 @@
                 tDelete: '{{ translate('Delete') }}',
                 tEdit: '{{ translate('Edit') }}',
             });
+            {% if date %}
+                var dateArray = '{{ date }}'.split('-');
+                $('#calendar').logisticsCalendar('gotoDate', dateArray[0], dateArray[1], dateArray[2]);
+            {% endif %}
         });
     </script>
 {% endblock %}
