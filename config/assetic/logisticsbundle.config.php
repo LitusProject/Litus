@@ -41,6 +41,7 @@ return array(
             '@common_jquery',
             '@common_jqueryui',
             '@common_typeahead_remote',
+            '@common_jquery_form',
             '@fullcalendar_css',
             '@logistics_js',
             '@bootstrap_css',

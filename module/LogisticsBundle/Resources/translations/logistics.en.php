@@ -44,4 +44,14 @@ return array(
     'month' => 'month',
     'week' => 'week',
     'day' => 'day',
+
+    'Start Date' => 'Start Date',
+    'End Date' => 'End Date',
+    'Reason' => 'Reason',
+    'Load' => 'Load',
+    'Additional Information' => 'Additional Information',
+    'Driver' => 'Driver',
+    'Passenger' => 'Passenger',
+    'Add' => 'Add',
+    'New Reservation' => 'New Reservation',
 );

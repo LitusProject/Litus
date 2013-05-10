@@ -15,10 +15,24 @@
         </div>
     </div>
 
+    <div class="flashmessage alert alert-success fade remove_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The reservation was successfully removed.') }}
+        </div>
+    </div>
+
     <div class="flashmessage alert alert-error fade add_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('There was an error while adding the reservation. Please refresh the page to verify.') }}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-success fade add_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The reservation was successfully added.') }}
         </div>
     </div>
 
@@ -37,6 +51,13 @@
     </div>
 
     <div id="calendar"></div>
+
+    <div id="reservationForm" class="hide">
+        {% if has_access('logistics_index', 'add') %}
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -48,7 +69,13 @@
             $('#calendar').logisticsCalendar({
                 fetchUrl: '{{ url('logistics_reservation_fetch') }}',
                 moveUrl: '{{ url('logistics_index', {'action': 'move'}) }}',
-                editable: {% if has_access('logistics_admin_van_reservation', 'add') %}true{% else %}false {% endif %},
+                addUrl: '{{ url('logistics_index', {'action': 'add'}) }}',
+                editUrl: '{{ url('logistics_index', {'action': 'edit'}) }}',
+                deleteUrl: '{{ url('logistics_index', {'action': 'delete'}) }}',
+                passengerTypeaheadUrl: '{{ url("common_admin_academic_typeahead", {}) }}',
+                editable: {% if has_access('logistics_index', 'add') %}true{% else %}false {% endif %},
+                deletable: {% if has_access('logistics_index', 'delete') %}true{% else %}false {% endif %},
+                form: $('#reservationForm'),
                 monthNames: [
                     '{{ translate('January') }}',
                     '{{ translate('February') }}',
@@ -109,9 +136,17 @@
                     $('.flashmessage').removeClass('in');
                     $('.remove_error').addClass('in');
                 },
+                removeSuccess: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.remove_success').addClass('in');
+                },
                 addError: function () {
                     $('.flashmessage').removeClass('in');
                     $('.add_error').addClass('in');
+                },
+                addSuccess: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.add_success').addClass('in');
                 },
                 updateError: function () {
                     $('.flashmessage').removeClass('in');
@@ -124,6 +159,15 @@
                 hideErrors: function () {
                     $('.flashmessage').removeClass('in');
                 },
+                tNewReservation: '{{ translate('New Reservation') }}',
+                tStartDate: '{{ translate('Start Date') }}',
+                tEndDate: '{{ translate('End Date') }}',
+                tLoad: '{{ translate('Load') }}',
+                tAdditionalInformation: '{{ translate('Additional Information') }}',
+                tDriver: '{{ translate('Driver') }}',
+                tPassenger: '{{ translate('Passenger') }}',
+                tDelete: '{{ translate('Delete') }}',
+                tEdit: '{{ translate('Edit') }}',
             });
         });
     </script>

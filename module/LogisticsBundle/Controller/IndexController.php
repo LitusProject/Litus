@@ -14,9 +14,11 @@
 
 namespace LogisticsBundle\Controller;
 
-use LogisticsBundle\Form\VanReservation\Add as AddForm,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    LogisticsBundle\Form\VanReservation\Add as AddForm,
     LogisticsBundle\Entity\Driver,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
+    LogisticsBundle\Entity\Reservation\ReservableResource,
+    LogisticsBundle\Entity\Reservation\VanReservation,
     Zend\View\Model\ViewModel,
     DateTime;
 
@@ -90,18 +92,14 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             if (null !== $passenger)
                 $passengerName = $passenger->getFullname();
 
-            $additionalInfo = $reservation->getAdditionalInfo();
-
-            $load = $reservation->getLoad();
-
             $result[] = array (
                 'start' => $reservation->getStartDate()->getTimeStamp(),
                 'end' => $reservation->getEndDate()->getTimeStamp(),
                 'reason' => $reservation->getReason(),
                 'driver' => $driverArray,
                 'passenger' => $passengerName,
-                'load' => $load,
-                'additionalInfo' => $additionalInfo,
+                'load' => $reservation->getLoad(),
+                'additionalInfo' => $reservation->getAdditionalInfo(),
                 'id' => $reservation->getId()
             );
         }
@@ -112,6 +110,137 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'status' => 'success',
                     'reservations' => (object) $result
                 )
+            )
+        );
+    }
+
+    public function addAction()
+    {
+        $this->initAjax();
+
+        if ($this->getRequest()->isPost()) {
+            $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+
+                $passenger = ('' == $formData['passenger_id'])
+                    ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
+
+                $driver = $this->getEntityManager()
+                   ->getRepository('LogisticsBundle\Entity\Driver')
+                   ->findOneById($formData['driver']);
+
+                $van = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
+                    ->findOneByName(VanReservation::VAN_RESOURCE_NAME);
+
+                if (null === $van) {
+                    $van = new ReservableResource(VanReservation::VAN_RESOURCE_NAME);
+                    $this->getEntityManager()->persist($van);
+                }
+
+                $reservation = new VanReservation(
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $formData['reason'],
+                    $formData['load'],
+                    $van,
+                    $formData['additional_info'],
+                    $this->getAuthentication()->getPersonObject()
+                );
+
+                $reservation->setDriver($driver);
+                $reservation->setPassenger($passenger);
+
+                $this->getEntityManager()->persist($reservation);
+                $this->getEntityManager()->flush();
+
+                $driverArray = array(
+                    'color' => '#444444',
+                    'name' => ''
+                );
+                if (null !== $driver) {
+                    $driverArray['color'] = $driver->getColor();
+                    $driverArray['name'] = $driver->getPerson()->getFullname();
+                }
+
+                $passenger = $reservation->getPassenger();
+
+                $passengerName = '';
+                if (null !== $passenger)
+                    $passengerName = $passenger->getFullname();
+
+                $result = array (
+                    'start' => $reservation->getStartDate()->getTimeStamp(),
+                    'end' => $reservation->getEndDate()->getTimeStamp(),
+                    'reason' => $reservation->getReason(),
+                    'driver' => $driverArray,
+                    'passenger' => $passengerName,
+                    'load' => $reservation->getLoad(),
+                    'additionalInfo' => $reservation->getAdditionalInfo(),
+                    'id' => $reservation->getId()
+                );
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'success',
+                            'reservation' => $result,
+                        )
+                    )
+                );
+            } else {
+                $errors = $form->getMessages();
+                $formErrors = array();
+
+                foreach ($form->getElements() as $key => $element) {
+                    if (!isset($errors[$element->getName()]))
+                        continue;
+
+                    $formErrors[$element->getAttribute('id')] = array();
+
+                    foreach ($errors[$element->getName()] as $error) {
+                        $formErrors[$element->getAttribute('id')][] = $error;
+                    }
+                }
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'error',
+                            'errors' => $formErrors,
+                        )
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'error',
+                )
+            )
+        );
+    }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($reservation);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array('status' => 'success'),
             )
         );
     }
