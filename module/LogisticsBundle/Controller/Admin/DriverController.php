@@ -44,7 +44,6 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
         $form = new Add($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            // Form is being posted, persist the new driver.
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

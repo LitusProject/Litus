@@ -44,4 +44,14 @@ return array(
     'month' => 'maand',
     'week' => 'week',
     'day' => 'dag',
+
+    'Start Date' => 'Start Datum',
+    'End Date' => 'Eind Datum',
+    'Reason' => 'Reden',
+    'Load' => 'Lading',
+    'Additional Information' => 'Extra Informatie',
+    'Driver' => 'Bestuurder',
+    'Passenger' => 'Passagier',
+    'Add' => 'Toevoegen',
+    'New Reservation' => 'Nieuwe Reservatie',
 );
