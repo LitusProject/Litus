@@ -28,13 +28,25 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        return new ViewModel();
+        $logoPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path');
+
+        return new ViewModel(
+            array(
+                'logoPath' => $logoPath,
+            )
+        );
     }
 
     public function viewAction()
     {
         if (!($page = $this->_getPage()))
             return new ViewModel();
+        
+        $logoPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path');
 
         $events = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Event')
@@ -50,6 +62,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
+                'logoPath' => $logoPath,
                 'page' => $page,
                 'events' => $events,
                 'internships' => $internships,
@@ -57,33 +70,6 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             )
         );
     }
-
-    public function logoAction()
-    {
-        if (!($company = $this->_getCompanyByLogo()))
-            return new ViewModel();
-
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.logo_path') . '/';
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => mime_content_type($filePath . $company->getLogo()),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($filePath . $company->getLogo(), 'r');
-        $data = fread($handle, filesize($filePath . $company->getLogo()));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
-            )
-        );
-    }
-
 
     public function fileAction()
     {

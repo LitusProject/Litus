@@ -125,6 +125,7 @@ return array(
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
             '@bootstrap_js_rowlink',
+            '@common_spin_js',
             '@career_css',
         ),
         'br_career_vacancy' => array(

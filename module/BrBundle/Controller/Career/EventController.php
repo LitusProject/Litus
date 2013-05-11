@@ -46,9 +46,14 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     {
         $event = $this->_getEvent();
 
+        $logoPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path');
+
         return new ViewModel(
             array(
                 'event' => $event,
+                'logoPath' => $logoPath,
             )
         );
     }

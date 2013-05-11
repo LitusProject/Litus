@@ -27,15 +27,12 @@
 
             $('#searchbox').bind("input propertychange", function(){
                 var $this = $(this);
-                var delay = 500; // delay after last input
+                var delay = 500;
 
                 clearTimeout($this.data("timer"));
                 $this.data("timer", setTimeout(function(){
                     $this.removeData("timer");
-
-                    // Do your stuff after 2 seconds of last user input
                     performSearch('%25' + $('#searchbox').val() + '%25');
-
                 }, delay));
             });
 
@@ -43,6 +40,12 @@
         });
 
         function performSearch(text) {
+            $('#companies').html('').spin({
+                color: '#ccc',
+                length: 0,
+                width: 4,
+                lines: 10
+            });
             $.post('{{ url('br_career_company', {"action": "search"})}}' + text, function (data) {
                 $('#companies').html('');
                 $.each(data, function(index, element) {
@@ -52,7 +55,7 @@
                             <a class="company-container thumbnail" href="{{ url("br_career_company", {"action": "view"}) }}' + element.slug + '">\
                                     <div class="company-logo">'
                                         + (element.logo ?
-                                            '<img src="{{ url("br_career_company", {"action": "logo"}) }}id/' + element.logo + '" alt="' + element.name + '"/>'
+                                            '<img src="/{{ logoPath }}/' + element.logo + '" alt="' + element.name + '"/>'
                                         :
                                             '<h1 class="company-logo-replacement">' + element.name + '</h1>')
                                         + '</div><div class="name-container"><center><span class="company-name">' + element.name + '</span></center></div></a></li>'

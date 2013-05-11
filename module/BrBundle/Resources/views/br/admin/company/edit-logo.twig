@@ -12,7 +12,7 @@
 	    <br />
 	    <h1>Current Logo</h1>
 	    {% if company.getLogo() %}
-	        <img src="{{ url('br_admin_company', {'action': 'logo', 'id': company.getLogo()}) }}" alt="{{ company.getName() }}">
+	        <img src="/{{ logoPath }}/{{ company.getLogo() }}" alt="{{ company.getName() }}">
 	    {% else %}
 	        <i>This company currently has no logo.</i>
 	    {% endif %}

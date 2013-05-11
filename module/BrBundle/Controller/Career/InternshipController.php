@@ -33,10 +33,15 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             $this->getParam('page')
         );
 
+        $logoPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path');
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'logoPath' => $logoPath,
             )
         );
     }
@@ -44,10 +49,15 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
     public function viewAction()
     {
         $internship = $this->_getInternship();
+        
+        $logoPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path');
 
         return new ViewModel(
             array(
                 'internship' => $internship,
+                'logoPath' => $logoPath,
             )
         );
     }

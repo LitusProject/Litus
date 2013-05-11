@@ -13,7 +13,7 @@
         {% endif %}
             {% if event.getCompany().getLogo() %}
 
-                    <img src="{{ url('br_career_company', {'action': 'logo', 'id': event.getCompany().getLogo()}) }}" alt="{{ event.getCompany().getName() }}">
+                    <img src="/{{ logoPath }}/{{ event.getCompany().getLogo() }}" alt="{{ event.getCompany().getName() }}">
             {% else %}
 
                 <h2><center class="company-name">{{ event.getCompany().getName() }}</center></h2>

@@ -304,16 +304,16 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         $form = new LogoForm();
 
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path');
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                $filePath = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('br.logo_path');
 
                 $file = new FileTransfer();
                 $file->receive();
@@ -359,32 +359,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'company' => $company,
                 'form' => $form,
-            )
-        );
-    }
-
-    public function logoAction()
-    {
-        if (!($company = $this->_getCompanyByLogo()))
-            return new ViewModel();
-
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.logo_path') . '/';
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-        	'Content-Type' => mime_content_type($filePath . $company->getLogo()),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($filePath . $company->getLogo(), 'r');
-        $data = fread($handle, filesize($filePath . $company->getLogo()));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
+                'logoPath' => $filePath,
             )
         );
     }

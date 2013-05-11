@@ -28,11 +28,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installConfig(
             array(
                 array(
-                    'key'         => 'br.logo_path',
-                    'value'       => 'data/br/companies',
-                    'description' => 'The path to the company logo files',
-                ),
-                array(
                     'key'         => 'br.file_path',
                     'value'       => 'data/br/files',
                     'description' => 'The path to the company files',
@@ -93,7 +88,7 @@ The VTK Corporate Team',
             array(
                 'brbundle' => array(
                     'br_admin_company' => array(
-                        'add', 'delete', 'editLogo', 'edit', 'logo', 'manage'
+                        'add', 'delete', 'editLogo', 'edit', 'manage'
                     ),
                     'br_admin_company_event' => array(
                         'add', 'delete', 'edit', 'editPoster', 'manage', 'progress', 'upload'
@@ -115,7 +110,7 @@ The VTK Corporate Team',
                         'index'
                     ),
                     'br_career_company' => array(
-                        'view', 'overview', 'file', 'search', 'logo',
+                        'view', 'overview', 'file', 'search',
                     ),
                     'br_career_event' => array(
                         'view', 'overview'
