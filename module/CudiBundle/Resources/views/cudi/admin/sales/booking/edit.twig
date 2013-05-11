@@ -333,7 +333,11 @@
             e.preventDefault();
             var removeBooking = $('#removeBooking');
             removeBooking.find('.delete').unbind('click').click(function () {
-                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "delete", "id": booking.getId()})}}number/' + removeBooking.find('#removeNbBookings').val();
+                if (removeBooking.find('#removeNbBookings').val())
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "delete", "id": booking.getId()})}}number/' + removeBooking.find('#removeNbBookings').val();
+                else
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "delete", "id": booking.getId()})}}';
+
             });
             removeBooking.modal();
         }
@@ -344,7 +348,10 @@
             e.preventDefault();
             var assignBooking = $('#assignBooking');
             assignBooking.find('.assign').unbind('click').click(function () {
-                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "assign", "id": booking.getId()})}}number/' +assignBooking.find('#assignNbBookings').val();
+                if (assignBooking.find('#assignNbBookings').val())
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "assign", "id": booking.getId()})}}number/' + assignBooking.find('#assignNbBookings').val();
+                else
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "assign", "id": booking.getId()})}}';
             });
             assignBooking.modal();
         }
@@ -355,7 +362,10 @@
             e.preventDefault();
             var unassignBooking = $('#unassignBooking');
             unassignBooking.find('.unassign').unbind('click').click(function () {
-                window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}number/' + unassignBooking.find('#unassignNbBookings').val();
+                if (unassignBooking.find('#unassignNbBookings').val())
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}number/' + unassignBooking.find('#unassignNbBookings').val();
+                else
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "unassign", "id": booking.getId()})}}';
             });
             unassignBooking.modal();
         }

@@ -262,7 +262,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($booking = $this->_getBooking()))
             return new ViewModel();
 
-        if ($this->getParam('number') < $booking->getNumber()) {
+        if (is_numeric($this->getParam('number')) && $this->getParam('number') < $booking->getNumber()) {
             $booking->setNumber($booking->getNumber() - $this->getParam('number'));
         } else {
             $this->getEntityManager()->remove($booking);
@@ -311,7 +311,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if ($this->getParam('number') < $booking->getNumber()) {
+        if (is_numeric($this->getParam('number')) && $this->getParam('number') < $booking->getNumber()) {
             $new = new Booking(
                 $this->getEntityManager(),
                 $booking->getPerson(),
@@ -361,7 +361,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($booking = $this->_getBooking()))
             return new ViewModel();
 
-        if ($this->getParam('number') < $booking->getNumber()) {
+        if (is_numeric($this->getParam('number')) && $this->getParam('number') < $booking->getNumber()) {
             $new = new Booking(
                 $this->getEntityManager(),
                 $booking->getPerson(),
