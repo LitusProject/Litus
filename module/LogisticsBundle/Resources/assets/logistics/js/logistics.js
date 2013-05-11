@@ -78,6 +78,7 @@
             firstHour: 7,
             firstDay: 1,
             lazyFetching: false,
+            unselectAuto: false,
             defaultView: 'agendaWeek',
             timeFormat: {
                 agenda: 'H:mm{ - H:mm}',
@@ -186,7 +187,10 @@
             title: $('<div>').append(
                 $('<b>', {'class': 'reason'}).html(settings.tNewReservation),
                 $('<div>', {'class': 'pull-right'}).append(
-                    $('<a>', {'class': 'close'}).html('&times;').click(function () {$(jsEvent.target).popover('destroy')})
+                    $('<a>', {'class': 'close'}).html('&times;').click(function () {
+                        $(jsEvent.target).popover('destroy');
+                        $this.fullCalendar('unselect');
+                    })
                 )
             ),
             content: settings.form.html(),
@@ -217,6 +221,7 @@
             url: settings.addUrl,
             success: function (data) {
                 if (data && data.status == 'success') {
+                    $this.fullCalendar('unselect');
                     settings.addSuccess();
                     if ($this.data('currentPopover'))
                         $this.data('currentPopover').popover('destroy');
