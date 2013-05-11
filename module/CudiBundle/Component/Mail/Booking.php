@@ -62,7 +62,7 @@ class Booking
 
         $openingHourText = '';
         foreach($openingHours as $openingHour) {
-            $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
+            $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
 
             if (strlen($openingHour->getComment($language)) > 0)
                 $openingHourText .= ' (' . $openingHour->getComment($language) . ')';
