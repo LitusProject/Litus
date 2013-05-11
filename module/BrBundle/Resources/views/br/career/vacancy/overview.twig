@@ -8,8 +8,10 @@
                 <tr>
                     <td width="120">
                         <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
-                            {% if vacancy.getCompany().getLogo() %}
-                                    <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
+                            {% if vacancy.getCompany().getLogo() is not empty %}
+                                <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
+                            {% else %}
+                                <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
                             {% endif %}
                         </a>
                     </td>

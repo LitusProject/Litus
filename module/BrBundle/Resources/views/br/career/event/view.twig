@@ -11,13 +11,13 @@
         {% if event.getCompany().getPage().hasYear(currentAcademicYear) %}
         <a href="{{ url('br_career_company',{ 'action': 'view', 'company': event.getCompany().getSlug() }) }}">
         {% endif %}
+
             {% if event.getCompany().getLogo() %}
-
-                    <img src="/{{ logoPath }}/{{ event.getCompany().getLogo() }}" alt="{{ event.getCompany().getName() }}">
+                <img src="/{{ logoPath }}/{{ event.getCompany().getLogo() }}" alt="{{ event.getCompany().getName() }}">
             {% else %}
-
                 <h2><center class="company-name">{{ event.getCompany().getName() }}</center></h2>
             {% endif %}
+        
         {% if event.getCompany().getPage().hasYear(currentAcademicYear) %}
         </a>
         {% endif %}

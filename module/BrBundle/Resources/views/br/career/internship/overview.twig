@@ -8,8 +8,10 @@
                 <tr>
                     <td width="120">
                         <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
-                            {% if internship.getCompany().getLogo() %}
-                                    <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ internship.getCompany().getName() }}">
+                            {% if internship.getCompany().getLogo() is not empty %}
+                                <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ internship.getCompany().getName() }}">
+                            {% else %}
+                                <center class="company-name">{{ internship.getCompany().getName() }}</center>
                             {% endif %}
                         </a>
                     </td>
@@ -25,5 +27,4 @@
         </table>
 
         {% include 'site/partials/paginationControl.twig' %}
-
 {% endblock %}
