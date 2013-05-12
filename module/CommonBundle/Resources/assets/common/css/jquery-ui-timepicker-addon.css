@@ -8,3 +8,8 @@
 .ui-timepicker-rtl{ direction: rtl; }
 .ui-timepicker-rtl dl { text-align: right; }
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
+
+/* patch datepicker tables in admin, remove background images */
+table.ui-datepicker-calendar th, table.ui-datepicker-calendar td {
+    background: none !important;
+}
