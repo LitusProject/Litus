@@ -72,6 +72,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('date');
         $field->setLabel('Date')
             ->setAttribute('placeholder', 'dd/mm/yyyy')
+            ->setAttribute('data-datepicker', true)
             ->setRequired();
         $this->add($field);
 

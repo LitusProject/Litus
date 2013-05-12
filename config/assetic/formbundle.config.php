@@ -28,6 +28,10 @@ return array(
             '@gollum_css',
             '@gollum_js',
             '@admin_css',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'form_admin_form_field' => array(
             '@common_jquery',

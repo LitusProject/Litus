@@ -401,6 +401,21 @@ return array(
                             'common/js/jquery-ui.min.js',
                         ),
                     ),
+                    'common_jqueryui_css' => array(
+                        'assets' => array(
+                            'common/css/jquery-ui.min.css',
+                        ),
+                    ),
+                    'common_jqueryui_datepicker' => array(
+                        'assets' => array(
+                            'common/js/jquery-ui-timepicker-addon.js',
+                        ),
+                    ),
+                    'common_jqueryui_datepicker_css' => array(
+                        'assets' => array(
+                            'common/css/jquery-ui-timepicker-addon.css',
+                        ),
+                    ),
                     'common_jquery_form' => array(
                         'assets'  => array(
                             'common/js/jquery.form.js',
