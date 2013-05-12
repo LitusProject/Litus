@@ -34,7 +34,7 @@
                     <td>{% if photo.isCensored() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('gallery_admin_gallery', 'viewPhoto') %}
-                            <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="view">View</a>
+                            <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getFilePath() }}" class="view">View</a>
                         {% endif %}
 
                         {% if not photo.isCensored() %}

@@ -8,9 +8,9 @@
     <div id="images">
         {% for photo in album.getPhotos() %}
             {% if not photo.isCensored() %}
-                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="imageGallery" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getThumbPath() }}"></a>
+                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getFilePath() }}" class="imageGallery" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getThumbPath() }}"></a>
             {% elseif photo.isCensored() and allowCensor %}
-                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="imageGallery censored" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getThumbPath() }}"></a>
+                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getFilePath() }}" class="imageGallery censored" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getThumbPath() }}"></a>
             {% endif %}
         {% endfor %}
     </div>
