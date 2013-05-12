@@ -80,14 +80,6 @@ class Photo
     /**
      * @return string
      */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
-    }
-
-    /**
-     * @return string
-     */
     public function getThumbPath()
     {
         return 'thumbs/' . $this->filePath;
