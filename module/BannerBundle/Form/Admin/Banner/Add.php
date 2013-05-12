@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
+    BannerBundle\Controller\Admin\BannerController,
     BannerBundle\Entity\Nodes\Banner,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -75,7 +76,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new File('file');
-        $field->setLabel('Image')
+        $field->setLabel('Image (' . BannerController::BANNER_WIDTH . ' x ' . BannerController::BANNER_HEIGHT . ')')
             ->setRequired(true);
         $this->add($field);
 
