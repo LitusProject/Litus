@@ -28,6 +28,10 @@ return array(
             '@admin_css',
             '@common_jquery_form',
             '@common_typeahead_remote',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'shift_admin_shift_counter' => array(
             '@common_jquery',

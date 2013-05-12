@@ -22,8 +22,6 @@ return array(
 
         'notification_admin_notification' => array(
             '@common_jquery',
-            '@common_jqueryui',
-            '@common_jqueryui_datepicker',
             '@admin_js',
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
@@ -31,6 +29,8 @@ return array(
             '@gollum_css',
             '@gollum_js',
             '@admin_css',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),

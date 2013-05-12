@@ -42,6 +42,10 @@ return array(
             '@common_form_upload_progress',
             '@gollum_css',
             '@gollum_js',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'br_admin_company_job' => array(
             '@common_jquery',
@@ -51,6 +55,10 @@ return array(
             '@bootstrap_js_modal',
             '@gollum_css',
             '@gollum_js',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'br_admin_company_user' => array(
             '@common_jquery',

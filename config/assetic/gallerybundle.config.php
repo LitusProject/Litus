@@ -28,6 +28,10 @@ return array(
             '@bootstrap_js_modal',
             '@plupload_css',
             '@plupload_js',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
 
         'gallery' => array(
