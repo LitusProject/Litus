@@ -40,7 +40,10 @@ class Driver extends EntityRepository
             ->from('LogisticsBundle\Entity\Driver', 'd')
             ->innerJoin('d.years', 'y')
             ->where(
-                $query->expr()->eq('y', ':year')
+                $query->expr()->andX(
+                    $query->expr()->eq('d.removed', 'false'),
+                    $query->expr()->eq('y', ':year')
+                )
             )
             ->setParameter('year', $year)
             ->getQuery()
