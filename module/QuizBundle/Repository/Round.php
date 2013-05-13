@@ -31,4 +31,28 @@ class Round extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Gets the order for the next round in the quiz
+     * @param \QuizBundle\Entity\Quiz $quiz
+     * @return int
+     */
+    public function getNextRoundOrderForQuiz(QuizEntity $quiz)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('round')
+            ->from('QuizBundle\Entity\Round', 'round')
+            ->where(
+                $query->expr()->eq('round.quiz', ':quiz')
+            )
+            ->orderBy('round.order', 'DESC')
+            ->setParameter('quiz', $quiz->getId())
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if($result === null)
+            return 1;
+        return $result->getOrder() + 1;
+    }
 }

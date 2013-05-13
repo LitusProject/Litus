@@ -76,6 +76,13 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
+        $next_team_number = $this->getEntityManager()
+                ->getRepository('QuizBundle\Entity\Team')
+                ->getNextTeamNumberForQuiz($quiz);
+
+        $form->get('number')
+            ->setValue($next_team_number);
+
         return new ViewModel(
             array(
                 'quiz' => $quiz,

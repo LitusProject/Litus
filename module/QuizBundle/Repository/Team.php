@@ -31,4 +31,28 @@ class Team extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Gets the number for the next team in the quiz
+     * @param \QuizBundle\Entity\Quiz $quiz
+     * @return int
+     */
+    public function getNextTeamNumberForQuiz(QuizEntity $quiz)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('team')
+            ->from('QuizBundle\Entity\Team', 'team')
+            ->where(
+                $query->expr()->eq('team.quiz', ':quiz')
+            )
+            ->orderBy('team.number', 'DESC')
+            ->setParameter('quiz', $quiz->getId())
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if($result === null)
+            return 1;
+        return $result->getNumber() + 1;
+    }
 }
