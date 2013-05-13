@@ -13,14 +13,16 @@ use Doctrine\ORM\EntityRepository,
  */
 class Driver extends EntityRepository
 {
-
     public function findOneById($id)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('LogisticsBundle\Entity\Driver', 'd')
             ->where(
-                $query->expr()->eq('d.person', ':id')
+                $query->expr()->andX(
+                    $query->expr()->eq('d.removed', 'false'),
+                    $query->expr()->eq('d.person', ':id')
+                )
             )
             ->setParameter('id', $id)
             ->getQuery()
@@ -50,9 +52,12 @@ class Driver extends EntityRepository
     public function findAll()
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('driver')
-            ->from('LogisticsBundle\Entity\Driver', 'driver')
-            ->innerJoin('driver.person', 'p')
+        $resultSet = $query->select('d')
+            ->from('LogisticsBundle\Entity\Driver', 'd')
+            ->innerJoin('d.person', 'p')
+            ->where(
+                $query->expr()->eq('d.removed', 'false')
+            )
             ->orderBy('p.lastName', 'ASC')
             ->getQuery()
             ->getResult();

@@ -69,9 +69,18 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
 
                 $color = $formData['color'];
 
-                $driver = new Driver($person, $color);
+                $driver = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Driver')
+                    ->findOneByPerson($person);
+
+                if (!$driver) {
+                    $driver = new Driver($person, $color);
+                    $this->getEntityManager()->persist($driver);
+                } else {
+                    $driver->setRemoved(false);
+                }
+
                 $driver->setYears($years);
-                $this->getEntityManager()->persist($driver);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -161,7 +170,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
         if (!($driver = $this->_getDriver()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($driver);
+        $driver->setRemoved(true);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

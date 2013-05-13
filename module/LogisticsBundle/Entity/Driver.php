@@ -52,6 +52,13 @@ class Driver
     private $color;
 
     /**
+     * @var boolean The flag this driver is active of not
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $removed;
+
+    /**
      * Creates a new driver for the given person
      *
      * @param \CommonBundle\Entity\Users\Person $person The person to mark as a driver.
@@ -62,6 +69,7 @@ class Driver
         $this->person = $person;
         $this->color = $color;
         $this->years = new ArrayCollection();
+        $this->removed = false;
     }
 
     /**
@@ -83,7 +91,7 @@ class Driver
 
     /**
      * @param array $years Sets the years in which this person was a driver.
-     * @return \LogisticsBundle\Entity\Driver This
+     * @return \LogisticsBundle\Entity\Driver
      */
     public function setYears(array $years) {
         $this->years = new ArrayCollection($years);
@@ -104,11 +112,28 @@ class Driver
 
     /**
      * @param string $color Sets the color used for this driver.
-     * @return \LogisticsBundle\Entity\Driver This
+     * @return \LogisticsBundle\Entity\Driver
      */
     public function setColor($color) {
         $this->color = $color;
         return $this;
     }
 
+    /**
+     * @param boolean $removed
+     * @return \LogisticsBundle\Entity\Driver
+     */
+    public function setRemoved($removed)
+    {
+        $this->removed = $removed;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRemoved()
+    {
+        return $this->removed;
+    }
 }
