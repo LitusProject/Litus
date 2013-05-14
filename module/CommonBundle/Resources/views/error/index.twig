@@ -83,6 +83,14 @@
             {% if exception is defined %}
                 <h3>Exception Information</h3>
                 <p>
+                    {# Hack to get the exception class name
+                        exception.__toString() returns
+                        "exception '<class>' in <file>:<line> Stack Trace: <trace>"
+                        Split it on a single quote and take the second piece.
+                    #}
+                    <b>Type:</b> {{ exception.__toString()|split("'")[1] }}
+                </p>
+                <p>
                     <b>Message:</b> {{ exception.getMessage() }}
                 </p>
 
