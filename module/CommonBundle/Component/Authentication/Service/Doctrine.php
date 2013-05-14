@@ -66,10 +66,11 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @param \Zend\Authentication\Storage\StorageInterface $storage The persistent storage handler
      * @param string $namespace The namespace the storage handlers will use
      * @param string $cookieSuffix The cookie suffix that is used to store the session cookie
+     * @param \CommonBundle\Component\Authentication\Action $action The action that should be taken after authentication
      * @throws \CommonBundle\Component\Authentication\Service\Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
-        EntityManager $entityManager, $entityName, $expire, StorageInterface $storage, $namespace, $cookieSuffix
+        EntityManager $entityManager, $entityName, $expire, StorageInterface $storage, $namespace, $cookieSuffix, Action $action
     )
     {
         parent::__construct($storage);
@@ -79,6 +80,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
         $this->_namespace = $namespace;
         $this->_expire = $expire;
         $this->_cookieSuffix = $cookieSuffix;
+        $this->_action = $action;
 
         if ('\\' == substr($entityName, 0, 1)) {
             throw new Exception\InvalidArgumentException(

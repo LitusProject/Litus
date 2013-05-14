@@ -491,6 +491,8 @@ abstract class Person
      */
     public function setFailedLogins($failedLogins)
     {
+        if($failedLogins > 32767) // Limit of Postgres smallint datatype
+            $failedLogins = 32767;
         $this->failedLogins = $failedLogins;
         return $this;
     }
