@@ -469,7 +469,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $number = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Booking')
-            ->expireBookings();
+            ->expireBookings($this->getMailTransport());
 
         $this->getEntityManager()->flush();
 

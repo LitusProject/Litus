@@ -134,7 +134,7 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.booking_expire_warning_mail_subject',
-                    'value'       => 'Reservation Expiration Warning',
+                    'value'       => 'Assignment Expiration Warning',
                     'description' => 'The subject of the mail sent by warning for expirations',
                 ),
                 array(
@@ -150,6 +150,23 @@ Please cancel a reservation if you don\'t need the article, this way we can help
 
 The opening hours of Cudi are:
 {{ openingHours }}
+
+VTK Cudi
+
+-- This is an automatically generated email, please do not reply --',
+                    'description' => 'The mail sent when a booking is about to expire'
+                ),
+                array(
+                    'key'         => 'cudi.booking_expire_mail_subject',
+                    'value'       => 'Assignment Expiration',
+                    'description' => 'The subject of the mail sent by warning for expirations',
+                ),
+                array(
+                    'key'         => 'cudi.booking_expire_mail',
+                    'value'       => 'Dear,
+
+The following bookings are expired:
+{{ bookings }}
 
 VTK Cudi
 

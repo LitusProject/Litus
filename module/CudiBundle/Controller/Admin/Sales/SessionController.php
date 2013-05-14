@@ -278,7 +278,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 if ('1' == $autoExpire) {
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sales\Booking')
-                        ->expireBookings();
+                        ->expireBookings($this->getMailTransport());
                 }
 
                 $session->close($cashRegister);

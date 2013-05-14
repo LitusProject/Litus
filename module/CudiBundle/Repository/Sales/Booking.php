@@ -859,7 +859,7 @@ class Booking extends EntityRepository
         return $counter;
     }
 
-    public function expireBookings()
+    public function expireBookings(TransportInterface $mailTransport)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $bookings = $query->select('b')
@@ -874,9 +874,21 @@ class Booking extends EntityRepository
             ->getQuery()
             ->getResult();
 
+        $persons = array();
         foreach($bookings as $booking) {
                $booking->setStatus('expired', $this->getEntityManager());
+
+               if (!isset($persons[$booking->getPerson()->getId()]))
+                    $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+
+                $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
         }
+
+        $this->getEntityManager()->flush();
+
+        foreach($persons as $person)
+            BookingMail::sendExpireMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
+
         return sizeof($bookings);
     }
 
