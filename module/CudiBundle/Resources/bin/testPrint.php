@@ -31,7 +31,7 @@ $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default
 
 $rules = array(
     'printer|p-s' => 'Printer Name',
-    'ticket|t-s' => 'Ticket Type',
+    'ticket|t-s'  => 'Ticket Type',
 );
 
 try {

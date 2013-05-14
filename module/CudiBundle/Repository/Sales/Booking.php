@@ -854,7 +854,7 @@ class Booking extends EntityRepository
         $this->getEntityManager()->flush();
 
         foreach($persons as $person)
-            BookingMail::sendMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
+            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
 
         return $counter;
     }
@@ -924,6 +924,25 @@ class Booking extends EntityRepository
             ->setParameter('status', 'assigned')
             ->setParameter('article', $article->getId())
             ->orderBy('b.assignmentDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllExpiringBefore(DateTime $date)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->lt('b.expirationDate', ':date'),
+                    $query->expr()->eq('b.status', ':status')
+                )
+            )
+            ->setParameter('status', 'assigned')
+            ->setParameter('date', $date)
             ->getQuery()
             ->getResult();
 

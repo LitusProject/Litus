@@ -73,7 +73,7 @@ if (isset($opts->a)) {
                 $em->persist($booking);
 
                 if (isset($opts->f) && isset($opts->m))
-                    \CudiBundle\Component\Mail\Booking::sendMail($em, $mt, array($booking), $booking->getPerson());
+                    \CudiBundle\Component\Mail\Booking::sendAssignMail($em, $mt, array($booking), $booking->getPerson());
             } elseif ($booking->getStatus() == 'booked') {
                 $number++;
                 $booking->setStatus('assigned', $em);

@@ -133,6 +133,30 @@ VTK Cudi
                     'description' => 'The mail sent when a booking is assigned'
                 ),
                 array(
+                    'key'         => 'cudi.booking_expire_warning_mail_subject',
+                    'value'       => 'Reservation Expiration Warning',
+                    'description' => 'The subject of the mail sent by warning for expirations',
+                ),
+                array(
+                    'key'         => 'cudi.booking_expire_warning_mail',
+                    'value'       => 'Dear,
+
+The following bookings are going to expire soon:
+{{ bookings }}
+
+These reservations will expire after the first sale session after its expiration date.
+
+Please cancel a reservation if you don\'t need the article, this way we can help other students.
+
+The opening hours of Cudi are:
+{{ openingHours }}
+
+VTK Cudi
+
+-- This is an automatically generated email, please do not reply --',
+                    'description' => 'The mail sent when a booking is about to expire'
+                ),
+                array(
                     'key'         => 'cudi.queue_item_barcode_prefix',
                     'value'       => '988000000000',
                     'description' => 'The start for a serving queue item barcode',
@@ -289,7 +313,12 @@ VTK Cudi
                     'key'         => 'cudi.opening_hours_page',
                     'value'       => '0',
                     'description' => 'The id of the opening hour page',
-                )
+                ),
+                array(
+                    'key'         => 'cudi.expiration_warning_interval',
+                    'value'       => 'P4D',
+                    'description' => 'The interval for sending a warning mail before expiring a booking',
+                ),
             )
         );
 

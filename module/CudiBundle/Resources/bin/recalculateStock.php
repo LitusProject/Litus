@@ -17,6 +17,7 @@
  *
  * Usage:
  * --run|-r      Recalculate Stock
+ * --flush|-f    Flush the results
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -29,8 +30,8 @@ $application = Zend\Mvc\Application::init(include 'config/application.config.php
 $entityManager = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 $rules = array(
-    'run|r' => 'Recalculate Stock',
-    'flush|f'     => 'Flush',
+    'run|r'   => 'Recalculate Stock',
+    'flush|f' => 'Flush',
 );
 
 try {
