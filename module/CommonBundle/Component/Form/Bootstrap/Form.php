@@ -14,7 +14,8 @@
 
 namespace CommonBundle\Component\Form\Bootstrap;
 
-use Zend\InputFilter\InputFilterAwareInterface;
+use Zend\Form\Element\Csrf,
+    Zend\InputFilter\InputFilterAwareInterface;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -45,6 +46,10 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 
         if ($horizontal)
             $this->setAttribute('class', 'form-horizontal');
+
+        $this->add(
+            new Csrf('csrf');
+        );
     }
 
     /**

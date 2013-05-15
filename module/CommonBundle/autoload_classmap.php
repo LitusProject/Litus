@@ -39,6 +39,7 @@ return array(
     'CommonBundle\Component\FlashMessenger\FlashMessage'                               => __DIR__ . '/Component/FlashMessenger/FlashMessage.php',
     'CommonBundle\Component\Form\Admin\Element\Checkbox'                               => __DIR__ . '/Component/Form/Admin/Element/Checkbox.php',
     'CommonBundle\Component\Form\Admin\Element\Collection'                             => __DIR__ . '/Component/Form/Admin/Element/Collection.php',
+    'CommonBundle\Component\Form\Admin\Element\Csrf'                                   => __DIR__ . '/Component/Form/Admin/Element/Csrf.php',
     'CommonBundle\Component\Form\Admin\Element\File'                                   => __DIR__ . '/Component/Form/Admin/Element/File.php',
     'CommonBundle\Component\Form\Admin\Element\Hidden'                                 => __DIR__ . '/Component/Form/Admin/Element/Hidden.php',
     'CommonBundle\Component\Form\Admin\Element\Password'                               => __DIR__ . '/Component/Form/Admin/Element/Password.php',

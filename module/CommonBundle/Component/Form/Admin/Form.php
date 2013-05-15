@@ -14,7 +14,8 @@
 
 namespace CommonBundle\Component\Form\Admin;
 
-use Zend\InputFilter\InputFilterAwareInterface;
+use CommonBundle\Component\Form\Admin\Element\Csrf,
+    Zend\InputFilter\InputFilterAwareInterface;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -34,6 +35,10 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         $this->setAttribute('method', 'post')
             ->setAttribute('class', 'form')
             ->setAttribute('novalidate', true);
+
+        $this->add(
+            new Csrf('csrf')
+        );
     }
 
     /**
