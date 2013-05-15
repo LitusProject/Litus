@@ -942,19 +942,21 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllExpiringBefore(DateTime $date)
+    public function findAllExpiringBetween(DateTime $start, DateTime $end)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->lt('b.expirationDate', ':date'),
+                    $query->expr()->gte('b.expirationDate', ':start'),
+                    $query->expr()->lte('b.expirationDate', ':end'),
                     $query->expr()->eq('b.status', ':status')
                 )
             )
             ->setParameter('status', 'assigned')
-            ->setParameter('date', $date)
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
             ->getQuery()
             ->getResult();
 

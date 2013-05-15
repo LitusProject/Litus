@@ -50,14 +50,17 @@ if (isset($opts->r)) {
             ->getConfigValue('cudi.expiration_warning_interval')
     );
 
-    $now = new \DateTime();
-    $now->add($interval);
+    $start = new \DateTime();
+    $start->setTime(0, 0);
+    $start->add($interval);
+    $end = clone $start;
+    $end->add(new \DateInterval('P1D'));
 
-    echo 'Sending mails to bookings expiring before ' . $now->format('d M Y') . '...' . PHP_EOL;
+    echo 'Sending mails to bookings expiring between ' . $start->format('d M Y') . ' and ' . $end->format('d M Y') . '...' . PHP_EOL;
 
     $bookings = $entityManager
         ->getRepository('CudiBundle\Entity\Sales\Booking')
-        ->findAllExpiringBefore($now);
+        ->findAllExpiringBetween($start, $end);
 
     $persons = array();
     foreach($bookings as $booking) {
