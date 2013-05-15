@@ -29,6 +29,7 @@ use Locale,
  * @author Kristof Mariën <kristof.mariën@litus.cc>
  */
 class Translator extends \Zend\I18n\Translator\Translator
+    implements \Zend\Validator\Translator\TranslatorInterface
 {
     /**
      * Add a translation file.
