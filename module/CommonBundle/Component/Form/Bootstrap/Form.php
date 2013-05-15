@@ -48,7 +48,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             $this->setAttribute('class', 'form-horizontal');
 
         $this->add(
-            new Csrf('csrf');
+            new Csrf('csrf')
         );
     }
 
