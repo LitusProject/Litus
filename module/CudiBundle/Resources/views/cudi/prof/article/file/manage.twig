@@ -185,6 +185,7 @@
                         {% endif %}
                         $('#progressModal').permanentModal('hide');
                         $('#addFile form')[0].reset();
+                        $('.fileupload').fileupload('clear');
                     }
                 },
                 onSubmit: function () {
