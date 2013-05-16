@@ -468,17 +468,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * We want an easy method to retrieve the Translator from
-     * the DI container.
-     *
-     * @return \Zend\I18n\Translator\Translator
-     */
-    public function getTranslator()
-    {
-        return $this->getServiceLocator()->get('translator');
-    }
-
-    /**
      * Gets a parameter from a GET request.
      *
      * @param string $param The parameter's key
@@ -488,5 +477,26 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     public function getParam($param, $default = null)
     {
         return $this->getEvent()->getRouteMatch()->getParam($param, $default);
+    }
+
+    /**
+     * Retrieve the common session storage from the DI container.
+     *
+     * @return \Zend\Session\Container
+     */
+    public function getSessionStorage()
+    {
+        return $this->getServiceLocator()->get('common_sessionstorage');
+    }
+
+    /**
+     * We want an easy method to retrieve the Translator from
+     * the DI container.
+     *
+     * @return \Zend\I18n\Translator\Translator
+     */
+    public function getTranslator()
+    {
+        return $this->getServiceLocator()->get('translator');
     }
 }

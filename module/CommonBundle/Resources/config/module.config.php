@@ -278,9 +278,11 @@ return array(
                 );
             },
             'authentication_sessionstorage' => function ($serviceManager) {
-                return new \Zend\Authentication\Storage\Session(
-                    'Litus_Auth'
-                );
+                return new \Zend\Authentication\Storage\Session('Litus_Auth');
+            },
+
+            'common_sessionstorage' => function($serviceManager) {
+                return new Zend\Session\Container('Litus_Common');
             },
         ),
         'invokables' => array(
