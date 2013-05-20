@@ -64,7 +64,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
 
         $field = new Select($prefix . 'address_city');
         $field->setLabel('City')
-            ->setAttribute('options', $cities);
+            ->setAttribute('options', $cities)
+            ->setRequired();
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal_other');
