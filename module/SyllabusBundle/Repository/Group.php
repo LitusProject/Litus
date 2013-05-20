@@ -18,8 +18,11 @@ class Group extends EntityRepository
     public function findAll()
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('d')
-            ->from('SyllabusBundle\Entity\Group', 'd')
+        $resultSet = $query->select('g')
+            ->from('SyllabusBundle\Entity\Group', 'g')
+            ->where(
+                $query->expr()->eq('g.removed', 'false')
+            )
             ->getQuery()
             ->getResult();
 
@@ -29,12 +32,13 @@ class Group extends EntityRepository
     public function findAllCvBook()
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('d')
-            ->from('SyllabusBundle\Entity\Group', 'd')
+        $resultSet = $query->select('g')
+            ->from('SyllabusBundle\Entity\Group', 'g')
             ->where(
-                $query->expr()->eq('d.cvBook', 'true')
+                $query->expr()->eq('g.cvBook', 'true'),
+                $query->expr()->eq('g.removed', 'false')
             )
-            ->orderBy('d.name', 'ASC')
+            ->orderBy('g.name', 'ASC')
             ->getQuery()
             ->getResult();
 
