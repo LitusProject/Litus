@@ -137,7 +137,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The user was successfully created!'
+                        'The academic was successfully created!'
                     )
                 );
 
@@ -303,7 +303,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The user was successfully updated!'
+                        'The academic was successfully updated!'
                     )
                 );
 
@@ -343,7 +343,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             new FlashMessage(
                 FlashMessage::SUCCESS,
                 'Succes',
-                'The user was successfully activated!'
+                'The academic was successfully activated!'
             )
         );
 
