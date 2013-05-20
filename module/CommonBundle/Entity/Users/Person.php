@@ -356,7 +356,6 @@ abstract class Person
     /**
      * @param string $email
      * @return \CommonBundle\Entity\Users\Person
-     * @throws \InvalidArgumentException
      */
     public function setEmail($email = null)
     {

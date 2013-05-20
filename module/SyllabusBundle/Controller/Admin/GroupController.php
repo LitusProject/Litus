@@ -248,6 +248,23 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($group = $this->_getGroup()))
+            return new ViewModel();
+
+        $group->setRemoved();
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
     public function deleteStudyAction()
     {
         $this->initAjax();

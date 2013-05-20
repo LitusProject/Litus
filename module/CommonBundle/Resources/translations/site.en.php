@@ -76,7 +76,7 @@ return array(
     'Change Image' => 'Change Image',
     'Remove' => 'Remove',
 
-    'File Server' => 'Bestandsserver',
+    'File Server' => 'File Server',
     'Unfortunately, there is no record of your university identification and as a consequence cannot create an account for you.' => 'Unfortunately, there is no record of your university identification and as a consequence cannot create an account for you.',
     'You have to be a member of our organization to be able to request an account on the file server.' => 'You have to be a member of our organization to be able to request an account on the file server.',
     'You have already activated your account on our server.' => 'You have already activated your account on our server.',

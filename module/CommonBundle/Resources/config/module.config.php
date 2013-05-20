@@ -378,14 +378,15 @@ return array(
         ),
     ),
     'assetic_configuration' => array(
+        'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
         'debug' => false,
         'webPath' => __DIR__ . '/../../../../public/_assetic',
-        'strategyForRenderer' => array(
-            'AsseticBundle\View\ViewHelperStrategy' => 'Zend\View\Renderer\PhpRenderer'
+        'rendererToStrategy' => array(
+            'Zend\View\Renderer\PhpRenderer' => 'AsseticBundle\View\ViewHelperStrategy'
         ),
         'cacheEnabled' => true,
         'cachePath' => __DIR__ . '/../../../../data/cache',
-        'baseUrl' => '/_assetic',
+        'basePath' => '/_assetic/',
         'controllers' => $asseticConfig['controllers'],
         'routes' => $asseticConfig['routes'],
         'modules' => array(

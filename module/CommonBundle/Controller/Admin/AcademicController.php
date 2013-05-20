@@ -181,6 +181,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->findOneByName('student');
                 if ($formData['roles']) {
                     foreach ($formData['roles'] as $role) {
+                        if($role == 'student') continue;
                         $roles[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName($role);
@@ -189,6 +190,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
 
+                $birthday = DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00');
+                if(!$birthday)
+                    $birthday = null;
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
@@ -197,7 +201,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->setUniversityIdentification(
                         ('' == $formData['university_identification'] ? null : $formData['university_identification'])
                     )
-                    ->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    ->setBirthday($birthday)
                     ->setUniversityEmail($universityEmail)
                     ->setRoles($roles);
 

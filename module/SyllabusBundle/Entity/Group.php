@@ -48,6 +48,13 @@ class Group
     private $cvBook;
 
     /**
+     * @var boolean Whether this group is removed or not
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $removed;
+
+    /**
      * @param string $name
      * @param boolean $cvBook
      */
@@ -55,6 +62,8 @@ class Group
     {
         $this->name = $name;
         $this->cvBook = $cvBook;
+
+        $this->removed = false;
     }
 
     /**
@@ -98,6 +107,15 @@ class Group
     public function setCvBook($cvBook)
     {
         $this->cvBook = $cvBook;
+        return $this;
+    }
+
+    /**
+     * @return \SyllabusBundle\Entity\Group
+     */
+    public function setRemoved()
+    {
+        $this->removed = true;
         return $this;
     }
 
