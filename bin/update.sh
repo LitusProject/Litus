@@ -29,3 +29,5 @@ touch module/CudiBundle/Resources/assets/supplier/less/base.less
 touch module/LogisticsBundle/Resources/assets/logistics/less/base.less
 
 touch module/SportBundle/Resources/assets/run/less/base.less
+
+php public/index.php assetic build
