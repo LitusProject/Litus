@@ -3,10 +3,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/LitusProject/zf2-assetic-module"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
         }
     ],

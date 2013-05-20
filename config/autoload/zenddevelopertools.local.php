@@ -25,7 +25,7 @@ return array(
             ),
         ),
         'toolbar' => array(
-            'enabled'       => ('production' != getenv('APPLICATION_ENV')),
+            'enabled'       => ('development' == getenv('APPLICATION_ENV')),
             'auto_hide'     => true,
             'position'      => 'bottom',
             'version_check' => false,
