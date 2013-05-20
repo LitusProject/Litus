@@ -181,6 +181,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->findOneByName('student');
                 if ($formData['roles']) {
                     foreach ($formData['roles'] as $role) {
+                        if($role == 'student') continue;
                         $roles[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName($role);
