@@ -19,7 +19,6 @@ bin/Doctrine/doctrine-module odm:generate:hydrators data/hydrators/
 
 # Making sure our LESS stylesheets are recompiled
 touch module/CommonBundle/Resources/assets/admin/less/admin.less
-touch module/CommonBundle/Resources/assets/bootstrap/less/bootstrap.less
 touch module/CommonBundle/Resources/assets/site/less/base.less
 
 touch module/CudiBundle/Resources/assets/prof/less/base.less
