@@ -995,7 +995,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             new FlashMessage(
                                 FlashMessage::SUCCESS,
                                 'Success',
-                                'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.'
+                                'Your account was successfully created! Please note that it may take a few minutes before your account is accessible.'
                             )
                         );
 
