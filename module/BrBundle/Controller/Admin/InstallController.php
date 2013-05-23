@@ -88,7 +88,7 @@ The VTK Corporate Team',
             array(
                 'brbundle' => array(
                     'br_admin_company' => array(
-                        'add', 'delete', 'editLogo', 'edit', 'manage'
+                        'add', 'delete', 'editLogo', 'edit', 'manage', 'upload', 'uploadProgress'
                     ),
                     'br_admin_company_event' => array(
                         'add', 'delete', 'edit', 'editPoster', 'manage', 'progress', 'upload'
