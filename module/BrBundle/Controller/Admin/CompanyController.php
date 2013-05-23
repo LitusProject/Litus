@@ -304,7 +304,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         $form = new LogoForm();
 
-        $filePath = $this->getEntityManager()
+        $filePath = 'public/' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
