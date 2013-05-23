@@ -228,14 +228,14 @@ class Academic extends \CommonBundle\Entity\Users\Person
      * @param \DateTime $birthday
      * @return \CommonBundle\Entity\Users\People\Academic
      */
-    public function setBirthday(DateTime $birthday)
+    public function setBirthday(DateTime $birthday = null)
     {
         $this->birthday = $birthday;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getBirthday()
     {

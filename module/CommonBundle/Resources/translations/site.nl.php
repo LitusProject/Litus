@@ -76,11 +76,12 @@ return array(
     'Change Image' => 'Wijzig Afbeelding',
     'Remove' => 'Verwijder',
 
-    'Unfortunately, there is no record of your university identification and as a consequence cannot create an account for you.' => 'Je studentennummer staat niet geristreerd in onze database en we kunnen daarom geen account voor je aanmaken.',
+    'File Server' => 'Bestandsserver',
+    'Unfortunately, there is no record of your university identification and we cannot create an account for you.' => 'Je studentennummer staat niet geregistreerd in onze database en we kunnen dus geen account voor je aanmaken.',
     'You have to be a member of our organization to be able to request an account on the file server.' => 'Alleen leden kunnen een account aanvragen op de bestandsserver.',
-    'You have already activated your account on our server.' => 'Je hebt je account op onze server reeds geactiveerd.',
+    'You have already activated your account on our server. You can use the form below to change your password.' => 'Je hebt je account op onze server reeds geactiveerd. Je kan het formulier hieronder gebruiken om je wachtwoord te veranderen.',
     'Your password was succesfully changed!' => 'Je nieuw wachtwoord is opgeslagen!',
-    'Your account was successfully created! However, please note that it may take a few minutes before your account is accessible.' => 'Je account werd geactiveerd! Het kan echter enkele minuten duren voordat je kan inloggen op de server.',
+    'Your account was successfully created! Please note that it may take a few minutes before your account is accessible.' => 'Je account werd geactiveerd! Het kan enkele minuten duren voordat je kan inloggen op de server.',
 
     'Bookstore' => 'Cudi',
     'Reservations' => 'Reservaties',

@@ -226,9 +226,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
 
                 $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
-                $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
-                $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
+             }
+            else {
+                $data['primary_address_address_city'] = 'other';
+                $data['primary_address_address_postal_other'] = $academic->getPrimaryAddress()->getPostal();
+                $data['primary_address_address_city_other'] = $academic->getPrimaryAddress()->getCity();
+                $data['primary_address_address_street_other'] = $academic->getPrimaryAddress()->getStreet();
             }
+            $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
+            $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
         }
 
         if ($metaData && $metaData->becomeMember()) {
