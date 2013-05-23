@@ -27,7 +27,7 @@ return array(
             '@bootstrap_js_modal',
             '@admin_css',
             '@common_jquery_form',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@common_jqueryui',
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
@@ -52,7 +52,7 @@ return array(
             '@bootstrap_js_modal',
             '@admin_css',
             '@common_jquery_form',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
         'shift_admin_unit' => array(
             '@common_jquery',

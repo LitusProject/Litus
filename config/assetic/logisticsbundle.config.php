@@ -21,7 +21,7 @@ return array(
         ),
         'logistics_admin_driver' => array(
             '@common_jquery',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
@@ -31,7 +31,7 @@ return array(
         ),
         'logistics_admin_van_reservation' => array(
             '@common_jquery',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
@@ -44,7 +44,7 @@ return array(
         'logistics_index' => array(
             '@common_jquery',
             '@common_jqueryui',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@common_jquery_form',
             '@fullcalendar_css',
             '@logistics_js',

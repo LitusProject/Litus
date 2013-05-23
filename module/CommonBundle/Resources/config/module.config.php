@@ -449,7 +449,7 @@ return array(
                             'common/js/fieldcount.js',
                         ),
                     ),
-                    'common_typeahead_remote' => array(
+                    'common_remote_typeahead' => array(
                         'assets'  => array(
                             'common/js/typeaheadRemote.js',
                         ),

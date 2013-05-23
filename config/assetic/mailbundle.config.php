@@ -50,7 +50,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
         'mail_admin_mail_alias' => array(
             '@common_jquery',
@@ -58,7 +58,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
         'mail_admin_mail_volunteer' => array(
             '@common_jquery',

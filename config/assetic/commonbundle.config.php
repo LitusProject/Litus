@@ -88,7 +88,7 @@ return array(
             '@bootstrap_js_alert',
             '@bootstrap_js_modal',
             '@secretary_css',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@common_holder_js',
         ),
         'common_session' => array(

@@ -25,7 +25,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
         'cudi_admin_article_subject' => array(
             '@common_jquery',
@@ -33,7 +33,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
         'cudi_admin_article_comment' => array(
             '@common_jquery',
@@ -88,8 +88,8 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_remote_typeahead',
             '@common_jquery_form',
-            '@common_typeahead_remote',
         ),
         'cudi_admin_sales_session' => array(
             '@common_jquery',
@@ -154,7 +154,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@supplier_nav',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
         'cudi_admin_stock_delivery' => array(
             '@common_jquery',
@@ -163,7 +163,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@supplier_nav',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@common_download_file',
         ),
         'cudi_admin_stock_retour' => array(
@@ -173,7 +173,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@supplier_nav',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@common_download_file',
         ),
         'cudi_admin_prof_action' => array(
@@ -187,7 +187,7 @@ return array(
             '@bootstrap_css',
             '@sale_js',
             '@sale_css',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@bootstrap_js_button',
@@ -240,7 +240,7 @@ return array(
             '@bootstrap_js_alert',
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@prof_css',
         ),
         'cudi_prof_article_mapping' => array(
@@ -248,7 +248,7 @@ return array(
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@prof_css',
         ),
         'cudi_prof_file' => array(
@@ -287,7 +287,7 @@ return array(
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
             '@prof_css',
         ),
         'cudi_prof_help' => array(

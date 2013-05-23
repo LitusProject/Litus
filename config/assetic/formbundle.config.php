@@ -47,7 +47,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_modal',
             '@bootstrap_js_transition',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
         'form_view' => array(
             '@common_jquery',

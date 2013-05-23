@@ -30,7 +30,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
         'secretary_registration' => array(
             '@common_jquery',
@@ -44,7 +44,7 @@ return array(
             '@bootstrap_js_modal',
             '@bootstrap_js_alert',
             '@secretary_css',
-            '@common_typeahead_remote',
+            '@common_remote_typeahead',
         ),
     ),
     'routes' => array(),
