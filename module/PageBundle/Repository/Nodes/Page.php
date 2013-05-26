@@ -72,7 +72,7 @@ class Page extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('p')
-            ->from('PageBundle\Entity\Nodes\Page', 'p');
+            ->from('PageBundle\Entity\Nodes\Page', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('p.name', ':name'),
