@@ -165,7 +165,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByNames(
+            ->findOneByNameAndParent(
                 $this->getParam('name'), $this->getParam('parent')
             );
 

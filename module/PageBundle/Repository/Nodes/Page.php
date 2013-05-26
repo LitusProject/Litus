@@ -41,7 +41,7 @@ class Page extends EntityRepository
 
     public function findOneByNames($name, $parentName)
     {
-        if ($parentName === null)
+        if (null === $parentName)
             return $this->findOneByName($name, null);
 
         $query = $this->_em->createQueryBuilder();
