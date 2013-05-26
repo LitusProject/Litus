@@ -77,15 +77,14 @@ class Page extends EntityRepository
         if (null === $parent) {
             $where = $query->expr()->andX(
                 $query->expr()->eq('p.name', ':name'),
+                $query->expr()->isNull('p.parent'),
                 $query->expr()->isNull('p.endTime')
             );
         } else {
             $where = $query->expr()->andX(
+                $query->expr()->eq('p.name', ':name'),
                 $query->expr()->eq('p.parent', ':parent'),
-                $query->expr()->andX(
-                    $query->expr()->eq('p.name', ':name'),
-                    $query->expr()->isNull('p.endTime')
-                )
+                $query->expr()->isNull('p.endTime')
             );
         }
 
