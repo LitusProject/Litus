@@ -82,11 +82,11 @@ class Academic extends \CommonBundle\Repository\Users\Person
     public function findAllByUniversityIdentification($universityIdentification)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
-            ->from('CommonBundle\Entity\Users\People\Academic', 'a')
+        $resultSet = $query->select('p')
+            ->from('CommonBundle\Entity\Users\People\Academic', 'p')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->like('a.universityIdentification', ':universityIdentification'),
+                    $query->expr()->like('p.universityIdentification', ':universityIdentification'),
                     $query->expr()->eq('p.canLogin', 'true')
                 )
             )
@@ -132,26 +132,26 @@ class Academic extends \CommonBundle\Repository\Users\Person
     public function findAllByNameTypeahead($name)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
-            ->from('CommonBundle\Entity\Users\People\Academic', 'a')
+        $resultSet = $query->select('p')
+            ->from('CommonBundle\Entity\Users\People\Academic', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
                         $query->expr()->like(
                             $query->expr()->concat(
-                                $query->expr()->lower($query->expr()->concat('a.firstName', "' '")),
-                                $query->expr()->lower('a.lastName')
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
                             ),
                             ':name'
                         ),
                         $query->expr()->like(
                             $query->expr()->concat(
-                                $query->expr()->lower($query->expr()->concat('a.lastName', "' '")),
-                                $query->expr()->lower('a.firstName')
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
                             ),
                             ':name'
                         ),
-                        $query->expr()->like('a.universityIdentification', ':name')
+                        $query->expr()->like('p.universityIdentification', ':name')
                     ),
                     $query->expr()->eq('p.canLogin', 'true')
                 )
