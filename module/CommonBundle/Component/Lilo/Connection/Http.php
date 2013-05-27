@@ -12,11 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Amon\Connection;
+namespace CommonBundle\Component\Lilo\Connection;
 
-use CommonBundle\Component\Amon\Data,
-    CommonBundle\Component\Amon\Data\Exception as ExceptionData,
-    CommonBundle\Component\Amon\Data\Log as LogData,
+use CommonBundle\Component\Lilo\Data,
+    CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
+    CommonBundle\Component\Lilo\Data\Log as LogData,
     Exception,
     Zend\Http\Client,
     Zend\Http\Request,
@@ -24,22 +24,21 @@ use CommonBundle\Component\Amon\Data,
     Zend\Mvc\MvcEvent;
 
 /**
- * Amon is server monitoring software that also has the ability to store .
  * This client provides all functions needed to store Litus exceptions.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Http extends \CommonBundle\Component\Amon\Connection
+class Http extends \CommonBundle\Component\Lilo\Connection
 {
     /**
      * @var string The server's address
      */
-    private $_server = '127.0.0.1';
+    private $_host = 'localhost';
 
     /**
      * @var integer The port used by the server
      */
-    private $_port = 2464;
+    private $_secure = true;
 
     /**
      * @var string The application's secret key
@@ -49,21 +48,21 @@ class Http extends \CommonBundle\Component\Amon\Connection
     /**
      * Creates a new HTTP connection.
      *
-     * @param string $server The server's address
-     * @param integer $port The port used by the server
+     * @param string $host The application's host
+     * @param bool $secure Whether or not to use a secure connection
      * @param string $secretKey The application's secret key
      */
-    public function __construct($server = '', $port = '', $secretKey = '')
+    public function __construct($host = '', $secure = true, $secretKey = '')
     {
-        $this->_server = $server;
-        $this->_port = $port;
+        $this->_host = $host;
+        $this->_secure = $secure;
         $this->_secretKey = $secretKey;
     }
 
     /**
      * Sends the given data object to the server.
      *
-     * @param \CommonBundle\Component\Amon\Data $data The data object that should be sent
+     * @param \CommonBundle\Component\Lilo\Data $data The data object that should be sent
      * @return void
      */
     public function send(Data $data)
@@ -78,21 +77,14 @@ class Http extends \CommonBundle\Component\Amon\Connection
     /**
      * Generates the request URL based on the data type.
      *
-     * @param \CommonBundle\Component\Amon\Data $data The data object
+     * @param \CommonBundle\Component\Lilo\Data $data The data object
      * @return string
      */
     private function _getRequestUrl(Data $data)
     {
-        $url = 'http://' . $this->_server . ':' . $this->_port . '/api/';
-
-        if ($data instanceof ExceptionData) {
-            $url .= 'exception/';
-        } else if ($data instanceof LogData) {
-            $url .= 'log/';
-        }
-
-        $url .= $this->_secretKey;
-
-        return $url;
+        return (true === $this->_secure ? 'https://' : 'http://')
+            . $this->_host
+            . '/api/'
+            . ($data instanceof ExceptionData ? 'exception' : 'log') . '/';
     }
 }

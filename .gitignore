@@ -6,9 +6,9 @@
 .DS_Store
 
 # These files contain sensitive data
-config/amon.config.php
 config/database.config.php
 config/ldap.config.php
+config/lilo.config.php
 
 # We don't want cached data in our repository
 data/banner/images

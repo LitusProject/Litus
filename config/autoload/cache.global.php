@@ -19,7 +19,7 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'cache' => function ($serviceManager) {
-                $cache = \Zend\Cache\StorageFactory::factory(
+                return \Zend\Cache\StorageFactory::factory(
                     array(
                         'adapter' => array(
                             'name' => 'apc',
@@ -30,7 +30,6 @@ return array(
                         ),
                     )
                 );
-                return $cache;
             },
         ),
     ),

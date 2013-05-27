@@ -13,8 +13,7 @@
  */
 
 return array(
-    'protocol'  => 'http',
-    'server'    => '127.0.0.1',
-    'port'      => '2464',
+    'host'      => 'localhost',
+    'secure'    => true,
     'secretKey' => '',
 );

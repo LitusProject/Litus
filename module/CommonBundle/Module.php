@@ -14,9 +14,7 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Amon\Client,
-    CommonBundle\Component\Amon\Connection\Http,
-    CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
+use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
     Zend\Mvc\ModuleRouteListener,
     Zend\Mvc\MvcEvent;
 
@@ -30,7 +28,7 @@ class Module
         $sharedEvents = $events->getSharedManager();
 
         if ('production' == getenv('APPLICATION_ENV'))
-            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('amon'), 'handleMvcEvent'));
+            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('lilo'), 'handleMvcEvent'));
 
         $injectTemplateListener = new InjectTemplateListener();
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);

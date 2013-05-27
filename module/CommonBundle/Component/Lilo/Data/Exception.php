@@ -12,14 +12,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Amon\Data;
+namespace CommonBundle\Component\Lilo\Data;
 
 /**
- * This class stores an exception in the right format for Amon to process.
+ * This class converts an exception to the right format for the
+ * Lilo API.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Exception extends \CommonBundle\Component\Amon\Data
+class Exception extends \CommonBundle\Component\Lilo\Data
 {
     /**
      * @var array The correctly formatted data object

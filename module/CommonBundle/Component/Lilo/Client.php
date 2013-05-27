@@ -12,32 +12,32 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Amon;
+namespace CommonBundle\Component\Lilo;
 
-use CommonBundle\Component\Amon\Data\Exception as ExceptionData,
-    CommonBundle\Component\Amon\Data\Log as LogData,
+use CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
+    CommonBundle\Component\Lilo\Data\Log as LogData,
     CommonBundle\Component\Controller\Exception\HasNoAccessException,
     Exception,
     Zend\Mvc\Application,
     Zend\Mvc\MvcEvent;
 
 /**
- * Amon is server monitoring software that also has the ability to store an application's log
- * messages and exceptions. This client provides all functions needed to store Litus exceptions.
+ * Lilo is a small application that can store exception and log messages.
+ * This client provides all functions needed to store Litus exceptions.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Client
 {
     /**
-     * @var \CommonBundle\Compnent\Amon\Connection $_connection The connection to the Amon server
+     * @var \CommonBundle\Compnent\Lilo\Connection $_connection The connection to the Lilo server
      */
     private $_connection;
 
     /**
-     * Constructs a new Amon client.
+     * Constructs a new Lilo client.
      *
-     * @param \CommonBundle\Compnent\Amon\Connection $connection The connection to the Amon server
+     * @param \CommonBundle\Compnent\Lilo\Connection $connection The connection to the Lilo server
      */
     public function __construct(Connection $connection)
     {
@@ -45,7 +45,7 @@ class Client
     }
 
     /**
-     * Sends a log to the server.
+     * Sends a log message to the server.
      *
      * @param string $message The message that should be sent
      * @param string $tags The tags associated with the message
@@ -59,7 +59,7 @@ class Client
     }
 
     /**
-     * Logs an exception to the server.
+     * Sends an exception to the server.
      *
      * @param  \Exception $exception The exception that should be sent
      * @return void
@@ -80,9 +80,7 @@ class Client
      */
     public function handleMvcEvent(MvcEvent $e)
     {
-        if ($e->getError() == Application::ERROR_EXCEPTION) {
-            if (!($e->getParam('exception') instanceof HasNoAccessException))
-                $this->sendException($e->getParam('exception'));
-        }
+        if ($e->getError() == Application::ERROR_EXCEPTION)
+            $this->sendException($e->getParam('exception'));
     }
 }

@@ -12,10 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Amon;
+namespace CommonBundle\Component\Lilo;
 
 /**
- * This class represents data that should be sent to the server.
+ * This class represents data that should be sent to Lilo.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

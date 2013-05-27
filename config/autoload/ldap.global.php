@@ -24,7 +24,7 @@ return array(
             'ldap' => function ($serviceManager) {
                 $ldapConfig = include __DIR__ . '/../ldap.config.php';
 
-                $ldap = new Zend\Ldap\Ldap(
+                return new Zend\Ldap\Ldap(
                     array(
                         'host'           => $ldapConfig['host'],
                         'username'       => $ldapConfig['username'],
@@ -33,7 +33,6 @@ return array(
                         'baseDn'         => $ldapConfig['baseDn'],
                     )
                 );
-                return $ldap;
             },
         ),
     ),

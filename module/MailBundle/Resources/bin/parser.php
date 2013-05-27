@@ -29,7 +29,7 @@ $application = Zend\Mvc\Application::init(include 'config/application.config.php
 $dm = $application->getServiceManager()->get('doctrine.documentmanager.odm_default');
 
 if ('production' == getenv('APPLICATION_ENV'))
-    $amon = $application->getServiceManager()->get('amon');
+    $lilo = $application->getServiceManager()->get('lilo');
 
 $rules = array(
     'run|r' => 'Run the Parser',
@@ -94,8 +94,8 @@ if (isset($opts->r)) {
                     $dm->flush();
 
                     if ('production' == getenv('APPLICATION_ENV')) {
-                        $amon->sendLog(
-                            'Storing an incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
+                        $lilo->sendLog(
+                            'Storing incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
                             array(
                                 'MailBundle',
                                 'parser.php'
@@ -106,8 +106,8 @@ if (isset($opts->r)) {
             break;
             default:
                 if ('production' == getenv('APPLICATION_ENV')) {
-                    $amon->sendLog(
-                        'The command specified in the subject line (' . $command . ') was not valid',
+                    $lilo->sendLog(
+                        'Invalid command specified in the subject line (' . $command . ')',
                         array(
                             'MailBundle',
                             'parser.php'

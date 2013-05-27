@@ -12,10 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Amon;
+namespace CommonBundle\Component\Lilo;
 
 /**
- * This class represents a connection to the Amon server.
+ * This class represents a connection to Lilo.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -24,7 +24,7 @@ abstract class Connection
     /**
      * Sends the given data object to the server.
      *
-     * @param \CommonBundle\Component\Amon\Data $data The data object that should be sent
+     * @param \CommonBundle\Component\Lilo\Data $data The data object that should be sent
      * @return void
      */
     abstract public function send(Data $data);
