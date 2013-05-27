@@ -20,7 +20,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'gallery.watermark_path',
-                    'value'       => 'data/gallery/img/watermark.png',
+                    'value'       => 'data/gallery/watermark.png',
                     'description' => 'The path to the watermark',
                 ),
                 array(
