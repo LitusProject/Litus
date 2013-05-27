@@ -23,10 +23,8 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('MailBundle\Entity\Alias')
-                ->findAll(),
+        $paginator = $this->paginator()->createFromEntity(
+            'MailBundle\Entity\Alias',
             $this->getParam('page'),
             array(),
             array(

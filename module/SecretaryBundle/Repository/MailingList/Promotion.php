@@ -13,22 +13,6 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Promotion extends EntityRepository
 {
-
-    public function findAllByAdmin(Academic $academic) {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('l')
-            ->from('MailBundle\Entity\MailingList', 'l')
-            ->from('MailBundle\Entity\MailingList\AdminMap', 'a')
-            ->where(
-                $query->expr()->eq('a.academic', ':academic')
-            )
-            ->setParameter('academic', $academic)
-            ->getQuery()
-            ->getResult();
-
-        return $resultSet;
-    }
-
     public function findOneByAcademicYear(AcademicYear $academicYear) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -45,5 +29,4 @@ class Promotion extends EntityRepository
             return $resultSet[0];
         return null;
     }
-
 }

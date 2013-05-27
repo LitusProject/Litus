@@ -13,7 +13,6 @@ use CommonBundle\Entity\Users\People\Academic,
  */
 class Named extends EntityRepository
 {
-
     public function findAllByAdmin(Academic $academic) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -22,11 +21,11 @@ class Named extends EntityRepository
             ->where(
                 $query->expr()->eq('a.academic', ':academic')
             )
+            ->orderBy('name', 'asc')
             ->setParameter('academic', $academic)
             ->getQuery()
             ->getResult();
 
         return $resultSet;
     }
-
 }

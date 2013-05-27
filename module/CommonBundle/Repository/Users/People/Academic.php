@@ -52,21 +52,24 @@ class Academic extends \CommonBundle\Repository\Users\Person
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\Users\People\Academic', 'p')
             ->where(
-                $query->expr()->orX(
-                    $query->expr()->like(
-                        $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
-                            $query->expr()->lower('p.lastName')
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
+                            ),
+                            ':name'
                         ),
-                        ':name'
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
+                            ),
+                            ':name'
+                        )
                     ),
-                    $query->expr()->like(
-                        $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
-                            $query->expr()->lower('p.firstName')
-                        ),
-                        ':name'
-                    )
+                    $query->expr()->eq('p.canLogin', 'true')
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
@@ -82,7 +85,10 @@ class Academic extends \CommonBundle\Repository\Users\Person
         $resultSet = $query->select('a')
             ->from('CommonBundle\Entity\Users\People\Academic', 'a')
             ->where(
-                $query->expr()->like('a.universityIdentification', ':universityIdentification')
+                $query->expr()->andX(
+                    $query->expr()->like('a.universityIdentification', ':universityIdentification'),
+                    $query->expr()->eq('p.canLogin', 'true')
+                )
             )
             ->setParameter('universityIdentification', '%' . strtolower($universityIdentification) . '%')
             ->getQuery()
@@ -97,9 +103,12 @@ class Academic extends \CommonBundle\Repository\Users\Person
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\Users\People\Academic', 'p')
             ->where(
-                $query->expr()->orX(
-                    $query->expr()->eq('p.username', ':username'),
-                    $query->expr()->eq('p.universityIdentification', ':username')
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->eq('p.username', ':username'),
+                        $query->expr()->eq('p.universityIdentification', ':username')
+                    ),
+                    $query->expr()->eq('p.canLogin', 'true')
                 )
             )
             ->setParameter('username', $username)
@@ -126,22 +135,25 @@ class Academic extends \CommonBundle\Repository\Users\Person
         $resultSet = $query->select('a')
             ->from('CommonBundle\Entity\Users\People\Academic', 'a')
             ->where(
-                $query->expr()->orX(
-                    $query->expr()->like(
-                        $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('a.firstName', "' '")),
-                            $query->expr()->lower('a.lastName')
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('a.firstName', "' '")),
+                                $query->expr()->lower('a.lastName')
+                            ),
+                            ':name'
                         ),
-                        ':name'
-                    ),
-                    $query->expr()->like(
-                        $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('a.lastName', "' '")),
-                            $query->expr()->lower('a.firstName')
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('a.lastName', "' '")),
+                                $query->expr()->lower('a.firstName')
+                            ),
+                            ':name'
                         ),
-                        ':name'
+                        $query->expr()->like('a.universityIdentification', ':name')
                     ),
-                    $query->expr()->like('a.universityIdentification', ':name')
+                    $query->expr()->eq('p.canLogin', 'true')
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
@@ -156,10 +168,12 @@ class Academic extends \CommonBundle\Repository\Users\Person
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\Users\Statuses\Organization', 's')
+            ->innerJoin('s.person', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->neq('s.status', '\'non_member\''),
-                    $query->expr()->eq('s.academicYear', ':academicYear')
+                    $query->expr()->eq('s.academicYear', ':academicYear'),
+                    $query->expr()->eq('p.canLogin', 'true')
                 )
             )
             ->setParameter('academicYear', $academicYear->getId())

@@ -25,7 +25,6 @@ use Doctrine\ORM\Mapping as ORM,
  */
 class Named extends \MailBundle\Entity\MailingList
 {
-
     /**
      * @var string The name of this list
      *

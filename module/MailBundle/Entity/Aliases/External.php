@@ -26,7 +26,6 @@ use Doctrine\ORM\Mapping as ORM,
  */
 class External extends \MailBundle\Entity\Alias
 {
-
     /**
      * @var string The e-mail address of this alias
      *

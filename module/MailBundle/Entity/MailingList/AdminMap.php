@@ -26,7 +26,6 @@ use CommonBundle\Entity\Users\People\Academic,
  */
 class AdminMap
 {
-
     /**
      * @var integer The ID of the mapping
      *

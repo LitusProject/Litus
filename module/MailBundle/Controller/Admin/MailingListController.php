@@ -41,16 +41,18 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if (!$editor) {
             $paginator = $this->paginator()->createFromArray(
                 $this->getEntityManager()
-                ->getRepository('MailBundle\Entity\MailingList\Named')
-                ->findAllByAdmin($person),
+                    ->getRepository('MailBundle\Entity\MailingList\Named')
+                    ->findAllByAdmin($person),
                 $this->getParam('page')
             );
         } else {
-            $paginator = $this->paginator()->createFromArray(
-                $this->getEntityManager()
-                ->getRepository('MailBundle\Entity\MailingList\Named')
-                ->findAll(),
-                $this->getParam('page')
+            $paginator = $this->paginator()->createFromEntity(
+                'MailBundle\Entity\MailingList\Named',
+                $this->getParam('page'),
+                array(),
+                array(
+                    'name' => 'ASC'
+                )
             );
         }
 
