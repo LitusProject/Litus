@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'mail/admin/mail/partials/navigation.twig' %}
+	{% include 'mail/admin/group/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
@@ -19,8 +19,8 @@
 	            <tr>
 	                <td>{{ group }}</td>
 	    			<td>
-	    			    {% if hasAccess('mail_admin_mail', 'send') %}
-	    				    <a href="{{ url('mail_admin_mail', {"action": "send", "group": key, "type": 'organization'}) }}" class="mail_send">Send Mail</a>
+	    			    {% if hasAccess('mail_admin_group', 'send') %}
+	    				    <a href="{{ url('mail_admin_group', {"action": "send", "group": key, "type": 'organization'}) }}" class="mail_send">Send Mail</a>
 	    				{% endif %}
 	    			</td>
 	            </tr>
@@ -42,8 +42,8 @@
 	            <tr>
 	                <td>{{ group }}</td>
 	    			<td>
-	    			    {% if hasAccess('mail_admin_mail', 'send') %}
-	    				    <a href="{{ url('mail_admin_mail', {"action": "send", "group": key, "type": 'university'}) }}" class="mail_send">Send Mail</a>
+	    			    {% if hasAccess('mail_admin_group', 'send') %}
+	    				    <a href="{{ url('mail_admin_group', {"action": "send", "group": key, "type": 'university'}) }}" class="mail_send">Send Mail</a>
 	    				{% endif %}
 	    			</td>
 	            </tr>

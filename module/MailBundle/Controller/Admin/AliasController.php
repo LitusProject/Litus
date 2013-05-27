@@ -25,9 +25,13 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Alias')
-            ->findAll(),
-            $this->getParam('page')
+                ->getRepository('MailBundle\Entity\Alias')
+                ->findAll(),
+            $this->getParam('page'),
+            array(),
+            array(
+                'name' => 'ASC'
+            )
         );
 
         return new ViewModel(
@@ -75,7 +79,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'mail_admin_mail_alias',
+                    'mail_admin_alias',
                     array(
                         'action' => 'manage',
                     )
@@ -121,7 +125,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_alias',
+                'mail_admin_alias',
                 array(
                     'action' => 'manage'
                 )
@@ -144,7 +148,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_alias',
+                'mail_admin_alias',
                 array(
                     'action' => 'manage'
                 )

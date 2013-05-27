@@ -10,22 +10,22 @@
 @black:                         #000;
 @white:                         #fff;
 
-@grayDarker:            		#222;
-@grayDark:              		#333;
-@gray:                  		#555;
-@grayMiddleLight:       		#888;
-@grayLight:             		#bbb;
-@grayMiddleLighter:     		#ddd;
-@grayLighter:           		#eee;
+@grayDarker:                    #222;
+@grayDark:                      #333;
+@gray:                          #555;
+@grayMiddleLight:               #888;
+@grayLight:                     #bbb;
+@grayMiddleLighter:             #ddd;
+@grayLighter:                   #eee;
 
 @cGray:                         #ccc;
 @cHeaderDark:                   #22325a;
 @cHeaderLight:                  #121b35;
 
 // Fonts
-@headingsFontFamily: 			"Helvetica Neue", Helvetica, Arial, sans-serif;
-@headingsFontWeight:    		bold;
-@headingsColor:         		#333;
+@headingsFontFamily:            "Helvetica Neue", Helvetica, Arial, sans-serif;
+@headingsFontWeight:            bold;
+@headingsColor:                 #333;
 
 // Navigation Bar
 @navbarHeight:                  40px;
@@ -64,35 +64,42 @@
 
 // Mixins
 .verticalGradient(@startColor: #555, @endColor: #333) {
-	background-color: mix(@startColor, @endColor, 60%);
-	background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
-	background-image: -ms-linear-gradient(top, @startColor, @endColor); // IE10
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
-	background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
-	background-image: -o-linear-gradient(top, @startColor, @endColor); // Opera 11.10
-	background-image: linear-gradient(top, @startColor, @endColor); // The standard
-	background-repeat: repeat-x;
-	filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)", @startColor, @endColor)); // IE9 and down
+    background-color: mix(@startColor, @endColor, 60%);
+    background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
+    background-image: -ms-linear-gradient(top, @startColor, @endColor); // IE10
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(top, @startColor, @endColor); // Opera 11.10
+    background-image: linear-gradient(top, @startColor, @endColor); // The standard
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)", @startColor, @endColor)); // IE9 and down
 }
 
 .border-radius(@radius) {
-  -webkit-border-radius: @radius;
-     -moz-border-radius: @radius;
-          border-radius: @radius;
+    -webkit-border-radius: @radius;
+       -moz-border-radius: @radius;
+            border-radius: @radius;
 }
 
 .box-shadow(@shadow: 0 1px 3px rgba(0,0,0,.25)) {
-  -webkit-box-shadow: @shadow;
-     -moz-box-shadow: @shadow;
-          box-shadow: @shadow;
+    -webkit-box-shadow: @shadow;
+       -moz-box-shadow: @shadow;
+            box-shadow: @shadow;
+}
+
+.box-sizing(@boxmodel) {
+    -webkit-box-sizing: @boxmodel;
+       -moz-box-sizing: @boxmodel;
+        -ms-box-sizing: @boxmodel;
+            box-sizing: @boxmodel;
 }
 
 .rotate(@degrees) {
-   -webkit-transform: rotate(@degrees);
-      -moz-transform: rotate(@degrees);
-       -ms-transform: rotate(@degrees);
-        -o-transform: rotate(@degrees);
-           transform: rotate(@degrees);
+    -webkit-transform: rotate(@degrees);
+       -moz-transform: rotate(@degrees);
+        -ms-transform: rotate(@degrees);
+         -o-transform: rotate(@degrees);
+            transform: rotate(@degrees);
 }
 
 .rotate-origin(@origin) {
@@ -103,160 +110,143 @@
             transform-origin: @origin;
 }
 
+.transition(@transition) {
+    -webkit-transition: @transition;
+       -moz-transition: @transition;
+        -ms-transition: @transition;
+         -o-transition: @transition;
+            transition: @transition;
+}
+
 .buttonBackground(@startColor, @endColor) {
-  // gradientBar will set the background to a pleasing blend of these, to support IE<=9
-  .gradientBar(@startColor, @endColor);
+    .gradientBar(@startColor, @endColor);
 
-  // in these cases the gradient won't cover the background, so we override
-  &:hover, &:active, &.active, &.disabled, &[disabled] {
-    background-color: @endColor;
-  }
+    &:hover, &:active, &.active, &.disabled, &[disabled] {
+        background-color: @endColor;
+    }
 
-  // IE 7 + 8 can't handle box-shadow to show active, so we darken a bit ourselves
-  &:active,
-  &.active {
-    background-color: darken(@endColor, 10%) e("\9");
-  }
+    &:active,
+    &.active {
+        background-color: darken(@endColor, 10%) e("\9");
+    }
 }
 
 .gradientBar(@primaryColor, @secondaryColor) {
-  .verticalGradient(@primaryColor, @secondaryColor);
-  border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
-  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
+    .verticalGradient(@primaryColor, @secondaryColor);
+    border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
+    border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
 }
 
-// The Grid
+// Grid
 #grid {
+    .core (@gridColumnWidth, @gridGutterWidth) {
+        .spanX (@index) when (@index > 0) {
+            (~".span@{index}") { .span(@index); }
+            .spanX(@index - 1);
+        }
+        .spanX (0) {}
 
-  .core (@gridColumnWidth, @gridGutterWidth) {
+        .offsetX (@index) when (@index > 0) {
+            (~".offset@{index}") { .offset(@index); }
+            .offsetX(@index - 1);
+        }
+        .offsetX (0) {}
 
-    .spanX (@index) when (@index > 0) {
-      (~".span@{index}") { .span(@index); }
-      .spanX(@index - 1);
-    }
-    .spanX (0) {}
+        .offset (@columns) {
+            margin-left: (@gridColumnWidth * @columns) + (@gridGutterWidth * (@columns + 1));
+        }
 
-    .offsetX (@index) when (@index > 0) {
-      (~".offset@{index}") { .offset(@index); }
-      .offsetX(@index - 1);
-    }
-    .offsetX (0) {}
+        .span (@columns) {
+            width: (@gridColumnWidth * @columns) + (@gridGutterWidth * (@columns - 1));
+        }
 
-    .offset (@columns) {
-      margin-left: (@gridColumnWidth * @columns) + (@gridGutterWidth * (@columns + 1));
-    }
+        .row {
+            margin-left: @gridGutterWidth * -1;
+            .clearfix();
+        }
 
-    .span (@columns) {
-      width: (@gridColumnWidth * @columns) + (@gridGutterWidth * (@columns - 1));
-    }
+        [class*="span"] {
+            float: left;
+            margin-left: @gridGutterWidth;
+        }
 
-    .row {
-      margin-left: @gridGutterWidth * -1;
-      .clearfix();
-    }
+        .container,
+        .navbar-fixed-top .container,
+        .navbar-fixed-bottom .container {
+            .span(@gridColumns);
+        }
 
-    [class*="span"] {
-      float: left;
-      margin-left: @gridGutterWidth;
-    }
-
-    // Set the container width, and override it for fixed navbars in media queries
-    .container,
-    .navbar-fixed-top .container,
-    .navbar-fixed-bottom .container { .span(@gridColumns); }
-
-    // generate .spanX and .offsetX
-    .spanX (@gridColumns);
-    .offsetX (@gridColumns);
-
-  }
-
-  .fluid (@fluidGridColumnWidth, @fluidGridGutterWidth) {
-
-    .spanX (@index) when (@index > 0) {
-      (~".span@{index}") { .span(@index); }
-      .spanX(@index - 1);
-    }
-    .spanX (0) {}
-
-    .span (@columns) {
-      width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1));
-      *width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) - (.5 / @gridRowWidth * 100 * 1%);
+        .spanX (@gridColumns);
+        .offsetX (@gridColumns);
     }
 
-    .row-fluid {
-      width: 100%;
-      .clearfix();
-      [class*="span"] {
-        .input-block-level();
-        float: left;
-        margin-left: @fluidGridGutterWidth;
-        *margin-left: @fluidGridGutterWidth - (.5 / @gridRowWidth * 100 * 1%);
-      }
-      [class*="span"]:first-child {
-        margin-left: 0;
-      }
+    .fluid (@fluidGridColumnWidth, @fluidGridGutterWidth) {
+        .spanX (@index) when (@index > 0) {
+            (~".span@{index}") { .span(@index); }
+            .spanX(@index - 1);
+        }
+        .spanX (0) {}
 
-      // generate .spanX
-      .spanX (@gridColumns);
+        .span (@columns) {
+            width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1));
+            *width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) - (.5 / @gridRowWidth * 100 * 1%);
+        }
+
+        .row-fluid {
+            width: 100%;
+            .clearfix();
+            [class*="span"] {
+                .input-block-level();
+                float: left;
+                margin-left: @fluidGridGutterWidth;
+                *margin-left: @fluidGridGutterWidth - (.5 / @gridRowWidth * 100 * 1%);
+            }
+            [class*="span"]:first-child {
+                margin-left: 0;
+            }
+
+            .spanX (@gridColumns);
+        }
     }
 
-  }
+    .input(@gridColumnWidth, @gridGutterWidth) {
+        .spanX (@index) when (@index > 0) {
+            (~"input.span@{index}, textarea.span@{index}, .uneditable-input.span@{index}") { .span(@index); }
+            .spanX(@index - 1);
+        }
+        .spanX (0) {}
 
-  .input(@gridColumnWidth, @gridGutterWidth) {
+        .span(@columns) {
+            width: ((@gridColumnWidth) * @columns) + (@gridGutterWidth * (@columns - 1)) - 10;
+        }
 
-    .spanX (@index) when (@index > 0) {
-      (~"input.span@{index}, textarea.span@{index}, .uneditable-input.span@{index}") { .span(@index); }
-      .spanX(@index - 1);
+        input,
+        textarea,
+        .uneditable-input {
+            margin-left: 0;
+        }
+
+        .spanX (@gridColumns);
     }
-    .spanX (0) {}
-
-    .span(@columns) {
-      width: ((@gridColumnWidth) * @columns) + (@gridGutterWidth * (@columns - 1)) - 10;
-    }
-
-    input,
-    textarea,
-    .uneditable-input {
-      margin-left: 0; // override margin-left from core grid system
-    }
-
-    // generate .spanX
-    .spanX (@gridColumns);
-
-  }
 }
 
 .input-block-level {
-  display: block;
-  width: 100%;
-  min-height: 28px;        // Make inputs at least the height of their button counterpart
-  .box-sizing(border-box); // Makes inputs behave like true block-level elements
-}
-
-.box-sizing(@boxmodel) {
-  -webkit-box-sizing: @boxmodel;
-     -moz-box-sizing: @boxmodel;
-      -ms-box-sizing: @boxmodel;
-          box-sizing: @boxmodel;
+    display: block;
+    width: 100%;
+    min-height: 28px;
+    .box-sizing(border-box);
 }
 
 .clearfix {
-  *zoom: 1;
-  &:before,
-  &:after {
-    display: table;
-    content: "";
-  }
-  &:after {
-    clear: both;
-  }
+    *zoom: 1;
+    &:before,
+    &:after {
+        display: table;
+        content: "";
+    }
+    &:after {
+        clear: both;
+    }
 }
 
-.transition(@transition) {
-  -webkit-transition: @transition;
-     -moz-transition: @transition;
-      -ms-transition: @transition;
-       -o-transition: @transition;
-          transition: @transition;
-}
+

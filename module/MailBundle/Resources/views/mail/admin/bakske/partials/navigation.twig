@@ -3,8 +3,8 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('mail_admin_mail_bakske', 'send') %}
-                <li><a{% if 'send' == getParam('action') %} class="active" {% endif %} href="{{ url('mail_admin_mail_bakske', {'action': 'send'}) }}">Bakske</a></li>
+            {% if hasAccess('mail_admin_bakske', 'send') %}
+                <li><a{% if 'send' == getParam('action') %} class="active" {% endif %} href="{{ url('mail_admin_bakske', {'action': 'send'}) }}">Bakske</a></li>
             {% endif %}
         </ul>
     </nav>

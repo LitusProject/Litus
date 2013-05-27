@@ -3,11 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('mail_admin_mail_list', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("mail_admin_mail_list", {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('mail_admin_list', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("mail_admin_list", {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('mail_admin_mail_list', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("mail_admin_mail_list", {"action": "manage"}) }}">Manage</a></li>
+            {% if hasAccess('mail_admin_list', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("mail_admin_list", {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

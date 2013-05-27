@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="mail">Groups</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('mail_admin_group', 'groups') %}
+                <li><a{% if 'groups' == getParam('action') %} class="active" {% endif %} href="{{ url('mail_admin_group') }}">Groups</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

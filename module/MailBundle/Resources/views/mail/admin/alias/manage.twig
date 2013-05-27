@@ -35,7 +35,7 @@
                         <td>{{ alias.getName() }}</td>
                         <td>{{ alias.getEmailAddress() }}</td>
                         <td class="actions">
-                            {% if hasAccess('mail_admin_mail_alias', 'delete') %}
+                            {% if hasAccess('mail_admin_alias', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ alias.getId() }}" data-name="{{ alias.getName() }}">Delete</a>
                             {% endif %}
                         </td>
@@ -75,9 +75,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-
             $('.item .delete').click(openModal);
-
         });
 
         function openModal(e) {
@@ -88,7 +86,7 @@
             removeAlias.find('.aliasName').html($(this).data('name'));
             var id = $this.data('id');
             removeAlias.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('mail_admin_mail_alias', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('mail_admin_alias', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.alias_removed_success').removeClass('hide');

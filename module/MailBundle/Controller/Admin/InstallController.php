@@ -83,25 +83,25 @@ Jorn Hendrickx',
         $this->installAcl(
             array(
                 'mailbundle' => array(
-                    'mail_admin_mail' => array(
+                    'mail_admin_group' => array(
                         'groups', 'send'
                     ),
-                    'mail_admin_mail_list' => array(
+                    'mail_admin_list' => array(
                         'manage', 'add', 'entries', 'admins', 'delete', 'deleteEntry', 'deleteAdmin'
                     ),
-                    'mail_admin_mail_alias' => array(
+                    'mail_admin_alias' => array(
                         'manage', 'add', 'delete',
                     ),
-                    'amail_dmin_mail_prof' => array(
+                    'mail_admin_prof' => array(
                         'cudi'
                     ),
-                    'mail_admin_mail_study' => array(
+                    'mail_admin_study' => array(
                         'send'
                     ),
-                    'mail_admin_mail_bakske' => array(
+                    'mail_admin_bakske' => array(
                         'send'
                     ),
-                    'mail_admin_mail_volunteer' => array(
+                    'mail_admin_volunteer' => array(
                         'send'
                     ),
                 )

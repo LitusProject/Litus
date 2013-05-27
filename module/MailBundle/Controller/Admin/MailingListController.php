@@ -102,7 +102,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 );
 
                 $this->redirect()->toRoute(
-                    'mail_admin_mail_list',
+                    'mail_admin_list',
                     array(
                         'action' => 'manage',
                     )
@@ -218,7 +218,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 }
 
                 $this->redirect()->toRoute(
-                    'mail_admin_mail_list',
+                    'mail_admin_list',
                     array(
                         'action' => 'entries',
                         'id' => $list->getId(),
@@ -305,7 +305,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 }
 
                 $this->redirect()->toRoute(
-                    'mail_admin_mail_list',
+                    'mail_admin_list',
                     array(
                         'action' => 'admins',
                         'id' => $list->getId(),
@@ -401,7 +401,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_list',
+                'mail_admin_list',
                 array(
                     'action' => 'manage'
                 )
@@ -424,7 +424,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_list',
+                'mail_admin_list',
                 array(
                     'action' => 'manage'
                 )
@@ -448,7 +448,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_list',
+                'mail_admin_list',
                 array(
                     'action' => 'manage'
                 )
@@ -471,7 +471,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_list',
+                'mail_admin_list',
                 array(
                     'action' => 'manage'
                 )
@@ -495,7 +495,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_list',
+                'mail_admin_list',
                 array(
                     'action' => 'manage'
                 )
@@ -518,7 +518,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_list',
+                'mail_admin_list',
                 array(
                     'action' => 'manage'
                 )
@@ -543,7 +543,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_mail_list',
+                'mail_admin_list',
                 array(
                     'action' => 'manage'
                 )

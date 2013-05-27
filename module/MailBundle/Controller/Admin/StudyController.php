@@ -241,7 +241,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     );
 
                     $this->redirect()->toRoute(
-                        'mail_admin_mail_study',
+                        'mail_admin_study',
                         array(
                             'action' => 'send'
                         )

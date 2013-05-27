@@ -90,7 +90,7 @@ class VolunteerController extends \CommonBundle\Component\Controller\ActionContr
                 );
 
                 $this->redirect()->toRoute(
-                    'mail_admin_mail_volunteer',
+                    'mail_admin_volunteer',
                     array(
                         'action' => 'send'
                     )
