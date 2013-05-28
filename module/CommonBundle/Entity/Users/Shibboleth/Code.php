@@ -65,11 +65,19 @@ class Code
     private $code;
 
     /**
+     * @var string The additional information
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $info;
+
+    /**
      * @param string $universityIdentification
      * @param string $code The code
      * @param int $expirationTime
+     * @param string $info The additional information
      */
-    public function __construct($universityIdentification, $code, $expirationTime = 300)
+    public function __construct($universityIdentification, $code, $expirationTime = 300, $info)
     {
         $this->id = md5(uniqid(rand(), true));
         $this->creationTime = new DateTime();
@@ -80,6 +88,7 @@ class Code
 
         $this->code = $code;
         $this->universityIdentification = $universityIdentification;
+        $this->info = $info;
     }
 
     /**
@@ -104,6 +113,14 @@ class Code
     public function getUniversityIdentification()
     {
         return $this->universityIdentification;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInfo()
+    {
+        return $this->info;
     }
 
     /**
