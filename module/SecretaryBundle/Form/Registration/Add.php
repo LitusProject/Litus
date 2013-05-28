@@ -53,9 +53,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $identification The university identification
+     * @param array|null $extraInfo Extra information about the user
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $name = null)
+    public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $name = null)
     {
         parent::__construct($name);
 
@@ -72,12 +73,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('first_name');
         $field->setLabel('First Name')
             ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
+            ->setValue(isset($extraInfo['first_name']) ? $extraInfo['first_name'] : '')
             ->setRequired();
         $personal->add($field);
 
         $field = new Text('last_name');
         $field->setLabel('Last Name')
             ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
+            ->setValue(isset($extraInfo['last_name']) ? $extraInfo['last_name'] : '')
             ->setRequired();
         $personal->add($field);
 
@@ -129,9 +132,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $internet->setLabel('Internet');
         $this->add($internet);
 
+        $universityEmail = '';
+        if (isset($extraInfo['email'])) {
+            $universityEmail = explode('@', $extraInfo['email'])[0];
+        }
+
         $field = new Text('university_email');
         $field->setLabel('University E-mail')
             ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
+            ->setValue($universityEmail)
             ->setRequired();
         $internet->add($field);
 

@@ -34,11 +34,20 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
     $checkCode = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
         ->findOneByCode(substr($_SERVER[$shibbolethSessionKey], 1));
 
+    $shibbolethExtraInfoKeys = unserialize(
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_extra_info')
+        );
+    $extraInfo = array();
+    foreach($shibbolethExtraInfoKeys as $key => $value)
+        $extraInfo[$key] = isset($_SERVER[$value]) ? $_SERVER[$value] : '';
+
     if (null === $checkCode) {
         $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
             $_SERVER[$shibbolethPersonKey],
             substr($_SERVER[$shibbolethSessionKey], 1),
-            ($_GET['source'] == 'register') ? 1800 : 300
+            ($_GET['source'] == 'register') ? 1800 : 300,
+            serialize($extraInfo)
         );
 
         $em->persist($newCode);

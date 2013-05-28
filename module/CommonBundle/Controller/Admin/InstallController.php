@@ -29,7 +29,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->_installLanguages();
         $this->_installCities();
-        
+
         $this->installConfig(
             array(
                 array(
@@ -208,6 +208,17 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'value'       => 'cn=users,ou=groups,dc=ldap,dc=vtk,dc=be',
                     'description' => 'The LDAP identifier for the users group',
                 ),
+                array(
+                    'key'         => 'shibboleth_extra_info'
+                    'value'       => serialize(
+                        array(
+                            'first_name' => 'Shib_Person_givenName',
+                            'last_name' => 'Shib_Person_surname',
+                            'email' => 'Shib_Person_mail',
+                        )
+                    ),
+                    'description' => 'The keys for extra info from Shibboleth',
+                )
             )
         );
     }

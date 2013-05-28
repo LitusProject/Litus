@@ -96,7 +96,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         if ($this->getRequest()->isPost()) {
             if ($this->_isValidCode()) {
-                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
+                $code = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                    ->findLastByUniversityIdentification($this->getParam('identification'));
+
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
 
                 $formData = $this->getRequest()->getPost();
                 $formData['university_identification'] = $this->getParam('identification');
@@ -311,10 +315,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getServiceLocator()->get('authentication_doctrineservice')
                     );
 
-                    $code = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
-                        ->findLastByUniversityIdentification($this->getParam('identification'));
-
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
 
@@ -349,7 +349,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             }
         } else {
             if ($this->_isValidCode()) {
-                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
+                $code = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                    ->findLastByUniversityIdentification($this->getParam('identification'));
+
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
 
                 return new ViewModel(
                     array(
