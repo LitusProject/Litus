@@ -26,10 +26,6 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
 {
     public function salesAction()
     {
-        $organizations = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
-
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Sales\Session',
             $this->getParam('page'),
@@ -45,7 +41,6 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'organizations' => $organizations,
             )
         );
     }

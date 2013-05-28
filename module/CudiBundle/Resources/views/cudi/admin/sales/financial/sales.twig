@@ -6,18 +6,6 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        {% if organizations|length > 1 %}
-            <div style="padding:4px;text-align:right">
-                Organization:
-                <select id="organizationField">
-                    <option value="all">All</option>
-                    {% for organization in organizations %}
-                        <option value="{{ organization.getId() }}">{{ organization.getName() }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        {% endif %}
-
         <table class="full_width manage">
 
             <tr>
@@ -37,16 +25,9 @@
                     <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i') }}{% endif %}</td>
                     {% set theoreticalRevenue = session.getTheoreticalRevenue() %}
                     {% set actualRevenue = session.getActualRevenue() %}
-                    <td class="organization organization-all">&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</td>
-                    <td class="organization organization-all">&euro; {{ (actualRevenue/100)|number_format(2) }}</td>
-                    <td class="organization organization-all">&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</td>
-                    {% for organization in organizations %}
-                        {% set theoreticalRevenue = session.getTheoreticalRevenue(organization) %}
-                        {% set actualRevenue = session.getActualRevenue() %}
-                        <td class="organization organization-{{ organization.getId() }}" style="display: none;">&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</td>
-                        <td class="organization organization-{{ organization.getId() }}" style="display: none;">&euro; {{ (actualRevenue/100)|number_format(2) }}</td>
-                        <td class="organization organization-{{ organization.getId() }}" style="display: none;">&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</td>
-                    {% endfor %}
+                    <td>&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</td>
+                    <td>&euro; {{ (actualRevenue/100)|number_format(2) }}</td>
+                    <td>&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</td>
                     <td class="actions">
                         {% if hasAccess('cudi_admin_sales_session', 'edit') %}
                             <a href="{{ url("cudi_admin_sales_session", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
@@ -58,15 +39,4 @@
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#organizationField').change(function() {
-                $('.item .organization').hide();
-                $('.item .organization-' + $(this).find(':selected').val()).show();
-            });
-        });
-    </script>
 {% endblock %}

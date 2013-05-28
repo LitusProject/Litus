@@ -271,7 +271,7 @@ return array(
             'cudi_admin_stock' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/stock[/:action[/:id][/semester/:semester][/organization/:organization][/page/:page][/:field/:string]][/]',
+                    'route' => '/admin/stock[/:action[/:id][/semester/:semester][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
@@ -279,7 +279,6 @@ return array(
                         'string'       => '[%a-zA-Z0-9:.,_-]*',
                         'page'         => '[0-9]*',
                         'semester'     => '[0-9]*',
-                        'organization' => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_stock',

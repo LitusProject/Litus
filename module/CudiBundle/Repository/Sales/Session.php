@@ -3,7 +3,6 @@
 namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Sales\Session as SessionEntity,
     DateTime,
     Doctrine\ORM\EntityRepository;
@@ -45,29 +44,6 @@ class Session extends EntityRepository
             ->where(
                 $query->expr()->eq('s.session', ':session')
             )
-            ->setParameter('session', $session->getId())
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        if (null === $resultSet)
-            $resultSet = 0;
-
-        return $resultSet;
-    }
-
-    public function getTheoreticalRevenueByOrganization(SessionEntity $session, Organization $organization)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('SUM(s.price)')
-            ->from('CudiBundle\Entity\Sales\SaleItem', 's')
-            ->join('s.article', 'a')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('s.session', ':session'),
-                    $query->expr()->eq('a.organization', ':organization')
-                )
-            )
-            ->setParameter('organization', $organization)
             ->setParameter('session', $session->getId())
             ->getQuery()
             ->getSingleScalarResult();
