@@ -21,19 +21,12 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
-    CudiBundle\Entity\Sales\Booking,
     DateTime,
-    Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
-    SecretaryBundle\Entity\Syllabus\StudyEnrollment,
-    SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     SecretaryBundle\Form\Registration\Add as AddForm,
     SecretaryBundle\Form\Registration\Edit as EditForm,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -43,6 +36,29 @@ use CommonBundle\Component\Authentication\Authentication,
  */
 class RegistrationController extends \SecretaryBundle\Component\Controller\RegistrationController
 {
+    /**
+     * Execute the request.
+     *
+     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @return array
+     * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
+     */
+    public function onDispatch(MvcEvent $e)
+    {
+        $result = parent::onDispatch($e);
+
+        $enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled');
+
+        if ('1' !== $enabled) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        return $result;
+    }
+
     public function addAction()
     {
         if (null !== $this->getParam('identification')) {
@@ -53,36 +69,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $academic = null;
         }
 
-        try {
-            $terms_and_conditions = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
-        } catch(\Exception $e) {
-            $terms_and_conditions = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
-        }
+        $terms_and_conditions = $this->_getTermsAndConditions();
 
         if (null !== $academic) {
-            $authentication = new Authentication(
-                new ShibbolethAdapter(
-                    $this->getEntityManager(),
-                    'CommonBundle\Entity\Users\People\Academic',
-                    'universityIdentification'
-                ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
-            );
-
-            $code = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
-                ->findLastByUniversityIdentification($this->getParam('identification'));
-
-            $this->getEntityManager()->remove($code);
-            $this->getEntityManager()->flush();
-
-            $authentication->authenticate(
-                $this->getParam('identification'), '', true
-            );
+            $this->_authenticate();
 
             $this->redirect()->toRoute(
                 'secretary_registration',
@@ -118,7 +108,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->findOneByName('student')
                     );
 
-                    $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
+                    $universityEmail = $this->_parseUniversityEmail($formData['university_email']);
 
                     $academic = new Academic(
                         $this->getParam('identification'),
@@ -131,22 +121,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getParam('identification')
                     );
 
-                    if ($formData['primary_address_address_city'] != 'other') {
-                        $primaryCity = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Address\City')
-                            ->findOneById($formData['primary_address_address_city']);
-                        $primaryCityName = $primaryCity->getName();
-                        $primaryPostal = $primaryCity->getPostal();
-                        $primaryStreet = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Address\Street')
-                            ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
-                            ->getName();
-                    } else {
-                        $primaryCityName = $formData['primary_address_address_city_other'];
-                        $primaryStreet = $formData['primary_address_address_street_other'];
-                        $primaryPostal = $formData['primary_address_address_postal_other'];
-                    }
-
                     $academic->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
                         ->addUniversityStatus(
                             new UniversityStatus(
@@ -158,14 +132,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         ->setPersonalEmail($formData['personal_email'])
                         ->setUniversityEmail($universityEmail)
                         ->setPrimaryAddress(
-                            new Address(
-                                $primaryStreet,
-                                $formData['primary_address_address_number'],
-                                $formData['primary_address_address_mailbox'],
-                                $primaryPostal,
-                                $primaryCityName,
-                                'BE'
-                            )
+                            $this->_getPrimaryAddress($formData)
                         )
                         ->setSecondaryAddress(
                             new Address(
@@ -178,32 +145,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             )
                         );
 
-                    $filePath = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('common.profile_path');
-
-                    $upload = new FileUpload();
-                    $upload->addValidator(new SizeValidator(array('max' => '3MB')));
-                    $upload->addValidator(new ImageValidator());
-
-                    if ($upload->isValid()) {
-                        $upload->receive();
-
-                        $image = new Imagick($upload->getFileName());
-                        unlink($upload->getFileName());
-                        $image->cropThumbnailImage(320, 240);
-
-                        if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
-                            $fileName = $academic->getPhotoPath();
-                        } else {
-                            $fileName = '';
-                            do{
-                                $fileName = sha1(uniqid());
-                            } while (file_exists($filePath . '/' . $fileName));
-                        }
-                        $image->writeImage($filePath . '/' . $fileName);
-                        $academic->setPhotoPath($fileName);
-                    }
+                    $this->_uploadProfileImage($academic);
 
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
@@ -215,69 +157,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['tshirt_size']
                         );
 
-                        $membershipArticle = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sales\Article')
-                            ->findOneById($this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('secretary.membership_article')
-                            );
-
-                        $booking = new Booking(
-                            $this->getEntityManager(),
-                            $academic,
-                            $membershipArticle,
-                            'assigned',
-                            1,
-                            true
-                        );
-
-                        $this->getEntityManager()->persist($booking);
-
-                        $registrationArticles = unserialize(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('cudi.registration_articles')
-                        );
-
-                        // Add the T-shirt too
-                        $tshirts = unserialize(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('cudi.tshirt_article')
-                        );
-                        $registrationArticles[] = $tshirts[$formData['tshirt_size']];
-
-                        $enableAssignment = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.enable_automatic_assignment');
-                        $currentPeriod = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Stock\Period')
-                            ->findOneActive();
-                        $currentPeriod->setEntityManager($this->getEntityManager());
-
-                        foreach ($registrationArticles as $registrationArticle) {
-                            $booking = new Booking(
-                                $this->getEntityManager(),
-                                $academic,
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sales\Article')
-                                    ->findOneById($registrationArticle),
-                                'booked',
-                                1,
-                                true
-                            );
-                            $this->getEntityManager()->persist($booking);
-
-                            if ($enableAssignment == '1') {
-                                $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
-                                if ($available > 0) {
-                                    if ($available >= $booking->getNumber()) {
-                                        $booking->setStatus('assigned', $this->getEntityManager());
-                                    }
-                                }
-                            }
-                        }
-
+                        $this->_bookRegistrationArticles($academic);
                     } else {
                         $metaData = new MetaData(
                             $academic,
@@ -388,15 +268,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        try {
-            $terms_and_conditions = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
-        } catch(\Exception $e) {
-            $terms_and_conditions = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
-        }
+        $terms_and_conditions = $this->_getTermsAndConditions();
 
         $form = new EditForm(
             $academic,
@@ -416,10 +288,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
             $form->setData($formData);
 
-            $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
-
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
+
+                $universityEmail = $this->_parseUniversityEmail($formData['university_email']);
 
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
@@ -430,41 +302,18 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->setPersonalEmail($formData['personal_email'])
                     ->setUniversityEmail($universityEmail);
 
-                if ($formData['primary_address_address_city'] != 'other') {
-                    $primaryCity = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Address\City')
-                        ->findOneById($formData['primary_address_address_city']);
-                    $primaryCityName = $primaryCity->getName();
-                    $primaryPostal = $primaryCity->getPostal();
-                    $primaryStreet = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Address\Street')
-                        ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
-                        ->getName();
-                } else {
-                    $primaryCityName = $formData['primary_address_address_city_other'];
-                    $primaryStreet = $formData['primary_address_address_street_other'];
-                    $primaryPostal = $formData['primary_address_address_postal_other'];
-                }
+                $primaryAddress = $this->_getPrimaryAddress($formData);
 
                 if (null !== $academic->getPrimaryAddress()) {
                     $academic->getPrimaryAddress()
-                        ->setStreet($primaryStreet)
-                        ->setNumber($formData['primary_address_address_number'])
-                        ->setMailbox($formData['primary_address_address_mailbox'])
-                        ->setPostal($primaryPostal)
-                        ->setCity($primaryCityName)
-                        ->setCountry('BE');
+                        ->setStreet($primaryAddress->getStreet())
+                        ->setNumber($primaryAddress->getNumber())
+                        ->setMailbox($primaryAddress->getMailbox())
+                        ->setPostal($primaryAddress->getPostal())
+                        ->setCity($primaryAddress->getCity())
+                        ->setCountry($primaryAddress->getCountry());
                 } else {
-                    $academic->setPrimaryAddress(
-                        new Address(
-                            $primaryStreet,
-                            $formData['primary_address_address_number'],
-                            $formData['primary_address_address_mailbox'],
-                            $primaryPostal,
-                            $primaryCityName,
-                            'BE'
-                        )
-                    );
+                    $academic->setPrimaryAddress($primaryAddress);
                 }
 
                 if (null !== $academic->getSecondaryAddress()) {
@@ -497,32 +346,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $academic->addUniversityStatus($status);
                 }
 
-                $filePath = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.profile_path');
-
-                $upload = new FileUpload();
-                $upload->addValidator(new SizeValidator(array('max' => '3MB')));
-                $upload->addValidator(new ImageValidator());
-
-                if ($upload->isValid()) {
-                    $upload->receive();
-
-                    $image = new Imagick($upload->getFileName());
-                    unlink($upload->getFileName());
-                    $image->cropThumbnailImage(320, 240);
-
-                    if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
-                        $fileName = $academic->getPhotoPath();
-                    } else {
-                        $fileName = '';
-                        do{
-                            $fileName = sha1(uniqid());
-                        } while (file_exists($filePath . '/' . $fileName));
-                    }
-                    $image->writeImage($filePath . '/' . $fileName);
-                    $academic->setPhotoPath($fileName);
-                }
+                $this->_uploadProfileImage($academic);
 
                 $tshirts = unserialize(
                     $this->getEntityManager()
@@ -587,130 +411,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
 
                 if ($metaData->becomeMember()) {
-                    $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
-                        ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                            $membershipArticle,
-                            $academic
-                        );
-                    if (null === $booking) {
-                        $booking = new Booking(
-                            $this->getEntityManager(),
-                            $academic,
-                            $membershipArticle,
-                            'assigned',
-                            1,
-                            true
-                        );
-
-                        $this->getEntityManager()->persist($booking);
-                    }
-
-                    $hasShirt = false;
-                    foreach ($tshirts as $tshirt) {
-                        $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sales\Booking')
-                            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sales\Article')
-                                    ->findOneById($tshirt),
-                                $academic
-                            );
-
-                        if (null !== $booking) {
-                            $hasShirt = true;
-                            break;
-                        }
-                    }
-
-                    $enableAssignment = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.enable_automatic_assignment');
-                    $currentPeriod = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\Period')
-                        ->findOneActive();
-                    $currentPeriod->setEntityManager($this->getEntityManager());
-
-                    // Only make a new booking if no tshirt has been sold before
-                    if (!$hasShirt) {
-                        $booking = new Booking(
-                            $this->getEntityManager(),
-                            $academic,
-                            $this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Sales\Article')
-                                ->findOneById($tshirts[$formData['tshirt_size']]),
-                            'booked',
-                            1,
-                            true
-                        );
-
-                        $this->getEntityManager()->persist($booking);
-
-                        if ($enableAssignment == '1') {
-                            $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
-                            if ($available > 0) {
-                                if ($available >= $booking->getNumber()) {
-                                    $booking->setStatus('assigned', $this->getEntityManager());
-                                }
-                            }
-                        }
-                    }
-
-                    // Book the other articles that should be booked on registration
-                    $registrationArticles = unserialize(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.registration_articles')
-                    );
-
-                    foreach ($registrationArticles as $registrationArticle) {
-                        $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sales\Booking')
-                            ->findOneSoldByArticleAndPerson(
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sales\Article')
-                                    ->findOneById($registrationArticle),
-                                $academic
-                            );
-
-                        // Already got this article, continue
-                        if (null !== $booking)
-                            continue;
-
-                        $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sales\Booking')
-                            ->findOneAssignedByArticleAndPerson(
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sales\Article')
-                                    ->findOneById($registrationArticle),
-                                $academic
-                            );
-
-                        // Already booked this article, continue
-                        if (null !== $booking)
-                            continue;
-
-                        $booking = new Booking(
-                            $this->getEntityManager(),
-                            $academic,
-                            $this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Sales\Article')
-                                ->findOneById($registrationArticle),
-                            'booked',
-                            1,
-                            true
-                        );
-                        $this->getEntityManager()->persist($booking);
-
-                        if ($enableAssignment == '1') {
-                            $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
-                            if ($available > 0) {
-                                if ($available >= $booking->getNumber()) {
-                                    $booking->setStatus('assigned', $this->getEntityManager());
-                                }
-                            }
-                        }
-                    }
+                    $this->_bookRegistrationArticles($academic);
                 } else {
                     $booking = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sales\Booking')
@@ -781,31 +482,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($this->getCurrentAcademicYear());
-
-        $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
-
-        $studyIds = array();
-        foreach($enrollments as $enrollment)
-            $studyIds[] = $enrollment->getStudy()->getId();
-
-        return new ViewModel(
-            array(
-                'studies' => $studies,
-                'enrollments' => $studyIds,
-            )
+        return $this->_studiesAction(
+            $academic,
+            $this->getCurrentAcademicYear()
         );
     }
 
     public function saveStudiesAction()
     {
         $this->initAjax();
-
-        $data = $this->getRequest()->getPost();
 
         if (!($academic = $this->_getAcademic())) {
             return new ViewModel(
@@ -815,43 +500,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             );
         }
 
-        $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
-
-        foreach($enrollments as $enrollment)
-            $this->getEntityManager()->remove($enrollment);
-
-        $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
-
-        foreach($enrollments as $enrollment)
-            $this->getEntityManager()->remove($enrollment);
-
-        if (!empty($data['studies'])) {
-            foreach($data['studies'] as $id) {
-                $study = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($id);
-                $this->getEntityManager()->persist(new StudyEnrollment($academic, $this->getCurrentAcademicYear(), $study));
-
-                $subjects = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($study, $this->getCurrentAcademicYear());
-
-                foreach($subjects as $subject) {
-                    if ($subject->isMandatory())
-                        $this->getEntityManager()->persist(new SubjectEnrollment($academic, $this->getCurrentAcademicYear(), $subject->getSubject()));
-                }
-            }
-        }
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'success'),
-            )
+        return $this->_saveStudiesAction(
+            $academic,
+            $this->getCurrentAcademicYear(),
+            $this->getRequest()->getPost()
         );
     }
 
@@ -868,97 +520,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        $form = new SubjectForm();
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $this->getEntityManager()->persist(
-                    new SubjectEnrollment(
-                        $academic,
-                        $this->getCurrentAcademicYear(),
-                        $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Subject')
-                            ->findOneById($formData['subject_id'])
-                    )
-                );
-
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The subject was succesfully added!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'common_account',
-                    array(
-                        'action' => 'subjects',
-                    )
-                );
-
-                return new ViewModel(
-                    array(
-                        'currentAcademicYear' => $this->getCurrentAcademicYear(),
-                    )
-                );
-            }
-        }
-
-        $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
-
-        $mappings = array();
-        $studySubjects = array();
-        foreach($enrollments as $enrollment) {
-            $subjects = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear());
-            $mappings[] = array(
-                'enrollment' => $enrollment,
-                'subjects' => $subjects,
-            );
-            foreach($subjects as $subject)
-                $studySubjects[] = $subject->getSubject()->getId();
-        }
-
-        $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
-
-        $subjectIds = array();
-        $otherSubjects = array();
-        foreach($enrollments as $enrollment) {
-            $subjectIds[] = $enrollment->getSubject()->getId();
-
-            if (!in_array($enrollment->getSubject()->getId(), $studySubjects))
-                $otherSubjects[] = $enrollment->getSubject();
-        }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-                'mappings' => $mappings,
-                'enrollments' => $subjectIds,
-                'currentAcademicYear' => $this->getCurrentAcademicYear(),
-                'otherSubjects' => $otherSubjects,
-            )
+        return $this->_subjectAction(
+            $academic,
+            $this->getCurrentAcademicYear(),
+            new SubjectForm()
         );
     }
 
     public function saveSubjectsAction()
     {
         $this->initAjax();
-
-        $data = $this->getRequest()->getPost();
 
         if (!($academic = $this->_getAcademic())) {
             return new ViewModel(
@@ -967,27 +538,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 )
             );
         }
-        $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        foreach($enrollments as $enrollment)
-            $this->getEntityManager()->remove($enrollment);
-
-        if (!empty($data['subjects'])) {
-            foreach($data['subjects'] as $id) {
-                $subject = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Subject')
-                    ->findOneById($id);
-                $this->getEntityManager()->persist(new SubjectEnrollment($academic, $this->getCurrentAcademicYear(), $subject));
-            }
-        }
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'success'),
-            )
+        return $this->_saveSubjectAction(
+            $academic,
+            $this->getCurrentAcademicYear(),
+            $this->getRequest()->getPost()
         );
     }
 
@@ -1068,5 +623,28 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $shibbolethUrl .= '%2F';
 
         return $shibbolethUrl . '?source=register';
+    }
+
+    private function _authenticate()
+    {
+        $authentication = new Authentication(
+            new ShibbolethAdapter(
+                $this->getEntityManager(),
+                'CommonBundle\Entity\Users\People\Academic',
+                'universityIdentification'
+            ),
+            $this->getServiceLocator()->get('authentication_doctrineservice')
+        );
+
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
+
+        $this->getEntityManager()->remove($code);
+        $this->getEntityManager()->flush();
+
+        $authentication->authenticate(
+            $this->getParam('identification'), '', true
+        );
     }
 }
