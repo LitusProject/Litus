@@ -118,7 +118,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $terms_and_conditions = $this->_getTermsAndConditions();
+        $termsAndConditions = $this->_getTermsAndConditions();
 
         $form = new EditForm(
             $academic,
@@ -311,7 +311,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return new ViewModel(
             array(
                 'form' => $form,
-                'terms_and_conditions' => $terms_and_conditions,
+                'termsAndConditions' => $termsAndConditions,
             )
         );
     }

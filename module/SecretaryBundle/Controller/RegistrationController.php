@@ -69,7 +69,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $academic = null;
         }
 
-        $terms_and_conditions = $this->_getTermsAndConditions();
+        $termsAndConditions = $this->_getTermsAndConditions();
 
         if (null !== $academic) {
             $this->_authenticate();
@@ -223,7 +223,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 return new ViewModel(
                     array(
                         'form' => $form,
-                        'terms_and_conditions' => $terms_and_conditions,
+                        'termsAndConditions' => $termsAndConditions,
                     )
                 );
             }
@@ -238,7 +238,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 return new ViewModel(
                     array(
                         'form' => $form,
-                        'terms_and_conditions' => $terms_and_conditions,
+                        'termsAndConditions' => $termsAndConditions,
                     )
                 );
             }
@@ -268,7 +268,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $terms_and_conditions = $this->_getTermsAndConditions();
+        $termsAndConditions = $this->_getTermsAndConditions();
 
         $form = new EditForm(
             $academic,
@@ -464,7 +464,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return new ViewModel(
             array(
                 'form' => $form,
-                'terms_and_conditions' => $terms_and_conditions,
+                'termsAndConditions' => $termsAndConditions,
             )
         );
     }

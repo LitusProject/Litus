@@ -387,15 +387,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     protected function _getTermsAndConditions()
     {
         try {
-            $terms_and_conditions = $this->getEntityManager()
+            $termsAndConditions = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
         } catch(\Exception $e) {
-            $terms_and_conditions = $this->getEntityManager()
+            $termsAndConditions = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
         }
-        return $terms_and_conditions;
+        return $termsAndConditions;
     }
 
     protected function _getPrimaryAddress($formData)
