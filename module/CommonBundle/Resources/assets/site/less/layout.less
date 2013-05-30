@@ -330,17 +330,25 @@ footer {
     .container {
         padding: 0 20px;
         color: @headingsColor;
+    }
 
-        .title {
-            font-family: @headingsFontFamily;
-            font-weight: @headingsFontWeight;
-            font-size: 18px;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
+    h3 {
+        margin: 0;
 
-            color: @black;
+        font-family: @headingsFontFamily;
+        font-weight: @headingsFontWeight;
+        font-size: 18px;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
 
-            line-height: 40px;
-        }
+        color: @black;
+
+        line-height: 40px;
+    }
+
+    .light {
+        margin-bottom: 20px;
+        padding: 16px 0 16px 0;
+        background: #333;
 
         .nav-list {
             margin: 0 0 10px 0;
@@ -370,20 +378,14 @@ footer {
         .companies {
             margin-left: 15px;
         }
-
-        .social {
-            float: right;
-
-            img {
-                height: 32px;
-            }
-        }
     }
 
-    .light {
-        margin-bottom: 20px;
-        padding: 16px 0 16px 0;
-        background: #333;
+    .copyright {
+        .icons {
+            margin: 0;
+            line-height: 40px;
+            text-align: right;
+        }
     }
 }
 
