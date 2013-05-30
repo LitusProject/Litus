@@ -160,6 +160,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('id', 'organization_info');
         $this->add($organization);
 
+        $field = new Select('organization');
+        $field->setLabel('Organization')
+            ->setAttribute('options', $this->_getOrganizations());
+        $organization->add($field);
+
         $field = new Checkbox('become_member');
         $field->setLabel('I want to become a member of the organization (&euro;10)')
             ->setValue(true);
@@ -262,6 +267,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->setData($data);
+    }
+
+    private function _getOrganizations()
+    {
+        $organizations = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
+        $organizationOptions = array();
+        foreach($organizations as $organization)
+            $organizationOptions[$organization->getId()] = $organization->getName();
+
+        return $organizationOptions;
     }
 
     public function getInputFilter()

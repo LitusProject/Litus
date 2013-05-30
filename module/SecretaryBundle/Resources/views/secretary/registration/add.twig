@@ -10,8 +10,23 @@
     <div class="row page">
         <div class="span12">
             {% if form %}
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(form) }}
+                {% if organizations|length > 1 %}
+                    <div id="organizationSelector">
+                        <ul style="list-style: none; width: 300px; margin: 0 auto;">
+                            {% for organization in organizations %}
+                                <li style="margin-bottom: 10px;">
+                                    <a class="thumbnail" id="organization-{{ organization.getId() }}" data-id="{{ organization.getId() }}" href="#" style="padding: 20px;text-decoration: none;">
+                                        {{ organization.getName() }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <div id="registerForm"{% if organizations|length > 1 %} style="display: none;"{% endif %}>
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(form) }}
+                </div>
             {% else %}
                 <div style="text-align: center;">
                     <p style="text-align: center;">
@@ -63,6 +78,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            {% if organizations|length > 1 %}
+                $('#organizationSelector a').click(function (e) {
+                    e.preventDefault();
+                    $('#organizationSelector').hide();
+                    $('#registerForm').show();
+                    $('#registerForm #organization').val($(this).data('id')).closest('.control-group').hide();
+                });
+            {% endif %}
+
             $('#conditions').parent().append(
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );

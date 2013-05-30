@@ -12,5 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class Organization extends EntityRepository
 {
+    public function findAll()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('CommonBundle\Entity\General\Organization', 'o')
+            ->orderBy('o.name', 'ASC')
+            ->getQuery()
+            ->getResult();
 
+        return $resultSet;
+    }
 }

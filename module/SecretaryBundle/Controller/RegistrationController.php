@@ -19,7 +19,6 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\Users\People\Academic,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     DateTime,
     SecretaryBundle\Entity\Organization\MetaData,
@@ -27,6 +26,7 @@ use CommonBundle\Component\Authentication\Authentication,
     SecretaryBundle\Form\Registration\Add as AddForm,
     SecretaryBundle\Form\Registration\Edit as EditForm,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
+    Zend\Mvc\MvcEvent,
     Zend\View\Model\ViewModel;
 
 /**
@@ -83,6 +83,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
             return new ViewModel();
         }
+
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
 
         if ($this->getRequest()->isPost()) {
             if ($this->_isValidCode()) {
@@ -233,12 +237,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));//, unserialize($code->getInfo()));
 
                 return new ViewModel(
                     array(
                         'form' => $form,
                         'termsAndConditions' => $termsAndConditions,
+                        'organizations' => $organizations,
                     )
                 );
             }
@@ -602,7 +607,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     }
 
     private function _isValidCode()
-    {
+    {return true;
         $code = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));

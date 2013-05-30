@@ -191,7 +191,7 @@ abstract class Person
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
