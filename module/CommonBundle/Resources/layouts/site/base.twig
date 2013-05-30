@@ -226,58 +226,60 @@
     </div>
 
     <footer>
-    	<div class="light">
-    		<div class="container">
-		        <div class="row-fluid">
-		        	<span class="span3">
-		        		<span class="title">{{ translate('Links') }}</span>
+	    <div class="row-fluid light">
+            <div class="container">
+	        	<div class="span3">
+	        		<span class="title">{{ translate('Links') }}</span>
 
-                        <ul class="nav-list">
-                            <li><a href="http://eng.kuleuven.be">FIrW</a></li>
-                            <li><a href="http://www.kuleuven.be">KU Leuven</a></li>
-                            <li><a href="http://www.vilv.be">VILV</a></li>
-                            <li><a href="http://www.kviv.be">KVIV</a></li>
-                        </ul>
+                    <ul class="nav-list">
+                        <li><a href="http://eng.kuleuven.be">FIrW</a></li>
+                        <li><a href="http://www.kuleuven.be">KU Leuven</a></li>
+                        <li><a href="http://www.vilv.be">VILV</a></li>
+                        <li><a href="http://www.kviv.be">KVIV</a></li>
+                    </ul>
 
-                        <ul class="nav-list">
-                            <li><a href="http://best.vtk.be">BEST</a></li>
-                            <li><a href="http://existenz.be">Existenz</a></li>
-                            <li><a href="http://revue.vtk.be">Revue</a></li>
-                        </ul>
+                    <ul class="nav-list">
+                        <li><a href="http://best.vtk.be">BEST</a></li>
+                        <li><a href="http://existenz.be">Existenz</a></li>
+                        <li><a href="http://revue.vtk.be">Revue</a></li>
+                    </ul>
 
-                        <ul class="nav-list">
-                            <li><a href="http://www.loko.be">LOKO</a></li>
-                        </ul>
-		        	</span>
-		        	<span class="span9">
-		        		<span class="title">{{ translate('Partners') }}</span>
+                    <ul class="nav-list">
+                        <li><a href="http://www.loko.be">LOKO</a></li>
+                    </ul>
+	        	</div>
+	        	<div class="span9">
+	        		<span class="title">{{ translate('Partners') }}</span>
 
-                        <p class="companies">
-                            <a id="nmbs" href="http://www.nmbs.be"></a>
-                            <a id="deloitte" href="http://www.deloitte.com/be"></a>
-                            <a id="kbc" href="http://www.kbc.be"></a>
-                            <a id="exxon" href="http://www.exxonmobil.com"></a>
-                            <a id="basf" href="http://www.basf.be/ecp2/Jobs_Career_belgium_nl/index"></a>
-                            <a id="gdfsuez" href="http://www.gdfsuez.com/"></a>
+                    <p class="companies">
+                        <a id="nmbs" href="http://www.nmbs.be"></a>
+                        <a id="deloitte" href="http://www.deloitte.com/be"></a>
+                        <a id="kbc" href="http://www.kbc.be"></a>
+                        <a id="exxon" href="http://www.exxonmobil.com"></a>
+                        <a id="basf" href="http://www.basf.be/ecp2/Jobs_Career_belgium_nl/index"></a>
+                        <a id="gdfsuez" href="http://www.gdfsuez.com/"></a>
 
-                            {#% for logo in logos %}
-                                <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
-                            {% endfor %#}
-                        </p>
-		        	</span>
-		        </div>
-		    </div>
+                        {#% for logo in logos %}
+                            <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
+                        {% endfor %#}
+                    </p>
+	        	</div>
+	        </div>
 	    </div>
 
-        <div class="container bottom">
-        	<span class="title">
-        		&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}
-        	</span>
+        <div class="row">
+            <div class="container">
+                <div class="span12">
+                	<span class="title">
+                		&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}
+                	</span>
 
-        	<span class="social">
-        		<a href="http://facebook.com/VTKLeuven"><img src="/_site/img/facebook.png" /></a>
-        		<a href="http://twitter.com/VTKLeuven"><img src="/_site/img/twitter.png" /></a>
-        	</span>
+                	<span class="social">
+                		<a href="http://facebook.com/VTKLeuven"><img src="/_site/img/facebook.png" /></a>
+                		<a href="http://twitter.com/VTKLeuven"><img src="/_site/img/twitter.png" /></a>
+                	</span>
+                </div>
+            </div>
         </div>
     </footer>
 
