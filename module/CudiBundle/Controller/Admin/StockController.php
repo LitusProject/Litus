@@ -17,7 +17,6 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
     CudiBundle\Component\Document\Generator\Stock as StockGenerator,
     CudiBundle\Form\Admin\Stock\Export as ExportForm,
     CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
@@ -42,21 +41,16 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
 
-        $organizations = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
-
         $academicYear = $this->getAcademicYear();
         $semester = $this->_getSemester();
-        $organization = $this->_getOrganization();
 
         if (null !== $this->getParam('field'))
-            $articles = $this->_search($academicYear, $semester, $organization);
+            $articles = $this->_search($academicYear, $semester);
 
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Article')
-                ->findAllByAcademicYear($academicYear, $semester, $organization);
+                ->findAllByAcademicYear($academicYear, $semester);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -70,8 +64,6 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 'period' => $period,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'organizations' => $organizations,
-                'currentOrganization' => $organization,
             )
         );
     }
@@ -110,9 +102,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $semester = $this->_getSemester();
-        $organization = $this->_getOrganization();
 
-        $articles = $this->_search($this->getAcademicYear(), $semester, $organization);
+        $articles = $this->_search($this->getAcademicYear(), $semester);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -397,21 +388,21 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
-    private function _search(AcademicYear $academicYear, $semester = 0, Organization $organization = null)
+    private function _search(AcademicYear $academicYear, $semester = 0)
     {
         switch($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
-                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester, $organization);
+                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'barcode':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
-                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester, $organization);
+                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'supplier':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
-                    ->findAllBySupplierStringAndAcademicYear($this->getParam('string'), $academicYear, $semester, $organization);
+                    ->findAllBySupplierStringAndAcademicYear($this->getParam('string'), $academicYear, $semester);
         }
     }
 
@@ -487,15 +478,5 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         if ($semester == 1 || $semester == 2)
             return $semester;
         return 0;
-    }
-
-    private function _getOrganization()
-    {
-        if (null !== $this->getParam('organization'))
-            return $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Organization')
-                ->findOneById($this->getParam('organization'));
-
-        return null;
     }
 }

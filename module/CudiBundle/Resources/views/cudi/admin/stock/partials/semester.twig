@@ -3,27 +3,15 @@
         <ul>
             <li>
                 <a {% if currentSemester != 1 and currentSemester != 2 %} class="active" {% endif %}
-                    href="{% if currentOrganization %}
-                        {{ url('cudi_admin_stock', {'action': 'manage', 'organization': currentOrganization.getId()}) }}
-                    {% else %}
-                        {{ url('cudi_admin_stock', {'action': 'manage'}) }}
-                    {% endif %}">All</a>
+                    href="{{ url('cudi_admin_stock', {'action': 'manage'}) }}">All</a>
             </li>
             <li>
                 <a {% if currentSemester == 1 %} class="active" {% endif %}
-                    href="{% if currentOrganization %}
-                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': 1, 'organization': currentOrganization.getId()}) }}
-                    {% else %}
-                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': 1}) }}
-                    {% endif %}">Semester 1</a>
+                    href="{{ url('cudi_admin_stock', {'action': 'manage', 'semester': 1}) }}">Semester 1</a>
             </li>
             <li>
                 <a {% if currentSemester == 2 %} class="active" {% endif %}
-                    href="{% if currentOrganization %}
-                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': 2, 'organization': currentOrganization.getId()}) }}
-                    {% else %}
-                        {{ url('cudi_admin_stock', {'action': 'manage', 'semester': 2}) }}
-                    {% endif %}">Semester 2</a>
+                    href="{{ url('cudi_admin_stock', {'action': 'manage', 'semester': 2}) }}">Semester 2</a>
             </li>
         </ul>
     </nav>

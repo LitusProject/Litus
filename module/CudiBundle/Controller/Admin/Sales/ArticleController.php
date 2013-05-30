@@ -119,10 +119,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CudiBundle\Entity\Supplier')
                     ->findOneById($formData['supplier']);
 
-                $organization = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Organization')
-                    ->findOneById($formData['organization']);
-
                 $saleArticle = new SaleArticle(
                     $article,
                     $formData['barcode'],
@@ -132,8 +128,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     $formData['unbookable'],
                     $formData['sellable'],
                     $supplier,
-                    $formData['can_expire'],
-                    $organization
+                    $formData['can_expire']
                 );
 
                 $this->getEntityManager()->persist($saleArticle);
@@ -193,10 +188,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CudiBundle\Entity\Supplier')
                     ->findOneById($formData['supplier']);
 
-                $organization = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Organization')
-                    ->findOneById($formData['organization']);
-
                 $saleArticle->setBarcode($formData['barcode'])
                     ->setPurchasePrice($formData['purchase_price'])
                     ->setSellPrice($formData['sell_price'])
@@ -204,8 +195,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setIsUnbookable($formData['unbookable'])
                     ->setIsSellable($formData['sellable'])
                     ->setSupplier($supplier)
-                    ->setCanExpire($formData['can_expire'])
-                    ->setOrganization($organization);
+                    ->setCanExpire($formData['can_expire']);
 
                 $article = $saleArticle->getMainArticle();
                 if ($article->isInternal()) {

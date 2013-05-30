@@ -4,7 +4,6 @@ namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Article as ArticleEntity,
     CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository,
@@ -18,12 +17,12 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
  */
 class Article extends EntityRepository
 {
-    public function findAllByAcademicYear(AcademicYear $academicYear, $semester = 0, Organization $organization = null)
+    public function findAllByAcademicYear(AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('a')
+        $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -33,14 +32,8 @@ class Article extends EntityRepository
                     $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
-            );
-
-        if (null !== $organization) {
-            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
-                ->setParameter('organization', $organization);
-        }
-
-        $resultSet = $query->orderBy('m.title', 'ASC')
+            )
+            ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -154,12 +147,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
+    public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('a')
+        $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -171,26 +164,20 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('title', '%'.strtolower($title).'%');
-
-        if (null !== $organization) {
-            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
-                ->setParameter('organization', $organization);
-        }
-
-        $resultSet = $query->orderBy('m.title', 'ASC')
+            ->setParameter('title', '%'.strtolower($title).'%')
+            ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
         return $resultSet;
     }
 
-    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
+    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('a')
+        $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -202,14 +189,8 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('author', '%'.strtolower($author).'%');
-
-        if (null !== $organization) {
-            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
-                ->setParameter('organization', $organization);
-        }
-
-        $resultSet = $query->orderBy('m.title', 'ASC')
+            ->setParameter('author', '%'.strtolower($author).'%')
+            ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -244,12 +225,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
+    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('a')
+        $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -261,26 +242,20 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('publisher', '%'.strtolower($publisher).'%');
-
-        if (null !== $organization) {
-            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
-                ->setParameter('organization', $organization);
-        }
-
-        $resultSet = $query->orderBy('m.title', 'ASC')
+            ->setParameter('publisher', '%'.strtolower($publisher).'%')
+            ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
         return $resultSet;
     }
 
-    public function findAllByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
+    public function findAllByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('b')
+        $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
             ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -293,14 +268,8 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('barcode', '%'.$barcode.'%');
-
-        if (null !== $organization) {
-            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
-                ->setParameter('organization', $organization);
-        }
-
-        $resultSet = $query->orderBy('m.title', 'ASC')
+            ->setParameter('barcode', '%'.$barcode.'%')
+            ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -311,12 +280,12 @@ class Article extends EntityRepository
         return $articles;
     }
 
-    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear, $semester = 0, Organization $organization = null)
+    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('a')
+        $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->innerJoin('a.supplier', 's', Join::WITH,
@@ -330,14 +299,8 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('supplier', '%' . strtolower($supplier) . '%');
-
-        if (null !== $organization) {
-            $query->andWhere($query->expr()->eq('a.organization', ':organization'))
-                ->setParameter('organization', $organization);
-        }
-
-        $resultSet = $query->orderBy('m.title', 'ASC')
+            ->setParameter('supplier', '%' . strtolower($supplier) . '%')
+            ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
