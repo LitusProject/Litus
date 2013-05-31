@@ -47,6 +47,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('BannerBundle\Entity\Nodes\Banner')
             ->findAllActive();
 
+        $result->currentAcademicYear = $this->getCurrentAcademicYear();
+
         /*$result->logos = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Logo')
             ->findAllByType('homepage');

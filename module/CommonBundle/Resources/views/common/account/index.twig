@@ -62,6 +62,8 @@
 
             <h3>{{ translate('Organization') }}</h3>
             <dl class="dl-horizontal wide">
+                <dt>{{ translate('Organization') }}</dt>
+                <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
                 <dt>{{ translate('Membership') }}</dt>
                 <dd>{% if metaData.becomeMember() %}Yes{% else %}No{% endif %}</dd>
                 <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>

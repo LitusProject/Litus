@@ -15,6 +15,7 @@
 namespace CommonBundle\Entity\Users\People\Organizations;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\Users\People\Academic,
     Doctrine\ORM\Mapping as ORM;
 
@@ -41,7 +42,7 @@ class AcademicYearMap
     /**
      * @var \CommonBundle\Entity\Users\People\Academic The person
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", inversedBy="organizationMap")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -104,5 +105,15 @@ class AcademicYearMap
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return \CommonBundle\Entity\Users\People\Organizations\AcademicYearMap
+     */
+    public function setOrganization(Organization $organization)
+    {
+        $this->organization = $organization;
+        return $this;
     }
 }

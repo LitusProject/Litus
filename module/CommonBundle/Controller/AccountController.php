@@ -198,6 +198,13 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
 
                 $this->_uploadProfileImage($academic);
+                $this->_setOrganization(
+                    $academic,
+                    $this->getCurrentAcademicYear(),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization'])
+                );
 
                 $tshirts = unserialize(
                     $this->getEntityManager()
@@ -262,7 +269,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     );
 
                 if ($metaData->becomeMember()) {
-                    $this->_bookRegistrationArticles($academic);
+                    $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
                 } else {
                     $booking = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sales\Booking')

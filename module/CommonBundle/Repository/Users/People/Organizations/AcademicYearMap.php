@@ -2,7 +2,9 @@
 
 namespace CommonBundle\Repository\Users\People\Organizations;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\People\Academic,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Barcode
@@ -12,4 +14,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class AcademicYearMap extends EntityRepository
 {
+    public function findOneByAcademicAndAcademicYear(Academic $academic, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CommonBundle\Entity\Users\People\Organizations\AcademicYearMap', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.academic', ':academic'),
+                    $query->expr()->eq('a.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academic', $academic->getId())
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

@@ -208,6 +208,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $universityEmail = explode('@', $universityEmail)[0];
         }
 
+        $organization = $academic->getOrganization($academicYear);
+
         $data = array(
             'first_name' => $academic->getFirstName(),
             'last_name' => $academic->getLastName(),
@@ -225,6 +227,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'personal_email' => $academic->getPersonalEmail(),
             'primary_email' => $academic->getPersonalEmail() == $academic->getEmail(),
             'become_member' => $metaData ? $metaData->becomeMember() : false,
+            'organization' => $organization ? $organization->getId() : 0,
         );
 
         if ($academic->getPrimaryAddress()) {

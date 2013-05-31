@@ -94,7 +94,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));//, unserialize($code->getInfo()));
 
                 $formData = $this->getRequest()->getPost();
                 $formData['university_identification'] = $this->getParam('identification');
@@ -115,7 +115,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $universityEmail = $this->_parseUniversityEmail($formData['university_email']);
 
                     $academic = new Academic(
-                        $this->getParam('identification'),
+                        's0210425',//$this->getParam('identification'),
                         $roles,
                         $formData['first_name'],
                         $formData['last_name'],
@@ -150,6 +150,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         );
 
                     $this->_uploadProfileImage($academic);
+                    $this->_setOrganization(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Organization')
+                            ->findOneById($formData['organization'])
+                    );
 
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
@@ -161,7 +168,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['tshirt_size']
                         );
 
-                        $this->_bookRegistrationArticles($academic);
+                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
                     } else {
                         $metaData = new MetaData(
                             $academic,
@@ -352,6 +359,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
 
                 $this->_uploadProfileImage($academic);
+                $this->_setOrganization(
+                    $academic,
+                    $this->getCurrentAcademicYear(),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization'])
+                );
 
                 $tshirts = unserialize(
                     $this->getEntityManager()
@@ -416,7 +430,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
 
                 if ($metaData->becomeMember()) {
-                    $this->_bookRegistrationArticles($academic);
+                    $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
                 } else {
                     $booking = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sales\Booking')

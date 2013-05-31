@@ -17,7 +17,9 @@ namespace SecretaryBundle\Component\Controller;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\Users\People\Organizations\AcademicYearMap,
     CudiBundle\Entity\Sales\Booking,
     Imagick,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
@@ -244,7 +246,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
     }
 
-    protected function _bookRegistrationArticles(Academic $academic)
+    protected function _bookRegistrationArticles(Academic $academic, $tshirtSize)
     {
         $membershipArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
@@ -310,7 +312,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $academic,
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
-                    ->findOneById($tshirts[$formData['tshirt_size']]),
+                    ->findOneById($tshirts[$tshirtSize]),
                 'booked',
                 1,
                 true
@@ -424,5 +426,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $primaryCityName,
             'BE'
         );
+    }
+
+    protected function _setOrganization(Academic $academic, AcademicYear $academicYear, Organization $organization)
+    {
+        $map = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Organizations\AcademicYearMap')
+            ->findOneByAcademicAndAcademicYear($academic, $academicYear);
+
+        if (null === $map) {
+            $this->getEntityManager()->persist(new AcademicYearMap($academic, $academicYear, $organization));
+        } else {
+            $map->setOrganization($organization);
+        }
     }
 }
