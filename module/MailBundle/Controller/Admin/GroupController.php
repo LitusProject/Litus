@@ -76,19 +76,21 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setSubject($formData['subject']);
 
                 if ('organization' == $type) {
-                    $persons = $this->getEntityManager()
+                    $people = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\Users\Statuses\Organization')
                         ->findAllByStatus($status, $this->getCurrentAcademicYear());
                 } else {
-                    $persons = $this->getEntityManager()
+                    $people = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\Users\Statuses\University')
                         ->findAllByStatus($status, $this->getCurrentAcademicYear());
                 }
 
                 $mail->addTo($mailAddress, $mailName);
 
-                foreach($persons as $person)
-                    $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
+                foreach($people as $person) {
+                    if (null !== $person->getPerson()->getEmail())
+                        $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
+                }
 
                 if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
