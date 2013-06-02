@@ -14,7 +14,8 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
     CommonBundle\Form\Auth\Login as LoginForm,
@@ -55,6 +56,32 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'iso8601' => date('c', time()),
             'display' => date('l, F j Y, H:i', time())
         );
+
+        if ($this->hasAccess('cudi_admin_stock_period', 'new')) {
+            $period = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period')
+                ->findOneActive();
+
+            if (null === $period) {
+                $this->addPersistentFlashMessage(
+                    $result,
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'Please create a new stock period! <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">Click here</a>'
+                    )
+                );
+            } elseif ($period->getStartDate()->format('Y') < date('Y') || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()) {
+                $this->addPersistentFlashMessage(
+                    $result,
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'Warning',
+                        'Please create a new stock period! <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">Click here</a>'
+                    )
+                );
+            }
+        }
 
         $e->setResult($result);
 

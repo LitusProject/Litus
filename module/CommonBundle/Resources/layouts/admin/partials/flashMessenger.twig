@@ -1,10 +1,20 @@
 {% for flashMessage in flashMessenger %}
-	<div class="flashmessage {{ flashMessage.getType() }}_message full_width">
-		<div class="title">{{ flashMessage.getTitle() }}</div>
-		<div class="content">
-		    {% autoescape false %}
-			<p>{{ flashMessage.getMessage() }}</p>
-			{% endautoescape %}
-		</div>
-	</div>
+    <div class="flashmessage {{ flashMessage.getType() }}_message full_width">
+        <div class="title">{{ flashMessage.getTitle() }}</div>
+        <div class="content">
+            {% autoescape false %}
+            <p>{{ flashMessage.getMessage() }}</p>
+            {% endautoescape %}
+        </div>
+    </div>
+{% endfor %}
+{% for flashMessage in persistentFlashMessages %}
+    <div class="flashmessage {{ flashMessage.getType() }}_message full_width">
+        <div class="title">{{ flashMessage.getTitle() }}</div>
+        <div class="content">
+            {% autoescape false %}
+            <p>{{ flashMessage.getMessage() }}</p>
+            {% endautoescape %}
+        </div>
+    </div>
 {% endfor %}
