@@ -68,7 +68,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
                     new FlashMessage(
                         FlashMessage::ERROR,
                         'Error',
-                        'Please create a new stock period! To do so, please click <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">here</a>'
+                        'Please create a new stock period! To do so, please click <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">here</a>.'
                     )
                 );
             } elseif ($period->getStartDate()->format('Y') < date('Y') || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()) {
@@ -77,7 +77,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
                     new FlashMessage(
                         FlashMessage::WARNING,
                         'Warning',
-                        'Please create a new stock period! To do so, please click <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">here</a>'
+                        'Please create a new stock period! To do so, please click <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">here</a>.'
                     )
                 );
             }
