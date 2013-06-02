@@ -340,7 +340,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     private function _addToQueue(User $user, $universityIdentification)
-    {echo $universityIdentification;
+    {
         $session = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($user->getExtraData('session'));
@@ -348,7 +348,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         $item = $this->_queue->addPerson($session, $universityIdentification, true);
 
         if (is_string($item)) {
-            $this->sendText($user, $item);
+            $object = (object) array(
+                'addPersonError' => json_decode($item),
+            );
+            $this->sendText($user, json_encode($object));
         } else {
             return $item->getId();
         }
