@@ -14,6 +14,7 @@
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
         tAddToQueue: 'Add to queue',
         tErrorAddPerson: 'The person could not be added to the queue',
+        tErrorAddPersonType: {'person': 'The person was not found', 'noBookings': 'There were no bookings for this person'},
 
         translateStatus: function (status) {return status},
         sendToSocket: function (text) {},
@@ -64,8 +65,8 @@
             _gotBarcode($(this), barcode);
             return this;
         },
-        addPersonError : function () {
-            _addPersonError($(this));
+        addPersonError : function (error) {
+            _addPersonError($(this), error);
             return this;
         }
     };
@@ -425,16 +426,21 @@
     }
 
     function _toggleVisibility($this, row, data) {
+        if (data == undefined) {
+            row.show();
+            return;
+        }
+
         var show = true;
-        if ($this.find('.hideHold').is(':checked') && data && data.status == 'hold')
+        if ($this.find('.hideHold').is(':checked') && data.status == 'hold')
             show = false;
 
         var filter = $this.find('.filterText').val();
         if (filter.length > 0) {
             filter = filter.toLowerCase();
             show = false;
-            if (data && data.name.toLowerCase().indexOf(filter) >= 0 || data.university_identification.toLowerCase().indexOf(filter) >= 0)
-                show = true
+            if (data.name.toLowerCase().indexOf(filter) >= 0 || data.university_identification.toLowerCase().indexOf(filter) >= 0)
+                show = true;
         }
 
         if (show)
@@ -460,12 +466,14 @@
         });
     }
 
-    function _addPersonError($this) {
+    function _addPersonError($this, error) {
         var settings = $this.data('queueSettings');
 
         $this.find('.modal-body').prepend(
             $('<div>', {'class': 'flashmessage alert alert-error fade in'}).append(
-                $('<div>', {'class': 'content'}).append('<p>').html(settings.tErrorAddPerson)
+                $('<div>', {'class': 'content'}).append('<p>').html(
+                    settings.tErrorAddPerson + ': ' + settings.tErrorAddPersonType[error]
+                )
             )
         );
 
