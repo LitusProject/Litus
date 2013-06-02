@@ -13,6 +13,7 @@
         tPrintNext: 'Print Next',
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
         tAddToQueue: 'Add to queue',
+        tErrorAddPerson: 'The person could not be added to the queue',
 
         translateStatus: function (status) {return status},
         sendToSocket: function (text) {},
@@ -63,6 +64,10 @@
             _gotBarcode($(this), barcode);
             return this;
         },
+        addPersonError : function () {
+            _addPersonError($(this));
+            return this;
+        }
     };
 
     $.fn.queue = function (method) {
@@ -421,14 +426,14 @@
 
     function _toggleVisibility($this, row, data) {
         var show = true;
-        if ($this.find('.hideHold').is(':checked') && data.status == 'hold')
+        if ($this.find('.hideHold').is(':checked') && data && data.status == 'hold')
             show = false;
 
         var filter = $this.find('.filterText').val();
         if (filter.length > 0) {
             filter = filter.toLowerCase();
             show = false;
-            if (data.name.toLowerCase().indexOf(filter) >= 0 || data.university_identification.toLowerCase().indexOf(filter) >= 0)
+            if (data && data.name.toLowerCase().indexOf(filter) >= 0 || data.university_identification.toLowerCase().indexOf(filter) >= 0)
                 show = true
         }
 
@@ -453,5 +458,19 @@
                 }
             }
         });
+    }
+
+    function _addPersonError($this) {
+        var settings = $this.data('queueSettings');
+
+        $this.find('.modal-body').prepend(
+            $('<div>', {'class': 'flashmessage alert alert-error fade in'}).append(
+                $('<div>', {'class': 'content'}).append('<p>').html(settings.tErrorAddPerson)
+            )
+        );
+
+        setTimeout(function () {
+            $this.find('.modal-body .flashmessage').remove();
+        }, 2000);
     }
 })(jQuery);

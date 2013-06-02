@@ -1,14 +1,18 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-success fade" id="studies_saved_success">
-        <div class="content">
-            {{ translate('Your studies were successfully saved!') }}
+    <div class="page-alert">
+        <div class="flashmessage alert alert-success fade" id="studies_saved_success">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('Your studies were successfully saved!') }}
+            </div>
         </div>
-    </div>
-    <div class="flashmessage alert alert-error fade" id="studies_saved_error">
-        <div class="content">
-            {{ translate('An error occurred while saving your studies!') }}
+        <div class="flashmessage alert alert-error fade" id="studies_saved_error">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('An error occurred while saving your studies!') }}
+            </div>
         </div>
     </div>
 
@@ -65,8 +69,13 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
             $('.study_enroll').click(function (e) {
                 e.preventDefault();
+                $('.page-alert .flashmessage').removeClass('in');
                 $(this).toggleClass('active');
                 updateHeadings();
                 saveChanges();

@@ -90,6 +90,13 @@ class Academic extends \CommonBundle\Entity\Users\Person
     private $universityStatuses;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The user's organization mapping
+     *
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\People\Organizations\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"})
+     */
+    private $organizationMap;
+
+    /**
      * @param string $username The user's username
      * @param array $roles The user's roles
      * @param string $firstName The user's first name
@@ -276,5 +283,18 @@ class Academic extends \CommonBundle\Entity\Users\Person
     public function getSecondaryAddress()
     {
         return $this->secondaryAddress;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return \CommonBundle\Entity\General\Organization
+     */
+    public function getOrganization(AcademicYearEntity $academicYear)
+    {
+        foreach($this->organizationMap as $map) {
+            if ($map->getAcademicYear() == $academicYear) {
+                return $map->getOrganization();
+            }
+        }
     }
 }

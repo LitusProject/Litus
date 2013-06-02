@@ -160,6 +160,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('id', 'organization_info');
         $this->add($organization);
 
+        $organizations = $this->_getOrganizations();
+        if (sizeof($organizations) > 1) {
+            $field = new Select('organization');
+            $field->setLabel('Organization')
+                ->setAttribute('options', $organizations);
+            $organization->add($field);
+        }
+
         $field = new Checkbox('become_member');
         $field->setLabel('I want to become a member of the organization (&euro;10)')
             ->setValue(true);
@@ -203,6 +211,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $universityEmail = explode('@', $universityEmail)[0];
         }
 
+        $organization = $academic->getOrganization($academicYear);
+
         $data = array(
             'first_name' => $academic->getFirstName(),
             'last_name' => $academic->getLastName(),
@@ -220,6 +230,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'personal_email' => $academic->getPersonalEmail(),
             'primary_email' => $academic->getPersonalEmail() == $academic->getEmail(),
             'become_member' => $metaData ? $metaData->becomeMember() : false,
+            'organization' => $organization ? $organization->getId() : 0,
         );
 
         if ($academic->getPrimaryAddress()) {
@@ -262,6 +273,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->setData($data);
+    }
+
+    private function _getOrganizations()
+    {
+        $organizations = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
+        $organizationOptions = array();
+        foreach($organizations as $organization)
+            $organizationOptions[$organization->getId()] = $organization->getName();
+
+        return $organizationOptions;
     }
 
     public function getInputFilter()
@@ -402,6 +426,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 )
             )
         );
+
+        if (sizeof($this->_getOrganizations()) > 1) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'organization',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+        }
 
         if (!$this->_conditionsAlreadyChecked) {
             $inputFilter->add(

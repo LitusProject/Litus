@@ -197,6 +197,8 @@ var currentView = 'selectPaydesk';
                         collect.collect('addArticle', data.addArticle);
                     if (currentView == 'sale')
                         sale.sale('addArticle', data.addArticle);
+                } else if (data.addPersonError) {
+                    queue.queue('addPersonError');
                 }
             },
             error: function (e) {

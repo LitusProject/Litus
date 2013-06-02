@@ -262,8 +262,6 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
 
     /**
      * Validate the query result: check the credential.
-     *
-     * @return \Litus\Authentication\Result
      */
     abstract protected function validatePersonObject();
 
