@@ -160,10 +160,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('id', 'organization_info');
         $this->add($organization);
 
-        $field = new Select('organization');
-        $field->setLabel('Organization')
-            ->setAttribute('options', $this->_getOrganizations());
-        $organization->add($field);
+        $organizations = $this->_getOrganizations();
+        if (sizeof($organizations) > 1) {
+            $field = new Select('organization');
+            $field->setLabel('Organization')
+                ->setAttribute('options', $organizations);
+            $organization->add($field);
+        }
 
         $field = new Checkbox('become_member');
         $field->setLabel('I want to become a member of the organization (&euro;10)')
@@ -423,6 +426,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 )
             )
         );
+
+        if (sizeof($this->_getOrganizations()) > 1) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'organization',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+        }
 
         if (!$this->_conditionsAlreadyChecked) {
             $inputFilter->add(

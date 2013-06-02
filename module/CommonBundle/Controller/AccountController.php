@@ -198,13 +198,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
 
                 $this->_uploadProfileImage($academic);
-                $this->_setOrganization(
-                    $academic,
-                    $this->getCurrentAcademicYear(),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization'])
-                );
+                if (isset($formData['organization'])) {
+                    $this->_setOrganization(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Organization')
+                            ->findOneById($formData['organization'])
+                    );
+                }
 
                 $tshirts = unserialize(
                     $this->getEntityManager()
