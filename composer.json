@@ -17,5 +17,10 @@
         "zf-commons/zfc-twig": "@dev",
         "twitter/bootstrap": "2.3.*",
         "zendframework/zend-developer-tools": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "module/"
+        }
     }
 }
