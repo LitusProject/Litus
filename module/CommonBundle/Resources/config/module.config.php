@@ -378,7 +378,7 @@ return array(
         ),
     ),
     'assetic_configuration' => array(
-        'buildOnRequest' => true,//getenv('APPLICATION_ENV') == 'development',
+        'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
         'debug' => false,
         'webPath' => __DIR__ . '/../../../../public/_assetic',
         'rendererToStrategy' => array(
