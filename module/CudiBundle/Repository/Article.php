@@ -161,7 +161,7 @@ class Article extends EntityRepository
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $mapping->getArticle()->getId(), 'edit');
 
-            if (isset($edited[0])) {
+            if (isset($edited[0]) && !$edited[0]->isRefused()) {
                 $ids[] = $edited[0]->getEntityId();
             } else {
                 $ids[] = $mapping->getArticle()->getId();
@@ -177,7 +177,7 @@ class Article extends EntityRepository
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $add->getEntityId(), 'edit');
 
-            if (isset($edited[0])) {
+            if (isset($edited[0]) && !$edited[0]->isRefused()) {
                 $ids[] = $edited[0]->getEntityId();
             } else {
                 $ids[] = $add->getEntityId();

@@ -9,9 +9,10 @@
             <th>{{ translate('Draft') }}</th>
             <th>{{ translate('Title') }}</th>
             <th width="120px">{{ translate('Authors') }}</th>
-            <th width="220px">{{ translate('Publisher') }}</th>
+            <th width="120px">{{ translate('Publisher') }}</th>
             <th width="90px">{{ translate('Publish Year') }}</th>
             <th width="100px">{{ translate('ISBN') }}</th>
+            <th width="50px">{{ translate('Price') }}</th>
             <th width="90px">{{ translate('Actions') }}</th>
         </tr>
 
@@ -23,6 +24,7 @@
                 <td>{{ article.getPublishers() }}</td>
                 <td>{{ article.getYearPublished() }}</td>
                 <td>{{ article.getISBN() }}</td>
+                <td>{% if article.getSaleArticle() %}&euro;{{ (article.getSaleArticle().getSellPrice()/100)|number_format(2) }}{% endif %}</td>
                 <td class="actions">
                     {% if hasAccess('cudi_prof_article', 'edit') %}
                         <a href="{{ url("cudi_prof_article", {"action": "edit", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>

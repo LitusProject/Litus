@@ -62,8 +62,24 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
 
-            if (!isset($actions[0]) || $actions[0]->isRefused())
-                $articleMappings[] = $mapping;
+            $edited = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllByEntityAndPreviousIdAndAction('article', $mapping->getArticle()->getId(), 'edit');
+
+            if (!isset($actions[0]) || !$actions[0]->isRefused()) {
+                if (isset($edited[0]) && !$edited[0]->isRefused()) {
+                    $edited[0]->setEntityManager($this->getEntityManager());
+                    $article = $edited[0]->getEntity();
+                } else {
+                    $article = $mapping->getArticle();
+                }
+
+                $articleMappings[] = array(
+                    'mapping' => $mapping,
+                    'article' => $article,
+                );
+                $article->setEntityManager($this->getEntityManager());
+            }
         }
 
         $profMappings = $this->getEntityManager()

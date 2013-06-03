@@ -38,6 +38,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
 
+        foreach($articles as $article) {
+            $article->setEntityManager($this->getEntityManager());
+        }
+
         return new ViewModel(
             array(
                 'articles' => $articles,
@@ -114,24 +118,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $academicYear
                     );
 
-                $mapping = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-                    ->findOneByArticleAndSubjectAndAcademicYear($article, $subject->getSubject(), $academicYear, true);
+                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
+                $mapping->setIsProf(true);
+                $this->getEntityManager()->persist($mapping);
 
-                if (null === $mapping) {
-                    $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
-                    $mapping->setIsProf(true);
-                    $this->getEntityManager()->persist($mapping);
-
-                    $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'add');
-                    $this->getEntityManager()->persist($action);
-                } else {
-                    $actions = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Prof\Action')
-                        ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
-                    foreach ($actions as $action)
-                        $this->getEntityManager()->remove($action);
-                }
+                $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'add');
+                $this->getEntityManager()->persist($action);
 
                 $this->getEntityManager()->flush();
 
@@ -236,24 +228,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $academicYear
                     );
 
-                $mapping = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-                    ->findOneByArticleAndSubjectAndAcademicYear($article, $subject->getSubject(), $academicYear, true);
+                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
+                $mapping->setIsProf(true);
+                $this->getEntityManager()->persist($mapping);
 
-                if (null === $mapping) {
-                    $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
-                    $mapping->setIsProf(true);
-                    $this->getEntityManager()->persist($mapping);
-
-                    $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'add');
-                    $this->getEntityManager()->persist($action);
-                } else {
-                    $actions = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Prof\Action')
-                        ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
-                    foreach ($actions as $action)
-                        $this->getEntityManager()->remove($action);
-                }
+                $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'add');
+                $this->getEntityManager()->persist($action);
 
                 $this->getEntityManager()->flush();
 
@@ -369,8 +349,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     if ($edited) {
                         $this->getEntityManager()->persist($duplicate);
                         $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $duplicate->getId(), 'edit', $article->getId());
-                        if ($formData['draft'])
-                            $article->setIsDraft(true);
                         $this->getEntityManager()->persist($action);
                     }
                 } else {
@@ -392,13 +370,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                             ->setIsRectoVerso($formData['rectoverso'])
                             ->setIsPerforated($formData['perforated']);
                     }
-
-                    if ($formData['draft'])
-                        $article->setIsDraft(true);
-                    else
-                        $article->setIsDraft(false);
-
                 }
+
+                if ($formData['draft'])
+                    $article->setIsDraft(true);
+                else
+                    $article->setIsDraft(false);
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
