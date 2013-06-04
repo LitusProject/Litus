@@ -54,7 +54,7 @@ class Admin extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Checkbox('edit_admin');
-        $field->setLabel('Can Edit Other People\'s Rights to this List');
+        $field->setLabel('Can Edit Admins');
         $this->add($field);
 
         $field = new Hidden('person_id');

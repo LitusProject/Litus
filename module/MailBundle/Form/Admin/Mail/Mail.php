@@ -18,7 +18,8 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\Validator\EmailAddress as EmailAddressValidator;
 
 /**
  * Send Mail
@@ -33,6 +34,11 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($name = null)
     {
         parent::__construct($name);
+
+        $field = new Text('from');
+        $field->setLabel('From')
+            ->setAttribute('style', 'width: 400px;');
+        $this->add($field);
 
         $field = new Text('subject');
         $field->setLabel('Subject')
@@ -56,6 +62,21 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'from',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new EmailAddressValidator(),
+                    ),
+                )
+            )
+        );
 
         $inputFilter->add(
             $factory->createInput(
