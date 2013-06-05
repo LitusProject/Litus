@@ -36,7 +36,7 @@ class Language
     /**
      * @var string The language abbrev
      *
-     * @ORM\Column(type="string", length=4)
+     * @ORM\Column(type="string", length=4, unique=true)
      */
     private $abbrev;
 
