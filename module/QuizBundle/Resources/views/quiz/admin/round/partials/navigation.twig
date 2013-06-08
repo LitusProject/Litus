@@ -1,0 +1,21 @@
+<header id="controller_header">
+    <div class="title"><span class="quiz">Quiz: Rounds</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('quiz_admin_round', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('quiz_admin_round', {"action": "add", "quizid": getParam('quizid') }) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('quiz_admin_round', 'manage') %}
+                <li>
+                    <a
+                        {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('quiz_admin_round', {"action": "manage", "quizid": getParam('quizid')}) }}"
+                    >
+                        Manage
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

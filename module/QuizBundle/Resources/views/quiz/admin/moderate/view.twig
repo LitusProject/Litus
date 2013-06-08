@@ -1,0 +1,61 @@
+{% extends 'moderate/base.twig' %}
+
+{% block content %}
+    <header class="subhead">
+        <h1>{{ quiz.getName() }}</h1>
+    </header>
+    <div class=".pull-left">
+        <select id="show-until">
+            <option value="0">---</option>
+            {% for round in rounds %}
+                <option value="{{ loop.index }}">{{ round.getName() }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <table id="view_rounds" class="table table-striped table-bordered">
+        <tr>
+            <th class="rank">Rank</th>
+            <th class="team">Team</th>
+            {% for round in rounds %}
+                <th class="round">{{ round.getName() }}</th>
+            {% endfor %}
+        </tr>
+        {% for teamid in total_points|keys %}
+            <tr>
+                <td class="rank">{{ loop.index }}</td>
+                <td class="team">{{ teams[teamid].getName() }}</td>
+                {% for round in rounds %}
+                    <td class="round">
+                        {% if points[teamid][round.getId()] is not defined %}
+                            0
+                        {% else %}
+                            {{ points[teamid][round.getId()] }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block content_script %}
+    <script>
+        $('#show-until').on('change', function() {
+            var last_column = $(this).val();
+            if(last_column == 0) {
+                $('#view_rounds tr .round').show();
+            }
+            else {
+                $('#view_rounds tr').each(function() {
+                    $(this).children('.round').each(function(k) {
+                        if(k >= last_column){
+                            $(this).hide();
+                        } else {
+                            $(this).show();
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+{% endblock %}

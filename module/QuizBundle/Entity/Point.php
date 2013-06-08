@@ -14,9 +14,7 @@
 
 namespace QuizBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a point.
