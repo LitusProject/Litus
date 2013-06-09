@@ -29,9 +29,6 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        if (!$this->getAuthentication()->isAuthenticated())
-            return new ViewModel();
-
         $editor = false;
         $person = $this->getAuthentication()->getPersonObject();
         foreach ($person->getFlattenedRoles() as $role) {

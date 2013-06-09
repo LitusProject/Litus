@@ -60,7 +60,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->_initFallbackLanguage();
         $this->_initViewHelpers();
 
-        $this->initAuthentication();
+        if (null !== $this->initAuthentication())
+            return;
+
         $this->initLocalization();
 
         $authenticatedPerson = null;
@@ -237,7 +239,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                         $this->getAuthenticationHandler()['controller'] == $this->getParam('controller')
                             && $this->getAuthenticationHandler()['action'] == $this->getParam('action')
                     ) {
-                        $this->redirect()->toRoute(
+                        return $this->redirect()->toRoute(
                             $this->getAuthenticationHandler()['redirect_route']
                         );
                     }
@@ -248,7 +250,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                         $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
                             && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
                     ) {
-                        $this->redirect()->toRoute(
+                        return $this->redirect()->toRoute(
                             $this->getAuthenticationHandler()['auth_route']
                         );
                     }
