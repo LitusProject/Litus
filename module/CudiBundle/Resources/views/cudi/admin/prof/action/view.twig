@@ -110,7 +110,7 @@
     </div>
 
     <aside>
-        {% if action.getEntityName() == 'article' and not action.getEntity().isDraft() %}
+        {% if (action.getEntityName() == 'article' and not action.getEntity().isDraft()) or action.getEntityName() != 'article' %}
             {% if hasAccess('cudi_admin_prof_action', 'refuse') and action.isUnCompleted() %}
                 <div class="sidebox">
                     <div class="title">Refuse Action</div>
