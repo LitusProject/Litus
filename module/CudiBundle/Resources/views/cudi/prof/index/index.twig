@@ -14,12 +14,16 @@
                             <div><b>{{ action.getPerson().getFullName() }}</b> {% autoescape false %}{% if action.getAction() == 'add' %}{{ translate('added an article on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% else %}{{ translate('edited an article on <b>%date%</b>')|replace({'%date%': action.getTimestamp().format('d/m/Y H:i')}) }}{% endif %}{% endautoescape %}</div>
                             <div class="info">
                                 {{ translate('Article') }}: <b>{{ action.getEntity().getTitle() }}</b><br />
-                                {{ translate('Status') }}: <b>{% if action.isCompleted() %}
-                                        <span class="label label-success">{{ translate('Confirmed') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
-                                    {% elseif action.isRefused() %}
-                                        <span class="label label-important">{{ translate('Refused') }}</span> by {{ action.getCompletedPerson().getFullName() }}
+                                {{ translate('Status') }}: <b>{% if action.getEntity().isDraft() %}
+                                        <span class="label label-info">{{ translate('Draft') }}</span>
                                     {% else %}
-                                        <span class="label label-warning">{{ translate('Not confirmed') }}</span>
+                                        {% if action.isCompleted() %}
+                                            <span class="label label-success">{{ translate('Confirmed') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
+                                        {% elseif action.isRefused() %}
+                                            <span class="label label-important">{{ translate('Refused') }}</span> by {{ action.getCompletedPerson().getFullName() }}
+                                        {% else %}
+                                            <span class="label label-warning">{{ translate('Not confirmed') }}</span>
+                                        {% endif %}
                                     {% endif %}</b>
                             </div>
                         {% elseif action.getEntityName() == 'mapping' %}

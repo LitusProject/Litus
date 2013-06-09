@@ -351,6 +351,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $duplicate->getId(), 'edit', $article->getId());
                         $this->getEntityManager()->persist($action);
                     }
+
+                    if ($formData['draft'])
+                        $duplicate->setIsDraft(true);
+                    else
+                        $duplicate->setIsDraft(false);
                 } else {
                     $article->setAuthors($formData['author'])
                         ->setPublishers($formData['publisher'])
@@ -370,12 +375,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                             ->setIsRectoVerso($formData['rectoverso'])
                             ->setIsPerforated($formData['perforated']);
                     }
-                }
 
-                if ($formData['draft'])
-                    $article->setIsDraft(true);
-                else
-                    $article->setIsDraft(false);
+                    if ($formData['draft'])
+                        $article->setIsDraft(true);
+                    else
+                        $article->setIsDraft(false);
+                }
 
                 $this->getEntityManager()->flush();
 

@@ -80,14 +80,19 @@
                             <td>{{ action.getEntity().getBinding().getName() }}</td>
                         </tr>
                         <tr>
-                            <td>Binding</td>
+                            <td>Recto Verso</td>
                             <td>{% if action.getPreviousEntity().isRecoverso() %}Yes{% else %}No{% endif %}</td>
                             <td>{% if action.getEntity().getBinding().isRecoverso() %}Yes{% else %}No{% endif %}</td>
                         </tr>
                         <tr>
-                            <td>Binding</td>
+                            <td>Perforated</td>
                             <td>{% if action.getPreviousEntity().isPerforated() %}Yes{% else %}No{% endif %}</td>
                             <td>{% if action.getEntity().isPerforated() %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Colored</td>
+                            <td>{% if action.getPreviousEntity().isColored() %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if action.getEntity().isColored() %}Yes{% else %}No{% endif %}</td>
                         </tr>
                     {% endif %}
                 </table>
