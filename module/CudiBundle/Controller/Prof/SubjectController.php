@@ -17,6 +17,7 @@ namespace CudiBundle\Controller\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
     CudiBundle\Form\Prof\Subject\Enrollment as EnrollmentForm,
+    DateInterval,
     SyllabusBundle\Entity\StudentEnrollment,
     Zend\View\Model\ViewModel;
 
@@ -49,37 +50,34 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
 
-        if (!($academicYear = $this->getAcademicYear()))
-            return new ViewModel();
+        $academicYear = $this->getAcademicYear();
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-            ->findAllBySubjectAndAcademicYear($subject, $academicYear, true);
+        $articleMappings = $this->_getArticlesFromMappings(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->findAllBySubjectAndAcademicYear($subject, $academicYear, true)
+        );
 
-        $articleMappings = array();
-        foreach($mappings as $mapping) {
-            $actions = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
+        $currentArticles = array();
+        foreach($articleMappings as $mapping)
+            $currentArticles[$mapping['article']->getId()] = $mapping['article']->getId();
 
-            $edited = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllByEntityAndPreviousIdAndAction('article', $mapping->getArticle()->getId(), 'edit');
+        $previous = clone $academicYear->getStartDate();
+        $previous->sub(new DateInterval('P1Y'));
 
-            if (!isset($actions[0]) || !$actions[0]->isRefused()) {
-                if (isset($edited[0]) && !$edited[0]->isRefused()) {
-                    $edited[0]->setEntityManager($this->getEntityManager());
-                    $article = $edited[0]->getEntity();
-                } else {
-                    $article = $mapping->getArticle();
-                }
+        $previousAcademicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStart($previous);
 
-                $articleMappings[] = array(
-                    'mapping' => $mapping,
-                    'article' => $article,
-                );
-                $article->setEntityManager($this->getEntityManager());
-            }
+        $previousArticleMappings = $this->_getArticlesFromMappings(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->findAllBySubjectAndAcademicYear($subject, $previousAcademicYear, true)
+        );
+
+        foreach($previousArticleMappings as $key => $mapping) {
+            if (isset($currentArticles[$mapping['article']->getId()]))
+                unset($previousArticleMappings[$key]);
         }
 
         $profMappings = $this->getEntityManager()
@@ -131,6 +129,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 'subject' => $subject,
                 'academicYear' => $academicYear,
                 'articleMappings' => $articleMappings,
+                'previousArticleMappings' => $previousArticleMappings,
                 'profMappings' => $profMappings,
                 'enrollmentForm' => $enrollmentForm,
             )
@@ -159,6 +158,36 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 'result' => $result,
             )
         );
+    }
+
+    private function _getArticlesFromMappings($mappings)
+    {
+        $articleMappings = array();
+        foreach($mappings as $mapping) {
+            $actions = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
+
+            $edited = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllByEntityAndPreviousIdAndAction('article', $mapping->getArticle()->getId(), 'edit');
+
+            if (!isset($actions[0]) || !$actions[0]->isRefused()) {
+                if (isset($edited[0]) && !$edited[0]->isRefused()) {
+                    $edited[0]->setEntityManager($this->getEntityManager());
+                    $article = $edited[0]->getEntity();
+                } else {
+                    $article = $mapping->getArticle();
+                }
+
+                $articleMappings[] = array(
+                    'mapping' => $mapping,
+                    'article' => $article,
+                );
+                $article->setEntityManager($this->getEntityManager());
+            }
+        }
+        return $articleMappings;
     }
 
     private function _getSubject()

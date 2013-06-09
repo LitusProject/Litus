@@ -42,6 +42,6 @@ try {
 }
 
 if (isset($opts->r)) {
-    $update = new \SyllabusBundle\Component\WebSocket\Syllabus\Update($em, $mail_transport);
+    $update = new \SyllabusBundle\Component\WebSocket\Update($em, $mail_transport);
     $update->process();
 }

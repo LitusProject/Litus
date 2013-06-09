@@ -25,6 +25,12 @@
             {{ translate('The mapping between this subject and the docent was succesfully removed.') }}
         </div>
     </div>
+    <div class="flashmessage alert alert-error fade" id="article_activate_error">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while activating the mapping between this subject and the article.') }}
+        </div>
+    </div>
 
     <div class="page-header">
         <h2>{{ translate('Subject') }}</h2>
@@ -52,6 +58,21 @@
             <th width="50px">{{ translate('Price') }}</th>
             <th width="180px">{{ translate('Actions') }}</th>
         </tr>
+
+        {% for mapping in previousArticleMappings %}
+            <tr style="color: #ccc;font-style: italic;">
+                <td>{{ mapping['article'].getTitle() }}</td>
+                <td>{{ mapping['article'].getAuthors() }}</td>
+                <td>{{ mapping['article'].getPublishers() }}</td>
+                <td>{{ mapping['article'].getYearPublished() }}</td>
+                <td>{% if mapping['article'].getSaleArticle() %}&euro;{{ (mapping['article'].getSaleArticle().getSellPrice()/100)|number_format(2) }}{% endif %}</td>
+                <td class="actions">
+                    {% if hasAccess('cudi_prof_article_mapping', 'activate') %}
+                        <a href="#" class="btn btn-info activateArticle" data-id="{{ mapping['mapping'].getId() }}" data-article="{{ mapping['article'].getTitle() }}">{{ translate('Activate') }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
 
         {% for mapping in articleMappings %}
             <tr>
@@ -135,6 +156,27 @@
             <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
         </div>
     </div>
+
+    <div id="modalActivateArticle" class="modal fade hide">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Activate Article') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{ translate('Are you sure you want to article the following article') }}: <b><span class="articleTitle"></span></b>?</p>
+            <p>
+                {{ translate('Will the content of the article be the same af previous year?') }}
+                <select id="sameAsPreviousYear" style="width: auto;">
+                    <option value="yes">{{ translate('Yes') }}</option>
+                    <option value="no">{{ translate('No') }}</option>
+                </select>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -142,7 +184,36 @@
         $(document).ready(function () {
             $('.removeArticle').click(openRemoveArticleModal);
             $('.removeProf').click(openRemoveProfModal);
+            $('.activateArticle').click(openActivateArticleModal);
         });
+
+        function openActivateArticleModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var activateArticle = $('#modalActivateArticle');
+            activateArticle.find('.articleTitle').html($(this).data('article'));
+            activateArticle.find('.confirm').unbind('click').click(function () {
+                $.post(
+                    '{{ url('cudi_prof_article_mapping', {"action": "activate", "language": language.getAbbrev()})}}' + $this.data('id'),
+                    {'sameAsPreviousYear': $('#sameAsPreviousYear').val()},
+                    function (data) {
+                        if (data && 'success' == data.status) {
+                            window.location.reload();
+                        } else {
+                            errorActivateArticle();
+                        }
+                    },
+                    'json').error(errorActivateArticle);
+            });
+            activateArticle.modal();
+        }
+
+        function errorActivateArticle() {
+            $('.flashmessage').removeClass('in');
+            $('#article_activate_error').addClass('in');
+            $('#modalActivateArticle').modal('hide');
+        }
 
         function openRemoveArticleModal(e) {
             var $this = $(this);

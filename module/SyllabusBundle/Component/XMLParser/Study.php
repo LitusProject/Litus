@@ -125,6 +125,7 @@ class Study
                 $entityManager->persist($academicYear);
             }
             $this->_academicYear = $academicYear;
+
             if ($counter <= 1) {
                 $this->_removeMappings();
                 $this->_callback('cleanup', '');
@@ -134,8 +135,8 @@ class Study
             $this->_profs = array();
 
             $this->_createSubjects(
-                $xml->data->sc->cg,
-                $this->_createStudies($xml->data->sc)
+                $xml->data->opleiding->cg,
+                $this->_createStudies($xml->data->opleiding)
             );
 
             $this->_callback('saving_data', (string) $xml->data->sc->titel);

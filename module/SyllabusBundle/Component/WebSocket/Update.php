@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Component\WebSocket\Syllabus;
+namespace SyllabusBundle\Component\WebSocket;
 
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\WebSocket\User,
