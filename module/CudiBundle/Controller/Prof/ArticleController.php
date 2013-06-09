@@ -263,7 +263,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 'form' => $form,
                 'subject' => $subject,
                 'isPost' => $this->getRequest()->isPost(),
-                'isInternalPost' => $formData['internal'] ? true : false,
+                'isInternalPost' => isset($formData) && $formData['internal'] ? true : false,
             )
         );
     }
