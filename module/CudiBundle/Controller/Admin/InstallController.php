@@ -423,7 +423,7 @@ VTK Cudi
                         'add', 'addFromSubject', 'edit', 'manage', 'typeahead'
                     ),
                     'cudi_prof_article_mapping' => array(
-                        'add', 'delete'
+                        'activate', 'add', 'delete'
                     ),
                     'cudi_prof_article_comment' => array(
                         'delete', 'manage'
@@ -494,7 +494,7 @@ VTK Cudi
                             'add', 'addFromSubject', 'edit', 'manage', 'typeahead'
                         ),
                         'cudi_prof_article_mapping' => array(
-                            'add', 'delete'
+                            'activate', 'add', 'delete'
                         ),
                         'cudi_prof_article_comment' => array(
                             'delete', 'manage'

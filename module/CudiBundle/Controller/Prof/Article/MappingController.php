@@ -131,6 +131,39 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    public function activateAction()
+    {
+        $this->initAjax();
+
+        if (!($mapping = $this->_getMapping()))
+            return new ViewModel();
+
+        $mapping->getArticle()->setIsSameAsPreviousYear($this->getRequest()->getPost()['sameAsPreviousYear']);
+
+        $newMapping = new SubjectMap($mapping->getArticle(), $mapping->getSubject(), $this->getAcademicYear(), $mapping->isMandatory());
+        $newMapping->setIsProf(true);
+        $this->getEntityManager()->persist($newMapping);
+
+        $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $newMapping->getId(), 'add');
+        $this->getEntityManager()->persist($action);
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The mapping was successfully activated!'
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
     private function _getMapping()
     {
         if (!($academicYear = $this->getAcademicYear()))

@@ -140,24 +140,26 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 
+        $now = new DateTime();
         $start = new DateTime(
             str_replace(
                 '{{ year }}',
                 $startAcademicYear->format('Y'),
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
+                    ->getConfigValue('cudi.prof_start_academic_year')
             )
         );
+        $start->add(new DateInterval('P1Y'));
 
-        $next = clone $start;
-        $next->add(new DateInterval('P1Y'));
-        if ($next <= new DateTime())
-            $start = $next;
+        if ($now > $start) {
+            $startAcademicYear->add(new DateInterval('P1Y2M'));
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
+        }
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($start);
+            ->findOneByStart($startAcademicYear);
 
         if (null === $academicYear) {
             $organizationStart = str_replace(
