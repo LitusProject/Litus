@@ -16,6 +16,7 @@ namespace QuizBundle\Entity;
 
 use CommonBundle\Entity\Users\Person,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -58,6 +59,20 @@ class Quiz
     private $timestamp;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The rounds in this quiz
+     *
+     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Round", mappedBy="quiz", cascade="remove")
+     */
+    private $rounds;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The teams in this quiz
+     *
+     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Team", mappedBy="quiz", cascade="remove")
+     */
+    private $teams;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The roles that can edit this quiz
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
@@ -78,8 +93,10 @@ class Quiz
     {
         $this->person = $person;
         $this->name = $name;
-        $this->editRoles = $editRoles;
+        $this->editRoles = new ArrayCollection($editRoles);
         $this->timestamp = new DateTime();
+        $this->rounds = new ArrayCollection;
+        $this->teams = new ArrayCollection;
     }
 
     /**
@@ -140,5 +157,15 @@ class Quiz
     public function getEditRoles()
     {
         return $this->editRoles->toArray();
+    }
+
+    public function getRounds()
+    {
+        return $this->rounds->toArray();
+    }
+
+    public function getTeams()
+    {
+        return $this->teams->toArray();
     }
 }

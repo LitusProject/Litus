@@ -19,6 +19,34 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'quiz_admin_quiz' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'quiz_admin_team' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'quiz_admin_round' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'quiz_admin_moderate' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_tab',
+            '@bootstrap_js_transition',
+            '@moderate_css',
+        )
     ),
     'routes' => array(),
 );

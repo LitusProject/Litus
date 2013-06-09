@@ -14,12 +14,11 @@
 
 namespace QuizBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
-    DateTime,
+use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * This is the entity for a promotion year.
+ * This is the entity for a quiz round.
  *
  * @ORM\Entity(repositoryClass="QuizBundle\Repository\Round")
  * @ORM\Table(name="quiz.rounds")
@@ -53,7 +52,7 @@ class Round
     /**
      * @var int The order of the round
      *
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(name="round_order", type="smallint")
      */
     private $order;
 
@@ -65,15 +64,24 @@ class Round
     private $maxPoints;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The points in this round
+     *
+     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Point", mappedBy="round", cascade="remove")
+     */
+    private $points;
+
+    /**
      * @param \QuizBundle\Entity\Quiz $quiz
      * @param string $name
      * @param integer $order
      */
-    public function __construct(Quiz $quiz, $name, $order)
+    public function __construct(Quiz $quiz, $name, $maxPoints, $order)
     {
         $this->quiz = $quiz;
         $this->name = $name;
+        $this->maxPoints = $maxPoints;
         $this->order = $order;
+        $this->points = new ArrayCollection;
     }
 
     /**
