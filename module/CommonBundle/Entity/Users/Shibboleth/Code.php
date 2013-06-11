@@ -72,12 +72,19 @@ class Code
     private $info;
 
     /**
+     * @var string The redirect url
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $redirect;
+
+    /**
      * @param string $universityIdentification
      * @param string $code The code
      * @param int $expirationTime
      * @param string $info The additional information
      */
-    public function __construct($universityIdentification, $code, $expirationTime = 300, $info)
+    public function __construct($universityIdentification, $code, $expirationTime = 300, $info, $redirect = null)
     {
         $this->id = md5(uniqid(rand(), true));
         $this->creationTime = new DateTime();
@@ -89,6 +96,7 @@ class Code
         $this->code = $code;
         $this->universityIdentification = $universityIdentification;
         $this->info = $info;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -121,6 +129,14 @@ class Code
     public function getInfo()
     {
         return $this->info;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirect()
+    {
+        return $this->redirect;
     }
 
     /**

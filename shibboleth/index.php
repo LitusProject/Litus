@@ -47,7 +47,8 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
             $_SERVER[$shibbolethPersonKey],
             substr($_SERVER[$shibbolethSessionKey], 1),
             ($_GET['source'] == 'register') ? 1800 : 300,
-            serialize($extraInfo)
+            serialize($extraInfo),
+            isset($_GET['redirect']) ? $_GET['redirect'] : null
         );
 
         $em->persist($newCode);

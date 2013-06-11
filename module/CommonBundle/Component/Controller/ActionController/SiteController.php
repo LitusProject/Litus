@@ -167,6 +167,11 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
 
-        return $shibbolethUrl . '?source=site';
+        $shibbolethUrl .= '%3Fsource=site';
+
+        if (isset($_SERVER['REQUEST_URI']) && isset($_SERVER['HTTP_HOST']))
+            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+        return $shibbolethUrl;
     }
 }
