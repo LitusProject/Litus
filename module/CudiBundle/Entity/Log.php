@@ -26,7 +26,11 @@ use CommonBundle\Entity\Users\Person,
  * @ORM\DiscriminatorMap({
  *      "sales_assignments"="CudiBundle\Entity\Log\Sales\Assignments",
  *      "sales_prof_version"="CudiBundle\Entity\Log\Sales\ProfVersion",
- *      "sales_return"="CudiBundle\Entity\Log\Sales\Returned"
+ *      "sales_return"="CudiBundle\Entity\Log\Sales\Returned",
+ *      "articles_sales_bookable"="CudiBundle\Entity\Log\Articles\Sales\Bookable",
+ *      "articles_sales_unbookable"="CudiBundle\Entity\Log\Articles\Sales\Unbookable",
+ *      "articles_subject_map_added"="CudiBundle\Entity\Log\Articles\SubjectMap\Added",
+ *      "articles_subject_map_removed"="CudiBundle\Entity\Log\Articles\SubjectMap\Removed"
  * })
  */
 class Log
