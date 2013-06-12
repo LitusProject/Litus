@@ -66,14 +66,14 @@ class SubjectMap
     private $mandatory;
 
     /**
-     * @var boolean The flag whether the article is just created by a prof
+     * @var boolean The flag whether the mapping is just created by a prof
      *
      * @ORM\Column(type="boolean")
      */
     private $isProf;
 
     /**
-     * @var boolean The flag whether the file is removed
+     * @var boolean The flag whether the mapping is removed
      *
      * @ORM\Column(type="boolean")
      */

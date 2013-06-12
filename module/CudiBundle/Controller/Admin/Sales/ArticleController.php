@@ -23,6 +23,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\Article as SaleArticle,
     CudiBundle\Entity\Sales\Articles\History,
     CudiBundle\Entity\Sales\SaleItem,
+    CudiBundle\Entity\Log\Articles\Sales\Bookable as BookableLog,
+    CudiBundle\Entity\Log\Articles\Sales\Unbookable as UnbookableLog,
     DateTime,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -133,6 +135,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->persist($saleArticle);
 
+                if ($formData['bookable'])
+                    $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle()));
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -207,6 +212,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $article->setFrontPage();
                     }
                 }
+
+                if ($formData['bookable'] && !$history->getPrecursor()->isBookable())
+                    $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
+                elseif (!$formData['bookable'] && $history->getPrecursor()->isBookable())
+                    $this->getEntityManager()->persist(new UnbookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
 
                 $this->getEntityManager()->flush();
 

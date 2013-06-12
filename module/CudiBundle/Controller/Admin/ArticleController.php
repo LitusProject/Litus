@@ -21,6 +21,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\History,
     CudiBundle\Entity\Articles\SubjectMap,
     cudiBundle\Entity\Comments\Mapping as CommentMapping,
+    CudiBundle\Entity\Log\Articles\SubjectMap\Added as SubjectMapAddedLog,
     CudiBundle\Form\Admin\Article\Add as AddForm,
     CudiBundle\Form\Admin\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Article\Duplicate as DuplicateForm,
@@ -136,6 +137,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     if (null === $mapping) {
                         $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                         $this->getEntityManager()->persist($mapping);
+                        $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $mapping));
                     }
                 }
 

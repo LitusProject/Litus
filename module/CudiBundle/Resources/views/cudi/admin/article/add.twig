@@ -15,8 +15,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#type').change(function () {
-                if ($(this).find(':selected').val() == 'common')
+                if ($(this).find(':selected').val() == 'common') {
                     $('#subjectSearch, #subjectId').val('');
+                    $('#subject_form').hide();
+                } else {
+                    $('#subject_form').show();
+                }
             });
             $('#internal').click(toggleInternal);
             toggleInternal();

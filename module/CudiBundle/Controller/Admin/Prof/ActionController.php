@@ -16,6 +16,7 @@ namespace CudiBundle\Controller\Admin\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\History,
+    CudiBundle\Entity\Log\Articles\SubjectMap\Added as SubjectMapAddedLog,
     CudiBundle\Form\Admin\Prof\Article\Confirm as ArticleForm,
     CudiBundle\Form\Admin\Prof\File\Confirm as FileForm,
     Zend\View\Model\ViewModel;
@@ -177,6 +178,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         } elseif ($action->getEntityName() == 'mapping') {
             if ($action->getAction() == 'add') {
                 $action->getEntity()->setIsProf(false);
+                $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $action->getEntity()));
             } else {
                 $action->getEntity()->setRemoved();
             }
