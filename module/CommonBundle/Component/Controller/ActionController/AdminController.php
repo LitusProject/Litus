@@ -159,7 +159,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($startAcademicYear);
+            ->findOneByUniversityStart($startAcademicYear);
 
         if (null === $academicYear) {
             $organizationStart = str_replace(

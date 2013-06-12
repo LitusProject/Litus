@@ -37,7 +37,7 @@ class AcademicYear
     /**
      * @var \DateTime The start date of this academic year
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", unique=true)
      */
     private $start;
 
