@@ -59,6 +59,7 @@
 		            <th width="180px">Publisher</th>
 		            <th width="50px">Year</th>
 		            <th width="60px">Type</th>
+		            <th width="70px">Action</th>
 		        </tr>
 
 		        {% for mapping in articleMappings %}
@@ -68,6 +69,11 @@
 		                <td>{{ mapping.getArticle().getPublishers() }}</td>
 		                <td>{{ mapping.getArticle().getYearPublished() }}</td>
 		                <td>{% if mapping.getArticle().isInternal() %}Internal{% else %}External{% endif %}</td>
+		                <td class="actions">
+		                	{% if hasAccess('cudi_admin_article', 'edit') %}
+		                		<a href="{{ url('cudi_admin_article', {"action": "edit", "id": mapping.getArticle().getId()}) }}" class="edit">Edit</a>
+		                	{% endif %}
+		                </td>
 		            </tr>
 		        {% endfor %}
 		    </table>
