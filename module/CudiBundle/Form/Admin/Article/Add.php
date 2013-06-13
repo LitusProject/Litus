@@ -96,6 +96,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('type');
         $field->setLabel('Type')
             ->setRequired()
+            ->setValue('other')
             ->setAttribute('options', Article::$POSSIBLE_TYPES);
         $article->add($field);
 

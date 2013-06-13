@@ -16,6 +16,8 @@ namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
+    CudiBundle\Entity\Log\Articles\SubjectMap\Added as AddedLog,
+    CudiBundle\Entity\Log\Articles\SubjectMap\Removed as RemovedLog,
     CudiBundle\Form\Admin\Article\Mapping\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -60,6 +62,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 if (null === $mapping) {
                     $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                     $this->getEntityManager()->persist($mapping);
+                    $this->getEntityManager()->persist(new AddedLog($this->getAuthentication()->getPersonObject(), $mapping));
 
                     if ($article->isInternal()) {
                         $cachePath = $this->getEntityManager()
@@ -119,7 +122,8 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         if (!($mapping = $this->_getMapping()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($mapping);
+        $mapping->setRemoved();
+        $this->getEntityManager()->persist(new RemovedLog($this->getAuthentication()->getPersonObject(), $mapping));
 
         $article = $mapping->getArticle();
 

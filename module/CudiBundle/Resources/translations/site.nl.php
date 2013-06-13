@@ -58,4 +58,11 @@ return array(
     'No Articles Found' => 'Geen Artikels Gevonden',
 
     'The opening hours for next week are:' => 'De openingsuren voor de komende week zijn:',
+
+    'An error occurred while updating your preferences.' => 'Er is een fout opgetreden tijdens het aanpassen van je voorkeuren.',
+    'Your preferences where succesfully saved.' => 'Je voorkeuren zijn succesvol opgeslagen.',
+    'Send a mail when the catalogus is updated' => 'Verstuur een mail wanneer de catalogus aangepast wordt',
+    'Keep me updated' => 'Hou me op de hoogte',
+    'Don\'t send a mail when the catalogus is updated' => 'Verstuur geen mail wanneer de catalogus aangepast wordt',
+    'Don\'t keep me updated' => 'Hou me niet op de hoogte',
 );

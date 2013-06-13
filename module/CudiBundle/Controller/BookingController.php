@@ -16,6 +16,7 @@ namespace CudiBundle\Controller;
 
 use CommonBundle\Entity\Users\People\Academic,
     CudiBundle\Entity\Sales\Booking,
+    CudiBundle\Entity\Articles\Notifications\Subscription,
     CudiBundle\Form\Booking\Booking as BookingForm,
     CudiBundle\Form\Booking\Search as SearchForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -313,6 +314,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'subjectArticleMap' => $result,
                 'form' => $form,
                 'searchForm' => $searchForm,
+                'isSubscribed' => $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Articles\Notifications\Subscription')
+                    ->findOneByPerson($this->getAuthentication()->getPersonObject()) !== null,
             )
         );
     }
@@ -496,6 +500,28 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array('status' => 'error'),
+            )
+        );
+    }
+
+    public function keepUpdatedAction()
+    {
+        $this->initAjax();
+
+        if ($this->getRequest()->getPost()['keepUpdated'] == 'true') {
+            $this->getEntityManager()->persist(new Subscription($this->getAuthentication()->getPersonObject()));
+        } else {
+            $subscription = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Articles\Notifications\Subscription')
+                ->findOneByPerson($this->getAuthentication()->getPersonObject());
+            if (null !== $subscription)
+                $this->getEntityManager()->remove($subscription);
+        }
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array('status' => 'success'),
             )
         );
     }

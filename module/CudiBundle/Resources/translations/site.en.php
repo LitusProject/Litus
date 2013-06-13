@@ -58,4 +58,11 @@ return array(
     'No Articles Found' => 'No Articles Found',
 
     'The opening hours for next week are:' => 'The opening hours for next week are:',
+
+    'An error occurred while updating your preferences.' => 'An error occurred while updating your preferences.',
+    'Your preferences where succesfully saved.' => 'Your preferences where succesfully saved.',
+    'Send a mail when the catalogus is updated' => 'Send a mail when the catalogus is updated',
+    'Keep me updated' => 'Keep me updated',
+    'Don\'t send a mail when the catalogus is updated' => 'Don\'t send a mail when the catalogus is updated',
+    'Don\'t keep me updated' => 'Don\'t keep me updated',
 );

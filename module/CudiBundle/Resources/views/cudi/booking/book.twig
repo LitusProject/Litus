@@ -6,6 +6,20 @@
     <div class="page-header">
         <h1>{{ translate('Book Textbooks') }}</h1>
     </div>
+    <div class="page-alert">
+        <div class="flashmessage alert alert-error fade" id="keep_updated_error">
+            <a class="close">&times;</a>
+            <div class="content">
+                {{ translate('An error occurred while updating your preferences.') }}
+            </div>
+        </div>
+        <div class="flashmessage alert alert-success fade" id="keep_updated_success">
+            <a class="close">&times;</a>
+            <div class="content">
+                {{ translate('Your preferences where succesfully saved.') }}
+            </div>
+        </div>
+    </div>
 
     <div class="row page">
         <div class="span12">
@@ -15,6 +29,10 @@
                 {% if hasAccess('cudi_booking', 'search') %}
                     <div class="row">
                         <div class="pull-right">
+                            {% if hasAccess('cudi_booking', 'keepUpdated') %}
+                                <button class="btn btn-warning" id="keepUpdated" {% if isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('Send a mail when the catalogus is updated') }}">{{ translate('Keep me updated') }}</button>
+                                <button class="btn btn-warning" id="dontKeepUpdated" {% if not isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('Don\'t send a mail when the catalogus is updated') }}">{{ translate('Don\'t keep me updated') }}</button>
+                            {% endif %}
                             <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
                         </div>
                     </div>
@@ -156,7 +174,65 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function (e) {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('[rel=tooltip]').tooltip();
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+
+            {% if hasAccess('cudi_booking', 'keepUpdated') %}
+            $('#keepUpdated').click(function () {
+                $.ajax({
+                    url: '{{ url('cudi_booking', {'action': 'keepUpdated'}) }}',
+                    method: 'post',
+                    data: {keepUpdated: true},
+                    dataType: 'json',
+                    success: function (data) {
+                        $('.flashmessage').removeClass('in');
+                        if (data && data.status == 'success') {
+                            $('#keep_updated_success').addClass('in');
+                            $('#dontKeepUpdated').show();
+                            $('#keepUpdated').hide();
+                        } else {
+                            $('#keep_updated_error').addClass('in');
+                        }
+                    },
+                    error: function () {
+                        $('.flashmessage').removeClass('in');
+                        $('#keep_updated_error').addClass('in');
+                    }
+                }).error(function () {
+                    $('.flashmessage').removeClass('in');
+                    $('#keep_updated_error').addClass('in');
+                });
+            });
+            $('#dontKeepUpdated').click(function () {
+                $.ajax({
+                    url: '{{ url('cudi_booking', {'action': 'keepUpdated'}) }}',
+                    method: 'post',
+                    data: {keepUpdated: false},
+                    dataType: 'json',
+                    success: function (data) {
+                        $('.flashmessage').removeClass('in');
+                        if (data && data.status == 'success') {
+                            $('#keep_updated_success').addClass('in');
+                            $('#keepUpdated').show();
+                            $('#dontKeepUpdated').hide();
+                        } else {
+                            $('#keep_updated_error').addClass('in');
+                        }
+                    },
+                    error: function () {
+                        $('.flashmessage').removeClass('in');
+                        $('#keep_updated_error').addClass('in');
+                    }
+                }).error(function () {
+                    $('.flashmessage').removeClass('in');
+                    $('#keep_updated_error').addClass('in');
+                });
+            });
+            {% endif %}
 
             $('input[id*=article-]').each(function(i) {
                 $('[id="' + this.id + '"]').each(function(i) {
