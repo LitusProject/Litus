@@ -336,6 +336,23 @@ VTK Cudi
                     'value'       => 'P4D',
                     'description' => 'The interval for sending a warning mail before expiring a booking',
                 ),
+                array(
+                    'key'         => 'cudi.catalog_update_mail',
+                    'value'       => 'Dear,
+
+The catalog of our cudi has been updated:
+{{ updates }}
+
+VTK Cudi
+
+-- This is an automatically generated email, please do not reply --',
+                    'description' => 'The content of the mail send for catalog updates',
+                ),
+                array(
+                    'key'         => 'cudi.catalog_update_mail_subject',
+                    'value'       => 'Catalog Updates',
+                    'description' => 'The subject for the mail send for catalog updates',
+                ),
             )
         );
 
