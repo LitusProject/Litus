@@ -459,7 +459,7 @@ VTK Cudi
                         'index'
                     ),
                     'cudi_booking' => array(
-                        'book', 'bookSearch', 'cancel', 'search', 'view'
+                        'book', 'bookSearch', 'cancel', 'keepUpdated', 'search', 'view'
                     ),
                     'cudi_opening_hour' => array(
                         'week'
@@ -520,7 +520,7 @@ VTK Cudi
                     ),
                     'actions' => array(
                         'cudi_booking' => array(
-                            'book', 'cancel', 'view',
+                            'book', 'bookSearch', 'cancel', 'keepUpdated', 'search', 'view'
                         ),
                     ),
                 ),

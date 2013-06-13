@@ -500,6 +500,19 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function keepUpdatedAction()
+    {
+        $this->initAjax();
+        
+        //$this->getRequest()->getPost()['keepUpdated'] == 'true'
+        
+        return new ViewModel(
+            array(
+                'result' => array('status' => 'success'),
+            )
+        );
+    }
+
     private function _getBooking()
     {
         if (null === $this->getParam('id') || !is_numeric($this->getParam('id')))
