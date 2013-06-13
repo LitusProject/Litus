@@ -30,8 +30,8 @@
                     <div class="row">
                         <div class="pull-right">
                             {% if hasAccess('cudi_booking', 'keepUpdated') %}
-                                <button class="btn btn-warning" id="keepUpdated" {% if false %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('Send a mail when the catalogus is updated') }}">{{ translate('Keep me updated') }}</button>
-                                <button class="btn btn-warning" id="dontKeepUpdated" {% if true %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('Don\'t send a mail when the catalogus is updated') }}">{{ translate('Don\'t keep me updated') }}</button>
+                                <button class="btn btn-warning" id="keepUpdated" {% if isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('Send a mail when the catalogus is updated') }}">{{ translate('Keep me updated') }}</button>
+                                <button class="btn btn-warning" id="dontKeepUpdated" {% if not isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('Don\'t send a mail when the catalogus is updated') }}">{{ translate('Don\'t keep me updated') }}</button>
                             {% endif %}
                             <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
                         </div>
