@@ -32,16 +32,18 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
      * @param string $personName
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($email, $personName, $name = null)
+    public function __construct($email = '', $personName = '', $name = null)
     {
         parent::__construct($name);
+
+        $this->remove('csrf');
 
         $field = new Hidden('email');
         $field->setValue($email);
         $this->add($field);
 
         $field = new Hidden('name');
-        $field->setValue($name);
+        $field->setValue($personName);
         $this->add($field);
 
         $field = new Text('subject');
