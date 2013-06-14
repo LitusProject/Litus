@@ -59,7 +59,7 @@ class Collection extends \Zend\Form\Element\Collection
     public function populateValues($data)
     {
         foreach($data as $key => $value) {
-            if (!$this->get($key))
+            if (!$this->has($key))
                 unset($data[$key]);
         }
         foreach ($this->byName as $name => $element) {
