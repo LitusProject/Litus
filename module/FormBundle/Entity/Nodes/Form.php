@@ -445,7 +445,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
                 $fallbackTranslation = $translation;
         }
 
-        if ($allowFallback)
+        if ($allowFallback && isset($fallbackTranslation))
             return $fallbackTranslation;
 
         return null;

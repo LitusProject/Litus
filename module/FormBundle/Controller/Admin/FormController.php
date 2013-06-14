@@ -21,6 +21,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\ViewerMap,
     FormBundle\Form\Admin\Form\Add as AddForm,
     FormBundle\Form\Admin\Form\Edit as EditForm,
+    FormBundle\Form\Admin\Mail\Send as MailForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -226,7 +227,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                         $this->getEntityManager()->persist($translation);
                     } else {
-                        // Delete translation if it already exists
                         $translation = $formSpecification->getTranslation($language, false);
 
                         if ($translation !== null) {
@@ -255,11 +255,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 return new ViewModel();
             }
         }
+        $mailForm = new MailForm();
+        $mailForm->setAttribute('action', $this->url()->fromRoute('form_admin_mail', array('action' => 'send', 'id' => $formSpecification->getId())));
 
         return new ViewModel(
             array(
                 'form' => $form,
                 'formSpecification' => $formSpecification,
+                'mailForm' => $mailForm,
             )
         );
     }

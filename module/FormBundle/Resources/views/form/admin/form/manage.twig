@@ -1,124 +1,124 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'form/admin/form/partials/navigation.twig' %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width form_removed_success hide">
-    	<div class="title">Success</div>
-    	<div class="content">
-    		<p>The form was successfully removed!</p>
-    	</div>
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The form was successfully removed!</p>
+        </div>
     </div>
     <div class="flashmessage error_message full_width form_removed_error hide">
-    	<div class="title">Error</div>
-    	<div class="content">
-    		<p>An error occurred while trying to delete the form.</p>
-    	</div>
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the form.</p>
+        </div>
     </div>
 
-	<div id="controller_action">
-	    <table class="full_width manage">
-	        <thead>
-	            <tr>
-	                <th>Name</th>
-	                <th width="150px">Start Date</th>
-	                <th width="150px">End Date</th>
-	                <th width="70px">Active</th>
-	                <th width="160px">Author</th>
-	                <th width="70px">Actions</th>
-	            </tr>
-	        </thead>
+    <div id="controller_action">
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="150px">Start Date</th>
+                    <th width="150px">End Date</th>
+                    <th width="70px">Active</th>
+                    <th width="160px">Author</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </thead>
 
-	        <tbody>
-	            {% for form in paginator %}
-	                <tr class="item item-{{ form.getId() }}">
-	                    <td>{{ form.getTitle(language) }}</td>
-	                    <td>{{ dateLocalized(form.getStartDate(), 'dd/MM/y HH:mm') }}</td>
-	                    <td>{{ dateLocalized(form.getEndDate(), 'dd/MM/y HH:mm') }}</td>
-	                    <td>{% if form.isActive() %}&times;{% endif %}</td>
-	                    <td>{{ form.getCreationPerson().getFullName() }}</td>
-	                    <td class="actions">
-                    		{% if hasAccess('form_view', 'view') %}
-								<a href="{{ url('form_view', {"action": "view", "id": form.getId()}) }}" class="view">View Form</a>
-                    		{% endif %}
-                    		{% if form.canBeViewedBy(authenticatedPerson, entityManager) %}
-		                        {% if hasAccess('form_manage', 'view') %}
-		                            <a href="{{ url('form_manage', {"action": "view", "id": form.getId()}) }}" class="view">View Results</a>
-		                        {% endif %}
-                    		{% endif %}
-                    		{% if form.canBeEditedBy(authenticatedPerson) %}
-		                        {% if hasAccess('form_admin_form', 'edit') %}
-		                            <a href="{{ url('form_admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>
-		                        {% endif %}
-		                        {% if hasAccess('form_admin_form', 'delete') %}
-		                            <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getTitle(language) }}" class="delete">Delete</a>
-		                        {% endif %}
-	                        {% endif %}
-	                    </td>
-	                </tr>
-	            {% endfor %}
-	        </tbody>
-	    </table>
+            <tbody>
+                {% for form in paginator %}
+                    <tr class="item item-{{ form.getId() }}">
+                        <td>{{ form.getTitle(language) }}</td>
+                        <td>{{ dateLocalized(form.getStartDate(), 'dd/MM/y HH:mm') }}</td>
+                        <td>{{ dateLocalized(form.getEndDate(), 'dd/MM/y HH:mm') }}</td>
+                        <td>{% if form.isActive() %}&times;{% endif %}</td>
+                        <td>{{ form.getCreationPerson().getFullName() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('form_view', 'view') %}
+                                <a href="{{ url('form_view', {"action": "view", "id": form.getId()}) }}" class="view">View Form</a>
+                            {% endif %}
+                            {% if form.canBeViewedBy(authenticatedPerson, entityManager) %}
+                                {% if hasAccess('form_manage', 'view') %}
+                                    <a href="{{ url('form_manage', {"action": "view", "id": form.getId()}) }}" class="view">View Results</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if form.canBeEditedBy(authenticatedPerson) %}
+                                {% if hasAccess('form_admin_form', 'edit') %}
+                                    <a href="{{ url('form_admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('form_admin_form', 'delete') %}
+                                    <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getTitle(language) }}" class="delete">Delete</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-		{% include 'admin/partials/paginationControl.twig' %}
-	</div>
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
 
-	<div class="modal hide fade" id="removeForm">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Delete Form
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following form: <b class="name"></b>. This will also delete all <b>entries</b> and all <b>fields</b> for this form!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="removeForm">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Form
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following form: <b class="name"></b>. This will also delete all <b>entries</b> and all <b>fields</b> for this form!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.item .delete').click(openModal);
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
 
-		function openModal(e) {
-			var $this = $(this);
-			e.preventDefault();
-			var removeForm = $('#removeForm');
-			removeForm.find('.name').html($(this).data('name'));
-			removeForm.find('.cancel').one('click', function () {
-				removeForm.modal('hide');
-			});
-			var id = $this.data('id');
-			removeForm.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('form_admin_form', {"action": "delete"})}}' + id, function (data) {
-				    if (data && 'success' == data.status) {
-						$('.flashmessage').addClass('hide');
-						$('.form_removed_success').removeClass('hide');
-						$('.item-' + id).remove();
-						removeForm.modal('hide');
-					} else {
-					    errorRemove();
-					}
-				}, 'json').error(errorRemove);
-			});
-			removeForm.modal();
-		}
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeForm = $('#removeForm');
+            removeForm.find('.name').html($(this).data('name'));
+            removeForm.find('.cancel').one('click', function () {
+                removeForm.modal('hide');
+            });
+            var id = $this.data('id');
+            removeForm.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('form_admin_form', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.form_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeForm.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeForm.modal();
+        }
 
-		function errorRemove() {
-		    $('.flashmessage').addClass('hide');
-		    $('.form_removed_error').removeClass('hide');
-		    $('#removeForm').modal('hide');
-		}
-	</script>
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.form_removed_error').removeClass('hide');
+            $('#removeForm').modal('hide');
+        }
+    </script>
 {% endblock %}
