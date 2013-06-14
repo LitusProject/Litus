@@ -46,7 +46,7 @@ try {
 
 if (isset($opts->r)) {
     $date = new \DateTime();
-    $date->sub(new \DateInterval('P5D'));
+    $date->sub(new \DateInterval('P1D'));
 
     $academicYear = getCurrentAcademicYear($em);
 
