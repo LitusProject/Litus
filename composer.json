@@ -9,8 +9,8 @@
     "require": {
         "zendframework/zendframework" : "@stable",
 
-        "doctrine/doctrine-orm-module": "@stable",
-        "doctrine/doctrine-mongo-odm-module": "@stable",
+        "doctrine/doctrine-orm-module": "@dev",
+        "doctrine/doctrine-mongo-odm-module": "@dev",
 
         "EvanDotPro/EdpMarkdown": "@dev",
         "widmogrod/zf2-assetic-module": "@dev",

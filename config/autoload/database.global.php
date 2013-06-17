@@ -26,6 +26,9 @@ return array(
             'apc' => array(
                 'namespace' => 'Litus',
             ),
+            'array' => array(
+                'namespace' => 'Litus',
+            ),
         ),
         'configuration' => array(
             'odm_default' => array(
