@@ -40,4 +40,12 @@ return array(
     'This form has reached the maximum number of submissions.' => 'This form has reached the maximum number of submissions.',
     'You can\'t fill this form more than once.' => 'You can\'t fill this form more than once.',
     'Your entry has been recorded.' => 'Your entry has been recorded.',
+
+    'Mail Participants' => 'Mail Participants',
+    'Mail Subject' => 'Mail Subject',
+    'Message' => 'Message',
+    'The mail was succesfully send.' => 'The mail was succesfully send.',
+    'An error occurred while trying to send a mail.' => 'An error occurred while trying to send a mail.',
+    'Send Mail' => 'Send Mail',
+    'Send' => 'Send',
 );

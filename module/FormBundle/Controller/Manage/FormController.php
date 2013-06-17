@@ -18,6 +18,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     FormBundle\Component\Document\Generator\Csv as CsvGenerator,
     FormBundle\Entity\Entry as FieldEntry,
+    FormBundle\Form\Manage\Mail\Send as MailForm,
     FormBundle\Form\SpecifiedForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -89,12 +90,16 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Nodes\Entry')
             ->findAllByForm($form);
 
+        $mailForm = new MailForm();
+        $mailForm->setAttribute('action', $this->url()->fromRoute('form_manage_mail', array('action' => 'send', 'id' => $form->getId())));
+
         return new ViewModel(
             array(
-                'form'    => $form,
-                'fields'  => $fields,
-                'entries' => $entries,
-                'viewer'  => $viewerMap,
+                'form'     => $form,
+                'fields'   => $fields,
+                'entries'  => $entries,
+                'viewer'   => $viewerMap,
+                'mailForm' => $mailForm,
             )
         );
     }

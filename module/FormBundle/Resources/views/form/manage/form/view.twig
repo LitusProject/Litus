@@ -1,76 +1,98 @@
 {% extends 'manage/base.twig' %}
 
 {% block content %}
-
+    <div class="flashmessage alert alert-success fade" id="mail_send_success">
+        <a class="close">&times;</a>
+        <div class="title">{{ translate('Success') }}</div>
+        <div class="content">
+            <p>{{ translate('The mail was succesfully send.') }}</p>
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="mail_send_error">
+        <a class="close">&times;</a>
+        <div class="title">{{ translate('Error') }}</div>
+        <div class="content">
+            <p>{{ translate('An error occurred while trying to send a mail.') }}</p>
+        </div>
+    </div>
     <div class="flashmessage alert alert-success fade" id="entry_removed_success">
-	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translate('Success') }}</div>
-    	<div class="content">
-    		<p>{{ translate('The entry was succesfully removed.') }}</p>
-    	</div>
+        <a class="close">&times;</a>
+        <div class="title">{{ translate('Success') }}</div>
+        <div class="content">
+            <p>{{ translate('The entry was succesfully removed.') }}</p>
+        </div>
     </div>
     <div class="flashmessage alert alert-error fade" id="entry_removed_error">
-	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translate('Error') }}</div>
-    	<div class="content">
-    		<p>{{ translate('An error occurred while removing the entry.') }}</p>
-    	</div>
+        <a class="close">&times;</a>
+        <div class="title">{{ translate('Error') }}</div>
+        <div class="content">
+            <p>{{ translate('An error occurred while removing the entry.') }}</p>
+        </div>
     </div>
 
     {% if authenticatedPerson is not null %}
-	    <h2>{{ form.getTitle(language) }} ({{ entries|length }} {{ translate("subscriptions") }})</h2>
+        {% if hasAccess('form_manage_mail', 'send') and viewer.isMail() %}
+            <div class="pull-right">
+                <a class="btn" id="sendMail">
+                    <span class="icon-envelope"></span>
+                    {{ translate('Mail Participants') }}
+                </a>
+            </div>
+        {% endif %}
 
-	    <table class="table">
+        <h2>{{ form.getTitle(language) }} ({{ entries|length }} {{ translate("subscriptions") }})</h2>
 
-	    	<thead>
-	    		<tr>
+        <table class="table">
+
+            <thead>
+                <tr>
                     <th width="20px">{{ translate('ID') }}</th>
-	    			<th width="130px">{{ translate("Submitter") }}</th>
-	    			<th width="130px">{{ translate("Submitted") }}</th>
+                    <th width="130px">{{ translate("Submitter") }}</th>
+                    <th width="130px">{{ translate("Submitted") }}</th>
 
                     {% if viewer.isMail() %}
                         <th width="130px">{{ translate("Email") }}</th>
                     {% endif %}
 
-	    			{% for field in fields %}
-	    				<th>{{ field.getLabel(language) }}</th>
-    				{% endfor %}
+                    {% for field in fields %}
+                        <th>{{ field.getLabel(language) }}</th>
+                    {% endfor %}
 
-    				{% if viewer.isEdit() %}
-    					<th width="175px">{{ translate("Actions") }}</th>
-    				{% endif %}
+                    {% if viewer.isEdit() %}
+                        <th width="175px">{{ translate("Actions") }}</th>
+                    {% endif %}
 
-	    		</tr>
-			</thead>
+                </tr>
+            </thead>
 
-    		<tbody>
-		    {% for entry in entries %}
-		    	<tr class="item item-{{ entry.getId() }}">
+            <tbody>
+            {% for entry in entries %}
+                <tr class="item item-{{ entry.getId() }}">
                     <td>{{ entry.getId() }}</td>
-    				<td>
+                    <td>
                         {{ entry.getPersonInfo().getFullName() }}{% if entry.isGuestEntry() %} (Guest){% endif %}
                     </td>
-    				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
+                    <td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
 
                     {% if viewer.isMail() %}
                         <td>{{ entry.getPersonInfo().getEmail() }}</td>
                     {% endif %}
 
-	    			{% for field in fields %}
-	    				<td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
-    				{% endfor %}
+                    {% for field in fields %}
+                        <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
+                    {% endfor %}
 
-    				{% if viewer.isEdit() %}
-    					<td>
-							<a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">{{ translate("Edit") }}</a>
-							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
-    					</td>
-    				{% endif %}
+                    {% if viewer.isEdit() %}
+                        <td>
+                            <a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">{{ translate("Edit") }}</a>
+                            <a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
+                        </td>
+                    {% endif %}
 
-	    		</tr>
-		    {% endfor %}
-			</tbody>
-		</table>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
     {% else %}
         <div style="text-align: center;">
@@ -79,61 +101,116 @@
         </div>
     {% endif %}
 
-	<div class="modal hide fade" id="removeEntry">
-    	<div class="modal-header">
-    		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translate('Delete Entry') }}</h3>
-    	</div>
-		<div class="modal-body">
-			<p>
-				{{ translate("You are about to delete the following user's entry") }}: <b class="user-name"></b>.
-				{{ translate("Please note that this operation cannot be undone!") }}
-			</p>
-			<p>
-				{{ translate("Are you sure you want to continue?") }}
-			</p>
-		</div>
-		<div class="modal-footer">
-			<button class="confirm btn btn-danger">{{ translate('Yes') }}</button>
-			<button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
-		</div>
-	</div>
+    <div class="modal hide fade" id="removeEntry">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Delete Entry') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                {{ translate("You are about to delete the following user's entry") }}: <b class="user-name"></b>.
+                {{ translate("Please note that this operation cannot be undone!") }}
+            </p>
+            <p>
+                {{ translate("Are you sure you want to continue?") }}
+            </p>
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="sendMailModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Send Mail') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(mailForm) }}
+                <br style="clear: both;">
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="confirm btn btn-success send">{{ translate('Send') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+            
+            $('#sendMail').click(openSendMailModal);
 
-			$('.item .delete').click(openModal);
+            $('.item .delete').click(openRemoveModal);
+        });
 
-		});
+        function openRemoveModal(e) {
+            var $this = $(this);
 
-		function openModal(e) {
-			var $this = $(this);
+            e.preventDefault();
+            var removeEntry = $('#removeEntry');
+            removeEntry.find('.user-name').text($(this).data('name'));
+            removeEntry.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('form_manage', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#entry_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        removeEntry.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeEntry.modal();
+        }
 
-			e.preventDefault();
-			var removeEntry = $('#removeEntry');
-			removeEntry.find('.user-name').text($(this).data('name'));
-			removeEntry.find('.confirm').unbind('click').click(function () {
-				$.post('{{ url('form_manage', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
-				    if (data && 'success' == data.status) {
-		                $('.flashmessage').removeClass('in');
-						$('#entry_removed_success').addClass('in');
-						$this.parent().parent().remove();
-						removeEntry.modal('hide');
-					} else {
-					    errorRemove();
-					}
-				}, 'json').error(errorRemove);
-			});
-			removeEntry.modal();
-		}
+        function errorRemove() {
+            $('.flashmessage').removeClass('in');
+            $('#entry_removed_error').addClass('in');
+            $('#removeEntry').modal('hide');
+        }
 
-		function errorRemove() {
-		    $('.flashmessage').removeClass('in');
-			$('#entry_removed_error').addClass('in');
-		    $('#removeEntry').modal('hide');
-		}
-	</script>
+        function openSendMailModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var sendMail = $('#sendMailModal');
+            sendMail.find('.send').click(function () {
+                console.log('send');
+                sendMail.find('form').ajaxSubmit({
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.errors) {
+                            $('.flashmessage').addClass('hide');
+                            sendMail.find('ul.errors').remove();
+                            sendMail.find('.control-group').removeClass('error');
+                            for(element in data.errors) {
+                                var list = $('<ul>', {'class': 'errors'});
+                                for (error in data.errors[element])
+                                    list.append($('<li>').html(data.errors[element][error]));
+                                var div = $('<div>', {'class': 'help-inline'}).append(list);
+                                sendMail.find('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
+                            }
+                        } else {
+                            $('.flashmessage').removeClass('in');
+                            $('#mail_send_success').addClass('in');
+                            sendMail.modal('hide');
+                        }
+                    },
+                    error: function () {
+                        $('.flashmessage').removeClass('in');
+                        $('#mail_send_error').addClass('in');
+                        sendMail.modal('hide');
+                    },
+                });
+            });
+            sendMail.modal();
+        }
+    </script>
 {% endblock %}

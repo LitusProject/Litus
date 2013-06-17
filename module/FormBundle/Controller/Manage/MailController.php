@@ -12,10 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Controller\Admin;
+namespace FormBundle\Controller\Manage;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Form\Admin\Mail\Send as MailForm,
+    FormBundle\Form\Manage\Mail\Send as MailForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 

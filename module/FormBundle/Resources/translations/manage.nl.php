@@ -40,4 +40,12 @@ return array(
     'This form has reached the maximum number of submissions.' => 'Dit formulier heeft het maximum aantal inschrijvingen bereikt.',
     'You can\'t fill this form more than once.' => 'Je kan dit formulier slechts één keer invullen.',
     'Your entry has been recorded.' => 'Je registratie is opgeslagen.',
+
+    'Mail Participants' => 'Mail Deelnemers',
+    'Mail Subject' => 'Mail Onderwerp',
+    'Message' => 'Bericht',
+    'The mail was succesfully send.' => 'De mail is succesvol verzonden.',
+    'An error occurred while trying to send a mail.' => 'Er is een fout opgetreden tijdens het verzenden van de mail.',
+    'Send Mail' => 'Verstuur Mail',
+    'Send' => 'Verstuur',
 );

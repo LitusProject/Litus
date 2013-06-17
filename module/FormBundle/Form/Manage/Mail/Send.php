@@ -12,11 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Form\Admin\Mail;
+namespace FormBundle\Form\Manage\Mail;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Send extends \CommonBundle\Component\Form\Admin\Form
+class Send extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @param string $email
@@ -39,14 +39,14 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
         $this->remove('csrf');
 
         $field = new Text('subject');
-        $field->setLabel('Subject')
-            ->setAttribute('style', 'width: 350px')
+        $field->setLabel('Mail Subject')
+            ->setAttribute('style', 'width: 250px')
             ->setRequired();
         $this->add($field);
 
         $field = new Textarea('message');
         $field->setLabel('Message')
-            ->setAttribute('style', 'width: 400px')
+            ->setAttribute('style', 'width: 300px')
             ->setRequired();
         $this->add($field);
     }

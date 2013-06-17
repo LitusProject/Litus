@@ -4,18 +4,6 @@
     {% include 'form/admin/form/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
-    <div class="flashmessage success_message full_width mail_send_success hide">
-        <div class="title">Success</div>
-        <div class="content">
-            <p>The mail was successfully send!</p>
-        </div>
-    </div>
-    <div class="flashmessage error_message full_width mail_send_error hide">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to send a mail.</p>
-        </div>
-    </div>
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
@@ -48,38 +36,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('form_admin_mail', 'send') and formSpecification.canBeEditedBy(authenticatedPerson) %}
-            <div class="sidebox">
-                <div class="title">Mail Participants</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to mail the participants of this form!</i>
-                    </p>
-                    <p>
-                        <a href="#" class="sendMail">&rarr; Mail Participants</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
     </aside>
-
-    <div class="modal hide fade" id="sendMail">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Send Mail
-        </div>
-        <div class="modal-body">
-            <p>
-                {% import 'admin/partials/form.twig' as forms %}
-                {{ forms.renderForm(mailForm) }}
-                <br style="clear: both;">
-            </p>
-            <div class="footer">
-                <input type="button" class="send" value="Send">
-                <input type="button" class="cancel" data-dismiss="modal" value="Cancel">
-            </div>
-        </div>
-    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -89,8 +46,6 @@
             $('textarea.md').gollum({'width': '400px'});
             $('#mail').click(toggleMail);
             toggleMail();
-
-            $('aside .sendMail').click(openSendMailModal);
         });
 
         function toggleMail() {
@@ -98,40 +53,6 @@
                 $('#mail_form').show();
             else
                 $('#mail_form').hide();
-        }
-
-        function openSendMailModal(e) {
-            var $this = $(this);
-
-            e.preventDefault();
-            var sendMail = $('#sendMail');
-            sendMail.find('.send').one('click', function () {
-                sendMail.find('form').ajaxSubmit({
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.errors) {
-                            $('.flashmessage').addClass('hide');
-                            sendMail.find('ul.errors').remove();
-                            for(element in data.errors) {
-                                var list = $('<ul>', {class: 'errors'})
-                                for (error in data.errors[element])
-                                    list.append($('<li>').html(data.errors[element][error]));
-                                sendMail.find('#' + element).parent().after(list);
-                            }
-                        } else {
-                            $('.flashmessage').addClass('hide');
-                            $('.mail_send_success').removeClass('hide');
-                            sendMail.modal('hide');
-                        }
-                    },
-                    error: function () {
-                        $('.flashmessage').addClass('hide');
-                        $('.mail_send_error').removeClass('hide');
-                        sendMail.modal('hide');
-                    },
-                });
-            });
-            sendMail.modal();
         }
     </script>
 {% endblock %}
