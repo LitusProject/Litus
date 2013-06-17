@@ -242,9 +242,6 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'doctrine.cache.apc' => function($serviceManager) {
-                return new \Doctrine\Common\Cache\ApcCache();
-            },
             'translator' => 'CommonBundle\Component\I18n\TranslatorServiceFactory',
 
             'authentication' => function ($serviceManager) {
