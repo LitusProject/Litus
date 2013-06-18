@@ -20,6 +20,12 @@ return array(
     'End Date' => 'End Date',
     'Active' => 'Active',
 
+    'ID' => 'ID',
+    'Name' => 'Name',
+    'Guest' => 'Guest',
+    'Phone Number' => 'Phone Number',
+    'Address' => 'Address',
+    'Email' => 'Email',
     'Submitter' => 'Submitter',
     'Submitted' => 'Submitted',
     'subscriptions' => 'subscriptions',

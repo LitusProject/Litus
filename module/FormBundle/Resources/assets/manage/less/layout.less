@@ -1,12 +1,12 @@
 /**
- * Layout
- *
- * Copyright 2011 Litus
- *
- * Author: Kristof Mariën <kristof.marien@litus.cc>
- */
+* Layout
+*
+* Copyright 2011 Litus
+*
+* Author: Kristof Mariën <kristof.marien@litus.cc>
+*/
 
- header {
+header {
     padding-top: 40px;
     .verticalGradient(@cFormDark, @cFormLight);
     margin-bottom: 15px;
@@ -14,16 +14,16 @@
     h1 {
         color: @cWhite;
         text-shadow: 0 1px 1px rgba(0,0,0,.3);
-     }
+    }
 
     .inner {
         background: transparent url(/_form/img/grid-18px.png) top center;
         padding: 45px 0;
         .box-shadow(inset 0 10px 30px rgba(0,0,0,.3));
     }
- }
+}
 
- .navbar {
+.navbar {
     z-index: 2000;
 
     .brand {
@@ -68,6 +68,7 @@
         #loginDropdown {
             ul {
                 padding-bottom: 10px;
+
                 li {
                     padding: 10px;
 
@@ -89,38 +90,56 @@
             }
         }
     }
- }
+}
 
- footer {
-     margin-top: 45px;
-     padding: 35px 10px 36px;
-     border-top: 1px solid #E5E5E5;
-     color: #555;
+footer {
+    margin-top: 45px;
+    padding: 35px 10px 36px;
+    border-top: 1px solid #E5E5E5;
+    color: #555;
 
-     .development_information {
+    .development_information {
         float: right;
-     }
- }
+    }
+}
 
- .alert .title {
+.alert .title {
     font-weight: bold;
- }
+}
 
- .flashmessage.fade {
-   .transition(all .15s linear);
-   height: 0;
-   margin-bottom: 0px;
-   padding-top: 0px;
-   padding-bottom: 0px;
-   overflow: hidden;
-   &.in {
-     height: auto;
-     margin-bottom: 18px;
-     padding-top: 8px;
-     padding-bottom: 8px;
-   }
- }
+.flashmessage.fade {
+    .transition(all .15s linear);
+        height: 0;
+        margin-bottom: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        overflow: hidden;
+        &.in {
+        height: auto;
+        margin-bottom: 18px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
 
- hr {
+hr {
     margin: 0 0 10px 0;
- }
+}
+
+
+/*
+* Popovers
+*/
+.popover {
+    width: @pPopoverWidth !important;
+    max-width: @pPopoverWidth !important;
+    padding-bottom: @pPopoverMargin;
+
+    dt {
+        width: 100px;
+    }
+
+    dd {
+        margin-left: 120px;
+    }
+}

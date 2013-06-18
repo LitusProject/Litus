@@ -20,6 +20,12 @@ return array(
     'End Date' => 'Einddatum',
     'Active' => 'Actief',
 
+    'ID' => 'ID',
+    'Name' => 'Naam',
+    'Guest' => 'Gast',
+    'Phone Number' => 'Telefoon Nummer',
+    'Address' => 'Adres',
+    'Email' => 'Email',
     'Submitter' => 'Verzender',
     'Submitted' => 'Verzonden',
     'subscriptions' => 'inschrijvingen',

@@ -46,13 +46,7 @@
 
             <thead>
                 <tr>
-                    <th width="20px">{{ translate('ID') }}</th>
                     <th width="130px">{{ translate("Submitter") }}</th>
-                    <th width="130px">{{ translate("Submitted") }}</th>
-
-                    {% if viewer.isMail() %}
-                        <th width="130px">{{ translate("Email") }}</th>
-                    {% endif %}
 
                     {% for field in fields %}
                         <th>{{ field.getLabel(language) }}</th>
@@ -68,15 +62,37 @@
             <tbody>
             {% for entry in entries %}
                 <tr class="item item-{{ entry.getId() }}">
-                    <td>{{ entry.getId() }}</td>
                     <td>
-                        {{ entry.getPersonInfo().getFullName() }}{% if entry.isGuestEntry() %} (Guest){% endif %}
+                        <a href="#" data-id="{{ entry.getId() }}" data-toggle="popover" title="" data-content="<dl class='dl-horizontal'>
+                            <dt>{{ translate('ID') }}</dt>
+                            <dd>{{ entry.getId() }}</dd>
+                            <dt>{{ translate('Name') }}</dt>
+                            <dd>{{ entry.getPersonInfo().getFullName() }}</dd>
+                            <dt>{{ translate('Guest') }}</dt>
+                            <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+                            {% if not entry.isGuestEntry() %}
+                                <dt>{{ translate('Phone Number') }}</dt>
+                                <dd>{{ entry.getPersonInfo().getPhoneNumber() }}</dd>
+                                {% if entry.getPersonInfo().getAddress() %}
+                                <dt>{{ translate('Address') }}</dt>
+                                    <dd>
+                                        <address>
+                                          {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
+                                          {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}<br>
+                                        </address>
+                                    </dd>
+                                {% endif %}
+                            {% endif %}
+                            <dt>{{ translate('Submitted') }}</dt>
+                            <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
+                            {% if viewer.isMail() %}
+                                <dt>{{ translate('Email') }}</dt>
+                                <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
+                            {% endif %}
+                        </dl>">
+                            {{ entry.getPersonInfo().getFullName() }}
+                        </a>
                     </td>
-                    <td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
-
-                    {% if viewer.isMail() %}
-                        <td>{{ entry.getPersonInfo().getEmail() }}</td>
-                    {% endif %}
 
                     {% for field in fields %}
                         <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
@@ -85,7 +101,7 @@
                     {% if viewer.isEdit() %}
                         <td>
                             <a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">{{ translate("Edit") }}</a>
-                            <a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
+                            <a href="#" class="btn btn-mini btn-danger delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
                         </td>
                     {% endif %}
 
@@ -143,7 +159,20 @@
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
-            
+
+            $('[data-toggle="popover"]').popover(
+                {
+                    html: true,
+                }
+            ).click(function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                $('[data-toggle="popover"]').each(function() {
+                    if ($(this).data('id') != id)
+                        $(this).popover('hide');
+                });
+            });
+
             $('#sendMail').click(openSendMailModal);
 
             $('.item .delete').click(openRemoveModal);
