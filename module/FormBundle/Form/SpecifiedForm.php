@@ -82,7 +82,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
             if ($fieldSpecification instanceof StringField) {
 
                 if ($fieldSpecification->isMultiLine()) {
-                    $field = new TextArea('field-' . $fieldSpecification->getId());
+                    $field = new Textarea('field-' . $fieldSpecification->getId());
                     $field->setAttribute('rows', 3);
                 } else {
                     $field = new Text('field-' . $fieldSpecification->getId());

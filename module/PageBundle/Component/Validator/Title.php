@@ -80,7 +80,7 @@ class Title extends \Zend\Validator\AbstractValidator
 
         $page = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByNames(
+            ->findOneByNameAndParent(
                 Url::createSlug($value), Url::createSlug($parentName)
             );
 

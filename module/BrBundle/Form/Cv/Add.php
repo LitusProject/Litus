@@ -125,7 +125,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue($currentYear + 1);
         $studies->add($field);
 
-        $field = new TextArea('additional_diplomas');
+        $field = new Textarea('additional_diplomas');
         $field->setLabel('Additional Diplomas (e.g. driver\'s license)')
             ->setAttribute('rows', 3)
             ->setRequired(false)
@@ -160,7 +160,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setValue(1);
         $this->add($field);
 
-        $field = new TextArea('lang_extra');
+        $field = new Textarea('lang_extra');
         $field->setLabel('Extra Information (Year Abroad, Born Outside Belgium, ...)')
             ->setAttribute('rows', 2)
             ->setRequired(true)
@@ -179,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $capabilities->setLabel('Capabilities');
         $this->add($capabilities);
 
-        $field = new TextArea('computer_skills');
+        $field = new Textarea('computer_skills');
         $field->setLabel('Computer Skills')
             ->setAttribute('rows', 3)
             ->setRequired(true)
@@ -188,7 +188,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('style', 'resize: none;');
         $capabilities->add($field);
 
-        $field = new TextArea('experiences');
+        $field = new Textarea('experiences');
         $field->setLabel('Experiences, Projects (e.g. Internship, Holiday Jobs)')
             ->setAttribute('rows', 3)
             ->setRequired(true)
@@ -201,7 +201,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $thesis->setLabel('Thesis');
         $this->add($thesis);
 
-        $field = new TextArea('thesis_summary');
+        $field = new Textarea('thesis_summary');
         $field->setLabel('Summary')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
@@ -235,7 +235,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('data-count', 50);
         $future->add($field);
 
-        $field = new TextArea('career_expectations');
+        $field = new Textarea('career_expectations');
         $field->setLabel('Career Expectations')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
@@ -248,7 +248,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $thesis->setLabel('Profile');
         $this->add($thesis);
 
-        $field = new TextArea('hobbies');
+        $field = new Textarea('hobbies');
         $field->setLabel('Hobbies')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')
@@ -257,7 +257,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('data-count', 200);
         $thesis->add($field);
 
-        $field = new TextArea('profile_about');
+        $field = new Textarea('profile_about');
         $field->setLabel('About Me')
             ->setAttribute('rows', 3)
             ->setAttribute('style', 'resize: none;')

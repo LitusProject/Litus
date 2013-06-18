@@ -69,7 +69,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
-            $field = new TextArea('introduction_' . $language->getAbbrev());
+            $field = new Textarea('introduction_' . $language->getAbbrev());
             $field->setLabel('Introduction')
                 ->setAttribute('class', 'md')
                 ->setAttribute('rows', 20)
@@ -142,7 +142,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setRequired();
         $mail->add($field);
 
-        $field = new TextArea('mail_body');
+        $field = new Textarea('mail_body');
         $field->setLabel('Body')
             ->setAttribute('rows', 20)
             ->setValue('Exameple mail:
