@@ -76,9 +76,10 @@ class Entry
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
+     * @param \FormBundle\Entity\Nodes\GuestInfo|null $guestInfo
      * @param \FormBundle\Entity\Nodes\Form $form
      */
-    public function __construct($person, $guestInfo, $form)
+    public function __construct(Person $person, GuestInfo $guestInfo = null, Form $form)
     {
         $this->creationTime = new DateTime();
         $this->creationPerson = $person;
@@ -112,7 +113,7 @@ class Entry
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \FormBundle\Entity\Nodes\GuestInfo
      */
     public function getGuestInfo()
     {
@@ -120,7 +121,7 @@ class Entry
     }
 
     /**
-     * @return Information about the person.
+     * @return \CommonBundle\Entity\Users\Person|\FormBundle\Entity\Nodes\GuestInfo
      */
     public function getPersonInfo()
     {
@@ -130,26 +131,32 @@ class Entry
             return $this->guestInfo;
     }
 
+    /**
+     * @return boolean
+     */
     public function isGuestEntry()
     {
         return $this->creationPerson === null;
     }
 
     /**
-     * @return The form this field belongs to.
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function getForm() {
         return $this->form;
     }
 
     /**
-     * @param FormBundle\Entity\Entry The entry to add to this form.
+     * @param \FormBundle\Entity\Entry The entry to add to this form.
      */
     public function addFieldEntry($fieldEntry) {
         $this->fieldEntries->add($fieldEntry);
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getFieldEntries() {
         return $this->fieldEntries->toArray();
     }

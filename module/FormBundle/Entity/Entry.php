@@ -19,7 +19,8 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Nodes\Entry as NodeEntry;
 
 /**
  * This entity stores the node item.
@@ -29,7 +30,6 @@ use CommonBundle\Entity\General\Language,
  */
 class Entry
 {
-
     /**
      * @var FormBundle\Entity\Nodes\Entry The form entry's id.
      *
@@ -56,9 +56,10 @@ class Entry
     private $value;
 
     /**
-     * @param string $label
+     * @param \FormBundle\Entity\Nodes\Entry $formEntry
+     * @param \FormBundle\Entity\Field $field
      */
-    public function __construct($formEntry, $field, $value)
+    public function __construct(NodeEntry $formEntry, Field $field, $value)
     {
         $this->formEntry = $formEntry;
         $this->field = $field;
@@ -94,6 +95,10 @@ class Entry
         return $this;
     }
 
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
     public function getValueString(Language $language) {
         return $this->getField()->getValueString($language, $this->getValue());
     }

@@ -1,0 +1,17 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ specification.getTitle(language) }}</h1>
+    </div>
+
+    {% autoescape false %}
+        {{ markdown(specification.getIntroduction(language)) }}
+    {% endautoescape %}
+
+    <hr/>
+    {% if form %}
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    {% endif %}
+{% endblock %}

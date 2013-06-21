@@ -5,24 +5,41 @@
         <h1>{{ specification.getTitle(language) }}</h1>
     </div>
 
-    <div class="row page">
-        <div class="span12">
+    {% autoescape false %}
+        {{ markdown(specification.getIntroduction(language)) }}
+    {% endautoescape %}
 
-            {% autoescape false %}
-                {{ markdown(specification.getIntroduction(language)) }}
-            {% endautoescape %}
+    <hr/>
 
-            <hr/>
-
-            {% if not form %}
-                {{ translate(message) }}
-			{% else %}
-
-                {% if form %}
-                    {% import 'site/partials/form.twig' as forms %}
-                    {{ forms.renderForm(form) }}
-                {% endif %}
-            {% endif %}
+    {% if not form %}
+        <div class="alert">
+            {{ translate(message) }}
         </div>
-    </div>
+    {% else %}
+        {% if form %}
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        {% endif %}
+    {% endif %}
+
+    {% if entries|length > 0 %}
+        <h2>{{ translate('Submissions') }}</h2>
+
+        <table class="table table-striped">
+            <tr>
+                <th>{{ translate('Submission date') }}</th>
+                <th>{{ translate('Actions') }}</th>
+            </tr>
+            {% for entry in entries %}
+                <tr>
+                    <td>{{ dateLocalized(entry.getCreationTime(), 'd MMMM Y H:mm') }}</td>
+                    <td>
+                        {% if specification.isEditableByUser() and hasAccess('form_view', 'edit') %}
+                            <a href="{{ url("form_view", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 {% endblock %}

@@ -19,7 +19,8 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Nodes\Form;
 
 /**
  * This entity stores the node item.
@@ -86,9 +87,11 @@ abstract class Field
     );
 
     /**
-     * @param string $label
+     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param integer $order
+     * @param boolean $required
      */
-    public function __construct($form, $order, $required)
+    public function __construct(Form $form, $order, $required)
     {
         $this->form = $form;
         $this->order = $order;
@@ -182,5 +185,4 @@ abstract class Field
     }
 
     abstract public function getValueString(Language $language, $value);
-
 }

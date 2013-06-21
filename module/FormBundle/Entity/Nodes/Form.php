@@ -540,5 +540,4 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         }
         return '';
     }
-
 }
