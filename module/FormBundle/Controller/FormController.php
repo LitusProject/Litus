@@ -35,22 +35,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $formSpecification = $this->_getForm();
 
-        if (!$formSpecification) {
+        if (!$formSpecification)
             return new ViewModel();
-        }
-
-        $message = null;
 
         $now = new DateTime();
-        if ($now < $formSpecification->getStartDate() ||
-            $now > $formSpecification->getEndDate() ||
-            !$formSpecification->isActive())
-        {
-            $message = 'This form is currently closed.';
-
+        if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
             return new ViewModel(
                 array(
-                    'message'       => $message,
+                    'message'       => 'This form is currently closed.',
                     'specification' => $formSpecification,
                 )
             );
@@ -61,11 +53,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findAllByForm($formSpecification));
 
         if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
-            $message = 'This form has reached the maximum number of submissions.';
-
             return new ViewModel(
                 array(
-                    'message'       => $message,
+                    'message'       => 'This form has reached the maximum number of submissions.',
                     'specification' => $formSpecification,
                 )
             );
@@ -74,11 +64,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null && !$formSpecification->isNonMember()) {
-            $message = 'Please login to view this form.';
-
             return new ViewModel(
                 array(
-                    'message'       => $message,
+                    'message'       => 'Please login to view this form.',
                     'specification' => $formSpecification,
                 )
             );
@@ -88,30 +76,18 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->findAllByFormAndPerson($formSpecification, $person));
 
             if (!$formSpecification->isMultiple() && $entriesCount > 0) {
-                $message = 'You can\'t fill this form more than once.';
-
                 return new ViewModel(
                     array(
-                        'message'       => $message,
+                        'message'       => 'You can\'t fill this form more than once.',
                         'specification' => $formSpecification,
                     )
                 );
             }
         }
 
-        if ($message) {
-            return new ViewModel(
-                array(
-                    'message'       => $message,
-                    'specification' => $formSpecification,
-                )
-            );
-        }
-
         $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
 
         if ($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -135,7 +111,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 foreach ($formSpecification->getFields() as $field) {
-
                     $value = $formData['field-' . $field->getId()];
 
                     $fieldEntry = new FieldEntry($formEntry, $field, $value);
@@ -148,15 +123,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 if ($formSpecification->hasMail()) {
-
                     $mailAddress = $formSpecification->getMailFrom();
 
                     $mail = new Message();
                     $mail->setBody($formSpecification->getCompletedMailBody($this->getEntityManager(), $formEntry, $this->getLanguage()))
                         ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMailSubject());
-
-                    $mail->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
+                        ->setSubject($formSpecification->getMailSubject())
+                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
                     if ($formSpecification->getMailBcc())
                         $mail->addBcc($mailAddress);
@@ -165,13 +138,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $this->getMailTransport()->send($mail);
                 }
 
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'Your entry has been recorded.'
+                    )
+                );
+
                 $this->redirect()->toRoute(
                     'form_view',
-                    array
-                    (
-                        'action'   => 'complete',
+                    array(
+                        'action'   => 'view',
                         'id'       => $formSpecification->getId(),
-                        'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
 
@@ -183,17 +162,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'specification' => $formSpecification,
                 'form' => $form,
-            )
-        );
-    }
-
-    public function completeAction()
-    {
-        $formSpecification = $this->_getForm();
-
-        return new ViewModel(
-            array(
-                'specification' => $formSpecification,
             )
         );
     }
@@ -220,8 +188,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = $this->getEntityManager()
-        ->getRepository('FormBundle\Entity\Nodes\Form')
-        ->findOneById($this->getParam('id'));
+            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->findOneById($this->getParam('id'));
 
         if (null === $form) {
             $this->flashMessenger()->addMessage(
@@ -244,5 +212,4 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return $form;
     }
-
 }

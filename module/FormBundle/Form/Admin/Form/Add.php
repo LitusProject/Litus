@@ -114,6 +114,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $field->setLabel('Allow Entry Without Login (First name, last name and email fields will be created automatically)');
         $this->add($field);
 
+        $field = new Checkbox('editable_by_user');
+        $field->setLabel('Allow Users To Edit Their Info');
+        $this->add($field);
+
         $field = new Checkbox('multiple');
         $field->setLabel('Multiple Entries / Person Allowed');
         $this->add($field);

@@ -41,7 +41,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'manage'
                     ),
                     'form_view' => array(
-                        'view', 'complete',
+                        'view',
                     ),
                     'form_manage' => array(
                         'download', 'index', 'view', 'edit', 'delete',

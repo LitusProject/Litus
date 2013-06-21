@@ -92,6 +92,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $max,
                     $formData['multiple'],
                     $formData['non_members'],
+                    $formData['editable_by_user'],
                     $formData['mail'],
                     $formData['mail_subject'],
                     $formData['mail_body'],
@@ -194,6 +195,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->setActive($formData['active'])
                     ->setMax($max)
                     ->setMultiple($formData['multiple'])
+                    ->setEditableByUser($formData['editable_by_user'])
                     ->setNonMember($formData['non_members'])
                     ->setMail($formData['mail'])
                     ->setMailSubject($formData['mail_subject'])

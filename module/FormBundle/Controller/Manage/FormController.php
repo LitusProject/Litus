@@ -149,7 +149,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 $formData = $form->getFormData($formData);
 
                 foreach ($formSpecification->getFields() as $field) {
-
                     $value = $formData['field-' . $field->getId()];
 
                     // Find entry
@@ -158,15 +157,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneByFormEntryAndField($formEntry, $field);
 
                     if ($fieldEntry) {
-
                         $fieldEntry->setValue($value);
-
                     } else {
                         $fieldEntry = new FieldEntry($formEntry, $field, $value);
                         $formEntry->addFieldEntry($fieldEntry);
                         $this->getEntityManager()->persist($fieldEntry);
                     }
-
                 }
 
                 $this->getEntityManager()->flush();

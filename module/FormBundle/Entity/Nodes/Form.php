@@ -63,6 +63,13 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     private $nonMember;
 
     /**
+     * @var boolean Form editable by user
+     *
+     * @ORM\Column(name="editable_by_user", type="boolean")
+     */
+    private $editableByUser;
+
+    /**
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field", mappedBy="form")
      *
      * @ORM\OrderBy({"order" = "ASC"})
@@ -134,20 +141,27 @@ class Form extends \CommonBundle\Entity\Nodes\Node
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
-     * @param string $title
-     * @param boolean $redoable
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param boolean $active
+     * @param boolean $max
      * @param boolean $multiple
+     * @param boolean $nonMember
+     * @param boolean $editableByUser
      * @param boolean $mail Whether to send a mail upon completion.
      * @param string $mailSubject The subject of the mail.
      * @param string $mailBody The body of the mail.
+     * @param string $mailFrom
+     * @param string $mailBcc
      */
-    public function __construct($person, $startDate, $endDate, $active, $max, $multiple, $nonMember, $mail, $mailSubject, $mailBody, $mailFrom, $mailBcc)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser, $mail, $mailSubject, $mailBody, $mailFrom, $mailBcc)
     {
         parent::__construct($person);
 
         $this->max = $max;
         $this->multiple = $multiple;
         $this->nonMember = $nonMember;
+        $this->editableByUser = $editableByUser;
         $this->fields = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->startDate = $startDate;
@@ -192,6 +206,23 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      */
     public function isMultiple() {
         return $this->multiple;
+    }
+
+    /**
+     * @param boolean $editableByUser
+     *
+     * @return \FormBundle\Entity\Nodes\Form
+     */
+    public function setEditableByUser($editableByUser) {
+        $this->editableByUser = $editableByUser;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEditableByUser() {
+        return $this->editableByUser;
     }
 
     /**
