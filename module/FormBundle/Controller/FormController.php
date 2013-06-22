@@ -184,7 +184,58 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                // do all the stuff
+
+                foreach ($entry->getForm()->getFields() as $field) {
+                    $value = $formData['field-' . $field->getId()];
+
+                    $fieldEntry = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Entry')
+                        ->findOneByFormEntryAndField($entry, $field);
+
+                    if ($fieldEntry) {
+                        $fieldEntry->setValue($value);
+                    } else {
+                        $fieldEntry = new FieldEntry($entry, $field, $value);
+                        $formEntry->addFieldEntry($fieldEntry);
+                        $this->getEntityManager()->persist($fieldEntry);
+                    }
+                }
+
+                $this->getEntityManager()->flush();
+
+                if ($entry->getForm()->hasMail()) {
+                    $mailAddress = $entry->getForm()->getMailFrom();
+
+                    $mail = new Message();
+                    $mail->setBody($entry->getForm()->getCompletedMailBody($this->getEntityManager(), $entry, $this->getLanguage()))
+                        ->setFrom($mailAddress)
+                        ->setSubject($entry->getForm()->getMailSubject())
+                        ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
+
+                    if ($formSpecification->getMailBcc())
+                        $mail->addBcc($mailAddress);
+
+                    if ('development' != getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
+                }
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'Your entry has been updated.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $entry->getForm()->getId(),
+                    )
+                );
+
+                return new ViewModel();
             }
         }
 

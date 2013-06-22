@@ -151,7 +151,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 foreach ($formSpecification->getFields() as $field) {
                     $value = $formData['field-' . $field->getId()];
 
-                    // Find entry
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($formEntry, $field);

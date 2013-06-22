@@ -46,6 +46,11 @@ return array(
     'This form has reached the maximum number of submissions.' => 'Dit formulier heeft het maximum aantal inschrijvingen bereikt.',
     'You can\'t fill this form more than once.' => 'Je kan dit formulier slechts één keer invullen.',
     'Your entry has been recorded.' => 'Je registratie is opgeslagen.',
+    'Your entry has been updated.' => 'Je registratie is succesvol aangepast.',
+    'Submissions' => 'Registraties',
+    'Submission Date' => 'Registratie Datum',
+    'Actions' => 'Acties',
+    'Edit' => 'Bewerk',
 
     'Mail Participants' => 'Mail Deelnemers',
     'Mail Subject' => 'Mail Onderwerp',
