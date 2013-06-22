@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Form;
+namespace FormBundle\Form\SpecifiedForm;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
@@ -33,11 +33,11 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     Zend\Form\Element\Submit;
 
 /**
- * Add Field
+ * Specifield Form Add
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @var \CudiBundle\Entity\Sales\Article
@@ -45,8 +45,10 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_form;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Form $form
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param \CommonBundle\Entity\Users\Person|null $person
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, $name = null)

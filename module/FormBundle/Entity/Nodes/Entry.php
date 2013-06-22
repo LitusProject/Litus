@@ -19,7 +19,8 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Entry as FieldEntry;
 
 /**
  * This entity stores the node item.
@@ -149,7 +150,7 @@ class Entry
     /**
      * @param \FormBundle\Entity\Entry The entry to add to this form.
      */
-    public function addFieldEntry($fieldEntry) {
+    public function addFieldEntry(FieldEntry $fieldEntry) {
         $this->fieldEntries->add($fieldEntry);
         return $this;
     }

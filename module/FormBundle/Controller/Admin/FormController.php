@@ -113,7 +113,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             $language,
                             $formData['title_' . $language->getAbbrev()],
                             $formData['introduction_' . $language->getAbbrev()],
-                            $formData['submittext_' . $language->getAbbrev()]
+                            $formData['submittext_' . $language->getAbbrev()],
+                            $formData['updatetext_' . $language->getAbbrev()]
                         );
 
                         $this->getEntityManager()->persist($translation);
@@ -217,12 +218,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                                 $language,
                                 $formData['title_' . $language->getAbbrev()],
                                 $formData['introduction_' . $language->getAbbrev()],
-                                $formData['submittext_' . $language->getAbbrev()]
+                                $formData['submittext_' . $language->getAbbrev()],
+                                $formData['updatetext_' . $language->getAbbrev()]
                             );
                         } else {
                             $translation->setTitle($formData['title_' . $language->getAbbrev()])
                                 ->setIntroduction($formData['introduction_' . $language->getAbbrev()])
-                                ->setSubmitText($formData['submittext_' . $language->getAbbrev()]);
+                                ->setSubmitText($formData['submittext_' . $language->getAbbrev()])
+                                ->setUpdateText($formData['updatetext_' . $language->getAbbrev()]);
                         }
 
                         $this->getEntityManager()->persist($translation);

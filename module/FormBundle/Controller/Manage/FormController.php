@@ -19,7 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Component\Document\Generator\Csv as CsvGenerator,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\Manage\Mail\Send as MailForm,
-    FormBundle\Form\SpecifiedForm,
+    FormBundle\Form\SpecifiedForm\Add as SpecifiedForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 

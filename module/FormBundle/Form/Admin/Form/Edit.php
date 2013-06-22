@@ -67,6 +67,7 @@ class Edit extends Add
             $data['title_' . $language->getAbbrev()] = $form->getTitle($language, false);
             $data['introduction_' . $language->getAbbrev()] = $form->getIntroduction($language, false);
             $data['submittext_' . $language->getAbbrev()] = $form->getSubmitText($language, false);
+            $data['updatetext_' . $language->getAbbrev()] = $form->getUpdateText($language, false);
         }
 
         $this->setData($data);

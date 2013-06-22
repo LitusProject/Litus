@@ -20,7 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Nodes\GuestInfo,
     FormBundle\Entity\Nodes\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
-    FormBundle\Form\SpecifiedForm,
+    FormBundle\Form\SpecifiedForm\Add as AddForm,
+    FormBundle\Form\SpecifiedForm\Edit as EditForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -28,6 +29,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * FormController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class FormController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
@@ -86,7 +88,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
+        $form = new AddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -174,7 +176,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $person = $this->getAuthentication()->getPersonObject();
-        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $person);
+        $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+                // do all the stuff
+            }
+        }
 
         return new ViewModel(
             array(
