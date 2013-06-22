@@ -14,7 +14,7 @@
 
         "EvanDotPro/EdpMarkdown": "@dev",
         "widmogrod/zf2-assetic-module": "@dev",
-        "zf-commons/zfc-twig": "@dev",
+        "zf-commons/zfc-twig": "1.1.3",
         "twitter/bootstrap": "2.3.*",
         "zendframework/zend-developer-tools": "dev-master"
     },
