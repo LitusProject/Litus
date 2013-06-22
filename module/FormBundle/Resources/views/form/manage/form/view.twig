@@ -5,7 +5,7 @@
         <a class="close">&times;</a>
         <div class="title">{{ translate('Success') }}</div>
         <div class="content">
-            <p>{{ translate('The mail was succesfully send.') }}</p>
+            <p>{{ translate('The mail was succesfully sent.') }}</p>
         </div>
     </div>
     <div class="flashmessage alert alert-error fade" id="mail_send_error">
@@ -130,10 +130,14 @@
             <p>
                 {{ translate("Are you sure you want to continue?") }}
             </p>
+            <div class="modal-footer">
+                <button class="btn btn-danger confirm">{{ translate('Delete') }}</button>
+                <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
+            </div>
         </div>
     </div>
 
-    <div class="modal hide fade" id="sendMailModal">
+    <div class="modal hide fade" id="sendMail">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
             <h3>{{ translate('Send Mail') }}</h3>
@@ -146,7 +150,7 @@
             </p>
         </div>
         <div class="modal-footer">
-            <button class="confirm btn btn-success send">{{ translate('Send') }}</button>
+            <button class="btn btn-success confirm">{{ translate('Send') }}</button>
             <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
         </div>
     </div>
@@ -209,9 +213,8 @@
             var $this = $(this);
 
             e.preventDefault();
-            var sendMail = $('#sendMailModal');
-            sendMail.find('.send').click(function () {
-                console.log('send');
+            var sendMail = $('#sendMail');
+            sendMail.find('.confirm').click(function () {
                 sendMail.find('form').ajaxSubmit({
                     dataType: 'json',
                     success: function (data) {

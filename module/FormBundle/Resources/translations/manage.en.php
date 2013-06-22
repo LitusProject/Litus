@@ -50,7 +50,7 @@ return array(
     'Mail Participants' => 'Mail Participants',
     'Mail Subject' => 'Mail Subject',
     'Message' => 'Message',
-    'The mail was succesfully send.' => 'The mail was succesfully send.',
+    'The mail was succesfully sent.' => 'The mail was succesfully sent.',
     'An error occurred while trying to send a mail.' => 'An error occurred while trying to send a mail.',
     'Send Mail' => 'Send Mail',
     'Send' => 'Send',

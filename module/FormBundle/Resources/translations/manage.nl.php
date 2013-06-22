@@ -50,7 +50,7 @@ return array(
     'Mail Participants' => 'Mail Deelnemers',
     'Mail Subject' => 'Mail Onderwerp',
     'Message' => 'Bericht',
-    'The mail was succesfully send.' => 'De mail is succesvol verzonden.',
+    'The mail was succesfully sent.' => 'De mail is succesvol verzonden.',
     'An error occurred while trying to send a mail.' => 'Er is een fout opgetreden tijdens het verzenden van de mail.',
     'Send Mail' => 'Verstuur Mail',
     'Send' => 'Verstuur',
