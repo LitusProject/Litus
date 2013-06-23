@@ -21,7 +21,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
-    FormBundle\Component\Validator\StringFieldValidator,
+    FormBundle\Component\Validator\Required as RequiredValidator,
+    FormBundle\Component\Validator\StringField as StringFieldValidator,
     FormBundle\Entity\Fields\Checkbox as CheckboxField,
     FormBundle\Entity\Fields\String as StringField,
     FormBundle\Entity\Fields\Dropdown as DropdownField,
@@ -254,6 +255,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'digits',
                         ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'required',
+                    'required' => false,
+                    'validators' => array(
+                        new RequiredValidator(),
                     ),
                 )
             )
