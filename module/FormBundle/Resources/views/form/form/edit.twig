@@ -15,3 +15,45 @@
         {{ forms.renderForm(form) }}
     {% endif %}
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var form = $('#content form');
+            form.find('input, select').each(function () {
+                var $this = $(this);
+                if ($this.data('visible_if_element') !== undefined) {
+                    $this.closest('.control-group').hide();
+                    form.find('#field-' + $this.data('visible_if_element')).bind('change keyup', function () {
+                        if ($(this).attr('type') == 'text') {
+                            if ($(this).val() !== '') {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                            }
+                            $this.trigger('change');
+                        } else if ($(this).attr('type') == 'checkbox') {
+                            if (
+                                ($(this).is(':checked') && $this.data('visible_if_value') == '1')
+                                    || (!$(this).is(':checked') && $this.data('visible_if_value') == '0')
+                                && $(this).is(':visible')
+                            ) {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                            }
+                            $this.trigger('change');
+                        } else if ($(this).is('select')) {
+                            if ($(this).find('option:selected').html() == $this.data('visible_if_value') && $(this).is(':visible')) {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                            }
+                            $this.trigger('change');
+                        }
+                    }).trigger('change');
+                }
+            });
+        });
+    </script>
+{% endblock %}

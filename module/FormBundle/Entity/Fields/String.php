@@ -57,13 +57,15 @@ class String extends Field
      * @param \FormBundle\Entity\Nodes\Form $form
      * @param integer $order
      * @param boolean $required
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param string $visibilityValue
      * @param integer $lineLength
      * @param integer $lines
      * @param boolean $multiLine
      */
-    public function __construct(Form $form, $order, $required, $lineLength, $lines, $multiLine)
+    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, $lineLength, $lines, $multiLine)
     {
-        parent::__construct($form, $order, $required);
+        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
         $this->lineLength = $lineLength;
         $this->lines = $lines;
         $this->multiLine = $multiLine;

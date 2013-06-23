@@ -23,6 +23,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     FormBundle\Component\Validator\StringFieldValidator,
     FormBundle\Entity\Fields\Checkbox as CheckboxField,
+    FormBundle\Entity\Fields\String as StringField,
     FormBundle\Entity\Fields\Dropdown as DropdownField,
     FormBundle\Entity\Nodes\Form,
     FormBundle\Entity\Field,
@@ -147,7 +148,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $options = array(0 => 'Always');
         foreach($this->_form->getFields() as $field) {
-            if ($field instanceof DropdownField) {
+            if ($field instanceof StringField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'string',
+                    )
+                );
+            } else if ($field instanceof DropdownField) {
                 $options[] = array(
                     'label' => $field->getLabel(),
                     'value' => $field->getId(),

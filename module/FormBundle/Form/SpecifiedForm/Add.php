@@ -99,19 +99,22 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ->setAttribute('data-linecount', $fieldSpecification->getLines());
                 }
 
-                $this->add($field);
             } elseif ($fieldSpecification instanceof Dropdown) {
                 $field = new Select('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setAttribute('options', $fieldSpecification->getOptionsArray($language));
-                $this->add($field);
             } elseif ($fieldSpecification instanceof CheckboxField) {
                 $field = new Checkbox('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language));
-                $this->add($field);
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
+
+            if (null !== $fieldSpecification->getVisibilityDecissionField()) {
+                $field->setAttribute('data-visible_if_element', $fieldSpecification->getVisibilityDecissionField()->getId())
+                    ->setAttribute('data-visible_if_value', $fieldSpecification->getVisibilityValue());
+            }
+            $this->add($field);
         }
 
         $field = new Submit('submit');

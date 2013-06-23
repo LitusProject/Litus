@@ -42,10 +42,12 @@ abstract class OptionSelector extends Field
      * @param \FormBundle\Entity\Nodes\Form $form
      * @param integer $order
      * @param boolean $required
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param string $visibilityValue
      */
-    public function __construct(Form $form, $order, $required)
+    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
-        parent::__construct($form, $order, $required);
+        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
 
         $this->option_translations = new ArrayCollection();
     }

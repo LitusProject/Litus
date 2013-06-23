@@ -70,6 +70,21 @@ abstract class Field
     private $required;
 
     /**
+     * @var \FormBundle\Entity\Field The field responsible for the visibility of this field
+     *
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Field")
+     * @ORM\JoinColumn(name="visibility_decission_field", referencedColumnName="id")
+     */
+    private $visibityDecisionField;
+
+    /**
+     * @var string The required value of the visibityDecisionField;
+     *
+     * @ORM\Column(name="visibility_value", type="string", nullable=true)
+     */
+    private $visibilityValue;
+
+    /**
      * @var array The translations of this field
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Translation", mappedBy="field", cascade={"remove"})
@@ -89,13 +104,17 @@ abstract class Field
      * @param \FormBundle\Entity\Nodes\Form $form
      * @param integer $order
      * @param boolean $required
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param string $visibilityValue
      */
-    public function __construct(Form $form, $order, $required)
+    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
         $this->form = $form;
         $this->order = $order;
         $this->required = $required;
         $this->translations = new ArrayCollection();
+        $this->visibityDecisionField = $visibityDecisionField;
+        $this->visibilityValue = $visibilityValue;
     }
 
     /**
@@ -144,6 +163,40 @@ abstract class Field
      */
     public function isRequired() {
         return $this->required;
+    }
+
+    /**
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     *
+     * @return \FormBundle\Entity\Field
+     */
+    public function setVisibilityDecissionField(Field $visibityDecisionField = null) {
+        $this->visibityDecisionField = $visibityDecisionField;
+        return $this;
+    }
+
+    /**
+     * @return \FormBundle\Entity\Field
+     */
+    public function getVisibilityDecissionField() {
+        return $this->visibityDecisionField;
+    }
+
+    /**
+     * @param string $visibilityValue
+     *
+     * @return \FormBundle\Entity\Field
+     */
+    public function setVisibilityValue($visibilityValue) {
+        $this->visibilityValue = $visibilityValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisibilityValue() {
+        return $this->visibilityValue;
     }
 
     /**

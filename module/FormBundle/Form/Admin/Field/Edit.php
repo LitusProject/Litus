@@ -18,7 +18,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Fields\Checkbox as CheckboxField,
     FormBundle\Entity\Fields\String as StringField,
-    FormBundle\Entity\Fields\DropdownField,
+    FormBundle\Entity\Fields\Dropdown as DropdownField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 
@@ -31,15 +31,23 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends Add
 {
     /**
+     * @var \FormBundle\Entity\Field
+     */
+    private $_field;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Nodes\Field $field The field we're going to modify
+     * @param \FormBundle\Entity\Field $field The field we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)
     {
         parent::__construct($fieldSpecification->getForm(), $entityManager, $name);
 
+        $this->_field = $fieldSpecification;
+
         $this->get('type')->setAttribute('disabled', 'disabled');
+        $this->get('visibility')->get('visible_if')->setAttribute('options', $this->_getVisibilityOptions());
 
         $this->remove('submit');
 
@@ -49,6 +57,43 @@ class Edit extends Add
         $this->add($field);
 
         $this->_populateFromField($fieldSpecification);
+    }
+
+    private function _getVisibilityOptions()
+    {
+        $options = array(0 => 'Always');
+        foreach($this->_form->getFields() as $field) {
+            if ($field == $this->_field)
+                continue;
+
+            if ($field instanceof StringField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'string',
+                    )
+                );
+            } else if ($field instanceof DropdownField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'dropdown',
+                        'data-values' => $field->getOptions(),
+                    )
+                );
+            } elseif ($field instanceof CheckboxField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'checkbox',
+                    )
+                );
+            }
+        }
+        return $options;
     }
 
     private function _populateFromField(Field $field)
@@ -71,6 +116,12 @@ class Edit extends Add
             if($field instanceof DropdownField) {
                 $data['options_' . $language->getAbbrev()] = $field->getOptions($language, false);
             }
+        }
+
+        if (null !== $field->getVisibilityDecissionField()) {
+            $data['visible_if'] = $field->getVisibilityDecissionField()->getId();
+            $data['visible_value'] = $field->getVisibilityValue();
+            $this->get('visibility')->get('visible_value')->setAttribute('data-current_value', $field->getVisibilityValue());
         }
 
         $this->setData($data);

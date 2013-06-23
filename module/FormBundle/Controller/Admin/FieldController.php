@@ -103,12 +103,18 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
+                $visibilityDecissionField = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Field')
+                    ->findOneById($formData['visible_if']);
+
                 switch($formData['type']) {
                     case 'string':
                         $field = new StringField(
                             $formSpecification,
                             $formData['order'],
                             $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null,
                             $formData['charsperline'] === '' ? 0 : $formData['charsperline'],
                             $formData['lines'] === '' ? 0 : $formData['lines'],
                             $formData['multiline']
@@ -118,7 +124,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         $field = new Dropdown(
                             $formSpecification,
                             $formData['order'],
-                            $formData['required']
+                            $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null
                         );
 
                         foreach($languages as $language) {
@@ -138,7 +146,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         $field = new Checkbox(
                             $formSpecification,
                             $formData['order'],
-                            $formData['required']
+                            $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null
                         );
                         break;
                     default:
@@ -228,8 +238,14 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
+                $visibilityDecissionField = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Field')
+                    ->findOneById($formData['visible_if']);
+
                 $field->setOrder($formData['order'])
-                    ->setRequired($formData['required']);
+                    ->setRequired($formData['required'])
+                    ->setVisibilityDecissionField($visibilityDecissionField)
+                    ->setVisibilityValue(isset($visibilityDecissionField) ? $formData['visible_value'] : null);
 
                 if ($field instanceof StringField) {
                     $field->setLineLength($formData['charsperline'] === '' ? 0 : $formData['charsperline'])
