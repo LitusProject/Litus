@@ -136,7 +136,7 @@
             });
 
             $('#uploadFile').formUploadProgress({
-                url: '{{ url('cudi_prof_file', {"action": "progress", "language": language.getAbbrev()}) }}',
+                url: '/progress.php',
                 name: $('#progress_key').val(),
                 interval: 1000,
                 onProgress: function (data) {

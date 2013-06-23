@@ -38,7 +38,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#uploadFile').formUploadProgress({
-                url: '{{ url('publication_admin_edition_pdf', {"action": "progress"}) }}',
+                url: '/progress.php',
                 name: $('#progress_key').val(),
                 interval: 1000,
                 onProgress: function (data) {

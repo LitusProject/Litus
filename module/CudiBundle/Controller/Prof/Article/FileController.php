@@ -22,7 +22,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Doctrine\ORM\EntityManager,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\ProgressBar\Upload\SessionProgress,
     Zend\View\Model\ViewModel;
 
 /**
@@ -193,17 +192,6 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
         }
-    }
-
-    public function progressAction()
-    {
-        $progress = new SessionProgress();
-
-        return new ViewModel(
-            array(
-                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
-            )
-        );
     }
 
     public function deleteAction()

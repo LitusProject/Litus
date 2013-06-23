@@ -20,7 +20,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PageBundle\Form\Admin\Page\Add as AddForm,
     PageBundle\Form\Admin\Page\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\ProgressBar\Upload\SessionProgress,
     Zend\View\Model\ViewModel;
 
 /**
@@ -329,17 +328,6 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
         }
-    }
-
-    public function uploadProgressAction()
-    {
-        $progress = new SessionProgress();
-
-        return new ViewModel(
-            array(
-                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
-            )
-        );
     }
 
     private function _getPage()

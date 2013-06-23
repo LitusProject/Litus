@@ -137,7 +137,7 @@
             });
 
             $('#uploadFile').formUploadProgress({
-                url: '{{ url('cudi_admin_article_file', {"action": "progress"}) }}',
+                url: '/progress.php',
                 name: $('#progress_key').val(),
                 interval: 1000,
                 onProgress: function (data) {

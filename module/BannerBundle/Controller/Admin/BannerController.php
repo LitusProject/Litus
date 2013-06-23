@@ -21,7 +21,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\ProgressBar\Upload\SessionProgress,
     Zend\Validator\File\Count as CountValidator,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\IsImage as ImageValidator,
@@ -102,6 +101,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function uploadAction()
     {
+        $this->initAjax();
+        
         $upload = new FileUpload();
 
         $upload->addValidator(new SizeValidator(array('max' => '10MB')));
@@ -264,17 +265,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 );
             }
         }
-    }
 
-    public function progressAction()
-    {
-        $progress = new SessionProgress();
-
-        return new ViewModel(
-            array(
-                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
-            )
-        );
+        return new ViewModel();
     }
 
     public function deleteAction()

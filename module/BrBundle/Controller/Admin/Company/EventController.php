@@ -25,7 +25,6 @@ use BrBundle\Entity\Company\Event,
     Imagick,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
-    Zend\ProgressBar\Upload\SessionProgress,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
@@ -315,17 +314,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'status' => 'error',
-            )
-        );
-    }
-
-    public function progressAction()
-    {
-        $progress = new SessionProgress();
-
-        return new ViewModel(
-            array(
-                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
             )
         );
     }
