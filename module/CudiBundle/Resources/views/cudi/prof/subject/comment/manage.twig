@@ -2,13 +2,13 @@
 
 {% block content %}
     <div class="flashmessage alert alert-error fade" id="comment_removed_error">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while removing the comment.') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="comment_removed_success">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         <div class="content">
             {{ translate('The comment was succesfully removed.') }}
         </div>
@@ -102,6 +102,10 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+            
             $('.item .view').click(openViewModal);
             $('.item .delete').click(openRemoveModal);
             $('#addComment .save').click(function () {
