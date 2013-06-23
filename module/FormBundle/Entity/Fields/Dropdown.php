@@ -20,6 +20,7 @@ use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Field,
     FormBundle\Entity\Nodes\Form;
 
 /**
