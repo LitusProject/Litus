@@ -16,6 +16,9 @@ namespace FormBundle\Form\Admin\Field;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
+    FormBundle\Entity\Fields\Checkbox as CheckboxField,
+    FormBundle\Entity\Fields\String as StringField,
+    FormBundle\Entity\Fields\DropdownField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 
@@ -36,6 +39,8 @@ class Edit extends Add
     {
         parent::__construct($fieldSpecification->getForm(), $entityManager, $name);
 
+        $this->get('type')->setAttribute('disabled', 'disabled');
+
         $this->remove('submit');
 
         $field = new Submit('submit');
@@ -53,8 +58,19 @@ class Edit extends Add
             'required' => $field->isRequired(),
         );
 
+        if ($field instanceof StringField) {
+            $data['charsperline'] = $field->getLineLength();
+            $data['multiline'] = $field->isMultiLine();
+            if ($field->isMultiLine())
+                $data['lines'] = $field->getLines();
+        }
+
         foreach($this->getLanguages() as $language) {
             $data['label_' . $language->getAbbrev()] = $field->getLabel($language, false);
+
+            if($field instanceof DropdownField) {
+                $data['options_' . $language->getAbbrev()] = $field->getOptions($language, false);
+            }
         }
 
         $this->setData($data);

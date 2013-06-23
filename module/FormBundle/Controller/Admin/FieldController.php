@@ -72,7 +72,6 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -187,6 +186,118 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'formSpecification' => $formSpecification,
+                'form' => $form,
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        if (!($field = $this->_getField()))
+            return new ViewModel();
+
+        if (!$field->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_form',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $form = new EditForm($field, $this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                $field->setOrder($formData['order'])
+                    ->setRequired($formData['required']);
+
+                if ($field instanceof StringField) {
+                    $field->setLineLength($formData['charsperline'] === '' ? 0 : $formData['charsperline'])
+                        ->setLines($formData['lines'] === '' ? 0 : $formData['lines'])
+                        ->setMultiLine($formData['multiline']);
+                } elseif ($field instanceof Dropdown) {
+                    foreach($languages as $language) {
+                        if ('' != $formData['options_' . $language->getAbbrev()]) {
+                            $translation = $field->getOptionTranslation($language, false);
+
+                            if (null !== $translation) {
+                                $translation->setOptions($formData['options_' . $language->getAbbrev()]);
+                            } else {
+                                $translation = new OptionTranslation(
+                                    $field,
+                                    $language,
+                                    $formData['options_' . $language->getAbbrev()]
+                                );
+
+                                $this->getEntityManager()->persist($translation);
+                            }
+                        }
+                    }
+                }
+
+                foreach($languages as $language) {
+                    if ('' != $formData['label_' . $language->getAbbrev()]) {
+                        $translation = $field->getTranslation($language, false);
+
+                        if (null !== $translation) {
+                            $translation->setLabel($formData['label_' . $language->getAbbrev()]);
+                        } else {
+                            $translation = new Translation(
+                                $field,
+                                $language,
+                                $formData['label_' . $language->getAbbrev()]
+                            );
+
+                            $this->getEntityManager()->persist($translation);
+                        }
+                    }
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The field was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_admin_form_field',
+                    array(
+                        'action' => 'manage',
+                        'id' => $field->getForm()->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'formSpecification' => $field->getForm(),
                 'form' => $form,
             )
         );

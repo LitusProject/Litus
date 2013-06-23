@@ -80,6 +80,16 @@ class String extends Field
     }
 
     /**
+     * @param integer $lineLength The maximum number of characters per line.
+     * @return \FormBundle\Entity\Fields\String
+     */
+    public function setLineLength($lineLength)
+    {
+        $this->lineLength = $lineLength;
+        return $this;
+    }
+
+    /**
      * Returns the maximum number of lines for this field.
      *
      * @return integer The maximum number of lines.
@@ -92,6 +102,16 @@ class String extends Field
     }
 
     /**
+     * @param integer $lines Returns the maximum number of lines for this field.
+     * @return \FormBundle\Entity\Fields\String
+     */
+    public function setLines($lines)
+    {
+        $this->lines = $lines;
+        return $this;
+    }
+
+    /**
      * Returns whether this is a multiline field.
      *
      * @return boolean True if and only if this is a multiline field.
@@ -99,6 +119,16 @@ class String extends Field
     public function isMultiLine()
     {
         return $this->multiLine;
+    }
+
+    /**
+     * @param boolean $multiLine Returns whether this is a multiline field.
+     * @return \FormBundle\Entity\Fields\String
+     */
+    public function setMultiLine($multiLine)
+    {
+        $this->multiLine = $multiLine;
+        return $this;
     }
 
     /**
@@ -121,5 +151,4 @@ class String extends Field
     public function getValueString(Language $language, $value) {
         return $value;
     }
-
 }

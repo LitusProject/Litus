@@ -38,7 +38,6 @@ use CommonBundle\Entity\General\Language,
  */
 abstract class Field
 {
-
     /**
      * @var The reservation's unique identifier
      *

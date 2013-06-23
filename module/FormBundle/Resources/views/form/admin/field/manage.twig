@@ -37,6 +37,9 @@
                     <td>{{ field.getOrder() }}</td>
                     <td>{% if field.isRequired() %}&times;{% endif %}</td>
                     <td class="actions">
+                        {% if hasAccess('form_admin_form_field', 'edit') %}
+                            <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
                         {% if hasAccess('form_admin_form_field', 'delete') %}
                             <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
                         {% endif %}
