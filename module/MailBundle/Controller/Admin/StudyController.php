@@ -147,8 +147,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                             foreach($bccs as $bcc)
                                 $body = $body . $bcc . '<br/>';
-                            echo $body;
-                            exit;
 
                             $part = new Part($body);
                             $part->type = Mime::TYPE_HTML;
