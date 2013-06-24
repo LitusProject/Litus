@@ -88,10 +88,10 @@ return array(
                     ),
                 ),
             ),
-            'quiz_admin_moderate' => array(
+            'quiz_quiz' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/quiz/:quizid/moderate[/:action[/:roundid/:teamid]][/]',
+                    'route' => '/quiz/:quizid[/:action[/:roundid/:teamid]][/]',
                     'constraints' => array(
                         'quizid'  => '[0-9]+',
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -99,7 +99,7 @@ return array(
                         'teamid'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'quiz_admin_moderate',
+                        'controller' => 'quiz_quiz',
                         'action' => 'manage',
                     ),
                 ),
@@ -146,7 +146,7 @@ return array(
             'quiz_admin_quiz'           => 'QuizBundle\Controller\Admin\QuizController',
             'quiz_admin_round'          => 'QuizBundle\Controller\Admin\RoundController',
             'quiz_admin_team'           => 'QuizBundle\Controller\Admin\TeamController',
-            'quiz_admin_moderate'       => 'QuizBundle\Controller\Admin\ModerateController',
+            'quiz_quiz'                 => 'QuizBundle\Controller\QuizController',
         ),
     ),
     'assetic_configuration' => array(
@@ -154,12 +154,12 @@ return array(
             'quizbundle' => array(
                 'root_path' => __DIR__ . '/../assets',
                 'collections' => array(
-                    'moderate_css' => array(
+                    'quiz_css' => array(
                         'assets' => array(
-                            'moderate/less/base.less',
+                            'quiz/less/base.less',
                         ),
                         'filters' => array(
-                            'moderate_less' => array(
+                            'quiz_less' => array(
                                 'name' => 'Assetic\Filter\LessFilter',
                                 'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
@@ -171,7 +171,7 @@ return array(
                             ),
                         ),
                         'options' => array(
-                            'output' => 'moderate_css.css',
+                            'output' => 'quiz_css.css',
                         ),
                     ),
                 ),

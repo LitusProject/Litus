@@ -1,4 +1,4 @@
-{% extends 'moderate/base.twig' %}
+{% extends 'quiz/base.twig' %}
 
 {% block content %}
     <header class="subhead">
@@ -49,7 +49,7 @@
                 return;
             }
             ajax_requests_pending++;
-            var url = '{{ url('quiz_admin_moderate', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team')
+            var url = '{{ url('quiz_quiz', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team')
             $.ajax({
                 url: url,
                 type: 'post',

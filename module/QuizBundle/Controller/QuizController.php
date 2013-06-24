@@ -1,19 +1,19 @@
 <?php
 
-namespace QuizBundle\Controller\Admin;
+namespace QuizBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     QuizBundle\Entity\Point,
     Zend\View\Model\ViewModel;
 
 /**
- * ModerateController
+ * QuizController
  *
- * Controller for /admin/quiz/:quizid/moderate[/:action[/:roundid/:teamid]]
+ * Controller for /quiz/:quizid[/:action[/:roundid/:teamid]]
  *
  * @author Lars Vierbergen <vierbergenlars@gmail.com>
  */
-class ModerateController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class QuizController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -193,7 +193,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'quiz_admin_moderate',
+                'quiz_quiz',
                 array(
                     'action' => 'manage',
                 )
@@ -216,7 +216,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'quiz_admin_moderate',
+                'quiz_quiz',
                 array(
                     'action' => 'manage'
                 )
@@ -243,7 +243,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'quiz_admin_moderate',
+                'quiz_quiz',
                 array(
                     'action' => 'manage',
                 )
@@ -266,7 +266,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'quiz_admin_moderate',
+                'quiz_quiz',
                 array(
                     'action' => 'manage'
                 )
