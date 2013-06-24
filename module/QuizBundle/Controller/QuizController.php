@@ -119,6 +119,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 'teams' => $teams_indexed,
                 'points' => $points,
                 'total_points' => $totals,
+                'order'=> $this->getRequest()->getQuery('order', 'ASC'),
             )
         );
     }

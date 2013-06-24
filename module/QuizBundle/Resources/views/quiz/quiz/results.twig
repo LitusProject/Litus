@@ -2,6 +2,12 @@
 
 {% block content %}
     <header class="subhead">
+        <form action="" method="GET" class="pull-right">
+            <select name="order" id="order">
+                <option value="ASC"{% if order == 'ASC' %} selected{% endif %}>Best first</option>
+                <option value="DESC"{% if order == 'DESC' %} selected{% endif %}>Best last</option>
+            </select>
+        </form>
         <h1>{{ quiz.getName() }}</h1>
     </header>
     <table id="results" class="table table-bordered">
@@ -10,18 +16,31 @@
             <th class="team">Team</th>
             <th class="total">Total</th>
         </tr>
-        {% for teamid,total in total_points %}
-            <tr>
-                <td class="rank">{{ loop.index }}</td>
-                <td class="team">{{ teams[teamid].getName() }}</td>
-                <td class="total">{{ total }}</td>
-            </tr>
-        {% endfor %}
+        {% if order == 'ASC' %}
+            {% for teamid,total in total_points %}
+                <tr>
+                    <td class="rank">{{ loop.index }}</td>
+                    <td class="team">{{ teams[teamid].getName() }}</td>
+                    <td class="total">{{ total }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            {% for teamid,total in total_points|reverse(true) %}
+                <tr>
+                    <td class="rank">{{ loop.revindex }}</td>
+                    <td class="team">{{ teams[teamid].getName() }}</td>
+                    <td class="total">{{ total }}</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
     </table>
 {% endblock %}
 
 {% block content_script %}
     <script>
+        $('#order').on('change', function() {
+            $(this).parent().submit();
+        });
         $('#results tr:not(.head)').hide();
         $(document).keyup(function (e) {
             if (e.keyCode == 37 || e.keyCode == 38) {
