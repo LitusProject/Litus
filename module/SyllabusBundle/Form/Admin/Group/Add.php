@@ -15,8 +15,10 @@
 namespace SyllabusBundle\Form\Admin\Group;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Checkbox,
     Doctrine\ORM\EntityManager,
+    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     SyllabusBundle\Component\Validator\Group\Name as NameValidator,
     SyllabusBundle\Entity\Group,
     Zend\InputFilter\InputFilter,
@@ -55,6 +57,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Show In CV Book');
         $this->add($field);
 
+        $field = new Textarea('extra_members');
+        $field->setLabel('Extra Members')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'add');
@@ -67,6 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'name' => $group->getName(),
                 'cvbook' => $group->getCvBook(),
+                'extra_members' => $group->getExtraMembers(),
             )
         );
     }
@@ -86,6 +94,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         new NameValidator($this->_entityManager),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'extra_members',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new MultiMailValidator(),
                     ),
                 )
             )

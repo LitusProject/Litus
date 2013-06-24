@@ -73,7 +73,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $this->getEntityManager()->persist(new Group($formData['name'], $formData['cvbook']));
+                $this->getEntityManager()->persist(new Group($formData['name'], $formData['cvbook'], $formData['extra_members']));
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -127,7 +127,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $group->setName($formData['name'])
-                    ->setCvBook($formData['cvbook']);
+                    ->setCvBook($formData['cvbook'])
+                    ->setExtraMembers($formData['extra_members']);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(

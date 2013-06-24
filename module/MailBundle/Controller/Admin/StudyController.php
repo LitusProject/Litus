@@ -49,6 +49,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('MailBundle\Document\Message')
             ->findAll();
 
+            $storedMessages = array();
         $form = new MailForm($studies, $groups, $storedMessages);
 
         if($this->getRequest()->isPost()) {
@@ -63,7 +64,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 $upload->addValidator(new SizeValidator(array('max' => '50MB')));
 
                 if ($upload->isValid()) {
-
                     $enrollments = array();
 
                     $studyIds = $formData['studies'];
@@ -90,13 +90,17 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     }
 
                     $groupIds = $formData['groups'];
+                    $extraMembers = array();
 
                     if ($groupIds) {
                         foreach ($groupIds as $groupId) {
-
                             $group = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\Group')
                                 ->findOneById($groupId);
+
+                            $exploded = preg_split("/[,;\s]+/", $group->getExtraMembers());
+                            foreach($exploded as $explodedMail)
+                                $extraMembers[$explodedMail] = $explodedMail;
 
                             $studies = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
@@ -138,8 +142,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                             foreach($enrollments as $enrollment)
                                 $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
 
+                            foreach($extraMembers as $extraMember)
+                                $body = $body . $extraMember . '<br/>';
+
                             foreach($bccs as $bcc)
                                 $body = $body . $bcc . '<br/>';
+                            echo $body;
+                            exit;
 
                             $part = new Part($body);
                             $part->type = Mime::TYPE_HTML;
@@ -194,6 +203,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                             foreach($enrollments as $enrollment)
                                 $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
 
+                            foreach($extraMembers as $extraMember)
+                                $body = $body . $extraMember . '<br/>';
+
                             foreach($bccs as $bcc)
                                 $body = $body . $bcc . '<br/>';
 
@@ -224,6 +236,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     if (!$formData['test']) {
                         foreach($enrollments as $enrollment)
                             $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+
+                        foreach($extraMembers as $extraMember)
+                            $mail->addBcc($extraMember);
 
                         foreach($bccs as $bcc)
                             $mail->addBcc($bcc);
