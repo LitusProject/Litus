@@ -57,7 +57,7 @@ class Group
     /**
      * @var string Comma separated string of extra members
      *
-     * @ORM\Column(type="string", name="extra_members")
+     * @ORM\Column(type="text", name="extra_members")
      */
     private $extraMembers;
 

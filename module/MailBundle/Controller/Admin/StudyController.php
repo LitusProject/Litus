@@ -49,7 +49,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('MailBundle\Document\Message')
             ->findAll();
 
-            $storedMessages = array();
         $form = new MailForm($studies, $groups, $storedMessages);
 
         if($this->getRequest()->isPost()) {
@@ -98,9 +97,11 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                                 ->getRepository('SyllabusBundle\Entity\Group')
                                 ->findOneById($groupId);
 
-                            $exploded = preg_split("/[,;\s]+/", $group->getExtraMembers());
-                            foreach($exploded as $explodedMail)
-                                $extraMembers[$explodedMail] = $explodedMail;
+                            $groupExtraMembers = unserialize($group->getExtraMembers());
+                            if ($groupExtraMembers) {
+                                foreach($groupExtraMembers as $mail)
+                                    $extraMembers[$mail] = $mail;
+                            }
 
                             $studies = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')

@@ -70,11 +70,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     protected function populateFromGroup(Group $group)
     {
+        $extraMembers = unserialize($group->getExtraMembers());
+
         $this->setData(
             array(
                 'name' => $group->getName(),
                 'cvbook' => $group->getCvBook(),
-                'extra_members' => $group->getExtraMembers(),
+                'extra_members' => $extraMembers ? implode(',', $extraMembers) : '',
             )
         );
     }
