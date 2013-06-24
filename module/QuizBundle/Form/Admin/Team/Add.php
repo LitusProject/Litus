@@ -2,13 +2,12 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+    QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Team,
+    QuizBundle\Entity\Quiz,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -25,14 +24,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private $_entityManager = null;
 
     /**
+     * @var \QuizBundle\Entity\Quiz The quiz the team will belong to
+     */
+    private $_quiz = null;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \QuizBundle\Entity\Quiz $quiz
      * @var null|string|int $name Optional name for the form
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+        $this->_quiz = $quiz;
 
 
         $field = new Text('name');
@@ -80,6 +86,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array('name' => 'int'),
                         new PositiveNumberValidator,
+                        new UniqueTeamValidator($this->_entityManager, $this->_quiz),
                     )
                 )
             )
