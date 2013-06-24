@@ -43,7 +43,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         if(!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
-        $form = new AddForm($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager(), $quiz);
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);

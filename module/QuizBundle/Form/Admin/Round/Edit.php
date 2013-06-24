@@ -20,7 +20,7 @@ class Edit extends Add {
      */
     public function __construct(EntityManager $entityManager, Round $round, $name = null)
     {
-        parent::__construct($entityManager, $name);
+        parent::__construct($entityManager, $round->getQuiz(), $name);
 
         $this->remove('submit');
 
