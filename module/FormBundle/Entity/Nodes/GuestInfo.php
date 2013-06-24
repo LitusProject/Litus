@@ -106,5 +106,4 @@ class GuestInfo
     {
         return $this->email;
     }
-
 }

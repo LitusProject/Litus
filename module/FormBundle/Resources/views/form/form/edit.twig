@@ -10,37 +10,9 @@
     {% endautoescape %}
 
     <hr/>
-
-    {% if not form %}
-        <div class="alert">
-            {{ translate(message) }}
-        </div>
-    {% else %}
-        {% if form %}
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-        {% endif %}
-    {% endif %}
-
-    {% if entries|length > 0 %}
-        <h2>{{ translate('Submissions') }}</h2>
-
-        <table class="table table-striped">
-            <tr>
-                <th>{{ translate('Submission Date') }}</th>
-                <th>{{ translate('Actions') }}</th>
-            </tr>
-            {% for entry in entries %}
-                <tr>
-                    <td>{{ dateLocalized(entry.getCreationTime(), 'd MMMM Y H:mm') }}</td>
-                    <td>
-                        {% if specification.isEditableByUser() and hasAccess('form_view', 'edit') %}
-                            <a href="{{ url("form_view", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+    {% if form %}
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     {% endif %}
 {% endblock %}
 

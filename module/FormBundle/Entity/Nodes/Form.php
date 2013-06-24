@@ -21,7 +21,8 @@ use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Field;
 
 /**
  * This entity stores the node item.
@@ -61,6 +62,13 @@ class Form extends \CommonBundle\Entity\Nodes\Node
      * @ORM\Column(name="non_member", type="boolean")
      */
     private $nonMember;
+
+    /**
+     * @var boolean Form editable by user
+     *
+     * @ORM\Column(name="editable_by_user", type="boolean")
+     */
+    private $editableByUser;
 
     /**
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field", mappedBy="form")
@@ -134,20 +142,27 @@ class Form extends \CommonBundle\Entity\Nodes\Node
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
-     * @param string $title
-     * @param boolean $redoable
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param boolean $active
+     * @param boolean $max
      * @param boolean $multiple
+     * @param boolean $nonMember
+     * @param boolean $editableByUser
      * @param boolean $mail Whether to send a mail upon completion.
      * @param string $mailSubject The subject of the mail.
      * @param string $mailBody The body of the mail.
+     * @param string $mailFrom
+     * @param string $mailBcc
      */
-    public function __construct($person, $startDate, $endDate, $active, $max, $multiple, $nonMember, $mail, $mailSubject, $mailBody, $mailFrom, $mailBcc)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser, $mail, $mailSubject, $mailBody, $mailFrom, $mailBcc)
     {
         parent::__construct($person);
 
         $this->max = $max;
         $this->multiple = $multiple;
         $this->nonMember = $nonMember;
+        $this->editableByUser = $editableByUser;
         $this->fields = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->startDate = $startDate;
@@ -195,6 +210,23 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
+     * @param boolean $editableByUser
+     *
+     * @return \FormBundle\Entity\Nodes\Form
+     */
+    public function setEditableByUser($editableByUser) {
+        $this->editableByUser = $editableByUser;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEditableByUser() {
+        return $this->editableByUser;
+    }
+
+    /**
      * @param boolean $nonMember
      *
      * @return \FormBundle\Entity\Nodes\Form
@@ -212,13 +244,16 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
-     * @param FormBundle\Entity\Field The field to add to this form.
+     * @param \FormBundle\Entity\Field The field to add to this form.
      */
     public function addField($field) {
         $this->fields->add($field);
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getFields() {
         return $this->fields->toArray();
     }
@@ -226,7 +261,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param DateTime $startDate
      *
-     * @return \BannerBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
@@ -241,9 +276,9 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
-     * @param DateTime $endDate
+     * @param \DateTime $endDate
      *
-     * @return \BannerBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
@@ -251,7 +286,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getEndDate() {
         return $this->endDate;
@@ -260,7 +295,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param boolean $active
      *
-     * @return \BannerBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setActive($active) {
         $this->active = $active;
@@ -277,7 +312,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param boolean $mail
      *
-     * @return \BannerBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setMail($mail) {
         $this->mail = $mail;
@@ -294,7 +329,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param boolean $mailSubject
      *
-     * @return \BannerBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setMailSubject($mailSubject) {
         $this->mailSubject = $mailSubject;
@@ -311,7 +346,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param boolean $mailBody
      *
-     * @return \BannerBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setMailBody($mailBody) {
         $this->mailBody = $mailBody;
@@ -325,6 +360,12 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         return $this->mailBody;
     }
 
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \FormBundle\Entity\Nodes\Entry $entry
+     * @param \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
     public function getCompletedMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
         $body = $this->getMailBody();
         $body = str_replace('%id%', $entry->getId(), $body);
@@ -336,6 +377,12 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         return $body;
     }
 
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \FormBundle\Entity\Nodes\Entry $entry
+     * @param \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
     private function _getSummary(EntityManager $entityManager, Entry $entry, Language $language) {
         $fieldEntries = $entityManager->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
@@ -432,7 +479,22 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \PageBundle\Entity\Nodes\Translation
+     * @return string
+     */
+    public function getUpdateText(Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getUpdateText();
+
+        return '';
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return \FormBundle\Entity\Nodes\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -494,13 +556,13 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * Returns the value for the given entry and field.
      *
-     * @param entry The entry to find the value for.
-     * @param field The field to find the value for.
-     * @param language The language to get the value in.
+     * @param \FormBundle\Entity\Nodes\Entry $entry The entry to find the value for.
+     * @param \FormBundle\Entity\Field $field The field to find the value for.
+     * @param \CommonBundle\Entity\General\Language $language The language to get the value in.
      *
      * @return The value.
      */
-    public function getValueFor($entry, $field, $language)
+    public function getValueFor(Entry $entry, Field $field, Language $language)
     {
         foreach ($entry->getFieldEntries() as $fieldEntry) {
             if ($fieldEntry->getField()->getId() === $field->getId()) {
@@ -509,5 +571,4 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         }
         return '';
     }
-
 }

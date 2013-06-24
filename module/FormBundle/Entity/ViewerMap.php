@@ -16,7 +16,8 @@ namespace FormBundle\Entity;
 
 use CommonBundle\Entity\Users\Person,
     DateTime,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Nodes\Form;
 
 /**
  * This entity stores the node item.
@@ -26,7 +27,6 @@ use CommonBundle\Entity\Users\Person,
  */
 class ViewerMap
 {
-
     /**
      * @var integer The ID of the mapping
      *
@@ -72,7 +72,7 @@ class ViewerMap
      * @param boolean $edit
      * @param boolean $mail
      */
-    public function __construct($form, $person, $edit, $mail)
+    public function __construct(Form $form, Person $person, $edit, $mail)
     {
         $this->person = $person;
         $this->form = $form;

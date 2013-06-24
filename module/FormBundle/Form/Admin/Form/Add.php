@@ -81,6 +81,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
+            $field = new Text('updatetext_' . $language->getAbbrev());
+            $field->setLabel('Update Button Text')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
             $tabContent->add($pane);
         }
 
@@ -112,6 +117,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Checkbox('non_members');
         $field->setLabel('Allow Entry Without Login (First name, last name and email fields will be created automatically)');
+        $this->add($field);
+
+        $field = new Checkbox('editable_by_user');
+        $field->setLabel('Allow Users To Edit Their Info');
         $this->add($field);
 
         $field = new Checkbox('multiple');
@@ -282,6 +291,18 @@ The Form Creator')
                 $factory->createInput(
                     array(
                         'name'     => 'submittext_' . $language->getAbbrev(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault(),
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'updatetext_' . $language->getAbbrev(),
                         'required' => $language->getAbbrev() == \Locale::getDefault(),
                         'filters'  => array(
                             array('name' => 'StringTrim'),

@@ -20,7 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Nodes\GuestInfo,
     FormBundle\Entity\Nodes\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
-    FormBundle\Form\SpecifiedForm,
+    FormBundle\Form\SpecifiedForm\Add as AddForm,
+    FormBundle\Form\SpecifiedForm\Edit as EditForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -28,29 +29,22 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * FormController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class FormController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     public function viewAction()
     {
-        $formSpecification = $this->_getForm();
-
-        if (!$formSpecification) {
+        if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
-        }
 
-        $message = null;
+        $entries = null;
 
         $now = new DateTime();
-        if ($now < $formSpecification->getStartDate() ||
-            $now > $formSpecification->getEndDate() ||
-            !$formSpecification->isActive())
-        {
-            $message = 'This form is currently closed.';
-
+        if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
             return new ViewModel(
                 array(
-                    'message'       => $message,
+                    'message'       => 'This form is currently closed.',
                     'specification' => $formSpecification,
                 )
             );
@@ -61,11 +55,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findAllByForm($formSpecification));
 
         if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
-            $message = 'This form has reached the maximum number of submissions.';
-
             return new ViewModel(
                 array(
-                    'message'       => $message,
+                    'message'       => 'This form has reached the maximum number of submissions.',
                     'specification' => $formSpecification,
                 )
             );
@@ -74,44 +66,31 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null && !$formSpecification->isNonMember()) {
-            $message = 'Please login to view this form.';
-
             return new ViewModel(
                 array(
-                    'message'       => $message,
+                    'message'       => 'Please login to view this form.',
                     'specification' => $formSpecification,
                 )
             );
         } else if ($person !== null) {
-            $entriesCount = count($this->getEntityManager()
+            $entries = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Nodes\Entry')
-                ->findAllByFormAndPerson($formSpecification, $person));
+                ->findAllByFormAndPerson($formSpecification, $person);
 
-            if (!$formSpecification->isMultiple() && $entriesCount > 0) {
-                $message = 'You can\'t fill this form more than once.';
-
+            if (!$formSpecification->isMultiple() && count($entries) > 0) {
                 return new ViewModel(
                     array(
-                        'message'       => $message,
+                        'message'       => 'You can\'t fill this form more than once.',
                         'specification' => $formSpecification,
+                        'entries'       => $entries,
                     )
                 );
             }
         }
 
-        if ($message) {
-            return new ViewModel(
-                array(
-                    'message'       => $message,
-                    'specification' => $formSpecification,
-                )
-            );
-        }
-
-        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
+        $form = new AddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
 
         if ($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -135,7 +114,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 foreach ($formSpecification->getFields() as $field) {
-
                     $value = $formData['field-' . $field->getId()];
 
                     $fieldEntry = new FieldEntry($formEntry, $field, $value);
@@ -148,15 +126,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 if ($formSpecification->hasMail()) {
-
                     $mailAddress = $formSpecification->getMailFrom();
 
                     $mail = new Message();
                     $mail->setBody($formSpecification->getCompletedMailBody($this->getEntityManager(), $formEntry, $this->getLanguage()))
                         ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMailSubject());
-
-                    $mail->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
+                        ->setSubject($formSpecification->getMailSubject())
+                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
                     if ($formSpecification->getMailBcc())
                         $mail->addBcc($mailAddress);
@@ -165,13 +141,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $this->getMailTransport()->send($mail);
                 }
 
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'Your entry has been recorded.'
+                    )
+                );
+
                 $this->redirect()->toRoute(
                     'form_view',
-                    array
-                    (
-                        'action'   => 'complete',
+                    array(
+                        'action'   => 'view',
                         'id'       => $formSpecification->getId(),
-                        'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
 
@@ -182,18 +164,85 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'specification' => $formSpecification,
-                'form' => $form,
+                'form'          => $form,
+                'entries'       => $entries,
             )
         );
     }
 
-    public function completeAction()
+    public function editAction()
     {
-        $formSpecification = $this->_getForm();
+        if (!($entry = $this->_getEntry()))
+            return new ViewModel();
+
+        $person = $this->getAuthentication()->getPersonObject();
+        $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                foreach ($entry->getForm()->getFields() as $field) {
+                    $value = $formData['field-' . $field->getId()];
+
+                    $fieldEntry = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Entry')
+                        ->findOneByFormEntryAndField($entry, $field);
+
+                    if ($fieldEntry) {
+                        $fieldEntry->setValue($value);
+                    } else {
+                        $fieldEntry = new FieldEntry($entry, $field, $value);
+                        $formEntry->addFieldEntry($fieldEntry);
+                        $this->getEntityManager()->persist($fieldEntry);
+                    }
+                }
+
+                $this->getEntityManager()->flush();
+
+                if ($entry->getForm()->hasMail()) {
+                    $mailAddress = $entry->getForm()->getMailFrom();
+
+                    $mail = new Message();
+                    $mail->setBody($entry->getForm()->getCompletedMailBody($this->getEntityManager(), $entry, $this->getLanguage()))
+                        ->setFrom($mailAddress)
+                        ->setSubject($entry->getForm()->getMailSubject())
+                        ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
+
+                    if ($formSpecification->getMailBcc())
+                        $mail->addBcc($mailAddress);
+
+                    if ('development' != getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
+                }
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'Your entry has been updated.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $entry->getForm()->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
 
         return new ViewModel(
             array(
-                'specification' => $formSpecification,
+                'specification' => $entry->getForm(),
+                'form'          => $form,
             )
         );
     }
@@ -201,48 +250,54 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the form!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'common_index',
-                array(
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
+            $this->getResponse()->setStatusCode(404);
             return;
         }
 
         $form = $this->getEntityManager()
-        ->getRepository('FormBundle\Entity\Nodes\Form')
-        ->findOneById($this->getParam('id'));
+            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->findOneById($this->getParam('id'));
 
         if (null === $form) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No form with the given ID was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'common_index',
-                array(
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
+            $this->getResponse()->setStatusCode(404);
             return;
         }
 
         return $form;
     }
 
+    private function _getEntry()
+    {
+        if (null === $this->getParam('id')) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $entry = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $entry || !$entry->getForm()->isEditableByUser()) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $now = new DateTime();
+        if ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive()) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null && !$entry->getForm()->isNonMember()) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        } else if ($person !== null && $entry->getCreationPerson() != $person) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        return $entry;
+    }
 }

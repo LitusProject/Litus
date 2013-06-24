@@ -19,7 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Component\Document\Generator\Csv as CsvGenerator,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\Manage\Mail\Send as MailForm,
-    FormBundle\Form\SpecifiedForm,
+    FormBundle\Form\SpecifiedForm\Add as SpecifiedForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -149,24 +149,19 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 $formData = $form->getFormData($formData);
 
                 foreach ($formSpecification->getFields() as $field) {
-
                     $value = $formData['field-' . $field->getId()];
 
-                    // Find entry
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($formEntry, $field);
 
                     if ($fieldEntry) {
-
                         $fieldEntry->setValue($value);
-
                     } else {
                         $fieldEntry = new FieldEntry($formEntry, $field, $value);
                         $formEntry->addFieldEntry($fieldEntry);
                         $this->getEntityManager()->persist($fieldEntry);
                     }
-
                 }
 
                 $this->getEntityManager()->flush();

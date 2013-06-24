@@ -17,7 +17,7 @@ namespace FormBundle\Form\Admin\Viewer;
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
-    FormBundle\Component\Validator\PersonValidator,
+    FormBundle\Component\Validator\Person as PersonValidator,
     FormBundle\Entity\Nodes\Form,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,

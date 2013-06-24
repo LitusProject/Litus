@@ -20,7 +20,8 @@ use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field;
+    FormBundle\Entity\Field,
+    FormBundle\Entity\Nodes\Form;
 
 /**
  * An abstract class that stores a number of options.
@@ -30,7 +31,6 @@ use CommonBundle\Entity\General\Language,
  */
 abstract class OptionSelector extends Field
 {
-
     /**
      * @var array The translations of this field
      *
@@ -39,13 +39,15 @@ abstract class OptionSelector extends Field
     private $option_translations;
 
     /**
-     * @param FormBundle\Entity\Nodes\Form $form
+     * @param \FormBundle\Entity\Nodes\Form $form
      * @param integer $order
-     * @param bool $required
+     * @param boolean $required
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param string $visibilityValue
      */
-    public function __construct($form, $order, $required)
+    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
-        parent::__construct($form, $order, $required);
+        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
 
         $this->option_translations = new ArrayCollection();
     }
@@ -102,8 +104,12 @@ abstract class OptionSelector extends Field
         return null;
     }
 
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $value
+     * @return string
+     */
     public function getValueString(Language $language, $value) {
         return $this->getOptionsArray($language)[$value];
     }
-
 }

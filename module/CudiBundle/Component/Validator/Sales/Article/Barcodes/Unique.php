@@ -78,15 +78,6 @@ class Unique extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        /*$article = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findOneByBarcode($value);
-
-        if (!(null === $article || $article == $this->_saleArticle)) {
-            $this->error(self::NOT_VALID);
-            return false;
-        }*/
-
         $barcode = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
             ->findOneByBarcode($value);

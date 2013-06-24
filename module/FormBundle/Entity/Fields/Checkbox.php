@@ -20,7 +20,8 @@ use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field;
+    FormBundle\Entity\Field,
+    FormBundle\Entity\Nodes\Form;
 
 /**
  * This entity stores the node item.
@@ -32,17 +33,23 @@ class Checkbox extends Field
 {
 
     /**
-     * @param FormBundle\Entity\Nodes\Form $form
+     * @param \FormBundle\Entity\Nodes\Form $form
      * @param integer $order
      * @param bool $required
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param string $visibilityValue
      */
-    public function __construct($form, $order, $required)
+    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
-        parent::__construct($form, $order, $required);
+        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
     }
 
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $value
+     * @return string
+     */
     public function getValueString(Language $language, $value) {
         return $value ? 'X' : '';
     }
-
 }

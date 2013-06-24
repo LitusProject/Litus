@@ -21,7 +21,11 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
-    FormBundle\Component\Validator\StringFieldValidator,
+    FormBundle\Component\Validator\Required as RequiredValidator,
+    FormBundle\Component\Validator\StringField as StringFieldValidator,
+    FormBundle\Entity\Fields\Checkbox as CheckboxField,
+    FormBundle\Entity\Fields\String as StringField,
+    FormBundle\Entity\Fields\Dropdown as DropdownField,
     FormBundle\Entity\Nodes\Form,
     FormBundle\Entity\Field,
     Doctrine\ORM\EntityManager,
@@ -120,10 +124,59 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Max. number of lines (Multiline fields only)');
         $string_form->add($field);
 
+        $visibility = new Collection('visibility');
+        $visibility->setLabel('Visibility');
+        $this->add($visibility);
+
+        $field = new Select('visible_if');
+        $field->setLabel('Visible If')
+            ->setRequired()
+            ->setAttribute('options', $this->_getVisibilityOptions());
+        $visibility->add($field);
+
+        $field = new Select('visible_value');
+        $field->setLabel('Is')
+            ->setRequired();
+        $visibility->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'field_add');
         $this->add($field);
+    }
+
+    private function _getVisibilityOptions()
+    {
+        $options = array(0 => 'Always');
+        foreach($this->_form->getFields() as $field) {
+            if ($field instanceof StringField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'string',
+                    )
+                );
+            } else if ($field instanceof DropdownField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'dropdown',
+                        'data-values' => $field->getOptions(),
+                    )
+                );
+            } elseif ($field instanceof CheckboxField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'checkbox',
+                    )
+                );
+            }
+        }
+        return $options;
     }
 
     protected function getLanguages()
@@ -164,7 +217,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'digits'
                         ),
-                        new StringFieldValidator($this->data['multiline'], $this->data['lines']),
+                        new StringFieldValidator(
+                            isset($this->data['multiline']) ? $this->data['multiline'] : null,
+                            isset($this->data['lines']) ? $this->data['lines'] : null
+                        ),
                     ),
                 )
             )
@@ -199,6 +255,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'digits',
                         ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'required',
+                    'required' => false,
+                    'validators' => array(
+                        new RequiredValidator(),
                     ),
                 )
             )
