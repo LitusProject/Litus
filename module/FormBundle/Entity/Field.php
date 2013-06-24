@@ -72,7 +72,7 @@ abstract class Field
     /**
      * @var \FormBundle\Entity\Field The field responsible for the visibility of this field
      *
-     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Field")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field")
      * @ORM\JoinColumn(name="visibility_decission_field", referencedColumnName="id")
      */
     private $visibityDecisionField;
