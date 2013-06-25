@@ -15,8 +15,8 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company,
-    BrBundle\Entity\Contracts\Composition,
-    BrBundle\Entity\Contracts\Section,
+    BrBundle\Entity\Contract\Composition,
+    BrBundle\Entity\Contract\Section,
     CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -66,7 +66,7 @@ class Contract
      * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
      *
      * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Contracts\Composition",
+     *      targetEntity="BrBundle\Entity\Contract\Composition",
      *      mappedBy="contract",
      *      cascade={"all"},
      *      orphanRemoval=true

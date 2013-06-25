@@ -12,10 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Entity\Contracts;
+namespace BrBundle\Entity\Contract;
 
 use BrBundle\Entity\Contract,
-    BrBundle\Entity\Contracts\Section,
+    BrBundle\Entity\Contract\Section,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,9 +43,9 @@ class Composition
     private $contract;
 
     /**
-     * @var \BrBundle\Entity\Contracts\Section The section described in this object
+     * @var \BrBundle\Entity\Contract\Section The section described in this object
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Contracts\Section", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Contract\Section", fetch="EAGER")
      * @ORM\JoinColumn(name="section", referencedColumnName="id", onDelete="CASCADE")
      */
     private $section;
@@ -60,7 +60,7 @@ class Composition
 
     /**
      * @param \BrBundle\Entity\Contract $contract The contract this object is a part of
-     * @param \BrBundle\Entity\Contracts\Section $section The section described in this object
+     * @param \BrBundle\Entity\Contract\Section $section The section described in this object
      * @param int $position The position number of the section in the contract
      */
     public function __construct(Contract $contract, Section $section, $position)
@@ -81,7 +81,7 @@ class Composition
     /**
      * @throws \InvalidArgumentException
      * @param \BrBundle\Entity\Contract $contract
-     * @return \BrBundle\Entity\Contracts\Composition
+     * @return \BrBundle\Entity\Contract\Composition
      */
     public function setContract(Contract $contract)
     {
@@ -94,7 +94,7 @@ class Composition
     }
 
     /**
-     * @return \BrBundle\Entity\Contracts\Section
+     * @return \BrBundle\Entity\Contract\Section
      */
     public function getSection()
     {
@@ -103,8 +103,8 @@ class Composition
 
     /**
      * @throws \InvalidArgumentException
-     * @param \BrBundle\Entity\Contracts\Section $section
-     * @return \BrBundle\Entity\Contracts\Composition
+     * @param \BrBundle\Entity\Contract\Section $section
+     * @return \BrBundle\Entity\Contract\Composition
      */
     public function setSection(Section $section)
     {
@@ -129,7 +129,7 @@ class Composition
      *
      * @throws \InvalidArgumentException
      * @param $position int
-     * @return \BrBundle\Entity\Contracts\Composition
+     * @return \BrBundle\Entity\Contract\Composition
      */
     public function setPosition($position)
     {

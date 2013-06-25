@@ -14,7 +14,7 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
+use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     BrBundle\Form\Admin\Company\User\Add as AddForm,
     BrBundle\Form\Admin\Company\User\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -35,7 +35,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             return;
 
         $paginator = $this->paginator()->createFromEntity(
-            'BrBundle\Entity\Users\People\Corporate',
+            'BrBundle\Entity\User\Person\Corporate',
             $this->getParam('page'),
             array(
                 'canLogin' => 'true',
@@ -285,7 +285,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Users\People\Corporate')
+            ->getRepository('BrBundle\Entity\User\Person\Corporate')
             ->findOneById($this->getParam('id'));
 
         if (null === $company) {

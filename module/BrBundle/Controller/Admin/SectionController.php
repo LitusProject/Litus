@@ -14,7 +14,7 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Contracts\Section,
+use BrBundle\Entity\Contract\Section,
     BrBundle\Form\Admin\Section\Add as AddForm,
     BrBundle\Form\Admin\Section\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -29,7 +29,7 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'BrBundle\Entity\Contracts\Section',
+            'BrBundle\Entity\Contract\Section',
             $this->getParam('page')
         );
 

@@ -40,7 +40,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
  *      "academic"="CommonBundle\Entity\Users\People\Academic",
- *      "corporate"="BrBundle\Entity\Users\People\Corporate",
+ *      "corporate"="BrBundle\Entity\User\Person\Corporate",
  *      "supplier"="CudiBundle\Entity\Users\People\Supplier"
  * })
  */

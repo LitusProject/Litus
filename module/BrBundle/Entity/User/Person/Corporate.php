@@ -12,10 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Entity\Users\People;
+namespace BrBundle\Entity\User\Person;
 
 use BrBundle\Entity\Company,
-    BrBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
+    BrBundle\Entity\User\Status\Corporate as CorporateStatus,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Users\Credential,
     Doctrine\Common\Collections\ArrayCollection,
@@ -38,7 +38,7 @@ class Corporate extends \CommonBundle\Entity\Users\Person
     private $company;
 
     /**
-     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\User\Status\Corporate", mappedBy="person", cascade={"persist"})
      */
     private $corporateStatuses;
 
@@ -71,8 +71,8 @@ class Corporate extends \CommonBundle\Entity\Users\Person
     /**
      * Adds a corporate status to the list, if possible.
      *
-     * @param \BrBundle\Entity\Users\Statuses\Corporate $corporateStatus
-     * @return \BrBundle\Entity\Users\People\Corporate
+     * @param \BrBundle\Entity\User\Status\Corporate $corporateStatus
+     * @return \BrBundle\Entity\User\Person\Corporate
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */

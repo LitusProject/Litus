@@ -16,7 +16,7 @@ namespace BrBundle\Form\Admin\Section;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    BrBundle\Entity\Contracts\Section,
+    BrBundle\Entity\Contract\Section,
     Doctrine\ORM\EntityManager,
     Zend\Form\Form,
     Zend\Form\Element\Select,

@@ -12,9 +12,9 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Entity\Users\Statuses;
+namespace BrBundle\Entity\User\Status;
 
-use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
+use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     CommonBundle\Component\Util\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
@@ -44,10 +44,10 @@ class Corporate
     private $id;
 
     /**
-     * @var \BrBundle\Entity\Users\People\Corporate The person this company status belongs to
+     * @var \BrBundle\Entity\User\Person\Corporate The person this company status belongs to
      *
      * @ORM\ManyToOne(
-     *      targetEntity="BrBundle\Entity\Users\People\Corporate", inversedBy="corporateStatuses"
+     *      targetEntity="BrBundle\Entity\User\Person\Corporate", inversedBy="corporateStatuses"
      * )
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
@@ -68,7 +68,7 @@ class Corporate
     private $year;
 
     /**
-     * @param \BrBundle\Entity\Users\People\Corporate $person The person that should be given the status
+     * @param \BrBundle\Entity\User\Person\Corporate $person The person that should be given the status
      * @param string $status The status that should be given to the person
      * @throws \InvalidArgumentException
      */
@@ -92,7 +92,7 @@ class Corporate
     }
 
     /**
-     * @return \BrBundle\Entity\Users\People\Corporate
+     * @return \BrBundle\Entity\User\Person\Corporate
      */
     public function getPerson()
     {
@@ -103,7 +103,7 @@ class Corporate
      * Returns whether the given user can have a corporate status.
      *
      * @static
-     * @param \BrBundle\Entity\Users\People\Corporate $person the user to check
+     * @param \BrBundle\Entity\User\Person\Corporate $person the user to check
      * @return bool
      */
     public static function isValidPerson(CorporatePerson $person)

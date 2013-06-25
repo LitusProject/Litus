@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Entity\Contracts;
+namespace BrBundle\Entity\Contract;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Users\Person,
@@ -126,7 +126,7 @@ class Section
 
     /**
      * @param string $name The name of this section
-     * @return \BrBundle\Entity\Contracts\Section
+     * @return \BrBundle\Entity\Contract\Section
      */
     public function setName($name)
     {
@@ -148,7 +148,7 @@ class Section
 
     /**
      * @param \Litus\Entity\Users\Person $author The author of this section
-     * @return \BrBundle\Entity\Contracts\Section
+     * @return \BrBundle\Entity\Contract\Section
      */
     public function setAuthor(Person $author)
     {
@@ -170,7 +170,7 @@ class Section
 
     /**
      * @param string $content The content of this section
-     * @return \BrBundle\Entity\Contracts\Section
+     * @return \BrBundle\Entity\Contract\Section
      */
     public function setContent($content)
     {
@@ -194,7 +194,7 @@ class Section
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
      * @throws \InvalidArgumentException
-     * @return \BrBundle\Entity\Contracts\Section
+     * @return \BrBundle\Entity\Contract\Section
      */
     public function setVatType(EntityManager $entityManager, $vatType)
     {
@@ -234,7 +234,7 @@ class Section
 
     /**
      * @param int $price
-     * @return \BrBundle\Entity\Contracts\Section
+     * @return \BrBundle\Entity\Contract\Section
      */
     public function setPrice($price)
     {
@@ -268,7 +268,7 @@ class Section
 
     /**
      * @param string|null $description
-     * @return \BrBundle\Entity\Contracts\Section
+     * @return \BrBundle\Entity\Contract\Section
      */
     public function setInvoiceDescription($description)
     {
