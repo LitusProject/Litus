@@ -39,7 +39,7 @@ class VanReservation extends Reservation
     /**
      * @var The passenger of the van for this reservation.
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="passenger", referencedColumnName="id", nullable=true)
      */
     private $passenger;
@@ -58,7 +58,7 @@ class VanReservation extends Reservation
      * @param string $load
      * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
      * @param string $additionalInfo
-     * @param \CommonBundle\Entity\Users\Person $creator
+     * @param \CommonBundle\Entity\User\Person $creator
      */
     public function __construct($startDate, $endDate, $reason, $load, ReservableResource $resource, $additionalInfo, $creator) {
         parent::__construct($startDate, $endDate, $reason, $resource, $additionalInfo, $creator);
@@ -69,14 +69,14 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getDriver() {
         return $this->driver;
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $driver
+     * @param \CommonBundle\Entity\User\Person $driver
      *
      * @return \LogisticsBundle\Entity\Reservation\VanReservation
      */
@@ -86,14 +86,14 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPassenger() {
         return $this->passenger;
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $passenger
+     * @param \CommonBundle\Entity\User\Person $passenger
      *
      * @return \LogisticsBundle\Entity\Reservation\VanReservation
      */

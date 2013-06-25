@@ -95,7 +95,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $passenger = ('' == $formData['passenger_id'])
                     ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
@@ -172,7 +172,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $passenger = ('' == $formData['passenger_id'])
                     ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);

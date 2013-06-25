@@ -141,7 +141,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 $booking = new Booking(
                     $this->getEntityManager(),
                     $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneById($formData['person_id']),
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sales\Article')
@@ -758,7 +758,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($this->getParam('id'));
 
         if (null === $person) {

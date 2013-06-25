@@ -12,10 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users\Statuses;
+namespace CommonBundle\Entity\User\Status;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,10 +48,10 @@ class Organization
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person this union status describes
+     * @var \CommonBundle\Entity\User\Person The person this union status describes
      *
      * @ORM\ManyToOne(
-     *         targetEntity="CommonBundle\Entity\Users\Person", inversedBy="organizationStatuses"
+     *         targetEntity="CommonBundle\Entity\User\Person", inversedBy="organizationStatuses"
      * )
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
@@ -73,7 +73,7 @@ class Organization
     private $academicYear;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person The person this union status describes
+     * @param \CommonBundle\Entity\User\Person $person The person this union status describes
      * @param string $status The actual status value
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @throws \InvalidArgumentException
@@ -98,7 +98,7 @@ class Organization
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {
@@ -109,7 +109,7 @@ class Organization
      * Returns whether the given person can have a UnionStatus.
      *
      * @static
-     * @param \CommonBundle\Entity\Users\Person $person The person to check
+     * @param \CommonBundle\Entity\User\Person $person The person to check
      * @return bool
      */
     public static function isValidPerson(Person $person, AcademicYear $academicYear)
@@ -127,7 +127,7 @@ class Organization
 
     /**
      * @param $status
-     * @return \CommonBundle\Entity\Users\UnionStatus
+     * @return \CommonBundle\Entity\User\UnionStatus
      */
     public function setStatus($status)
     {

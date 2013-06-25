@@ -15,7 +15,7 @@
 namespace SecretaryBundle\Entity\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -37,9 +37,9 @@ class MetaData
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The person of the metadata
+     * @var \CommonBundle\Entity\User\Person\Academic The person of the metadata
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -96,7 +96,7 @@ class MetaData
     );
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param boolean $becomeMember
      * @param boolean $irreeelAtCudi
@@ -133,7 +133,7 @@ class MetaData
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getAcademic()
     {

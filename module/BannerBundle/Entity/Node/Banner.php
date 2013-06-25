@@ -15,7 +15,7 @@
 namespace BannerBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -27,7 +27,7 @@ use CommonBundle\Entity\General\Language,
  * @ORM\Entity(repositoryClass="BannerBundle\Repository\Node\Banner")
  * @ORM\Table(name="nodes.banners")
  */
-class Banner extends \CommonBundle\Entity\Nodes\Node
+class Banner extends \CommonBundle\Entity\Node
 {
 
     /**
@@ -82,7 +82,7 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
     private $url;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $category
      */
     public function __construct(Person $person, $name, $image, DateTime $startDate, DateTime $endDate, $active, $url )

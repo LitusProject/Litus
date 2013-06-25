@@ -16,9 +16,9 @@ namespace CommonBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\Users\Credential,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
-    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Entity\User\Credential,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
     CommonBundle\Form\Account\FileServer\CreateAccount as CreateAccountForm,
     CommonBundle\Form\Account\FileServer\ChangePassword as ChangePasswordForm,
@@ -733,7 +733,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         $user = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Code')
+            ->getRepository('CommonBundle\Entity\User\Code')
             ->findOnePersonByCode($this->getParam('code'));
 
         if (null === $user) {

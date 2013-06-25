@@ -18,8 +18,8 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\Users\People\Academic,
-    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
@@ -63,7 +63,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         if (null !== $this->getParam('identification')) {
             $academic = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('identification'));
         } else {
             $academic = null;
@@ -91,7 +91,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         if ($this->getRequest()->isPost()) {
             if ($this->_isValidCode()) {
                 $code = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                    ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
@@ -202,7 +202,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $authentication = new Authentication(
                         new ShibbolethAdapter(
                             $this->getEntityManager(),
-                            'CommonBundle\Entity\Users\People\Academic',
+                            'CommonBundle\Entity\User\Person\Academic',
                             'universityIdentification'
                         ),
                         $this->getServiceLocator()->get('authentication_doctrineservice')
@@ -243,7 +243,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         } else {
             if ($this->_isValidCode()) {
                 $code = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                    ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
@@ -627,7 +627,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     private function _isValidCode()
     {
         $code = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
         if (null !== $code)
@@ -653,14 +653,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         $authentication = new Authentication(
             new ShibbolethAdapter(
                 $this->getEntityManager(),
-                'CommonBundle\Entity\Users\People\Academic',
+                'CommonBundle\Entity\User\Person\Academic',
                 'universityIdentification'
             ),
             $this->getServiceLocator()->get('authentication_doctrineservice')
         );
 
         $code = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
         $this->getEntityManager()->remove($code);

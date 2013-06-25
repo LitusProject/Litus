@@ -15,7 +15,7 @@
 namespace FormBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
     FormBundle\Entity\Nodes\Entry,
     DateTime,
@@ -29,7 +29,7 @@ use CommonBundle\Entity\General\Language,
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\Form")
  * @ORM\Table(name="nodes.forms")
  */
-class Form extends \CommonBundle\Entity\Nodes\Node
+class Form extends \CommonBundle\Entity\Node
 {
 
     /**
@@ -133,7 +133,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     private $translations;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $title
      * @param boolean $redoable
      * @param boolean $multiple
@@ -454,7 +454,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * Indicates whether the given person can view this form.
      *
-     * @param \CommonBundle\Entity\Users\Persons $person The person to check.
+     * @param \CommonBundle\Entity\User\Persons $person The person to check.
      * @param \Doctrine\ORM\EntityManager $entityManager The entity manager to use.
      * @return boolean
      */
@@ -472,7 +472,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     /**
      * Indicates whether the given person can edit this form.
      *
-     * @param \CommonBundle\Entity\Users\Person $person The person to check.
+     * @param \CommonBundle\Entity\User\Person $person The person to check.
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

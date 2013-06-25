@@ -3,7 +3,7 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Component\Util\AcademicYear as UtilAcademicYear,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;

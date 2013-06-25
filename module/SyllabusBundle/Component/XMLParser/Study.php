@@ -16,9 +16,9 @@ namespace SyllabusBundle\Component\XMLParser;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\Users\Credential,
-    CommonBundle\Entity\Users\People\Academic,
-    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Entity\User\Credential,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     Doctrine\ORM\EntityManager,
     SimpleXMLElement,
@@ -309,7 +309,7 @@ class Study
             $identification = 'u' . substr(trim($profData->attributes()->persno), 1);
 
             $prof = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($identification);
             if (null == $prof) {
                 if (isset($this->_profs[$identification])) {

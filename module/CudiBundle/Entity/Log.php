@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -52,9 +52,9 @@ class Log
     private $timestamp;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person of the log
+     * @var \CommonBundle\Entity\User\Person The person of the log
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -67,7 +67,7 @@ class Log
     private $text;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $text
      */
     public function __construct(Person $person, $text)
@@ -94,7 +94,7 @@ class Log
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

@@ -5,7 +5,7 @@ namespace ShiftBundle\Repository;
 use DateTime,
     CalendarBundle\Entity\Node\Event,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityRepository,
     ShiftBundle\Entity\Unit as UnitEntity;
 

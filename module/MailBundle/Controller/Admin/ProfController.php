@@ -72,7 +72,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     ->getConfigValue('cudi.mail_name');
 
                 $statuses = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\Statuses\University')
+                    ->getRepository('CommonBundle\Entity\User\Status\University')
                     ->findAllByStatus('professor', $academicYear);
 
                 foreach($statuses as $status) {

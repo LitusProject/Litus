@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Articles\Notifications;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,15 +33,15 @@ class Subscription
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person of this subscription
+     * @var \CommonBundle\Entity\User\Person The person of this subscription
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public function __construct(Person $person)
     {
@@ -57,7 +57,7 @@ class Subscription
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

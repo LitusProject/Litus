@@ -14,7 +14,7 @@
 
 namespace ShiftBundle\Entity\Shifts;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -43,9 +43,9 @@ class Volunteer
     private $signupTime;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person that volunteered
+     * @var \CommonBundle\Entity\User\Person The person that volunteered
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -85,7 +85,7 @@ class Volunteer
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

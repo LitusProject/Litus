@@ -2,7 +2,7 @@
 
 namespace ShiftBundle\Repository;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**

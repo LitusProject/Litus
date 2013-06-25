@@ -253,14 +253,14 @@ return array(
             'authentication_credentialadapter' => function ($serviceManager) {
                 return new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
                     $serviceManager->get('doctrine.entitymanager.orm_default'),
-                    'CommonBundle\Entity\Users\Person',
+                    'CommonBundle\Entity\User\Person',
                     'username'
                 );
             },
             'authentication_doctrineservice' => function ($serviceManager) {
                 return new \CommonBundle\Component\Authentication\Service\Doctrine(
                     $serviceManager->get('doctrine.entitymanager.orm_default'),
-                    'CommonBundle\Entity\Users\Session',
+                    'CommonBundle\Entity\User\Session',
                     2678400,
                     $serviceManager->get('authentication_sessionstorage'),
                     'Litus_Auth',

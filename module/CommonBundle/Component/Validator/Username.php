@@ -61,7 +61,7 @@ class Username extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $person = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneByUsername($value);
 
         if (null === $person)

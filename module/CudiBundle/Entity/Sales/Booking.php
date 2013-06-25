@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Sales;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Article,
     DateInterval,
     DateTime,
@@ -37,9 +37,9 @@ class Booking
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person of the booking
+     * @var \CommonBundle\Entity\User\Person The person of the booking
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -112,7 +112,7 @@ class Booking
      * @throws \InvalidArgumentException
      *
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\Users\Person $person The person of the booking
+     * @param \CommonBundle\Entity\User\Person $person The person of the booking
      * @param \CudiBundle\Entity\Sales\Article $article The booked article
      * @param string $status The status of the booking
      * @param integer $number The number of articles booked
@@ -147,7 +147,7 @@ class Booking
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

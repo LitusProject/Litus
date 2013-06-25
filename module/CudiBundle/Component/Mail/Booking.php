@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Component\Mail;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     IntlDateFormatter,
     Zend\Mail\Message,
@@ -32,7 +32,7 @@ class Booking
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param array $bookings
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -100,7 +100,7 @@ class Booking
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param array $bookings
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public static function sendExpireWarningMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -168,7 +168,7 @@ class Booking
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param array $bookings
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public static function sendExpireMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {

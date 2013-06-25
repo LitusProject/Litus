@@ -14,7 +14,7 @@
 
 namespace CommonBundle\Component\Controller;
 
-use CommonBundle\Entity\Users\Person;
+use CommonBundle\Entity\User\Person;
 
 /**
  * Interface that specifies controller authentication methods.

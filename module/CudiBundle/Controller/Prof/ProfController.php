@@ -44,7 +44,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                 $formData = $form->getFormData($formData);
 
                 $docent = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($formData['prof_id']);
 
                 $mapping = $this->getEntityManager()
@@ -115,10 +115,10 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     {
         $docents = array_merge(
             $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findAllByName($this->getParam('string')),
             $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findAllByUniversityIdentification($this->getParam('string'))
         );
 

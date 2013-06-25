@@ -17,7 +17,7 @@ class Code extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
-            ->from('CommonBundle\Entity\Users\Shibboleth\Code', 'c')
+            ->from('CommonBundle\Entity\User\Shibboleth\Code', 'c')
             ->where(
                 $query->expr()->eq('c.universityIdentification', ':universityIdentification')
             )
@@ -37,7 +37,7 @@ class Code extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
-            ->from('CommonBundle\Entity\Users\Shibboleth\Code', 'c')
+            ->from('CommonBundle\Entity\User\Shibboleth\Code', 'c')
             ->where(
                 $query->expr()->lt('c.expirationTime', ':expirationTime')
             )

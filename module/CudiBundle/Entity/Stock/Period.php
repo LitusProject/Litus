@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Stock;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Article,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -36,9 +36,9 @@ class Period
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who created the period
+     * @var \CommonBundle\Entity\User\Person The person who created the period
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -63,7 +63,7 @@ class Period
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person The person who created the period
+     * @param \CommonBundle\Entity\User\Person $person The person who created the period
      */
     public function __construct(Person $person)
     {
@@ -82,7 +82,7 @@ class Period
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

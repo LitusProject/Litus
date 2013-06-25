@@ -18,8 +18,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\Users\People\Academic,
-    CommonBundle\Entity\Users\People\Organizations\AcademicYearMap,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Person\Organizationss\AcademicYearMap,
     CudiBundle\Entity\Sales\Booking,
     Imagick,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
@@ -431,7 +431,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     protected function _setOrganization(Academic $academic, AcademicYear $academicYear, Organization $organization)
     {
         $map = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Organizations\AcademicYearMap')
+            ->getRepository('CommonBundle\Entity\User\Person\Organizationss\AcademicYearMap')
             ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
         if (null === $map) {

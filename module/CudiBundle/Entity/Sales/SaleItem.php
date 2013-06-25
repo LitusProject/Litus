@@ -195,7 +195,7 @@ class SaleItem
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\person
+     * @return \CommonBundle\Entity\User\person
      */
     public function getPerson()
     {

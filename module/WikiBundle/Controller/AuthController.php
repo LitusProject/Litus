@@ -134,14 +134,14 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             $authentication = new Authentication(
                 new ShibbolethAdapter(
                     $this->getEntityManager(),
-                    'CommonBundle\Entity\Users\People\Academic',
+                    'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
                 $this->getServiceLocator()->get('authentication_doctrineservice')
             );
 
             $code = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
             if (null !== $code) {

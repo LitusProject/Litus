@@ -28,7 +28,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
         $this->initAjax();
 
         $session = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Session')
+            ->getRepository('CommonBundle\Entity\User\Session')
             ->findOneById($this->getParam('id'));
 
         $status = 'error';

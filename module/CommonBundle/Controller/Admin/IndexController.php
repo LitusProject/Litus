@@ -58,7 +58,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $activeSessions = array();
         if ($this->getAuthentication()->isAuthenticated()) {
             $activeSessions = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Session')
+                ->getRepository('CommonBundle\Entity\User\Session')
                 ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
         }
 

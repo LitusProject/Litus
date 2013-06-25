@@ -15,7 +15,7 @@
 namespace ShiftBundle\Entity\Shifts;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -44,15 +44,15 @@ class Responsible
     private $signupTime;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person that volunteered
+     * @var \CommonBundle\Entity\User\Person The person that volunteered
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      */
     public function __construct(Person $person, AcademicYear $academicYear)
@@ -82,7 +82,7 @@ class Responsible
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

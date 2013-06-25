@@ -14,7 +14,7 @@
 
 namespace MailBundle\Entity\Aliases;
 
-use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
+use CommonBundle\Entity\User\Person\Academic as AcademicPerson,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     MailBundle\Entity\MailingList;
@@ -28,9 +28,9 @@ use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
 class Academic extends \MailBundle\Entity\Alias
 {
     /**
-     * @var CommonBundle\Entity\Users\People\Academic The academic associated with this alias.
+     * @var CommonBundle\Entity\User\Person\Academic The academic associated with this alias.
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id", nullable=false)
      */
     private $academic;
@@ -39,7 +39,7 @@ class Academic extends \MailBundle\Entity\Alias
      * Creates a new alias for the given academic with the given name.
      *
      * @param string $name The name for this alias.
-     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic to create the alias for.
+     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to create the alias for.
      */
     public function __construct($name, AcademicPerson $academic)
     {
@@ -48,7 +48,7 @@ class Academic extends \MailBundle\Entity\Alias
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getAcademic() {
         return $this->academic;

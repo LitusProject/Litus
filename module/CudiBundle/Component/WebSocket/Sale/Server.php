@@ -99,7 +99,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 }
 
                 $authSession = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\Users\Session')
+                    ->getRepository('CommonBundle\Entity\User\Session')
                     ->findOneById($command->authSession);
 
                 if ($authSession) {

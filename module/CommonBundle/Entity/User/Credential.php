@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users;
+namespace CommonBundle\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
 

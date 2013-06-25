@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\Users\People\Organizations;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -18,7 +18,7 @@ class AcademicYearMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CommonBundle\Entity\Users\People\Organizations\AcademicYearMap', 'a')
+            ->from('CommonBundle\Entity\User\Person\Organizationss\AcademicYearMap', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.academic', ':academic'),

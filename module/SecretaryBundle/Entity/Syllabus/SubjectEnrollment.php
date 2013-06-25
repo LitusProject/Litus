@@ -15,7 +15,7 @@
 namespace SecretaryBundle\Entity\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
     SyllabusBundle\Entity\Subject;
@@ -38,9 +38,9 @@ class SubjectEnrollment
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The person of the enrollment
+     * @var \CommonBundle\Entity\User\Person\Academic The person of the enrollment
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -62,7 +62,7 @@ class SubjectEnrollment
     private $subject;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \SyllabusBundle\Entity\Subject $subject
      */
@@ -82,7 +82,7 @@ class SubjectEnrollment
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getAcademic()
     {

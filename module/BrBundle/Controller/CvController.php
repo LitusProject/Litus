@@ -19,7 +19,7 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Form\Cv\Add as AddForm,
     BrBundle\Form\Cv\Edit as EditForm,
     CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 

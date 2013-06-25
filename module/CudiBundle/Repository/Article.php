@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityRepository;
 
 /**

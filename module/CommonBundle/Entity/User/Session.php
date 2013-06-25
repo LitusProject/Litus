@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users;
+namespace CommonBundle\Entity\User;
 
 use DateTime,
     Doctrine\ORM\EntityManager,
@@ -50,9 +50,9 @@ class Session
     private $expirationTime;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person associated with this session
+     * @var \CommonBundle\Entity\User\Person The person associated with this session
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person", fetch="EAGER")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -87,7 +87,7 @@ class Session
 
     /**
      * @param int|\DateTime $expirationTime
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $userAgent
      * @param string $ip
      */
@@ -139,7 +139,7 @@ class Session
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

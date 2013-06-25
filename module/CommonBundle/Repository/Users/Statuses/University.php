@@ -17,7 +17,7 @@ class University extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CommonBundle\Entity\Users\Statuses\University', 's')
+            ->from('CommonBundle\Entity\User\Status\University', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('s.status', ':status'),

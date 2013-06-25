@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Stock\Orders;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Supplier,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
@@ -71,9 +71,9 @@ class Order
     private $items;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who ordered the order
+     * @var \CommonBundle\Entity\User\Person The person who ordered the order
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -144,7 +144,7 @@ class Order
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {
@@ -152,7 +152,7 @@ class Order
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      *
      * @return \CudiBundle\Entity\Stock\Orders\Order
      */

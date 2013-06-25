@@ -146,7 +146,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
 
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
         if (null === $person)
@@ -183,7 +183,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
 
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
         if (null === $person)
@@ -219,12 +219,12 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         switch($this->getParam('field')) {
             case 'university_identification':
                 $people = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findAllByUniversityIdentification($this->getParam('string'));
                 break;
             case 'name':
                 $people = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findAllByName($this->getParam('string'));
                 break;
         }
@@ -338,7 +338,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('id'));
 
         if (null === $person) {

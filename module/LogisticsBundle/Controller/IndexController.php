@@ -131,7 +131,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             if ($form->isValid()) {
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $passenger = ('' == $formData['passenger_id'])
                     ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
@@ -270,7 +270,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             if ($form->isValid()) {
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $passenger = ('' == $formData['passenger_id'])
                     ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);

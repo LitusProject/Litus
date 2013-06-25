@@ -14,7 +14,7 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\Users\People\Academic,
+use CommonBundle\Entity\User\Person\Academic,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,7 +41,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
 
         $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
 
         if (null !== $academic) {
@@ -64,7 +64,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         if (null !== $this->getRequest()->getPost('session')) {
             $session = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Session')
+                ->getRepository('CommonBundle\Entity\User\Session')
                 ->findOneById($this->getRequest()->getPost('session'));
 
             return $session->getPerson();
@@ -72,7 +72,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         if (null !== $this->getRequest()->getPost('username')) {
             return $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Person')
+                ->getRepository('CommonBundle\Entity\User\Person')
                 ->findOneByUsername($this->getRequest()->getPost('username'));
         }
 

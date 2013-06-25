@@ -18,7 +18,7 @@ class Code extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('CommonBundle\Entity\Users\Person', 'p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
             ->innerJoin('p.code', 'c', Join::WITH,
                 $query->expr()->andX(
                     $query->expr()->eq('c.code', ':code'),

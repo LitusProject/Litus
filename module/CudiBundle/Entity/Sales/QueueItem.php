@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Sales;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\PayDesk,
     CudiBundle\Entity\Sales\Session,
     DateTime,
@@ -37,9 +37,9 @@ class QueueItem
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person of the queue item
+     * @var \CommonBundle\Entity\User\Person The person of the queue item
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -132,7 +132,7 @@ class QueueItem
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \CudiBundle\Entity\Sales\Session $session
      */
     public function __construct(EntityManager $entityManager, Person $person, Session $session)
@@ -171,7 +171,7 @@ class QueueItem
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

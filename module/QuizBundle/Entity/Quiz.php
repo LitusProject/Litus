@@ -14,7 +14,7 @@
 
 namespace QuizBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -44,9 +44,9 @@ class Quiz
     private $name;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person created this quiz
+     * @var \CommonBundle\Entity\User\Person The person created this quiz
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -85,7 +85,7 @@ class Quiz
     private $editRoles;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $name
      * @param array $editRoles
      */

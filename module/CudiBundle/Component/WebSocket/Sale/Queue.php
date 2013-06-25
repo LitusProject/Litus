@@ -163,7 +163,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
         $person = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneByUsername($universityIdentification);
 
         if (null == $person) {

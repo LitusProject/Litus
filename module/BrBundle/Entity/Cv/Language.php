@@ -82,7 +82,7 @@ class Language
     private $oral;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
      * @param \CommonBundle\Entity\General\AcademicYear $year The current academic year.
      */
     public function __construct(Entry $entry, $name, $written, $oral)

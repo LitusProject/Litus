@@ -15,7 +15,7 @@
 namespace ShiftBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     DateTime,
     DateInterval,
     ShiftBundle\Document\Token,
@@ -462,7 +462,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             return null;
 
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getRequest()->getPost('person'));
 
         return $person;

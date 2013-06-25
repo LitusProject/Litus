@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Stock\Periods\Values;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Stock\Period,
     DateTime,
@@ -43,9 +43,9 @@ class Delta
     private $timestamp;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who added the delta
+     * @var \CommonBundle\Entity\User\Person The person who added the delta
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -81,7 +81,7 @@ class Delta
     private $comment;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person The person who added the delta
+     * @param \CommonBundle\Entity\User\Person $person The person who added the delta
      * @param \CudiBundle\Entity\Sales\Article $stockItem The article of the delta
      * @param \CudiBundle\Entity\Stock\Period $period The period of the delta
      * @param integer $value The value of the delta
@@ -116,7 +116,7 @@ class Delta
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

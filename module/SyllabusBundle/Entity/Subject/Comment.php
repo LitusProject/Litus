@@ -14,7 +14,7 @@
 
 namespace SyllabusBundle\Entity\Subject;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     SyllabusBundle\Entity\Subject,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -50,9 +50,9 @@ class Comment
     private $text;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person that created the comment
+     * @var \CommonBundle\Entity\User\Person The person that created the comment
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -83,7 +83,7 @@ class Comment
      * @throws \InvalidArgumentException
      *
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\Users\Person $person The person that created the comment
+     * @param \CommonBundle\Entity\User\Person $person The person that created the comment
      * @param \SyllabusBundle\Entity\Subject $subject The subject of the comment
      * @param string $text The content of the comment
      * @param string $type The type of the comment
@@ -140,7 +140,7 @@ class Comment
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

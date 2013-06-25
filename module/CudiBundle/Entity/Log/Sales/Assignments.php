@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Log\Sales;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,7 +24,7 @@ use CommonBundle\Entity\Users\Person,
 class Assignments extends \CudiBundle\Entity\Log
 {
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param array $assignments
      */
     public function __construct(Person $person, $assignments)

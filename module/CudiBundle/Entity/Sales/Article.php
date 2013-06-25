@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Sales;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sales\Articles\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
@@ -499,7 +499,7 @@ class Article
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
      * @return boolean

@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Sales\Session;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Session,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -177,7 +177,7 @@ class Restriction
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      *
      * @return boolean
      */

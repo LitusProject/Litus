@@ -17,7 +17,7 @@ class Person extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('CommonBundle\Entity\Users\Person', 'p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
                 $query->expr()->eq('p.id', ':id')
             )
@@ -34,7 +34,7 @@ class Person extends EntityRepository
     public function findAllByRole($role)
     {
         $resultSet = $this->_em
-            ->createQuery('SELECT p FROM CommonBundle\Entity\Users\Person p JOIN p.roles r WHERE r.name = \'' . $role . '\'')
+            ->createQuery('SELECT p FROM CommonBundle\Entity\User\Person p JOIN p.roles r WHERE r.name = \'' . $role . '\'')
             ->getResult();
 
         return $resultSet;
@@ -44,7 +44,7 @@ class Person extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('CommonBundle\Entity\Users\Person', 'p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
                 $query->expr()->orX(
                     $query->expr()->like(
@@ -74,7 +74,7 @@ class Person extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('CommonBundle\Entity\Users\Person', 'p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
                 $query->expr()->like('p.username', ':username')
             )
@@ -89,7 +89,7 @@ class Person extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('CommonBundle\Entity\Users\Person', 'p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
                 $query->expr()->eq('p.username', ':username')
             )
@@ -102,7 +102,7 @@ class Person extends EntityRepository
             return $resultSet[0];
 
         $barcode = $this->_em
-            ->getRepository('CommonBundle\Entity\Users\Barcode')
+            ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($username);
 
         if ($barcode)
@@ -115,7 +115,7 @@ class Person extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CommonBundle\Entity\Users\Person', 'a')
+            ->from('CommonBundle\Entity\User\Person', 'a')
             ->where(
                 $query->expr()->orX(
                     $query->expr()->like(
@@ -145,7 +145,7 @@ class Person extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CommonBundle\Entity\Users\Statuses\Organization', 's')
+            ->from('CommonBundle\Entity\User\Status\Organization', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->neq('s.status', '\'non_member\''),

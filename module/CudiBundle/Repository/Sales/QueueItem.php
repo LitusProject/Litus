@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Session as SessionEntity,
     Doctrine\ORM\EntityRepository;
 

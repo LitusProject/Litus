@@ -15,7 +15,7 @@
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -66,9 +66,9 @@ class Session
     private $closeRegister;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person responsible for the sale session
+     * @var \CommonBundle\Entity\User\Person The person responsible for the sale session
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="manager", referencedColumnName="id")
      */
     private $manager;
@@ -94,7 +94,7 @@ class Session
 
     /**
      * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
-     * @param \CommonBundle\Entity\Users\Person $manager The manager of the session
+     * @param \CommonBundle\Entity\User\Person $manager The manager of the session
      * @param string $comment The comment on this sale session
      */
     public function __construct(CashRegister $openRegister, Person $manager, $comment = '')
@@ -168,7 +168,7 @@ class Session
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getManager()
     {
@@ -231,7 +231,7 @@ class Session
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      *
      * @return boolean
      */

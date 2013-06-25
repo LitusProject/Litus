@@ -14,7 +14,7 @@
 
 namespace MailBundle\Entity\Entries;
 
-use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
+use CommonBundle\Entity\User\Person\Academic as AcademicPerson,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     MailBundle\Entity\MailingList;
@@ -28,9 +28,9 @@ use CommonBundle\Entity\Users\People\Academic as AcademicPerson,
 class Academic extends \MailBundle\Entity\Entry
 {
     /**
-     * @var CommonBundle\Entity\Users\People\Academic The academic associated with this entry.
+     * @var CommonBundle\Entity\User\Person\Academic The academic associated with this entry.
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id", nullable=false)
      */
     private $academic;
@@ -39,7 +39,7 @@ class Academic extends \MailBundle\Entity\Entry
      * Creates a new list entry for the given list with the given academic.
      *
      * @param \MailBundle\Entity\MailingList $list The list for this entry.
-     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic to add.
+     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to add.
      */
     public function __construct(MailingList $list, AcademicPerson $academic)
     {
@@ -48,7 +48,7 @@ class Academic extends \MailBundle\Entity\Entry
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getAcademic() {
         return $this->academic;

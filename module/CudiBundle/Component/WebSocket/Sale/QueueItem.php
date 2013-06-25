@@ -17,7 +17,7 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Entity\Sales\SaleItem,
     CudiBundle\Entity\Users\People\Sale\Acco as AccoCard,

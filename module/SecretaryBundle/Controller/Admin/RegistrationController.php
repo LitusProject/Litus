@@ -16,7 +16,7 @@ namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Users\Barcode,
+    CommonBundle\Entity\User\Barcode,
     DateInterval,
     DateTime,
     SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,

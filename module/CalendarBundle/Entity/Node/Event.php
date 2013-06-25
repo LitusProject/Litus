@@ -3,7 +3,7 @@
 namespace CalendarBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -14,7 +14,7 @@ use CommonBundle\Entity\General\Language,
  * @ORM\Entity(repositoryClass="CalendarBundle\Repository\Node\Event")
  * @ORM\Table(name="nodes.events")
  */
-class Event extends \CommonBundle\Entity\Nodes\Node
+class Event extends \CommonBundle\Entity\Node
 {
     /**
      * @var array The translations of this event
@@ -52,7 +52,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     private $name;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      */

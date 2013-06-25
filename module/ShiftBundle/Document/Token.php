@@ -14,7 +14,7 @@
 
 namespace ShiftBundle\Document;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Doctrine\ORM\EntityManager;
 
@@ -52,7 +52,7 @@ class Token
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public function __construct(Person $person)
     {
@@ -77,11 +77,11 @@ class Token
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson(EntityManager $entityManager)
     {
-        return $entityManager->getRepository('CommonBundle\Entity\Users\Person')
+        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->person);
     }
 }

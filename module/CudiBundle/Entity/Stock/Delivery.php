@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Stock;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Article,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
@@ -57,9 +57,9 @@ class Delivery
     private $number;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who ordered the order
+     * @var \CommonBundle\Entity\User\Person The person who ordered the order
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -67,7 +67,7 @@ class Delivery
     /**
      * @param \CudiBundle\Entity\Sales\Article $article The article of the delivery
      * @param integer $number The number of the article
-     * @param \CommonBundle\Entity\Users\Person The person who ordered the order
+     * @param \CommonBundle\Entity\User\Person The person who ordered the order
      */
     public function __construct(Article $article, $number, Person $person)
     {
@@ -111,7 +111,7 @@ class Delivery
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

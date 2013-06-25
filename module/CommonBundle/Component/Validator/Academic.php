@@ -90,7 +90,7 @@ class Academic extends \Zend\Validator\AbstractValidator
     protected function getPerson($value)
     {
         $repository = $this->_entityManager
-        ->getRepository('CommonBundle\Entity\Users\People\Academic');
+        ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
         if ($this->_byId) {
             $person = $repository->findOneById($value);

@@ -14,7 +14,7 @@
 
 namespace CommonBundle\Component\Validator\Person;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager;
 
 class Barcode extends \Zend\Validator\AbstractValidator
@@ -27,7 +27,7 @@ class Barcode extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person
+     * @var \CommonBundle\Entity\User\Person
      */
     private $_person = null;
 
@@ -44,7 +44,7 @@ class Barcode extends \Zend\Validator\AbstractValidator
      * Create a new Unique Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param mixed $opts The validator's options
      */
     public function __construct(EntityManager $entityManager, Person $person = null, $opts = null)
@@ -77,7 +77,7 @@ class Barcode extends \Zend\Validator\AbstractValidator
             return true;
 
         $barcode = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\Users\Barcode')
+            ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($value);
 
         if (null === $barcode || ($this->_person && $barcode->getPerson() == $this->_person))

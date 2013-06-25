@@ -15,7 +15,7 @@
 namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -27,7 +27,7 @@ use CommonBundle\Entity\General\Language,
  * @ORM\Entity(repositoryClass="NewsBundle\Repository\Nodes\News")
  * @ORM\Table(name="nodes.news")
  */
-class News extends \CommonBundle\Entity\Nodes\Node
+class News extends \CommonBundle\Entity\Node
 {
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this news item
@@ -51,7 +51,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     private $endDate;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \DateTime $endDate
      */
     public function __construct(Person $person, DateTime $endDate = null)

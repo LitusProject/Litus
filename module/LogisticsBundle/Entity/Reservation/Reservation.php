@@ -40,9 +40,9 @@ class Reservation
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The creator of this reservation
+     * @var \CommonBundle\Entity\User\Person The creator of this reservation
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creator", referencedColumnName="id")
      */
     private $creator;
@@ -89,7 +89,7 @@ class Reservation
      * @param string $reason
      * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
      * @param string $additionalInfo
-     * @param \CommonBundle\Entity\Users\Person $creator
+     * @param \CommonBundle\Entity\User\Person $creator
      */
     public function __construct($startDate, $endDate, $reason, ReservableResource $resource, $additionalInfo, $creator) {
         $this->startDate = $startDate;
@@ -115,7 +115,7 @@ class Reservation
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getCreator() {
         return $this->creator;

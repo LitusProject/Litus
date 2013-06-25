@@ -192,7 +192,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $users = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findAllByRole($role->getName());
 
         foreach ($users as $user) {

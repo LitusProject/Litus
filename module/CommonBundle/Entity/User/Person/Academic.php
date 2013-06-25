@@ -12,13 +12,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users\People;
+namespace CommonBundle\Entity\User\Person;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\Users\Credential,
-    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Entity\User\Credential,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -29,7 +29,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\People\Academic")
  * @ORM\Table(name="users.people_academic")
  */
-class Academic extends \CommonBundle\Entity\Users\Person
+class Academic extends \CommonBundle\Entity\User\Person
 {
     /**
      * @var string The user's personal email
@@ -85,14 +85,14 @@ class Academic extends \CommonBundle\Entity\Users\Person
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's university statuses
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\University", mappedBy="person", cascade={"persist", "remove"})
      */
     private $universityStatuses;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's organization mapping
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\People\Organizations\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organizationss\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"})
      */
     private $organizationMap;
 
@@ -119,7 +119,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param string $personalEmail
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setPersonalEmail($personalEmail)
     {
@@ -137,7 +137,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param string $universityEmail
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setUniversityEmail($universityEmail)
     {
@@ -155,7 +155,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param string $universityIdentification
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setUniversityIdentification($universityIdentification)
     {
@@ -173,7 +173,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param string $photoPath
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setPhotoPath($photoPath)
     {
@@ -190,8 +190,8 @@ class Academic extends \CommonBundle\Entity\Users\Person
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Statuses\University $universityStatus
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @param \CommonBundle\Entity\User\Status\University $universityStatus
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function addUniversityStatus(UniversityStatus $universityStatus)
     {
@@ -201,7 +201,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @return \CommonBundle\Entity\Users\Statuses\University
+     * @return \CommonBundle\Entity\User\Status\University
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
     {
@@ -233,7 +233,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param \DateTime $birthday
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setBirthday(DateTime $birthday = null)
     {
@@ -251,7 +251,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param \CommonBundle\Entity\General\Address $primaryAddress
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setPrimaryAddress(Address $primaryAddress)
     {
@@ -269,7 +269,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param \CommonBundle\Entity\General\Address $secondaryAddress
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setSecondaryAddress(Address $secondaryAddress)
     {

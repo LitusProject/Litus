@@ -82,11 +82,11 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 
                 if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                     $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneByUsername($formData['person_name']);
                 } else {
                     $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneById($formData['person_id']);
                 }
 
@@ -176,11 +176,11 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 } else {
                     if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                         $academic = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                            ->getRepository('CommonBundle\Entity\User\Person\Academic')
                             ->findOneByUsername($formData['person_name']);
                     } else {
                         $academic = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                            ->getRepository('CommonBundle\Entity\User\Person\Academic')
                             ->findOneById($formData['person_id']);
                     }
 
@@ -266,11 +266,11 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 
                 if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                     $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneByUsername($formData['person_name']);
                 } else {
                     $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneById($formData['person_id']);
                 }
 

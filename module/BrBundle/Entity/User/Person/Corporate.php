@@ -17,7 +17,7 @@ namespace BrBundle\Entity\User\Person;
 use BrBundle\Entity\Company,
     BrBundle\Entity\User\Status\Corporate as CorporateStatus,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\User\Credential,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -27,7 +27,7 @@ use BrBundle\Entity\Company,
  * @ORM\Entity(repositoryClass="BrBundle\Repository\User\Person\Corporate")
  * @ORM\Table(name="users.people_corporate")
  */
-class Corporate extends \CommonBundle\Entity\Users\Person
+class Corporate extends \CommonBundle\Entity\User\Person
 {
     /**
      * @var \BrBundle\Entity\Company The user's company

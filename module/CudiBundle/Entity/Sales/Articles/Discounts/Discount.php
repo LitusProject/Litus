@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Sales\Articles\Discounts;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Article as Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -340,7 +340,7 @@ class Discount
 
     /**
      * @param \CudiBundle\Entity\Sales\Article $article
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
      * @return boolean

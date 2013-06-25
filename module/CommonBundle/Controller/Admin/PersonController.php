@@ -15,7 +15,7 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,7 +30,7 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
         $this->initAjax();
 
         $persons = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findAllByNameTypeahead($this->getParam('string'));
 
         $result = array();

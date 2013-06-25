@@ -15,7 +15,7 @@
 namespace PageBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -70,7 +70,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 $formData = $form->getFormData($formData);
 
                 $person = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\Person')
+                    ->getRepository('CommonBundle\Entity\User\Person')
                     ->findOneById($formData['person_id']);
 
                 $article = $this->getEntityManager()

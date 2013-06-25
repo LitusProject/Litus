@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Users\People;
 
-use CommonBundle\Entity\Users\Credential,
+use CommonBundle\Entity\User\Credential,
     CudiBundle\Entity\Supplier as SupplierEntity,
     Doctrine\ORM\Mapping as ORM;
 
@@ -24,7 +24,7 @@ use CommonBundle\Entity\Users\Credential,
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Users\People\Supplier")
  * @ORM\Table(name="users.people_suppliers")
  */
-class Supplier extends \CommonBundle\Entity\Users\Person
+class Supplier extends \CommonBundle\Entity\User\Person
 {
     /**
      * @var \CudiBundle\Entity\Supplier The supplier associated with this person

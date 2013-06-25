@@ -15,7 +15,7 @@
 namespace CudiBundle\Form\Admin\Supplier\User;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
@@ -29,7 +29,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
+     * @param \CommonBundle\Entity\User\Person $person The person we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Person $person, $name = null)

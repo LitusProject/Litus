@@ -85,7 +85,7 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($configs->getConfigValue('cudi.person'));
 
         if ($this->_order == 'barcode') {

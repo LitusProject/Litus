@@ -70,7 +70,7 @@ class VolunteerController extends \CommonBundle\Component\Controller\ActionContr
 
                 foreach ($volunteers as $volunteer) {
                     $person = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneById($volunteer['id']);
 
                     if (!$person->isPraesidium($currentYear)) {

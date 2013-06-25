@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Entity\Users\People\Academic,
+use CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Entity\Articles\Notifications\Subscription,
     CudiBundle\Form\Booking\Booking as BookingForm,

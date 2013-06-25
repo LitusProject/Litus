@@ -19,7 +19,7 @@ use DateInterval,
     CalendarBundle\Entity\Node\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
@@ -48,9 +48,9 @@ class Shift
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who created this shift
+     * @var \CommonBundle\Entity\User\Person The person who created this shift
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
      */
     private $creationPerson;
@@ -78,9 +78,9 @@ class Shift
     private $endDate;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person that manages this shift
+     * @var \CommonBundle\Entity\User\Person The person that manages this shift
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="manager", referencedColumnName="id")
      */
     private $manager;
@@ -164,11 +164,11 @@ class Shift
     private $description;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $creationPerson
+     * @param \CommonBundle\Entity\User\Person $creationPerson
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \DateTime $startDate
      * @param \DateTime $endDate
-     * @param \CommonBundle\Entity\Users\Person $manager
+     * @param \CommonBundle\Entity\User\Person $manager
      * @param integer $nbResponsibles
      * @param integer $nbVolunteers
      * @param \ShiftBundle\Entity\Unit $unit
@@ -206,7 +206,7 @@ class Shift
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getCreationPerson()
     {
@@ -258,7 +258,7 @@ class Shift
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getManager()
     {
@@ -266,7 +266,7 @@ class Shift
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $manager
+     * @param \CommonBundle\Entity\User\Person $manager
      * @return \ShiftBundle\Entity\Shift
      */
     public function setManager(Person $manager)
@@ -338,7 +338,7 @@ class Shift
      * shift.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
+     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
      * @return boolean
      */
     public function canHaveAsResponsible(EntityManager $entityManager, Person $person)
@@ -426,7 +426,7 @@ class Shift
      * shift.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
+     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
      * @return boolean
      */
     public function canHaveAsVolunteer(EntityManager $entityManager, Person $person)
@@ -569,7 +569,7 @@ class Shift
      * Check whether or not the given person can sign out from this shift.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
+     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
      * @return boolean
      */
     public function canSignout(EntityManager $entityManager, Person $person)
@@ -606,7 +606,7 @@ class Shift
     /**
      * Removes the given person from this shift.
      *
-     * @param \CommonBundle\Entity\Users\Person $person The person that should be removed
+     * @param \CommonBundle\Entity\User\Person $person The person that should be removed
      * @return \ShiftBundle\Entity\Shifts\Responsible|\ShiftBundle\Entity\Shifts\Volunteer
      */
     public function removePerson(Person $person)
@@ -633,7 +633,7 @@ class Shift
     /**
      * Indicates whether the given person can edit this shift and its subscriptions.
      *
-     * @param \CommonBundle\Entity\Users\Person $person The person to check.
+     * @param \CommonBundle\Entity\User\Person $person The person to check.
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

@@ -15,7 +15,7 @@
 namespace CudiBundle\Entity\Sales\Articles;
 
 use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Article as Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -137,7 +137,7 @@ class Restriction
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
      * @return boolean

@@ -15,7 +15,7 @@
 namespace NotificationBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -27,7 +27,7 @@ use CommonBundle\Entity\General\Language,
  * @ORM\Entity(repositoryClass="NotificationBundle\Repository\Nodes\Notification")
  * @ORM\Table(name="nodes.notifications")
  */
-class Notification extends \CommonBundle\Entity\Nodes\Node
+class Notification extends \CommonBundle\Entity\Node
 {
 
     /**
@@ -68,7 +68,7 @@ class Notification extends \CommonBundle\Entity\Nodes\Node
     private $active;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $category
      */
     public function __construct(Person $person, $content, DateTime $startDate, DateTime $endDate, $active )

@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users\Shibboleth;
+namespace CommonBundle\Entity\User\Shibboleth;
 
 use DateTime,
     Doctrine\ORM\EntityManager,

@@ -14,7 +14,7 @@
 
 namespace MailBundle\Entity\MailingList;
 
-use CommonBundle\Entity\Users\People\Academic,
+use CommonBundle\Entity\User\Person\Academic,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -44,9 +44,9 @@ class AdminMap
     private $list;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The academic of the mapping
+     * @var \CommonBundle\Entity\User\Person\Academic The academic of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -60,7 +60,7 @@ class AdminMap
 
     /**
      * @param \MailBundle\Entity\MailingList
-     * @param \CommonBundle\Entity\Users\People\Academic $academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param boolean $editAdmin
      */
     public function __construct($list, $academic, $editAdmin)
@@ -82,7 +82,7 @@ class AdminMap
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getAcademic() {
         return $this->academic;

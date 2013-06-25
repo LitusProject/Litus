@@ -46,7 +46,7 @@ try {
 foreach (file($opts->i) as $alias) {
     $alias = explode(':', trim($alias));
 
-    $academic = $em->getRepository('CommonBundle\Entity\Users\People\Academic')
+    $academic = $em->getRepository('CommonBundle\Entity\User\Person\Academic')
         ->findOneByEmail($alias[1]);
 
     if (null !== $academic) {

@@ -17,7 +17,7 @@ class Organization extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CommonBundle\Entity\Users\Statuses\Organization', 's')
+            ->from('CommonBundle\Entity\User\Status\Organization', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('s.status', ':status'),

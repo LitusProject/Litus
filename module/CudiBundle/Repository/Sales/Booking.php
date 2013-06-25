@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Exception,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Log\Sales\Assignments as LogAssignments,

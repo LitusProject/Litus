@@ -16,7 +16,7 @@ namespace SecretaryBundle\Form\Admin\Registration;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -35,13 +35,13 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person we're going to assign a barcode
+     * @var \CommonBundle\Entity\User\Person The person we're going to assign a barcode
      */
     protected $_person = null;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Person $person The person we're going to assign a barcode
+     * @param \CommonBundle\Entity\User\Person $person The person we're going to assign a barcode
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Person $person, $name = null)

@@ -12,9 +12,9 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users;
+namespace CommonBundle\Entity\User;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -36,9 +36,9 @@ class Barcode
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person associated with this barcode
+     * @var \CommonBundle\Entity\User\Person The person associated with this barcode
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", inversedBy="barcodes")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person", inversedBy="barcodes")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -60,7 +60,7 @@ class Barcode
     /**
      * Constructs a new barcode
      *
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param integer $barcode
      */
     public function __construct(Person $person, $barcode)
@@ -78,7 +78,7 @@ class Barcode
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

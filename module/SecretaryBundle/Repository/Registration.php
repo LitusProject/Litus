@@ -3,7 +3,7 @@
 namespace SecretaryBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Query\Expr\Join,
     Doctrine\ORM\EntityRepository;
 
@@ -102,7 +102,7 @@ class Registration extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CommonBundle\Entity\Users\Barcode', 'b')
+            ->from('CommonBundle\Entity\User\Barcode', 'b')
             ->where(
                 $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
             )

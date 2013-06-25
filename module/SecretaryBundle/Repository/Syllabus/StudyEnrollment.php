@@ -3,7 +3,7 @@
 namespace SecretaryBundle\Repository\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityRepository,
     SyllabusBUndle\Entity\Study;
 

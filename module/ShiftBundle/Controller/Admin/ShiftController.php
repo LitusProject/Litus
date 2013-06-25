@@ -75,7 +75,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
@@ -156,7 +156,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);

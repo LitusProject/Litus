@@ -15,7 +15,7 @@
 namespace BrBundle\Entity\Contract;
 
 use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -53,9 +53,9 @@ class Section
     private $content;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The author of this section
+     * @var \CommonBundle\Entity\User\Person The author of this section
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
@@ -91,7 +91,7 @@ class Section
     /**
      * @param string $name The name of this section
      * @param string $content The content of this section
-     * @param \CommonBundle\Entity\Users\Person $author The author of this section
+     * @param \CommonBundle\Entity\User\Person $author The author of this section
      * @param int $price
      * @param string $vatType see setVatType($vatType)
      */

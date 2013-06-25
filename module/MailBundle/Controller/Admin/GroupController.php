@@ -15,8 +15,8 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
-    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     MailBundle\Form\Admin\Mail\Mail as MailForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -80,11 +80,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 if ('organization' == $type) {
                     $people = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\Statuses\Organization')
+                        ->getRepository('CommonBundle\Entity\User\Status\Organization')
                         ->findAllByStatus($status, $this->getCurrentAcademicYear());
                 } else {
                     $people = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\Statuses\University')
+                        ->getRepository('CommonBundle\Entity\User\Status\University')
                         ->findAllByStatus($status, $this->getCurrentAcademicYear());
                 }
 

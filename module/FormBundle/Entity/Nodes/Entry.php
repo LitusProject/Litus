@@ -15,7 +15,7 @@
 namespace FormBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -46,9 +46,9 @@ class Entry
     private $creationTime;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who created this node
+     * @var \CommonBundle\Entity\User\Person The person who created this node
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id", nullable=true)
      */
     private $creationPerson;
@@ -75,7 +75,7 @@ class Entry
     private $fieldEntries;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \FormBundle\Entity\Nodes\Form $form
      */
     public function __construct($person, $guestInfo, $form)
@@ -104,7 +104,7 @@ class Entry
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getCreationPerson()
     {
@@ -112,7 +112,7 @@ class Entry
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getGuestInfo()
     {

@@ -12,11 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users\People\Organizations;
+namespace CommonBundle\Entity\User\Person\Organizationss;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,9 +40,9 @@ class AcademicYearMap
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The person
+     * @var \CommonBundle\Entity\User\Person\Academic The person
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", inversedBy="organizationMap")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="organizationMap")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -64,7 +64,7 @@ class AcademicYearMap
     private $organization;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $person The person
+     * @param \CommonBundle\Entity\User\Person\Academic $person The person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @param \CommonBundle\Entity\General\Organization $organization The organization
      */
@@ -84,7 +84,7 @@ class AcademicYearMap
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getAcademic()
     {
@@ -109,7 +109,7 @@ class AcademicYearMap
 
     /**
      * @param \CommonBundle\Entity\General\Organization $organization
-     * @return \CommonBundle\Entity\Users\People\Organizations\AcademicYearMap
+     * @return \CommonBundle\Entity\User\Person\Organizationss\AcademicYearMap
      */
     public function setOrganization(Organization $organization)
     {

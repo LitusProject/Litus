@@ -12,16 +12,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users;
+namespace CommonBundle\Entity\User;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Code,
-    CommonBundle\Entity\Users\Credential,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Code,
+    CommonBundle\Entity\User\Credential,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
@@ -39,7 +39,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "academic"="CommonBundle\Entity\Users\People\Academic",
+ *      "academic"="CommonBundle\Entity\User\Person\Academic",
  *      "corporate"="BrBundle\Entity\User\Person\Corporate",
  *      "supplier"="CudiBundle\Entity\Users\People\Supplier"
  * })
@@ -63,9 +63,9 @@ abstract class Person
     private $username;
 
     /**
-     * @var \CommonBundle\Entity\Users\Credential The person's credential
+     * @var \CommonBundle\Entity\User\Credential The person's credential
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Credential", cascade={"all"}, fetch="EAGER")
      * @ORM\JoinColumn(name="credential", referencedColumnName="id")
      */
     private $credential;
@@ -133,20 +133,20 @@ abstract class Person
     private $canLogin;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\Organization", mappedBy="person", cascade={"persist", "remove"})
      */
     private $organizationStatuses;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Barcode", mappedBy="person")
      * @ORM\OrderBy({"time" = "ASC"})
      */
     private $barcodes;
 
     /**
-     * @var \CommonBundle\Entity\Users\Code A unique code to activate this account
+     * @var \CommonBundle\Entity\User\Code A unique code to activate this account
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Code")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Code")
      * @ORM\JoinColumn(name="code", referencedColumnName="id")
      */
     private $code;
@@ -200,7 +200,7 @@ abstract class Person
 
     /**
      * @param string $username
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setUsername($username)
@@ -222,8 +222,8 @@ abstract class Person
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Credential $credential
-     * @return \CommonBundle\Entity\Users\Person
+     * @param \CommonBundle\Entity\User\Credential $credential
+     * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setCredential(Credential $credential)
@@ -274,7 +274,7 @@ abstract class Person
      * Add the specified roles to the user.
      *
      * @param array $roles An array containing the roles that should be added
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function setRoles(array $roles)
     {
@@ -299,7 +299,7 @@ abstract class Person
      * Removes the given role.
      *
      * @param \CommonBundle\Entity\Acl\Role $role The role that should be removed
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function removeRole(Role $role)
     {
@@ -309,7 +309,7 @@ abstract class Person
 
     /**
      * @param string $firstName
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setFirstName($firstName)
@@ -328,7 +328,7 @@ abstract class Person
 
     /**
      * @param string $lastName
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setLastName($lastName)
@@ -355,7 +355,7 @@ abstract class Person
 
     /**
      * @param string $email
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function setEmail($email = null)
     {
@@ -373,7 +373,7 @@ abstract class Person
 
     /**
      * @param \CommonBundle\Entity\General\Address $address
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function setAddress(Address $address)
     {
@@ -391,7 +391,7 @@ abstract class Person
 
     /**
      * @param null|string $phoneNumber
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setPhoneNumber($phoneNumber = null)
@@ -411,7 +411,7 @@ abstract class Person
 
     /**
      * @param null|string $sex The person's sex
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setSex($sex)
@@ -440,7 +440,7 @@ abstract class Person
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function disableLogin()
     {
@@ -449,7 +449,7 @@ abstract class Person
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Barcode
+     * @return \CommonBundle\Entity\User\Barcode
      */
     public function getBarcode()
     {
@@ -457,7 +457,7 @@ abstract class Person
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Code
+     * @return \CommonBundle\Entity\User\Code
      */
     public function getCode()
     {
@@ -465,9 +465,9 @@ abstract class Person
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Code|null $code
+     * @param \CommonBundle\Entity\User\Code|null $code
      *
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function setCode(Code $code = null)
     {
@@ -486,7 +486,7 @@ abstract class Person
     /**
      * @param integer $failedLogins
      *
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function setFailedLogins($failedLogins)
     {
@@ -499,7 +499,7 @@ abstract class Person
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function setLanguage(Language $language)
     {
@@ -534,8 +534,8 @@ abstract class Person
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Statuses\Organization $organizationStatus
-     * @return \CommonBundle\Entity\Users\Person
+     * @param \CommonBundle\Entity\User\Status\Organization $organizationStatus
+     * @return \CommonBundle\Entity\User\Person
      */
     public function addOrganizationStatus(OrganizationStatus $organizationStatus)
     {
@@ -545,7 +545,7 @@ abstract class Person
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @return \CommonBundle\Entity\Users\Statuses\Organization
+     * @return \CommonBundle\Entity\User\Status\Organization
      */
     public function getOrganizationStatus(AcademicYearEntity $academicYear)
     {
@@ -612,7 +612,7 @@ abstract class Person
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param boolean $onlyShibboleth Activate only login by Shibboleth
      *
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $subjectConfig = 'common.account_activated_subject', $time = 86400)
     {
@@ -622,7 +622,7 @@ abstract class Person
             do {
                 $code = md5(uniqid(rand(), true));
                 $found = $entityManager
-                    ->getRepository('CommonBundle\Entity\Users\Code')
+                    ->getRepository('CommonBundle\Entity\User\Code')
                     ->findOneByCode($code);
             } while(isset($found));
 

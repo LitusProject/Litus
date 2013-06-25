@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\Users;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityRepository;
 
@@ -18,7 +18,7 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CommonBundle\Entity\Users\Session', 's')
+            ->from('CommonBundle\Entity\User\Session', 's')
             ->where(
                 $query->expr()->orX(
                     $query->expr()->lt('s.expirationTime', ':expirationTime'),
@@ -36,7 +36,7 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CommonBundle\Entity\Users\Session', 's')
+            ->from('CommonBundle\Entity\User\Session', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('s.person', ':person'),

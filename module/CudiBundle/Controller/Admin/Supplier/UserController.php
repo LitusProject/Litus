@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Admin\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\User\Credential,
     CudiBundle\Entity\Users\People\Supplier as SupplierPerson,
     CudiBundle\Form\Admin\Supplier\User\Add as AddForm,
     CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,

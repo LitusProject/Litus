@@ -27,7 +27,7 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
     CommonBundle\Component\Validator\Decimal as DecimalValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;

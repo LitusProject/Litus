@@ -18,7 +18,7 @@ use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     BrBundle\Form\Admin\Company\User\Add as AddForm,
     BrBundle\Form\Admin\Company\User\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\User\Credential,
     Zend\View\Model\ViewModel;
 
 /**

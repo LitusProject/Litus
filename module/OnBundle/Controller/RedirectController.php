@@ -14,7 +14,7 @@
 
 namespace OnBundle\Controller;
 
-use CommonBundle\Entity\Users\People\Academic,
+use CommonBundle\Entity\User\Person\Academic,
     Zend\View\Model\ViewModel;
 
 /**

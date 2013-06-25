@@ -12,10 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\Users\Statuses;
+namespace CommonBundle\Entity\User\Status;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,10 +49,10 @@ class University
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The person this university status belongs to
+     * @var \CommonBundle\Entity\User\Person\Academic The person this university status belongs to
      *
      * @ORM\ManyToOne(
-     *      targetEntity="CommonBundle\Entity\Users\People\Academic", inversedBy="universityStatuses"
+     *      targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="universityStatuses"
      * )
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
@@ -74,7 +74,7 @@ class University
     private $academicYear;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $person The person that should be given the status
+     * @param \CommonBundle\Entity\User\Person\Academic $person The person that should be given the status
      * @param string $status The status that should be given to the person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @throws \InvalidArgumentException
@@ -99,7 +99,7 @@ class University
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getPerson()
     {
@@ -110,7 +110,7 @@ class University
      * Returns whether the given user can have a university status.
      *
      * @static
-     * @param \CommonBundle\Entity\Users\People\Academic $person the user to check
+     * @param \CommonBundle\Entity\User\Person\Academic $person the user to check
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @return bool
      */
@@ -129,7 +129,7 @@ class University
 
     /**
      * @param $status string the status to set
-     * @return \CommonBundle\Entity\Users\UniversityStatus;
+     * @return \CommonBundle\Entity\User\UniversityStatus;
      */
     public function setStatus($status)
     {

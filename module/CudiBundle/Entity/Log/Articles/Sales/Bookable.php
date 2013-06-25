@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Log\Articles\Sales;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -26,7 +26,7 @@ use CommonBundle\Entity\Users\Person,
 class Bookable extends \CudiBundle\Entity\Log
 {
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \CudiBundle\Entity\Sales\Article $article
      */
     public function __construct(Person $person, Article $article)

@@ -17,7 +17,7 @@ namespace BrBundle\Entity;
 use BrBundle\Entity\Company,
     BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Contract\Section,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -47,9 +47,9 @@ class Contract
     private $date;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The author of this contract
+     * @var \CommonBundle\Entity\User\Person The author of this contract
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
@@ -111,7 +111,7 @@ class Contract
     private $dirty;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $author The author of this contract
+     * @param \CommonBundle\Entity\User\Person $author The author of this contract
      * @param \BrBundle\Entity\Contract $company The company for which this contract is meant
      * @param int $discount The discount associated with this contract
      * @param string $title The title of the contract
@@ -157,7 +157,7 @@ class Contract
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getAuthor()
     {
@@ -166,7 +166,7 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param \CommonBundle\Entity\Users\Person $author
+     * @param \CommonBundle\Entity\User\Person $author
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setAuthor(Person $author)

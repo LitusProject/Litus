@@ -1,8 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace CommonBundle\Entity\Nodes;
+namespace CommonBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -41,15 +53,15 @@ abstract class Node
     private $creationTime;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who created this node
+     * @var \CommonBundle\Entity\User\Person The person who created this node
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
      */
     private $creationPerson;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $creationPerson
+     * @param \CommonBundle\Entity\User\Person $creationPerson
      */
     public function __construct(Person $creationPerson)
     {
@@ -74,7 +86,7 @@ abstract class Node
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getCreationPerson()
     {

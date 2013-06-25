@@ -90,7 +90,7 @@ class PersonValidator extends \Zend\Validator\AbstractValidator
     protected function getPerson($value)
     {
         $repository = $this->_entityManager
-        ->getRepository('CommonBundle\Entity\Users\Person');
+        ->getRepository('CommonBundle\Entity\User\Person');
 
         if ($this->_byId) {
             $person = $repository->findOneById($value);

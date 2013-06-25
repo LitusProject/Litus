@@ -2,7 +2,7 @@
 
 namespace MailBundle\Repository\MailingList;
 
-use CommonBundle\Entity\Users\People\Academic,
+use CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityRepository;
 
 /**

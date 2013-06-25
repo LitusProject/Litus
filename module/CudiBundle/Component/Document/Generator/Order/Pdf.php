@@ -70,7 +70,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($configs->getConfigValue('cudi.person'));
 
         $delivery_address_name = $configs->getConfigValue('cudi.delivery_address_name');

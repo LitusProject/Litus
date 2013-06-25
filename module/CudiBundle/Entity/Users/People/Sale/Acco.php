@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Users\People\Sale;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,9 +35,9 @@ class Acco
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person associated with this entity
+     * @var \CommonBundle\Entity\User\Person The person associated with this entity
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -50,7 +50,7 @@ class Acco
     private $hasAccoCard;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person The person associated with this entity
+     * @param \CommonBundle\Entity\User\Person $person The person associated with this entity
      * @param boolean $hasAccoCard Flag whether this person has an acco card
      */
     public function __construct(Person $person, $hasAccoCard)
@@ -68,7 +68,7 @@ class Acco
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

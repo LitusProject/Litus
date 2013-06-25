@@ -14,7 +14,7 @@
 
 namespace OnBundle\Document;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Doctrine\ORM\EntityManager;
 
@@ -65,7 +65,7 @@ class Slug
     private $hits;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $name
      * @param string $url
      */
@@ -87,11 +87,11 @@ class Slug
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getCreationPerson(EntityManager $entityManager)
     {
-        return $entityManager->getRepository('CommonBundle\Entity\Users\Person')
+        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->creationPerson);
     }
 

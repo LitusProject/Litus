@@ -16,7 +16,7 @@ namespace PageBundle\Entity\Nodes;
 
 use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
@@ -28,7 +28,7 @@ use CommonBundle\Component\Util\Url,
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Nodes\Page")
  * @ORM\Table(name="nodes.pages")
  */
-class Page extends \CommonBundle\Entity\Nodes\Node
+class Page extends \CommonBundle\Entity\Node
 {
     /**
      * @var \Datetime The time at which this version was created
@@ -87,7 +87,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     private $translations;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $name
      * @param array $editRoles
      * @param string $name
@@ -258,7 +258,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     /**
      * Checks whether or not the given user can edit the page.
      *
-     * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
+     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

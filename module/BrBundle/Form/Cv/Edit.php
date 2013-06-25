@@ -17,7 +17,7 @@ namespace BrBundle\Form\Cv;
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager;
 
 /**

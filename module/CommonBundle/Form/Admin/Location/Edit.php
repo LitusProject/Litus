@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
 class Edit extends \CommonBundle\Form\Admin\Location\Add
 {
     /**
-     * @param \CommonBundle\Entity\Users\Role $location The location we're going to modify
+     * @param \CommonBundle\Entity\User\Role $location The location we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(Location $location, $name = null)

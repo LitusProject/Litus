@@ -49,7 +49,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $docent = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($formData['prof_id']);
 
                 $mapping = $this->getEntityManager()
@@ -112,10 +112,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $docents = array_merge(
             $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findAllByName($this->getParam('string')),
             $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findAllByUniversityIdentification($this->getParam('string'))
         );
 

@@ -49,7 +49,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
                 if ($formData['person_id'] == '') {
                     // No autocompletion used, we assume the username was entered
                     $person = $repository->findOneByUsername($formData['person_name']);
