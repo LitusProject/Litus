@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     BannerBundle\Controller\Admin\BannerController,
-    BannerBundle\Entity\Nodes\Banner,
+    BannerBundle\Entity\Node\Banner,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;

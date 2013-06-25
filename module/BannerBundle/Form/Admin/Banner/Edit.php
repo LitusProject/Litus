@@ -16,7 +16,7 @@ namespace BannerBundle\Form\Admin\Banner;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
-    BannerBundle\Entity\Nodes\Banner,
+    BannerBundle\Entity\Node\Banner,
     Zend\Form\Element\Submit;
 
 /**
@@ -29,7 +29,7 @@ class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BannerBundle\Entity\Nodes\Banner $banner The banner we're going to modify
+     * @param \BannerBundle\Entity\Node\Banner $banner The banner we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Banner $banner, $name = null)

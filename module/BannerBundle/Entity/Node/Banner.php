@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BannerBundle\Entity\Nodes;
+namespace BannerBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
@@ -100,7 +100,7 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param string $name
      *
-     * @return \BannerBundle\Entity\Nodes\Notification
+     * @return \BannerBundle\Entity\Node\Notification
      */
     public function setName($name) {
         $this->name = $name;
@@ -117,7 +117,7 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param string $image
      *
-     * @return \BannerBundle\Entity\Nodes\Notification
+     * @return \BannerBundle\Entity\Node\Notification
      */
     public function setImage($image) {
         $this->image = $image;
@@ -134,7 +134,7 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param DateTime $startDate
      *
-     * @return \BannerBundle\Entity\Nodes\Notification
+     * @return \BannerBundle\Entity\Node\Notification
      */
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
@@ -151,7 +151,7 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param DateTime $endDate
      *
-     * @return \BannerBundle\Entity\Nodes\Notification
+     * @return \BannerBundle\Entity\Node\Notification
      */
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
@@ -168,7 +168,7 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param boolean $active
      *
-     * @return \BannerBundle\Entity\Nodes\Notification
+     * @return \BannerBundle\Entity\Node\Notification
      */
     public function setActive($active) {
         $this->active = $active;
@@ -185,7 +185,7 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param string $url
      *
-     * @return \BannerBundle\Entity\Nodes\Notification
+     * @return \BannerBundle\Entity\Node\Notification
      */
     public function setUrl($url) {
         $this->url = $url;

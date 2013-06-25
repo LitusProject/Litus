@@ -16,7 +16,7 @@ namespace BannerBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    BannerBundle\Entity\Nodes\Banner,
+    BannerBundle\Entity\Node\Banner,
     BannerBundle\Form\Admin\Banner\Add as AddForm,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -44,7 +44,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'BannerBundle\Entity\Nodes\Banner',
+            'BannerBundle\Entity\Node\Banner',
             $this->getParam('page')
         );
 
@@ -321,7 +321,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $banner = $this->getEntityManager()
-            ->getRepository('BannerBundle\Entity\Nodes\Banner')
+            ->getRepository('BannerBundle\Entity\Node\Banner')
             ->findOneById($this->getParam('id'));
 
         if (null === $banner) {

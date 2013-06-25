@@ -17,7 +17,7 @@ class Banner extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('BannerBundle\Entity\Nodes\Banner', 'n')
+            ->from('BannerBundle\Entity\Node\Banner', 'n')
             ->orderBy('n.creationTime', 'DESC')
             ->getQuery()
             ->getResult();
@@ -31,7 +31,7 @@ class Banner extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('BannerBundle\Entity\Nodes\Banner', 'n')
+            ->from('BannerBundle\Entity\Node\Banner', 'n')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->lte('n.startDate', ':now'),

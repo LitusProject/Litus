@@ -14,7 +14,7 @@ use CommonBundle\Entity\Users\Person,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "banner"="BannerBundle\Entity\Nodes\Banner",
+ *      "banner"="BannerBundle\Entity\Node\Banner",
  *      "form"="FormBundle\Entity\Nodes\Form",
  *      "page"="PageBundle\Entity\Nodes\Page",
  *      "news"="NewsBundle\Entity\Nodes\News",

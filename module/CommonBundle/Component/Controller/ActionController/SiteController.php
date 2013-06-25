@@ -44,7 +44,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $result->shibbolethUrl = $this->_getShibbolethUrl();
 
         $result->banners = $this->getEntityManager()
-            ->getRepository('BannerBundle\Entity\Nodes\Banner')
+            ->getRepository('BannerBundle\Entity\Node\Banner')
             ->findAllActive();
 
         $result->currentAcademicYear = $this->getCurrentAcademicYear();
