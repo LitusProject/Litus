@@ -19,12 +19,12 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
-    CudiBundle\Entity\Log\Sales\ProfVersion as ProfVersionLog,
-    CudiBundle\Entity\Sales\Article as SaleArticle,
-    CudiBundle\Entity\Sales\Articles\History,
-    CudiBundle\Entity\Sales\SaleItem,
-    CudiBundle\Entity\Log\Articles\Sales\Bookable as BookableLog,
-    CudiBundle\Entity\Log\Articles\Sales\Unbookable as UnbookableLog,
+    CudiBundle\Entity\Log\Sale\ProfVersion as ProfVersionLog,
+    CudiBundle\Entity\Sale\Article as SaleArticle,
+    CudiBundle\Entity\Sale\Article\History,
+    CudiBundle\Entity\Sale\SaleItem,
+    CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog,
+    CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog,
     DateTime,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -46,7 +46,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findAllByAcademicYear($academicYear, $semester);
         }
 
@@ -305,7 +305,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $history = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\History')
+            ->getRepository('CudiBundle\Entity\Sale\Article\History')
             ->findByArticle($article);
 
         return new ViewModel(
@@ -356,7 +356,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = $this->getAcademicYear();
 
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
 
         $result = array();
@@ -400,7 +400,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 foreach($formData['to'] as $status) {
                     $bookings = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->findAllByStatusAndArticleAndPeriod($status, $saleArticle, $this->getActiveStockPeriod());
 
                     foreach($bookings as $booking) {
@@ -451,19 +451,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         switch($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'author':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findAllByAuthorAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'publisher':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findAllByPublisherAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'barcode':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester);
         }
     }
@@ -490,7 +490,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {

@@ -40,12 +40,12 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \CudiBundle\Entity\Sales\Article
+     * @var \CudiBundle\Entity\Sale\Article
      */
     protected $_form;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Form $form
+     * @param \CudiBundle\Entity\Sale\Form $form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */

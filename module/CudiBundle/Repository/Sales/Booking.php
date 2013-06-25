@@ -5,9 +5,9 @@ namespace CudiBundle\Repository\Sales;
 use CommonBundle\Entity\User\Person,
     Exception,
     CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Log\Sales\Assignments as LogAssignments,
-    CudiBundle\Entity\Sales\Article as ArticleEntity,
-    CudiBundle\Entity\Sales\Booking as BookingEntity,
+    CudiBundle\Entity\Log\Sale\Assignments as LogAssignments,
+    CudiBundle\Entity\Sale\Article as ArticleEntity,
+    CudiBundle\Entity\Sale\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
     DateTime,
     DateInterval,
@@ -27,7 +27,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -56,7 +56,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -80,7 +80,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('COUNT(b.id)')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -106,7 +106,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
@@ -131,7 +131,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.article', ':article'),
@@ -156,7 +156,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.status', ':status'),
@@ -183,7 +183,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->not(
@@ -214,7 +214,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->not(
@@ -240,7 +240,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('COUNT(b.id)')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->not(
@@ -268,7 +268,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->innerJoin('b.person', 'p')
             ->where(
                 $query->expr()->andX(
@@ -328,7 +328,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -374,7 +374,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -424,7 +424,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.status', '\'booked\''),
@@ -452,7 +452,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.status', '\'booked\''),
@@ -480,7 +480,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.article', ':article'),
@@ -510,7 +510,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
@@ -539,7 +539,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
@@ -573,7 +573,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
@@ -607,7 +607,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
@@ -641,7 +641,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
@@ -672,7 +672,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where($query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->neq('b.status', '\'sold\''),
@@ -705,7 +705,7 @@ class Booking extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where($query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->eq('b.status', '\'sold\''),
@@ -729,7 +729,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-        ->from('CudiBundle\Entity\Sales\Booking', 'b')
+        ->from('CudiBundle\Entity\Sale\Booking', 'b')
         ->where(
             $query->expr()->eq('b.id', ':id')
         )
@@ -748,7 +748,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
@@ -772,7 +772,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.article', ':article'),
@@ -800,7 +800,7 @@ class Booking extends EntityRepository
         $period->setEntityManager($this->getEntityManager());
 
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllBookedArticles();
 
         $counter = 0;
@@ -815,7 +815,7 @@ class Booking extends EntityRepository
                 continue;
 
             $bookings = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllBookedByArticleAndPeriod($article, $period);
 
             foreach($bookings as $booking) {
@@ -863,7 +863,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $bookings = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.status', '\'assigned\''),
@@ -896,7 +896,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $bookings = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.status', '\'assigned\''),
@@ -926,7 +926,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.article', ':article'),
@@ -946,7 +946,7 @@ class Booking extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gte('b.expirationDate', ':start'),

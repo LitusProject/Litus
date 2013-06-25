@@ -15,8 +15,8 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Returned as ReturnedLog,
-    CudiBundle\Entity\Sales\QueueItem,
+    CudiBundle\Entity\Sale\Returned as ReturnedLog,
+    CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
     Zend\View\Model\ViewModel;
 
@@ -30,11 +30,11 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     public function saleAction()
     {
         $paydesks = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\PayDesk')
+            ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
 
         $membershipArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
@@ -57,7 +57,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     public function returnAction()
     {
         $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
         $form = new ReturnSaleForm($this->getEntityManager());
@@ -74,16 +74,16 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->findOneById($formData['person_id']);
 
                 $article = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneByBarcode($formData['article']);
 
                 $booking = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneSoldByPersonAndArticle($person, $article);
 
                 if ($booking) {
                     $saleItem = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\SaleItem')
+                        ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                         ->findOneByPersonAndArticle($person, $article);
 
                     if ($saleItem) {

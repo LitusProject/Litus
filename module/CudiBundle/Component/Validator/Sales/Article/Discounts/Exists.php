@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Component\Validator\Sales\Article\Discounts;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -73,7 +73,7 @@ class Exists extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $discount = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Discount')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
             ->findOneByArticleAndType($this->_article, $value);
 
         if (null === $discount)

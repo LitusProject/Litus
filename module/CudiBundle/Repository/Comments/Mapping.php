@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Comments;
 
 use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Comments\Comment as CommentEntity,
+    CudiBundle\Entity\Comment\Comment as CommentEntity,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -18,7 +18,7 @@ class Mapping extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Comments\Mapping', 'm')
+            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.article', ':article'),

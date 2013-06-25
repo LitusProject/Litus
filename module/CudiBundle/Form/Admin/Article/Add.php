@@ -177,7 +177,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getBindings()
     {
         $bindings = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+            ->getRepository('CudiBundle\Entity\Article\Option\Binding')
             ->findAll();
 
         $bindingOptions = array();
@@ -190,7 +190,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getColors()
     {
         $colors = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+            ->getRepository('CudiBundle\Entity\Article\Option\Color')
             ->findAll();
 
         $colorOptions = array();

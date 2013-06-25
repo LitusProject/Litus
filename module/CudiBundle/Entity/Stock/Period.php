@@ -15,7 +15,7 @@
 namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sale\Article,
     DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -134,7 +134,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -147,7 +147,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -159,7 +159,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -171,7 +171,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -183,7 +183,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -195,7 +195,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -207,7 +207,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */

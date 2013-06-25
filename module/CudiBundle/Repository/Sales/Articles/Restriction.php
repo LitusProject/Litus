@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sales\Articles;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -17,7 +17,7 @@ class Restriction extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-            ->from('CudiBundle\Entity\Sales\Articles\Restriction', 'r')
+            ->from('CudiBundle\Entity\Sale\Article\Restriction', 'r')
             ->innerJoin('r.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -39,7 +39,7 @@ class Restriction extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-            ->from('CudiBundle\Entity\Sales\Articles\Restriction', 'r')
+            ->from('CudiBundle\Entity\Sale\Article\Restriction', 'r')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('r.article', ':article'),

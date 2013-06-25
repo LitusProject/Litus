@@ -101,7 +101,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $article = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($formData['article_id']);
 
                 $item = new Retour($article, $formData['number'], $this->getAuthentication()->getPersonObject(), $formData['comment']);

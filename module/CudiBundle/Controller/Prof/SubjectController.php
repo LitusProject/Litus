@@ -54,7 +54,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
         $articleMappings = $this->_getArticlesFromMappings(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findAllBySubjectAndAcademicYear($subject, $academicYear, true)
         );
 
@@ -71,7 +71,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
         $previousArticleMappings = $this->_getArticlesFromMappings(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findAllBySubjectAndAcademicYear($subject, $previousAcademicYear, true)
         );
 

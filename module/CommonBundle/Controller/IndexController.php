@@ -32,7 +32,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $bookings = null;
         if (null !== $this->getAuthentication()->getPersonObject()) {
             $bookings = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
 
             foreach ($bookings as $key => $booking) {
@@ -66,22 +66,22 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $cudi = array();
         $cudi['currentOpeningHour'] = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour')
             ->findCurrent();
 
         $sessions = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOpen();
         if (sizeof($sessions) == 1) {
             $cudi['currentSession'] = $sessions[0];
 
             $cudi['currentStudents'] = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                 ->findNbBySession($cudi['currentSession']);
         }
 
         $cudi['openingHours'] = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour')
             ->findWeekFromNow();
 
         return new ViewModel(

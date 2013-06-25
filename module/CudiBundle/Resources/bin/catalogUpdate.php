@@ -52,13 +52,13 @@ if (isset($opts->r)) {
 
     $subjects = array();
 
-    $logs = $em->getRepository('CudiBundle\Entity\Log\Articles\Sales\Bookable')
+    $logs = $em->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
         ->findAllAfter($date);
 
     foreach($logs as $log) {
         $article= $log->getArticle($em);
 
-        $mappings = $em->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+        $mappings = $em->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticleAndAcademicYear($article->getMainArticle(), $academicYear);
 
         foreach($mappings as $mapping) {
@@ -78,13 +78,13 @@ if (isset($opts->r)) {
         }
     }
 
-    $logs = $em->getRepository('CudiBundle\Entity\Log\Articles\Sales\Unbookable')
+    $logs = $em->getRepository('CudiBundle\Entity\Log\Article\Sale\Unbookable')
         ->findAllAfter($date);
 
     foreach($logs as $log) {
         $article= $log->getArticle($em);
 
-        $mappings = $em->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+        $mappings = $em->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticleAndAcademicYear($article->getMainArticle(), $academicYear);
 
         foreach($mappings as $mapping) {
@@ -104,7 +104,7 @@ if (isset($opts->r)) {
         }
     }
 
-    $logs = $em->getRepository('CudiBundle\Entity\Log\Articles\SubjectMap\Added')
+    $logs = $em->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
         ->findAllAfter($date);
 
     foreach($logs as $log) {
@@ -125,7 +125,7 @@ if (isset($opts->r)) {
         $subjects[$subjectMap->getSubject()->getId()]['updates']['added'][] = $subjectMap->getArticle();
     }
 
-    $logs = $em->getRepository('CudiBundle\Entity\Log\Articles\SubjectMap\Removed')
+    $logs = $em->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
         ->findAllAfter($date);
 
     foreach($logs as $log) {
@@ -146,7 +146,7 @@ if (isset($opts->r)) {
         $subjects[$subjectMap->getSubject()->getId()]['updates']['removed'][] = $subjectMap->getArticle();
     }
 
-    $subscribers = $em->getRepository('CudiBundle\Entity\Articles\Notifications\Subscription')
+    $subscribers = $em->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
         ->findAll();
 
     $mailAddress = $em->getRepository('CommonBundle\Entity\General\Config')

@@ -16,7 +16,7 @@ namespace CudiBundle\Form\Admin\Stock;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sale\Article,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;

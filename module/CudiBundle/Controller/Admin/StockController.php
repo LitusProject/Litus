@@ -24,7 +24,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Stock\Update as StockForm,
     CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Stock\Periods\Values\Delta,
+    CudiBundle\Entity\Stock\Period\Value\Delta,
     CudiBundle\Entity\Stock\Orders\Virtual as VirtualOrder,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -49,7 +49,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findAllByAcademicYear($academicYear, $semester);
         }
 
@@ -206,7 +206,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
                     $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
                     $bookings = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->findLastAssignedByArticle($article);
 
                     foreach($bookings as $booking) {
@@ -323,7 +323,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\Periods\Values\Delta',
+            'CudiBundle\Entity\Stock\Period\Value\Delta',
             $this->getParam('page'),
             array(
                 'article' => $article,
@@ -393,15 +393,15 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         switch($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'barcode':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester);
             case 'supplier':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findAllBySupplierStringAndAcademicYear($this->getParam('string'), $academicYear, $semester);
         }
     }
@@ -446,7 +446,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $item = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getParam('id'));
 
         if (null === $item) {

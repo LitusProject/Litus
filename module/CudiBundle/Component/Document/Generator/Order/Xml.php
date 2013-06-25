@@ -75,7 +75,7 @@ class Xml
             $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
 
             $mappings = $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Files\Mapping')
+                ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findAllPrintableByArticle($item->getArticle()->getMainArticle());
 
             $zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
@@ -107,7 +107,7 @@ class Xml
         );
 
         $mappings = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Files\Mapping')
+            ->getRepository('CudiBundle\Entity\File\Mapping')
             ->findAllByArticle($item->getArticle()->getMainArticle());
         foreach($mappings as $mapping) {
             $attachments[] = new Object(

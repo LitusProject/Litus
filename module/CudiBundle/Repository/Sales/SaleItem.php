@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sales\Article as ArticleEntity,
+    CudiBundle\Entity\Sale\Article as ArticleEntity,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
 
@@ -19,7 +19,7 @@ class SaleItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Sales\SaleItem', 'i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
             ->where(
                 $query->expr()->andX(
@@ -43,7 +43,7 @@ class SaleItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Sales\SaleItem', 'i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
             ->where(
                 $query->expr()->andX(

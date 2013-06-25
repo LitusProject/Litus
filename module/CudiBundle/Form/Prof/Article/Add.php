@@ -161,7 +161,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _getBindings()
     {
         $bindings = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+            ->getRepository('CudiBundle\Entity\Article\Option\Binding')
             ->findAll();
         $bindingOptions = array();
         foreach($bindings as $item)

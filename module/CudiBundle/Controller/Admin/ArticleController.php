@@ -16,12 +16,12 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Articles\External,
-    CudiBundle\Entity\Articles\Internal,
-    CudiBundle\Entity\Articles\History,
-    CudiBundle\Entity\Articles\SubjectMap,
+    CudiBundle\Entity\Article\External,
+    CudiBundle\Entity\Article\Internal,
+    CudiBundle\Entity\Article\History,
+    CudiBundle\Entity\Article\SubjectMap,
     cudiBundle\Entity\Comments\Mapping as CommentMapping,
-    CudiBundle\Entity\Log\Articles\SubjectMap\Added as SubjectMapAddedLog,
+    CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
     CudiBundle\Form\Admin\Article\Add as AddForm,
     CudiBundle\Form\Admin\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Article\Duplicate as DuplicateForm,
@@ -78,11 +78,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                         ->findOneById($formData['binding']);
 
                     $frontColor = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Color')
                         ->findOneById($formData['front_color']);
 
                     $article = new Internal(
@@ -131,7 +131,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                             ->findOneById($formData['subject_id']);
                     }
                     $mapping = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                        ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                         ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
 
                     if (null === $mapping) {
@@ -204,11 +204,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 if ($article->isInternal()) {
                     $binding = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                         ->findOneById($formData['binding']);
 
                     $frontPageColor = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Color')
                         ->findOneById($formData['front_color']);
 
                     $article->setNbBlackAndWhite($formData['nb_black_and_white'])
@@ -243,11 +243,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $saleArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($article);
 
         $comments = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Mapping')
+            ->getRepository('CudiBundle\Entity\Comment\Mapping')
             ->findByArticle($article);
 
         return new ViewModel(
@@ -283,7 +283,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $history = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\History')
+            ->getRepository('CudiBundle\Entity\Article\History')
             ->findAllByArticle($article);
 
         return new ViewModel(
@@ -348,11 +348,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                         ->findOneById($formData['binding']);
 
                     $frontColor = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Color')
                         ->findOneById($formData['front_color']);
 
                     $new = new Internal(
@@ -391,7 +391,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($new);
 
                 $mappings = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                    ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                     ->findAllByArticleAndAcademicYear($article, $academicYear);
 
                 foreach($mappings as $mapping) {
@@ -463,21 +463,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->persist($history);
 
         $completeHistory = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\History')
+            ->getRepository('CudiBundle\Entity\Article\History')
             ->findByArticle($previous);
 
         foreach($completeHistory as $item)
             $item->setArticle($article);
 
         $comments = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Comment')
+            ->getRepository('CudiBundle\Entity\Comment\Comment')
             ->findAllByArticle($previous);
 
         foreach($comments as $comment)
             $this->getEntityManager()->persist(new CommentMapping($article, $comment));
 
         $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticle($previous, true);
 
         foreach($mappings as $mapping) {
@@ -525,11 +525,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $binding = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+            ->getRepository('CudiBundle\Entity\Article\Option\Binding')
             ->findOneByCode('glued');
 
         $frontColor = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+            ->getRepository('CudiBundle\Entity\Article\Option\Color')
             ->findOneByName('White');
 
         $article = new Internal(
@@ -558,21 +558,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->persist($history);
 
         $completeHistory = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\History')
+            ->getRepository('CudiBundle\Entity\Article\History')
             ->findByArticle($previous);
 
         foreach($completeHistory as $item)
             $item->setArticle($article);
 
         $comments = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Comment')
+            ->getRepository('CudiBundle\Entity\Comment\Comment')
             ->findAllByArticle($previous);
 
         foreach($comments as $comment)
             $this->getEntityManager()->persist(new CommentMapping($article, $comment));
 
         $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticle($previous, true);
 
         foreach($mappings as $mapping) {

@@ -17,7 +17,7 @@ namespace CudiBundle\Controller\Admin\Article;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
-    CudiBundle\Entity\Files\File,
+    CudiBundle\Entity\File\File,
     CudiBundle\Form\Admin\Article\File\Add as AddForm,
     CudiBundle\Form\Admin\Article\File\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -38,11 +38,11 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $saleArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($article);
 
         $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Files\Mapping')
+            ->getRepository('CudiBundle\Entity\File\Mapping')
             ->findAllByArticle($article);
 
         $form = new AddForm();
@@ -359,7 +359,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
@@ -406,7 +406,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $file = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Files\Mapping')
+            ->getRepository('CudiBundle\Entity\File\Mapping')
             ->findOneById($this->getParam('id'));
 
         if (null === $file) {

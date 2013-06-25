@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Stock\Orders;
 
 use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Orders\Item as ItemEntity,
     CudiBundle\Entity\Stock\Orders\Order as OrderEntity,
     CudiBundle\Entity\Stock\Period,

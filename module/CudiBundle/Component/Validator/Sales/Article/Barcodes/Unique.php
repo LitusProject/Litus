@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Component\Validator\Sales\Article\Barcodes;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -32,7 +32,7 @@ class Unique extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Article The sale article to be ignored
+     * @var \CudiBundle\Entity\Sale\Article The sale article to be ignored
      */
     private $_saleArticle = array();
 
@@ -49,7 +49,7 @@ class Unique extends \Zend\Validator\AbstractValidator
      * Create a new Unique Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sales\Article $saleArticle The sale article to be ignored
+     * @param \CudiBundle\Entity\Sale\Article $saleArticle The sale article to be ignored
      * @param mixed $opts The validator's options
      */
     public function __construct(EntityManager $entityManager, Article $saleArticle = null, $opts = null)
@@ -79,7 +79,7 @@ class Unique extends \Zend\Validator\AbstractValidator
         }
 
         /*$article = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByBarcode($value);
 
         if (!(null === $article || $article == $this->_saleArticle)) {
@@ -88,7 +88,7 @@ class Unique extends \Zend\Validator\AbstractValidator
         }*/
 
         $barcode = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findOneByBarcode($value);
 
         if (null === $barcode || $barcode->getArticle() == $this->_saleArticle)

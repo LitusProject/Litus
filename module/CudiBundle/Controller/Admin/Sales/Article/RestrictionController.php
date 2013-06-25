@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Admin\Sales\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Articles\Restriction,
+    CudiBundle\Entity\Sale\Article\Restriction,
     CudiBundle\Form\Admin\Sales\Article\Restrictions\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -73,7 +73,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         $restrictions = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Restriction')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
             ->findAllByArticle($article);
 
         return new ViewModel(
@@ -124,7 +124,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
@@ -171,7 +171,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         $restriction = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Restriction')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
             ->findOneById($this->getParam('id'));
 
         if (null === $restriction) {

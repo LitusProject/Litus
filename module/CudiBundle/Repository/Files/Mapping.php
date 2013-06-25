@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Files;
 
 use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Files\File as FileEntity,
+    CudiBundle\Entity\File\File as FileEntity,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -18,7 +18,7 @@ class Mapping extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Files\Mapping', 'm')
+            ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.file', ':file'),
@@ -41,7 +41,7 @@ class Mapping extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Files\Mapping', 'm')
+            ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.removed', 'false'),
@@ -61,7 +61,7 @@ class Mapping extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Files\Mapping', 'm')
+            ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.removed', 'false'),

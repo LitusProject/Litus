@@ -16,7 +16,7 @@ namespace CudiBundle\Form\Admin\Prof\File;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
-    CudiBundle\Entity\Files\Mapping as FileMapping,
+    CudiBundle\Entity\File\Mapping as FileMapping,
     Zend\Form\Element\Submit;
 
 /**
@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Confirm extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param \CudiBundle\Entity\Files\Mapping $mapping
+     * @param \CudiBundle\Entity\File\Mapping $mapping
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(FileMapping $mapping, $name = null)

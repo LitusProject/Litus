@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-    CudiBundle\Entity\Sales\Session as SessionEntity,
+    CudiBundle\Entity\Sale\Session as SessionEntity,
     DateTime,
     Doctrine\ORM\EntityRepository;
 
@@ -19,7 +19,7 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CudiBundle\Entity\Sales\Session', 's')
+            ->from('CudiBundle\Entity\Sale\Session', 's')
             ->where($query->expr()->orX(
                     $query->expr()->eq('s.openRegister', ':register'),
                     $query->expr()->eq('s.closeRegister', ':register')
@@ -40,7 +40,7 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('SUM(s.price)')
-            ->from('CudiBundle\Entity\Sales\SaleItem', 's')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 's')
             ->where(
                 $query->expr()->eq('s.session', ':session')
             )
@@ -58,7 +58,7 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CudiBundle\Entity\Sales\Session', 's')
+            ->from('CudiBundle\Entity\Sale\Session', 's')
             ->setMaxResults(1)
             ->orderBy('s.openDate', 'DESC')
             ->getQuery()
@@ -74,7 +74,7 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CudiBundle\Entity\Sales\Session', 's')
+            ->from('CudiBundle\Entity\Sale\Session', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->lte('s.openDate', ':now'),
@@ -96,7 +96,7 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CudiBundle\Entity\Sales\Session', 's')
+            ->from('CudiBundle\Entity\Sale\Session', 's')
             ->where(
                 $query->expr()->isNull('s.closeDate')
             )

@@ -101,7 +101,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 $formData = $form->getFormData($formData);
 
                 $article = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($formData['article_id']);
 
                 if ($formData['add_with_virtual_order']) {
@@ -190,7 +190,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         $academicYear = $this->getAcademicYear();
 
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
 
         $result = array();

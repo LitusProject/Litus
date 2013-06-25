@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sales\Session;
 
-use CudiBundle\Entity\Sales\Session,
+use CudiBundle\Entity\Sale\Session,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -17,7 +17,7 @@ class Restriction extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-            ->from('CudiBundle\Entity\Sales\Session\Restriction', 'r')
+            ->from('CudiBundle\Entity\Sale\Session\Restriction', 'r')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('r.session', ':session'),

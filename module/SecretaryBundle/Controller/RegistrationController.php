@@ -380,10 +380,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 if (null !== $metaData) {
                     if (null !== $metaData->getTshirtSize()) {
                         $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->getRepository('CudiBundle\Entity\Sale\Booking')
                             ->findOneAssignedByArticleAndPerson(
                                 $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->getRepository('CudiBundle\Entity\Sale\Article')
                                     ->findOneById($tshirts[$metaData->getTshirtSize()]),
                                 $academic
                             );
@@ -427,7 +427,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
 
                 $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('secretary.membership_article')
@@ -437,7 +437,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
                 } else {
                     $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                             $membershipArticle,
                             $academic

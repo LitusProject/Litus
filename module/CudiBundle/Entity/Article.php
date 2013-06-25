@@ -25,8 +25,8 @@ use CommonBundle\Entity\General\AcademicYear,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "external"="CudiBundle\Entity\Articles\External",
- *      "internal"="CudiBundle\Entity\Articles\Internal"
+ *      "external"="CudiBundle\Entity\Article\External",
+ *      "internal"="CudiBundle\Entity\Article\Internal"
  * })
  */
 abstract class Article
@@ -481,12 +481,12 @@ abstract class Article
     }
 
     /**
-     * @return \CudiBundle\Entity\Sales\Article
+     * @return \CudiBundle\Entity\Sale\Article
      */
     public function getSaleArticle()
     {
         return $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($this);
     }
 

@@ -59,7 +59,7 @@ if (isset($opts->r)) {
     echo 'Sending mails to bookings expiring between ' . $start->format('d M Y') . ' and ' . $end->format('d M Y') . '...' . PHP_EOL;
 
     $bookings = $entityManager
-        ->getRepository('CudiBundle\Entity\Sales\Booking')
+        ->getRepository('CudiBundle\Entity\Sale\Booking')
         ->findAllExpiringBetween($start, $end);
 
     $persons = array();

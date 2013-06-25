@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Admin\Sales\Session;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Session\Restriction,
+    CudiBundle\Entity\Sale\Session\Restriction,
     CudiBundle\Form\Admin\Sales\Session\Restriction\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -32,7 +32,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             return new ViewModel();
 
         $restrictions = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\Restriction')
+            ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
             ->findBySession($session);
 
         $form = new AddForm($this->getEntityManager(), $session);
@@ -121,7 +121,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('id'));
 
         if (null === $session) {
@@ -168,7 +168,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         $restriction = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\Restriction')
+            ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
             ->findOneById($this->getParam('id'));
 
         if (null === $restriction) {

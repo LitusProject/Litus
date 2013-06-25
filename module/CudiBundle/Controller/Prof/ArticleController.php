@@ -16,9 +16,9 @@ namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
-    CudiBundle\Entity\Articles\External,
-    CudiBundle\Entity\Articles\Internal,
-    CudiBundle\Entity\Articles\SubjectMap,
+    CudiBundle\Entity\Article\External,
+    CudiBundle\Entity\Article\Internal,
+    CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\Article\Add as AddForm,
     CudiBundle\Form\Prof\Article\Edit as EditForm,
@@ -65,7 +65,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                         ->findOneById($formData['binding']);
 
                     $article = new Internal(
@@ -175,7 +175,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                         ->findOneById($formData['binding']);
 
                     $article = new Internal(
@@ -328,7 +328,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     if ($formData['internal']) {
                         if ($article->getBinding()->getId() != $formData['binding']) {
                             $duplicate->setBinding($this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
+                                ->getRepository('CudiBundle\Entity\Article\StockArticles\Binding')
                                 ->findOneById($formData['binding']));
                             $edited = true;
                         }
@@ -369,7 +369,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     if ($formData['internal']) {
                         $article->setBinding(
                                 $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                                    ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                                     ->findOneById($formData['binding'])
                             )
                             ->setIsRectoVerso($formData['rectoverso'])

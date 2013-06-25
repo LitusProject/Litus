@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Stock\Orders;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period,
     Doctrine\ORM\EntityRepository;
 

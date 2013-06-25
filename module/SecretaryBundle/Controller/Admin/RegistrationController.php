@@ -142,7 +142,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $registration->setPayed($formData['payed']);
 
                 $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('secretary.membership_article')
@@ -150,7 +150,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                 if ($registration->hasPayed()) {
                     $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                             $membershipArticle,
                             $registration->getAcademic()

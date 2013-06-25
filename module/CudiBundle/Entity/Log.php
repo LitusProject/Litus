@@ -24,13 +24,13 @@ use CommonBundle\Entity\User\Person,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "sales_assignments"="CudiBundle\Entity\Log\Sales\Assignments",
- *      "sales_prof_version"="CudiBundle\Entity\Log\Sales\ProfVersion",
- *      "sales_return"="CudiBundle\Entity\Log\Sales\Returned",
- *      "articles_sales_bookable"="CudiBundle\Entity\Log\Articles\Sales\Bookable",
- *      "articles_sales_unbookable"="CudiBundle\Entity\Log\Articles\Sales\Unbookable",
- *      "articles_subject_map_added"="CudiBundle\Entity\Log\Articles\SubjectMap\Added",
- *      "articles_subject_map_removed"="CudiBundle\Entity\Log\Articles\SubjectMap\Removed"
+ *      "sales_assignments"="CudiBundle\Entity\Log\Sale\Assignments",
+ *      "sales_prof_version"="CudiBundle\Entity\Log\Sale\ProfVersion",
+ *      "sales_return"="CudiBundle\Entity\Log\Sale\Returned",
+ *      "articles_sales_bookable"="CudiBundle\Entity\Log\Article\Sale\Bookable",
+ *      "articles_sales_unbookable"="CudiBundle\Entity\Log\Article\Sale\Unbookable",
+ *      "articles_subject_map_added"="CudiBundle\Entity\Log\Article\SubjectMap\Added",
+ *      "articles_subject_map_removed"="CudiBundle\Entity\Log\Article\SubjectMap\Removed"
  * })
  */
 class Log

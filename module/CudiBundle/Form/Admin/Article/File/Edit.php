@@ -15,7 +15,7 @@
 namespace CudiBundle\Form\Admin\Article\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CudiBundle\Entity\Files\Mapping as FileMapping,
+    CudiBundle\Entity\File\Mapping as FileMapping,
     Zend\Form\Element\Submit;
 
 /**

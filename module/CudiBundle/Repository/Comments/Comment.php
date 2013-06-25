@@ -17,7 +17,7 @@ class Comment extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Comments\Mapping', 'm')
+            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->where(
                 $query->expr()->eq('m.article', ':article')
             )
@@ -36,7 +36,7 @@ class Comment extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Comments\Mapping', 'm')
+            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->innerJoin('m.comment', 'c')
             ->where(
                 $query->expr()->andx(
@@ -59,7 +59,7 @@ class Comment extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Comments\Mapping', 'm')
+            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->innerJoin('m.comment', 'c')
             ->where(
                 $query->expr()->andx(

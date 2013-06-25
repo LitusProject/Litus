@@ -28,7 +28,7 @@ class ArticleController extends \CudiBundle\Component\Controller\SupplierControl
     public function manageAction()
     {
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllBySupplier($this->getSupplier());
 
         return new ViewModel(

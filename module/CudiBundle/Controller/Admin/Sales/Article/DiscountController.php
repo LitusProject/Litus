@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Admin\Sales\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Articles\Discounts\Discount,
+    CudiBundle\Entity\Sale\Article\Discount\Discount,
     CudiBundle\Form\Admin\Sales\Article\Discounts\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -52,7 +52,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                     );
                 } else {
                     $template = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Template')
+                        ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
                         ->findOneById($formData['template']);
 
                     $discount->setTemplate($template);
@@ -83,7 +83,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         }
 
         $discounts = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Discount')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
             ->findByArticle($article);
 
         return new ViewModel(
@@ -134,7 +134,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         }
 
         $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
@@ -181,7 +181,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         }
 
         $discount = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Discount')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
             ->findOneById($this->getParam('id'));
 
         if (null === $discount) {

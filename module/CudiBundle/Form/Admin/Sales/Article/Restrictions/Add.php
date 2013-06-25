@@ -19,8 +19,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     CudiBundle\Component\Validator\Sales\Article\Restrictions\Exists as RestrictionValidator,
-    CudiBundle\Entity\Sales\Article,
-    CudiBundle\Entity\Sales\Articles\Restriction,
+    CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Sale\Article\Restriction,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -39,12 +39,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Article
+     * @var \CudiBundle\Entity\Sale\Article
      */
     protected $_article;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */

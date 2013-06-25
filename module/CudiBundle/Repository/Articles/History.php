@@ -17,7 +17,7 @@ class History extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('h')
-            ->from('CudiBundle\Entity\Articles\History', 'h')
+            ->from('CudiBundle\Entity\Article\History', 'h')
             ->innerJoin('h.precursor', 'a')
             ->where(
                 $query->expr()->eq('h.article', ':article')

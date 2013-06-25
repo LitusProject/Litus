@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Component\Validator\Sales\Session\Restriction;
 
-use CudiBundle\Entity\Sales\Session,
+use CudiBundle\Entity\Sale\Session,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -32,7 +32,7 @@ class Exists extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Session
+     * @var \CudiBundle\Entity\Sale\Session
      */
     private $_session = null;
 
@@ -49,7 +49,7 @@ class Exists extends \Zend\Validator\AbstractValidator
      * Create a new Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sales\Session $session
+     * @param \CudiBundle\Entity\Sale\Session $session
      * @param mixed $opts The validator's options
      */
     public function __construct(EntityManager $entityManager, Session $session, $opts = null)
@@ -74,7 +74,7 @@ class Exists extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $restriction = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session\Restriction')
+            ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
             ->findOneBySessionAndType($this->_session, $value);
 
         if (null == $restriction)

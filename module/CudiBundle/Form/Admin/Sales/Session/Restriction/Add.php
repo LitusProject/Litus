@@ -18,8 +18,8 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CudiBundle\Component\Validator\Sales\Session\Restriction\Exists as ExistsValidator,
     CudiBundle\Component\Validator\Sales\Session\Restriction\Values as ValuesValidator,
-    CudiBundle\Entity\Sales\Session,
-    CudiBundle\Entity\Sales\Session\Restriction,
+    CudiBundle\Entity\Sale\Session,
+    CudiBundle\Entity\Sale\Session\Restriction,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
@@ -38,13 +38,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Session
+     * @var \CudiBundle\Entity\Sale\Session
      */
     private $_session;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sales\Session $session
+     * @param \CudiBundle\Entity\Sale\Session $session
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Session $session, $name = null )

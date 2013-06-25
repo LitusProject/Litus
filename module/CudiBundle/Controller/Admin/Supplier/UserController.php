@@ -16,7 +16,7 @@ namespace CudiBundle\Controller\Admin\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Credential,
-    CudiBundle\Entity\Users\People\Supplier as SupplierPerson,
+    CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
     CudiBundle\Form\Admin\Supplier\User\Add as AddForm,
     CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -34,7 +34,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Users\People\Supplier',
+            'CudiBundle\Entity\User\Person\Supplier',
             $this->getParam('page'),
             array(
                 'canLogin' => 'true',
@@ -257,7 +257,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Users\People\Supplier')
+            ->getRepository('CudiBundle\Entity\User\Person\Supplier')
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {

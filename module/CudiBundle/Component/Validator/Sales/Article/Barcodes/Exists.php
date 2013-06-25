@@ -71,7 +71,7 @@ class Exists extends \Zend\Validator\AbstractValidator
         }
 
         $article = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByBarcode($value);
 
         if (null !== $article)

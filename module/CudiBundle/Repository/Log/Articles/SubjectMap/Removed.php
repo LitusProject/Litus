@@ -17,7 +17,7 @@ class Removed extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
-            ->from('CudiBundle\Entity\Log\Articles\SubjectMap\Removed', 'l')
+            ->from('CudiBundle\Entity\Log\Article\SubjectMap\Removed', 'l')
             ->where(
                 $query->expr()->gt('l.timestamp', ':date')
             )

@@ -90,11 +90,11 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
 
         if ($this->_order == 'barcode') {
             $stock = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findAllByAcademicYearSortBarcode($this->_academicYear);
         } else {
             $stock = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findAllByAcademicYear($this->_academicYear);
         }
 

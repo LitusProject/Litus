@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Admin\Sales\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Articles\Barcode,
+    CudiBundle\Entity\Sale\Article\Barcode,
     CudiBundle\Form\Admin\Sales\Article\Barcodes\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -65,7 +65,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $barcodes = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findAllByArticle($article);
 
         return new ViewModel(
@@ -116,7 +116,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
@@ -163,7 +163,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $barcode = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findOneById($this->getParam('id'));
 
         if (null === $barcode) {

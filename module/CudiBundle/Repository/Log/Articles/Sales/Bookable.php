@@ -17,7 +17,7 @@ class Bookable extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
-            ->from('CudiBundle\Entity\Log\Articles\Sales\Bookable', 'l')
+            ->from('CudiBundle\Entity\Log\Article\Sale\Bookable', 'l')
             ->where(
                 $query->expr()->gt('l.timestamp', ':date')
             )

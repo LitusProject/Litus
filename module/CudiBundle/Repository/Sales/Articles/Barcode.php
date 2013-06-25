@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sales\Articles;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -17,7 +17,7 @@ class Barcode extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
+            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -43,7 +43,7 @@ class Barcode extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
+            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(

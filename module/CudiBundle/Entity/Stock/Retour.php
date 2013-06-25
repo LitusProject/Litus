@@ -15,7 +15,7 @@
 namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sale\Article,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -52,9 +52,9 @@ class Retour
     private $number;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Article The article of the retour
+     * @var \CudiBundle\Entity\Sale\Article The article of the retour
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
@@ -75,7 +75,7 @@ class Retour
     private $comment;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article The article of the retour
+     * @param \CudiBundle\Entity\Sale\Article $article The article of the retour
      * @param integer $number The number of the retour
      * @param \CommonBundle\Entity\User\Person $person The person of the retour
      * @param string $comment The comment of the retour
@@ -107,7 +107,7 @@ class Retour
     }
 
     /**
-     * @return \CudiBundle\Entity\Sales\Article
+     * @return \CudiBundle\Entity\Sale\Article
      */
     public function getArticle()
     {

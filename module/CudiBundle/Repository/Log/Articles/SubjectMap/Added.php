@@ -17,7 +17,7 @@ class Added extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
-            ->from('CudiBundle\Entity\Log\Articles\SubjectMap\Added', 'l')
+            ->from('CudiBundle\Entity\Log\Article\SubjectMap\Added', 'l')
             ->where(
                 $query->expr()->gt('l.timestamp', ':date')
             )

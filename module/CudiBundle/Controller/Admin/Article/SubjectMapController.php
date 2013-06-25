@@ -15,9 +15,9 @@
 namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Articles\SubjectMap,
-    CudiBundle\Entity\Log\Articles\SubjectMap\Added as AddedLog,
-    CudiBundle\Entity\Log\Articles\SubjectMap\Removed as RemovedLog,
+    CudiBundle\Entity\Article\SubjectMap,
+    CudiBundle\Entity\Log\Article\SubjectMap\Added as AddedLog,
+    CudiBundle\Entity\Log\Article\SubjectMap\Removed as RemovedLog,
     CudiBundle\Form\Admin\Article\Mapping\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -56,7 +56,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 }
 
                 $mapping = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                    ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
 
                 if (null === $mapping) {
@@ -97,7 +97,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         }
 
         $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticleAndAcademicYear($article, $academicYear);
 
         $academicYears = $this->getEntityManager()
@@ -168,7 +168,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         }
 
         $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {

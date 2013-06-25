@@ -34,12 +34,12 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     public function onDispatch(MvcEvent $e)
     {
         $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
         if (null == $session || !$session->isOpen()) {
             $sessions = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOpen();
             if (sizeof($sessions) == 1) {
                 $this->redirect()->toRoute(

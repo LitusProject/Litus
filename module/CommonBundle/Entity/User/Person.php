@@ -41,7 +41,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * @ORM\DiscriminatorMap({
  *      "academic"="CommonBundle\Entity\User\Person\Academic",
  *      "corporate"="BrBundle\Entity\User\Person\Corporate",
- *      "supplier"="CudiBundle\Entity\Users\People\Supplier"
+ *      "supplier"="CudiBundle\Entity\User\Person\Supplier"
  * })
  */
 abstract class Person

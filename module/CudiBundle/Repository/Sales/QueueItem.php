@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sales\Session as SessionEntity,
+    CudiBundle\Entity\Sale\Session as SessionEntity,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -18,7 +18,7 @@ class QueueItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('MAX(i.queueNumber)')
-            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where($query->expr()->eq('i.session', ':session'))
             ->setParameter('session', $session->getId())
             ->getQuery()
@@ -34,7 +34,7 @@ class QueueItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where($query->expr()->andX(
                     $query->expr()->eq('i.session', ':session'),
                     $query->expr()->eq('i.person', ':person'),
@@ -58,7 +58,7 @@ class QueueItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where($query->expr()->andX(
                     $query->expr()->eq('i.session', ':session'),
                     $query->expr()->eq('i.status', ':status')
@@ -77,7 +77,7 @@ class QueueItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where($query->expr()->andX(
                     $query->expr()->eq('i.session', ':session'),
                     $query->expr()->neq('i.status', ':sold'),
@@ -98,7 +98,7 @@ class QueueItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('COUNT(i)')
-            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where($query->expr()->andX(
                     $query->expr()->eq('i.session', ':session'),
                     $query->expr()->neq('i.status', ':sold'),
@@ -120,7 +120,7 @@ class QueueItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('i.person', ':person'),

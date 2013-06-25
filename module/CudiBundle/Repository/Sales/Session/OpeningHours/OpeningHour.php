@@ -18,7 +18,7 @@ class OpeningHour extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
-            ->from('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour', 'o')
+            ->from('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour', 'o')
             ->where(
                 $query->expr()->gte('o.endDate', ':now')
             )
@@ -34,7 +34,7 @@ class OpeningHour extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
-            ->from('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour', 'o')
+            ->from('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour', 'o')
             ->where(
                 $query->expr()->lt('o.endDate', ':now')
             )
@@ -60,7 +60,7 @@ class OpeningHour extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
-            ->from('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour', 'o')
+            ->from('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour', 'o')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('o.startDate', ':start'),
@@ -86,7 +86,7 @@ class OpeningHour extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
-            ->from('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour', 'o')
+            ->from('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour', 'o')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('o.endDate', ':start'),
@@ -106,7 +106,7 @@ class OpeningHour extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
-            ->from('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour', 'o')
+            ->from('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour', 'o')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->lt('o.startDate', ':now'),

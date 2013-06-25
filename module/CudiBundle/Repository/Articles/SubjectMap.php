@@ -21,7 +21,7 @@ class SubjectMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.removed', 'false'),
@@ -48,7 +48,7 @@ class SubjectMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->innerJoin('m.article', 'a', Join::WITH,
                 $query->expr()->eq('a.isHistory', 'false')
             )
@@ -72,7 +72,7 @@ class SubjectMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.removed', 'false'),
@@ -93,7 +93,7 @@ class SubjectMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.removed', 'false'),

@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period as PeriodEntity,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
@@ -94,7 +94,7 @@ class Period extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $query->select('a.id')
-            ->from('CudiBundle\Entity\Sales\SaleItem', 'i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.article', 'a')
             ->where(
                 $query->expr()->andX(
@@ -121,7 +121,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->where(
                 $query->expr()->in('a.id', $this->_findAllArticleIds($period))
             )
@@ -144,7 +144,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -173,7 +173,7 @@ class Period extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->in('a.id', $this->_findAllArticleIds($period)),
@@ -198,7 +198,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.supplier', 's')
             ->where(
                 $query->expr()->andX(
@@ -279,7 +279,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(i.number)')
-            ->from('CudiBundle\Entity\Sales\SaleItem', 'i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('i.timestamp', ':startDate'),
@@ -305,7 +305,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(b.number)')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('b.bookDate', ':startDate'),
@@ -332,7 +332,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(b.number)')
-            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('b.bookDate', ':startDate'),

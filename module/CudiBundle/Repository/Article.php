@@ -112,7 +112,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-            ->from('CudiBundle\Entity\Articles\SubjectMap', 's')
+            ->from('CudiBundle\Entity\Article\SubjectMap', 's')
             ->join('s.article', 'a')
             ->where(
                 $query->expr()->andX(
@@ -145,7 +145,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.removed', 'false'),
@@ -218,7 +218,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.removed', 'false'),

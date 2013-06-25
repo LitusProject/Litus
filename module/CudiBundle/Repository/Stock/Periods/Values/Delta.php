@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Stock\Periods\Values;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period,
     Doctrine\ORM\EntityRepository;
 
@@ -18,7 +18,7 @@ class Delta extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('SUM(v.value)')
-            ->from('CudiBundle\Entity\Stock\Periods\Values\Delta', 'v')
+            ->from('CudiBundle\Entity\Stock\Period\Value\Delta', 'v')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('v.article', ':article'),

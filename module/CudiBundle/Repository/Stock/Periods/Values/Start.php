@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Stock\Periods\Values;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period,
     Doctrine\ORM\EntityRepository;
 
@@ -18,7 +18,7 @@ class Start extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
-            ->from('CudiBundle\Entity\Stock\Periods\Values\Start', 'v')
+            ->from('CudiBundle\Entity\Stock\Period\Value\Start', 'v')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('v.article', ':article'),

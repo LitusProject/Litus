@@ -17,8 +17,8 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CudiBundle\Entity\Sales\Session,
-    CudiBundle\Entity\Sales\QueueItem as EntityQueueItem,
+    CudiBundle\Entity\Sale\Session,
+    CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -54,20 +54,20 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         return count(
             $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                 ->findAllByStatus($session, 'signed_in')
         );
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Session $session The sale session
+     * @param \CudiBundle\Entity\Sale\Session $session The sale session
      *
      * @return string
      */
     public function getJsonQueue(Session $session)
     {
         $repository = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem');
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem');
 
         return json_encode(
             (object) array(
@@ -100,7 +100,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             return;
 
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $prefix = $this->_entityManager
@@ -129,7 +129,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Session $session The sale session
+     * @param \CudiBundle\Entity\Sale\Session $session The sale session
      *
      * @return string
      */
@@ -144,7 +144,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'queue' => array_slice(
                     $this->_createJsonQueue(
                         $this->_entityManager
-                            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                             ->findAllBySession($session)
                     ),
                     0,
@@ -155,7 +155,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Session $session The sale session
+     * @param \CudiBundle\Entity\Sale\Session $session The sale session
      * @param string $universityIdentification
      *
      * @return string
@@ -185,7 +185,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
 
         $bookings = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssignedByPerson($person);
 
         if (empty($bookings)) {
@@ -197,7 +197,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
 
         $queueItem = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneByPersonNotSold($session, $person);
 
         if (null == $queueItem) {
@@ -221,7 +221,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         foreach($this->_queueItems as $item) {
             if ($item->getUser()->getSocket() == $user->getSocket()) {
                 $item = $this->_entityManager
-                    ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                    ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                     ->findOneById($item->getId());
 
                 if ($item->getStatus() == 'collecting') {
@@ -241,7 +241,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function startCollecting(User $user, $id)
     {
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('collecting');
@@ -267,7 +267,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function stopCollecting($id, $articles = null)
     {
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('collected');
@@ -289,7 +289,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function cancelCollecting($id)
     {
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('signed_in');
@@ -302,12 +302,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function startSelling(User $user, $id)
     {
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('selling');
         $paydesk = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\PayDesk')
+            ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findOneByCode($user->getExtraData('paydesk'));
         if (null !== $paydesk)
             $item->setPayDesk($paydesk);
@@ -328,7 +328,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function cancelSelling($id)
     {
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('collected');
@@ -348,7 +348,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             return;
 
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $saleItems = $this->_queueItems[$id]->conclude($articles, $discounts);
@@ -373,7 +373,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             unset($this->_queueItems[$id]);
 
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('hold');
@@ -389,7 +389,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             unset($this->_queueItems[$id]);
 
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('signed_in');
@@ -423,11 +423,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
 
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $article = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByBarcode($barcode);
 
         if (!isset($article)) {
@@ -481,14 +481,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     public function undoSelling($id)
     {
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setPayMethod(null)
             ->setStatus('collected');
 
         $saleItems = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\SaleItem')
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findByQueueItem($item);
 
         $articles = array();
@@ -506,7 +506,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         foreach($articles as $article) {
             while($article['number'] > 0) {
                 $booking = $this->_entityManager
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneSoldByPersonAndArticle($item->getPerson(), $article['article']);
 
                 if (!isset($booking))

@@ -189,7 +189,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $article = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($formData['article_id']);
 
                 $item = $this->getEntityManager()

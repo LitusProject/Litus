@@ -23,7 +23,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -46,7 +46,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -72,7 +72,7 @@ class Article extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
@@ -95,7 +95,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        ->from('CudiBundle\Entity\Sales\Article', 'a')
+        ->from('CudiBundle\Entity\Sale\Article', 'a')
         ->where(
             $query->expr()->eq('a.id', ':id')
         )
@@ -113,7 +113,7 @@ class Article extends EntityRepository
     public function findOneByBarcode($barcode)
     {
         $barcode = $this->_em
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findOneByBarcode($barcode);
 
         if (isset($barcode))
@@ -128,7 +128,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        ->from('CudiBundle\Entity\Sales\Article', 'a')
+        ->from('CudiBundle\Entity\Sale\Article', 'a')
         ->innerJoin('a.mainArticle', 'm')
         ->where(
             $query->expr()->andX(
@@ -153,7 +153,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -178,7 +178,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -203,7 +203,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -231,7 +231,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -256,7 +256,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
+            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -286,7 +286,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->innerJoin('a.supplier', 's', Join::WITH,
                 $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
@@ -311,7 +311,7 @@ class Article extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
@@ -335,7 +335,7 @@ class Article extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
-            ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
+            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -368,7 +368,7 @@ class Article extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         if ($semester == 0) {
             $resultSet = $query->select('a.id')
-                ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+                ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
                 ->innerJoin('m.article', 'a')
                 ->innerJoin('m.subject', 's')
                 ->where(
@@ -380,7 +380,7 @@ class Article extends EntityRepository
         } else {
             $query = $this->_em->createQueryBuilder();
             $resultSet = $query->select('a.id')
-                ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+                ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
                 ->innerJoin('m.article', 'a')
                 ->innerJoin('m.subject', 's')
                 ->where(

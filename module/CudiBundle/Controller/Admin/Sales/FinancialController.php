@@ -27,7 +27,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
     public function salesAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Sales\Session',
+            'CudiBundle\Entity\Sale\Session',
             $this->getParam('page'),
             array(),
             array('openDate' => 'DESC')
