@@ -23,7 +23,7 @@ use DateTime,
  * Because of this, however, we need to create an extra step to get the authentication
  * result to Litus.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Shibboleth\Code")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Shibboleth\Code")
  * @ORM\Table(name="users.shibboleth_codes")
  */
 class Code

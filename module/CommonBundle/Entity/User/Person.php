@@ -31,7 +31,7 @@ use CommonBundle\Component\Util\AcademicYear,
 /**
  * This is the entity for a person.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Person")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person")
  * @ORM\Table(
  *      name="users.people",
  *      uniqueConstraints={@ORM\UniqueConstraint(name="username_unique", columns={"username"})}

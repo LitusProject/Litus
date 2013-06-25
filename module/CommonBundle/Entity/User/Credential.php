@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This entity stores a user's credentials.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Credential")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Credential")
  * @ORM\Table(name="users.credentials")
  */
 class Credential

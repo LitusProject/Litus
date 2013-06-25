@@ -20,7 +20,7 @@ use DateTime,
 /**
  * This entity stores a user's codes.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Code")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Code")
  * @ORM\Table(name="users.codes")
  */
 class Code

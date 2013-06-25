@@ -26,7 +26,7 @@ use CommonBundle\Component\Util\AcademicYear,
 /**
  * This is the entity for an academic person, e.g. a student or professor.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\People\Academic")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Academic")
  * @ORM\Table(name="users.people_academic")
  */
 class Academic extends \CommonBundle\Entity\User\Person

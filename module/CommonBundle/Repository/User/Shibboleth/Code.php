@@ -1,6 +1,6 @@
 <?php
 
-namespace CommonBundle\Repository\Users\Shibboleth;
+namespace CommonBundle\Repository\User\Shibboleth;
 
 use DateTime,
     Doctrine\ORM\EntityRepository;

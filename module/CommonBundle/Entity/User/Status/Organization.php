@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * Specifying the different types of memberships the organization has.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organization")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Status\Organization")
  * @ORM\Table(name="users.organization_statuses")
  */
 class Organization

@@ -1,6 +1,6 @@
 <?php
 
-namespace CommonBundle\Repository\Users\People\Organizations;
+namespace CommonBundle\Repository\User\Person\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,

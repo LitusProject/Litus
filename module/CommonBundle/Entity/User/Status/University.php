@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * A classification of a user based on his status at our Alma Mater.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\University")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Status\University")
  * @ORM\Table(name="users.university_statuses")
  */
 class University

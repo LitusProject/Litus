@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * Specifying the mapping between organization and academic
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\People\Organizations\AcademicYearMap")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\AcademicYearMap")
  * @ORM\Table(
  *     name="users.people_organizations_academic_year_map",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="mapping_unique", columns={"academic", "academic_year"})}

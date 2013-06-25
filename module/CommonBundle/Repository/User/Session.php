@@ -1,6 +1,6 @@
 <?php
 
-namespace CommonBundle\Repository\Users;
+namespace CommonBundle\Repository\User;
 
 use CommonBundle\Entity\User\Person,
     DateTime,

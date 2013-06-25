@@ -21,7 +21,7 @@ use CommonBundle\Entity\User\Person,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Nodes\Node")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Node")
  * @ORM\Table(name="nodes.nodes")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")

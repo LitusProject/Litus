@@ -22,7 +22,7 @@ use DateTime,
  * We store all sessions in the database, so that we have a tidbit more information and
  * the authentication process can be made slightly more secure.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Session")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Session")
  * @ORM\Table(name="users.sessions")
  */
 class Session

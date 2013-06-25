@@ -21,7 +21,7 @@ use CommonBundle\Entity\User\Person,
 /**
  * This entity stores a user's barcode.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Barcode")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Barcode")
  * @ORM\Table(name="users.barcodes")
  */
 class Barcode
