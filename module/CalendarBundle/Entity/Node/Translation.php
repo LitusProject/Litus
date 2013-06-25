@@ -9,7 +9,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="CalendarBundle\Repository\Nodes\Translation")
+ * @ORM\Entity(repositoryClass="CalendarBundle\Repository\Node\Translation")
  * @ORM\Table(name="nodes.events_translations")
  */
 class Translation

@@ -1,6 +1,6 @@
 <?php
 
-namespace CalendarBundle\Repository\Nodes;
+namespace CalendarBundle\Repository\Node;
 
 use Doctrine\ORM\EntityRepository;
 

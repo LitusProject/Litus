@@ -11,7 +11,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="CalendarBundle\Repository\Nodes\Event")
+ * @ORM\Entity(repositoryClass="CalendarBundle\Repository\Node\Event")
  * @ORM\Table(name="nodes.events")
  */
 class Event extends \CommonBundle\Entity\Nodes\Node
