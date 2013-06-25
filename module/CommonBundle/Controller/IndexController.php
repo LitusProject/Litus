@@ -49,7 +49,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findNbSite(5);
 
         $events = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
         $calendarItems = array();

@@ -57,7 +57,7 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _createEventsArray(Language $language)
     {
         $events = $this->_entityManager
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
         $eventsArray = array(

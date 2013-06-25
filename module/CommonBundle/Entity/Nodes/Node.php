@@ -19,7 +19,7 @@ use CommonBundle\Entity\Users\Person,
  *      "page"="PageBundle\Entity\Nodes\Page",
  *      "news"="NewsBundle\Entity\Nodes\News",
  *      "notification"="NotificationBundle\Entity\Nodes\Notification",
- *      "event"="CalendarBundle\Entity\Nodes\Event"
+ *      "event"="CalendarBundle\Entity\Node\Event"
  * })
  */
 abstract class Node

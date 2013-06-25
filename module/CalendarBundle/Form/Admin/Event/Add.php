@@ -15,7 +15,7 @@
 namespace CalendarBundle\Form\Admin\Event;
 
 use CalendarBundle\Component\Validator\Name as EventNameValidator,
-    CalendarBundle\Entity\Nodes\Event,
+    CalendarBundle\Entity\Node\Event,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Tabs,

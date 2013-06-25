@@ -1,6 +1,6 @@
 <?php
 
-namespace CalendarBundle\Entity\Nodes;
+namespace CalendarBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
@@ -19,7 +19,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     /**
      * @var array The translations of this event
      *
-     * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Nodes\Translation", mappedBy="event", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Node\Translation", mappedBy="event", cascade={"persist", "remove"})
      */
     private $translations;
 
@@ -70,7 +70,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param \DateTime $startDate
      *
-     * @return \CalendarBundle\Entity\Nodes\Event
+     * @return \CalendarBundle\Entity\Node\Event
      */
     public function setStartDate($startDate)
     {
@@ -89,7 +89,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param \DateTime $endDate
      *
-     * @return \CalendarBundle\Entity\Nodes\Event
+     * @return \CalendarBundle\Entity\Node\Event
      */
     public function setEndDate($endDate)
     {
@@ -116,7 +116,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param string $poster
      *
-     * @return \CalendarBundle\Entity\Nodes\Event
+     * @return \CalendarBundle\Entity\Node\Event
      */
     public function setPoster($poster)
     {
@@ -127,7 +127,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \CalendarBundle\Entity\Nodes\Translation
+     * @return \CalendarBundle\Entity\Node\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -215,9 +215,9 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
-     * @param \CalendarBundle\Entity\Nodes\Translation $translation
+     * @param \CalendarBundle\Entity\Node\Translation $translation
      *
-     * @return \CalendarBundle\Entity\Nodes\Event
+     * @return \CalendarBundle\Entity\Node\Event
      */
     public function addTranslation(Translation $translation)
     {

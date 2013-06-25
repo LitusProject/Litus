@@ -1,6 +1,6 @@
 <?php
 
-namespace CalendarBundle\Entity\Nodes;
+namespace CalendarBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
@@ -24,9 +24,9 @@ class Translation
     private $id;
 
     /**
-     * @var \CalendarBundle\Entity\Nodes\Event The event of this translation
+     * @var \CalendarBundle\Entity\Node\Event The event of this translation
      *
-     * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Nodes\Event", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Node\Event", inversedBy="translations")
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
      */
     private $event;
@@ -61,7 +61,7 @@ class Translation
     private $content;
 
     /**
-     * @param \CalendarBundle\Entity\Nodes\Event $event
+     * @param \CalendarBundle\Entity\Node\Event $event
      * @param \CommonBundle\Entity\General\Language $language
      * @param string $location
      * @param string $title
@@ -77,7 +77,7 @@ class Translation
     }
 
     /**
-     * @return \CalendarBundle\Entity\Nodes\Event
+     * @return \CalendarBundle\Entity\Node\Event
      */
     public function getEvent()
     {
@@ -103,7 +103,7 @@ class Translation
     /**
      * @param string $location
      *
-     * @return \CalendarBundle\Entity\Nodes\Translation
+     * @return \CalendarBundle\Entity\Node\Translation
      */
     public function setLocation($location)
     {
@@ -122,7 +122,7 @@ class Translation
     /**
      * @param string $title
      *
-     * @return \CalendarBundle\Entity\Nodes\Translation
+     * @return \CalendarBundle\Entity\Node\Translation
      */
     public function setTitle($title)
     {
@@ -141,7 +141,7 @@ class Translation
     /**
      * @param string $content
      *
-     * @return \CalendarBundle\Entity\Nodes\Translation
+     * @return \CalendarBundle\Entity\Node\Translation
      */
     public function setContent($content)
     {

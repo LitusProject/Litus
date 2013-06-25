@@ -17,7 +17,7 @@ namespace ShiftBundle\Component\Document\Generator;
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CalendarBundle\Entity\Nodes\Event,
+    CalendarBundle\Entity\Node\Event,
     ShiftBundle\Entity\Shift,
     DateTime,
     Doctrine\ORM\EntityManager;
@@ -44,7 +44,7 @@ class EventPdf extends \CommonBundle\Component\Document\Generator\Pdf
      * Create a new Event PDF Generator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CalendarBundle\Entity\Nodes\Event $event The event
+     * @param \CalendarBundle\Entity\Node\Event $event The event
      * @param array $shifts The shifts for this event
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
      */

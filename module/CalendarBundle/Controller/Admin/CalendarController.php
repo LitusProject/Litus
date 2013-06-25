@@ -4,8 +4,8 @@ namespace CalendarBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
-    CalendarBundle\Entity\Nodes\Event,
-    CalendarBundle\Entity\Nodes\Translation,
+    CalendarBundle\Entity\Node\Event,
+    CalendarBundle\Entity\Node\Translation,
     CalendarBundle\Form\Admin\Event\Add as AddForm,
     CalendarBundle\Form\Admin\Event\Edit as EditForm,
     CalendarBundle\Form\Admin\Event\Poster as PosterForm,
@@ -30,7 +30,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                ->getRepository('CalendarBundle\Entity\Node\Event')
                 ->findAllActive(0),
             $this->getParam('page')
         );
@@ -47,7 +47,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                ->getRepository('CalendarBundle\Entity\Node\Event')
                 ->findAllOld(),
             $this->getParam('page')
         );
@@ -395,7 +395,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($this->getParam('id'));
 
         if (null === $event) {
@@ -442,7 +442,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneByPoster($this->getParam('id'));
 
         if (null === $event) {

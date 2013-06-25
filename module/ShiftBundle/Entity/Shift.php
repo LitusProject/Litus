@@ -16,7 +16,7 @@ namespace ShiftBundle\Entity;
 
 use DateInterval,
     DateTime,
-    CalendarBundle\Entity\Nodes\Event,
+    CalendarBundle\Entity\Node\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
     CommonBundle\Entity\Users\Person,
@@ -134,9 +134,9 @@ class Shift
     private $unit;
 
     /**
-     * @var \CalendarBundle\Entity\Nodes\Event The shift's event
+     * @var \CalendarBundle\Entity\Node\Event The shift's event
      *
-     * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Nodes\Event")
+     * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Node\Event")
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
      */
     private $event;
@@ -172,7 +172,7 @@ class Shift
      * @param integer $nbResponsibles
      * @param integer $nbVolunteers
      * @param \ShiftBundle\Entity\Unit $unit
-     * @param \CalendarBundle\Entity\Nodes\Event $event
+     * @param \CalendarBundle\Entity\Node\Event $event
      * @param \CommonBundle\Entity\General\Location $location
      * @param string $name
      * @param string $description
@@ -492,7 +492,7 @@ class Shift
     }
 
     /**
-     * @param \CalendarBundle\Entity\Nodes\Event $event
+     * @param \CalendarBundle\Entity\Node\Event $event
      * @return \ShiftBundle\Entity\Shift
      */
     public function setEvent($event)

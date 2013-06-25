@@ -17,7 +17,7 @@ class Event extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('e')
-            ->from('CalendarBundle\Entity\Nodes\Event', 'e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
             ->where(
                 $query->expr()->orX(
                     $query->expr()->gt('e.endDate', ':now'),
@@ -40,7 +40,7 @@ class Event extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
-            ->from('CalendarBundle\Entity\Nodes\Event', 'e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
             ->where(
                 $query->expr()->lt('e.startDate', ':now')
             )
@@ -56,7 +56,7 @@ class Event extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
-            ->from('CalendarBundle\Entity\Nodes\Event', 'e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gte('e.startDate', ':first'),

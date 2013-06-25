@@ -90,7 +90,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData = $eventSearchForm->getFormData($formData);
 
                     $event = $this->getEntityManager()
-                        ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                        ->getRepository('CalendarBundle\Entity\Node\Event')
                         ->findOneById($formData['event']);
 
                     $searchResults = $this->getEntityManager()
