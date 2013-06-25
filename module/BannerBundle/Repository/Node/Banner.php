@@ -1,6 +1,6 @@
 <?php
 
-namespace BannerBundle\Repository\Nodes;
+namespace BannerBundle\Repository\Node;
 
 use DateTime,
     Doctrine\ORM\EntityRepository;
