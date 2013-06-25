@@ -21,7 +21,7 @@ use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
 /**
  * A classification of a user based on his status at our Alma Mater.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Users\Statuses\Corporate")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\User\Status\Corporate")
  * @ORM\Table(name="users.corporate_statuses")
  */
 class Corporate

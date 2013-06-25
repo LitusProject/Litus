@@ -24,7 +24,7 @@ use BrBundle\Entity\Company,
 /**
  * This is a person that represents a contact in a company.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Users\People\Corporate")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\User\Person\Corporate")
  * @ORM\Table(name="users.people_corporate")
  */
 class Corporate extends \CommonBundle\Entity\Users\Person

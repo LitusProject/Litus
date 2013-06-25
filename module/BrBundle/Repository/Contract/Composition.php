@@ -1,6 +1,6 @@
 <?php
 
-namespace BrBundle\Repository\Contracts;
+namespace BrBundle\Repository\Contract;
 
 use Doctrine\ORM\EntityRepository;
 

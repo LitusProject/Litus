@@ -21,7 +21,7 @@ use BrBundle\Entity\Contract,
 /**
  * This entity represents the composition of a contract.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Contracts\Composition")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract\Composition")
  * @ORM\Table(
  *      name="br.contracts_compositions",
  *      uniqueConstraints={

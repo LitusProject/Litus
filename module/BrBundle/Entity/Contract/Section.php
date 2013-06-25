@@ -22,7 +22,7 @@ use CommonBundle\Component\Util\AcademicYear,
 /**
  * A section represents a part of a contract.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Contracts\Section")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract\Section")
  * @ORM\Table(name="br.contracts_sections")
  */
 class Section
