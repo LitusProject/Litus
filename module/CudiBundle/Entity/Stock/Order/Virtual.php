@@ -19,7 +19,7 @@ use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Orders\Virtual")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Order\Virtual")
  * @ORM\Table(name="cudi.stock_orders_virtual")
  */
 class Virtual

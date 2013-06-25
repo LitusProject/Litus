@@ -19,7 +19,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Sales\ProfVersion")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Sale\ProfVersion")
  * @ORM\Table(name="cudi.log_sales_prof_version")
  */
 class ProfVersion extends \CudiBundle\Entity\Log

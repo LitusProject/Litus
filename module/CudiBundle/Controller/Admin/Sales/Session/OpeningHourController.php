@@ -15,8 +15,8 @@
 namespace CudiBundle\Controller\Admin\Sales\Session;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour,
-    CudiBundle\Entity\Sale\Session\OpeningHours\Translation,
+    CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
+    CudiBundle\Entity\Sale\Session\OpeningHour\Translation,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -32,7 +32,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour')
+                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
                 ->findAllActive(),
             $this->getParam('page')
         );
@@ -230,7 +230,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         $openingHour = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findOneById($this->getParam('id'));
 
         if (null === $openingHour) {

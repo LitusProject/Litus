@@ -20,7 +20,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Articles\Sales\Bookable")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Article\Sale\Bookable")
  * @ORM\Table(name="cudi.log_articles_sales_bookable")
  */
 class Bookable extends \CudiBundle\Entity\Log

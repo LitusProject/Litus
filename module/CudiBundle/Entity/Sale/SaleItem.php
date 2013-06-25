@@ -22,7 +22,7 @@ use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\SaleItem")
  * @ORM\Table(name="cudi.sales_sale_items", indexes={@ORM\Index(name="sales_sale_item_time", columns={"timestamp"})})
  */
 class SaleItem

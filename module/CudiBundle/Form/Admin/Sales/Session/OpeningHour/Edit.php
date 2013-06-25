@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
-use CudiBundle\Entity\Sale\Session\OpeningHours\OpeningHour,
+use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 

@@ -20,7 +20,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Orders\Order")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Order\Order")
  * @ORM\Table(name="cudi.stock_orders", indexes={@ORM\Index(name="stock_orders_time", columns={"date_created"})})
  */
 class Order

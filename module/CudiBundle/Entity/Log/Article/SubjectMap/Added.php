@@ -20,7 +20,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Articles\SubjectMap\Added")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Article\SubjectMap\Added")
  * @ORM\Table(name="cudi.log_articles_subject_map_add")
  */
 class Added extends \CudiBundle\Entity\Log

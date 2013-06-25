@@ -21,7 +21,7 @@ use CudiBundle\Entity\Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\History")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\History")
  * @ORM\Table(name="cudi.articles_history")
  */
 class History

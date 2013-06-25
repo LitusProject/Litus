@@ -20,7 +20,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Articles\SubjectMap\Removed")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Article\SubjectMap\Removed")
  * @ORM\Table(name="cudi.log_articles_subject_map_remove")
  */
 class Removed extends \CudiBundle\Entity\Log

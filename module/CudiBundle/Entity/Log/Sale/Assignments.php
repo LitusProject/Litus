@@ -18,7 +18,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Sales\Assignments")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Sale\Assignments")
  * @ORM\Table(name="cudi.log_sales_assignments")
  */
 class Assignments extends \CudiBundle\Entity\Log

@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\Bank\CashRegister,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Session")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session")
  * @ORM\Table(name="cudi.sales_sessions")
  */
 class Session

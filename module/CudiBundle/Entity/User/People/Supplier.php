@@ -21,7 +21,7 @@ use CommonBundle\Entity\User\Credential,
 /**
  * This is the entity for an supplier person.
  *
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Users\People\Supplier")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\User\Person\Supplier")
  * @ORM\Table(name="users.people_suppliers")
  */
 class Supplier extends \CommonBundle\Entity\User\Person

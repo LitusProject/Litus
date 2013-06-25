@@ -18,7 +18,7 @@ use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Orders\Item")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Order\Item")
  * @ORM\Table(name="cudi.stock_orders_items")
  */
 class Item

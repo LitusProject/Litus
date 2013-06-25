@@ -18,7 +18,7 @@ use CudiBundle\Entity\Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comments\Mapping")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comment\Mapping")
  * @ORM\Table(name="cudi.comments_articles_map")
  */
 class Mapping

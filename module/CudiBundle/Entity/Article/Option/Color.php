@@ -17,7 +17,7 @@ namespace CudiBundle\Entity\Article\Option;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\Options\Color")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\Option\Color")
  * @ORM\Table(name="cudi.articles_options_colors")
  */
 class Color

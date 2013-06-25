@@ -22,7 +22,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Booking")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Booking")
  * @ORM\Table(name="cudi.sales_bookings", indexes={@ORM\Index(name="sales_booking_time", columns={"bookDate"})})
  */
 class Booking

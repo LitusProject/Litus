@@ -17,7 +17,7 @@ namespace CudiBundle\Entity\Sale;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\PayDesk")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\PayDesk")
  * @ORM\Table(name="cudi.sales_pay_desks")
  */
 class PayDesk

@@ -18,7 +18,7 @@ use CudiBundle\Entity\Article\Internal as InternalArticle,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Files\Mapping")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\File\Mapping")
  * @ORM\Table(name="cudi.files_articles_map")
  */
 class Mapping

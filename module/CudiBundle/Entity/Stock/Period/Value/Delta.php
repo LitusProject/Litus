@@ -21,7 +21,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Periods\Values\Delta")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Period\Value\Delta")
  * @ORM\Table(name="cudi.stock_periods_values_deltas")
  */
 class Delta

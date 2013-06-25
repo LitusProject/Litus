@@ -20,7 +20,7 @@ use CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Entity\Subject;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\SubjectMap")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\SubjectMap")
  * @ORM\Table(name="cudi.articles_subjects_map")
  */
 class SubjectMap

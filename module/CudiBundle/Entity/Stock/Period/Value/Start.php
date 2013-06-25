@@ -19,7 +19,7 @@ use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Periods\Values\Start")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Period\Value\Start")
  * @ORM\Table(name="cudi.stock_periods_values_starts")
  */
 class Start

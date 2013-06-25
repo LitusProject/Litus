@@ -22,7 +22,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\QueueItem")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\QueueItem")
  * @ORM\Table(name="cudi.sales_queue_items")
  */
 class QueueItem

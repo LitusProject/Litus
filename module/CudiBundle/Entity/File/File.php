@@ -19,7 +19,7 @@ use CudiBundle\Entity\Article\Internal as InternalArticle,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Files\File")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\File\File")
  * @ORM\Table(name="cudi.files_files")
  */
 class File

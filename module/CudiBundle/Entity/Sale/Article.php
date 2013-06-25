@@ -24,7 +24,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Article")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article")
  * @ORM\Table(name="cudi.sales_articles")
  */
 class Article

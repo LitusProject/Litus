@@ -21,7 +21,7 @@ use CommonBundle\Component\Util\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Articles\Restriction")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Articles\Restriction")
  * @ORM\Table(name="cudi.sales_articles_restrictions")
  */
 class Restriction

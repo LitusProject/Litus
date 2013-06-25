@@ -20,7 +20,7 @@ use CudiBundle\Entity\Article\Option\Binding,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\Internal")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\Internal")
  * @ORM\Table(name="cudi.articles_internal")
  */
 class Internal extends \CudiBundle\Entity\Article

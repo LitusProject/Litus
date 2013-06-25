@@ -21,7 +21,7 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comments\Comment")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comment\Comment")
  * @ORM\Table(name="cudi.comments_comments")
  */
 class Comment

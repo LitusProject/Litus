@@ -20,7 +20,7 @@ use CommonBundle\Entity\User\Person,
 /**
  * This entity stores Acco information for a person.
  *
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Users\People\Sale\Acco")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\User\Person\Sale\Acco")
  * @ORM\Table(name="users.people_sale_acco")
  */
 class Acco
