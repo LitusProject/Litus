@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Entity\User\Person\Organizationss;
+namespace CommonBundle\Entity\User\Person\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
@@ -109,7 +109,7 @@ class AcademicYearMap
 
     /**
      * @param \CommonBundle\Entity\General\Organization $organization
-     * @return \CommonBundle\Entity\User\Person\Organizationss\AcademicYearMap
+     * @return \CommonBundle\Entity\User\Person\Organization\AcademicYearMap
      */
     public function setOrganization(Organization $organization)
     {

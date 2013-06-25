@@ -18,7 +18,7 @@ class AcademicYearMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-            ->from('CommonBundle\Entity\User\Person\Organizationss\AcademicYearMap', 'a')
+            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.academic', ':academic'),

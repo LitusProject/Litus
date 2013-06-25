@@ -70,7 +70,7 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                 array(
                     'code' => Result::FAILURE_CREDENTIAL_INVALID,
                     'messages' => array(
-                        'Supplied credential is invalid'
+                        'The supplied credential is invalid'
                     ),
                     'personObject' => $this->getPersonObject()
                 )

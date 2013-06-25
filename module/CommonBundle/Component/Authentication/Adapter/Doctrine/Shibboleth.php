@@ -64,7 +64,7 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                 array(
                     'code' => Result::FAILURE,
                     'messages' => array(
-                        'The given IDentity cannot login'
+                        'The given identity cannot login'
                     )
                 )
             );

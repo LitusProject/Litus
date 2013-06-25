@@ -92,7 +92,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's organization mapping
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organizationss\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"})
      */
     private $organizationMap;
 
