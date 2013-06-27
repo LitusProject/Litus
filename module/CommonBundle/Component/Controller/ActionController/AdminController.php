@@ -57,7 +57,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'display' => date('l, F j Y, H:i', time())
         );
 
-        if ($this->hasAccess('cudi_admin_stock_period', 'new')) {
+        if ($this->hasAccess()->resourceAction('cudi_admin_stock_period', 'new')) {
             $period = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findOneActive();
