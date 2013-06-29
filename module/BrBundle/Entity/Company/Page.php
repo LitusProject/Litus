@@ -86,7 +86,7 @@ class Page
      */
     public static function isValidSector($sector)
     {
-        return array_key_exists($sector, self::$POSSIBLE_SECTORS);
+        return array_key_exists($sector, self::$possibleSectors);
     }
 
     /**

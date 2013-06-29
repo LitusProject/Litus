@@ -99,7 +99,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$POSSIBLE_SECTORS as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector)
             $sectorArray[$key] = $sector;
 
         return $sectorArray;

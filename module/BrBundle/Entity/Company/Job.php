@@ -371,7 +371,7 @@ class Job
      */
     public function getSector()
     {
-        return Company::$POSSIBLE_SECTORS[$this->sector];
+        return Company::$possibleSectors[$this->sector];
     }
 
     /**

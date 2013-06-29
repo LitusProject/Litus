@@ -122,14 +122,14 @@ class Company
     /**
      * @var array The possible sectors of a company
      */
-    public static $POSSIBLE_SECTORS = array(
+    public static $possibleSectors = array(
         'architecture' => 'Architecture & Construction',
         'audit' => 'Audit',
         'automobile' => 'Automobile',
         'biomedical' => 'Biomedical & Pharmaceutical',
         'chemistry' => 'Chemistry',
         'consultancy' => 'Consultancy',
-        'consumer' => 'Consumer goods & services',
+        'consumer' => 'Consumer Goods & Services',
         'distribution' => 'Distribution, Logistics & Transportation',
         'electronics' => 'Electronics',
         'energy' => 'Energy',
@@ -163,7 +163,7 @@ class Company
      */
     public static function isValidSector($sector)
     {
-        return array_key_exists($sector, self::$POSSIBLE_SECTORS);
+        return array_key_exists($sector, self::$possibleSectors);
     }
 
     /**
@@ -297,7 +297,7 @@ class Company
      */
     public function getSector()
     {
-        return self::$POSSIBLE_SECTORS[$this->sector];
+        return self::$possibleSectors[$this->sector];
     }
 
     /**
