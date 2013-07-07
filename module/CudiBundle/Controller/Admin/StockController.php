@@ -25,7 +25,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Stock\Period\Value\Delta,
-    CudiBundle\Entity\Stock\Orders\Virtual as VirtualOrder,
+    CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -181,7 +181,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         $stockForm = new StockForm($article);
 
         $virtual = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Orders\Virtual')
+            ->getRepository('CudiBundle\Entity\Stock\Order\Virtual')
             ->findNbByPeriodAndArticle($period, $article);
         $maxDelivery = $period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual;
 
@@ -242,7 +242,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $formData = $orderForm->getFormData($formData);
 
                     $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
+                        ->getRepository('CudiBundle\Entity\Stock\Order\Order')
                         ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 
                     $this->getEntityManager()->flush();

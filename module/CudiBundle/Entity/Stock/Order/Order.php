@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Stock\Orders;
+namespace CudiBundle\Entity\Stock\Order;
 
 use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Supplier,
@@ -66,7 +66,7 @@ class Order
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The items ordered
      *
-     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Orders\Item", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Order\Item", mappedBy="order")
      */
     private $items;
 
@@ -154,7 +154,7 @@ class Order
     /**
      * @param \CommonBundle\Entity\User\Person $person
      *
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function setPerson(Person $person)
     {
@@ -171,7 +171,7 @@ class Order
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function order()
     {
@@ -180,7 +180,7 @@ class Order
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function cancel()
     {
@@ -191,7 +191,7 @@ class Order
     /**
      * @param \DateTime $deliveryDate
      *
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function setDeliveryDate(DateTime $deliveryDate)
     {

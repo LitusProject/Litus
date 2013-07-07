@@ -18,7 +18,7 @@ class Item extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->where(
                 $query->expr()->andX(
@@ -41,7 +41,7 @@ class Item extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('i')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->where(
                 $query->expr()->andX(
@@ -65,7 +65,7 @@ class Item extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('i')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -93,7 +93,7 @@ class Item extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('i')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->innerJoin('o.supplier', 's')
             ->where(

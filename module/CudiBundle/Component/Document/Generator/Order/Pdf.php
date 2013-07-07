@@ -17,7 +17,7 @@ namespace CudiBundle\Component\Document\Generator\Order;
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CudiBundle\Entity\Stock\Orders\Order,
+    CudiBundle\Entity\Stock\Order\Order,
     DateTime,
     Doctrine\ORM\EntityManager;
 

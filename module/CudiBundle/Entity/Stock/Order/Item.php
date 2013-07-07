@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Stock\Orders;
+namespace CudiBundle\Entity\Stock\Order;
 
 use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\Mapping as ORM;
@@ -41,9 +41,9 @@ class Item
     private $article;
 
     /**
-     * @var \CudiBundle\Entity\Stock\Orders\Order The order of the item
+     * @var \CudiBundle\Entity\Stock\Order\Order The order of the item
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Stock\Orders\Order", inversedBy="items")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Stock\Order\Order", inversedBy="items")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;
@@ -57,7 +57,7 @@ class Item
 
     /**
      * @param \CudiBundle\Entity\Sale\Article $article The article of the item
-     * @param \CudiBundle\Entity\Stock\Orders\Order $order The order of the item
+     * @param \CudiBundle\Entity\Stock\Order\Order $order The order of the item
      * @param integer $number The number of items ordered
      */
     public function __construct(Article $article, Order $order, $number)
@@ -76,7 +76,7 @@ class Item
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function getOrder()
     {
@@ -102,7 +102,7 @@ class Item
     /**
      * @param integer $number
      *
-     * @return \CudiBundle\Entity\Stock\Orders\Item
+     * @return \CudiBundle\Entity\Stock\Order\Item
      */
     public function setNumber($number)
     {

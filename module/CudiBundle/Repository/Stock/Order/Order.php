@@ -4,8 +4,8 @@ namespace CudiBundle\Repository\Stock\Order;
 
 use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Stock\Orders\Item as ItemEntity,
-    CudiBundle\Entity\Stock\Orders\Order as OrderEntity,
+    CudiBundle\Entity\Stock\Order\Item as ItemEntity,
+    CudiBundle\Entity\Stock\Order\Order as OrderEntity,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository;
@@ -22,7 +22,7 @@ class Order extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('o')
-            ->from('CudiBundle\Entity\Stock\Orders\Order', 'o')
+            ->from('CudiBundle\Entity\Stock\Order\Order', 'o')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('o.supplier', ':supplier'),
@@ -47,7 +47,7 @@ class Order extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
-            ->from('CudiBundle\Entity\Stock\Orders\Order', 'o')
+            ->from('CudiBundle\Entity\Stock\Order\Order', 'o')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('o.supplier', ':supplier'),
@@ -68,7 +68,7 @@ class Order extends EntityRepository
     public function addNumberByArticle(Article $article, $number, Person $person)
     {
         $item = $this->_em
-            ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+            ->getRepository('CudiBundle\Entity\Stock\Order\Item')
             ->findOneOpenByArticle($article);
 
         if (isset($item)) {
