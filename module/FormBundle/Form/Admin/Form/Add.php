@@ -53,13 +53,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->_entityManager = $entityManager;
 
         $tabs = new Tabs('languages');
-        $tabs->setAttribute('class', 'table_default_width');
         $this->add($tabs);
 
         $tabContent = new TabContent('tab_content');
 
         foreach($this->getLanguages() as $language) {
-
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
@@ -116,7 +114,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add($field);
 
         $field = new Checkbox('non_members');
-        $field->setLabel('Allow Entry Without Login (First name, last name and email fields will be created automatically)');
+        $field->setLabel('Allow Entry Without Login');
         $this->add($field);
 
         $field = new Checkbox('editable_by_user');
@@ -124,7 +122,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add($field);
 
         $field = new Checkbox('multiple');
-        $field->setLabel('Multiple Entries / Person Allowed');
+        $field->setLabel('Multiple Entries per Person');
         $this->add($field);
 
         $field = new Checkbox('mail');
