@@ -147,6 +147,7 @@ abstract class Field
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
+     *
      * @return string
      */
     public function getLabel(Language $language = null, $allowFallback = true)
@@ -162,7 +163,8 @@ abstract class Field
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \PageBundle\Entity\Nodes\Translation
+     *
+     * @return \FormBundle\Entity\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

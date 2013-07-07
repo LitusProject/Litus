@@ -432,7 +432,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \PageBundle\Entity\Nodes\Translation
+     * @return \FormBundle\Entity\Node\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

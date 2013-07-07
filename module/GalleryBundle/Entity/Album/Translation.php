@@ -86,7 +86,7 @@ class Translation
     /**
      * @param string $title
      *
-     * @param \PageBundle\Entity\Nodes\Page
+     * @return \GalleryBundle\Entity\Album\Translation
      */
     public function setTitle($title)
     {
