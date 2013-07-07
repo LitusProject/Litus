@@ -23,8 +23,8 @@ use DateInterval,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
-    ShiftBundle\Entity\Shifts\Responsible,
-    ShiftBundle\Entity\Shifts\Volunteer,
+    ShiftBundle\Entity\Shift\Responsible,
+    ShiftBundle\Entity\Shift\Volunteer,
     ShiftBundle\Entity\Unit;
 
 /**
@@ -95,7 +95,7 @@ class Shift
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The people that are responsible for this shift
      *
-     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shifts\Responsible", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shift\Responsible", cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *      name="shifts.shifts_responsibles_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
@@ -115,7 +115,7 @@ class Shift
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The people that volunteered for this shift
      *
-     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shifts\Volunteer", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shift\Volunteer", cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *      name="shifts.shifts_volunteers_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
@@ -303,7 +303,7 @@ class Shift
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \ShiftBundle\Entity\Shifts\Responsible $responsible
+     * @param \ShiftBundle\Entity\Shift\Responsible $responsible
      * @return \ShiftBundle\Entity\Shift
      */
     public function addResponsible(EntityManager $entityManager, Responsible $responsible)
@@ -316,7 +316,7 @@ class Shift
     }
 
     /**
-     * @param \ShiftBundle\Entity\Shifts\Responsible $responsible
+     * @param \ShiftBundle\Entity\Shift\Responsible $responsible
      * @return \ShiftBundle\Entity\Shift
      */
     public function removeResponsible(Responsible $responsible)
@@ -391,7 +391,7 @@ class Shift
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \ShiftBundle\Entity\Shifts\Volunteer $volunteer
+     * @param \ShiftBundle\Entity\Shift\Volunteer $volunteer
      * @return \ShiftBundle\Entity\Shift
      */
     public function addVolunteer(EntityManager $entityManager, Volunteer $volunteer)
@@ -404,7 +404,7 @@ class Shift
     }
 
     /**
-     * @param \ShiftBundle\Entity\Shifts\Volunteer $volunteer
+     * @param \ShiftBundle\Entity\Shift\Volunteer $volunteer
      * @return \ShiftBundle\Entity\Shift
      */
     public function removeVolunteer(Volunteer $volunteer)
@@ -607,7 +607,7 @@ class Shift
      * Removes the given person from this shift.
      *
      * @param \CommonBundle\Entity\User\Person $person The person that should be removed
-     * @return \ShiftBundle\Entity\Shifts\Responsible|\ShiftBundle\Entity\Shifts\Volunteer
+     * @return \ShiftBundle\Entity\Shift\Responsible|\ShiftBundle\Entity\Shift\Volunteer
      */
     public function removePerson(Person $person)
     {

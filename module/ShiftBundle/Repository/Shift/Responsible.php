@@ -1,6 +1,6 @@
 <?php
 
-namespace ShiftBundle\Repository\Shifts;
+namespace ShiftBundle\Repository\Shift;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -16,7 +16,7 @@ class Responsible extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
-            ->from('ShiftBundle\Entity\Shifts\Responsible', 'v')
+            ->from('ShiftBundle\Entity\Shift\Responsible', 'v')
             ->where(
                 $query->expr()->eq('v.id', ':id')
             )

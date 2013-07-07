@@ -1,6 +1,6 @@
 <?php
 
-namespace ShiftBundle\Repository\Shifts;
+namespace ShiftBundle\Repository\Shift;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
@@ -18,7 +18,7 @@ class Volunteer extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
-            ->from('ShiftBundle\Entity\Shifts\Volunteer', 'v')
+            ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
             ->where(
                 $query->expr()->eq('v.id', ':id')
             )
@@ -35,7 +35,7 @@ class Volunteer extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
-            ->from('ShiftBundle\Entity\Shifts\Volunteer', 'v')
+            ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
             ->innerJoin('v.person', 'p')
             ->where(
                 $query->expr()->andX(
@@ -61,7 +61,7 @@ class Volunteer extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
-            ->from('ShiftBundle\Entity\Shifts\Volunteer', 'v')
+            ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
             ->innerJoin('v.person', 'p')
             ->where(
                 $query->expr()->andX(
@@ -91,7 +91,7 @@ class Volunteer extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
-            ->from('ShiftBundle\Entity\Shifts\Volunteer', 'v')
+            ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('v.signupTime', ':startAcademicYear'),

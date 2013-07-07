@@ -17,8 +17,8 @@ namespace ShiftBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     ShiftBundle\Entity\Shift,
-    ShiftBundle\Entity\Shifts\Responsible,
-    ShiftBundle\Entity\Shifts\Volunteer,
+    ShiftBundle\Entity\Shift\Responsible,
+    ShiftBundle\Entity\Shift\Volunteer,
     ShiftBundle\Form\Admin\Subscription\Add as AddForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -172,11 +172,11 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         switch($type) {
             case 'volunteer':
                 $repository = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shifts\Volunteer');
+                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer');
                 break;
             case 'responsible':
                 $repository = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shifts\Responsible');
+                    ->getRepository('ShiftBundle\Entity\Shift\Responsible');
                 break;
             default:
                 $this->flashMessenger()->addMessage(

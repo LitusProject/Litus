@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ShiftBundle\Entity\Shifts;
+namespace ShiftBundle\Entity\Shift;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
@@ -21,7 +21,7 @@ use CommonBundle\Entity\User\Person,
 /**
  * This entity stores a volunteer for a shift.
  *
- * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shifts\Volunteer")
+ * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shift\Volunteer")
  * @ORM\Table(name="shifts.volunteers")
  */
 class Volunteer
@@ -102,7 +102,7 @@ class Volunteer
 
     /**
      * @param boolean $payed
-     * @return \ShiftBundle\Entity\Shifts\Responsible
+     * @return \ShiftBundle\Entity\Shift\Responsible
      */
     public function setPayed($payed)
     {

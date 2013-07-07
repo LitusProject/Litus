@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ShiftBundle\Entity\Shifts;
+namespace ShiftBundle\Entity\Shift;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * This entity stores a responsible for a shift.
  *
- * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shifts\Responsible")
+ * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shift\Responsible")
  * @ORM\Table(name="shifts.responsibles")
  */
 class Responsible

@@ -65,7 +65,7 @@ class VolunteerController extends \CommonBundle\Component\Controller\ActionContr
                 $mail->addTo($formData['from']);
 
                 $volunteers = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shifts\Volunteer')
+                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
                     ->findAllByCountMinimum($currentYear, 1);
 
                 foreach ($volunteers as $volunteer) {
