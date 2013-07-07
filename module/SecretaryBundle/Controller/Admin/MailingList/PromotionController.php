@@ -15,8 +15,8 @@
 namespace SecretaryBundle\Controller\Admin\MailingList;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\Entries\Academic as AcademicEntry,
-    MailBundle\Entity\Entries\External as ExternalEntry,
+    MailBundle\Entity\Entry\Academic as AcademicEntry,
+    MailBundle\Entity\Entry\External as ExternalEntry,
     MailBundle\Entity\MailingList\Named as NamedList,
     SecretaryBundle\Entity\Promotion,
     SecretaryBundle\Entity\MailingList\Promotion as PromotionList,

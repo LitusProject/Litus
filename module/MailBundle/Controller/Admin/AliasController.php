@@ -15,7 +15,7 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\Aliases\Academic as Alias,
+    MailBundle\Entity\Alias\Academic as Alias,
     MailBundle\Form\Admin\Alias\Add as AddForm,
     Zend\View\Model\ViewModel;
 

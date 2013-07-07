@@ -52,13 +52,13 @@ foreach (file($opts->i) as $alias) {
     if (null !== $academic) {
         echo 'Academic: ' . $academic->getFullName() . PHP_EOL;
 
-        $newAlias = new MailBundle\Entity\Aliases\Academic(
+        $newAlias = new MailBundle\Entity\Alias\Academic(
             strtolower($alias[0]), $academic
         );
     } else {
         echo 'External: ' . $alias[1] . PHP_EOL;
 
-        $newAlias = new MailBundle\Entity\Aliases\External(
+        $newAlias = new MailBundle\Entity\Alias\External(
             strtolower($alias[0]), strtolower($alias[1])
         );
     }

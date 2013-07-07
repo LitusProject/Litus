@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Entity\Aliases;
+namespace MailBundle\Entity\Alias;
 
 use CommonBundle\Entity\User\Person\Academic as AcademicPerson,
     Doctrine\ORM\Mapping as ORM,
