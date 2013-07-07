@@ -67,7 +67,7 @@ class Message
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The attachemnts for this message
      *
-     * @ODM\ReferenceMany(targetDocument="MailBundle\Document\Messages\Attachment", cascade={"persist", "remove"})
+     * @ODM\ReferenceMany(targetDocument="MailBundle\Document\Message\Attachment", cascade={"persist", "remove"})
      */
     private $attachments;
 

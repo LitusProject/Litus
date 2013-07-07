@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Document\Messages;
+namespace MailBundle\Document\Message;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 

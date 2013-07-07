@@ -63,7 +63,7 @@ if (isset($opts->r)) {
             case '001':
                 $attachments = array();
                 foreach ($parser->getAttachments() as $attachment) {
-                    $attachments[] = new MailBundle\Document\Messages\Attachment(
+                    $attachments[] = new MailBundle\Document\Message\Attachment(
                         $attachment->getFilename(),
                         $attachment->getContentType(),
                         $attachment->getData()
