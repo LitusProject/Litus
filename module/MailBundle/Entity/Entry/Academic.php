@@ -22,7 +22,7 @@ use CommonBundle\Entity\User\Person\Academic as AcademicPerson,
 /**
  * This is the entity for a list entry.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\Entries\Academic")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry\Academic")
  * @ORM\Table(name="mail.lists_entries_academic")
  */
 class Academic extends \MailBundle\Entity\Entry

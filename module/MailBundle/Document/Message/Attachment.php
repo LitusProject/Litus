@@ -21,7 +21,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *
  * @ODM\Document(
  *     collection="mailbundle_messages_attachments",
- *     repositoryClass="MailBundle\Repository\Messages\Attachment"
+ *     repositoryClass="MailBundle\Repository\Message\Attachment"
  * )
  */
 class Attachment

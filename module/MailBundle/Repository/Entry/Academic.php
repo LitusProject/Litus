@@ -1,6 +1,6 @@
 <?php
 
-namespace MailBundle\Repository\Entries;
+namespace MailBundle\Repository\Entry;
 
 use Doctrine\ORM\EntityRepository;
 

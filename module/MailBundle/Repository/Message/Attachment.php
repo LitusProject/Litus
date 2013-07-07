@@ -1,6 +1,6 @@
 <?php
 
-namespace MailBundle\Repository\Messages;
+namespace MailBundle\Repository\Message;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
