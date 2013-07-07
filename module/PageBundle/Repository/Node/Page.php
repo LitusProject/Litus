@@ -1,6 +1,6 @@
 <?php
 
-namespace PageBundle\Repository\Nodes;
+namespace PageBundle\Repository\Node;
 
 use Doctrine\ORM\EntityRepository,
     PageBundle\Entity\Node\Page as PageEntity;

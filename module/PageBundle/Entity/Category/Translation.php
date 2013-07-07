@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity represents a translation of a category.
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Categories\Translation")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Category\Translation")
  * @ORM\Table(name="nodes.pages_categories_translations")
  */
 class Translation

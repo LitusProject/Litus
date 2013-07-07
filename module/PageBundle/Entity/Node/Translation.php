@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Nodes\Translation")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Node\Translation")
  * @ORM\Table(name="nodes.pages_translations")
  */
 class Translation

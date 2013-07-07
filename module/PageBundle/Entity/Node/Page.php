@@ -25,7 +25,7 @@ use CommonBundle\Component\Util\Url,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Nodes\Page")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Node\Page")
  * @ORM\Table(name="nodes.pages")
  */
 class Page extends \CommonBundle\Entity\Node

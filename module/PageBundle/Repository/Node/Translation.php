@@ -1,6 +1,6 @@
 <?php
 
-namespace PageBundle\Repository\Links;
+namespace PageBundle\Repository\Node;
 
 use Doctrine\ORM\EntityRepository;
 

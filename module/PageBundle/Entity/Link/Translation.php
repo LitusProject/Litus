@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity represents a translation of a link.
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Links\Translation")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Link\Translation")
  * @ORM\Table(name="nodes.pages_links_translations")
  */
 class Translation

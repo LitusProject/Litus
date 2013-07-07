@@ -1,6 +1,6 @@
 <?php
 
-namespace PageBundle\Repository\Nodes;
+namespace PageBundle\Repository\Category;
 
 use Doctrine\ORM\EntityRepository;
 
