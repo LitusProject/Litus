@@ -1,6 +1,6 @@
 <?php
 
-namespace NewsBundle\Repository\Nodes;
+namespace NewsBundle\Repository\Node;
 
 use Doctrine\ORM\EntityRepository;
 

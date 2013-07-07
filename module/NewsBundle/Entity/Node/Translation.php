@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace NewsBundle\Entity\Nodes;
+namespace NewsBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="NewsBundle\Repository\Nodes\Translation")
+ * @ORM\Entity(repositoryClass="NewsBundle\Repository\Node\Translation")
  * @ORM\Table(name="nodes.news_translations")
  */
 class Translation
@@ -37,9 +37,9 @@ class Translation
     private $id;
 
     /**
-     * @var \NewsBundle\Entity\Nodes\News The news of this translation
+     * @var \NewsBundle\Entity\Node\News The news of this translation
      *
-     * @ORM\ManyToOne(targetEntity="NewsBundle\Entity\Nodes\News", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="NewsBundle\Entity\Node\News", inversedBy="translations")
      * @ORM\JoinColumn(name="news", referencedColumnName="id")
      */
     private $news;
@@ -67,7 +67,7 @@ class Translation
     private $content;
 
     /**
-     * @param \NewsBundle\Entity\Nodes\News $news
+     * @param \NewsBundle\Entity\Node\News $news
      * @param \CommonBundle\Entity\General\Language $language
      * @param string $title
      * @param string $content
@@ -81,7 +81,7 @@ class Translation
     }
 
     /**
-     * @return \NewsBundle\Entity\Nodes\News
+     * @return \NewsBundle\Entity\Node\News
      */
     public function getNews()
     {
@@ -107,7 +107,7 @@ class Translation
     /**
      * @param string $title
      *
-     * @return \NewsBundle\Entity\Nodes\Translation
+     * @return \NewsBundle\Entity\Node\Translation
      */
     public function setTitle($title)
     {
@@ -136,7 +136,7 @@ class Translation
     /**
      * @param string $content
      *
-     * @param \NewsBundle\Entity\Nodes\Translation
+     * @param \NewsBundle\Entity\Node\Translation
      */
     public function setContent($content)
     {

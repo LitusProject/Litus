@@ -31,7 +31,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('NewsBundle\Entity\Nodes\News')
+                ->getRepository('NewsBundle\Entity\Node\News')
                 ->findAllSite(),
             $this->getParam('page')
         );
@@ -139,7 +139,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         );
 
         $news = $this->getEntityManager()
-            ->getRepository('NewsBundle\Entity\Nodes\News')
+            ->getRepository('NewsBundle\Entity\Node\News')
             ->findAll(100);
 
         foreach($news as $item) {
@@ -204,7 +204,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             return;
 
         $news = $this->getEntityManager()
-            ->getRepository('NewsBundle\Entity\Nodes\News')
+            ->getRepository('NewsBundle\Entity\Node\News')
             ->findOneByName($this->getParam('name'));
 
         if (null === $news)

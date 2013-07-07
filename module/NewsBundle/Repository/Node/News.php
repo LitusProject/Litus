@@ -1,6 +1,6 @@
 <?php
 
-namespace NewsBundle\Repository\Nodes;
+namespace NewsBundle\Repository\Node;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -16,7 +16,7 @@ class News extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('NewsBundle\Entity\Nodes\News', 'n')
+            ->from('NewsBundle\Entity\Node\News', 'n')
             ->orderBy('n.creationTime', 'DESC')
             ->setMaxResults($nbResults)
             ->getQuery()
@@ -29,7 +29,7 @@ class News extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('NewsBundle\Entity\Nodes\News', 'n')
+            ->from('NewsBundle\Entity\Node\News', 'n')
             ->where(
                 $query->expr()->orX(
                     $query->expr()->gte('n.endDate', ':now'),
@@ -48,7 +48,7 @@ class News extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('NewsBundle\Entity\Nodes\News', 'n')
+            ->from('NewsBundle\Entity\Node\News', 'n')
             ->where(
                 $query->expr()->orX(
                     $query->expr()->gte('n.endDate', ':now'),

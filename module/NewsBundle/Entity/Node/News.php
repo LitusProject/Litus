@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace NewsBundle\Entity\Nodes;
+namespace NewsBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -24,7 +24,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="NewsBundle\Repository\Nodes\News")
+ * @ORM\Entity(repositoryClass="NewsBundle\Repository\Node\News")
  * @ORM\Table(name="nodes.news")
  */
 class News extends \CommonBundle\Entity\Node
@@ -32,7 +32,7 @@ class News extends \CommonBundle\Entity\Node
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this news item
      *
-     * @ORM\OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="NewsBundle\Entity\Node\Translation", mappedBy="news", cascade={"persist", "remove"})
      */
     private $translations;
 
@@ -73,7 +73,7 @@ class News extends \CommonBundle\Entity\Node
 
     /**
      * @param \DateTime $endDate
-     * @return \NewsBundle\Entity\Nodes\News
+     * @return \NewsBundle\Entity\Node\News
      */
     public function setEndDate(DateTime $endDate = null)
     {
@@ -82,8 +82,8 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \NewsBundle\Entity\Nodes\Translation $translation
-     * @return \NewsBundle\Entity\Nodes\News
+     * @param \NewsBundle\Entity\Node\Translation $translation
+     * @return \NewsBundle\Entity\Node\News
      */
     public function addTranslation(Translation $translation)
     {
@@ -94,7 +94,7 @@ class News extends \CommonBundle\Entity\Node
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \NewsBundle\Entity\Nodes\Translation
+     * @return \NewsBundle\Entity\Node\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -166,7 +166,7 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \NewsBundle\Entity\Nodes\News
+     * @return \NewsBundle\Entity\Node\News
      */
     public function updateName()
     {

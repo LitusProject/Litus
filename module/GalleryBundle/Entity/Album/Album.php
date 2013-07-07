@@ -189,7 +189,7 @@ class Album
     /**
      * @param string $name
      *
-     * @return \NewsBundle\Entity\Nodes\News
+     * @return \NewsBundle\Entity\Node\News
      */
     public function updateName()
     {
