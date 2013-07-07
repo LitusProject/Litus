@@ -89,7 +89,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     private function _createPagesArray()
     {
         $pages = $this->_entityManager
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findAll();
 
         $pageOptions = array(

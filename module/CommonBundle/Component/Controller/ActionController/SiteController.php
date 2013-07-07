@@ -101,7 +101,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $pages = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->getRepository('PageBundle\Entity\Node\Page')
                 ->findBy(
                     array(
                         'category' => $category,

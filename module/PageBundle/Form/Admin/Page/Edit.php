@@ -17,7 +17,7 @@ namespace PageBundle\Form\Admin\Page;
 use CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
-    PageBundle\Entity\Nodes\Page,
+    PageBundle\Entity\Node\Page,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Edit extends Add
 {
     /**
-     * @param \PageBundle\Entity\Nodes\Page
+     * @param \PageBundle\Entity\Node\Page
      */
     private $_page;
 

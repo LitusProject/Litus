@@ -17,7 +17,7 @@ namespace CudiBundle\Controller;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     DateInterval,
-    PageBundle\Entity\Nodes\Page,
+    PageBundle\Entity\Node\Page,
     Zend\View\Model\ViewModel;
 
 /**
@@ -98,7 +98,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
     private function _buildSubmenu(Page $page)
     {
         $pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findByParent($page->getId());
 
         $links = $this->getEntityManager()
@@ -136,7 +136,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $pages = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->getRepository('PageBundle\Entity\Node\Page')
                 ->findByCategory($category);
 
             $links = $this->getEntityManager()

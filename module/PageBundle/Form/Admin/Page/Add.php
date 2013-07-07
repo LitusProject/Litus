@@ -23,7 +23,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Category,
-    PageBundle\Entity\Nodes\Page,
+    PageBundle\Entity\Node\Page,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -136,7 +136,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected function _createPagesArray(Category $category, $excludeTitle = '')
     {
         $pages = $this->_entityManager
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findByCategory($category);
 
         $pageOptions = array(

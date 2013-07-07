@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PageBundle\Entity\Nodes;
+namespace PageBundle\Entity\Node;
 
 use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
@@ -45,7 +45,7 @@ class Page extends \CommonBundle\Entity\Node
     private $endTime;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The page's category
+     * @var \PageBundle\Entity\Node\Page The page's category
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
@@ -65,9 +65,9 @@ class Page extends \CommonBundle\Entity\Node
     private $editRoles;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The page's parent
+     * @var \PageBundle\Entity\Node\Page The page's parent
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
@@ -82,7 +82,7 @@ class Page extends \CommonBundle\Entity\Node
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this page
      *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Nodes\Translation", mappedBy="page", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Node\Translation", mappedBy="page", cascade={"remove"})
      */
     private $translations;
 
@@ -115,7 +115,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param \DateTime $endTime
-     * @return \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Node\Page
      */
     public function setEndTime($endTime)
     {
@@ -133,7 +133,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param \PageBundle\Entity\Category $category
-     * @return \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Node\Page
      */
     public function setCategory($category)
     {
@@ -151,7 +151,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param array $editRoles
-     * @return \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Node\Page
      */
     public function setEditRoles(array $editRoles)
     {
@@ -168,8 +168,8 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \PageBundle\Entity\Nodes\Page $category The page's category
-     * @return \PageBundle\Entity\Nodes\Page
+     * @param \PageBundle\Entity\Node\Page $category The page's category
+     * @return \PageBundle\Entity\Node\Page
      */
     public function setParent(Page $parent)
     {
@@ -178,7 +178,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Node\Page
      */
     public function getParent()
     {
@@ -196,7 +196,7 @@ class Page extends \CommonBundle\Entity\Node
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \PageBundle\Entity\Nodes\Translation
+     * @return \PageBundle\Entity\Node\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

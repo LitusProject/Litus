@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PageBundle\Entity\Nodes;
+namespace PageBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -36,9 +36,9 @@ class Translation
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The page of this translation
+     * @var \PageBundle\Entity\Node\Page The page of this translation
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page", inversedBy="translations")
      * @ORM\JoinColumn(name="page", referencedColumnName="id")
      */
     private $page;
@@ -66,7 +66,7 @@ class Translation
     private $content;
 
     /**
-     * @param \PageBundle\Entity\Nodes\Page $page
+     * @param \PageBundle\Entity\Node\Page $page
      * @param \CommonBundle\Entity\General\Language $language
      * @param string $title
      * @param string $content
@@ -80,7 +80,7 @@ class Translation
     }
 
     /**
-     * @return \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Node\Page
      */
     public function getPage()
     {
@@ -106,7 +106,7 @@ class Translation
     /**
      * @param string $title
      *
-     * @return \PageBundle\Entity\Nodes\Translation
+     * @return \PageBundle\Entity\Node\Translation
      */
     public function setTitle($title)
     {
@@ -125,7 +125,7 @@ class Translation
     /**
      * @param string $content
      *
-     * @return \PageBundle\Entity\Nodes\Translation
+     * @return \PageBundle\Entity\Node\Translation
      */
     public function setContent($content)
     {

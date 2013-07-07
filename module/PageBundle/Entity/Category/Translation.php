@@ -12,17 +12,17 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PageBundle\Entity\Links;
+namespace PageBundle\Entity\Category;
 
 use CommonBundle\Entity\General\Language,
-    PageBundle\Entity\Link,
+    PageBundle\Entity\Category,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * This entity represents a translation of a link.
+ * This entity represents a translation of a category.
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Links\Translation")
- * @ORM\Table(name="nodes.pages_links_translations")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Categories\Translation")
+ * @ORM\Table(name="nodes.pages_categories_translations")
  */
 class Translation
 {
@@ -36,12 +36,12 @@ class Translation
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Link The link of this translation
+     * @var \PageBundle\Entity\Category The category of this translation
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Link", inversedBy="translations")
-     * @ORM\JoinColumn(name="link", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category", inversedBy="translations")
+     * @ORM\JoinColumn(name="category", referencedColumnName="id")
      */
-    private $link;
+    private $category;
 
     /**
      * @var \CommonBundle\Entity\General\Language The language of this translation
@@ -59,32 +59,23 @@ class Translation
     private $name;
 
     /**
-     * @var string The URL this link redirects to
-     *
-     * @ORM\Column(type="string")
-     */
-    private $url;
-
-    /**
-     * @param \PageBundle\Entity\Link $link
+     * @param \PageBundle\Entity\Category $category
      * @param \CommonBundle\Entity\General\Language $language
      * @param string $name
-     * @param string $url
      */
-    public function __construct(Link $link, Language $language, $name, $url)
+    public function __construct(Category $category, Language $language, $name)
     {
-        $this->link = $link;
+        $this->category = $category;
         $this->language = $language;
         $this->name = $name;
-        $this->url = $url;
     }
 
     /**
-     * @return \PageBundle\Entity\Link
+     * @return \PageBundle\Entity\Category
      */
-    public function getLink()
+    public function getCategory()
     {
-        return $this->link;
+        return $this->category;
     }
 
     /**
@@ -106,30 +97,11 @@ class Translation
     /**
      * @param string $name
      *
-     * @return \PageBundle\Entity\Links\Translation
+     * @return \PageBundle\Entity\Category\Translation
      */
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string $url
-     *
-     * @return \PageBundle\Entity\Links\Translation
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
         return $this;
     }
 }

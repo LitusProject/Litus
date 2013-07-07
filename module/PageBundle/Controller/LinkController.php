@@ -15,7 +15,7 @@
 namespace PageBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Nodes\Page,
+    PageBundle\Entity\Node\Page,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 

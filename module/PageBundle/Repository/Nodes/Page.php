@@ -3,7 +3,7 @@
 namespace PageBundle\Repository\Nodes;
 
 use Doctrine\ORM\EntityRepository,
-    PageBundle\Entity\Nodes\Page as PageEntity;
+    PageBundle\Entity\Node\Page as PageEntity;
 
 /**
  * Page
@@ -17,7 +17,7 @@ class Page extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('PageBundle\Entity\Nodes\Page', 'p')
+            ->from('PageBundle\Entity\Node\Page', 'p')
             ->where(
                 $query->expr()->isNull('p.endTime')
             )
@@ -29,13 +29,13 @@ class Page extends EntityRepository
 
     public function findByCategory($category)
     {
-        return $this->_em->getRepository('PageBundle\Entity\Nodes\Page')
+        return $this->_em->getRepository('PageBundle\Entity\Node\Page')
             ->findBy(array('category' => $category, 'endTime' => null));
     }
 
     public function findByParent($parent)
     {
-        return $this->_em->getRepository('PageBundle\Entity\Nodes\Page')
+        return $this->_em->getRepository('PageBundle\Entity\Node\Page')
             ->findBy(array('parent' => $parent, 'endTime' => null));
     }
 
@@ -46,7 +46,7 @@ class Page extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $query->select('p')
-            ->from('PageBundle\Entity\Nodes\Page', 'p')
+            ->from('PageBundle\Entity\Node\Page', 'p')
             ->innerJoin('p.parent', 'par')
             ->where(
                 $query->expr()->andX(
@@ -72,7 +72,7 @@ class Page extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('p')
-            ->from('PageBundle\Entity\Nodes\Page', 'p')
+            ->from('PageBundle\Entity\Node\Page', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('p.name', ':name'),
