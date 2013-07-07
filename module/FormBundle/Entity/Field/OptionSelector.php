@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Entity\Fields;
+namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -34,12 +34,12 @@ abstract class OptionSelector extends Field
     /**
      * @var array The translations of this field
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Fields\OptionTranslation", mappedBy="field", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\OptionTranslation", mappedBy="field", cascade={"remove"})
      */
     private $option_translations;
 
     /**
-     * @param FormBundle\Entity\Nodes\Form $form
+     * @param FormBundle\Entity\Node\Form $form
      * @param integer $order
      * @param bool $required
      */
@@ -83,7 +83,7 @@ abstract class OptionSelector extends Field
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \FormBundle\Entity\Fields\Translation
+     * @return \FormBundle\Entity\Field\Translation
      */
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {

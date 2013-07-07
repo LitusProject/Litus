@@ -1,6 +1,6 @@
 <?php
 
-namespace FormBundle\Entity\Fields;
+namespace FormBundle\Entity\Field;
 
 use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
@@ -26,7 +26,7 @@ class OptionTranslation
     /**
      * @var \FormBundle\Entity\Field The field of this translation
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Fields\OptionSelector", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field\OptionSelector", inversedBy="translations")
      * @ORM\JoinColumn(name="field", referencedColumnName="id")
      */
     private $field;
@@ -78,7 +78,7 @@ class OptionTranslation
     /**
      * @param string $options
      *
-     * @return \FormBundle\Entity\Fields\OptionSelector
+     * @return \FormBundle\Entity\Field\OptionSelector
      */
     public function setOptions($options) {
         $this->options = $options;

@@ -29,10 +29,10 @@ use CommonBundle\Entity\General\Language,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "string"="FormBundle\Entity\Fields\String",
- *      "options"="FormBundle\Entity\Fields\OptionSelector",
- *      "dropdown"="FormBundle\Entity\Fields\Dropdown",
- *      "checkbox"="FormBundle\Entity\Fields\Checkbox"
+ *      "string"="FormBundle\Entity\Field\String",
+ *      "options"="FormBundle\Entity\Field\OptionSelector",
+ *      "dropdown"="FormBundle\Entity\Field\Dropdown",
+ *      "checkbox"="FormBundle\Entity\Field\Checkbox"
  * })
  */
 abstract class Field
@@ -48,9 +48,9 @@ abstract class Field
     private $id;
 
     /**
-     * @var FormBundle\Entity\Nodes\Form The form this field is part of.
+     * @var FormBundle\Entity\Node\Form The form this field is part of.
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\Form", inversedBy="fields")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form", inversedBy="fields")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $form;

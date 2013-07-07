@@ -29,7 +29,7 @@ class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Nodes\Field $field The field we're going to modify
+     * @param \FormBundle\Entity\Node\Field $field The field we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)

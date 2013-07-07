@@ -1,6 +1,6 @@
 <?php
 
-namespace FormBundle\Repository\Nodes;
+namespace FormBundle\Repository\Node;
 
 use DateTime,
     Doctrine\ORM\EntityRepository;
@@ -17,7 +17,7 @@ class Entry extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\Nodes\Entry', 'n')
+            ->from('FormBundle\Entity\Node\Entry', 'n')
             ->orderBy('n.creationTime', 'DESC')
             ->getQuery()
             ->getResult();
@@ -29,7 +29,7 @@ class Entry extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
-            ->from('FormBundle\Entity\Nodes\Entry', 'f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
             ->orderBy('f.creationTime', 'DESC')
             ->where(
                 $query->expr()->eq('f.form', ':form')
@@ -45,7 +45,7 @@ class Entry extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
-            ->from('FormBundle\Entity\Nodes\Entry', 'f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
             ->orderBy('f.creationTime', 'DESC')
             ->where(
                 $query->expr()->andx(

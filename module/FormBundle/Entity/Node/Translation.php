@@ -1,6 +1,6 @@
 <?php
 
-namespace FormBundle\Entity\Nodes;
+namespace FormBundle\Entity\Node;
 
 use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
@@ -9,7 +9,7 @@ use CommonBundle\Component\Util\Url,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\Translation")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Translation")
  * @ORM\Table(name="nodes.forms_translations")
  */
 class Translation
@@ -24,9 +24,9 @@ class Translation
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Nodes\Form The form of this translation
+     * @var \FormBundle\Entity\Node\Form The form of this translation
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\Form", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form", inversedBy="translations")
      * @ORM\JoinColumn(name="form", referencedColumnName="id")
      */
     private $form;
@@ -61,7 +61,7 @@ class Translation
     private $submitText;
 
     /**
-     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param \FormBundle\Entity\Node\Form $form
      * @param \CommonBundle\Entity\General\Language $language
      * @param string $content
      * @param string $title
@@ -76,7 +76,7 @@ class Translation
     }
 
     /**
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function getForm()
     {
@@ -102,7 +102,7 @@ class Translation
     /**
      * @param string $title
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setTitle($title)
     {
@@ -121,7 +121,7 @@ class Translation
     /**
      * @param string $introduction
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setIntroduction($introduction)
     {
@@ -140,7 +140,7 @@ class Translation
     /**
      * @param string $submitText
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setSubmitText($submitText)
     {

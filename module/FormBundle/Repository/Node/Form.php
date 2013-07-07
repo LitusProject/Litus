@@ -1,6 +1,6 @@
 <?php
 
-namespace FormBundle\Repository\Nodes;
+namespace FormBundle\Repository\Node;
 
 use DateTime,
     Doctrine\ORM\EntityRepository;
@@ -17,7 +17,7 @@ class Form extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\Nodes\Form', 'n')
+            ->from('FormBundle\Entity\Node\Form', 'n')
             ->orderBy('n.creationTime', 'DESC')
             ->getQuery()
             ->getResult();
@@ -28,7 +28,7 @@ class Form extends EntityRepository
     public function findOneById($id) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\Nodes\Form', 'n')
+            ->from('FormBundle\Entity\Node\Form', 'n')
             ->where(
                 $query->expr()->eq('n.id', ':id')
             )
@@ -46,7 +46,7 @@ class Form extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
-            ->from('FormBundle\Entity\Nodes\Form', 'f')
+            ->from('FormBundle\Entity\Node\Form', 'f')
             ->where(
                 $query->expr()->gt('f.endDate', ':now')
             )
@@ -62,7 +62,7 @@ class Form extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
-            ->from('FormBundle\Entity\Nodes\Form', 'f')
+            ->from('FormBundle\Entity\Node\Form', 'f')
             ->where(
                 $query->expr()->lt('f.endDate', ':now')
             )

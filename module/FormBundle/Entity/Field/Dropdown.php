@@ -12,27 +12,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Entity\Fields;
+namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * This entity stores the node item.
+ * An abstract class that stores a number of options.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\Checkbox")
- * @ORM\Table(name="forms.fields_checkboxes")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\Dropdown")
+ * @ORM\Table(name="forms.fields_dropdowns")
  */
-class Checkbox extends Field
+class Dropdown extends OptionSelector
 {
 
     /**
-     * @param FormBundle\Entity\Nodes\Form $form
+     * @param FormBundle\Entity\Node\Form $form
      * @param integer $order
      * @param bool $required
      */
@@ -40,9 +39,4 @@ class Checkbox extends Field
     {
         parent::__construct($form, $order, $required);
     }
-
-    public function getValueString(Language $language, $value) {
-        return $value ? 'X' : '';
-    }
-
 }

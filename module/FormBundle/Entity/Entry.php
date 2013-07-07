@@ -31,10 +31,10 @@ class Entry
 {
 
     /**
-     * @var FormBundle\Entity\Nodes\Entry The form entry's id.
+     * @var FormBundle\Entity\Node\Entry The form entry's id.
      *
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Nodes\Entry", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Node\Entry", cascade={"persist"})
      * @ORM\JoinColumn(name="form_entry_id", referencedColumnName="id")
      */
     private $formEntry;

@@ -16,7 +16,7 @@ namespace FormBundle\Form\Admin\Form;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Nodes\Form,
+    FormBundle\Entity\Node\Form,
     Zend\Form\Element\Submit;
 
 /**
@@ -29,7 +29,7 @@ class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Nodes\Form $form The notification we're going to modify
+     * @param \FormBundle\Entity\Node\Form $form The notification we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Form $form, $name = null)

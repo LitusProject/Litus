@@ -12,12 +12,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Entity\Nodes;
+namespace FormBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
-    FormBundle\Entity\Nodes\Entry,
+    FormBundle\Entity\Node\Entry,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
@@ -26,7 +26,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\Form")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Form")
  * @ORM\Table(name="nodes.forms")
  */
 class Form extends \CommonBundle\Entity\Node
@@ -128,7 +128,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @var array The translations of this form
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Nodes\Translation", mappedBy="form", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation", mappedBy="form", cascade={"remove"})
      */
     private $translations;
 
@@ -163,7 +163,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param int $max
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setMax($max) {
         $this->max = $max;
@@ -180,7 +180,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $multiple
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setMultiple($multiple) {
         $this->multiple = $multiple;
@@ -197,7 +197,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $nonMember
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setNonMember($nonMember) {
         $this->nonMember = $nonMember;

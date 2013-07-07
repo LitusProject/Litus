@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Entity\Nodes;
+namespace FormBundle\Entity\Node;
 
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\GuestInfo")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\GuestInfo")
  * @ORM\Table(name="forms.guests_info")
  */
 class GuestInfo

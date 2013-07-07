@@ -37,9 +37,9 @@ class ViewerMap
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Nodes\Form The form of the mapping
+     * @var \FormBundle\Entity\Node\Form The form of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\Form")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form")
      * @ORM\JoinColumn(name="form", referencedColumnName="id")
      */
     private $form;
@@ -67,7 +67,7 @@ class ViewerMap
     private $mail;
 
     /**
-     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param \FormBundle\Entity\Node\Form $form
      * @param \CommonBundle\Entity\User\Person $person
      * @param boolean $edit
      * @param boolean $mail
@@ -85,7 +85,7 @@ class ViewerMap
     }
 
     /**
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function getForm() {
         return $this->form;

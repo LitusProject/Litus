@@ -16,9 +16,9 @@ namespace FormBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    FormBundle\Entity\Nodes\Form,
-    FormBundle\Entity\Nodes\GuestInfo,
-    FormBundle\Entity\Nodes\Entry as FormEntry,
+    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\GuestInfo,
+    FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\SpecifiedForm,
     Zend\Mail\Message,
@@ -57,7 +57,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $entriesCount = count($this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification));
 
         if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
@@ -84,7 +84,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         } else if ($person !== null) {
             $entriesCount = count($this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Nodes\Entry')
+                ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findAllByFormAndPerson($formSpecification, $person));
 
             if (!$formSpecification->isMultiple() && $entriesCount > 0) {
@@ -220,7 +220,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = $this->getEntityManager()
-        ->getRepository('FormBundle\Entity\Nodes\Form')
+        ->getRepository('FormBundle\Entity\Node\Form')
         ->findOneById($this->getParam('id'));
 
         if (null === $form) {

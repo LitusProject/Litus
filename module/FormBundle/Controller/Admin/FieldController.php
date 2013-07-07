@@ -15,10 +15,10 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Entity\Fields\Checkbox,
-    FormBundle\Entity\Fields\String as StringField,
-    FormBundle\Entity\Fields\Dropdown,
-    FormBundle\Entity\Fields\OptionTranslation,
+    FormBundle\Entity\Field\Checkbox,
+    FormBundle\Entity\Field\String as StringField,
+    FormBundle\Entity\Field\Dropdown,
+    FormBundle\Entity\Field\OptionTranslation,
     FormBundle\Entity\Translation,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
@@ -259,7 +259,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->getRepository('FormBundle\Entity\Node\Form')
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {

@@ -224,7 +224,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->getRepository('FormBundle\Entity\Node\Form')
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {

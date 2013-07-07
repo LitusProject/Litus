@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Entity\Fields;
+namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -53,7 +53,7 @@ class String extends Field
     private $multiLine;
 
     /**
-     * @param FormBundle\Entity\Nodes\Form $form
+     * @param FormBundle\Entity\Node\Form $form
      * @param integer $order
      * @param bool $required
      * @param integer $lineLength

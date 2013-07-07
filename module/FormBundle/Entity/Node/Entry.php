@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Entity\Nodes;
+namespace FormBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -24,7 +24,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\Entry")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Entry")
  * @ORM\Table(name="nodes.form_entries")
  */
 class Entry
@@ -54,17 +54,17 @@ class Entry
     private $creationPerson;
 
     /**
-     * @var \FormBundle\Entity\Nodes\GuestInfo The guest who created this node
+     * @var \FormBundle\Entity\Node\GuestInfo The guest who created this node
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\GuestInfo")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\GuestInfo")
      * @ORM\JoinColumn(name="guest_info", referencedColumnName="id", nullable=true)
      */
     private $guestInfo;
 
     /**
-     * @var FormBundle\Entity\Nodes\Form The form this entry is part of.
+     * @var FormBundle\Entity\Node\Form The form this entry is part of.
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\Form")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $form;
@@ -76,7 +76,7 @@ class Entry
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param \FormBundle\Entity\Node\Form $form
      */
     public function __construct($person, $guestInfo, $form)
     {
