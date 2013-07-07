@@ -26,7 +26,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     public function indexAction()
     {
         $notifications = $this->getEntityManager()
-            ->getRepository('NotificationBundle\Entity\Nodes\Notification')
+            ->getRepository('NotificationBundle\Entity\Node\Notification')
             ->findAllActive();
 
         $bookings = null;

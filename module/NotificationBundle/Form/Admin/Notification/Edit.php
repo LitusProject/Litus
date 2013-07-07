@@ -16,7 +16,7 @@ namespace NotificationBundle\Form\Admin\Notification;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
-    NotificationBundle\Entity\Nodes\Notification,
+    NotificationBundle\Entity\Node\Notification,
     Zend\Form\Element\Submit;
 
 /**
@@ -29,7 +29,7 @@ class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \NotificationBundle\Entity\Nodes\Notification $notification The notification we're going to modify
+     * @param \NotificationBundle\Entity\Node\Notification $notification The notification we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Notification $notification, $name = null)

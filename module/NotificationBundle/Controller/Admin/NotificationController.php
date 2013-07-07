@@ -16,7 +16,7 @@ namespace NotificationBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    NotificationBundle\Entity\Nodes\Notification,
+    NotificationBundle\Entity\Node\Notification,
     NotificationBundle\Form\Admin\Notification\Add as AddForm,
     NotificationBundle\Form\Admin\Notification\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -33,7 +33,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'NotificationBundle\Entity\Nodes\Notification',
+            'NotificationBundle\Entity\Node\Notification',
             $this->getParam('page')
         );
 
@@ -182,7 +182,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $notification = $this->getEntityManager()
-            ->getRepository('NotificationBundle\Entity\Nodes\Notification')
+            ->getRepository('NotificationBundle\Entity\Node\Notification')
             ->findOneById($this->getParam('id'));
 
         if (null === $notification) {

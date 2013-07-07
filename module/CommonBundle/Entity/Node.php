@@ -30,7 +30,7 @@ use CommonBundle\Entity\User\Person,
  *      "form"="FormBundle\Entity\Node\Form",
  *      "page"="PageBundle\Entity\Nodes\Page",
  *      "news"="NewsBundle\Entity\Node\News",
- *      "notification"="NotificationBundle\Entity\Nodes\Notification",
+ *      "notification"="NotificationBundle\Entity\Node\Notification",
  *      "event"="CalendarBundle\Entity\Node\Event"
  * })
  */

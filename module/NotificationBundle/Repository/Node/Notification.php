@@ -1,6 +1,6 @@
 <?php
 
-namespace NotificationBundle\Repository\Nodes;
+namespace NotificationBundle\Repository\Node;
 
 use DateTime,
     Doctrine\ORM\EntityRepository;
@@ -17,7 +17,7 @@ class Notification extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('NotificationBundle\Entity\Nodes\Notification', 'n')
+            ->from('NotificationBundle\Entity\Node\Notification', 'n')
             ->orderBy('n.creationTime', 'DESC')
             ->getQuery()
             ->getResult();
@@ -31,7 +31,7 @@ class Notification extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-            ->from('NotificationBundle\Entity\Nodes\Notification', 'n')
+            ->from('NotificationBundle\Entity\Node\Notification', 'n')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->lte('n.startDate', ':now'),

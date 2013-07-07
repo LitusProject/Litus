@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace NotificationBundle\Entity\Nodes;
+namespace NotificationBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -24,7 +24,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="NotificationBundle\Repository\Nodes\Notification")
+ * @ORM\Entity(repositoryClass="NotificationBundle\Repository\Node\Notification")
  * @ORM\Table(name="nodes.notifications")
  */
 class Notification extends \CommonBundle\Entity\Node
@@ -84,7 +84,7 @@ class Notification extends \CommonBundle\Entity\Node
     /**
      * @param string $content
      *
-     * @return \NotificationBundle\Entity\Nodes\Notification
+     * @return \NotificationBundle\Entity\Node\Notification
      */
     public function setContent($content) {
         $this->content = $content;
@@ -101,7 +101,7 @@ class Notification extends \CommonBundle\Entity\Node
     /**
      * @param DateTime $startDate
      *
-     * @return \NotificationBundle\Entity\Nodes\Notification
+     * @return \NotificationBundle\Entity\Node\Notification
      */
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
@@ -118,7 +118,7 @@ class Notification extends \CommonBundle\Entity\Node
     /**
      * @param DateTime $endDate
      *
-     * @return \NotificationBundle\Entity\Nodes\Notification
+     * @return \NotificationBundle\Entity\Node\Notification
      */
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
@@ -135,7 +135,7 @@ class Notification extends \CommonBundle\Entity\Node
     /**
      * @param boolean $active
      *
-     * @return \NotificationBundle\Entity\Nodes\Notification
+     * @return \NotificationBundle\Entity\Node\Notification
      */
     public function setActive($active) {
         $this->active = $active;
