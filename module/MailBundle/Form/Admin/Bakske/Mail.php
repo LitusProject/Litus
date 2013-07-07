@@ -86,7 +86,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findOneById($publicationId);
 
         $editions = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findAllByPublicationAndAcademicYear($publication, $this->_academicYear);
 
         if (empty($editions))

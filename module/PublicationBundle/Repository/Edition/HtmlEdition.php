@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicationBundle\Repository\Editions;
+namespace PublicationBundle\Repository\Edition;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
@@ -18,7 +18,7 @@ class HtmlEdition extends EntityRepository
 	{
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('PublicationBundle\Entity\Editions\Html', 'p')
+            ->from('PublicationBundle\Entity\Edition\Html', 'p')
             ->where(
                 $query->expr()->andX(
                    $query->expr()->eq('p.publication', ':publication'),
@@ -38,7 +38,7 @@ class HtmlEdition extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('PublicationBundle\Entity\Editions\Html', 'p')
+            ->from('PublicationBundle\Entity\Edition\Html', 'p')
             ->where(
                 $query->expr()->andX(
                    $query->expr()->eq('p.publication', ':publication'),

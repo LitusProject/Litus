@@ -27,8 +27,8 @@ use CommonBundle\Entity\General\AcademicYear,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "html"="PublicationBundle\Entity\Editions\Html",
- *      "pdf"="PublicationBundle\Entity\Editions\Pdf"}
+ *      "html"="PublicationBundle\Entity\Edition\Html",
+ *      "pdf"="PublicationBundle\Entity\Edition\Pdf"}
  * )
  */
 class Edition

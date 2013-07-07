@@ -62,7 +62,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findOneById($this->getParam('id'));
 
         if (null === $edition) {

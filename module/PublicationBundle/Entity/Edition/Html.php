@@ -11,7 +11,8 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace PublicationBundle\Entity\Editions;
+
+namespace PublicationBundle\Entity\Edition;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Util\Url,
@@ -23,53 +24,47 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * This is the entity for a publication
  *
- * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Editions\PdfEdition")
- * @ORM\Table(name="publications.editions_pdf")
+ * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Edition\HtmlEdition")
+ * @ORM\Table(name="publications.editions_html")
  */
-class Pdf extends \PublicationBundle\Entity\Edition
+class Html extends \PublicationBundle\Entity\Edition
 {
+    /**
+     * @var string The html of this edition.
+     *
+     * @ORM\Column(type="text", nullable=false)
+     */
+    private $html;
+
     /**
      * Creates a new edition with the given title
      *
      * @param \PublicationBundle\Entity\Publication The publication to which this edition belongs
      * @param \CommonBundle\Entity\General\AcademicYear
      * @param string $title The title of this edition
+     * @param string $html The html of this edition
      * @param \DateTime $date The date of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html, DateTime $date)
     {
         parent::__construct($publication, $academicYear, $title, $date);
-    }
-
-    private function getBase()
-    {
-        return '_publications/' . $this->getAcademicYear()->getCode(true) .
-            '/pdf/' . Url::createSlug($this->getPublication()->getTitle());
-    }
-
-    private function getFile()
-    {
-        return Url::createSlug($this->getTitle()) . '.pdf';
-    }
-
-    public function getDirectory()
-    {
-        return 'public/' . $this->getBase();
+        $this->html = $html;
     }
 
     /**
-     * @return string The pdf file of this edition
+     * @return string The html of this edition
      */
-    public function getFileName()
+    public function getHtml()
     {
-        return $this->getDirectory() . '/' . $this->getFile();
+        return $this->html;
     }
 
     /**
-     * @return string The url of the file of this edition
+     * @return string The location of the images of this edition.
      */
-    public function getUrl()
+    public function getImagesDirectory()
     {
-        return $this->getBase() . '/' . $this->getFile();
+        return 'public/_publications/' . $this->getAcademicYear()->getCode(true) .
+            '/html/' . Url::createSlug($this->getPublication()->getTitle()) . '/' . Url::createSlug($this->getTitle());
     }
 }

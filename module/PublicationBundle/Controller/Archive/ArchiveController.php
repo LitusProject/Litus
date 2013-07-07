@@ -63,11 +63,11 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
 
         $pdfs = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Pdf')
+            ->getRepository('PublicationBundle\Entity\Edition\Pdf')
             ->findAllByPublicationAndAcademicYear($publication, $year);
 
         $htmls = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findAllByPublicationAndAcademicYear($publication, $year);
 
         return new ViewModel(

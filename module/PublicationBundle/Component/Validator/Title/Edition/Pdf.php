@@ -79,7 +79,7 @@ class Pdf extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $edition = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\Editions\Pdf')
+            ->getRepository('PublicationBundle\Entity\Edition\Pdf')
             ->findOneByPublicationTitleAndAcademicYear($this->_publication, $value, $this->_academicYear);
 
         if (null !== $edition) {

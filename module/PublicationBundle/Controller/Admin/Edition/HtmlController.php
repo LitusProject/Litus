@@ -17,7 +17,7 @@ namespace PublicationBundle\Controller\Admin\Edition;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     PublicationBundle\Entity\Publication,
-    PublicationBundle\Entity\Editions\Html as HtmlEdition,
+    PublicationBundle\Entity\Edition\Html as HtmlEdition,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\ProgressBar\Upload\SessionProgress,
@@ -40,7 +40,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('PublicationBundle\Entity\Editions\Html')
+                ->getRepository('PublicationBundle\Entity\Edition\Html')
                 ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
@@ -229,7 +229,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findOneById($this->getParam('id'));
 
         if (null === $edition) {

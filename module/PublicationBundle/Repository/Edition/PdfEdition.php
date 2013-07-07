@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicationBundle\Repository\Editions;
+namespace PublicationBundle\Repository\Edition;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
@@ -18,7 +18,7 @@ class PdfEdition extends EntityRepository
 	{
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('PublicationBundle\Entity\Editions\Pdf', 'p')
+            ->from('PublicationBundle\Entity\Edition\Pdf', 'p')
             ->where(
                 $query->expr()->andX(
             	   $query->expr()->eq('p.publication', ':publication'),
@@ -38,7 +38,7 @@ class PdfEdition extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('PublicationBundle\Entity\Editions\Pdf', 'p')
+            ->from('PublicationBundle\Entity\Edition\Pdf', 'p')
             ->where(
                 $query->expr()->andX(
                    $query->expr()->eq('p.publication', ':publication'),

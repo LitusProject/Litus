@@ -79,7 +79,7 @@ class Html extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $edition = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findOneByPublicationTitleAndAcademicYear($this->_publication, $value, $this->_academicYear);
 
         if (null !== $edition) {

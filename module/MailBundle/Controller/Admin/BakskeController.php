@@ -43,7 +43,7 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
                 $editionId = $formData['edition'];
 
                 $edition = $this->getEntityManager()
-                    ->getRepository('PublicationBundle\Entity\Editions\Html')
+                    ->getRepository('PublicationBundle\Entity\Edition\Html')
                     ->findOneById($editionId);
 
                 $mailAddress = $this->getEntityManager()
