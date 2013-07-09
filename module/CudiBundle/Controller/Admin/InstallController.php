@@ -355,7 +355,7 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.sale_light_version',
-                    'value'       => '1',
+                    'value'       => '0',
                     'description' => 'Flag whether to show the light version of the sale app (no queue)',
                 ),
             )
