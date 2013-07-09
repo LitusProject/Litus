@@ -7,6 +7,7 @@
         tCancel: 'Cancel',
 
         membershipArticle: 0,
+        lightVersion: false,
 
         saveComment: function (id, comment) {},
         showQueue: function () {},

@@ -3,6 +3,7 @@
         isSell: true,
         discounts: [],
         membershipArticle: 0,
+        lightVersion: false,
 
         tCurrentCustomer: 'Current Customer',
         tComments: 'Comments',
@@ -137,6 +138,10 @@
                 )
             )
         );
+
+        if (settings.lightVersion) {
+            showQueue.hide();
+        }
 
         if (settings.isSell) {
             customer.after(

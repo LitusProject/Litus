@@ -12,6 +12,7 @@
                 sessionId: {{ session.getId() }},
                 authSession: '{{ authSession.getId() }}',
                 authKey: '{{ key }}',
+                lightVersion: {% if lightVersion %}true{% else %}false{% endif %},
                 membershipArticle: {{ membershipArticle.getId() }},
 
                 paydesks: [

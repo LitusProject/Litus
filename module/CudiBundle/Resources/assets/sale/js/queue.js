@@ -1,6 +1,7 @@
 (function ($) {
     var defaults = {
         tQueueTitle: 'Queue',
+        tQueueTitleLightVersion: 'Enter Person',
         tUniversityIdentification: 'University Identification',
         tPrint: 'Print',
         tDone: 'Done',
@@ -18,6 +19,7 @@
 
         translateStatus: function (status) {return status},
         sendToSocket: function (text) {},
+        lightVersion: false,
     };
 
     var lastPrinted = 0;
@@ -26,22 +28,26 @@
     var methods = {
         init : function (options) {
             var settings = $.extend(defaults, options);
-            var $this = $(this);
             $(this).data('queueSettings', settings);
 
-            _init($this);
+            if (settings.lightVersion) {
+                _initLightVersion($(this));
+            } else {
+                _init($(this));
+            }
             return this;
         },
         show : function (options) {
-            var permanent = options == undefined || options.permanent == undefined ? true : options.permanent;
+            var permanent = (options == undefined || options.permanent == undefined) ? true : options.permanent;
             currentView = permanent ? 'queue' : currentView;
             $(this).permanentModal({closable: !permanent});
 
-            var $this = $(this);
-
-            $(this).find('tbody tr').each(function () {
-                _showActions($this, $(this), $(this).data('info'));
-            });
+            if (!$(this).data('queueSettings').lightVersion) {
+                var $this = $(this);
+                $(this).find('tbody tr').each(function () {
+                    _showActions($this, $(this), $(this).data('info'));
+                });
+            }
             return this;
         },
         hide : function (options) {
@@ -209,6 +215,73 @@
         });
     }
 
+    function _initLightVersion($this) {
+        var settings = $this.data('queueSettings');
+
+        $this.addClass('modal fade').html('').append(
+            $('<div>', {'class': 'modal-header'}).append(
+                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide')}),
+                $('<h3>').html(settings.tQueueTitleLightVersion)
+            ),
+            $('<div>', {'class': 'modal-body'}).append(
+                $('<div>', {'class': 'form-search'}).append(
+                    $('<div>', {'class': 'input-append'}).append(
+                        filterText = $('<input>', {'type': 'text', 'class': 'input-medium search-query filterText', 'placeholder': settings.tUniversityIdentification}),
+                        clearFilter = $('<span>', {'class': 'add-on'}).css('cursor', 'pointer').append(
+                            $('<span>', {'class': 'icon-remove'})
+                        )
+                    )
+                )
+            ),
+            $('<div>', {'class': 'modal-footer'}).append(
+                undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling', 'data-key': '117'}).append(
+                    $('<i>', {'class': 'icon-arrow-left icon-white'}),
+                    settings.tUndoLastSelling + ' - F6'
+                ),
+                startSelling = $('<button>', {'class': 'btn btn-success disabled startSelling', 'data-key': '118'}).append(
+                    $('<i>', {'class': 'icon-print icon-white'}),
+                    settings.tSell + ' - F7'
+                )
+            )
+        );
+
+        filterText.css('width', '250px');
+
+        filterText.keyup(function (e) {
+            var filter = $(this).val().toLowerCase();
+            var pattern = new RegExp(/[a-z][0-9]{7}/);
+
+            if (pattern.test(filter)) {
+                $this.find('.startSelling').removeClass('disabled').unbind('click').click(function () {
+                    settings.sendToSocket(
+                        JSON.stringify({
+                            'command': 'action',
+                            'action': 'addToQueue',
+                            'universityIdentification': filter,
+                        })
+                    );
+                });
+                if (e.keyCode == 13)
+                    $this.find('.startSelling').click();
+            } else {
+                $this.find('.startSelling').addClass('disabled').unbind('click');
+            }
+        });
+
+        undoLastSelling.click(function () {
+            if (lastSold > 0) {
+                settings.sendToSocket(
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'undoSelling',
+                        'id': lastSold,
+                    })
+                );
+            }
+            $(this).hide();
+        });
+    }
+
     function _updateQueue($this, data) {
         var settings = $this.data('queueSettings');
         var tbody = $this.find('tbody');
@@ -245,21 +318,39 @@
 
     function _updateQueueItem($this, data) {
         var settings = $this.data('queueSettings');
-        var item = $this.find('tbody #item-' + data.id);
-
-        if (data.status == 'sold') {
-            item.remove();
-            return;
-        }
-
-        if (item.length == 0) {
-            item = _createItem($this, settings, data);
-            $this.find('tbody').append(item);
+        if (settings.lightVersion) {
+            if (data.university_identification == $this.find('.filterText').val().toLowerCase()) {
+                if (data.status == 'selling') {
+                    _addPersonError($this);
+                } else {
+                    $this.find('.filterText').val('');
+                    $this.find('.startSelling').addClass('disabled').unbind('click');
+                    settings.sendToSocket(
+                        JSON.stringify({
+                            'command': 'action',
+                            'action': 'startSelling',
+                            'id': data.id,
+                        })
+                    );
+                }
+            }
         } else {
-            _updateItem($this, settings, item, data)
-        }
+            var item = $this.find('tbody #item-' + data.id);
 
-        _toggleVisibility($this, item, data);
+            if (data.status == 'sold') {
+                item.remove();
+                return;
+            }
+
+            if (item.length == 0) {
+                item = _createItem($this, settings, data);
+                $this.find('tbody').append(item);
+            } else {
+                _updateItem($this, settings, item, data)
+            }
+
+            _toggleVisibility($this, item, data);
+        }
     }
 
     function _showActions($this, row, data) {
@@ -472,7 +563,7 @@
         $this.find('.modal-body').prepend(
             $('<div>', {'class': 'flashmessage alert alert-error fade in'}).append(
                 $('<div>', {'class': 'content'}).append('<p>').html(
-                    settings.tErrorAddPerson + ': ' + settings.tErrorAddPersonType[error]
+                    settings.tErrorAddPerson + (error == undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
                 )
             )
         );

@@ -353,6 +353,11 @@ VTK Cudi
                     'value'       => 'Catalog Updates',
                     'description' => 'The subject for the mail send for catalog updates',
                 ),
+                array(
+                    'key'         => 'cudi.sale_light_version',
+                    'value'       => '1',
+                    'description' => 'Flag whether to show the light version of the sale app (no queue)',
+                ),
             )
         );
 

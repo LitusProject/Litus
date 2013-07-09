@@ -70,6 +70,10 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
 
+        $result->lightVersion = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.sale_light_version');
+
         $e->setResult($result);
         return $result;
     }
