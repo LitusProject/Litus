@@ -14,7 +14,9 @@
 
 namespace TicketBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\Users\Person,
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")
@@ -30,7 +32,7 @@ class Ticket
     /**
      * @var array The possible states of a ticket
      */
-    private static $possibleStatuses = array(
+    public static $possibleStatuses = array(
         'emtpy' => 'Empty',
         'booked' => 'Booked',
         'sold' => 'Sold',
@@ -71,21 +73,177 @@ class Ticket
     /**
      * @var \DateTime The date the ticket was booked
      *
-     * @ORM\Column(name="book_date", type="datetime")
+     * @ORM\Column(name="book_date", type="datetime", nullable=true)
      */
     private $bookDate;
 
     /**
      * @var \DateTime The date the ticket was sold
      *
-     * @ORM\Column(name="sold_date", type="datetime")
+     * @ORM\Column(name="sold_date", type="datetime", nullable=true)
      */
     private $soldDate;
 
     /**
      * @var integer The number of the ticket (unique for an event)
      *
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $number;
+
+    /**
+     * @param \TicketBundle\Entity\Event $event
+     * @param string $status
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \DateTime $bookDate
+     * @param \DateTime $soldDate
+     * @param integer $number
+     */
+    public function __construct(Event $event, $status, Person $person = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
+    {
+        if (!self::isValidBookingStatus($status))
+            throw new \InvalidArgumentException('The TicketStatus is not valid.');
+
+        $this->event = $event;
+        $this->status = $status;
+        $this->person = $person;
+        $this->bookDate = $bookDate;
+        $this->soldDate = $soldDate;
+        $this->number = $number;
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function isValidTicketStatus($status)
+    {
+        return in_array($status, self::$POSSIBLE_STATUSES);
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return \TicketBundle\Entity\Event
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return self::$POSSIBLE_STATUSES[$this->status];
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusCode()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setStatus($status)
+    {
+        if (!self::isValidBookingStatus($status))
+            throw new \InvalidArgumentException('The TicketStatus is not valid.');
+
+        if ($status == 'empty') {
+            $this->bookDate = null;
+            $this->soldDate = null;
+        } elseif ($status == 'sold') {
+            $this->soldDate = new DateTime();
+        } elseif ($status == 'booked') {
+            $this->bookDate = new DateTime();
+            $this->soldDate = null;
+        }
+
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setPerson(Person $person = null)
+    {
+        $this->person = $person;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getBookDate()
+    {
+        return $this->bookDate;
+    }
+
+    /**
+     * @param \DateTime $bookDate
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setBookDate(DateTime $bookDate)
+    {
+        $this->bookDate = $bookDate;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getSoldDate()
+    {
+        return $this->soldDate;
+    }
+
+    /**
+     * @param \DateTime $soldDate
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setSoldDate(DateTime $soldDate)
+    {
+        $this->soldDate = $soldDate;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * @param integer $number
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+        return $this;
+    }
 }

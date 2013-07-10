@@ -86,7 +86,7 @@ class Group
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
