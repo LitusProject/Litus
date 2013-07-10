@@ -60,6 +60,13 @@ class Job
     private $description;
 
     /**
+     * @var string The benefits of the company.
+     *
+     * @ORM\Column(type="text")
+     */
+    private $benefits;
+
+    /**
      * @var string The profile required for this job.
      *
      * @ORM\Column(type="text")
@@ -67,11 +74,11 @@ class Job
     private $profile;
 
     /**
-     * @var string The required knowledge for this job.
+     * @var string The contact information for this job.
      *
-     * @ORM\Column(name="required_knowledge", type="text")
+     * @ORM\Column(type="text")
      */
-    private $requiredKnowledge;
+    private $contact;
 
     /**
      * @var string The city where the job is located
@@ -126,17 +133,19 @@ class Job
     /**
      * @param string $name The job's name
      * @param string $description The job's description
+     * @param string $benefits The job's benefits
      * @param string $profile The job's profile
-     * @param string $profile The job's required knowledge
+     * @param string $contact The job's required contact information
      * @param \BrBundle\Entity\Company $company The job's company
      * @param string $type The job's type (entry of $possibleTypes)
      */
-    public function __construct($name, $description, $profile, $requiredKnowledge, $city, Company $company, $type, $startDate, $endDate, $sector)
+    public function __construct($name, $description, $benefits, $profile, $contact, $city, Company $company, $type, $startDate, $endDate, $sector)
     {
         $this->setName($name);
         $this->setDescription($description);
+        $this->setBenefits($benefits);
         $this->setProfile($profile);
-        $this->setRequiredKnowledge($requiredKnowledge);
+        $this->setContact($contact);
         $this->setCity($city);
         $this->setStartDate($startDate);
         $this->setEndDate($endDate);
@@ -227,6 +236,25 @@ class Job
     }
 
     /**
+     * @param string $benefits
+     * @return \BrBundle\Entity\Company\job
+     */
+    public function setBenefits($benefits)
+    {
+        $this->benefits = $benefits;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBenefits()
+    {
+        return $this->benefits;
+    }
+
+    /**
      * @param string $profile
      * @return \BrBundle\Entity\Company\job
      */
@@ -246,12 +274,12 @@ class Job
     }
 
     /**
-     * @param string $requiredKnowledge
+     * @param string $contact
      * @return \BrBundle\Entity\Company\job
      */
-    public function setRequiredKnowledge($requiredKnowledge)
+    public function setContact($contact)
     {
-        $this->requiredKnowledge = $requiredKnowledge;
+        $this->contact = $contact;
 
         return $this;
     }
@@ -259,9 +287,9 @@ class Job
     /**
      * @return string
      */
-    public function getRequiredKnowledge()
+    public function getContact()
     {
-        return $this->requiredKnowledge;
+        return $this->contact;
     }
 
     /**
@@ -291,6 +319,14 @@ class Job
         $parser = new Markdown_Parser();
         $summary = $parser->transform($this->getDescription());
         return \CommonBundle\Component\Util\String::truncate($summary, $length, '...', true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummaryStriped($length = 50)
+    {
+        return strip_tags($this->getSummary($length));
     }
 
     /**

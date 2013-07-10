@@ -66,8 +66,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                 $job = new Job(
                     $formData['job_name'],
                     $formData['description'],
+                    $formData['benefits'],
                     $formData['profile'],
-                    $formData['requiredKnowledge'],
+                    $formData['contact'],
                     $formData['city'],
                     $company,
                     $formData['type'],
@@ -123,8 +124,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
                 $job->setName($formData['job_name'])
                     ->setDescription($formData['description'])
+                    ->setBenefits($formData['benefits'])
                     ->setProfile($formData['profile'])
-                    ->setRequiredKnowledge($formData['requiredKnowledge'])
+                    ->setContact($formData['contact'])
                     ->setCity($formData['city'])
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))

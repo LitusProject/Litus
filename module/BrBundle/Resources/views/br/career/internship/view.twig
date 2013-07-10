@@ -72,6 +72,20 @@
             </div>
             <div class="accordion-group">
                 <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#benefits">
+                        {{ translate('Benefits') }}
+                    </a>
+                </div>
+                <div id="benefits" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        {% autoescape false %}
+                            {{ markdown(internship.getBenefits()) }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#profile">
                         {{ translate('Wanted Profile') }}
                     </a>
@@ -86,14 +100,14 @@
             </div>
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#knowledge">
-                        {{ translate('Required Knowledge') }}
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#contact">
+                        {{ translate('Contact Information') }}
                     </a>
                 </div>
-                <div id="knowledge" class="accordion-body collapse in">
+                <div id="contact" class="accordion-body collapse in">
                     <div class="accordion-inner">
                         {% autoescape false %}
-                            {{ markdown(internship.getRequiredKnowledge()) }}
+                            {{ markdown(internship.getContact()) }}
                         {% endautoescape %}
                     </div>
                 </div>
