@@ -100,7 +100,7 @@ class Runner
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {

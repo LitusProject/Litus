@@ -85,7 +85,7 @@ class Lap
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
