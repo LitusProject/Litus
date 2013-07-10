@@ -32,6 +32,7 @@ return array(
         'ShiftBundle',
         'SportBundle',
         'SyllabusBundle',
+        'TicketBundle',
 
     	'LogisticsBundle',
         'SecretaryBundle',
