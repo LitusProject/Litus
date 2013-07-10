@@ -61,11 +61,11 @@ class Event
     private $active;
 
     /**
-     * @var integer The maximum number of tickets bookable by one person
+     * @var boolean Flag whether the tickets are generated
      *
-     * @ORM\Column(name="limit_per_person", type="integer")
+     * @ORM\Column(name="tickets_generated", type="boolean")
      */
-    private $limitPerPerson;
+    private $ticketsGenerated;
 
     /**
      * @var integer The total number of tickets
@@ -75,9 +75,16 @@ class Event
     private $numberOfTickets;
 
     /**
-     * @var boolean Flag whether the tickets are generated
+     * @var integer The maximum number of tickets bookable by one person
      *
-     * @ORM\Column(name="tickets_generated", type="boolean")
+     * @ORM\Column(name="limit_per_person", type="integer")
      */
-    private $ticketsGenerated;
+    private $limitPerPerson;
+
+    /**
+     * @var integer Flag whether only members can book tickets
+     *
+     * @ORM\Column(name="only_members", type="boolean")
+     */
+    private $onlyMembers;
 }
