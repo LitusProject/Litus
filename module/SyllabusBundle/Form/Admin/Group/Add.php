@@ -54,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Checkbox('cvbook');
-        $field->setLabel('Show In CV Book');
+        $field->setLabel('Show in CV Book');
         $this->add($field);
 
         $field = new Textarea('extra_members');
