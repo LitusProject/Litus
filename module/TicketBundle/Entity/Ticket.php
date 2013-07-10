@@ -28,6 +28,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Ticket
 {
     /**
+     * @var array The possible states of a ticket
+     */
+    private static $possibleStatuses = array(
+        'emtpy' => 'Empty',
+        'booked' => 'Booked',
+        'sold' => 'Sold',
+    );
+
+    /**
      * @var integer The ID of the ticket
      *
      * @ORM\Id
@@ -79,13 +88,4 @@ class Ticket
      * @ORM\Column(type="bigint")
      */
     private $number;
-
-    /**
-     * @var array The possible states of a ticket
-     */
-    private static $POSSIBLE_STATUSES = array(
-        'emtpy' => 'Empty',
-        'booked' => 'Booked',
-        'sold' => 'Sold',
-    );
 }
