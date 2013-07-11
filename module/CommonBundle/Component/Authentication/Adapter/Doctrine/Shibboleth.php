@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -64,7 +64,7 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                 array(
                     'code' => Result::FAILURE,
                     'messages' => array(
-                        'The given IDentity cannot login'
+                        'The given identity cannot login'
                     )
                 )
             );

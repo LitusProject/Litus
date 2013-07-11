@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -18,9 +18,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\Users\People\Academic,
-    CommonBundle\Entity\Users\People\Organizations\AcademicYearMap,
-    CudiBundle\Entity\Sales\Booking,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
+    CudiBundle\Entity\Sale\Booking,
     Imagick,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
@@ -249,14 +249,14 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     protected function _bookRegistrationArticles(Academic $academic, $tshirtSize)
     {
         $membershipArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
             );
 
         $booking = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                 $membershipArticle,
                 $academic
@@ -284,10 +284,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $hasShirt = false;
         foreach ($tshirts as $tshirt) {
             $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                     $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Article')
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
                         ->findOneById($tshirt),
                     $academic
                 );
@@ -311,7 +311,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $this->getEntityManager(),
                 $academic,
                 $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($tshirts[$tshirtSize]),
                 'booked',
                 1,
@@ -338,10 +338,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         foreach ($registrationArticles as $registrationArticle) {
             $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findOneSoldByArticleAndPerson(
                     $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Article')
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
                         ->findOneById($registrationArticle),
                     $academic
                 );
@@ -351,10 +351,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 continue;
 
             $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findOneAssignedByArticleAndPerson(
                     $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Article')
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
                         ->findOneById($registrationArticle),
                     $academic
                 );
@@ -367,7 +367,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $this->getEntityManager(),
                 $academic,
                 $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($registrationArticle),
                 'booked',
                 1,
@@ -431,7 +431,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     protected function _setOrganization(Academic $academic, AcademicYear $academicYear, Organization $organization)
     {
         $map = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Organizations\AcademicYearMap')
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
             ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
         if (null === $map) {

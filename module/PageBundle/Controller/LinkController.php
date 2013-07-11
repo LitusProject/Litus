@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace PageBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Nodes\Page,
+    PageBundle\Entity\Node\Page,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 

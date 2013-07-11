@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace CudiBundle\Form\Admin\Article\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CudiBundle\Entity\Files\Mapping as FileMapping,
+    CudiBundle\Entity\File\Mapping as FileMapping,
     Zend\Form\Element\Submit;
 
 /**

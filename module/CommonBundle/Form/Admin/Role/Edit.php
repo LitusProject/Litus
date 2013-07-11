@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -28,7 +28,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Role $role The role we're going to modify
+     * @param \CommonBundle\Entity\User\Role $role The role we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Role $role, $name = null)

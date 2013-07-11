@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,8 +15,8 @@
 namespace CudiBundle\Controller\Admin\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Articles\History,
-    CudiBundle\Entity\Log\Articles\SubjectMap\Added as SubjectMapAddedLog,
+    CudiBundle\Entity\Article\History,
+    CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
     CudiBundle\Form\Admin\Prof\Article\Confirm as ArticleForm,
     CudiBundle\Form\Admin\Prof\File\Confirm as FileForm,
     Zend\View\Model\ViewModel;
@@ -265,11 +265,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                         ->findOneById($formData['binding']);
 
                     $frontPageColor = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+                        ->getRepository('CudiBundle\Entity\Article\Option\Color')
                         ->findOneById($formData['front_color']);
 
                     $action->getEntity()->setNbBlackAndWhite($formData['nb_black_and_white'])

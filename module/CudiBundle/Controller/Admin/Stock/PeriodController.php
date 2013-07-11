@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Stock\Periods\Values\Start as StartValue,
+    CudiBundle\Entity\Stock\Period\Value\Start as StartValue,
     Zend\View\Model\ViewModel;
 
 /**
@@ -59,7 +59,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             $previous->close();
 
             $bookings = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllBooked($previous);
 
             foreach($bookings as $booking) {
@@ -71,7 +71,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 ->findAllArticlesByPeriod($previous);
             foreach($articles as $article) {
                 $value = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\Periods\Values\Start')
+                        ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
                         ->findValueByArticleAndPeriod($article, $previous)
                     + $previous->getNbDelivered($article)
                     - $previous->getNbSold($article);

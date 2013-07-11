@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace CommonBundle\Component\Controller;
 
-use CommonBundle\Entity\Users\Person;
+use CommonBundle\Entity\User\Person;
 
 /**
  * Interface that specifies controller authentication methods.

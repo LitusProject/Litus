@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,8 +14,8 @@
 
 namespace CudiBundle\Entity\Stock;
 
-use CommonBundle\Entity\Users\Person,
-    CudiBundle\Entity\Sales\Article,
+use CommonBundle\Entity\User\Person,
+    CudiBundle\Entity\Sale\Article,
     DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -36,9 +36,9 @@ class Period
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who created the period
+     * @var \CommonBundle\Entity\User\Person The person who created the period
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -63,7 +63,7 @@ class Period
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person The person who created the period
+     * @param \CommonBundle\Entity\User\Person $person The person who created the period
      */
     public function __construct(Person $person)
     {
@@ -82,7 +82,7 @@ class Period
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {
@@ -134,7 +134,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -147,7 +147,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -159,7 +159,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -171,7 +171,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -183,7 +183,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -195,7 +195,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */
@@ -207,7 +207,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      *
      * @return integer
      */

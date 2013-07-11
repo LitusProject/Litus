@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\Aliases\Academic as Alias,
+    MailBundle\Entity\Alias\Academic as Alias,
     MailBundle\Form\Admin\Alias\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -54,11 +54,11 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
 
                 if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                     $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneByUsername($formData['person_name']);
                 } else {
                     $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneById($formData['person_id']);
                 }
 

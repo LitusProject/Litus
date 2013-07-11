@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,8 +15,8 @@
 namespace SecretaryBundle\Controller\Admin\MailingList;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\Entries\Academic as AcademicEntry,
-    MailBundle\Entity\Entries\External as ExternalEntry,
+    MailBundle\Entity\Entry\Academic as AcademicEntry,
+    MailBundle\Entity\Entry\External as ExternalEntry,
     MailBundle\Entity\MailingList\Named as NamedList,
     SecretaryBundle\Entity\Promotion,
     SecretaryBundle\Entity\MailingList\Promotion as PromotionList,

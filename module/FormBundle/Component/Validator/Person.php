@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -90,7 +90,7 @@ class Person extends \Zend\Validator\AbstractValidator
     protected function getPerson($value)
     {
         $repository = $this->_entityManager
-        ->getRepository('CommonBundle\Entity\Users\Person');
+        ->getRepository('CommonBundle\Entity\User\Person');
 
         if ($this->_byId) {
             $person = $repository->findOneById($value);

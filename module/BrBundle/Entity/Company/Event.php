@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company,
-    CalendarBundle\Entity\Nodes\Event as CommonEvent,
+    CalendarBundle\Entity\Node\Event as CommonEvent,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -39,7 +39,7 @@ class Event
     /**
      * @var string The event
      *
-     * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Nodes\Event", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Node\Event", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
      */
     private $event;
@@ -53,7 +53,7 @@ class Event
     private $company;
 
     /**
-     * @param \CalendarBundle\Entity\Nodes\Event $event
+     * @param \CalendarBundle\Entity\Node\Event $event
      * @param \BrBundle\Entity\Company $company The event's company
      */
     public function __construct(CommonEvent $event, Company $company)
@@ -71,7 +71,7 @@ class Event
     }
 
     /**
-     * @return \CalendarBundle\Entity\Nodes\Event
+     * @return \CalendarBundle\Entity\Node\Event
      */
     public function getEvent()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace CudiBundle\Controller\Prof\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
-    CudiBundle\Entity\Files\File,
+    CudiBundle\Entity\File\File,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\File\Add as AddForm,
     Doctrine\ORM\EntityManager,
@@ -37,7 +37,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
 
         $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Files\Mapping')
+            ->getRepository('CudiBundle\Entity\File\Mapping')
             ->findAllByArticle($article, true);
 
         $fileMappings = array();
@@ -143,7 +143,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->getEntityManager()->flush();
 
             $mapping = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Files\Mapping')
+                ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneByFile($file);
             $mapping->setIsProf(true);
 
@@ -297,7 +297,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $file = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Files\Mapping')
+            ->getRepository('CudiBundle\Entity\File\Mapping')
             ->findOneById($this->getParam('id'));
 
         if (null === $file) {

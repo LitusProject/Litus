@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -86,7 +86,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findOneById($publicationId);
 
         $editions = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findAllByPublicationAndAcademicYear($publication, $this->_academicYear);
 
         if (empty($editions))

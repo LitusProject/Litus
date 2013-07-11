@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -34,12 +34,12 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     public function onDispatch(MvcEvent $e)
     {
         $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
         if (null == $session || !$session->isOpen()) {
             $sessions = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOpen();
             if (sizeof($sessions) == 1) {
                 $this->redirect()->toRoute(

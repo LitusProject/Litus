@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace FormBundle\Entity;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -31,10 +31,10 @@ use CommonBundle\Entity\General\Language,
 class Entry
 {
     /**
-     * @var FormBundle\Entity\Nodes\Entry The form entry's id.
+     * @var FormBundle\Entity\Node\Entry The form entry's id.
      *
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Nodes\Entry", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Node\Entry", cascade={"persist"})
      * @ORM\JoinColumn(name="form_entry_id", referencedColumnName="id")
      */
     private $formEntry;

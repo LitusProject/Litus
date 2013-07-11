@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -192,7 +192,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $users = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findAllByRole($role->getName());
 
         foreach ($users as $user) {

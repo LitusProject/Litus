@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -26,13 +26,13 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     public function indexAction()
     {
         $notifications = $this->getEntityManager()
-            ->getRepository('NotificationBundle\Entity\Nodes\Notification')
+            ->getRepository('NotificationBundle\Entity\Node\Notification')
             ->findAllActive();
 
         $bookings = null;
         if (null !== $this->getAuthentication()->getPersonObject()) {
             $bookings = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
 
             foreach ($bookings as $key => $booking) {
@@ -45,11 +45,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $newsItems = $this->getEntityManager()
-            ->getRepository('NewsBundle\Entity\Nodes\News')
+            ->getRepository('NewsBundle\Entity\Node\News')
             ->findNbSite(5);
 
         $events = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
         $calendarItems = array();
@@ -66,22 +66,22 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $cudi = array();
         $cudi['currentOpeningHour'] = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findCurrent();
 
         $sessions = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOpen();
         if (sizeof($sessions) == 1) {
             $cudi['currentSession'] = $sessions[0];
 
             $cudi['currentStudents'] = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+                ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                 ->findNbBySession($cudi['currentSession']);
         }
 
         $cudi['openingHours'] = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findWeekFromNow();
 
         return new ViewModel(

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,10 +15,10 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Entity\Fields\Checkbox,
-    FormBundle\Entity\Fields\String as StringField,
-    FormBundle\Entity\Fields\Dropdown,
-    FormBundle\Entity\Fields\OptionTranslation,
+    FormBundle\Entity\Field\Checkbox,
+    FormBundle\Entity\Field\String as StringField,
+    FormBundle\Entity\Field\Dropdown,
+    FormBundle\Entity\Field\OptionTranslation,
     FormBundle\Entity\Translation,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
@@ -386,7 +386,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->getRepository('FormBundle\Entity\Node\Form')
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Delivery,
-    CudiBundle\Entity\Stock\Orders\Virtual as VirtualOrder,
+    CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
     CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -101,12 +101,12 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 $formData = $form->getFormData($formData);
 
                 $article = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($formData['article_id']);
 
                 if ($formData['add_with_virtual_order']) {
                     $virtual = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\Orders\Virtual')
+                        ->getRepository('CudiBundle\Entity\Stock\Order\Virtual')
                         ->findNbByPeriodAndArticle($period, $article);
 
                     $nb = $formData['number'] - ($period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual);
@@ -190,13 +190,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         $academicYear = $this->getAcademicYear();
 
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
 
         $result = array();
         foreach($articles as $article) {
             $virtual = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Orders\Virtual')
+                ->getRepository('CudiBundle\Entity\Stock\Order\Virtual')
                 ->findNbByPeriodAndArticle($period, $article);
 
             $item = (object) array();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,7 +30,7 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
         $this->initAjax();
 
         $persons = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findAllByNameTypeahead($this->getParam('string'));
 
         $result = array();

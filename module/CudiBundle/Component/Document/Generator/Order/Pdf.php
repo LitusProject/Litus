@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,7 +17,7 @@ namespace CudiBundle\Component\Document\Generator\Order;
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CudiBundle\Entity\Stock\Orders\Order,
+    CudiBundle\Entity\Stock\Order\Order,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -70,7 +70,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($configs->getConfigValue('cudi.person'));
 
         $delivery_address_name = $configs->getConfigValue('cudi.delivery_address_name');

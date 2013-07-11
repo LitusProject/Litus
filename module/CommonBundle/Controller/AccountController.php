@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,13 +16,13 @@ namespace CommonBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\Users\Credential,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
-    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Entity\User\Credential,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
     CommonBundle\Form\Account\FileServer\CreateAccount as CreateAccountForm,
     CommonBundle\Form\Account\FileServer\ChangePassword as ChangePasswordForm,
-    CudiBundle\Entity\Sales\Booking,
+    CudiBundle\Entity\Sale\Booking,
     DateTime,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
@@ -217,10 +217,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 if (null !== $metaData) {
                     if ($metaData->getTshirtSize() !== null) {
                         $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->getRepository('CudiBundle\Entity\Sale\Booking')
                             ->findOneAssignedByArticleAndPerson(
                                 $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->getRepository('CudiBundle\Entity\Sale\Article')
                                     ->findOneById($tshirts[$metaData->getTshirtSize()]),
                                 $academic
                             );
@@ -264,7 +264,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
 
                 $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('secretary.membership_article')
@@ -274,7 +274,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
                 } else {
                     $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                             $membershipArticle,
                             $academic
@@ -733,7 +733,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         $user = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Code')
+            ->getRepository('CommonBundle\Entity\User\Code')
             ->findOnePersonByCode($this->getParam('code'));
 
         if (null === $user) {

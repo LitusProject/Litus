@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -18,7 +18,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
     CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
-    CudiBundle\Entity\Sales\Session,
+    CudiBundle\Entity\Sale\Session,
     CudiBundle\Form\Admin\Sales\Session\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Session\Edit as EditForm,
     CudiBundle\Form\Admin\Sales\Session\Close as CloseForm,
@@ -36,7 +36,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Sales\Session',
+            'CudiBundle\Entity\Sale\Session',
             $this->getParam('page'),
             array(),
             array('openDate' => 'DESC')
@@ -55,7 +55,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
 
         $lastSession = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->getLast();
 
         if($this->getRequest()->isPost()) {
@@ -179,7 +179,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneByCashRegister($cashRegister);
 
         $form = new EditForm($this->getEntityManager(), $cashRegister);
@@ -277,7 +277,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
                 if ('1' == $autoExpire) {
                     $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->expireBookings($this->getMailTransport());
                 }
 
@@ -320,7 +320,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $items = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findBySession($session);
 
         return new ViewModel(
@@ -366,7 +366,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('id'));
 
         if (null === $session) {

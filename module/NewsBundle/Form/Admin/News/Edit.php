@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace NewsBundle\Form\Admin\News;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
-    NewsBundle\Entity\Nodes\News,
+    NewsBundle\Entity\Node\News,
     Zend\Form\Element\Submit;
 
 /**
@@ -29,7 +29,7 @@ class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \NewsBundle\Entity\Nodes\News $news The news item we're going to modify
+     * @param \NewsBundle\Entity\Node\News $news The news item we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, News $news, $name = null)

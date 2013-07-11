@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace BannerBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    BannerBundle\Entity\Nodes\Banner,
+    BannerBundle\Entity\Node\Banner,
     BannerBundle\Form\Admin\Banner\Add as AddForm,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -43,7 +43,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'BannerBundle\Entity\Nodes\Banner',
+            'BannerBundle\Entity\Node\Banner',
             $this->getParam('page')
         );
 
@@ -313,7 +313,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $banner = $this->getEntityManager()
-            ->getRepository('BannerBundle\Entity\Nodes\Banner')
+            ->getRepository('BannerBundle\Entity\Node\Banner')
             ->findOneById($this->getParam('id'));
 
         if (null === $banner) {

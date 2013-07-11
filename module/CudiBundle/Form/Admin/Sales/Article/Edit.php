@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace CudiBundle\Form\Admin\Sales\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
-    CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -30,13 +30,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
 {
     /**
-     * @var \CudiBundle\Entity\Sales\Article
+     * @var \CudiBundle\Entity\Sale\Article
      */
     private $_article;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Article $article, $name = null)

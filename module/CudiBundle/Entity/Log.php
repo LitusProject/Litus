@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -24,13 +24,13 @@ use CommonBundle\Entity\Users\Person,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "sales_assignments"="CudiBundle\Entity\Log\Sales\Assignments",
- *      "sales_prof_version"="CudiBundle\Entity\Log\Sales\ProfVersion",
- *      "sales_return"="CudiBundle\Entity\Log\Sales\Returned",
- *      "articles_sales_bookable"="CudiBundle\Entity\Log\Articles\Sales\Bookable",
- *      "articles_sales_unbookable"="CudiBundle\Entity\Log\Articles\Sales\Unbookable",
- *      "articles_subject_map_added"="CudiBundle\Entity\Log\Articles\SubjectMap\Added",
- *      "articles_subject_map_removed"="CudiBundle\Entity\Log\Articles\SubjectMap\Removed"
+ *      "sales_assignments"="CudiBundle\Entity\Log\Sale\Assignments",
+ *      "sales_prof_version"="CudiBundle\Entity\Log\Sale\ProfVersion",
+ *      "sales_return"="CudiBundle\Entity\Log\Sale\Returned",
+ *      "articles_sales_bookable"="CudiBundle\Entity\Log\Article\Sale\Bookable",
+ *      "articles_sales_unbookable"="CudiBundle\Entity\Log\Article\Sale\Unbookable",
+ *      "articles_subject_map_added"="CudiBundle\Entity\Log\Article\SubjectMap\Added",
+ *      "articles_subject_map_removed"="CudiBundle\Entity\Log\Article\SubjectMap\Removed"
  * })
  */
 class Log
@@ -52,9 +52,9 @@ class Log
     private $timestamp;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person of the log
+     * @var \CommonBundle\Entity\User\Person The person of the log
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -67,7 +67,7 @@ class Log
     private $text;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param string $text
      */
     public function __construct(Person $person, $text)
@@ -94,7 +94,7 @@ class Log
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -18,7 +18,7 @@ use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     PageBundle\Entity\Category,
-    PageBundle\Entity\Nodes\Page;
+    PageBundle\Entity\Node\Page;
 
 /**
  * This entity represents a link in the menu structure.
@@ -38,15 +38,15 @@ class Link
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The link's parent
+     * @var \PageBundle\Entity\Node\Page The link's parent
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The link's category
+     * @var \PageBundle\Entity\Node\Page The link's category
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
@@ -56,7 +56,7 @@ class Link
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this link
      *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Links\Translation", mappedBy="link", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Link\Translation", mappedBy="link", cascade={"remove"})
      */
     private $translations;
 
@@ -79,7 +79,7 @@ class Link
     }
 
     /**
-     * @return \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Node\Page
      */
     public function getParent()
     {
@@ -87,7 +87,7 @@ class Link
     }
 
     /**
-     * @param \PageBundle\Entity\Nodes\Page $category The page's category
+     * @param \PageBundle\Entity\Node\Page $category The page's category
      * @return \PageBundle\Entity\Category
      */
     public function setParent(Page $parent)
@@ -117,7 +117,7 @@ class Link
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \PageBundle\Entity\Links\Translation
+     * @return \PageBundle\Entity\Link\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

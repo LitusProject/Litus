@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -72,14 +72,14 @@ class Title extends \Zend\Validator\AbstractValidator
         $parentName = null;
         if (isset($context['parent_' . $context['category']]) && '' != $context['parent_' . $context['category']]) {
             $realParent = $this->_entityManager
-                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneById($context['parent_' . $context['category']]);
 
             $parentName = $realParent->getName();
         }
 
         $page = $this->_entityManager
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findOneByNameAndParent(
                 Url::createSlug($value), Url::createSlug($parentName)
             );

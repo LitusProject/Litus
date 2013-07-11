@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Comments\Comment,
+    CudiBundle\Entity\Comment\Comment,
     CudiBundle\Form\Admin\Article\Comment\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -32,7 +32,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Mapping')
+            ->getRepository('CudiBundle\Entity\Comment\Mapping')
             ->findByArticle($article);
 
         $form = new AddForm();
@@ -172,7 +172,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $comment = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Mapping')
+            ->getRepository('CudiBundle\Entity\Comment\Mapping')
             ->findOneById($this->getParam('id'));
 
         if (null === $comment) {

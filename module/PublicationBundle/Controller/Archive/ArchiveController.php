@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -63,11 +63,11 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
 
         $pdfs = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Pdf')
+            ->getRepository('PublicationBundle\Entity\Edition\Pdf')
             ->findAllByPublicationAndAcademicYear($publication, $year);
 
         $htmls = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findAllByPublicationAndAcademicYear($publication, $year);
 
         return new ViewModel(

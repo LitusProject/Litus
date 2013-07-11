@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\QueueItem,
+    CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Form\Sale\Queue\SignIn as SignInForm,
     Zend\View\Model\ViewModel;
 
@@ -51,7 +51,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
             ->getConfigValue('br.public_logo_path');
 
         $payDesks = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\PayDesk')
+            ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
 
         for ($i = 0 ; $i < sizeof($payDesks) ; $i++) {

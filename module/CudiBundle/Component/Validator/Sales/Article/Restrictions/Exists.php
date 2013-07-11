@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Component\Validator\Sales\Article\Restrictions;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -73,7 +73,7 @@ class Exists extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $restriction = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Restriction')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
             ->findOneByArticleAndType($this->_article, $value);
 
         if (null === $restriction)

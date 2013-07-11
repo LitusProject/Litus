@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace PageBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Nodes\Page,
+    PageBundle\Entity\Node\Page,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -79,7 +79,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     private function _buildSubmenu(Page $page)
     {
         $pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findByParent($page->getId());
 
         $links = $this->getEntityManager()
@@ -117,7 +117,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $pages = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->getRepository('PageBundle\Entity\Node\Page')
                 ->findByCategory($category);
 
             $links = $this->getEntityManager()
@@ -164,7 +164,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             return;
 
         $page = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findOneByNameAndParent(
                 $this->getParam('name'), $this->getParam('parent')
             );

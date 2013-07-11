@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,9 +14,9 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Entity\Users\People\Academic,
-    CudiBundle\Entity\Sales\Booking,
-    CudiBundle\Entity\Articles\Notifications\Subscription,
+use CommonBundle\Entity\User\Person\Academic,
+    CudiBundle\Entity\Sale\Booking,
+    CudiBundle\Entity\Article\Notification\Subscription,
     CudiBundle\Form\Booking\Booking as BookingForm,
     CudiBundle\Form\Booking\Search as SearchForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -39,7 +39,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $bookings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($authenticatedPerson);
 
         $total = 0;
@@ -121,7 +121,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByAcademicAndAcademicYear($authenticatedPerson, $currentYear);
 
         $bookingsOpen = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($authenticatedPerson);
 
         $booked = array();
@@ -132,7 +132,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $bookingsSold = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllSoldByPerson($authenticatedPerson);
 
         $sold = array();
@@ -147,18 +147,18 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $subject = $enrollment->getSubject();
 
             $subjectMaps = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findAllBySubjectAndAcademicYear($subject, $currentYear);
 
             $articles = array();
             foreach ($subjectMaps as $subjectMap) {
                 $article = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneByArticle($subjectMap->getArticle());
 
                 if ($article !== null) {
                     $comments = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Comments\Comment')
+                        ->getRepository('CudiBundle\Entity\Comment\Comment')
                         ->findAllSiteByArticle($article->getMainArticle());
 
                     $articles[] = array(
@@ -184,14 +184,14 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $commonArticles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByTypeAndAcademicYear('common', $currentYear);
 
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
             if ($commonArticle->isBookable()) {
                 $comments = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Comments\Comment')
+                    ->getRepository('CudiBundle\Entity\Comment\Comment')
                     ->findAllSiteByArticle($commonArticle->getMainArticle());
 
                 $articles[] = array(
@@ -228,7 +228,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                     if (substr($formKey, 0, 8) === 'article-' && $formValue != '' && $formValue != '0') {
                         $saleArticle = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sales\Article')
+                            ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($saleArticleId);
 
                         if (!$saleArticle->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager()))
@@ -237,7 +237,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         foreach($saleArticle->getRestrictions() as $restriction) {
                             if ($restriction->getRawType() == 'amount') {
                                 $amount = sizeof($this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                                     ->findOneSoldOrAssignedOrBookedByArticleAndPerson($saleArticle, $this->getAuthentication()->getPersonObject()));
                                 if ($amount + $formValue > $restriction->getValue())
                                     $formValue = $restriction->getValue() - $amount;
@@ -315,7 +315,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'form' => $form,
                 'searchForm' => $searchForm,
                 'isSubscribed' => $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Articles\Notifications\Subscription')
+                    ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
                     ->findOneByPerson($this->getAuthentication()->getPersonObject()) !== null,
             )
         );
@@ -324,7 +324,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     public function searchAction()
     {
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByTitleOrAuthorAndAcademicYear($this->getParam('id'), $this->getCurrentAcademicYear());
 
         $numResults = $this->getEntityManager()
@@ -344,7 +344,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         );
 
         $bookingsOpen = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
 
         $booked = array();
@@ -355,7 +355,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $bookingsSold = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllSoldByPerson($this->getAuthentication()->getPersonObject());
 
         $sold = array();
@@ -389,7 +389,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $item->comments = array();
 
             $comments = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Comments\Comment')
+                ->getRepository('CudiBundle\Entity\Comment\Comment')
                 ->findAllSiteByArticle($article->getMainArticle());
 
             foreach($comments as $comment) {
@@ -432,7 +432,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
             foreach($formData as $id => $number) {
                 $article = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($id);
 
                 if (null === $article || !is_numeric($number))
@@ -512,7 +512,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $this->getEntityManager()->persist(new Subscription($this->getAuthentication()->getPersonObject()));
         } else {
             $subscription = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Articles\Notifications\Subscription')
+                ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
                 ->findOneByPerson($this->getAuthentication()->getPersonObject());
             if (null !== $subscription)
                 $this->getEntityManager()->remove($subscription);
@@ -532,7 +532,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             return;
 
         $booking = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneById($this->getParam('id'));
 
         if (null === $booking)

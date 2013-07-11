@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,9 +34,9 @@ class SubjectProfMap
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The prof of the mapping
+     * @var \CommonBundle\Entity\User\Person\Academic The prof of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $prof;
@@ -59,7 +59,7 @@ class SubjectProfMap
 
     /**
      * @param \SyllabusBundle\Entity\Subject $subject
-     * @param \CommonBundle\Entity\Users\People\Academic $prof
+     * @param \CommonBundle\Entity\User\Person\Academic $prof
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
      */
     public function __construct(Subject $subject, Academic $prof, AcademicYear $academicYear)
@@ -86,7 +86,7 @@ class SubjectProfMap
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getProf()
     {

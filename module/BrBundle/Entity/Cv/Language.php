@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -82,7 +82,7 @@ class Language
     private $oral;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
      * @param \CommonBundle\Entity\General\AcademicYear $year The current academic year.
      */
     public function __construct(Entry $entry, $name, $written, $oral)

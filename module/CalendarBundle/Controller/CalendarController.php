@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -99,7 +99,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $last->add(new DateInterval('P1M'));
 
         $events = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllBetween($first, $last);
 
         $dayFormatter = new IntlDateFormatter(
@@ -205,7 +205,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $result .= 'END:VTIMEZONE' . PHP_EOL;
 
         $events = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive(0);
 
         foreach($events as $event) {
@@ -243,7 +243,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             return;
 
         $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneByName($this->getParam('name'));
 
         if (null === $event)
@@ -258,7 +258,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             return;
 
         $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneByPoster($this->getParam('name'));
 
         if (null === $event)

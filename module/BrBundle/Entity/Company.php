@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Users\People\Corporate,
+use BrBundle\Entity\User\Person\Corporate,
     CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Address,
     Doctrine\Common\Collections\ArrayCollection,
@@ -108,7 +108,7 @@ class Company
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
      *
-     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", mappedBy="company")
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\User\Person\Corporate", mappedBy="company")
      */
     private $contacts;
 

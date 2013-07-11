@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,7 +17,7 @@ namespace SportBundle\Component\WebSocket\Run;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     DateTime,
     DateInterval,
     Doctrine\ORM\EntityManager,
@@ -105,7 +105,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 }
 
                 $authSession = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\Users\Session')
+                    ->getRepository('CommonBundle\Entity\User\Session')
                     ->findOneById($command->authSession);
 
                 if ($authSession) {
@@ -190,7 +190,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             && '' == $data->lastName
         ) {
             $academic = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
             if (null !== $academic) {
                 $data->firstName = $academic->getFirstName();
@@ -210,7 +210,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         if (null === $runner) {
             $academic = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
 
             $runner = new Runner(

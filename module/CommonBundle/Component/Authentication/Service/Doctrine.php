@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace CommonBundle\Component\Authentication\Service;
 
 use CommonBundle\Component\Authentication\Action,
     CommonBundle\Component\Authentication\Result\Doctrine as Result,
-    CommonBundle\Entity\Users\Session,
+    CommonBundle\Entity\User\Session,
     Doctrine\ORM\EntityManager,
     Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\Storage\StorageInterface as StorageInterface;

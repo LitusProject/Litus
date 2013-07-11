@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,7 +17,7 @@ namespace CudiBundle\Controller;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     DateInterval,
-    PageBundle\Entity\Nodes\Page,
+    PageBundle\Entity\Node\Page,
     Zend\View\Model\ViewModel;
 
 /**
@@ -49,7 +49,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         $openingHours = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findCurrentWeek();
 
         $start = new DateTime();
@@ -98,7 +98,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
     private function _buildSubmenu(Page $page)
     {
         $pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findByParent($page->getId());
 
         $links = $this->getEntityManager()
@@ -136,7 +136,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
             );
 
             $pages = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->getRepository('PageBundle\Entity\Node\Page')
                 ->findByCategory($category);
 
             $links = $this->getEntityManager()

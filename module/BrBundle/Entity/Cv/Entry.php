@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace BrBundle\Entity\Cv;
 
 use Doctrine\Common\Collections\ArrayCollection,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     SyllabusBundle\Entity\Study,
@@ -39,9 +39,9 @@ class Entry
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The academic to whom this cv belongs
+     * @var \CommonBundle\Entity\User\Person\Academic The academic to whom this cv belongs
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -261,7 +261,7 @@ class Entry
     private $about;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
      * @param \CommonBundle\Entity\General\AcademicYear $year The current academic year.
      */
     public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, $birthday,

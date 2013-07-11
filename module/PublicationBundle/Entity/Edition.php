@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -27,8 +27,8 @@ use CommonBundle\Entity\General\AcademicYear,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "html"="PublicationBundle\Entity\Editions\Html",
- *      "pdf"="PublicationBundle\Entity\Editions\Pdf"}
+ *      "html"="PublicationBundle\Entity\Edition\Html",
+ *      "pdf"="PublicationBundle\Entity\Edition\Pdf"}
  * )
  */
 class Edition

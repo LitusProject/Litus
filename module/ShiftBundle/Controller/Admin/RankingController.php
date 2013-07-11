@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -47,17 +47,17 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             if ($i != (count($rankingCriteria) - 1)) {
                 $volunteers = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shifts\Volunteer')
+                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
                     ->findAllByCountLimits($academicYear, $rankingCriteria[$i]['limit'], $rankingCriteria[$i+1]['limit']);
             } else {
                 $volunteers = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shifts\Volunteer')
+                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
                     ->findAllByCountMinimum($academicYear, $rankingCriteria[$i]['limit']);
             }
 
             foreach ($volunteers as $volunteer) {
                 $person = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($volunteer['id']);
 
                 if (!$person->isPraesidium($academicYear)) {

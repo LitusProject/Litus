@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -46,7 +46,7 @@ try {
 }
 
 if (isset($opts->a)) {
-    $article = $em->getRepository('CudiBundle\Entity\Sales\Article')
+    $article = $em->getRepository('CudiBundle\Entity\Sale\Article')
         ->findOneById($opts->a);
 
     $academicYear = getCurrentAcademicYear($em);
@@ -64,12 +64,12 @@ if (isset($opts->a)) {
             continue;
 
         if ($person->getAcademic()->isMember($academicYear) && $registration->hasPayed()) {
-            $booking = $em->getRepository('CudiBundle\Entity\Sales\Booking')
+            $booking = $em->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findOneSoldOrAssignedOrBookedByArticleAndPerson($article, $person->getAcademic());
 
             if (null === $booking) {
                 $number++;
-                $booking = new \CudiBundle\Entity\Sales\Booking($em, $person->getAcademic(), $article, 'assigned', 1, true);
+                $booking = new \CudiBundle\Entity\Sale\Booking($em, $person->getAcademic(), $article, 'assigned', 1, true);
                 $em->persist($booking);
 
                 if (isset($opts->f) && isset($opts->m))

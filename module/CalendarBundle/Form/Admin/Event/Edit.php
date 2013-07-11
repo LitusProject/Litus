@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -18,7 +18,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\QueryBuilder,
     CalendarBundle\Component\Validator\Name as EventNameValidator,
-    CalendarBundle\Entity\Nodes\Event,
+    CalendarBundle\Entity\Node\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends Add
 {
     /**
-     * @var \CalendarBundle\Entity\Nodes\Event
+     * @var \CalendarBundle\Entity\Node\Event
      */
     protected $_event;
 

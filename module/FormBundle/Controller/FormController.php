@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,9 +16,9 @@ namespace FormBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    FormBundle\Entity\Nodes\Form,
-    FormBundle\Entity\Nodes\GuestInfo,
-    FormBundle\Entity\Nodes\Entry as FormEntry,
+    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\GuestInfo,
+    FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     FormBundle\Form\SpecifiedForm\Edit as EditForm,
@@ -51,7 +51,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $entriesCount = count($this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification));
 
         if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
@@ -255,7 +255,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->getRepository('FormBundle\Entity\Node\Form')
             ->findOneById($this->getParam('id'));
 
         if (null === $form) {

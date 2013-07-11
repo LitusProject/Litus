@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -23,7 +23,7 @@ use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Form\Address\Add as AddressForm,
     CommonBundle\Form\Address\AddPrimary as PrimaryAddressForm,
     SecretaryBundle\Component\Validator\NoAt as NoAtValidator,

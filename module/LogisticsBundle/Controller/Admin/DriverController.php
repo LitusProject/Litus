@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -51,7 +51,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
                 if ($formData['person_id'] == '') {
                     // No autocompletion used, we assume the username was entered
                     $person = $repository->findOneByUsername($formData['person_name']);

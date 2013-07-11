@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace FormBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Nodes\Form;
@@ -37,17 +37,17 @@ class ViewerMap
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Nodes\Form The form of the mapping
+     * @var \FormBundle\Entity\Node\Form The form of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\Form")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form")
      * @ORM\JoinColumn(name="form", referencedColumnName="id")
      */
     private $form;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person of the mapping
+     * @var \CommonBundle\Entity\User\Person The person of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -67,8 +67,8 @@ class ViewerMap
     private $mail;
 
     /**
-     * @param \FormBundle\Entity\Nodes\Form $form
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \FormBundle\Entity\Node\Form $form
+     * @param \CommonBundle\Entity\User\Person $person
      * @param boolean $edit
      * @param boolean $mail
      */
@@ -85,14 +85,14 @@ class ViewerMap
     }
 
     /**
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function getForm() {
         return $this->form;
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson() {
         return $this->person;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace ShiftBundle\Document;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Doctrine\ORM\EntityManager;
 
@@ -52,7 +52,7 @@ class Token
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public function __construct(Person $person)
     {
@@ -77,11 +77,11 @@ class Token
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson(EntityManager $entityManager)
     {
-        return $entityManager->getRepository('CommonBundle\Entity\Users\Person')
+        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->person);
     }
 }

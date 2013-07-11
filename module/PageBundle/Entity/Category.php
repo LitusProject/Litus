@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,7 +17,7 @@ namespace PageBundle\Entity;
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    PageBundle\Entity\Nodes\Page;
+    PageBundle\Entity\Node\Page;
 
 /**
  * This entity stores a category.
@@ -37,9 +37,9 @@ class Category
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The category's parent
+     * @var \PageBundle\Entity\Node\Page The category's parent
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
@@ -47,7 +47,7 @@ class Category
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this category
      *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Categories\Translation", mappedBy="category", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Category\Translation", mappedBy="category", cascade={"remove"})
      */
     private $translations;
 
@@ -74,7 +74,7 @@ class Category
     }
 
     /**
-     * @return \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Node\Page
      */
     public function getParent()
     {
@@ -82,7 +82,7 @@ class Category
     }
 
     /**
-     * @param \PageBundle\Entity\Nodes\Page $category The page's category
+     * @param \PageBundle\Entity\Node\Page $category The page's category
      * @return \PageBundle\Entity\Category
      */
     public function setParent(Page $parent)
@@ -94,7 +94,7 @@ class Category
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \PageBundle\Entity\Categories\Translation
+     * @return \PageBundle\Entity\Category\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

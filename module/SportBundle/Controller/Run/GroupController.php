@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -47,7 +47,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                         && !isset($formData['last_name_' . $memberNb])
                 ) {
                     $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneByUniversityIdentification($formData['university_identification_' . $memberNb]);
 
                     $formData['first_name_' . $memberNb] = $academic->getFirstName();
@@ -92,7 +92,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
                         if (null === $repositoryCheck) {
                             $academic = $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                                 ->findOneByUniversityIdentification($formData['university_identification_' . $memberNb]);
 
                             $newRunner = new Runner(
@@ -152,7 +152,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
         if (8 == strlen($this->getParam('university_identification'))) {
             $academic = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('university_identification'));
 
             if (null !== $academic) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Sales\Booking,
+    CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Form\Admin\Mail\Send as MailForm,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
@@ -47,7 +47,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         if (!isset($bookings)) {
             list($records, $totalNumber) = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllActiveByPeriodPaginator($activePeriod, $this->getParam('page'), $this->paginator()->getItemsPerPage());
 
             $paginator = $this->paginator()->createFromPaginatorRepository(
@@ -89,7 +89,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $bookings = $this->_search($activePeriod);
 
         if (!isset($bookings)) {list($records, $totalNumber) = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllInactiveByPeriodPaginator($activePeriod, $this->getParam('page'), $this->paginator()->getItemsPerPage());
 
             $paginator = $this->paginator()->createFromPaginatorRepository(
@@ -141,10 +141,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 $booking = new Booking(
                     $this->getEntityManager(),
                     $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneById($formData['person_id']),
                     $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Article')
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
                         ->findOneById($formData['article_id']),
                     'booked',
                     $formData['number']
@@ -236,7 +236,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllByPersonAndPeriod($booking->getPerson(), $activePeriod),
             $this->getParam('page')
         );
@@ -442,7 +442,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     public function assignAllAction()
     {
         $number = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->assignAll($this->getAuthentication()->getPersonObject(), $this->getMailTransport());
 
         if (0 == $number)
@@ -468,7 +468,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     public function expireAllAction()
     {
         $number = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->expireBookings($this->getMailTransport());
 
         $this->getEntityManager()->flush();
@@ -501,7 +501,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $number = 0;
         if ($date) {
             $number = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->extendAllBookings($date);
 
             $this->getEntityManager()->flush();
@@ -574,7 +574,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if ($person = $this->_getPerson()) {
             $paginator = $this->paginator()->createFromArray(
                 $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllByPersonAndPeriod($person, $activePeriod),
                 $this->getParam('page')
             );
@@ -601,7 +601,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if ($article = $this->_getArticle()) {
             $paginator = $this->paginator()->createFromArray(
                 $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllByArticleAndPeriod($article, $activePeriod),
                 $this->getParam('page')
             );
@@ -617,7 +617,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     public function assignmentsAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Log\Sales\Assignments',
+            'CudiBundle\Entity\Log\Sale\Assignments',
             $this->getParam('page'),
             array(),
             array('timestamp' => 'DESC')
@@ -639,7 +639,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $ids = $log->getAssigments();
         foreach($ids as $id) {
             $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findOneById($id);
             $booking->setStatus('booked', $this->getEntityManager());
         }
@@ -659,15 +659,15 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         switch($this->getParam('field')) {
             case 'person':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllByPersonNameAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
             case 'article':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllByArticleAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
             case 'status':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllByStatusAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
         }
     }
@@ -726,7 +726,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $booking = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneById($this->getParam('id'));
 
         if (null === $booking) {
@@ -758,7 +758,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($this->getParam('id'));
 
         if (null === $person) {
@@ -790,7 +790,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
@@ -837,7 +837,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $log = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Log\Sales\Assignments')
+            ->getRepository('CudiBundle\Entity\Log\Sale\Assignments')
             ->findOneById($this->getParam('id'));
 
         if (null === $log) {

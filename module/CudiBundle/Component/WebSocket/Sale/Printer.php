@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CudiBundle\Entity\Sales\QueueItem as EntityQueueItem,
+use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
     Doctrine\ORM\EntityManager;
 
 class Printer
@@ -22,7 +22,7 @@ class Printer
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param string $printer
-     * @param CudiBundle\Entity\Sales\QueueItem $queueItem
+     * @param CudiBundle\Entity\Sale\QueueItem $queueItem
      * @param array $bookings
      */
     public static function signInTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
@@ -57,7 +57,7 @@ class Printer
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param string $printer
-     * @param CudiBundle\Entity\Sales\QueueItem $queueItem
+     * @param CudiBundle\Entity\Sale\QueueItem $queueItem
      * @param array $bookings
      */
     public static function collectTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
@@ -92,7 +92,7 @@ class Printer
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param string $printer
-     * @param CudiBundle\Entity\Sales\QueueItem $queueItem
+     * @param CudiBundle\Entity\Sale\QueueItem $queueItem
      * @param array $saleItems
      */
     public static function saleTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $saleItems)

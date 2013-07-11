@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Prof;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityRepository;
 
 /**

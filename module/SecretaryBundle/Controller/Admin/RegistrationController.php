@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Users\Barcode,
+    CommonBundle\Entity\User\Barcode,
     DateInterval,
     DateTime,
     SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
@@ -142,7 +142,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $registration->setPayed($formData['payed']);
 
                 $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('secretary.membership_article')
@@ -150,7 +150,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                 if ($registration->hasPayed()) {
                     $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                             $membershipArticle,
                             $registration->getAcademic()

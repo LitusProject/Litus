@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -13,7 +13,7 @@
  */
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
@@ -27,10 +27,10 @@ use CommonBundle\Entity\Users\Person,
 class Driver
 {
     /**
-     * @var \CommonBundle\Entity\Users\Person The person this driver represents
+     * @var \CommonBundle\Entity\User\Person The person this driver represents
      *
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -61,7 +61,7 @@ class Driver
     /**
      * Creates a new driver for the given person
      *
-     * @param \CommonBundle\Entity\Users\Person $person The person to mark as a driver.
+     * @param \CommonBundle\Entity\User\Person $person The person to mark as a driver.
      * @param $color The color for this driver.
      */
     public function __construct(Person $person, $color)
@@ -73,7 +73,7 @@ class Driver
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person The person associated with this driver.
+     * @return \CommonBundle\Entity\User\Person The person associated with this driver.
      */
     public function getPerson()
     {

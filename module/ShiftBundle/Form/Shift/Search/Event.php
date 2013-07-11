@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -57,7 +57,7 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _createEventsArray(Language $language)
     {
         $events = $this->_entityManager
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
         $eventsArray = array(

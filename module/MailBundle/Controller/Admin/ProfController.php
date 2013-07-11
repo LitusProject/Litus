@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -72,7 +72,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     ->getConfigValue('cudi.mail_name');
 
                 $statuses = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\Statuses\University')
+                    ->getRepository('CommonBundle\Entity\User\Status\University')
                     ->findAllByStatus('professor', $academicYear);
 
                 foreach($statuses as $status) {

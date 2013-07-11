@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,8 +17,8 @@ namespace FormBundle\Form\Admin\Viewer;
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
-    FormBundle\Component\Validator\Person as PersonValidator,
-    FormBundle\Entity\Nodes\Form,
+    FormBundle\Component\Validator\PersonValidator,
+    FormBundle\Entity\Node\Form,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -37,12 +37,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Article
+     * @var \CudiBundle\Entity\Sale\Article
      */
     protected $_form;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Form $form
+     * @param \CudiBundle\Entity\Sale\Form $form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */

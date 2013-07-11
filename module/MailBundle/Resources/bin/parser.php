@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -63,7 +63,7 @@ if (isset($opts->r)) {
             case '001':
                 $attachments = array();
                 foreach ($parser->getAttachments() as $attachment) {
-                    $attachments[] = new MailBundle\Document\Messages\Attachment(
+                    $attachments[] = new MailBundle\Document\Message\Attachment(
                         $attachment->getFilename(),
                         $attachment->getContentType(),
                         $attachment->getData()

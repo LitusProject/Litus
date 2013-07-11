@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace SecretaryBundle\Component\Validator;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager;
 
 class NoAt extends \Zend\Validator\AbstractValidator
@@ -27,7 +27,7 @@ class NoAt extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person
+     * @var \CommonBundle\Entity\User\Person
      */
     private $_person = null;
 
@@ -44,7 +44,7 @@ class NoAt extends \Zend\Validator\AbstractValidator
      * Create a new Unique Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param mixed $opts The validator's options
      */
     public function __construct($opts = null)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -19,7 +19,7 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Form\Cv\Add as AddForm,
     BrBundle\Form\Cv\Edit as EditForm,
     CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 

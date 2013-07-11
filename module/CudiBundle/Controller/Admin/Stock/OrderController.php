@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -19,7 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
     CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
+    CudiBundle\Form\Admin\Stock\Order\Add as AddForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -64,7 +64,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         if (!isset($orders)) {
             $orders = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->findAllByPeriod($period);
         }
 
@@ -134,7 +134,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
+                ->getRepository('CudiBundle\Entity\Stock\Order\Order')
                 ->findAllBySupplierAndPeriod($supplier, $period),
             $this->getParam('page')
         );
@@ -189,11 +189,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $article = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($formData['article_id']);
 
                 $item = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
+                    ->getRepository('CudiBundle\Entity\Stock\Order\Order')
                     ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 
                 $this->getEntityManager()->flush();
@@ -362,11 +362,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         switch($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+                    ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                     ->findAllByTitleAndPeriod($this->getParam('string'), $period);
             case 'supplier':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+                    ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                     ->findAllBySupplierStringAndPeriod($this->getParam('string'), $period);
         }
     }
@@ -440,7 +440,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $order = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
+            ->getRepository('CudiBundle\Entity\Stock\Order\Order')
             ->findOneById($this->getParam('id'));
 
         if (null === $order) {
@@ -487,7 +487,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $item = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+            ->getRepository('CudiBundle\Entity\Stock\Order\Item')
             ->findOneById($this->getParam('id'));
 
         if (null === $item) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -87,7 +87,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findAllByForm($form);
 
         $entries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($form);
 
         $mailForm = new MailForm();
@@ -285,7 +285,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         $entries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($form);
 
         $results = array();
@@ -345,7 +345,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->getRepository('FormBundle\Entity\Node\Form')
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {
@@ -392,7 +392,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         $entry = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->getRepository('FormBundle\Entity\Node\Entry')
             ->findOneById($this->getParam('id'));
 
         if (null === $entry) {

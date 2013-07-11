@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace PageBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     PageBundle\Entity\Category,
-    PageBundle\Entity\Categories\Translation,
+    PageBundle\Entity\Category\Translation,
     PageBundle\Form\Admin\Category\Add as AddForm,
     PageBundle\Form\Admin\Category\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -61,7 +61,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
                 if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->getRepository('PageBundle\Entity\Node\Page')
                         ->findOneById($formData['parent']);
 
                     $category->setParent($parent);
@@ -129,7 +129,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
                 if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->getRepository('PageBundle\Entity\Node\Page')
                         ->findOneById($formData['parent']);
 
                     $category->setParent($parent);

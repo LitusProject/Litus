@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -49,7 +49,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $docent = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($formData['prof_id']);
 
                 $mapping = $this->getEntityManager()
@@ -112,10 +112,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $docents = array_merge(
             $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findAllByName($this->getParam('string')),
             $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findAllByUniversityIdentification($this->getParam('string'))
         );
 

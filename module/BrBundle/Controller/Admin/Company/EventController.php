@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -18,8 +18,8 @@ use BrBundle\Entity\Company\Event,
     CalendarBundle\Form\Admin\Event\Add as AddForm,
     CalendarBundle\Form\Admin\Event\Edit as EditForm,
     CalendarBundle\Form\Admin\Event\Poster as PosterForm,
-    CalendarBundle\Entity\Nodes\Event as CommonEvent,
-    CalendarBundle\Entity\Nodes\Translation,
+    CalendarBundle\Entity\Node\Event as CommonEvent,
+    CalendarBundle\Entity\Node\Translation,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Imagick,

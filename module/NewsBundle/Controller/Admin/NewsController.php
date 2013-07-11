@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,8 +16,8 @@ namespace NewsBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    NewsBundle\Entity\Nodes\News,
-    NewsBundle\Entity\Nodes\Translation,
+    NewsBundle\Entity\Node\News,
+    NewsBundle\Entity\Node\Translation,
     NewsBundle\Form\Admin\News\Add as AddForm,
     NewsBundle\Form\Admin\News\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -33,7 +33,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'NewsBundle\Entity\Nodes\News',
+            'NewsBundle\Entity\Node\News',
             $this->getParam('page'),
             array(),
             array(
@@ -229,7 +229,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $news = $this->getEntityManager()
-            ->getRepository('NewsBundle\Entity\Nodes\News')
+            ->getRepository('NewsBundle\Entity\Node\News')
             ->findOneById($this->getParam('id'));
 
         if (null === $news) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -85,16 +85,16 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($configs->getConfigValue('cudi.person'));
 
         if ($this->_order == 'barcode') {
             $stock = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findAllByAcademicYearSortBarcode($this->_academicYear);
         } else {
             $stock = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findAllByAcademicYear($this->_academicYear);
         }
 

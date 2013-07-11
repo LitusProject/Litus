@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -26,14 +26,14 @@ abstract class Result extends \Zend\Authentication\Result
     /**
      * Return the user object.
      *
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public abstract function getPersonObject();
 
     /**
      * Return the session object.
      *
-     * @return \CommonBundle\Entity\Users\Session
+     * @return \CommonBundle\Entity\User\Session
      */
     public abstract function getSessionObject();
 }

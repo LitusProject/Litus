@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -21,9 +21,9 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Form\Admin\Address\AddPrimary as PrimaryAddressForm,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
-    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
     SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
@@ -39,7 +39,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
 class Edit extends \CommonBundle\Form\Admin\Person\Edit
 {
     /**
-     * @var \CommonBundle\Entity\Users\Person The person we're going to modify
+     * @var \CommonBundle\Entity\User\Person The person we're going to modify
      */
     private $_person = null;
 
@@ -47,7 +47,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
-     * @param \CommonBundle\Entity\Users\People\Academic $person The person we're going to modify
+     * @param \CommonBundle\Entity\User\Person\Academic $person The person we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, AcademicYear $academicYear, Academic $person, $name = null)

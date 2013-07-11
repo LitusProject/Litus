@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,7 +16,7 @@ namespace PageBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     PageBundle\Entity\Link,
-    PageBundle\Entity\Links\Translation,
+    PageBundle\Entity\Link\Translation,
     PageBundle\Form\Admin\Link\Add as AddForm,
     PageBundle\Form\Admin\Link\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -62,7 +62,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
                 if ('' != $formData['parent_' . $category->getId()]) {
                     $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->getRepository('PageBundle\Entity\Node\Page')
                         ->findOneById($formData['parent_' . $category->getId()]);
 
                     $link->setParent($parent);
@@ -137,7 +137,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
                 if ('' != $formData['parent_' . $category->getId()]) {
                     $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->getRepository('PageBundle\Entity\Node\Page')
                         ->findOneById($formData['parent_' . $category->getId()]);
 
                     $link->setParent($parent);

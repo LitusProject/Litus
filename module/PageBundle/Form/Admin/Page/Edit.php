@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,7 +17,7 @@ namespace PageBundle\Form\Admin\Page;
 use CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
-    PageBundle\Entity\Nodes\Page,
+    PageBundle\Entity\Node\Page,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Edit extends Add
 {
     /**
-     * @param \PageBundle\Entity\Nodes\Page
+     * @param \PageBundle\Entity\Node\Page
      */
     private $_page;
 

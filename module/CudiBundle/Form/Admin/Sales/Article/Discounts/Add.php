@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -20,8 +20,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Component\Validator\Sales\Article\Discounts\Exists as DiscountValidator,
-    CudiBundle\Entity\Sales\Article,
-    CudiBundle\Entity\Sales\Articles\Discounts\Discount,
+    CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -40,12 +40,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Article
+     * @var \CudiBundle\Entity\Sale\Article
      */
     protected $_article;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \CudiBundle\Entity\Sale\Article $article
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $templates = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Template')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
             ->findAll();
 
         foreach($templates as $template) {
@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getTemplates()
     {
         $templates = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Articles\Discounts\Template')
+            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
             ->findAll();
         $templateOptions = array(0 => 'none');
         foreach($templates as $template)

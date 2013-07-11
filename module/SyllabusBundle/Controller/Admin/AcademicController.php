@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -42,7 +42,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         if (!isset($paginator)) {
             $paginator = $this->paginator()->createFromEntity(
-                'CommonBundle\Entity\Users\People\Academic',
+                'CommonBundle\Entity\User\Person\Academic',
                 $this->getParam('page'),
                 array(
                     'canLogin' => 'true'
@@ -316,11 +316,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         switch($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findAllByName($this->getParam('string'));
             case 'university_identification':
                 return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findAllByUniversityIdentification($this->getParam('string'));
         }
     }
@@ -347,7 +347,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($this->getParam('id'));
 
         if (null === $academic) {

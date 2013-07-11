@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Entity\Prof;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -70,17 +70,17 @@ class Action
     private $timestamp;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person executed this action
+     * @var \CommonBundle\Entity\User\Person The person executed this action
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $person;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person completed this action
+     * @var \CommonBundle\Entity\User\Person The person completed this action
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="completed_person", referencedColumnName="id")
      */
     private $completedPerson;
@@ -105,7 +105,7 @@ class Action
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person The person executed this action
+     * @param \CommonBundle\Entity\User\Person $person The person executed this action
      * @param string $entity The entity name
      * @param integer $entityId The entity id
      * @param string $action The action type
@@ -148,11 +148,11 @@ class Action
                 ->findOneById($this->entityId);
         elseif ('file' == $this->entity)
             return $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Files\Mapping')
+                ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneById($this->entityId);
         elseif ('mapping' == $this->entity)
             return $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findOneById($this->entityId);
     }
 
@@ -186,11 +186,11 @@ class Action
                 ->findOneById($this->previousId);
         elseif ('file' == $this->entity)
             return $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Files\Mapping')
+                ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneById($this->previousId);
         elseif ('mapping' == $this->entity)
             return $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findOneById($this->previousId);
     }
 
@@ -222,7 +222,7 @@ class Action
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {
@@ -230,7 +230,7 @@ class Action
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getCompletedPerson()
     {
@@ -254,7 +254,7 @@ class Action
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $completedPerson
+     * @param \CommonBundle\Entity\User\Person $completedPerson
      *
      * @return \CudiBundle\Entity\Prof\Action
      */
@@ -267,7 +267,7 @@ class Action
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $completedPerson
+     * @param \CommonBundle\Entity\User\Person $completedPerson
      *
      * @return \CudiBundle\Entity\Prof\Action
      */

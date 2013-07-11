@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     BannerBundle\Controller\Admin\BannerController,
-    BannerBundle\Entity\Nodes\Banner,
+    BannerBundle\Entity\Node\Banner,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,8 +14,8 @@
 
 namespace CudiBundle\Entity\Stock;
 
-use CommonBundle\Entity\Users\Person,
-    CudiBundle\Entity\Sales\Article,
+use CommonBundle\Entity\User\Person,
+    CudiBundle\Entity\Sale\Article,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -35,9 +35,9 @@ class Delivery
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sales\Article The article of the delivery
+     * @var \CudiBundle\Entity\Sale\Article The article of the delivery
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
@@ -57,17 +57,17 @@ class Delivery
     private $number;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who ordered the order
+     * @var \CommonBundle\Entity\User\Person The person who ordered the order
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
-     * @param \CudiBundle\Entity\Sales\Article $article The article of the delivery
+     * @param \CudiBundle\Entity\Sale\Article $article The article of the delivery
      * @param integer $number The number of the article
-     * @param \CommonBundle\Entity\Users\Person The person who ordered the order
+     * @param \CommonBundle\Entity\User\Person The person who ordered the order
      */
     public function __construct(Article $article, $number, Person $person)
     {
@@ -87,7 +87,7 @@ class Delivery
     }
 
     /**
-     * @return \CudiBundle\Entity\Sales\Article
+     * @return \CudiBundle\Entity\Sale\Article
      */
     public function getArticle()
     {
@@ -111,7 +111,7 @@ class Delivery
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

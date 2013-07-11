@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,7 +17,7 @@ namespace SecretaryBundle\Form\Registration;
 use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     SecretaryBundle\Entity\Organization\MetaData,
     Zend\Cache\Storage\StorageInterface as CacheStorage;
 
@@ -34,7 +34,7 @@ class Edit extends Add
     protected $_entityManager = null;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $academic The academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @param \SecretaryBundle\Entity\Organization\MetaData $metaData The organization metadata
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance

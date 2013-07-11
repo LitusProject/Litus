@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -25,8 +25,8 @@ use Doctrine\ORM\Mapping as ORM,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "academic"="MailBundle\Entity\Entries\Academic",
- *      "external"="MailBundle\Entity\Entries\External"
+ *      "academic"="MailBundle\Entity\Entry\Academic",
+ *      "external"="MailBundle\Entity\Entry\External"
  * })
  */
 abstract class Entry

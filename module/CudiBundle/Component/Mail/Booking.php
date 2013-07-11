@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Component\Mail;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     IntlDateFormatter,
     Zend\Mail\Message,
@@ -32,7 +32,7 @@ class Booking
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param array $bookings
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -53,7 +53,7 @@ class Booking
             ->getConfigValue('cudi.mail_name');
 
         $openingHours = $entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findWeekFromNow();
 
         $language = $entityManager
@@ -100,7 +100,7 @@ class Booking
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param array $bookings
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public static function sendExpireWarningMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -121,7 +121,7 @@ class Booking
             ->getConfigValue('cudi.mail_name');
 
         $openingHours = $entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findWeekFromNow();
 
         $language = $entityManager
@@ -168,7 +168,7 @@ class Booking
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param array $bookings
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      */
     public static function sendExpireMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -189,7 +189,7 @@ class Booking
             ->getConfigValue('cudi.mail_name');
 
         $openingHours = $entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findWeekFromNow();
 
         $language = $entityManager

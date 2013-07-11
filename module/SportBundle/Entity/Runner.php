@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -45,9 +45,9 @@ class Runner
     private $academicYear;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The academic linked to this runner
+     * @var \CommonBundle\Entity\User\Person\Academic The academic linked to this runner
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -86,7 +86,7 @@ class Runner
      * @param string $firstName
      * @param string $lastName
      * @param \SportBundle\Entity\Group $group
-     * @param \CommonBundle\Entity\Users\People\Academic $academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic
      */
     public function __construct(AcademicYear $academicYear, $firstName, $lastName, Group $group = null, Academic $academic = null)
     {
@@ -108,7 +108,7 @@ class Runner
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function getAcademic()
     {
@@ -116,7 +116,7 @@ class Runner
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $academic
+     * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @return \SportBundle\Entity\Runner
      */
     public function setAcademic(Academic $academic)

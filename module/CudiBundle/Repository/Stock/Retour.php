@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use CudiBundle\Entity\Sales\Article,
+use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period as PeriodEntity,
     CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository;

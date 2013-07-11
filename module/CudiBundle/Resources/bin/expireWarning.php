@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -59,7 +59,7 @@ if (isset($opts->r)) {
     echo 'Sending mails to bookings expiring between ' . $start->format('d M Y') . ' and ' . $end->format('d M Y') . '...' . PHP_EOL;
 
     $bookings = $entityManager
-        ->getRepository('CudiBundle\Entity\Sales\Booking')
+        ->getRepository('CudiBundle\Entity\Sale\Booking')
         ->findAllExpiringBetween($start, $end);
 
     $persons = array();

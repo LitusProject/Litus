@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,8 +15,8 @@
 namespace CudiBundle\Controller\Admin\Sales\Session;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour,
-    CudiBundle\Entity\Sales\Session\OpeningHours\Translation,
+    CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
+    CudiBundle\Entity\Sale\Session\OpeningHour\Translation,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -32,7 +32,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
                 ->findAllActive(),
             $this->getParam('page')
         );
@@ -49,7 +49,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHour')
+                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
                 ->findAllOld(),
             $this->getParam('page')
         );
@@ -230,7 +230,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         $openingHour = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findOneById($this->getParam('id'));
 
         if (null === $openingHour) {

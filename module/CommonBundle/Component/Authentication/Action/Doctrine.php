@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace CommonBundle\Component\Authentication\Action;
 
-use CommonBundle\Entity\Users\Code,
+use CommonBundle\Entity\User\Code,
     Doctrine\ORM\EntityManager,
     Zend\Mail\Transport\TransportInterface,
     Zend\Mail\Message;
@@ -64,7 +64,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             do {
                 $code = md5(uniqid(rand(), true));
                 $found = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\Users\Code')
+                    ->getRepository('CommonBundle\Entity\User\Code')
                     ->findOneByCode($code);
             } while(isset($found));
 

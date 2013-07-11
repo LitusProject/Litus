@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,8 +17,8 @@ namespace ShiftBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     ShiftBundle\Entity\Shift,
-    ShiftBundle\Entity\Shifts\Responsible,
-    ShiftBundle\Entity\Shifts\Volunteer,
+    ShiftBundle\Entity\Shift\Responsible,
+    ShiftBundle\Entity\Shift\Volunteer,
     ShiftBundle\Form\Admin\Subscription\Add as AddForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -49,7 +49,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
                 if ($formData['person_id'] == '') {
                     // No autocompletion used, we assume the username was entered
                     $person = $repository->findOneByUsername($formData['person_name']);
@@ -172,11 +172,11 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         switch($type) {
             case 'volunteer':
                 $repository = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shifts\Volunteer');
+                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer');
                 break;
             case 'responsible':
                 $repository = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shifts\Responsible');
+                    ->getRepository('ShiftBundle\Entity\Shift\Responsible');
                 break;
             default:
                 $this->flashMessenger()->addMessage(

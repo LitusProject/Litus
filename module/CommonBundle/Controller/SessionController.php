@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -28,7 +28,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
         $activeSessions = array();
         if ($this->getAuthentication()->isAuthenticated()) {
             $activeSessions = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Session')
+                ->getRepository('CommonBundle\Entity\User\Session')
                 ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
         }
 
@@ -47,7 +47,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
         $this->initAjax();
 
         $session = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Session')
+            ->getRepository('CommonBundle\Entity\User\Session')
             ->findOneById($this->getParam('id'));
 
         $status = 'error';

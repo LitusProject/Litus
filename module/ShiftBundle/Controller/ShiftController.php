@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,12 +15,12 @@
 namespace ShiftBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     DateTime,
     DateInterval,
     ShiftBundle\Document\Token,
-    ShiftBundle\Entity\Shifts\Responsible,
-    ShiftBundle\Entity\Shifts\Volunteer,
+    ShiftBundle\Entity\Shift\Responsible,
+    ShiftBundle\Entity\Shift\Volunteer,
     ShiftBundle\Form\Shift\Search\Date as DateSearchForm,
     ShiftBundle\Form\Shift\Search\Event as EventSearchForm,
     ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
@@ -90,7 +90,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData = $eventSearchForm->getFormData($formData);
 
                     $event = $this->getEntityManager()
-                        ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                        ->getRepository('CalendarBundle\Entity\Node\Event')
                         ->findOneById($formData['event']);
 
                     $searchResults = $this->getEntityManager()
@@ -462,7 +462,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             return null;
 
         $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getRequest()->getPost('person'));
 
         return $person;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -20,13 +20,13 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Entity\Fields\Checkbox as CheckboxField,
-    FormBundle\Entity\Fields\String as StringField,
-    FormBundle\Entity\Fields\Dropdown,
-    FormBundle\Entity\Nodes\Form,
-    FormBundle\Entity\Nodes\Entry,
+    FormBundle\Entity\Field\Checkbox as CheckboxField,
+    FormBundle\Entity\Field\String as StringField,
+    FormBundle\Entity\Field\Dropdown,
+    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -40,7 +40,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \CudiBundle\Entity\Sales\Article
+     * @var \CudiBundle\Entity\Sale\Article
      */
     protected $_form;
 

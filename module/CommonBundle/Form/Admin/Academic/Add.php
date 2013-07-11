@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -19,8 +19,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
-    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace CudiBundle\Form\Admin\Sales\Session;
 
 use CommonBundle\Component\Form\Admin\Element\Textarea,
-    CudiBundle\Entity\Sales\Session,
+    CudiBundle\Entity\Sale\Session,
     Zend\Form\Element\Submit;
 
 /**
@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Textarea,
 class Comment extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param \CudiBundle\Entity\Sales\Session $session
+     * @param \CudiBundle\Entity\Sale\Session $session
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(Session $session, $name = null)

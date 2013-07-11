@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,7 +17,7 @@ namespace CalendarBundle\Component\Validator;
 use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
     Doctrine\ORM\EntityManager,
-    CalendarBundle\Entity\Nodes\Event;
+    CalendarBundle\Entity\Node\Event;
 
 /**
  * Matches the given event title against the database to check whether it is
@@ -35,7 +35,7 @@ class Name extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \CalendarBundle\Entity\Nodes\Event The event exluded from this check
+     * @var \CalendarBundle\Entity\Node\Event The event exluded from this check
      */
     private $_event;
 
@@ -54,7 +54,7 @@ class Name extends \Zend\Validator\AbstractValidator
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\Language $language
-     * @param \CalendarBundle\Entity\Nodes\Event The event exluded from this check
+     * @param \CalendarBundle\Entity\Node\Event The event exluded from this check
      * @param mixed $opts The validator's options
      */
     public function __construct(EntityManager $entityManager, Language $language, Event $event = null, $opts = null)
@@ -83,7 +83,7 @@ class Name extends \Zend\Validator\AbstractValidator
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
 
             $event = $this->_entityManager
-                ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                ->getRepository('CalendarBundle\Entity\Node\Event')
                 ->findOneByName($title);
 
             if (null === $event || ($this->_event && $event->getEvent() == $this->_event))

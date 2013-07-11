@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,8 +15,8 @@
 namespace PageBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Nodes\Page,
-    PageBundle\Entity\Nodes\Translation,
+    PageBundle\Entity\Node\Page,
+    PageBundle\Entity\Node\Translation,
     PageBundle\Form\Admin\Page\Add as AddForm,
     PageBundle\Form\Admin\Page\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -33,7 +33,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         $pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findBy(
                 array(
                     'endTime' => null
@@ -95,7 +95,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
                 if ('' != $formData['parent_' . $category->getId()]) {
                     $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->getRepository('PageBundle\Entity\Node\Page')
                         ->findOneById($formData['parent_' . $category->getId()]);
 
                     $page->setParent($parent);
@@ -155,7 +155,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         if (null !== $page->getEndTime()) {
             $activeVersion = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneByName($page->getName());
 
             $this->redirect()->toRoute(
@@ -200,14 +200,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
                 if ('' != $formData['parent_' . $category->getId()]) {
                     $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->getRepository('PageBundle\Entity\Node\Page')
                         ->findOneById($formData['parent_' . $category->getId()]);
 
                     $newPage->setParent($parent);
                 }
 
                 $orphanedPages = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->getRepository('PageBundle\Entity\Node\Page')
                         ->findByParent($page->getId());
 
                 foreach ($orphanedPages as $orphanedPage) {
@@ -352,7 +352,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $page = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findOneById($this->getParam('id'));
 
         if (null === $page) {

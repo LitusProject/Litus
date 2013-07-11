@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
-use CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour,
+use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
@@ -26,7 +26,7 @@ use CudiBundle\Entity\Sales\Session\OpeningHours\OpeningHour,
 class Edit extends Add
 {
     /**
-     * @param \CudiBundle\Entity\Sales\Session\OpeningHour $openingHour
+     * @param \CudiBundle\Entity\Sale\Session\OpeningHour $openingHour
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */

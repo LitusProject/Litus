@@ -3,7 +3,7 @@
 namespace GalleryBundle\Entity\Album;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -32,9 +32,9 @@ class Album
     private $createTime;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person who created this album
+     * @var \CommonBundle\Entity\User\Person The person who created this album
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="create_person", referencedColumnName="id")
      */
     private $createPerson;
@@ -69,7 +69,7 @@ class Album
     private $photos;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \DateTime $date
      */
     public function __construct(Person $person, DateTime $date)
@@ -97,7 +97,7 @@ class Album
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getCreatePerson()
     {
@@ -189,7 +189,7 @@ class Album
     /**
      * @param string $name
      *
-     * @return \NewsBundle\Entity\Nodes\News
+     * @return \NewsBundle\Entity\Node\News
      */
     public function updateName()
     {

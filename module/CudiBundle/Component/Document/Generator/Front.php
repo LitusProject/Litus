@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -18,7 +18,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sale\Article,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -30,7 +30,7 @@ use CommonBundle\Component\Util\AcademicYear,
 class Front extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \CudiBundle\Entity\Sales\Article
+     * @var \CudiBundle\Entity\Sale\Article
      */
     private $_article;
 
@@ -38,7 +38,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      * Create a new Article Front Generator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CudiBundle\Entity\Sales\Article $article The article
+     * @param \CudiBundle\Entity\Sale\Article $article The article
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
      */
     public function __construct(EntityManager $entityManager, Article $article, TmpFile $file)
@@ -112,7 +112,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
 
         $subjects = array();
         $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticleAndAcademicYear($this->_article->getMainArticle(), $this->_getCurrentAcademicYear());
         foreach ($mappings as $mapping) {
             $subjects[] = new Object(

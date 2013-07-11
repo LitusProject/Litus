@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -134,14 +134,14 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             $authentication = new Authentication(
                 new ShibbolethAdapter(
                     $this->getEntityManager(),
-                    'CommonBundle\Entity\Users\People\Academic',
+                    'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
                 $this->getServiceLocator()->get('authentication_doctrineservice')
             );
 
             $code = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
             if (null !== $code) {

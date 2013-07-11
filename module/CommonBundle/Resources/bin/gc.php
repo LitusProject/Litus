@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -44,7 +44,7 @@ try {
 if (isset($opts->a) || isset($opts->se)) {
     echo 'Running Sessions GC...' . PHP_EOL;
 
-    $sessions = $em->getRepository('CommonBundle\Entity\Users\Session')
+    $sessions = $em->getRepository('CommonBundle\Entity\User\Session')
         ->findAllExpired();
 
     foreach($sessions as $session)
@@ -60,7 +60,7 @@ if (isset($opts->a) || isset($opts->se)) {
 if (isset($opts->a) || isset($opts->sh)) {
     echo 'Running Shibboleth GC...' . PHP_EOL;
 
-    $sessions = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+    $sessions = $em->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
         ->findAllExpired();
 
     foreach($sessions as $session)

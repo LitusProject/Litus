@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -65,12 +65,12 @@ class VolunteerController extends \CommonBundle\Component\Controller\ActionContr
                 $mail->addTo($formData['from']);
 
                 $volunteers = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shifts\Volunteer')
+                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
                     ->findAllByCountMinimum($currentYear, 1);
 
                 foreach ($volunteers as $volunteer) {
                     $person = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneById($volunteer['id']);
 
                     if (!$person->isPraesidium($currentYear)) {

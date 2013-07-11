@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -99,7 +99,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 }
 
                 $authSession = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\Users\Session')
+                    ->getRepository('CommonBundle\Entity\User\Session')
                     ->findOneById($command->authSession);
 
                 if ($authSession) {
@@ -162,7 +162,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             return;
 
         $session = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($user->getExtraData('session'));
 
         switch ($user->getExtraData('queueType')) {
@@ -196,7 +196,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         foreach($this->getUsers() as $user) {
             $session = $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Sales\Session')
+                ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOneById($user->getExtraData('session'));
 
             switch ($user->getExtraData('queueType')) {
@@ -222,7 +222,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             return;
 
         $session = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($user->getExtraData('session'));
 
         switch ($command->action) {
@@ -309,7 +309,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _signIn(User $user, $universityIdentification)
     {
         $session = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($user->getExtraData('session'));
 
         $item = $this->_queue->addPerson($session, $universityIdentification);
@@ -331,7 +331,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 'signin',
                 $item,
                 $this->_entityManager
-                    ->getRepository('CudiBundle\Entity\Sales\Booking')
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllAssignedByPerson($item->getPerson())
             );
 
@@ -342,7 +342,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _addToQueue(User $user, $universityIdentification)
     {
         $session = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($user->getExtraData('session'));
 
         $item = $this->_queue->addPerson($session, $universityIdentification, true);
@@ -364,7 +364,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             $this->sendText($user, $result);
 
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         Printer::collectTicket(
@@ -372,7 +372,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             $user->getExtraData('paydesk'),
             $item,
             $this->_entityManager
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllAssignedByPerson($item->getPerson())
         );
     }
@@ -405,7 +405,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             return;
 
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         Printer::saleTicket(
@@ -429,7 +429,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _saveComment($id, $comment)
     {
         $item = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setComment($comment);

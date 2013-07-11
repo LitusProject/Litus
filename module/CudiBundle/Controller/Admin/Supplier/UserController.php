@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,8 +15,8 @@
 namespace CudiBundle\Controller\Admin\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Credential,
-    CudiBundle\Entity\Users\People\Supplier as SupplierPerson,
+    CommonBundle\Entity\User\Credential,
+    CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
     CudiBundle\Form\Admin\Supplier\User\Add as AddForm,
     CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -34,7 +34,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Users\People\Supplier',
+            'CudiBundle\Entity\User\Person\Supplier',
             $this->getParam('page'),
             array(
                 'canLogin' => 'true',
@@ -257,7 +257,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Users\People\Supplier')
+            ->getRepository('CudiBundle\Entity\User\Person\Supplier')
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {

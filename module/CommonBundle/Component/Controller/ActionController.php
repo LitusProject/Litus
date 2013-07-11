@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -21,7 +21,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Locale,
     Zend\Cache\StorageFactory,

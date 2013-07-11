@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -16,8 +16,8 @@ namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    FormBundle\Entity\Nodes\Form,
-    FormBundle\Entity\Nodes\Translation,
+    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Translation,
     FormBundle\Entity\ViewerMap,
     FormBundle\Form\Admin\Form\Add as AddForm,
     FormBundle\Form\Admin\Form\Edit as EditForm,
@@ -36,7 +36,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Nodes\Form')
+                ->getRepository('FormBundle\Entity\Node\Form')
                 ->findAllActive(),
             $this->getParam('page')
         );
@@ -54,7 +54,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Nodes\Form')
+                ->getRepository('FormBundle\Entity\Node\Form')
                 ->findAllOld(),
             $this->getParam('page')
         );
@@ -304,7 +304,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         // Delete all entries
         $entries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($form);
 
         foreach ($entries as $entry)
@@ -366,7 +366,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->getRepository('FormBundle\Entity\Node\Form')
             ->findOneById($this->getParam('id'));
 
         if (null === $form) {

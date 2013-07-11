@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -70,7 +70,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     ->getConfigValue('cudi.mail_name');
 
                 $entries = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Nodes\Entry')
+                    ->getRepository('FormBundle\Entity\Node\Entry')
                     ->findAllByForm($formSpecification);
 
                 foreach($entries as $entry) {
@@ -144,7 +144,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $form = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Form')
+            ->getRepository('FormBundle\Entity\Node\Form')
             ->findOneById($this->getParam('id'));
 
         if (null === $form) {

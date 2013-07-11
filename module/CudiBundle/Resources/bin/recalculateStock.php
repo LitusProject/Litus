@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -57,11 +57,11 @@ if (isset($opts->r)) {
 
     foreach($articles as $article) {
         $number = $entityManager
-                ->getRepository('CudiBundle\Entity\Stock\Periods\Values\Start')
+                ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
                 ->findValueByArticleAndPeriod($article, $period)
             + $period->getNbDelivered($article) - $period->getNbSold($article)
             + $entityManager
-                ->getRepository('CudiBundle\Entity\Stock\Periods\Values\Delta')
+                ->getRepository('CudiBundle\Entity\Stock\Period\Value\Delta')
                 ->findTotalByArticleAndPeriod($article, $period)
             - $entityManager
                 ->getRepository('CudiBundle\Entity\Stock\Retour')
@@ -79,7 +79,7 @@ if (isset($opts->r)) {
         if ($nbToMuchAssigned > 0) {
             echo 'Unassign ' . $article->getMainArticle()->getTitle() . ' (' . $nbToMuchAssigned . ' times)' . PHP_EOL;
             $bookings = $entityManager
-                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findLastAssignedByArticle($article);
 
             foreach($bookings as $booking) {

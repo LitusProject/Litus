@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,7 +17,7 @@ namespace PublicationBundle\Controller\Admin\Edition;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     PublicationBundle\Entity\Publication,
-    PublicationBundle\Entity\Editions\Html as HtmlEdition,
+    PublicationBundle\Entity\Edition\Html as HtmlEdition,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\Size as SizeValidator,
@@ -39,7 +39,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('PublicationBundle\Entity\Editions\Html')
+                ->getRepository('PublicationBundle\Entity\Edition\Html')
                 ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
@@ -217,7 +217,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findOneById($this->getParam('id'));
 
         if (null === $edition) {

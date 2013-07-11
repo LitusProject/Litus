@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -79,7 +79,7 @@ class Html extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $edition = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findOneByPublicationTitleAndAcademicYear($this->_publication, $value, $this->_academicYear);
 
         if (null !== $edition) {

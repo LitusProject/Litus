@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Prof\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Articles\SubjectMap,
+    CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\Mapping\Add as AddForm,
     Zend\View\Model\ViewModel;
@@ -48,7 +48,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
                     return;
 
                 $mapping = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                    ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear, true);
 
                 if (null === $mapping) {
@@ -190,7 +190,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findOneById($this->getParam('id'));
 
         $mappingProf = $this->getEntityManager()

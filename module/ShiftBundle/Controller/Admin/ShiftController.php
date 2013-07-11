@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -75,7 +75,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
@@ -101,7 +101,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 if ('' != $formData['event']) {
                     $shift->setEvent(
                         $this->getEntityManager()
-                            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                            ->getRepository('CalendarBundle\Entity\Node\Event')
                             ->findOneById($formData['event'])
                     );
                 }
@@ -156,7 +156,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
@@ -180,7 +180,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 if ('' != $formData['event']) {
                     $shift->setEvent(
                         $this->getEntityManager()
-                            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                            ->getRepository('CalendarBundle\Entity\Node\Event')
                             ->findOneById($formData['event'])
                     );
                 } else {
