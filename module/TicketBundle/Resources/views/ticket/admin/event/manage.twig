@@ -1,0 +1,40 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'ticket/admin/event/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Activity</th>
+                    <th width="200px">Close Date</th>
+                    <th width="200px">Number Sold</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for event in paginator %}
+                    <tr class="item item-{{ event.getId() }}">
+                        <td>{{ event.getActivity().getTitle(language) }}</td>
+                        <td>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}
+                        <td>{{ event.getNumberSold() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('ticket_admin_event', 'edit') %}
+                                <a href="{{ url('ticket_admin_event', {"action": "edit", "id": event.getId()}) }}" class="edit">Edit</a></li>
+                            {% endif %}
+                            {% if hasAccess('ticket_admin_event', 'delete') %}
+                                <a href="#" class="delete">Delete</a></li>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}
