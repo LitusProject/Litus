@@ -83,6 +83,28 @@
                     <div class="title">Divisions</div>
 
                     <ul class="subsubmenu">
+                        {% if hasAccess('sport_admin_run', 'queue') or hasAccess('ticket_admin_event') %}
+                            <li>
+                                <div class="subtitle">
+                                        <b>App's</b><br />
+                                        24h-Run, Tickets &amp; Quiz
+                                </div>
+
+                                <ul
+                                    {% if 'sport_admin_run' == getParam('controller') or 'ticket_admin_event' == getParam('controller') or 'ticket_admin_ticket' == getParam('controller') %}
+                                        style="display: block;"
+                                    {% endif %}
+                                >
+                                    {% if hasAccess('sport_admin_run', 'queue') %}
+                                        <li><a href="{{ url('sport_admin_run') }}">24h-Run</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('ticket_admin_event', 'manage') %}
+                                        <li><a href="{{ url('ticket_admin_event') }}">Ticket</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+
                         {% if hasAccess('br_admin_company', 'manage') or hasAccess('br_admin_cv_entry', 'manage') %}
                             <li>
                                 <div class="subtitle">
@@ -302,25 +324,6 @@
                                     {% endif %}
                                     {% if hasAccess('secretary_admin_mail_promotion', 'manage') %}
                                         <li><a href="{{ url('secretary_admin_mail_promotion') }}">Promotion Lists</a></li>
-                                    {% endif %}
-                                </ul>
-                            </li>
-                        {% endif %}
-
-                        {% if hasAccess('sport_admin_run', 'queue') %}
-                            <li>
-                                <div class="subtitle">
-                                        <b>Sport</b><br />
-                                        24h-Run
-                                </div>
-
-                                <ul
-                                    {% if 'sport_admin_run' == getParam('controller') %}
-                                        style="display: block;"
-                                    {% endif %}
-                                >
-                                    {% if hasAccess('sport_admin_run', 'queue') %}
-                                        <li><a href="{{ url('sport_admin_run') }}">24h-Run</a></li>
                                     {% endif %}
                                 </ul>
                             </li>

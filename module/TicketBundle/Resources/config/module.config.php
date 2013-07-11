@@ -25,6 +25,34 @@ return array(
                     ),
                 ),
             ),
+            'ticket_admin_event' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/ticket/event[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ticket_admin_event',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'ticket_admin_ticket' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/ticket/ticket[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ticket_admin_ticket',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -49,6 +77,8 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'ticket_install'               => 'TicketBundle\Controller\Admin\InstallController',
+            'ticket_admin_event'           => 'TicketBundle\Controller\Admin\EventController',
+            'ticket_admin_ticket'          => 'TicketBundle\Controller\Admin\TicketController',
         ),
     ),
 );

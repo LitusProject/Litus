@@ -91,6 +91,13 @@ class Event
     private $onlyMembers;
 
     /**
+     * @var \Doctrine\Common\Collection\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Ticket", mappedBy="event")
+     */
+    private $tickets;
+
+    /**
      * @param \CalendarBundle\Entity\Nodes\Event $activity
      * @param boolean $bookable
      * @param \DateTime $bookingsCloseDate
@@ -262,5 +269,26 @@ class Event
     {
         $this->onlyMembers = $onlyMembers;
         return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collection\ArrayCollection
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNumberSold()
+    {
+        $sold = 0;
+        foreach($this->tickets as $ticket) {
+            if ($ticket->getStatusCode() == 'sold')
+                $sold++;
+        }
+        return $sold;
     }
 }
