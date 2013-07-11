@@ -1,0 +1,28 @@
+<header id="controller_header">
+    <div class="title"><span class="events">Events</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('ticket_admin_event', 'add') %}
+                <li>
+                    <a
+                        {% if 'add' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('ticket_admin_event', {"action": "add"}) }}"
+                    >
+                        Add
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasAccess('ticket_admin_event', 'manage') %}
+                <li>
+                    <a
+                        {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('ticket_admin_event', {"action": "manage"}) }}"
+                    >
+                        Manage
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
