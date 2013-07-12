@@ -2,7 +2,7 @@
     <nav id="controller_sub_nav">
         <ul>
             <li>
-                <a {% if currentSemester != 1 and currentSemester != 2 %} class="active" {% endif %}
+                <a {% if currentSemester != 1 and currentSemester != 2 and currentSemester != 3 %} class="active" {% endif %}
                     href="{{ url('cudi_admin_stock', {'action': 'manage'}) }}">All</a>
             </li>
             <li>
@@ -12,6 +12,10 @@
             <li>
                 <a {% if currentSemester == 2 %} class="active" {% endif %}
                     href="{{ url('cudi_admin_stock', {'action': 'manage', 'semester': 2}) }}">Semester 2</a>
+            </li>
+            <li>
+                <a {% if currentSemester == 3 %} class="active" {% endif %}
+                    href="{{ url('cudi_admin_stock', {'action': 'manage', 'semester': 3}) }}">Semester 1 &amp; 2</a>
             </li>
         </ul>
     </nav>
