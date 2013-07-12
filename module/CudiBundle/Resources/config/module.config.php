@@ -306,7 +306,7 @@ return array(
             'cudi_admin_stock_order' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/stock/order[/:action[/:id[/:date]][/page/:page][/:field/:string]][/]',
+                    'route' => '/admin/stock/order[/:action[/:id[/:date][/:order]][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -314,6 +314,7 @@ return array(
                         'string'  => '[%a-zA-Z0-9:.,_-]*',
                         'page'    => '[0-9]*',
                         'date'    => '[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}',
+                        'order'   => '[a-zA-Z]*',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_stock_order',

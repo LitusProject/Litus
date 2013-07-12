@@ -4,6 +4,7 @@ namespace CudiBundle\Repository\Stock\Orders;
 
 use CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Stock\Period,
+    CudiBundle\Entity\Stock\Orders\Order as OrderEntity,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -111,6 +112,46 @@ class Item extends EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
 
         $resultSet = $query->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByOrderAlpha(OrderEntity $order)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->innerJoin('i.article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->where(
+                $query->expr()->eq('i.order', ':order')
+            )
+            ->setParameter('order', $order)
+            ->orderBy('m.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByOrderOnBarcode(OrderEntity $order)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->innerJoin('i.article', 'a')
+            ->innerJoin('a.barcodes', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('i.order', ':order'),
+                    $query->expr()->eq('b.main', ':isMainBarcode')
+                )
+            )
+            ->setParameter('order', $order)
+            ->setParameter('isMainBarcode', 'true')
+            ->orderBy('b.barcode', 'ASC')
+            ->getQuery()
             ->getResult();
 
         return $resultSet;
