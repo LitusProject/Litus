@@ -369,7 +369,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $file = new TmpFile();
-                $document = new StockGenerator($this->getEntityManager(), $formData['articles'], $formData['order'], $this->getAcademicYear(), $file);
+                $document = new StockGenerator($this->getEntityManager(), $formData['articles'], $formData['order'], isset($formData['in_stock']), $this->getAcademicYear(), $file);
                 $document->generate();
 
                 $headers = new Headers();
@@ -475,7 +475,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     {
         $semester = $this->getParam('semester');
 
-        if ($semester == 1 || $semester == 2)
+        if ($semester == 1 || $semester == 2  || $semester == 3)
             return $semester;
         return 0;
     }

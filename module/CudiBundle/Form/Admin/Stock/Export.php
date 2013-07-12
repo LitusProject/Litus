@@ -15,6 +15,7 @@
 namespace CudiBundle\Form\Admin\Stock;
 
 use CommonBundle\Component\Form\Admin\Element\Radio,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -44,6 +45,10 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('options', array('barcode' => 'Barcode', 'title' => 'Title'))
             ->setValue('barcode')
             ->setRequired();
+        $this->add($field);
+
+        $field = new Checkbox('in_stock');
+        $field->setLabel('Only In Stock');
         $this->add($field);
 
         $field = new Submit('export');

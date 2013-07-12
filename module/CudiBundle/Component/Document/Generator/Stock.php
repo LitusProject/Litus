@@ -39,6 +39,11 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
     private $_order;
 
     /**
+     * @var boolean
+     */
+    private $_onlyInStock;
+
+    /**
      * @var \CommonBundle\Entity\General\AcademicYear
      */
     private $_academicYear;
@@ -49,10 +54,11 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param string $articles The kind of articles to export
      * @param string $order The ordering of the articles to export
+     * @param boolean $onlyInStock Print only articles in stock
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
      */
-    public function __construct(EntityManager $entityManager, $articles, $order, AcademicYear $academicYear, TmpFile $file)
+    public function __construct(EntityManager $entityManager, $articles, $order, $onlyInStock, AcademicYear $academicYear, TmpFile $file)
     {
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -66,6 +72,7 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
 
         $this->_articles = $articles;
         $this->_order = $order;
+        $this->_onlyInStock = $onlyInStock;
         $this->_academicYear = $academicYear;
     }
 
@@ -103,6 +110,9 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
             if ($this->_articles == 'external' && $item->getMainArticle()->isInternal())
                 continue;
             if ($this->_articles == 'internal' && !$item->getMainArticle()->isInternal())
+                continue;
+
+            if ($item->getStockValue() <= 0 && $this->_onlyInStock)
                 continue;
 
             $items[] = new Object(
