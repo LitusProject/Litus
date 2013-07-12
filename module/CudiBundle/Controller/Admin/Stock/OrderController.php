@@ -286,7 +286,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
 
         $file = new TmpFile();
-        $document = new OrderPdfGenerator($this->getEntityManager(), $order, $file);
+        $document = new OrderPdfGenerator($this->getEntityManager(), $order, $this->getParam('order'), $file);
         $document->generate();
 
         $headers = new Headers();
