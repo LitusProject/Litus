@@ -55,7 +55,16 @@ if (isset($opts->r)) {
         ->getRepository('CudiBundle\Entity\Stock\Period')
         ->findAllArticlesByPeriod($period);
 
+    $membership = $entityManager
+        ->getRepository('CommonBundle\Entity\General\Config')
+        ->getConfigValue('secretary.membership_article');
+
     foreach($articles as $article) {
+        if ($article->getId() == $membership) {
+            $article->setStockValue(0);
+            continue;
+        }
+
         $number = $entityManager
                 ->getRepository('CudiBundle\Entity\Stock\Periods\Values\Start')
                 ->findValueByArticleAndPeriod($article, $period)
