@@ -50,6 +50,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field = new Text('unit_' . $unit->getId());
             $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
                 ->setAttribute('autocomplete', 'off')
+                ->setAttribute('class', 'moneyunit')
+                ->setAttribute('data-value', $unit->getUnit())
                 ->setRequired()
                 ->setValue(0);
             $this->add($field);
@@ -61,6 +63,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field = new Text('device_' . $device->getId());
             $field->setLabel($device->getName())
                 ->setAttribute('autocomplete', 'off')
+                ->setAttribute('class', 'device')
                 ->setRequired()
                 ->setValue(0);
             $this->add($field);
