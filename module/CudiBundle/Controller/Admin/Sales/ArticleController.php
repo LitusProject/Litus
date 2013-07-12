@@ -566,7 +566,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $semester = $this->getParam('semester');
 
-        if ($semester == 1 || $semester == 2)
+        if ($semester == 1 || $semester == 2 || $semester == 3)
             return $semester;
         return 0;
     }
