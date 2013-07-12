@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Stock\Order;
 
 use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Stock\Orders\Order as OrderEntity,
+    CudiBundle\Entity\Stock\Order\Order as OrderEntity,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -121,7 +121,7 @@ class Item extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -139,7 +139,7 @@ class Item extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.barcodes', 'b')
             ->where(

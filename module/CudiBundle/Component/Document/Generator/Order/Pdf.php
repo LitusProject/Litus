@@ -95,11 +95,11 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 
         if ($this->_sortOrder == 'barcode') {
             $items = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->findAllByOrderOnBarcode($this->_order);
         } else {
             $items = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->findAllByOrderAlpha($this->_order);
         }
 
