@@ -9,8 +9,31 @@
         <h1>Close Sale Session</h1>
         <p>Manager: <b>{{ session.getManager().getFullName() }}</b></p>
         <p>Date openend: <b>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</b></p>
+        {% set theoreticalRevenue = session.getTheoreticalRevenue() %}
+        <p>Theoretical Revenue: <b>&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</b></p>
+        <p>Actual Revenue: <b>&euro; <span id="actualRevenue">0.00</span></b></p>
+        <p>Delta: <b>&euro; <span id="deltaRevenue">{{ (-theoreticalRevenue/100)|number_format(2) }}</span></b></p>
         <br />
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}
+            $('#controller_action form input').keyup(function () {
+                var value = 0;
+                $('#controller_action form input.moneyunit').each(function () {
+                    value += $(this).val() * $(this).data('value');
+                });
+                $('#controller_action form input.device').each(function () {
+                    value += $(this).val() * 100;
+                });
+                $('#actualRevenue').html((value/100).toFixed(2));
+                $('#deltaRevenue').html(((value - {{ session.getTheoreticalRevenue() }})/100).toFixed(2));
+            })
+        });
+    </script>
 {% endblock %}

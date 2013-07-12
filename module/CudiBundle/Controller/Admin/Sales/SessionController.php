@@ -122,6 +122,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($session = $this->_getSession()))
             return new ViewModel();
 
+        $session->setEntityManager($this->getEntityManager());
+
         $form = new CommentForm($session);
 
         if($this->getRequest()->isPost()) {
@@ -244,6 +246,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($session = $this->_getSession()))
             return new ViewModel();
 
+        $session->setEntityManager($this->getEntityManager());
+        
         $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 
         if($this->getRequest()->isPost()) {
