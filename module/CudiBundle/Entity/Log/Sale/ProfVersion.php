@@ -32,4 +32,12 @@ class ProfVersion extends \CudiBundle\Entity\Log
     {
         parent::__construct($person, $article->getId());
     }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'prof version';
+    }
 }

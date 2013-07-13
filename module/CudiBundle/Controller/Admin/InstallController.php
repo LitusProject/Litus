@@ -400,7 +400,7 @@ VTK Cudi
                         'delete', 'manage'
                     ),
                     'cudi_admin_sales_booking' => array(
-                        'add', 'article', 'assign', 'assignAll', 'assignments', 'delete', 'edit', 'extendAll', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
+                        'actions', 'add', 'article', 'assign', 'assignAll', 'delete', 'deleteAll', 'edit', 'extendAll', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
                     ),
                     'cudi_admin_sales_article_discount' => array(
                         'delete', 'manage'

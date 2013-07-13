@@ -6,6 +6,7 @@ use CommonBundle\Entity\User\Person,
     Exception,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Log\Sale\Assignments as LogAssignments,
+    CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
     CudiBundle\Entity\Sale\Article as ArticleEntity,
     CudiBundle\Entity\Sale\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
@@ -444,6 +445,36 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllAssigned(Period $period = null)
+    {
+        if (null == $period) {
+            $period = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period')
+                ->findOneActive();
+        }
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.status', '\'assigned\''),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate());
+
+            if (!$period->isOpen())
+                $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllBookedArticles()
     {
         $period = $this->getEntityManager()
@@ -789,6 +820,45 @@ class Booking extends EntityRepository
 
         if (isset($resultSet[0]))
             return $resultSet[0];
+    }
+
+    public function cancelAll(Person $person)
+    {
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+
+        $period->setEntityManager($this->getEntityManager());
+
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllBooked();
+
+        $counter = 0;
+        $idsCancelled = array();
+
+        foreach($bookings as $booking) {
+            $booking->setStatus('canceled', $this->getEntityManager());
+            $idsCancelled[] = $booking->getId();
+            $counter++;
+        }
+
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllAssigned();
+
+        foreach($bookings as $booking) {
+            $booking->setStatus('canceled', $this->getEntityManager());
+            $idsCancelled[] = $booking->getId();
+            $counter++;
+        }
+
+        if ($counter > 0)
+            $this->getEntityManager()->persist(new LogCancellations($person, $idsCancelled));
+
+        $this->getEntityManager()->flush();
+
+        return $counter;
     }
 
     public function assignAll(Person $person, TransportInterface $mailTransport)

@@ -439,6 +439,32 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
+    public function deleteAllAction()
+    {
+        $number = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->cancelAll($this->getAuthentication()->getPersonObject());
+
+        if (0 == $number)
+            $message = 'No booking could be removed!';
+        elseif (1 == $number)
+            $message = 'There is <b>one</b> booking removed!';
+        else
+            $message = 'There are <b>' . $number . '</b> bookings removed!';
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                $message
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
+    }
+
     public function assignAllAction()
     {
         $number = $this->getEntityManager()
@@ -614,13 +640,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return $return;
     }
 
-    public function assignmentsAction()
+    public function actionsAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Log\Sale\Assignments',
-            $this->getParam('page'),
-            array(),
-            array('timestamp' => 'DESC')
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Log')
+                ->findBookingLogs(),
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -636,12 +662,22 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($log = $this->_getLog()))
             return new ViewModel();
 
-        $ids = $log->getAssigments();
-        foreach($ids as $id) {
-            $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneById($id);
-            $booking->setStatus('booked', $this->getEntityManager());
+        if ($log->getType() == 'assigments') {
+            $ids = $log->getAssigments();
+            foreach($ids as $id) {
+                $booking = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->findOneById($id);
+                $booking->setStatus('booked', $this->getEntityManager());
+            }
+        } elseif ($log->getType() == 'cancellations') {
+            $ids = $log->getCancellations();
+            foreach($ids as $id) {
+                $booking = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->findOneById($id);
+                $booking->setStatus('booked', $this->getEntityManager());
+            }
         }
 
         $this->getEntityManager()->remove($log);
@@ -837,7 +873,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $log = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Log\Sale\Assignments')
+            ->getRepository('CudiBundle\Entity\Log')
             ->findOneById($this->getParam('id'));
 
         if (null === $log) {

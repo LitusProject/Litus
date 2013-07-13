@@ -25,6 +25,7 @@ use CommonBundle\Entity\User\Person,
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
  *      "sales_assignments"="CudiBundle\Entity\Log\Sale\Assignments",
+ *      "sales_cancellations"="CudiBundle\Entity\Log\Sale\Cancellations",
  *      "sales_prof_version"="CudiBundle\Entity\Log\Sale\ProfVersion",
  *      "sales_return"="CudiBundle\Entity\Log\Sale\Returned",
  *      "articles_sales_bookable"="CudiBundle\Entity\Log\Article\Sale\Bookable",
@@ -107,5 +108,13 @@ class Log
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'log';
     }
 }

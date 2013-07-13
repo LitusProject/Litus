@@ -18,24 +18,24 @@ use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Sale\Assignments")
- * @ORM\Table(name="cudi.log_sales_assignments")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Sale\Cancellations")
+ * @ORM\Table(name="cudi.log_sales_cancellations")
  */
-class Assignments extends \CudiBundle\Entity\Log
+class Cancellations extends \CudiBundle\Entity\Log
 {
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param array $assignments
+     * @param array $cancellations
      */
-    public function __construct(Person $person, $assignments)
+    public function __construct(Person $person, $cancellations)
     {
-        parent::__construct($person, serialize($assignments));
+        parent::__construct($person, serialize($cancellations));
     }
 
     /**
      * @return array
      */
-    public function getAssigments()
+    public function getCancellations()
     {
         return unserialize($this->getText());
     }
@@ -53,6 +53,6 @@ class Assignments extends \CudiBundle\Entity\Log
      */
     public function getType()
     {
-        return 'assignments';
+        return 'cancellations';
     }
 }
