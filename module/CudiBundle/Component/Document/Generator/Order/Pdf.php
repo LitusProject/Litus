@@ -182,9 +182,14 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'order',
                 array(
-                    'date' => $now->format('d F Y')
+                    'date' => $now->format('d F Y'),
                 ),
                 array(
+                    new Object(
+                        'comment',
+                        array(),
+                        $this->_order->getComment()
+                    ),
                     new Object(
                         'our_union',
                         array(

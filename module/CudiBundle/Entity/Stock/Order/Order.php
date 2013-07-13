@@ -79,6 +79,13 @@ class Order
     private $person;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
+    /**
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of this order
      */
     public function __construct(Supplier $supplier, Person $person)
@@ -206,5 +213,24 @@ class Order
     public function getDeliveryDate()
     {
         return $this->dateDelivery;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     *
+     * @return \CudiBundle\Entity\Stock\Order\Order
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+        return $this;
     }
 }

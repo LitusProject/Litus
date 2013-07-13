@@ -25,6 +25,10 @@
         <p>Date: <b>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i:s')}}{% else %}(new){% endif %}</b></p>
         <br />
 
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br />
+
         <table class="manage">
 
             <tr>
