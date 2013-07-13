@@ -1,6 +1,6 @@
 <?php
 
-namespace ShiftBundle\Repository;
+namespace CommonBundle\Repository\General\Organization;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -14,7 +14,7 @@ class Unit extends EntityRepository
 {
     public function findAllActive()
     {
-        return $this->_em->getRepository('ShiftBundle\Entity\Unit')
+        return $this->_em->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findBy(array('active' => true), array('name' => 'ASC'));
     }
 }

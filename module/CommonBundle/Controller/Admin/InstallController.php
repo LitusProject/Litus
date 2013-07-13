@@ -209,7 +209,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The LDAP identifier for the users group',
                 ),
                 array(
-                    'key'         => 'shibboleth_extra_info'
+                    'key'         => 'shibboleth_extra_info',
                     'value'       => serialize(
                         array(
                             'first_name' => 'Shib_Person_givenName',
@@ -360,6 +360,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ),
                 ),
                 'student' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
                     'actions' => array(
                         'common_account' => array(
                             'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',

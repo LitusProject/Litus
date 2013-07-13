@@ -12,12 +12,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ShiftBundle\Controller\Admin;
+namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    ShiftBundle\Entity\Unit,
-    ShiftBundle\Form\Admin\Unit\Add as AddForm,
-    ShiftBundle\Form\Admin\Unit\Edit as EditForm,
+    CommonBundle\Entity\General\Organization\Unit,
+    CommonBundle\Form\Admin\Unit\Add as AddForm,
+    CommonBundle\Form\Admin\Unit\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,7 +30,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'ShiftBundle\Entity\Unit',
+            'CommonBundle\Entity\General\Organization\Unit',
             $this->getParam('page'),
             array(
                 'active' => true
@@ -50,7 +50,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -59,8 +59,39 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
+                if (isset($formData['organization'])) {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['unit']);
+                } else {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOne();
+                }
+
+                $roles = array();
+                if (isset($formData['roles'])) {
+                    foreach ($formData['roles'] as $role) {
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
+                }
+
+                $coordinatorRoles = array();
+                if (isset($formData['coordinatorRoles'])) {
+                    foreach ($formData['coordinatorRoles'] as $coordinatorRole) {
+                        $coordinatorRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($coordinatorRole);
+                    }
+                }
+
                 $unit = new Unit(
-                    $formData['name']
+                    $formData['name'],
+                    $organization,
+                    $roles,
+                    $coordinatorRoles
                 );
 
                 $this->getEntityManager()->persist($unit);
@@ -76,7 +107,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'shift_admin_unit',
+                    'common_admin_unit',
                     array(
                         'action' => 'manage'
                     )
@@ -98,7 +129,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         if (!($unit = $this->_getUnit()))
             return new ViewModel();
 
-        $form = new EditForm($unit);
+        $form = new EditForm($this->getEntityManager(), $unit);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -107,7 +138,38 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $unit->setName($formData['name']);
+                if (isset($formData['organization'])) {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['unit']);
+                } else {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOne();
+                }
+
+                $roles = array();
+                if (isset($formData['roles'])) {
+                    foreach ($formData['roles'] as $role) {
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
+                }
+
+                $coordinatorRoles = array();
+                if (isset($formData['coordinatorRoles'])) {
+                    foreach ($formData['coordinatorRoles'] as $coordinatorRole) {
+                        $coordinatorRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($coordinatorRole);
+                    }
+                }
+
+                $unit->setName($formData['name'])
+                    ->setOrganization($organization)
+                    ->setRoles($roles)
+                    ->setCoordinatorRoles($coordinatorRoles);
 
                 $this->getEntityManager()->flush();
 
@@ -120,7 +182,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'shift_admin_unit',
+                    'common_admin_unit',
                     array(
                         'action' => 'manage'
                     )
@@ -169,7 +231,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'shift_admin_unit',
+                'common_admin_unit',
                 array(
                     'action' => 'manage'
                 )
@@ -179,7 +241,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $unit = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Unit')
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findOneById($this->getParam('id'));
 
         if (null === $unit) {
@@ -192,7 +254,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'shift_admin_unit',
+                'common_admin_unit',
                 array(
                     'action' => 'manage'
                 )

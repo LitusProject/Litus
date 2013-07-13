@@ -58,7 +58,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findByAcademicYear($this->_getAcademicYear());
 
         $units = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Unit')
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActive();
 
         $unitsArray = array();

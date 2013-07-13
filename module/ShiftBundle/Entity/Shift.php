@@ -19,13 +19,13 @@ use DateInterval,
     CalendarBundle\Entity\Node\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
+    CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
     ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\Volunteer,
-    ShiftBundle\Entity\Unit;
+    ShiftBundle\Entity\Shift\Volunteer;
 
 /**
  * This entity stores a shift.
@@ -126,9 +126,9 @@ class Shift
     private $volunteers;
 
     /**
-     * @var \ShiftBundle\Entity\Unit The organization unit this shift belongs to
+     * @var \CommonBundle\Entity\General\Organization\Unit The organization unit this shift belongs to
      *
-     * @ORM\ManyToOne(targetEntity="ShiftBundle\Entity\Unit")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization\Unit")
      * @ORM\JoinColumn(name="unit", referencedColumnName="id")
      */
     private $unit;
@@ -171,7 +171,7 @@ class Shift
      * @param \CommonBundle\Entity\User\Person $manager
      * @param integer $nbResponsibles
      * @param integer $nbVolunteers
-     * @param \ShiftBundle\Entity\Unit $unit
+     * @param \CommonBundle\Entity\General\Organization\Unit $unit
      * @param \CalendarBundle\Entity\Node\Event $event
      * @param \CommonBundle\Entity\General\Location $location
      * @param string $name
@@ -466,7 +466,7 @@ class Shift
     }
 
     /**
-     * @return \ShiftBundle\Entity\Unit
+     * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function getUnit()
     {
@@ -474,7 +474,7 @@ class Shift
     }
 
     /**
-     * @param \ShiftBundle\Entity\Unit $unit
+     * @param \CommonBundle\Entity\General\Organization\Unit $unit
      * @return \ShiftBundle\Entity\Shift
      */
     public function setUnit(Unit $unit)
@@ -484,7 +484,7 @@ class Shift
     }
 
     /**
-     * @return \ShiftBundle\Entity\Unit
+     * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function getEvent()
     {

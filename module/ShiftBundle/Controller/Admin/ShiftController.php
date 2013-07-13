@@ -89,7 +89,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData['nb_responsibles'],
                     $formData['nb_volunteers'],
                     $this->getEntityManager()
-                        ->getRepository('ShiftBundle\Entity\Unit')
+                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                         ->findOneById($formData['unit']),
                     $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Location')
@@ -166,7 +166,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setNbVolunteers($formData['nb_volunteers'])
                     ->setUnit(
                         $this->getEntityManager()
-                            ->getRepository('ShiftBundle\Entity\Unit')
+                            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                             ->findOneById($formData['unit'])
                     )
                     ->setLocation(

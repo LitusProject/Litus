@@ -55,7 +55,7 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _createUnitsArray()
     {
         $units = $this->_entityManager
-            ->getRepository('ShiftBundle\Entity\Unit')
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActive();
 
         $unitsArray = array(

@@ -54,13 +54,6 @@ return array(
             '@common_jquery_form',
             '@common_remote_typeahead',
         ),
-        'shift_admin_unit' => array(
-            '@common_jquery',
-            '@admin_js',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_modal',
-            '@admin_css',
-        ),
 
         'shift' => array(
             '@common_jquery',
