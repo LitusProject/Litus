@@ -19,9 +19,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Component\Document\Generator\Stock as StockGenerator,
     CudiBundle\Form\Admin\Stock\Export as ExportForm,
+    CudiBundle\Form\Admin\Stock\SelectOptions as SelectOptionsForm,
     CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
     CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
     CudiBundle\Form\Admin\Stock\Update as StockForm,
+    CudiBundle\Form\Admin\Stock\BulkUpdate as BulkUpdateForm,
     CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Stock\Period\Value\Delta,
@@ -193,30 +195,32 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 if ($stockForm->isValid()) {
                     $formData = $stockForm->getFormData($formData);
 
-                    $delta = new Delta(
-                        $this->getAuthentication()->getPersonObject(),
-                        $article,
-                        $period,
-                        $formData['number'] - $article->getStockValue(),
-                        $formData['comment']
-                    );
-                    $this->getEntityManager()->persist($delta);
+                    if ($formData['number'] != $article->getStockValue()) {
+                        $delta = new Delta(
+                            $this->getAuthentication()->getPersonObject(),
+                            $article,
+                            $period,
+                            $formData['number'] - $article->getStockValue(),
+                            $formData['comment']
+                        );
+                        $this->getEntityManager()->persist($delta);
 
-                    $article->setStockValue($formData['number']);
+                        $article->setStockValue($formData['number']);
 
-                    $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
-                    $bookings = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->findLastAssignedByArticle($article);
+                        $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
+                        $bookings = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Booking')
+                            ->findLastAssignedByArticle($article);
 
-                    foreach($bookings as $booking) {
-                        if ($nbToMuchAssigned <= 0)
-                            break;
-                        $booking->setStatus('booked', $this->getEntityManager());
-                        $nbToMuchAssigned -= $booking->getNumber();
+                        foreach($bookings as $booking) {
+                            if ($nbToMuchAssigned <= 0)
+                                break;
+                            $booking->setStatus('booked', $this->getEntityManager());
+                            $nbToMuchAssigned -= $booking->getNumber();
+                        }
+
+                        $this->getEntityManager()->flush();
                     }
-
-                    $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -385,6 +389,102 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     )
                 );
             }
+        }
+    }
+
+    public function bulkUpdateAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return new ViewModel();
+
+        if ($this->getRequest()->getQuery('select') == null) {
+            $form = new SelectOptionsForm();
+            $form->setAttribute('method', 'get');
+
+            return new ViewModel(
+                array(
+                    'form' => $form,
+                )
+            );
+        } else {
+            $formData = $this->getRequest()->getQuery();
+            if ($formData['order'] == 'barcode') {
+                $stock = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findAllByAcademicYearSortBarcode($this->getAcademicYear());
+            } else {
+                $stock = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findAllByAcademicYear($this->getAcademicYear());
+            }
+
+            $articles = array();
+            foreach($stock as $item) {
+                if ($formData['articles'] == 'external' && $item->getMainArticle()->isInternal())
+                    continue;
+                if ($formData['articles'] == 'internal' && !$item->getMainArticle()->isInternal())
+                    continue;
+
+                if ($item->getStockValue() <= 0 && isset($formData['in_stock']))
+                    continue;
+
+                $articles[] = $item;
+            }
+
+            $form = new BulkUpdateForm($articles);
+
+            if($this->getRequest()->isPost()) {
+                $formData = $this->getRequest()->getPost();
+                $form->setData($formData);
+
+                if ($form->isValid()) {
+                    foreach($articles as $article) {
+                        if ($article->getStockValue() != $formData['article-' . $article->getId()]) {
+                            $delta = new Delta(
+                                $this->getAuthentication()->getPersonObject(),
+                                $article,
+                                $period,
+                                $formData['article-' . $article->getId()] - $article->getStockValue(),
+                                'Stock Update'
+                            );
+                            $this->getEntityManager()->persist($delta);
+
+                            $article->setStockValue($formData['article-' . $article->getId()]);
+
+                            $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
+                            $bookings = $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                ->findLastAssignedByArticle($article);
+
+                            foreach($bookings as $booking) {
+                                if ($nbToMuchAssigned <= 0)
+                                    break;
+                                $booking->setStatus('booked', $this->getEntityManager());
+                                $nbToMuchAssigned -= $booking->getNumber();
+                            }
+                        }
+                    }
+
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The stock was successfully updated!'
+                        )
+                    );
+
+                    $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+                }
+            }
+
+            return new ViewModel(
+                array(
+                    'articles' => $articles,
+                    'form' => $form,
+                )
+            );
         }
     }
 

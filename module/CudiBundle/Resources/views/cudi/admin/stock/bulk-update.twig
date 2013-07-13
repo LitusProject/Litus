@@ -1,0 +1,39 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/stock/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% if articles is null %}
+            {% import 'admin/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        {% else %}
+            {% autoescape false %}
+            {{ form().openTag(form) }}
+                <table class="full_width manage">
+                    <tr>
+                        <th width="100px">Barcode</th>
+                        <th>Article</th>
+                        <th width="100px">Supplier</th>
+                        <th width="150px">Stock Value</th>
+                    </tr>
+
+                    {% for article in articles %}
+                        <tr>
+                            <td>{{ article.getBarcode() }}</td>
+                            <td>{{ article.getMainArticle().getTitle() }}</td>
+                            <td>{{ article.getSupplier().getName() }}</td>
+                            <td>{{ formElement(form.get('article-' ~ article.getId())) }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div style="float: right">
+                    {{ formElement(form.get('submit')) }}
+                </div>
+            {{ form().closeTag() }}
+            {% endautoescape %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -418,7 +418,7 @@ VTK Cudi
                         'add', 'edit', 'delete', 'manage', 'old'
                     ),
                     'cudi_admin_stock' => array(
-                        'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
+                        'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
                     ),
                     'cudi_admin_stock_delivery' => array(
                         'add', 'delete', 'manage', 'supplier', 'typeahead'
