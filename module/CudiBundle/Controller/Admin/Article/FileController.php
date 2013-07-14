@@ -106,7 +106,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->getEntityManager()->flush();
 
             $mapping = $this->getEntityManager()
-                ->getRepository('Cudibundle\Entity\Files\Mapping')
+                ->getRepository('Cudibundle\Entity\File\Mapping')
                 ->findOneByArticleAndFile($article, $file);
 
             $this->flashMessenger()->addMessage(
