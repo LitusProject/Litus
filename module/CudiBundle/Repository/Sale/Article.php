@@ -379,7 +379,7 @@ class Article extends EntityRepository
                 ->getResult();
         } elseif ($semester == 3) {
             $resultSetOne = $query->select('a.id')
-                ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+                ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
                 ->innerJoin('m.article', 'a')
                 ->innerJoin('m.subject', 's')
                 ->where(
@@ -401,7 +401,7 @@ class Article extends EntityRepository
 
             $query = $this->_em->createQueryBuilder();
             $resultSetTwo = $query->select('a.id')
-                ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+                ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
                 ->innerJoin('m.article', 'a')
                 ->innerJoin('m.subject', 's')
                 ->where(
