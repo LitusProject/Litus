@@ -25,7 +25,7 @@ use CommonBundle\Entity\General\AcademicYear,
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\UnitMap")
  * @ORM\Table(
  *     name="users.people_organizations_unit_map",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="mapping_unique", columns={"academic", "academic_year", "unit"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="academics_units_map_unique", columns={"academic", "academic_year", "unit"})}
  * )
  */
 class UnitMap
