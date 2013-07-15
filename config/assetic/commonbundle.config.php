@@ -79,6 +79,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@admin_css',
+            '@common_remote_typeahead',
         ),
 
         'common_account' => array(

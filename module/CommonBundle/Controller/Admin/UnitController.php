@@ -16,8 +16,10 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Organization\Unit,
+    CommonBundle\Entity\User\Person\Organization\UnitMap,
     CommonBundle\Form\Admin\Unit\Add as AddForm,
     CommonBundle\Form\Admin\Unit\Edit as EditForm,
+    CommonBundle\Form\Admin\Unit\Member as MemberForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -124,6 +126,84 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function membersAction()
+    {
+        if(!($unit = $this->_getUnit()))
+            return new ViewModel();
+
+        $form = new MemberForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $member = null;
+
+                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneByUsername($formData['person_name']);
+                } else {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneById($formData['person_id']);
+                }
+
+                $repositoryCheck = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                    ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+
+                if (null !== $repositoryCheck) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'ERROR',
+                            'This academic already is a member of this unit!'
+                        )
+                    );
+                } else {
+                    $member = new UnitMap($academic, $this->getCurrentAcademicYear(), $unit, $formData['coordinator']);
+
+                    $this->getEntityManager()->persist($member);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCES',
+                            'The member was succesfully added!'
+                        )
+                    );
+                }
+
+                $this->redirect()->toRoute(
+                    'common_admin_unit',
+                    array(
+                        'action' => 'members',
+                        'id' => $unit->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $members = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+            ->findByUnit($unit);
+
+        return new ViewModel(
+            array(
+                'unit' => $unit,
+                'form' => $form,
+                'members' => $members,
+            )
+        );
+    }
+
     public function editAction()
     {
         if (!($unit = $this->_getUnit()))
@@ -219,6 +299,23 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function deleteMemberAction()
+    {
+        $this->initAjax();
+
+        if (!($member = $this->_getMember()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($member);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
     private function _getUnit()
     {
         if (null === $this->getParam('id')) {
@@ -264,5 +361,52 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $unit;
+    }
+
+    private function _getMember()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the member!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'common_admin_unit',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $member = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $member) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No member with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'common_admin_unit',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $member;
     }
 }

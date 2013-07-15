@@ -37,7 +37,7 @@
 	                    <td>{{ dateLocalized(notification.getStartDate(), 'dd/MM/y HH:mm') }}</td>
 	                    <td>{{ dateLocalized(notification.getEndDate(), 'dd/MM/y HH:mm') }}</td>
 	                    <td>{{ notification.getCreationPerson().getFullName() }}</td>
-	                    <td>{% if notification.isActive() %} X {% endif %}</td>
+	                    <td>{% if notification.isActive() %}&times;{% endif %}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('notification_admin_notification', 'edit') %}
 	                            <a href="{{ url('notification_admin_notification', {"action": "edit", "id": notification.getId()}) }}" class="edit">Edit</a>

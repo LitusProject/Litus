@@ -22,7 +22,7 @@
     				<td>{{ form.getTitle(language) }}</td>
                     <td>{{ dateLocalized(form.getStartDate(), 'dd/MM/y HH:mm') }}</td>
                     <td>{{ dateLocalized(form.getEndDate(), 'dd/MM/y HH:mm') }}</td>
-					<td>{% if form.isActive() %}X{% endif %}</td>
+					<td>{% if form.isActive() %}&times;{% endif %}</td>
 					<td>
 						<a href="{{ url("form_manage", {"action" : "view", "id" : form.getId()}) }}" class="btn btn-mini">{{ translate("View") }}</a>
                         <a href="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="btn btn-mini">{{ translate("Download") }}</a>

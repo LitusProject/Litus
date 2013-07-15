@@ -31,6 +31,9 @@
 	                <tr class="item item-{{ unit.getId() }}">
 	                    <td>{{ unit.getName() }}</td>
 	                    <td class="actions">
+	                    	{% if hasAccess('common_admin_unit', 'members') %}
+	                            <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId()}) }}" class="unit_member_edit">Members</a>
+	                        {% endif %}
 	                        {% if hasAccess('common_admin_unit', 'edit') %}
 	                            <a href="{{ url('common_admin_unit', {"action": "edit", "id": unit.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
