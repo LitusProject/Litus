@@ -44,7 +44,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -213,6 +213,40 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function pruneAction()
+    {
+        $roles = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findAll();
+
+        foreach ($roles as $role) {
+            foreach ($role->getActions() as $action)
+                if ($this->_findActionWithParents($action, $role->getParents()))
+                    $role->removeAction($action);
+        }
+
+        $this->getEntityManager()->flush();
+
+        $this->_updateCache();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Succes',
+                'The tree was succesfully pruned!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'common_admin_role',
+            array(
+                'action' => 'manage'
+            )
+        );
+
+        return new ViewModel();
+    }
+
     private function _getRole()
     {
         if (null === $this->getParam('name')) {
@@ -270,5 +304,17 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
         }
+    }
+
+    private function _findActionWithParents(AclAction $action, array $parents)
+    {
+        foreach ($parents as $parent) {
+            if (in_array($action, $parent->getActions()))
+                return true;
+
+            return $this->_findActionWithParents($action, $parent->getParents());
+        }
+
+        return false;
     }
 }

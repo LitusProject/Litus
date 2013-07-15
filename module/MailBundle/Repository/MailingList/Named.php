@@ -21,7 +21,7 @@ class Named extends EntityRepository
             ->where(
                 $query->expr()->eq('a.academic', ':academic')
             )
-            ->orderBy('l.name', 'asc')
+            ->orderBy('l.name', 'ASC')
             ->setParameter('academic', $academic)
             ->getQuery()
             ->getResult();
