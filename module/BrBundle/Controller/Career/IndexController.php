@@ -26,6 +26,13 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $this->redirect()->toRoute(
+            'br_career_company',
+            array(
+                'action' => 'overview'
+            )
+        );
+
+        return;
     }
 }

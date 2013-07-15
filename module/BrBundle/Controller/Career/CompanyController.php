@@ -43,7 +43,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
     {
         if (!($page = $this->_getPage()))
             return new ViewModel();
-        
+
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');

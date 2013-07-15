@@ -49,7 +49,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
     public function viewAction()
     {
         $internship = $this->_getInternship();
-        
+
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
