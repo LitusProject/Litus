@@ -349,9 +349,14 @@ class Academic extends \CommonBundle\Entity\User\Person
             }
         }
 
-        return array_merge(
-            $unitMap->getUnit()->getRoles(),
-            $unitMap->isCoordinator() ? $unitMap->getUnit()->getCoordinatorRoles() : array()
-        );
+        $roles = array();
+        if (null !== $unitMap) {
+            $roles = array_merge(
+                $unitMap->getUnit()->getRoles(),
+                $unitMap->isCoordinator() ? $unitMap->getUnit()->getCoordinatorRoles() : array()
+            );
+        }
+
+        return $roles;
     }
 }
