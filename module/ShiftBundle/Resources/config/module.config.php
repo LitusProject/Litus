@@ -91,21 +91,6 @@ return array(
                     ),
                 ),
             ),
-            'shift_admin_unit' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/unit[/:action[/:id][/page/:page]][/]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]*',
-                        'page'   => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'shift_admin_unit',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
             'shift' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -187,7 +172,6 @@ return array(
             'shift_admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
             'shift_admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
             'shift_admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
-            'shift_admin_unit'               => 'ShiftBundle\Controller\Admin\UnitController',
 
             'shift'                          => 'ShiftBundle\Controller\ShiftController',
         ),

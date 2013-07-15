@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
-    FormBundle\Entity\Nodes\Form;
+    FormBundle\Entity\Node\Form;
 
 /**
  * This entity stores the node item.

@@ -15,20 +15,20 @@
 namespace CommonBundle\Entity\User\Person\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
+    CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM;
 
 /**
  * Specifying the mapping between organization and academic.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\AcademicYearMap")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\UnitMap")
  * @ORM\Table(
- *     name="users.people_organizations_academic_year_map",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="academics_organizations_map_unique", columns={"academic", "academic_year"})}
+ *     name="users.people_organizations_unit_map",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="academics_units_map_unique", columns={"academic", "academic_year", "unit"})}
  * )
  */
-class AcademicYearMap
+class UnitMap
 {
     /**
      * @var int The ID of this academic year map
@@ -56,23 +56,32 @@ class AcademicYearMap
     private $academicYear;
 
     /**
-     * @var \CommonBundle\Entity\General\Organization The organization
+     * @var \CommonBundle\Entity\General\Organization\Unit The unit
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
-     * @ORM\JoinColumn(name="organization", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization\Unit")
+     * @ORM\JoinColumn(name="unit", referencedColumnName="id")
      */
-    private $organization;
+    private $unit;
+
+    /**
+     * @var boolean Whether or not the academic is the coordinator
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $coordinator;
 
     /**
      * @param \CommonBundle\Entity\User\Person\Academic $person The person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
-     * @param \CommonBundle\Entity\General\Organization $organization The organization
+     * @param \CommonBundle\Entity\General\Organization\Unit $unit The unit
+     * @param boolean $coordinator Whether or not the academic is the coordinator
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, Organization $organization)
+    public function __construct(Academic $academic, AcademicYear $academicYear, Unit $unit, $coordinator)
     {
         $this->academic = $academic;
         $this->academicYear = $academicYear;
-        $this->organization = $organization;
+        $this->unit = $unit;
+        $this->coordinator = $coordinator;
     }
 
     /**
@@ -102,8 +111,16 @@ class AcademicYearMap
     /**
      * @return \CommonBundle\Entity\General\Organization
      */
-    public function getOrganization()
+    public function getUnit()
     {
-        return $this->organization;
+        return $this->unit;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCoordinator()
+    {
+        return $this->coordinator;
     }
 }

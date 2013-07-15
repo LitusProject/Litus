@@ -60,10 +60,13 @@
                         </ul>
                     {% endif %}
 
-                    {% if hasAccess('common_admin_location', 'manage') %}
+                    {% if hasAccess('common_admin_location', 'manage') or hasAccess('common_admin_unit', 'manage') %}
                         <ul>
                             {% if hasAccess('common_admin_location', 'manage') %}
                                 <li><a href="{{ url('common_admin_location') }}">Locations</a></li>
+                            {% endif %}
+                            {% if hasAccess('common_admin_unit', 'manage') %}
+                                <li><a href="{{ url('common_admin_unit') }}">Units</a></li>
                             {% endif %}
                         </ul>
                     {% endif %}
@@ -222,11 +225,11 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('shift_admin_shift', 'manage') or hasAccess('shift_admin_unit', 'manage') %}
+                        {% if hasAccess('shift_admin_shift_counter', 'index') or hasAccess('shift_admin_shift_ranking', 'index') or hasAccess('shift_admin_shift', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Shifts</b><br />
-                                    Shifts &amp; Units
+                                    Counter, Rankings &amp; Shifts
                                 </div>
                                 <ul
                                     {% if 'shift_admin_shift' == getParam('controller') or 'shift_admin_shift_counter' == getParam('controller') or 'shift_admin_shift_ranking' == getParam('controller') or 'shift_admin_unit' == getParam('controller') %}
@@ -236,14 +239,11 @@
                                     {% if hasAccess('shift_admin_shift_counter', 'index') %}
                                         <li><a href="{{ url('shift_admin_shift_counter') }}">Counter</a></li>
                                     {% endif %}
-                                    {% if hasAccess('shift_admin_shift', 'manage') %}
-                                        <li><a href="{{ url('shift_admin_shift') }}">Shifts</a></li>
-                                    {% endif %}
                                     {% if hasAccess('shift_admin_shift_ranking', 'index') %}
                                         <li><a href="{{ url('shift_admin_shift_ranking') }}">Ranking</a></li>
                                     {% endif %}
-                                    {% if hasAccess('shift_admin_unit', 'manage') %}
-                                        <li><a href="{{ url('shift_admin_unit') }}">Units</a></li>
+                                    {% if hasAccess('shift_admin_shift', 'manage') %}
+                                        <li><a href="{{ url('shift_admin_shift') }}">Shifts</a></li>
                                     {% endif %}
                                 </ul>
                             </li>

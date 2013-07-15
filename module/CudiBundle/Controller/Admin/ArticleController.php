@@ -90,7 +90,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['author'],
                         $formData['publisher'],
                         $formData['year_published'],
-                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['isbn'] != '' ? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],

@@ -117,7 +117,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData = $unitSearchForm->getFormData($formData);
 
                     $unit = $this->getEntityManager()
-                        ->getRepository('ShiftBundle\Entity\Unit')
+                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                         ->findOneById($formData['unit']);
 
                     $searchResults = $this->getEntityManager()

@@ -12,11 +12,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ShiftBundle\Form\Admin\Unit;
+namespace CommonBundle\Form\Admin\Unit;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Shiftbundle\Entity\Unit,
+    CommonBundle\Entity\General\Organization\Unit,
+    Doctrine\ORM\EntityManager,
     Zend\Form\Element\Text,
     Zend\Form\Element\Submit;
 
@@ -28,12 +29,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends Add
 {
     /**
-     * @param \ShiftBundle\Entity\Unit $unit The unit we're going to modify
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\Organization\Unit $unit The unit we're going to modify
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Unit $unit, $name = null)
+    public function __construct(EntityManager $entityManager, Unit $unit, $name = null)
     {
-        parent::__construct($name);
+        parent::__construct($entityManager, $name);
 
         $this->remove('submit');
 
@@ -48,9 +50,24 @@ class Edit extends Add
     private function _populateFromUnit(Unit $unit)
     {
         $data = array(
-            'name' => $unit->getName()
+            'name' => $unit->getName(),
+            'organization' => $unit->getOrganization(),
+            'roles' => $this->_createRolesPopulationArray($unit->getRoles()),
+            'coordinatorRoles' => $this->_createRolesPopulationArray($unit->getCoordinatorRoles()),
         );
 
         $this->setData($data);
+    }
+
+    private function _createRolesPopulationArray(array $roles)
+    {
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if ($role->getSystem())
+                continue;
+
+            $rolesArray[] = $role->getName();
+        }
+        return $rolesArray;
     }
 }

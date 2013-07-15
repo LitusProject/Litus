@@ -19,7 +19,7 @@
     </div>
 
 	<div id="controller_action">
-	    <table class="full_width manage">
+	    <table class="manage">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -32,6 +32,9 @@
                     <tr class="item item-{{ role.getName() }}">
                         <td>{{ role.getName() }}</td>
                         <td class="actions">
+                            {% if not role.getSystem() and hasAccess('common_admin_role', 'Members') %}
+                                <a href="{{ url('common_admin_role', {"action": "members", "name": role.getName()}) }}" class="group_edit">Members</a>
+                            {% endif %}
                             {% if hasAccess('common_admin_role', 'edit') %}
                                 <a href="{{ url('common_admin_role', {"action": "edit", "name": role.getName()}) }}" class="edit">Edit</a>
                             {% endif %}
@@ -66,6 +69,22 @@
 			</div>
 		</div>
 	</div>
+
+    {% if hasAccess('common_admin_role', 'prune') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Prune Tree</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to prune the tree!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('common_admin_role', {"action": "prune"}) }}">&rarr; Prune Tree</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}

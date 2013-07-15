@@ -74,7 +74,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         } else if ($person !== null) {
             $entries = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Nodes\Entry')
+                ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findAllByFormAndPerson($formSpecification, $person);
 
             if (!$formSpecification->isMultiple() && count($entries) > 0) {
@@ -274,7 +274,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $entry = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->getRepository('FormBundle\Entity\Node\Entry')
             ->findOneById($this->getParam('id'));
 
         if (null === $entry || !$entry->getForm()->isEditableByUser()) {

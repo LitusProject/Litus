@@ -128,9 +128,6 @@ You have been removed from the following shift by an administrator:
         $this->installAcl(
             array(
                 'shiftbundle' => array(
-                    'shift_admin_unit' => array(
-                        'add', 'delete', 'edit', 'manage'
-                    ),
                     'shift_admin_shift' => array(
                         'add', 'delete', 'edit', 'manage', 'old'
                     ),

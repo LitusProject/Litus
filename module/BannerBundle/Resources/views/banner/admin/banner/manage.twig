@@ -37,7 +37,7 @@
                         <td>{{ dateLocalized(banner.getStartDate(), 'dd/MM/y HH:mm') }}</td>
                         <td>{{ dateLocalized(banner.getEndDate(), 'dd/MM/y HH:mm') }}</td>
                         <td>{{ banner.getCreationPerson().getFullName() }}</td>
-                        <td>{% if banner.isActive() %} X {% endif %}</td>
+                        <td>{% if banner.isActive() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('banner_admin_banner', 'edit') %}
                                 <a href="{{ url('banner_admin_banner', {"action": "edit", "id": banner.getId()}) }}" class="edit">Edit</a>

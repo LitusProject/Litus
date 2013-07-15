@@ -122,7 +122,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _createUnitsArray()
     {
         $units = $this->_entityManager
-            ->getRepository('ShiftBundle\Entity\Unit')
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActive();
 
         if (empty($units))

@@ -73,6 +73,14 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'common_admin_unit' => array(
+            '@common_jquery',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@admin_css',
+            '@common_remote_typeahead',
+        ),
 
         'common_account' => array(
             '@common_jquery',

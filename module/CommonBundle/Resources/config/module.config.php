@@ -150,10 +150,11 @@ return array(
             'common_admin_role' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/role[/:action[/name/:name][/page/:page]][/]',
+                    'route' => '/admin/role[/:action[/name/:name[/:id]][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'name'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
@@ -173,6 +174,21 @@ return array(
                     'defaults' => array(
                         'controller' => 'common_admin_session',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'common_admin_unit' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/unit[/:action[/:id][/page/:page]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'common_admin_unit',
+                        'action'     => 'manage',
                     ),
                 ),
             ),
@@ -334,6 +350,7 @@ return array(
             'common_admin_person'   => 'CommonBundle\Controller\Admin\PersonController',
             'common_admin_role'     => 'CommonBundle\Controller\Admin\RoleController',
             'common_admin_session'  => 'CommonBundle\Controller\Admin\SessionController',
+            'common_admin_unit'     => 'CommonBundle\Controller\Admin\UnitController',
 
             'common_index'          => 'CommonBundle\Controller\IndexController',
             'common_account'        => 'CommonBundle\Controller\AccountController',

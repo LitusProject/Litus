@@ -516,24 +516,6 @@ abstract class Person
     }
 
     /**
-     * This method is called recursively to create a one-dimensional role flattening the
-     * roles' inheritance structure.
-     *
-     * @param array $inheritanceRoles The array with the roles that should be unfolded
-     * @param array $return The one-dimensional return array
-     * @return array
-     */
-    private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
-    {
-        foreach ($inheritanceRoles as $role) {
-            $return[] = $role;
-            $return = $this->_flattenRolesInheritance($role->getParents(), $return);
-        }
-
-        return $return;
-    }
-
-    /**
      * @param \CommonBundle\Entity\User\Status\Organization $organizationStatus
      * @return \CommonBundle\Entity\User\Person
      */
@@ -657,5 +639,23 @@ abstract class Person
         }
 
         return $this;
+    }
+
+    /**
+     * This method is called recursively to create a one-dimensional role flattening the
+     * roles' inheritance structure.
+     *
+     * @param array $inheritanceRoles The array with the roles that should be unfolded
+     * @param array $return The one-dimensional return array
+     * @return array
+     */
+    private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
+    {
+        foreach ($inheritanceRoles as $role) {
+            $return[] = $role;
+            $return = $this->_flattenRolesInheritance($role->getParents(), $return);
+        }
+
+        return $return;
     }
 }

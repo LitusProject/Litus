@@ -16,8 +16,8 @@ namespace FormBundle\Form\SpecifiedForm;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
-    FormBundle\Entity\Nodes\Form,
-    FormBundle\Entity\Nodes\Entry,
+    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
@@ -31,8 +31,8 @@ class Edit extends Add
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Nodes\Form $form
-     * @param \FormBundle\Entity\Nodes\Entry $entry
+     * @param \FormBundle\Entity\Node\Form $form
+     * @param \FormBundle\Entity\Node\Entry $entry
      * @param \CommonBundle\Entity\Users\Person|null $person
      * @param null|string|int $name Optional name for the element
      */

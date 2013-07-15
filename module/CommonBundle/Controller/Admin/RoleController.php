@@ -44,7 +44,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -116,6 +116,23 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'form' => $form,
                 'roleCreated' => $roleCreated,
+            )
+        );
+    }
+
+    public function membersAction()
+    {
+        if(!($role = $this->_getRole()))
+            return new ViewModel();
+
+        $members = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findAllByRole($role);
+
+        return new ViewModel(
+            array(
+                'role' => $role,
+                'members' => $members,
             )
         );
     }
@@ -193,7 +210,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $users = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findAllByRole($role->getName());
+            ->findAllByRole($role);
 
         foreach ($users as $user) {
             $user->removeRole($role);
@@ -211,6 +228,60 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 ),
             )
         );
+    }
+
+    public function deleteMemberAction()
+    {
+        $this->initAjax();
+
+        if (!($role = $this->_getRole()))
+            return new ViewModel();
+
+        if (!($member = $this->_getMember()))
+            return new ViewModel();
+
+        $member->removeRole($role);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    public function pruneAction()
+    {
+        $roles = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findAll();
+
+        foreach ($roles as $role) {
+            foreach ($role->getActions() as $action)
+                if ($this->_findActionWithParents($action, $role->getParents()))
+                    $role->removeAction($action);
+        }
+
+        $this->getEntityManager()->flush();
+
+        $this->_updateCache();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Succes',
+                'The tree was succesfully pruned!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'common_admin_role',
+            array(
+                'action' => 'manage'
+            )
+        );
+
+        return new ViewModel();
     }
 
     private function _getRole()
@@ -260,6 +331,53 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return $role;
     }
 
+    private function _getMember()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the member!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'common_admin_role',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $member = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $member) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No member with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'common_admin_role',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $member;
+    }
+
     private function _updateCache()
     {
         if (null !== $this->getCache() && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
@@ -270,5 +388,17 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
         }
+    }
+
+    private function _findActionWithParents(AclAction $action, array $parents)
+    {
+        foreach ($parents as $parent) {
+            if (in_array($action, $parent->getActions()))
+                return true;
+
+            return $this->_findActionWithParents($action, $parent->getParents());
+        }
+
+        return false;
     }
 }

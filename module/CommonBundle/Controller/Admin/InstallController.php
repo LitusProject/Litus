@@ -209,7 +209,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The LDAP identifier for the users group',
                 ),
                 array(
-                    'key'         => 'shibboleth_extra_info'
+                    'key'         => 'shibboleth_extra_info',
                     'value'       => serialize(
                         array(
                             'first_name' => 'Shib_Person_givenName',
@@ -250,10 +250,13 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'typeahead'
                     ),
                     'common_admin_role' => array(
-                        'add', 'edit', 'delete', 'manage'
+                        'add', 'edit', 'delete', 'deleteMember', 'manage', 'members', 'prune'
                     ),
                     'common_admin_session' => array(
                         'expire'
+                    ),
+                    'common_admin_unit' => array(
+                        'add', 'delete', 'deleteMember', 'edit', 'manage', 'members'
                     ),
                     'common_account' => array(
                         'activate', 'edit', 'fileServer', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
@@ -360,6 +363,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ),
                 ),
                 'student' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
                     'actions' => array(
                         'common_account' => array(
                             'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',

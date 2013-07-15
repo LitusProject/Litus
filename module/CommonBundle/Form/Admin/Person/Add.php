@@ -85,7 +85,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('roles');
         $field->setLabel('Groups')
             ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_createRolesArray());
+            ->setAttribute('options', $this->createRolesArray());
         $this->add($field);
     }
 
@@ -95,7 +95,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
      *
      * @return array
      */
-    private function _createRolesArray()
+    protected function createRolesArray()
     {
         $roles = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Acl\Role')

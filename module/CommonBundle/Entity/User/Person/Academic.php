@@ -97,6 +97,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $organizationMap;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The user's unit mapping
+     *
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\UnitMap", mappedBy="academic", cascade={"persist", "remove"})
+     */
+    private $unitMap;
+
+    /**
      * @param string $username The user's username
      * @param array $roles The user's roles
      * @param string $firstName The user's first name
@@ -114,7 +121,10 @@ class Academic extends \CommonBundle\Entity\User\Person
         $this->setUniversityEmail($email);
 
         $this->universityIdentification = $universityIdentification;
+
         $this->universityStatuses = new ArrayCollection();
+        $this->organizationMap = new ArrayCollection();
+        $this->unitMap = new ArrayCollection();
     }
 
     /**
@@ -292,9 +302,61 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function getOrganization(AcademicYearEntity $academicYear)
     {
         foreach($this->organizationMap as $map) {
-            if ($map->getAcademicYear() == $academicYear) {
+            if ($map->getAcademicYear() == $academicYear)
                 return $map->getOrganization();
+        }
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function getUnit(AcademicYearEntity $academicYear)
+    {
+        foreach($this->unitMap as $map) {
+            if ($map->getAcademicYear() == $academicYear)
+                return $map->getUnit();
+        }
+    }
+
+    /**
+     * @param boolean $mergeUnitRoles
+     * @return array
+     */
+    public function getRoles($mergeUnitRoles = true)
+    {
+        return array_merge(
+            parent::getRoles(),
+            true === $mergeUnitRoles ? $this->getUnitRoles() : array()
+        );
+    }
+
+    /**
+     * Retrieves all the roles from the academic's units for the
+     * latest academic year.
+     *
+     * @return array
+     */
+    public function getUnitRoles()
+    {
+        $latestStartDate = null;
+        $unitMap = null;
+        foreach($this->unitMap as $map) {
+            $startDate = $map->getAcademicYear()->getStartDate();
+            if ($startDate > $latestStartDate) {
+                $latestStartDate = $startDate;
+                $unitMap = $map;
             }
         }
+
+        $roles = array();
+        if (null !== $unitMap) {
+            $roles = array_merge(
+                $unitMap->getUnit()->getRoles(),
+                $unitMap->isCoordinator() ? $unitMap->getUnit()->getCoordinatorRoles() : array()
+            );
+        }
+
+        return $roles;
     }
 }

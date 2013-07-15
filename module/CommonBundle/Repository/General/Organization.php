@@ -23,4 +23,12 @@ class Organization extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findOne()
+    {
+        if (count($this->findAll()) > 1)
+            throw new \RuntimeException('There is more than one organization');
+
+        return $this->findAll()[0];
+    }
 }

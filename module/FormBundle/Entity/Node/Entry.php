@@ -122,7 +122,7 @@ class Entry
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person|\FormBundle\Entity\Nodes\GuestInfo
+     * @return \CommonBundle\Entity\Users\Person|\FormBundle\Entity\Node\GuestInfo
      */
     public function getPersonInfo()
     {
@@ -141,7 +141,7 @@ class Entry
     }
 
     /**
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function getForm() {
         return $this->form;
