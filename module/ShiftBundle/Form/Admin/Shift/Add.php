@@ -188,8 +188,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $now = new DateTime();
-
         $inputFilter->add(
             $factory->createInput(
                 array(
