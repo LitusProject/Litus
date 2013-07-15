@@ -2,7 +2,8 @@
 
 namespace TicketBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository,
+    TicketBundle\Entity\Event as EventEntity;
 
 /**
  * Ticket
@@ -12,4 +13,45 @@ use Doctrine\ORM\EntityRepository;
  */
 class Ticket extends EntityRepository
 {
+    public function findOneByEventAndNumber(EventEntity $event, $number)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->eq('t.number', ':number')
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('number', $number)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
+    public function findAllEmptyByEvent(EventEntity $event)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->eq('t.status', ':empty')
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('empty', 'empty')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }
