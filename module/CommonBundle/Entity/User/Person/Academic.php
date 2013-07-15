@@ -320,9 +320,24 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
+     * @param boolean $mergeUnitRoles
      * @return array
      */
-    public function getRoles()
+    public function getRoles($mergeUnitRoles = true)
+    {
+        return array_merge(
+            parent::getRoles(),
+            true === $mergeUnitRoles ? $this->getUnitRoles() : array()
+        );
+    }
+
+    /**
+     * Retrieves all the roles from the academic's units for the
+     * latest academic year.
+     *
+     * @return array
+     */
+    public function getUnitRoles()
     {
         $latestStartDate = null;
         $unitMap = null;
@@ -335,7 +350,6 @@ class Academic extends \CommonBundle\Entity\User\Person
         }
 
         return array_merge(
-            parent::getRoles(),
             $unitMap->getUnit()->getRoles(),
             $unitMap->isCoordinator() ? $unitMap->getUnit()->getCoordinatorRoles() : array()
         );

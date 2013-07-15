@@ -120,6 +120,23 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function membersAction()
+    {
+        if(!($role = $this->_getRole()))
+            return new ViewModel();
+
+        $members = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findAllByRole($role);
+
+        return new ViewModel(
+            array(
+                'role' => $role,
+                'members' => $members,
+            )
+        );
+    }
+
     public function editAction()
     {
         if (!($role = $this->_getRole()))
@@ -193,7 +210,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $users = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findAllByRole($role->getName());
+            ->findAllByRole($role);
 
         foreach ($users as $user) {
             $user->removeRole($role);
@@ -209,6 +226,26 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 'result' => array(
                     'status' => 'success'
                 ),
+            )
+        );
+    }
+
+    public function deleteMemberAction()
+    {
+        $this->initAjax();
+
+        if (!($role = $this->_getRole()))
+            return new ViewModel();
+
+        if (!($member = $this->_getMember()))
+            return new ViewModel();
+
+        $member->removeRole($role);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
             )
         );
     }
@@ -292,6 +329,53 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $role;
+    }
+
+    private function _getMember()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the member!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'common_admin_role',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $member = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $member) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No member with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'common_admin_role',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $member;
     }
 
     private function _updateCache()

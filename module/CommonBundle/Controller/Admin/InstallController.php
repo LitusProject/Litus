@@ -250,7 +250,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'typeahead'
                     ),
                     'common_admin_role' => array(
-                        'add', 'edit', 'delete', 'manage'
+                        'add', 'edit', 'delete', 'deleteMember', 'manage', 'members', 'prune'
                     ),
                     'common_admin_session' => array(
                         'expire'

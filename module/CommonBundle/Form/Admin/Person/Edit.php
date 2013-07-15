@@ -46,6 +46,13 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
             ->setAttribute('disabled', 'disabled');
         $this->add($field);
 
+        $field = new Select('unit_roles');
+        $field->setLabel('Unit Groups')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->createRolesArray())
+            ->setAttribute('disabled', 'disabled');
+        $this->add($field);
+
         $field = new Text('code');
         $field->setLabel('Code')
             ->setAttribute('disabled', 'disabled');
@@ -58,8 +65,9 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
                 'email' => $person->getEmail(),
                 'telephone' => $person->getPhonenumber(),
                 'sex' => $person->getSex(),
-                'roles' => $this->_createRolesPopulationArray($person->getRoles()),
+                'roles' => $this->_createRolesPopulationArray($person->getRoles(false)),
                 'system_roles' => $this->_createSystemRolesPopulationArray($person->getFlattenedRoles()),
+                'unit_roles' => $this->_createRolesPopulationArray($person->getUnitRoles()),
                 'code' => $person->getCode() ? $person->getCode()->getCode() : '',
             )
         );

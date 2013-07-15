@@ -2,7 +2,8 @@
 
 namespace CommonBundle\Repository\User;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\Acl\Role,
+    CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -31,15 +32,6 @@ class Person extends EntityRepository
         return null;
     }
 
-    public function findAllByRole($role)
-    {
-        $resultSet = $this->_em
-            ->createQuery('SELECT p FROM CommonBundle\Entity\User\Person p JOIN p.roles r WHERE r.name = \'' . $role . '\'')
-            ->getResult();
-
-        return $resultSet;
-    }
-
     public function findAllByName($name)
     {
         $query = $this->_em->createQueryBuilder();
@@ -64,6 +56,22 @@ class Person extends EntityRepository
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByRole(Role $role)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
+            ->innerJoin('p.roles', 'r')
+            ->where(
+                $query->expr()->eq('r.name', ':name')
+            )
+            ->setParameter('name', $role->getName())
             ->getQuery()
             ->getResult();
 

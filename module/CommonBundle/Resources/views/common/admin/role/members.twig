@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'common/admin/unit/partials/navigation.twig' %}
+    {% include 'common/admin/role/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -19,29 +19,22 @@
     </div>
 
     <div id="controller_action">
-        <h1>Unit</h1>
-        <p>Name: <b>{{ unit.getName() }}</b></p>
+        <h1>Role</h1>
+        <p>Name: <b>{{ role.getName() }}</b></p>
 
         <h1>Members</h1>
-
-        {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
-
-        <br style="clear:both">
 
         <table class="full_width" style="margin-top: 5px;">
             <tr>
                 <th>Name</th>
-                <th>Coordinator</th>
                 <th width="90px">Actions</th>
             </tr>
             {% for member in members %}
                 <tr class="item item-{{ member.getId() }}">
-                    <td>{{ member.getAcademic().getFullName() }}</td>
-                    <td>{% if member.isCoordinator() %}&times;{% endif %}</td>
+                    <td>{{ member.getFullName() }}</td>
                     <td>
-                        {% if hasAccess('common_admin_unit', 'deleteMember') %}
-                            <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getAcademic().getFullName() }}" class="delete">Delete</a>
+                        {% if hasAccess('common_admin_role', 'deleteMember') %}
+                            <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getFullName() }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -73,18 +66,6 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#personSearch').typeaheadRemote(
-                {
-                    source: '{{ url('common_admin_academic_typeahead', {})}}',
-                    items: 20,
-                }
-            ).change(function (e) {
-                if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
-                } else {
-                    $('#personId').val('');
-                }
-            });
             $('.item .delete').click(openModal);
         });
 
@@ -96,7 +77,7 @@
             removeMember.find('.memberName').html($(this).data('name'));
             var id = $this.data('id');
             removeMember.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('common_admin_unit', {"action": "deleteMember"}) }}' + id, function (data) {
+                $.post('{{ url('common_admin_role', {"action": "deleteMember", "name": role.getName()}) }}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.member_removed_success').removeClass('hide');
