@@ -45,7 +45,7 @@ class Unit
     /**
      * @var \CommonBundle\Entity\General\Organization The unit's organization
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Organization", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization", cascade={"persist"})
      * @ORM\JoinColumn(name="organization", referencedColumnName="id")
      */
     private $organization;
