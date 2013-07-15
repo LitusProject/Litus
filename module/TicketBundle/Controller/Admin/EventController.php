@@ -17,6 +17,7 @@ namespace TicketBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     TicketBundle\Entity\Event,
+    TicketBundle\Entity\Ticket,
     TicketBundle\Form\Admin\Event\Add as AddForm,
     TicketBundle\Form\Admin\Event\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -34,6 +35,23 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Event')
                 ->findAll(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Event')
+                ->findOld(),
             $this->getParam('page')
         );
 
@@ -70,7 +88,18 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 if ($formData['generate_tickets']) {
-                    // generate them
+                    for($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
+                        do {
+                            $number = rand();
+                            $ticket = $this->getEntityManager()
+                                ->getRepository('TicketBundle\Entity\Ticket')
+                                ->findOneByEventAndNumber($event, $number);
+                        } while($ticket !== null);
+
+                        $ticket = new Ticket($event, 'empty', null, null, null, $number);
+                        $this->getEntityManager()->persist($ticket);
+                        $this->getEntityManager()->flush();
+                    }
                 }
 
                 $this->getEntityManager()->persist($event);
@@ -117,7 +146,48 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 if ($formData['generate_tickets']) {
-                    // generate them (if not yet generated)
+                    if ($event->areTicketsGenerated()) {
+                        if ($formData['number_of_tickets'] >= $event->getNumberOfTickets()) {
+                            for($i = $event->getNumberOfTickets() ; $i < $formData['number_of_tickets'] ; $i++) {
+                                do {
+                                    $number = rand();
+                                    $ticket = $this->getEntityManager()
+                                        ->getRepository('TicketBundle\Entity\Ticket')
+                                        ->findOneByEventAndNumber($event, $number);
+                                } while($ticket !== null);
+
+                                $ticket = new Ticket($event, 'empty', null, null, null, $number);
+                                $this->getEntityManager()->persist($ticket);
+                                $this->getEntityManager()->flush();
+                            }
+                        } else {
+                            $tickets = $this->getEntityManager()
+                                ->getRepository('TicketBundle\Entity\Ticket')
+                                ->findAllEmptyByEvent($event);
+                            $numberOfTickets = $event->getNumberOfTickets() - $formData['number_of_tickets'];
+
+                            foreach($tickets as $ticket) {
+                                if ($numberOfTickets == 0)
+                                    break;
+
+                                $numberOfTickets--;
+                                $this->getEntityManager()->remove($ticket);
+                            }
+                        }
+                    } else {
+                        for($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
+                            do {
+                                $number = rand();
+                                $ticket = $this->getEntityManager()
+                                    ->getRepository('TicketBundle\Entity\Ticket')
+                                    ->findOneByEventAndNumber($event, $number);
+                            } while($ticket !== null);
+
+                            $ticket = new Ticket($event, 'empty', null, null, null, $number);
+                            $this->getEntityManager()->persist($ticket);
+                            $this->getEntityManager()->flush();
+                        }
+                    }
                 }
 
                 $event->setActivity($this->getEntityManager()
@@ -161,7 +231,19 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function deleteAction()
     {
-        return new ViewModel();
+        $this->initAjax();
+
+        if (!($event = $this->_getEvent()))
+            return new ViewModel();
+
+        $event->setActive(false);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
     }
 
     private function _getEvent()

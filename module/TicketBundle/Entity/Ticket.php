@@ -33,7 +33,7 @@ class Ticket
      * @var array The possible states of a ticket
      */
     public static $possibleStatuses = array(
-        'emtpy' => 'Empty',
+        'empty' => 'Empty',
         'booked' => 'Booked',
         'sold' => 'Sold',
     );
@@ -50,7 +50,7 @@ class Ticket
     /**
      * @var string The event of the ticket
      *
-     * @ORM\OneToOne(targetEntity="TicketBundle\Entity\Event", inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Event", inversedBy="tickets")
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
      */
     private $event;
@@ -101,7 +101,7 @@ class Ticket
      */
     public function __construct(Event $event, $status, Person $person = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
-        if (!self::isValidBookingStatus($status))
+        if (!self::isValidTicketStatus($status))
             throw new \InvalidArgumentException('The TicketStatus is not valid.');
 
         $this->event = $event;
@@ -117,7 +117,7 @@ class Ticket
      */
     public static function isValidTicketStatus($status)
     {
-        return in_array($status, self::$POSSIBLE_STATUSES);
+        return array_key_exists($status, self::$possibleStatuses);
     }
 
     /**
@@ -141,7 +141,7 @@ class Ticket
      */
     public function getStatus()
     {
-        return self::$POSSIBLE_STATUSES[$this->status];
+        return self::$possibleStatuses[$this->status];
     }
 
     /**
@@ -158,7 +158,7 @@ class Ticket
      */
     public function setStatus($status)
     {
-        if (!self::isValidBookingStatus($status))
+        if (!self::isValidTicketStatus($status))
             throw new \InvalidArgumentException('The TicketStatus is not valid.');
 
         if ($status == 'empty') {

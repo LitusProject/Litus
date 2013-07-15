@@ -2,7 +2,8 @@
 
 namespace TicketBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Event
@@ -17,9 +18,33 @@ class Event extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('TicketBundle\Entity\Event', 'e')
+            ->innerJoin('e.activity', 'a')
             ->where(
-                $query->expr()->eq('e.active', 'true')
+                $query->expr()->andX(
+                    $query->expr()->eq('e.active', 'true'),
+                    $query->expr()->gt('a.startDate', ':now')
+                )
             )
+            ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findOld()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('TicketBundle\Entity\Event', 'e')
+            ->innerJoin('e.activity', 'a')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->eq('e.active', 'false'),
+                    $query->expr()->lt('a.startDate', ':now')
+                )
+            )
+            ->setParameter('now', new DateTime())
             ->getQuery()
             ->getResult();
 
