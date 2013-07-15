@@ -46,6 +46,11 @@ return array(
     'This form has reached the maximum number of submissions.' => 'This form has reached the maximum number of submissions.',
     'You can\'t fill this form more than once.' => 'You can\'t fill this form more than once.',
     'Your entry has been recorded.' => 'Your entry has been recorded.',
+    'Your entry has been updated.' => 'Your entry has been updated.',
+    'Submissions' => 'Submissions',
+    'Submission Date' => 'Submission Date',
+    'Actions' => 'Actions',
+    'Edit' => 'Edit',
 
     'Mail Participants' => 'Mail Participants',
     'Mail Subject' => 'Mail Subject',

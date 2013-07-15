@@ -20,7 +20,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Entity\Edition\Html as HtmlEdition,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\ProgressBar\Upload\SessionProgress,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
     Zend\View\Model\ViewModel,
@@ -176,17 +175,6 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
         }
-    }
-
-    public function progressAction()
-    {
-        $progress = new SessionProgress();
-
-        return new ViewModel(
-            array(
-                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
-            )
-        );
     }
 
     public function deleteAction()

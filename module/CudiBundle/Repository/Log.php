@@ -12,4 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class Log extends EntityRepository
 {
+    public function findBookingLogs()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('CudiBundle\Entity\Log', 'l')
+            ->where(
+                $query->expr()->orX(
+                    'l INSTANCE OF :assignments',
+                    'l INSTANCE OF :cancellations'
+                )
+            )
+            ->setParameter('assignments', $this->_em->getMetadataFactory()->getMetadataFor('CudiBundle\Entity\Log\Sale\Assignments'))
+            ->setParameter('cancellations', $this->_em->getMetadataFactory()->getMetadataFor('CudiBundle\Entity\Log\Sale\Cancellations'))
+            ->orderBy('l.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

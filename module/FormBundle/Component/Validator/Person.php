@@ -21,7 +21,7 @@ use Doctrine\ORM\EntityManager;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class PersonValidator extends \Zend\Validator\AbstractValidator
+class Person extends \Zend\Validator\AbstractValidator
 {
     const NO_SUCH_USER = 'noUser';
 

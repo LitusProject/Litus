@@ -236,6 +236,9 @@ class Study
             return;
 
         foreach($data->cg as $subjects) {
+            if ($subjects->tonen == 'N')
+                continue;
+
             if ($subjects->tc_cgs->children()->count() > 0) {
                 $activeStudies = array();
                 foreach($studies as $phaseNumber => $phase) {
@@ -335,7 +338,7 @@ class Study
                     $prof->activate($this->getEntityManager(), $this->_mailTransport);
 
                     $headers = get_headers($info['photo']);
-                    if ($headers[0] != 'HTTP/1.1 404 Not Found') {
+                    if ($headers[0] != 'HTTP/1.1 404 Not Found' && $headers[0] != 'HTTP/1.1 302 Moved Temporarily') {
                         file_put_contents('/tmp/' . $identification, file_get_contents($info['photo']));
                         $finfo = new \finfo;
                         $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);

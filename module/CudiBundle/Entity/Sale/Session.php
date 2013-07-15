@@ -210,6 +210,16 @@ class Session
     /**
      * @return integer
      */
+    public function getTheoreticalRevenue()
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getTheoreticalRevenue($this);
+    }
+
+    /**
+     * @return integer
+     */
     public function getActualRevenue()
     {
         if ($this->isOpen())

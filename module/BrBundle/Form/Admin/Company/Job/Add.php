@@ -69,13 +69,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Textarea('benefits');
+        $field->setLabel('Benefits')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Textarea('profile');
         $field->setLabel('Profile')
             ->setRequired();
         $this->add($field);
 
-        $field = new Textarea('requiredKnowledge');
-        $field->setLabel('Required Knowledge')
+        $field = new Textarea('contact');
+        $field->setLabel('Contact Information')
             ->setRequired();
         $this->add($field);
 
@@ -99,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$POSSIBLE_SECTORS as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector)
             $sectorArray[$key] = $sector;
 
         return $sectorArray;
@@ -111,8 +116,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'job_name' => $job->getName(),
                 'description' => $job->getDescription(),
+                'benefits' => $job->getBenefits(),
                 'profile' => $job->getProfile(),
-                'requiredKnowledge' => $job->getRequiredKnowledge(),
+                'contact' => $job->getContact(),
                 'city' => $job->getCity(),
                 'start_date' => $job->getStartDate()->format('d/m/Y H:i'),
                 'end_date' => $job->getEndDate()->format('d/m/Y H:i'),
@@ -214,6 +220,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'benefits',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'profile',
                     'required' => true,
                     'filters'  => array(
@@ -226,7 +244,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'requiredKnowledge',
+                    'name'     => 'contact',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

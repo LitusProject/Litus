@@ -21,8 +21,11 @@
             {% if hasAccess('cudi_admin_stock', 'notDelivered') %}
                 <li><a{% if 'cudi_admin_stock' == getParam('controller') and 'notDelivered' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_stock', {'action': 'notDelivered'}) }}">Not Delivered</a></li>
             {% endif %}
+            {% if hasAccess('cudi_admin_stock', 'bulkUpdate') %}
+                <li><a{% if 'bulkUpdate' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_stock', {'action': 'bulkUpdate'}) }}">Bulk Update</a></li>
+            {% endif %}
             {% if hasAccess('cudi_admin_stock', 'manage') %}
-                <li><a{% if 'cudi_admin_stock' == getParam('controller') and 'notDelivered' != getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_stock') }}">Overview</a></li>
+                <li><a{% if 'cudi_admin_stock' == getParam('controller') and 'notDelivered' != getParam('action') and 'export' != getParam('action') and 'bulkUpdate' != getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_stock') }}">Overview</a></li>
             {% endif %}
         </ul>
     </nav>

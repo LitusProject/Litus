@@ -3,8 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('cudi_admin_sales_booking', 'assignments') %}
-                <li><a {% if 'assignments' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_booking', {"action": "assignments"}) }}">Assignments</a></li>
+            {% if hasAccess('cudi_admin_sales_booking', 'actions') %}
+                <li><a {% if 'actions' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_booking', {"action": "actions"}) }}">Actions Log</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_booking', 'deleteAll') %}
+                <li><a href="#" class="removeAll">Remove All</a></li>
             {% endif %}
             {% if hasAccess('cudi_admin_sales_booking', 'extendAll') %}
                 <li><a href="#" class="extendAll">Extend All</a></li>
@@ -34,6 +37,31 @@
     </nav>
 </header>
 
+<div class="modal hide fade" id="removeAllBooking">
+    <div class="modal-header">
+        <span>Litus Admin</span>
+        /Remove All Inactive Bookings
+    </div>
+    <div class="modal-body">
+        <p>
+            You are about to remove all the inactive bookings!
+        </p>
+        <p>
+            <select id="removeAllBookingRisks">
+                <option value="0">---</option>
+                <option value="1">I understand the risks</option>
+            </select>
+        </p>
+        <p>
+            Are you sure you want to continue?
+        </p>
+        <div class="footer">
+            <input type="button" class="remove" value="Yes">
+            <input type="button" class="cancel" data-dismiss="modal" value="No">
+        </div>
+    </div>
+</div>
+
 <div class="modal hide fade" id="assignAllBooking">
     <div class="modal-header">
         <span>Litus Admin</span>
@@ -47,7 +75,7 @@
             Are you sure you want to continue?
         </p>
         <div class="footer">
-            <input type="button" class="delete" value="Yes">
+            <input type="button" class="assign" value="Yes">
             <input type="button" class="cancel" data-dismiss="modal" value="No">
         </div>
     </div>
@@ -66,7 +94,7 @@
             Are you sure you want to continue?
         </p>
         <div class="footer">
-            <input type="button" class="delete" value="Yes">
+            <input type="button" class="expire" value="Yes">
             <input type="button" class="cancel" data-dismiss="modal" value="No">
         </div>
     </div>
@@ -88,7 +116,7 @@
             Are you sure you want to continue?
         </p>
         <div class="footer">
-            <input type="button" class="delete" value="Yes">
+            <input type="button" class="extend" value="Yes">
             <input type="button" class="cancel" data-dismiss="modal" value="No">
         </div>
     </div>
@@ -96,12 +124,24 @@
 
 {% block content_script %}
     <script type="text/javascript">
+        function openRemoveAllModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var assignAllBooking = $('#removeAllBooking');
+            assignAllBooking.find('.remove').unbind('click').click(function () {
+                if (assignAllBooking.find('#removeAllBookingRisks').val() == 1)
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "deleteAll"})}}';
+            });
+            assignAllBooking.modal();
+        }
+
         function openAssignAllModal(e) {
             var $this = $(this);
 
             e.preventDefault();
             var assignAllBooking = $('#assignAllBooking');
-            assignAllBooking.find('.delete').unbind('click').click(function () {
+            assignAllBooking.find('.assign').unbind('click').click(function () {
                 window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "assignAll"})}}';
             });
             assignAllBooking.modal();
@@ -112,7 +152,7 @@
 
             e.preventDefault();
             var expireAllBooking = $('#expireAllBooking');
-            expireAllBooking.find('.delete').unbind('click').click(function () {
+            expireAllBooking.find('.expire').unbind('click').click(function () {
                 window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "expireAll"})}}';
             });
             expireAllBooking.modal();
@@ -124,7 +164,7 @@
             e.preventDefault();
 
             var extendAllBooking = $('#extendAllBooking');
-            extendAllBooking.find('.delete').unbind('click').click(function () {
+            extendAllBooking.find('.extend').unbind('click').click(function () {
                 var date = $('#extendAllBookingsDate').val().replace(/\//g, '-');
                 var pattern = /^[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}$/;
                 if (!pattern.test(date))

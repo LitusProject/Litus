@@ -61,6 +61,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#controller_nav .removeAll').click(openRemoveAllModal);
             $('#controller_nav .assignAll').click(openAssignAllModal);
             $('#controller_nav .expireAll').click(openExpireAllModal);
             $('#controller_nav .extendAll').click(openExtendAllModal);

@@ -47,4 +47,12 @@ class Assignments extends \CudiBundle\Entity\Log
     {
         return count(unserialize($this->getText()));
     }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'assignments';
+    }
 }

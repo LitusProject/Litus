@@ -63,7 +63,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 $upload->addValidator(new SizeValidator(array('max' => '50MB')));
 
                 if ($upload->isValid()) {
-
                     $enrollments = array();
 
                     $studyIds = $formData['studies'];
@@ -90,13 +89,19 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     }
 
                     $groupIds = $formData['groups'];
+                    $extraMembers = array();
 
                     if ($groupIds) {
                         foreach ($groupIds as $groupId) {
-
                             $group = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\Group')
                                 ->findOneById($groupId);
+
+                            $groupExtraMembers = unserialize($group->getExtraMembers());
+                            if ($groupExtraMembers) {
+                                foreach($groupExtraMembers as $mail)
+                                    $extraMembers[$mail] = $mail;
+                            }
 
                             $studies = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
@@ -137,6 +142,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                             $body = '<br/>This email would have been sent to:<br/>';
                             foreach($enrollments as $enrollment)
                                 $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
+
+                            foreach($extraMembers as $extraMember)
+                                $body = $body . $extraMember . '<br/>';
 
                             foreach($bccs as $bcc)
                                 $body = $body . $bcc . '<br/>';
@@ -194,6 +202,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                             foreach($enrollments as $enrollment)
                                 $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
 
+                            foreach($extraMembers as $extraMember)
+                                $body = $body . $extraMember . '<br/>';
+
                             foreach($bccs as $bcc)
                                 $body = $body . $bcc . '<br/>';
 
@@ -224,6 +235,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     if (!$formData['test']) {
                         foreach($enrollments as $enrollment)
                             $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+
+                        foreach($extraMembers as $extraMember)
+                            $mail->addBcc($extraMember);
 
                         foreach($bccs as $bcc)
                             $mail->addBcc($bcc);

@@ -16,7 +16,7 @@ class Named extends EntityRepository
     public function findAllByAdmin(Academic $academic) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
-            ->from('MailBundle\Entity\MailingList', 'l')
+            ->from('MailBundle\Entity\MailingList\Named', 'l')
             ->from('MailBundle\Entity\MailingList\AdminMap', 'a')
             ->where(
                 $query->expr()->eq('a.academic', ':academic')

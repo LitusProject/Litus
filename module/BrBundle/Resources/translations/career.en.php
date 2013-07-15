@@ -19,8 +19,9 @@ return array(
     'Internships' => 'Internships',
     'About' => 'About',
     'Last updated' => 'Last updated',
+    'Benefits' => 'Benefits',
     'Wanted Profile' => 'Wanted Profile',
-    'Required Knowledge' => 'Required Knowledge',
+    'Contact Information' => 'Contact Information',
     'Sector' => 'Sector',
     'Location' => 'Location',
 

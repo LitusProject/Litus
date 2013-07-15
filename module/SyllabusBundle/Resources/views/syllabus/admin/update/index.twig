@@ -62,6 +62,7 @@
                 url: '{{ socketUrl }}',
                 open: function (e) {
                     $('#syllabus_update_error, #syllabus_update_success').addClass('hide');
+                    $('#updateSyllabus .bar').width('100%');
                 },
                 message: function (e, data) {
                     $('#syllabus_update_error, #syllabus_update_success').addClass('hide');

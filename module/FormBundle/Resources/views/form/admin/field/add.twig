@@ -18,17 +18,39 @@
 
 {% block content_script %}
 	<script type="text/javascript">
-
         $(document).ready(function () {
             $('#languages a:first').click();
             $('#type').change(toggleType);
             toggleType();
+
+            $('#visible_if').change(function () {
+                if ($(this).find('option:selected').data('type') == 'string') {
+                    $('#visible_value').html('').closest('.row').show();
+                    $('#visible_value').html('').append(
+                        $('<option>', {'value': 1}).html('Not Empty')
+                    );
+                } else if ($(this).find('option:selected').data('type') == 'dropdown') {
+                    $('#visible_value').html('').closest('.row').show();
+                    var values = $(this).find('option:selected').data('values').split(',');
+                    $(values).each(function () {
+                        $('#visible_value').append($('<option>').html(this));
+                    });
+                    $('#visible_value').val($('#visible_value').data('current_value'));
+                } else if ($(this).find('option:selected').data('type') == 'checkbox') {
+                    $('#visible_value').html('').append(
+                        $('<option>', {'value': 1}).html('Checked'),
+                        $('<option>', {'value': 0}).html('Unchecked')
+                    ).closest('.row').show();
+                    $('#visible_value').val($('#visible_value').data('current_value'));
+                } else {
+                    $('#visible_value').html('').closest('.row').hide();
+                }
+            }).trigger('change');
         });
 
         function toggleType() {
             $('.extra_form').addClass('hide');
             $('.' + $('#type').val() + '_form').removeClass('hide');
         }
-
     </script>
 {% endblock %}

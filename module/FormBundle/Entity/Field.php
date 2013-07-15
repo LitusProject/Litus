@@ -19,7 +19,8 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Nodes\Form;
 
 /**
  * This entity stores the node item.
@@ -37,7 +38,6 @@ use CommonBundle\Entity\General\Language,
  */
 abstract class Field
 {
-
     /**
      * @var The reservation's unique identifier
      *
@@ -70,6 +70,21 @@ abstract class Field
     private $required;
 
     /**
+     * @var \FormBundle\Entity\Field The field responsible for the visibility of this field
+     *
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field")
+     * @ORM\JoinColumn(name="visibility_decission_field", referencedColumnName="id")
+     */
+    private $visibityDecisionField;
+
+    /**
+     * @var string The required value of the visibityDecisionField;
+     *
+     * @ORM\Column(name="visibility_value", type="string", nullable=true)
+     */
+    private $visibilityValue;
+
+    /**
      * @var array The translations of this field
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Translation", mappedBy="field", cascade={"remove"})
@@ -86,14 +101,20 @@ abstract class Field
     );
 
     /**
-     * @param string $label
+     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param integer $order
+     * @param boolean $required
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param string $visibilityValue
      */
-    public function __construct($form, $order, $required)
+    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
         $this->form = $form;
         $this->order = $order;
         $this->required = $required;
         $this->translations = new ArrayCollection();
+        $this->visibityDecisionField = $visibityDecisionField;
+        $this->visibilityValue = $visibilityValue;
     }
 
     /**
@@ -145,6 +166,40 @@ abstract class Field
     }
 
     /**
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     *
+     * @return \FormBundle\Entity\Field
+     */
+    public function setVisibilityDecissionField(Field $visibityDecisionField = null) {
+        $this->visibityDecisionField = $visibityDecisionField;
+        return $this;
+    }
+
+    /**
+     * @return \FormBundle\Entity\Field
+     */
+    public function getVisibilityDecissionField() {
+        return $this->visibityDecisionField;
+    }
+
+    /**
+     * @param string $visibilityValue
+     *
+     * @return \FormBundle\Entity\Field
+     */
+    public function setVisibilityValue($visibilityValue) {
+        $this->visibilityValue = $visibilityValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisibilityValue() {
+        return $this->visibilityValue;
+    }
+
+    /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
      *
@@ -184,5 +239,4 @@ abstract class Field
     }
 
     abstract public function getValueString(Language $language, $value);
-
 }

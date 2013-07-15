@@ -18,7 +18,7 @@ class Virtual extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(v.number)')
-            ->from('CudiBundle\Entity\Stock\Orders\Virtual', 'v')
+            ->from('CudiBundle\Entity\Stock\Order\Virtual', 'v')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('v.article', ':article'),

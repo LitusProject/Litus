@@ -16,7 +16,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Delivery,
-    CudiBundle\Entity\Stock\Orders\Virtual as VirtualOrder,
+    CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
     CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -106,7 +106,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
                 if ($formData['add_with_virtual_order']) {
                     $virtual = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\Orders\Virtual')
+                        ->getRepository('CudiBundle\Entity\Stock\Order\Virtual')
                         ->findNbByPeriodAndArticle($period, $article);
 
                     $nb = $formData['number'] - ($period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual);
@@ -196,7 +196,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         $result = array();
         foreach($articles as $article) {
             $virtual = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Orders\Virtual')
+                ->getRepository('CudiBundle\Entity\Stock\Order\Virtual')
                 ->findNbByPeriodAndArticle($period, $article);
 
             $item = (object) array();

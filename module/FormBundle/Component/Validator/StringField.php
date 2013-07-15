@@ -21,7 +21,7 @@ use Doctrine\ORM\EntityManager;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class StringFieldValidator extends \Zend\Validator\AbstractValidator
+class StringField extends \Zend\Validator\AbstractValidator
 {
     const ML_BOTH = 'mlboth';
     const NON_ML_LINES = 'nonmllines';

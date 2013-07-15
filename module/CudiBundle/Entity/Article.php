@@ -377,6 +377,10 @@ abstract class Article
     public function setIsHistory($isHistory)
     {
         $this->isHistory = $isHistory;
+
+        if ($saleArticle = $this->getSaleArticle() && $isHistory == true)
+            $saleArticle->setIsHistory(true);
+
         return $this;
     }
 
@@ -408,7 +412,7 @@ abstract class Article
     {
         if ($isDraft)
             $this->setIsProf(true);
-        
+
         $this->isDraft = $isDraft;
         return $this;
     }

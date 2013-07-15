@@ -18,8 +18,8 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
-    CudiBundle\Entity\Stock\Orders\Order,
-    CudiBundle\Entity\Stock\Orders\Item,
+    CudiBundle\Entity\Stock\Order\Order,
+    CudiBundle\Entity\Stock\Order\Item,
     Doctrine\ORM\EntityManager,
     ZipArchive;
 

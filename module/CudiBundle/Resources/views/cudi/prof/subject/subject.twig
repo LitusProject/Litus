@@ -2,31 +2,31 @@
 
 {% block content %}
     <div class="flashmessage alert alert-error fade" id="article_removed_error">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while removing the mapping between this subject and the article.') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="article_removed_success">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         <div class="content">
             {{ translate('The mapping between this subject and the article was succesfully removed.') }}
         </div>
     </div>
     <div class="flashmessage alert alert-error fade" id="prof_removed_error">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while removing the mapping between this subject and the docent.') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="prof_removed_success">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         <div class="content">
             {{ translate('The mapping between this subject and the docent was succesfully removed.') }}
         </div>
     </div>
     <div class="flashmessage alert alert-error fade" id="article_activate_error">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while activating the mapping between this subject and the article.') }}
         </div>
@@ -182,6 +182,10 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+            
             $('.removeArticle').click(openRemoveArticleModal);
             $('.removeProf').click(openRemoveProfModal);
             $('.activateArticle').click(openActivateArticleModal);

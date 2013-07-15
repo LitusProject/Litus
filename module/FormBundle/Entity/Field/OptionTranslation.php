@@ -47,9 +47,8 @@ class OptionTranslation
     private $options;
 
     /**
-     * @param \FormBundle\Entity\Field field
+     * @param \FormBundle\Entity\Field\OptionSelector field
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $content
      * @param string $options
      */
     public function __construct(OptionSelector $field, Language $language, $options)

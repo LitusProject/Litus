@@ -16,6 +16,13 @@
         <p>Manager: <b>{{ session.getManager().getFullName() }}</b></p>
         <p>Date openend: <b>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</b></p>
         {% if not session.isOpen() %}<p>Date closed: <b>{{ session.getCloseDate().format('Y-m-d H:i:s')}}</b></p>{% endif %}
+        {% set theoreticalRevenue = session.getTheoreticalRevenue() %}
+        {% set actualRevenue = session.getActualRevenue() %}
+        <p>Theoretical Revenue: <b>&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</b></p>
+        {% if not session.isOpen() %}
+            <p>Actual Revenue: <b>&euro; {{ (actualRevenue/100)|number_format(2) }}</b></p>
+            <p>Delta: <b>&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</b></p>
+        {% endif %}
         <br />
         <table class="half_width" style="width: 350px !important">
 

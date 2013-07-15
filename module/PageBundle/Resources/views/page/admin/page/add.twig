@@ -23,7 +23,7 @@
 
             $('textarea').gollum({
                 uploadURL: '{{ url('page_admin_page', {'action': 'upload'}) }}',
-                progressURL: '{{ url('page_admin_page', {'action': 'uploadProgress'}) }}',
+                progressURL: '/progress.php',
                 uploadProgressName: $('#progress_key').attr('name'),
                 progressId: $('#progress_key').val(),
             });

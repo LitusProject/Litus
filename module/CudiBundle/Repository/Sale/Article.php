@@ -377,6 +377,51 @@ class Article extends EntityRepository
                 ->setParameter('academicYear', $academicYear->getId())
                 ->getQuery()
                 ->getResult();
+        } elseif ($semester == 3) {
+            $resultSetOne = $query->select('a.id')
+                ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
+                ->innerJoin('m.article', 'a')
+                ->innerJoin('m.subject', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->orX(
+                            $query->expr()->eq('s.semester', '0'),
+                            $query->expr()->eq('s.semester', '1')
+                        ),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('academicYear', $academicYear->getId())
+                ->getQuery()
+                ->getResult();
+
+            $resultOnId = array();
+            foreach($resultSetOne as $item)
+                $resultOnId[$item['id']] = $item['id'];
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSetTwo = $query->select('a.id')
+                ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
+                ->innerJoin('m.article', 'a')
+                ->innerJoin('m.subject', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->orX(
+                            $query->expr()->eq('s.semester', '0'),
+                            $query->expr()->eq('s.semester', '2')
+                        ),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('academicYear', $academicYear->getId())
+                ->getQuery()
+                ->getResult();
+
+            $resultSet = array();
+            foreach($resultSetTwo as $item) {
+                if (isset($resultOnId[$item['id']]))
+                    $resultSet[] = $item;
+            }
         } else {
             $query = $this->_em->createQueryBuilder();
             $resultSet = $query->select('a.id')

@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Stock\Orders;
+namespace CudiBundle\Entity\Stock\Order;
 
 use CudiBundle\Entity\Sale\Article,
     DateTime,

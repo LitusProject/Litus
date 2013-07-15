@@ -69,7 +69,7 @@
 	    $(document).ready(function () {
             $('textarea#description').gollum({
                 uploadURL: '{{ url('br_admin_company', {'action': 'upload'}) }}',
-                progressURL: '{{ url('br_admin_company', {'action': 'uploadProgress'}) }}',
+                progressURL: '/progress.php',
                 uploadProgressName: '{{ uploadProgressName }}',
                 progressId: '{{ uploadProgressId }}',
             });

@@ -49,23 +49,25 @@ class Edit extends Add
     private function _populateFromForm(Form $form)
     {
         $data = array(
-            'start_date'   => $form->getStartDate()->format('d/m/Y H:i'),
-            'end_date'     => $form->getEndDate()->format('d/m/Y H:i'),
-            'active'       => $form->isActive(),
-            'max'          => $form->getMax(),
-            'multiple'     => $form->isMultiple(),
-            'non_members'  => $form->isNonMember(),
-            'mail'         => $form->hasMail(),
-            'mail_subject' => $form->getMailSubject(),
-            'mail_body'    => $form->getMailBody(),
-            'mail_from'    => $form->getMailFrom(),
-            'mail_bcc'     => $form->getMailBcc(),
+            'start_date'       => $form->getStartDate()->format('d/m/Y H:i'),
+            'end_date'         => $form->getEndDate()->format('d/m/Y H:i'),
+            'active'           => $form->isActive(),
+            'max'              => $form->getMax(),
+            'multiple'         => $form->isMultiple(),
+            'editable_by_user' => $form->isEditableByUser(),
+            'non_members'      => $form->isNonMember(),
+            'mail'             => $form->hasMail(),
+            'mail_subject'     => $form->getMailSubject(),
+            'mail_body'        => $form->getMailBody(),
+            'mail_from'        => $form->getMailFrom(),
+            'mail_bcc'         => $form->getMailBcc(),
         );
 
         foreach($this->getLanguages() as $language) {
             $data['title_' . $language->getAbbrev()] = $form->getTitle($language, false);
             $data['introduction_' . $language->getAbbrev()] = $form->getIntroduction($language, false);
             $data['submittext_' . $language->getAbbrev()] = $form->getSubmitText($language, false);
+            $data['updatetext_' . $language->getAbbrev()] = $form->getUpdateText($language, false);
         }
 
         $this->setData($data);

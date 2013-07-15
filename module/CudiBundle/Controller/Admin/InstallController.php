@@ -353,6 +353,11 @@ VTK Cudi
                     'value'       => 'Catalog Updates',
                     'description' => 'The subject for the mail send for catalog updates',
                 ),
+                array(
+                    'key'         => 'cudi.sale_light_version',
+                    'value'       => '0',
+                    'description' => 'Flag whether to show the light version of the sale app (no queue)',
+                ),
             )
         );
 
@@ -395,7 +400,7 @@ VTK Cudi
                         'delete', 'manage'
                     ),
                     'cudi_admin_sales_booking' => array(
-                        'add', 'article', 'assign', 'assignAll', 'assignments', 'delete', 'edit', 'extendAll', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
+                        'actions', 'add', 'article', 'assign', 'assignAll', 'delete', 'deleteAll', 'edit', 'extendAll', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
                     ),
                     'cudi_admin_sales_article_discount' => array(
                         'delete', 'manage'
@@ -413,7 +418,7 @@ VTK Cudi
                         'add', 'edit', 'delete', 'manage', 'old'
                     ),
                     'cudi_admin_stock' => array(
-                        'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
+                        'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
                     ),
                     'cudi_admin_stock_delivery' => array(
                         'add', 'delete', 'manage', 'supplier', 'typeahead'

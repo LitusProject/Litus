@@ -17,7 +17,7 @@ namespace CudiBundle\Component\Document\Generator\Order;
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CudiBundle\Entity\Stock\Orders\Order,
+    CudiBundle\Entity\Stock\Order\Order,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -34,13 +34,19 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     private $_order;
 
     /**
+     * @var string
+     */
+    private $_sortOrder;
+
+    /**
      * Create a new Order PDF Generator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \CudiBundle\Entity\Stock\Order $order The order
+     * @param string $sortOrder
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
      */
-    public function __construct(EntityManager $entityManager, Order $order, TmpFile $file)
+    public function __construct(EntityManager $entityManager, Order $order, $sortOrder, TmpFile $file)
     {
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -52,6 +58,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
         $this->_order = $order;
+        $this->_sortOrder = $sortOrder;
     }
 
     /**
@@ -85,7 +92,18 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 
         $external_items = array();
         $internal_items = array();
-        foreach($this->_order->getItems() as $item) {
+
+        if ($this->_sortOrder == 'barcode') {
+            $items = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                ->findAllByOrderOnBarcode($this->_order);
+        } else {
+            $items = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                ->findAllByOrderAlpha($this->_order);
+        }
+
+        foreach($items as $item) {
             if ($item->getArticle()->getMainArticle()->isInternal()) {
                 $internal_items[] = new Object(
                     'internal_item',
@@ -164,9 +182,14 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'order',
                 array(
-                    'date' => $now->format('d F Y')
+                    'date' => $now->format('d F Y'),
                 ),
                 array(
+                    new Object(
+                        'comment',
+                        array(),
+                        $this->_order->getComment()
+                    ),
                     new Object(
                         'our_union',
                         array(

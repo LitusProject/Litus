@@ -61,18 +61,28 @@ class Translation
     private $submitText;
 
     /**
+     * @var string The text on the update button of this tanslation
+     *
+     * @ORM\Column(type="string")
+     */
+    private $updateText;
+
+    /**
      * @param \FormBundle\Entity\Node\Form $form
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $content
      * @param string $title
+     * @param string $introduction
+     * @param string $submitText
+     * @param string $updateText
      */
-    public function __construct(Form $form, Language $language, $title, $introduction, $submitText)
+    public function __construct(Form $form, Language $language, $title, $introduction, $submitText, $updateText)
     {
         $this->form = $form;
         $this->language = $language;
         $this->title = $title;
         $this->introduction = $introduction;
         $this->submitText = $submitText;
+        $this->updateText = $updateText;
     }
 
     /**
@@ -145,6 +155,25 @@ class Translation
     public function setSubmitText($submitText)
     {
         $this->submitText = $submitText;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdateText()
+    {
+        return $this->updateText;
+    }
+
+    /**
+     * @param string $updateText
+     *
+     * @return \FormBundle\Entity\Nodes\Form
+     */
+    public function setUpdateText($updateText)
+    {
+        $this->updateText = $updateText;
         return $this;
     }
 }

@@ -5,24 +5,97 @@
         <h1>{{ specification.getTitle(language) }}</h1>
     </div>
 
-    <div class="row page">
-        <div class="span12">
+    {% autoescape false %}
+        {{ markdown(specification.getIntroduction(language)) }}
+    {% endautoescape %}
 
-            {% autoescape false %}
-                {{ markdown(specification.getIntroduction(language)) }}
-            {% endautoescape %}
+    <hr/>
 
-            <hr/>
-
-            {% if not form %}
-                {{ translate(message) }}
-			{% else %}
-
-                {% if form %}
-                    {% import 'site/partials/form.twig' as forms %}
-                    {{ forms.renderForm(form) }}
-                {% endif %}
-            {% endif %}
+    {% if not form %}
+        <div class="alert">
+            {{ translate(message) }}
         </div>
-    </div>
+    {% else %}
+        {% if form %}
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        {% endif %}
+    {% endif %}
+
+    {% if entries|length > 0 %}
+        <h2>{{ translate('Submissions') }}</h2>
+
+        <table class="table table-striped">
+            <tr>
+                <th>{{ translate('Submission Date') }}</th>
+                <th>{{ translate('Actions') }}</th>
+            </tr>
+            {% for entry in entries %}
+                <tr>
+                    <td>{{ dateLocalized(entry.getCreationTime(), 'd MMMM Y H:mm') }}</td>
+                    <td>
+                        {% if specification.isEditableByUser() and hasAccess('form_view', 'edit') %}
+                            <a href="{{ url("form_view", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var form = $('#content form');
+            form.find('input, select').each(function () {
+                var $this = $(this);
+                if ($this.data('visible_if_element') !== undefined) {
+                    $this.closest('.control-group').hide();
+                    form.find('#field-' + $this.data('visible_if_element')).bind('change keyup', function () {
+                        if ($(this).attr('type') == 'text') {
+                            if ($(this).val() !== '') {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                                resetElement($this);
+                            }
+                            $this.trigger('change');
+                        } else if ($(this).attr('type') == 'checkbox') {
+                            if (
+                                ($(this).is(':checked') && $this.data('visible_if_value') == '1')
+                                    || (!$(this).is(':checked') && $this.data('visible_if_value') == '0')
+                                && $(this).is(':visible')
+                            ) {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                                resetElement($this);
+                            }
+                            $this.trigger('change');
+                        } else if ($(this).is('select')) {
+                            if ($(this).find('option:selected').html() == $this.data('visible_if_value') && $(this).is(':visible')) {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                                resetElement($this);
+                            }
+                            $this.trigger('change');
+                        }
+                    }).trigger('change');
+                }
+            });
+        });
+
+        function resetElement(element) {
+            if (element.attr('type') == 'text') {
+                element.val('');
+            } else if (element.attr('type') == 'checkbox') {
+                element.prop('checked', false);
+            } else if (element.is('select')) {
+                element.find('option').removeAttr('selected');
+                element.find('option:first').attr('selected','selected');
+            }
+        }
+    </script>
 {% endblock %}

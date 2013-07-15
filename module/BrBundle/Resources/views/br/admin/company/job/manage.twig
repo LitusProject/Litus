@@ -35,7 +35,7 @@
 	            {% for job in paginator %}
 	                <tr class="item item-{{ job.getId() }}">
 	                    <td>{{ job.getName() }}</td>
-	                    <td>{{ job.getSummary() }}</td>
+	                    <td>{% autoescape false %}{{ job.getSummaryStriped() }}{% endautoescape %}</td>
 	                    <td>{{ job.getTypeName() }}</td>
 	                    <td class="actions">
 	                        <ul>

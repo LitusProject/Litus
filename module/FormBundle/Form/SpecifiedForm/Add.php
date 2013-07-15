@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Form;
+namespace FormBundle\Form\SpecifiedForm;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
@@ -33,11 +33,11 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     Zend\Form\Element\Submit;
 
 /**
- * Add Field
+ * Specifield Form Add
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @var \CudiBundle\Entity\Sale\Article
@@ -45,8 +45,10 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_form;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Form $form
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param \CommonBundle\Entity\Users\Person|null $person
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, $name = null)
@@ -97,19 +99,22 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
                         ->setAttribute('data-linecount', $fieldSpecification->getLines());
                 }
 
-                $this->add($field);
             } elseif ($fieldSpecification instanceof Dropdown) {
                 $field = new Select('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setAttribute('options', $fieldSpecification->getOptionsArray($language));
-                $this->add($field);
             } elseif ($fieldSpecification instanceof CheckboxField) {
                 $field = new Checkbox('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language));
-                $this->add($field);
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
+
+            if (null !== $fieldSpecification->getVisibilityDecissionField()) {
+                $field->setAttribute('data-visible_if_element', $fieldSpecification->getVisibilityDecissionField()->getId())
+                    ->setAttribute('data-visible_if_value', $fieldSpecification->getVisibilityValue());
+            }
+            $this->add($field);
         }
 
         $field = new Submit('submit');

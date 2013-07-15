@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <order date="6 November 2011">
+	<comment>
+		A Comment
+	</comment>
 	<our_union short_name="VTK">
 		<name>VTK VZW</name>
 	    <logo>data/images/logo/logo.svg</logo>

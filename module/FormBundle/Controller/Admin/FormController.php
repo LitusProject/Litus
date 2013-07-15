@@ -92,6 +92,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $max,
                     $formData['multiple'],
                     $formData['non_members'],
+                    $formData['editable_by_user'],
                     $formData['mail'],
                     $formData['mail_subject'],
                     $formData['mail_body'],
@@ -112,7 +113,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             $language,
                             $formData['title_' . $language->getAbbrev()],
                             $formData['introduction_' . $language->getAbbrev()],
-                            $formData['submittext_' . $language->getAbbrev()]
+                            $formData['submittext_' . $language->getAbbrev()],
+                            $formData['updatetext_' . $language->getAbbrev()]
                         );
 
                         $this->getEntityManager()->persist($translation);
@@ -194,6 +196,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->setActive($formData['active'])
                     ->setMax($max)
                     ->setMultiple($formData['multiple'])
+                    ->setEditableByUser($formData['editable_by_user'])
                     ->setNonMember($formData['non_members'])
                     ->setMail($formData['mail'])
                     ->setMailSubject($formData['mail_subject'])
@@ -215,12 +218,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                                 $language,
                                 $formData['title_' . $language->getAbbrev()],
                                 $formData['introduction_' . $language->getAbbrev()],
-                                $formData['submittext_' . $language->getAbbrev()]
+                                $formData['submittext_' . $language->getAbbrev()],
+                                $formData['updatetext_' . $language->getAbbrev()]
                             );
                         } else {
                             $translation->setTitle($formData['title_' . $language->getAbbrev()])
                                 ->setIntroduction($formData['introduction_' . $language->getAbbrev()])
-                                ->setSubmitText($formData['submittext_' . $language->getAbbrev()]);
+                                ->setSubmitText($formData['submittext_' . $language->getAbbrev()])
+                                ->setUpdateText($formData['updatetext_' . $language->getAbbrev()]);
                         }
 
                         $this->getEntityManager()->persist($translation);

@@ -25,7 +25,6 @@ use BrBundle\Entity\Company,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\ProgressBar\Upload\SessionProgress,
     Zend\View\Model\ViewModel;
 
 /**
@@ -284,17 +283,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             );
         }
         return new ViewModel();
-    }
-
-    public function uploadProgressAction()
-    {
-        $progress = new SessionProgress();
-
-        return new ViewModel(
-            array(
-                'result' => $progress->getProgress($this->getRequest()->getPost('upload_id')),
-            )
-        );
     }
 
     public function editLogoAction()

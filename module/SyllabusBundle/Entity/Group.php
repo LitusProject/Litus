@@ -55,13 +55,22 @@ class Group
     private $removed;
 
     /**
+     * @var string Comma separated string of extra members
+     *
+     * @ORM\Column(type="text", name="extra_members")
+     */
+    private $extraMembers;
+
+    /**
      * @param string $name
      * @param boolean $cvBook
+     * @param string $extraMembers
      */
-    public function __construct($name, $cvBook)
+    public function __construct($name, $cvBook, $extraMembers)
     {
         $this->name = $name;
         $this->cvBook = $cvBook;
+        $this->extraMembers = $extraMembers;
 
         $this->removed = false;
     }
@@ -116,6 +125,24 @@ class Group
     public function setRemoved()
     {
         $this->removed = true;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtraMembers()
+    {
+        return $this->extraMembers;
+    }
+
+    /**
+     * @param string $extraMembers
+     * @return \SyllabusBundle\Entity\Group
+     */
+    public function setExtraMembers($extraMembers)
+    {
+        $this->extraMembers = $extraMembers;
         return $this;
     }
 

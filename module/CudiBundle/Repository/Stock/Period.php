@@ -49,7 +49,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('a.id')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('i.order', 'o', Join::WITH,
                 $query->expr()->andX(
@@ -251,7 +251,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(i.number)')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o', Join::WITH,
                 $query->expr()->andX(
                     $query->expr()->gt('o.dateOrdered', ':startDate'),
@@ -359,7 +359,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('SUM(i.number)')
-            ->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+            ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o', Join::WITH,
                    $query->expr()->isNull('o.dateOrdered')
             )

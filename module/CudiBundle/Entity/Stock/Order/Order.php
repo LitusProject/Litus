@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Stock\Orders;
+namespace CudiBundle\Entity\Stock\Order;
 
 use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Supplier,
@@ -66,7 +66,7 @@ class Order
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The items ordered
      *
-     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Orders\Item", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Order\Item", mappedBy="order")
      */
     private $items;
 
@@ -77,6 +77,13 @@ class Order
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
 
     /**
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of this order
@@ -154,7 +161,7 @@ class Order
     /**
      * @param \CommonBundle\Entity\User\Person $person
      *
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function setPerson(Person $person)
     {
@@ -171,7 +178,7 @@ class Order
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function order()
     {
@@ -180,7 +187,7 @@ class Order
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function cancel()
     {
@@ -191,7 +198,7 @@ class Order
     /**
      * @param \DateTime $deliveryDate
      *
-     * @return \CudiBundle\Entity\Stock\Orders\Order
+     * @return \CudiBundle\Entity\Stock\Order\Order
      */
     public function setDeliveryDate(DateTime $deliveryDate)
     {
@@ -206,5 +213,24 @@ class Order
     public function getDeliveryDate()
     {
         return $this->dateDelivery;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     *
+     * @return \CudiBundle\Entity\Stock\Order\Order
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+        return $this;
     }
 }
