@@ -20,7 +20,7 @@ use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Nodes\Entry as NodeEntry;
+    FormBundle\Entity\Node\Entry as NodeEntry;
 
 /**
  * This entity stores the node item.
@@ -56,7 +56,7 @@ class Entry
     private $value;
 
     /**
-     * @param \FormBundle\Entity\Nodes\Entry $formEntry
+     * @param \FormBundle\Entity\Node\Entry $formEntry
      * @param \FormBundle\Entity\Field $field
      */
     public function __construct(NodeEntry $formEntry, Field $field, $value)

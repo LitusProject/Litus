@@ -17,7 +17,7 @@ class Named extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('MailBundle\Entity\MailingList\Named', 'l')
-            ->from('MailBundle\Entity\MailingList\AdminMap', 'a')
+            ->innerJoin('MailBundle\Entity\MailingList\AdminMap', 'a', 'a.list = l.name')
             ->where(
                 $query->expr()->eq('a.academic', ':academic')
             )

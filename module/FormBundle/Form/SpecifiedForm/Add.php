@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param \FormBundle\Entity\Node\Form $form
      * @param \CommonBundle\Entity\Users\Person|null $person
      * @param null|string|int $name Optional name for the element
      */

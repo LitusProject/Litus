@@ -169,7 +169,7 @@ class Translation
     /**
      * @param string $updateText
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setUpdateText($updateText)
     {

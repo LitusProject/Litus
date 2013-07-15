@@ -212,7 +212,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $editableByUser
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setEditableByUser($editableByUser) {
         $this->editableByUser = $editableByUser;
@@ -261,7 +261,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param DateTime $startDate
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
@@ -278,7 +278,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param \DateTime $endDate
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
@@ -295,7 +295,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $active
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setActive($active) {
         $this->active = $active;
@@ -312,7 +312,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $mail
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setMail($mail) {
         $this->mail = $mail;
@@ -329,7 +329,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $mailSubject
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setMailSubject($mailSubject) {
         $this->mailSubject = $mailSubject;
@@ -346,7 +346,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $mailBody
      *
-     * @return \FormBundle\Entity\Nodes\Form
+     * @return \FormBundle\Entity\Node\Form
      */
     public function setMailBody($mailBody) {
         $this->mailBody = $mailBody;
@@ -362,7 +362,7 @@ class Form extends \CommonBundle\Entity\Node
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \FormBundle\Entity\Nodes\Entry $entry
+     * @param \FormBundle\Entity\Node\Entry $entry
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
@@ -379,7 +379,7 @@ class Form extends \CommonBundle\Entity\Node
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \FormBundle\Entity\Nodes\Entry $entry
+     * @param \FormBundle\Entity\Node\Entry $entry
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
@@ -556,7 +556,7 @@ class Form extends \CommonBundle\Entity\Node
     /**
      * Returns the value for the given entry and field.
      *
-     * @param \FormBundle\Entity\Nodes\Entry $entry The entry to find the value for.
+     * @param \FormBundle\Entity\Node\Entry $entry The entry to find the value for.
      * @param \FormBundle\Entity\Field $field The field to find the value for.
      * @param \CommonBundle\Entity\General\Language $language The language to get the value in.
      *

@@ -20,7 +20,7 @@ use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Nodes\Form;
+    FormBundle\Entity\Node\Form;
 
 /**
  * This entity stores the node item.
@@ -101,7 +101,7 @@ abstract class Field
     );
 
     /**
-     * @param \FormBundle\Entity\Nodes\Form $form
+     * @param \FormBundle\Entity\Node\Form $form
      * @param integer $order
      * @param boolean $required
      * @param \FormBundle\Entity\Field $visibityDecisionField
