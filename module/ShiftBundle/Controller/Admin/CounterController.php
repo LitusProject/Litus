@@ -258,41 +258,15 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear')) {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        if (null === $this->getParam('academicyear'))
+            return $this->getCurrentAcademicYear();
 
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-
-            $next = clone $start;
-            $next->add(new DateInterval('P1Y'));
-            if ($next <= new DateTime())
-                $start = $next;
-        } else {
-            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-        }
-        $startAcademicYear->setTime(0, 0);
+        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $start->setTime(0, 0);
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($start);
+            ->findOneByUniversityStart($start);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
@@ -306,7 +280,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'shift_admin_shift_counter',
                 array(
-                    'action' => 'index'
+                    'action' => 'manage'
                 )
             );
 

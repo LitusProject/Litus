@@ -210,11 +210,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear')) {
-            $start = AcademicYear::getStartOfAcademicYear();
-        } else {
-            $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-        }
+        if (null === $this->getParam('academicyear'))
+            return $this->getCurrentAcademicYear();
+
+        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
         $start->setTime(0, 0);
 
         $academicYear = $this->getEntityManager()

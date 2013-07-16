@@ -32,7 +32,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
     public function cudiAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear();
 
         $semester = (new DateTime() < $academicYear->getUniversityStartDate()) ? 1 : 2;
 
@@ -157,47 +157,5 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 'form' => $form,
             )
         );
-    }
-
-    private function _getAcademicYear()
-    {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $now = new DateTime();
-        $profStart = new DateTime(
-            str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.prof_start_academic_year')
-            )
-        );
-
-        if ($now > $profStart && $startAcademicYear > $now) {
-            $startAcademicYear->add(new DateInterval('P1Y2M'));
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
-        }
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYear($organizationStart, $startAcademicYear);
-            $this->getEntityManager()->persist($academicYear);
-            $this->getEntityManager()->flush();
-        }
-
-        return $academicYear;
     }
 }
