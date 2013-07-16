@@ -32,7 +32,7 @@
                     <tr class="item item-{{ role.getName() }}">
                         <td>{{ role.getName() }}</td>
                         <td class="actions">
-                            {% if not role.getSystem() and hasAccess('common_admin_role', 'Members') %}
+                            {% if not role.getSystem() and hasAccess('common_admin_role', 'members') %}
                                 <a href="{{ url('common_admin_role', {"action": "members", "name": role.getName()}) }}" class="group_edit">Members</a>
                             {% endif %}
                             {% if hasAccess('common_admin_role', 'edit') %}
