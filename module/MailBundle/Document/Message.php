@@ -80,7 +80,7 @@ class Message
     public function __construct($type, $subject, $body, array $attachments = array())
     {
         $this->creationTime = new DateTime();
-        
+
         $this->type = $type;
         $this->attachments = new ArrayCollection($attachments);
 

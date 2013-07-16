@@ -203,7 +203,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }

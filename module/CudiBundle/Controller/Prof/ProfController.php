@@ -106,7 +106,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }

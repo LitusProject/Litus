@@ -15,21 +15,21 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\Alias\Academic as Alias,
-    MailBundle\Form\Admin\Alias\Add as AddForm,
+    MailBundle\Form\Admin\Message\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
-class AliasController extends \CommonBundle\Component\Controller\ActionController\AdminController
+/**
+ * MessageController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class MessageController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'MailBundle\Entity\Alias',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC'
-            )
+        $paginator = $this->paginator()->createFromDocument(
+            'MailBundle\Document\Message',
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -40,45 +40,39 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function addAction()
+    public function editAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        if (!($message = $this->_getMessage()))
+            return new ViewModel();
 
-        if($this->getRequest()->isPost()) {
+        $form = new EditForm($message);
+
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
+                var_dump("Hello");
+
                 $formData = $form->getFormData($formData);
 
-                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneByUsername($formData['person_name']);
-                } else {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']);
-                }
+                $message->setSubject($formData['subject'])
+                    ->setBody($formData['body']);
 
-                $alias = new Alias(
-                    $formData['alias'], $academic
-                );
-                $this->getEntityManager()->persist($alias);
-                $this->getEntityManager()->flush();
+                $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        'SUCCES',
-                        'The alias was succesfully created!'
+                        'Succes',
+                        'The message was successfully edited!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'mail_admin_alias',
+                    'mail_admin_message',
                     array(
-                        'action' => 'manage',
+                        'action' => 'manage'
                     )
                 );
 
@@ -97,11 +91,12 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($alias = $this->_getAlias()))
+        if (!($message = $this->_getMessage()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($alias);
-        $this->getEntityManager()->flush();
+        $this->getDocumentManager()->remove($message);
+
+        $this->getDocumentManager()->flush();
 
         return new ViewModel(
             array(
@@ -110,19 +105,19 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getAlias()
+    private function _getMessage()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the alias!'
+                    'No ID was given to identify the message!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_alias',
+                'mail_admin_message',
                 array(
                     'action' => 'manage'
                 )
@@ -131,21 +126,21 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $alias = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Alias')
+        $message = $this->getDocumentManager()
+            ->getRepository('MailBundle\Document\Message')
             ->findOneById($this->getParam('id'));
 
-        if (null === $alias) {
+        if (null === $message) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No alias with the given ID was found!'
+                    'No message with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_alias',
+                'mail_admin_message',
                 array(
                     'action' => 'manage'
                 )
@@ -154,6 +149,6 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $alias;
+        return $message;
     }
 }

@@ -104,7 +104,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -121,7 +121,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }

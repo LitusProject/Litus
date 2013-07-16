@@ -1,0 +1,108 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'mail/admin/message/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width message_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The message was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width message_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the message.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th width="100px">Attachments</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for message in paginator %}
+                    <tr class="item item-{{ message.getId() }}">
+                        <td>{{ message.getSubject() }}</td>
+                        <td>{{ message.getAttachments() | length }}</td>
+                        <td class="actions">
+                            {% if hasAccess('mail_admin_message', 'edit') %}
+                                <a href="{{ url('mail_admin_message', {"action": "edit", "id": message.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('mail_admin_message', 'delete') %}
+                                <a href="#" data-id="{{ message.getId() }}" data-subject="{{ message.getSubject() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal hide fade" id="removeMessage">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Message
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the message with subject: <b class="subject"></b>?
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeMessage = $('#removeMessage');
+            removeMessage.find('.subject').html($(this).data('subject'));
+            removeMessage.find('.cancel').one('click', function () {
+                removeMessage.modal('hide');
+            });
+            var id = $this.data('id');
+            removeMessage.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('mail_admin_message', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.message_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeMessage.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeMessage.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.message_removed_error').removeClass('hide');
+            $('#removeMessage').modal('hide');
+        }
+    </script>
+{% endblock %}

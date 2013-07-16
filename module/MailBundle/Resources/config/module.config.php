@@ -25,6 +25,34 @@ return array(
                     ),
                 ),
             ),
+            'mail_admin_alias' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/mail/alias[/:action[/:id][/page/:page]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'mail_admin_alias',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'mail_admin_bakske' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/mail/bakske[/:action][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'mail_admin_bakske',
+                        'action'     => 'send',
+                    ),
+                ),
+            ),
             'mail_admin_group' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -39,16 +67,33 @@ return array(
                     ),
                 ),
             ),
-            'mail_admin_bakske' => array(
+            'mail_admin_list' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/bakske[/:action][/]',
+                    'route' => '/admin/mail/list[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'mail_admin_bakske',
-                        'action'     => 'send',
+                        'controller' => 'mail_admin_list',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'mail_admin_message' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/mail/message[/:action[/:id][/page/:page]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[a-z0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'mail_admin_message',
+                        'action'     => 'manage',
                     ),
                 ),
             ),
@@ -75,51 +120,6 @@ return array(
                     'defaults' => array(
                         'controller' => 'mail_admin_study',
                         'action'     => 'send',
-                    ),
-                ),
-            ),
-            'mail_admin_bakske' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/mail/bakske[/:action[/:id][/page/:page]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'mail_admin_bakske',
-                        'action'     => 'send',
-                    ),
-                ),
-            ),
-            'mail_admin_list' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/mail/list[/:action[/:id][/page/:page]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'mail_admin_list',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
-            'mail_admin_alias' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/mail/alias[/:action[/:id][/page/:page]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'mail_admin_alias',
-                        'action'     => 'manage',
                     ),
                 ),
             ),
@@ -175,6 +175,7 @@ return array(
             'mail_admin_bakske'    => 'MailBundle\Controller\Admin\BakskeController',
             'mail_admin_group'     => 'MailBundle\Controller\Admin\GroupController',
             'mail_admin_list'      => 'MailBundle\Controller\Admin\MailingListController',
+            'mail_admin_message'   => 'MailBundle\Controller\Admin\MessageController',
             'mail_admin_prof'      => 'MailBundle\Controller\Admin\ProfController',
             'mail_admin_study'     => 'MailBundle\Controller\Admin\StudyController',
             'mail_admin_volunteer' => 'MailBundle\Controller\Admin\VolunteerController',

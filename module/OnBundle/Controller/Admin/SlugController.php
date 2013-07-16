@@ -120,7 +120,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The key was successfully edited!'
+                        'The slug was successfully edited!'
                     )
                 );
 
@@ -155,9 +155,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => array(
-                    'status' => 'success'
-                ),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
