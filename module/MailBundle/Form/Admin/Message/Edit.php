@@ -12,33 +12,28 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Form\Admin\Mail;
+namespace MailBundle\Form\Admin\Message;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    MailBundle\Document\Message,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    Zend\Validator\EmailAddress as EmailAddressValidator;
+    Zend\Form\Element\Submit;
 
 /**
- * Send Mail
+ * Edit Message
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Mail extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($name = null)
+    public function __construct(Message $message, $name = null)
     {
         parent::__construct($name);
-
-        $field = new Text('from');
-        $field->setLabel('From')
-            ->setAttribute('style', 'width: 400px;');
-        $this->add($field);
 
         $field = new Text('subject');
         $field->setLabel('Subject')
@@ -46,37 +41,34 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Textarea('message');
-        $field->setLabel('Message')
+        $field = new Textarea('body');
+        $field->setLabel('Body')
             ->setAttribute('style', 'width: 500px; height: 200px;')
             ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
-        $field->setValue('Send')
-            ->setAttribute('class', 'mail');
+        $field->setValue('Save')
+            ->setAttribute('class', 'mail_edit');
         $this->add($field);
+
+        $this->_populateFromMessage($message);
+    }
+
+    private function _populateFromMessage(Message $message)
+    {
+        $data = array(
+            'subject' => $message->getSubject(),
+            'body' => $message->getBody()
+        );
+
+        $this->setData($data);
     }
 
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'from',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new EmailAddressValidator(),
-                    ),
-                )
-            )
-        );
 
         $inputFilter->add(
             $factory->createInput(
@@ -93,7 +85,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'message',
+                    'name'     => 'body',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

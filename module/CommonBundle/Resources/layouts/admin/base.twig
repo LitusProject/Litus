@@ -171,14 +171,14 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('mail_admin_group', 'groups') or hasAccess('mail_admin_bakske', 'send') or hasAccess('mail_admin_prof', 'cudi') or hasAccess('mail_admin_study', 'send') or hasAccess('mail_admin_list', 'manage') or hasAccess('mail_admin_volunteer', 'send') %}
+                        {% if hasAccess('mail_admin_group', 'groups') or hasAccess('mail_admin_bakske', 'send') or hasAccess('mail_admin_prof', 'cudi') or hasAccess('mail_admin_study', 'send') or hasAccess('mail_admin_list', 'manage') or hasAccess('mail_admin_volunteer', 'send') or hasAccess('mail_admin_alias', 'manage') or hasAccess('mail_admin_message', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Mail</b><br />
                                     Aliases, Lists &amp; Mass Mail
                                 </div>
                                 <ul
-                                    {% if 'mail_admin_group' == getParam('controller') or 'mail_admin_bakske' == getParam('controller') or 'mail_admin_prof' == getParam('controller') or 'mail_admin_study' == getParam('controller') or 'mail_admin_list' == getParam('controller') or 'mail_admin_alias' == getParam('controller') or 'mail_admin_volunteer' == getParam('controller') %}
+                                    {% if 'mail_admin_group' == getParam('controller') or 'mail_admin_bakske' == getParam('controller') or 'mail_admin_prof' == getParam('controller') or 'mail_admin_study' == getParam('controller') or 'mail_admin_list' == getParam('controller') or 'mail_admin_alias' == getParam('controller') or 'mail_admin_volunteer' == getParam('controller') or 'mail_admin_message' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
@@ -193,6 +193,9 @@
                                     {% endif %}
                                     {% if hasAccess('mail_admin_list', 'manage') %}
                                         <li><a href="{{ url('mail_admin_list') }}">Lists</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('mail_admin_message', 'manage') %}
+                                        <li><a href="{{ url('mail_admin_message') }}">Stored Messages</a></li>
                                     {% endif %}
                                     {% if hasAccess('mail_admin_prof', 'cudi') %}
                                         <li><a href="{{ url('mail_admin_prof', {'action': 'cudi'}) }}">Prof</a></li>
