@@ -33,7 +33,7 @@
                 {% for event in paginator %}
                     <tr class="item item-{{ event.getId() }}">
                         <td>{{ event.getActivity().getTitle(language) }}</td>
-                        <td>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}
+                        <td>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}</td>
                         <td>{{ event.getNumberSold() }}</td>
                         <td class="actions">
                             {% if hasAccess('ticket_admin_event', 'edit') %}
