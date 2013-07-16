@@ -1,1 +1,28 @@
-{% extends 'ticket/admin/event/add.twig' %}
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'ticket/admin/event/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    {% if hasAccess('ticket_admin_ticket', 'manage') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">View Tickets</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_ticket', {'action': 'manage', 'id': event.getId()}) }}">&rarr; View Tickets</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+{% endblock %}

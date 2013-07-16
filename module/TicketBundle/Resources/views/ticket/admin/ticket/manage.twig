@@ -1,0 +1,43 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'ticket/admin/event/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Event</h1>
+        <p>Activity: <b>{{ event.getActivity().getTitle(language) }}</b></p>
+        <p>Bookable: <b>{% if event.isBookable() %}yes{% else %}no{% endif %}</b></p>
+        {% if event.isBookable() %}
+            <p>Bookings Close Date: <b>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}</b></p>
+        {% endif %}
+        <p>Number Sold: <b>{{ event.getNumberSold() }}</b></p>
+        <br />
+
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Person</th>
+                    <th width="200px">Status</th>
+                    <th width="200px">Number</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for ticket in paginator %}
+                    <tr class="item item-{{ ticket.getId() }}">
+                        <td>{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
+                        <td>{{ ticket.getStatus() }}</td>
+                        <td>{{ ticket.getNumber() }}</td>
+                        <td class="actions">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}
