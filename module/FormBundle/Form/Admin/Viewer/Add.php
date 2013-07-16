@@ -17,7 +17,7 @@ namespace FormBundle\Form\Admin\Viewer;
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
-    FormBundle\Component\Validator\PersonValidator,
+    FormBundle\Component\Validator\Person as PersonValidator,
     FormBundle\Entity\Node\Form,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'viewer_add');
+            ->setAttribute('class', 'add');
         $this->add($field);
     }
 
