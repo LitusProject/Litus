@@ -171,7 +171,7 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('mail_admin_group', 'groups') or hasAccess('mail_admin_bakske', 'send') or hasAccess('mail_admin_prof', 'cudi') or hasAccess('mail_admin_study', 'send') or hasAccess('mail_admin_list', 'manage') or hasAccess('mail_admin_volunteer', 'send') or hasAccess('mail_admin_alias', 'manage') or hasAccess('mail_admin_message', 'manage') %}
+                        {% if hasAccess('mail_admin_alias', 'manage') or hasAccess('mail_admin_bakske', 'send') or hasAccess('mail_admin_group', 'groups') or hasAccess('mail_admin_list', 'manage') or hasAccess('mail_admin_message', 'manage') or hasAccess('mail_admin_prof', 'cudi') or hasAccess('mail_admin_study', 'send') or hasAccess('mail_admin_volunteer', 'send') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Mail</b><br />
@@ -194,11 +194,11 @@
                                     {% if hasAccess('mail_admin_list', 'manage') %}
                                         <li><a href="{{ url('mail_admin_list') }}">Lists</a></li>
                                     {% endif %}
-                                    {% if hasAccess('mail_admin_message', 'manage') %}
-                                        <li><a href="{{ url('mail_admin_message') }}">Stored Messages</a></li>
-                                    {% endif %}
                                     {% if hasAccess('mail_admin_prof', 'cudi') %}
                                         <li><a href="{{ url('mail_admin_prof', {'action': 'cudi'}) }}">Prof</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('mail_admin_message', 'manage') %}
+                                        <li><a href="{{ url('mail_admin_message') }}">Stored Messages</a></li>
                                     {% endif %}
                                     {% if hasAccess('mail_admin_study', 'send') %}
                                         <li><a href="{{ url('mail_admin_study') }}">Studies</a></li>
