@@ -30,6 +30,14 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'ticket_sale_index' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@ticket_css',
+            '@ticket_js',
+        ),
     ),
     'routes' => array(),
 );

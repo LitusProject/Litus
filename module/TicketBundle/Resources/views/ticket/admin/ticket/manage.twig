@@ -19,9 +19,10 @@
             <thead>
                 <tr>
                     <th>Person</th>
-                    <th width="200px">Status</th>
+                    <th width="150px">Status</th>
                     <th width="200px">Number</th>
-                    <th width="70px">Action</th>
+                    <th width="130px">Book Date</th>
+                    <th width="130px">Sold Date</th>
                 </tr>
             </thead>
 
@@ -31,8 +32,8 @@
                         <td>{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
                         <td>{{ ticket.getStatus() }}</td>
                         <td>{{ ticket.getNumber() }}</td>
-                        <td class="actions">
-                        </td>
+                        <td>{{ ticket.getBookDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ ticket.getSoldDate().format('d/m/Y H:i') }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
