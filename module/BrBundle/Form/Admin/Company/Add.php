@@ -21,6 +21,7 @@ use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -76,6 +77,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new AddressForm('', 'address');
         $field->setLabel('Address');
+        $this->add($field);
+
+        $field = new Text('phone_number');
+        $field->setLabel('Phone Number')
+            ->setAttribute('placeholder', '+CCAAANNNNNN');
         $this->add($field);
 
         $field = new Text('website');
@@ -161,6 +167,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'uri',
                         )
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'phone_number',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PhoneNumberValidator(),
                     ),
                 )
             )

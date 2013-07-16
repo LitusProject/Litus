@@ -78,6 +78,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         $formData['address_city'],
                         $formData['address_country']
                     ),
+                    $formData['phone_number'],
                     $formData['website'],
                     $formData['sector']
                 );
@@ -160,8 +161,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
                 $company->setName($formData['company_name'])
                     ->setVatNumber($formData['vat_number'])
-                    ->setSector($formData['sector'])
+                    ->setPhoneNumber($formData['phone_number'])
                     ->setWebsite($formData['website'])
+                    ->setSector($formData['sector'])
                     ->getAddress()
                         ->setStreet($formData['address_street'])
                         ->setNumber($formData['address_number'])

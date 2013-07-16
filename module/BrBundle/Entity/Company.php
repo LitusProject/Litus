@@ -67,6 +67,13 @@ class Company
     private $address;
 
     /**
+     * @var string The company's telephone number
+     *
+     * @ORM\Column(type="string", length=15, nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
      * @var string The company's website
      *
      * @ORM\Column(type="text")
@@ -143,18 +150,21 @@ class Company
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
      * @param \CommonBundle\Entity\General\Address $address The company's address
+     * @param string $phoneNumber The company's telephone number
+     * @param string $website The company's website
      * @param string $sector The company's sector
      */
-    public function __construct($name, $vatNumber, Address $address, $website, $sector)
+    public function __construct($name, $vatNumber, Address $address, $phoneNumber, $website, $sector)
     {
         $this->setName($name);
-        $this->setVatNumber($vatNumber);
-        $this->setAddress($address);
-        $this->setWebsite($website);
+        $this->vatNumber = $vatNumber;
+        $this->address = $address;
+        $this->phoneNumber = $phoneNumber;
+        $this->website = $website;
         $this->setSector($sector);
-        $this->contacts = new ArrayCollection();
-
         $this->active = true;
+
+        $this->contacts = new ArrayCollection();
         $this->cvBookYears = new ArrayCollection();
     }
 
@@ -183,21 +193,6 @@ class Company
     }
 
     /**
-     * @param string $name
-     * @return \BrBundle\Entity\Company
-     */
-    public function setName($name)
-    {
-        if ((null === $name) || !is_string($name))
-            throw new \InvalidArgumentException('Invalid name');
-
-        $this->name = $name;
-        $this->slug = Url::createSlug($name);
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getName()
@@ -206,15 +201,13 @@ class Company
     }
 
     /**
-     * @param string $vatNumber
+     * @param string $name
      * @return \BrBundle\Entity\Company
      */
-    public function setVatNumber($vatNumber)
+    public function setName($name)
     {
-        if ((null === $vatNumber) || !is_string($vatNumber))
-            throw new \InvalidArgumentException('Invalid VAT number');
-
-        $this->vatNumber = $vatNumber;
+        $this->name = $name;
+        $this->slug = Url::createSlug($name);
 
         return $this;
     }
@@ -228,13 +221,12 @@ class Company
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Address $address
+     * @param string $vatNumber
      * @return \BrBundle\Entity\Company
      */
-    public function setAddress(Address $address)
+    public function setVatNumber($vatNumber)
     {
-        $this->address = $address;
-
+        $this->vatNumber = $vatNumber;
         return $this;
     }
 
@@ -247,16 +239,30 @@ class Company
     }
 
     /**
-     * @param string $website
+     * @param \CommonBundle\Entity\General\Address $address
      * @return \BrBundle\Entity\Company
      */
-    public function setWebsite($website)
+    public function setAddress(Address $address)
     {
-        if ((null === $website) || !is_string($website))
-            throw new \InvalidArgumentException('Invalid website');
+        $this->address = $address;
+        return $this;
+    }
 
-        $this->website = $website;
+    /**
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
 
+    /**
+     * @param string $phoneNumber
+     * @return \BrBundle\Entity\Company
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
         return $this;
     }
 
@@ -269,27 +275,26 @@ class Company
     }
 
     /**
+     * @param string $website
+     * @return \BrBundle\Entity\Company
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+        return $this;
+    }
+
+    /**
+     * Performs some extra formatting on the stored URL.
+     *
      * @return string
      */
     public function getFullWebsite()
     {
         $result =  $this->getWebsite();
-        if (strpos($result, 'http://') === FALSE)
+        if (false === strpos($result, 'http://'))
             $result = 'http://' . $result;
         return $result;
-    }
-
-    /**
-     * @param string $sector
-     * @return \BrBundle\Entity\Company
-     */
-    public function setSector($sector)
-    {
-        if (!self::isValidSector($sector))
-            throw new \InvalidArgumentException('The sector is not valid.');
-        $this->sector = $sector;
-
-        return $this;
     }
 
     /**
@@ -301,11 +306,34 @@ class Company
     }
 
     /**
+     * @param string $sector
+     * @return \BrBundle\Entity\Company
+     */
+    public function setSector($sector)
+    {
+        if (!self::isValidSector($sector))
+            throw new \InvalidArgumentException('The sector is not valid');
+        $this->sector = $sector;
+
+        return $this;
+    }
+
+    /**
+     * Returns the code of the company's sector.
+     *
      * @return string
      */
     public function getSectorCode()
     {
         return $this->sector;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 
     /**
@@ -317,14 +345,6 @@ class Company
         $this->logo = trim($logo, '/');
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLogo()
-    {
-        return $this->logo;
     }
 
     /**
@@ -361,21 +381,18 @@ class Company
     }
 
     /**
-     * Retrieves the years for which this company has bought the cv book.
-     *
-     * @return array The years in which this company has bought the cv book.
+     * @return array
      */
     public function getCvBookYears() {
         return $this->cvBookYears->toArray();
     }
 
     /**
-     * @param array $years Sets the years in which company has bought the cv book.
+     * @param array $years
      * @return \LogisticsBundle\Entity\Driver This
      */
     public function setCvBookYears(array $years) {
         $this->cvBookYears = new ArrayCollection($years);
         return $this;
     }
-
 }
