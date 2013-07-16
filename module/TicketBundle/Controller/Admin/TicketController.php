@@ -91,4 +91,51 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         return $event;
     }
+
+    private function _getTicket()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the ticket!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'ticket_admin_event',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $ticket) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ticket with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'ticket_admin_event',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $ticket;
+    }
 }

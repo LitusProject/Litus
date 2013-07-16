@@ -53,11 +53,40 @@ return array(
                     ),
                 ),
             ),
+            'ticket_sale_index' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/ticket/sale[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ticket_sale_index',
+                        'action'     => 'sale',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
         'template_path_stack' => array(
+            'ticket_layout' => __DIR__ . '/../layouts',
             'ticket_view' => __DIR__ . '/../views',
+        ),
+    ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/ticket.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/ticket.nl.php',
+                'locale'   => 'nl'
+            ),
         ),
     ),
     'doctrine' => array(
@@ -79,6 +108,41 @@ return array(
             'ticket_install'               => 'TicketBundle\Controller\Admin\InstallController',
             'ticket_admin_event'           => 'TicketBundle\Controller\Admin\EventController',
             'ticket_admin_ticket'          => 'TicketBundle\Controller\Admin\TicketController',
+            'ticket_sale_index'             => 'TicketBundle\Controller\Sale\IndexController',
+        ),
+    ),
+    'assetic_configuration' => array(
+        'modules' => array(
+            'sportbundle' => array(
+                'root_path' => __DIR__ . '/../assets',
+                'collections' => array(
+                    'ticket_css' => array(
+                        'assets' => array(
+                            'ticket/less/base.less',
+                        ),
+                        'filters' => array(
+                            'ticket_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'ticket_css.css',
+                        ),
+                    ),
+                    'ticket_js' => array(
+                        'assets' => array(
+                            'ticket/js/*.js',
+                        ),
+                    ),
+                ),
+            ),
         ),
     ),
 );
