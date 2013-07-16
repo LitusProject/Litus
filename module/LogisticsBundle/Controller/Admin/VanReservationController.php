@@ -229,7 +229,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -252,7 +252,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         return new ViewModel(
             array(
                 'result' => (object) array(
-                    "status" => "success",
+                    'status' => 'success',
                     "driver" => $person->getFullName(),
                 ),
             )
@@ -272,7 +272,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         return new ViewModel(
             array(
                 'result' => (object) array(
-                    "status" => "success",
+                    'status' => 'success',
                     "driver" => "",
                 ),
             )

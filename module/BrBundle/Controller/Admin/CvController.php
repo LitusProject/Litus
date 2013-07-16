@@ -143,7 +143,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }

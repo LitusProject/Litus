@@ -223,7 +223,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -243,7 +243,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }

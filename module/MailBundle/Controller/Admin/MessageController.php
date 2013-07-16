@@ -100,7 +100,7 @@ class MessageController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }

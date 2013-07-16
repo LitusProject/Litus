@@ -123,7 +123,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }

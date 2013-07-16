@@ -346,7 +346,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -366,7 +366,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -386,7 +386,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
