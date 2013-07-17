@@ -18,13 +18,13 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
- * IndexController
+ * TicketController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class IndexController extends \TicketBundle\Component\Controller\SaleController
+class TicketController extends \TicketBundle\Component\Controller\SaleController
 {
-    public function saleAction()
+    public function overviewAction()
     {
         $event = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event')

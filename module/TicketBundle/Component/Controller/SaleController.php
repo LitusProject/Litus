@@ -15,6 +15,7 @@
 namespace TicketBundle\Component\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    Exception,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -32,7 +33,25 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      */
     public function onDispatch(MvcEvent $e)
     {
+        $event = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event')
+            ->findOneById($this->getParam('id'));
+
+        if (null == $event)
+            throw new Exception('No valid event is given');
+
         $result = parent::onDispatch($e);
+
+        $language = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+        $result->language = $language;
+        $result->event = $event;
+
+        $result->unionUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('union_url');
 
         $e->setResult($result);
         return $result;
