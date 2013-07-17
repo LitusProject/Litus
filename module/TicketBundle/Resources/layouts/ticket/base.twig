@@ -16,20 +16,16 @@
         <div class="container">
             <a href="{{ unionUrl }}" class="brand"><img src="/_ticket/img/logo.png" /></a>
             <ul class="nav">
-            </ul>
-            <ul class="nav pull-right lang-nav visible-desktop">
-                <li class="dropdown" id="langDropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Language <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        {% for language in languages %}
-                            <li>
-                                <a href="{{ url("ticket_sale_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
+                {% if hasAccess('ticket_sale_index', 'sale') %}
+                    <li {% if 'sale' == getParam('action') and 'ticket_sale_index' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("ticket_sale_index", {"action": "sale", "id": event.getId()}) }}">Event</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('ticket_sale_ticket', 'overview') %}
+                    <li {% if 'overview' == getParam('action') and 'ticket_sale_ticket' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("ticket_sale_ticket", {"action": "overview", "id": event.getId()}) }}">Tickets</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -47,6 +43,23 @@
     {% include 'run/partials/flashMessenger.twig' %}
 
     <div id="content_controller">
+        <div class="page-header">
+            <h1>{{ event.getActivity().getTitle(language) }}</h1>
+        </div>
+
+        <dl class="dl-horizontal">
+            <dt>Bookable</dt>
+            <dd>{% if event.isBookable() %}yes{% else %}no{% endif %}</dd>
+            <dt>Bookings Close Date</dt>
+            <dd>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}</dd>
+            <dt>Number Sold</dt>
+            <dd>{{ event.getNumberSold() }}</dd>
+            {% if event.getNumberOfTickets() > 0 %}
+                <dt>Number Free</dt>
+                <dd>{{ event.getNumberOfTickets() - event.getNumberSold() }}</dd>
+            {% endif %}
+        </dl>
+
         {% block content %} {% endblock %}
     </div>
 
