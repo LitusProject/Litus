@@ -67,6 +67,20 @@ return array(
                     ),
                 ),
             ),
+            'ticket_sale_ticket' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/ticket/sale/ticket[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ticket_sale_ticket',
+                        'action'     => 'sale',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -108,7 +122,8 @@ return array(
             'ticket_install'               => 'TicketBundle\Controller\Admin\InstallController',
             'ticket_admin_event'           => 'TicketBundle\Controller\Admin\EventController',
             'ticket_admin_ticket'          => 'TicketBundle\Controller\Admin\TicketController',
-            'ticket_sale_index'             => 'TicketBundle\Controller\Sale\IndexController',
+            'ticket_sale_index'            => 'TicketBundle\Controller\Sale\IndexController',
+            'ticket_sale_ticket'           => 'TicketBundle\Controller\Sale\TicketController',
         ),
     ),
     'assetic_configuration' => array(
