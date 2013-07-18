@@ -84,7 +84,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData['generate_tickets'],
                     $formData['number_of_tickets'],
                     $formData['limit_per_person'],
-                    $formData['only_members']
+                    $formData['only_members'],
+                    $formData['price_members'],
+                    $formData['price_non_members']
                 );
 
                 if ($formData['generate_tickets']) {
@@ -199,7 +201,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setTicketsGenerated($formData['generate_tickets'])
                     ->setNumberOfTickets($formData['number_of_tickets'])
                     ->setLimitPerPerson($formData['limit_per_person'])
-                    ->setOnlyMembers($formData['only_members']);
+                    ->setOnlyMembers($formData['only_members'])
+                    ->setPriceMembers($formData['price_members'])
+                    ->setPriceNonMembers($formData['price_non_members']);
 
                 $this->getEntityManager()->flush();
 

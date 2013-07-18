@@ -1,5 +1,58 @@
 {% extends 'ticket/base.twig' %}
 
 {% block content %}
+    <h2>{{ translate('Sale') }}</h2>
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
 
+    <div id="saleConfirmModal" class="modal fade hide">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Sale Confirmation') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                {% autoescape false %}{{ translate('You are going to sell <span class="numberTickets"></span> tickets.') }}{% endautoescape %}
+            </p>
+            <p>
+                {% autoescape false %}{{ translate('Price: <b class="price"></b>') }}{% endautoescape %}
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
+            <button class="btn btn-success" id="sale">{{ translate('Sale') }}</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("ticket_sale_person_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+
+            $('#submit').click(function (e) {
+                e.preventDefault();
+
+                $('#saleConfirmModal .numberTickets').html($('select#number').val());
+                var price = $('select#number').val();
+                if ($('input#member').is(':checked')) {
+                    price = price * {{ (event.getPriceMembers()/100)|number_format(2) }};
+                } else {
+                    price = price * {{ (event.getPriceNonMembers()/100)|number_format(2) }};
+                }
+                $('#saleConfirmModal .price').html('&euro; ' + price.toFixed(2));
+                $('#saleConfirmModal').modal();
+            });
+        });
+    </script>
 {% endblock %}

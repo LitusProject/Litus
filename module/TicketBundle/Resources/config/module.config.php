@@ -28,10 +28,11 @@ return array(
             'ticket_admin_event' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/ticket/event[/:action[/:id]][/]',
+                    'route' => '/admin/ticket/event[/:action[/:id]][/page/:page][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'ticket_admin_event',
@@ -70,14 +71,29 @@ return array(
             'ticket_sale_ticket' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/ticket/sale/ticket[/:action[/:id]][/]',
+                    'route' => '/ticket/sale/ticket[/:action[/:id]][/page/:page][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'ticket_sale_ticket',
                         'action'     => 'sale',
+                    ),
+                ),
+            ),
+            'ticket_sale_person_typeahead' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/ticket/person/typeahead[/:string][/]',
+                    'constraints' => array(
+                        'string'   => '[%a-zA-Z0-9:.,_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ticket_sale_person',
+                        'action'     => 'typeahead',
                     ),
                 ),
             ),
@@ -87,20 +103,6 @@ return array(
         'template_path_stack' => array(
             'ticket_layout' => __DIR__ . '/../layouts',
             'ticket_view' => __DIR__ . '/../views',
-        ),
-    ),
-    'translator' => array(
-        'translation_files' => array(
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/ticket.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/ticket.nl.php',
-                'locale'   => 'nl'
-            ),
         ),
     ),
     'doctrine' => array(
@@ -124,6 +126,7 @@ return array(
             'ticket_admin_ticket'          => 'TicketBundle\Controller\Admin\TicketController',
             'ticket_sale_index'            => 'TicketBundle\Controller\Sale\IndexController',
             'ticket_sale_ticket'           => 'TicketBundle\Controller\Sale\TicketController',
+            'ticket_sale_person'           => 'TicketBundle\Controller\Sale\PersonController',
         ),
     ),
     'assetic_configuration' => array(
@@ -149,11 +152,6 @@ return array(
                         ),
                         'options' => array(
                             'output' => 'ticket_css.css',
-                        ),
-                    ),
-                    'ticket_js' => array(
-                        'assets' => array(
-                            'ticket/js/*.js',
                         ),
                     ),
                 ),
