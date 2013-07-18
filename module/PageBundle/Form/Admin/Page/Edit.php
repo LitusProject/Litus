@@ -52,7 +52,7 @@ class Edit extends Add
             $field = new Select('parent_' . $category->getId());
             $field->setLabel('Parent')
                 ->setAttribute('class', 'parent')
-                ->setAttribute('options', $this->_createPagesArray($category, $page->getCategory()->getId() == $category->getId() ? $page->getTitle() : ''));
+                ->setAttribute('options', $this->createPagesArray($category, $page->getCategory()->getId() == $category->getId() ? $page->getTitle() : ''));
             $this->add($field);
         }
 

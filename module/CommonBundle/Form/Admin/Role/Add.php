@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('parents');
         $field->setLabel('Parents')
             ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_createParentsArray());
+            ->setAttribute('options', $this->createParentsArray());
         $this->add($field);
 
         $field = new Select('actions');
@@ -74,15 +74,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      *
      * @return array
      */
-    private function _createParentsArray()
+    protected function createParentsArray($exclude = '')
     {
         $roles = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findAll();
 
         $parents = array();
-        foreach ($roles as $role)
-            $parents[$role->getName()] = $role->getName();
+        foreach ($roles as $role) {
+            if ($role->getName() != $exclude)
+                $parents[$role->getName()] = $role->getName();
+        }
 
         asort($parents);
 

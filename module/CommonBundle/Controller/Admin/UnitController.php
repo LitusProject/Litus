@@ -64,11 +64,18 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 if (isset($formData['organization'])) {
                     $organization = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['unit']);
+                        ->findOneById($formData['organization']);
                 } else {
                     $organization = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Organization')
                         ->findOne();
+                }
+
+                $parent = null;
+                if ('' != $formData['parent']) {
+                    $parent = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                        ->findOneById($formData['parent']);
                 }
 
                 $roles = array();
@@ -93,7 +100,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     $formData['name'],
                     $organization,
                     $roles,
-                    $coordinatorRoles
+                    $coordinatorRoles,
+                    $formData['displayed'],
+                    $parent
                 );
 
                 $this->getEntityManager()->persist($unit);
@@ -139,8 +148,6 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                $member = null;
 
                 if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                     $academic = $this->getEntityManager()
@@ -237,6 +244,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     }
                 }
 
+                $parent = null;
+                if ('' != $formData['parent']) {
+                    $parent = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                        ->findOneById($formData['parent']);
+                }
+
                 $coordinatorRoles = array();
                 if (isset($formData['coordinatorRoles'])) {
                     foreach ($formData['coordinatorRoles'] as $coordinatorRole) {
@@ -248,8 +262,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 $unit->setName($formData['name'])
                     ->setOrganization($organization)
+                    ->setParent($parent)
                     ->setRoles($roles)
-                    ->setCoordinatorRoles($coordinatorRoles);
+                    ->setCoordinatorRoles($coordinatorRoles)
+                    ->setDisplayed($formData['displayed']);
 
                 $this->getEntityManager()->flush();
 
