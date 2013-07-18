@@ -80,7 +80,7 @@ class Entry
      * @param \FormBundle\Entity\Node\GuestInfo $guestInfo
      * @param \FormBundle\Entity\Node\Form $form
      */
-    public function __construct(Person $person, GuestInfo $guestInfo = null, Form $form)
+    public function __construct(Person $person = null, GuestInfo $guestInfo = null, Form $form)
     {
         $this->creationTime = new DateTime();
         $this->creationPerson = $person;
