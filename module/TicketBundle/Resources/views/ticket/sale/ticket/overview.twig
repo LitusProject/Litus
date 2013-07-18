@@ -1,5 +1,34 @@
 {% extends 'ticket/base.twig' %}
 
 {% block content %}
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>{{ translate('Person') }}</th>
+            <th width="110px">{{ translate('Status') }}</th>
+            <th width="140px">{{ translate('Number') }}</th>
+            <th width="120px">{{ translate('Book Date') }}</th>
+            <th width="120px">{{ translate('Sold Date') }}</th>
+            <th width="130px">{{ translate('Action') }}</th>
+        </tr>
 
+        {% for ticket in paginator %}
+            <tr class="item item-{{ ticket.getId() }}">
+                <td>{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
+                <td>{{ ticket.getStatus() }}</td>
+                <td>{{ ticket.getNumber() }}</td>
+                <td>{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
+                <td>{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
+                <td class="actions">
+                    {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getPerson() %}
+                        <a href="{{ url("ticket_sale_ticket", {"action": "unassign", "id": ticket.getId()}) }}" class="btn btn-danger">{{ translate('Unassign') }}</a>
+                    {% endif %}
+                    {% if hasAccess('ticket_sale_ticket', 'delete') and not event.areTicketsGenerated() %}
+                        <a href="{{ url("ticket_sale_ticket", {"action": "delete", "id": ticket.getId()}) }}" class="btn btn-danger">{{ translate('Delete') }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% include 'site/partials/paginationControl.twig' %}
 {% endblock %}

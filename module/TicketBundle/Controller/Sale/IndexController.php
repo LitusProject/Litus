@@ -15,6 +15,7 @@
 namespace TicketBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    TicketBundle\Form\Sale\Ticket\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,9 +31,26 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
+        $form = new AddForm($event);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if ($event->areTicketsGenerated()) {
+
+                } else {
+
+                }
+            }
+        }
+
         return new ViewModel(
             array(
-                
+                'form' => $form,
             )
         );
     }

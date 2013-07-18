@@ -17,8 +17,9 @@ namespace TicketBundle\Form\Admin\Event;
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Checkbox,
-    Doctrine\ORM\EntityManager,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    CommonBundle\Component\Validator\Price as PriceValidator,
+    Doctrine\ORM\EntityManager,
     Ticketbundle\Entity\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -84,6 +85,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Only Members');
         $this->add($field);
 
+        $field = new Text('price_members');
+        $field->setLabel('Price Members');
+        $this->add($field);
+
+        $field = new Text('price_non_members');
+        $field->setLabel('Price Non Members');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'shift_add');
@@ -102,6 +111,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'number_of_tickets' => $event->getNumberOfTickets(),
                 'limit_per_person' => $event->getLimitPerPerson(),
                 'only_members' => $event->isOnlyMembers(),
+                'price_members' => number_format($event->getPriceMembers()/100, 2),
+                'price_non_members' => number_format($event->getPriceNonMembers()/100, 2),
             )
         );
     }
@@ -204,6 +215,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'price_members',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator()
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'price_non_members',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator()
                     ),
                 )
             )

@@ -36,6 +36,21 @@ class Ticket extends EntityRepository
         return null;
     }
 
+    public function findAllByEvent(EventEntity $event)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->eq('t.event', ':event')
+            )
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllEmptyByEvent(EventEntity $event)
     {
         $query = $this->_em->createQueryBuilder();

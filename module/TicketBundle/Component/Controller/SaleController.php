@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SaleController extends \CommonBundle\Component\Controller\ActionController
+class SaleController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     /**
      * Execute the request.
@@ -56,7 +56,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         $e->setResult($result);
         return $result;
     }
-
+    
     /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
