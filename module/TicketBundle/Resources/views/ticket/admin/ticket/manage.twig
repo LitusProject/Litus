@@ -23,6 +23,7 @@
                     <th width="200px">Number</th>
                     <th width="130px">Book Date</th>
                     <th width="130px">Sold Date</th>
+                    <th width="100px">Member</th>
                 </tr>
             </thead>
 
@@ -34,6 +35,7 @@
                         <td>{{ ticket.getNumber() }}</td>
                         <td>{{ ticket.getBookDate().format('d/m/Y H:i') }}</td>
                         <td>{{ ticket.getSoldDate().format('d/m/Y H:i') }}</td>
+                        <td>{% if ticket.isMember() %}yes{% else %}no{% endif %}</td>
                     </tr>
                 {% endfor %}
             </tbody>

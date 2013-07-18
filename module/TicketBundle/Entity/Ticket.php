@@ -92,6 +92,13 @@ class Ticket
     private $number;
 
     /**
+     * @var boolean Flag whether the ticket was sold to a member
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $member;
+
+    /**
      * @param \TicketBundle\Entity\Event $event
      * @param string $status
      * @param \CommonBundle\Entity\Users\Person $person
@@ -244,6 +251,24 @@ class Ticket
     public function setNumber($number)
     {
         $this->number = $number;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMember()
+    {
+        return $this->member;
+    }
+
+    /**
+     * @param boolean $member
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setMember($member)
+    {
+        $this->member = $member;
         return $this;
     }
 }

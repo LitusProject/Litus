@@ -91,6 +91,20 @@ class Event
     private $onlyMembers;
 
     /**
+     * @var integer The price for members
+     *
+     * @ORM\Column(name="price_members", type="smallint")
+     */
+    private $priceMembers;
+
+    /**
+     * @var integer The price for non members
+     *
+     * @ORM\Column(name="price_non_members", type="smallint")
+     */
+    private $priceNonMembers;
+
+    /**
      * @var \Doctrine\Common\Collection\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Ticket", mappedBy="event")
@@ -106,8 +120,10 @@ class Event
      * @param integer $numberOfTickets
      * @param integer $limitPerPerson
      * @param boolean $onlyMembers
+     * @param integer $priceMembers
+     * @param integer $priceNonMembers
      */
-    public function __construct(CalendarEvent $activity, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $onlyMembers)
+    public function __construct(CalendarEvent $activity, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $onlyMembers, $priceMembers, $priceNonMembers)
     {
         $this->activity = $activity;
         $this->bookable = $bookable;
@@ -117,6 +133,9 @@ class Event
         $this->numberOfTickets = $numberOfTickets;
         $this->limitPerPerson = $limitPerPerson;
         $this->onlyMembers = $onlyMembers;
+
+        $this->setPriceMembers($priceMembers)
+            ->setPriceNonMembers($priceNonMembers);
     }
 
     /**
@@ -268,6 +287,42 @@ class Event
     public function setOnlyMembers($onlyMembers)
     {
         $this->onlyMembers = $onlyMembers;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPriceMembers()
+    {
+        return $this->priceMembers;
+    }
+
+    /**
+     * @param integer $priceMembers
+     * @return \TicketBunlde\Entity\Event
+     */
+    public function setPriceMembers($priceMembers)
+    {
+        $this->priceMembers = $priceMembers * 100;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPriceNonMembers()
+    {
+        return $this->priceNonMembers;
+    }
+
+    /**
+     * @param integer $priceNonMembers
+     * @return \TicketBunlde\Entity\Event
+     */
+    public function setPriceNonMembers($priceNonMembers)
+    {
+        $this->priceNonMembers = $priceNonMembers * 100;
         return $this;
     }
 

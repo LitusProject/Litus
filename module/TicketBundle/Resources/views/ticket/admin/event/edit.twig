@@ -10,8 +10,8 @@
         {{ forms.renderForm(form) }}
     </div>
 
-    {% if hasAccess('ticket_admin_ticket', 'manage') %}
-        <aside>
+    <aside>
+        {% if hasAccess('ticket_admin_ticket', 'manage') %}
             <div class="sidebox">
                 <div class="title">View Tickets</div>
                 <div class="content">
@@ -23,6 +23,19 @@
                     </p>
                 </div>
             </div>
-        </aside>
-    {% endif %}
+        {% endif %}
+        {% if hasAccess('ticket_sale_index', 'sale') %}
+            <div class="sidebox">
+                <div class="title">Sale Tickets</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to sale tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_sale_index', {'action': 'sale', 'id': event.getId()}) }}">&rarr; Sale Tickets</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}
