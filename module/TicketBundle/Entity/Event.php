@@ -16,6 +16,7 @@ namespace TicketBundle\Entity;
 
 use CalendarBundle\Entity\Nodes\Event as CalendarEvent,
     DateTime,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -345,5 +346,26 @@ class Event
                 $sold++;
         }
         return $sold;
+    }
+
+    public function getNumberFree()
+    {
+        return $this->getNumberOfTickets() - $this->getNumberSold();
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return integer
+     */
+    public function generateTicketNumber(EntityManager $entityManager)
+    {
+        do {
+            $number = rand();
+            $ticket = $entityManager
+                ->getRepository('TicketBundle\Entity\Ticket')
+                ->findOneByEventAndNumber($this, $number);
+        } while($ticket !== null);
+
+        return $number;
     }
 }
