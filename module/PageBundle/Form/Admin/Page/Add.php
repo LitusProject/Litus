@@ -108,24 +108,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add($field);
     }
 
-    protected function createPagesArray(Category $category, $exclude = '')
-    {
-        $pages = $this->_entityManager
-            ->getRepository('PageBundle\Entity\Node\Page')
-            ->findByCategory($category);
-
-        $pageOptions = array(
-            '' => ''
-        );
-        foreach($pages as $page) {
-            if ($page->getTitle() != $exclude)
-                $pageOptions[$page->getId()] = $page->getTitle();
-        }
-
-        asort($pageOptions);
-        return $pageOptions;
-    }
-
     protected function getLanguages()
     {
         return $this->_entityManager
@@ -149,6 +131,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         asort($categoryOptions);
 
         return $categoryOptions;
+    }
+
+    protected function createPagesArray(Category $category, $exclude = '')
+    {
+        $pages = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Node\Page')
+            ->findByCategory($category);
+
+        $pageOptions = array(
+            '' => ''
+        );
+        foreach($pages as $page) {
+            if ($page->getTitle() != $exclude)
+                $pageOptions[$page->getId()] = $page->getTitle();
+        }
+
+        asort($pageOptions);
+        return $pageOptions;
     }
 
     private function _createEditRolesArray()

@@ -85,7 +85,7 @@ class Unit
     /**
      * @var boolean Whether or not this unit is displayed on the site
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $displayed;
 
@@ -201,7 +201,10 @@ class Unit
      */
     public function getRoles()
     {
-        return $this->roles->toArray();
+        return array_merge(
+            $this->getParent()->getRoles(),
+            $this->roles->toArray()
+        );
     }
 
     /**
