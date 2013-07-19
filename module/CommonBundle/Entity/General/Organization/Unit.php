@@ -187,7 +187,7 @@ class Unit
     }
 
     /**
-     * @param array $coordinatoRoles
+     * @param array $coordinatorRoles
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setCoordinatorRoles(array $coordinatorRoles)
@@ -202,7 +202,9 @@ class Unit
     public function getRoles()
     {
         return array_merge(
-            $this->getParent()->getRoles(),
+            null !== $this->getParent()
+                ? $this->getParent()->getRoles()
+                : array(),
             $this->roles->toArray()
         );
     }
