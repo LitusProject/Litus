@@ -220,7 +220,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $article->getId(), 'add');
                 $this->getEntityManager()->persist($action);
 
-                $subject = $this->getEntityManager()
+                $mappingProf = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                     ->findOneBySubjectIdAndProfAndAcademicYear(
                         $formData['subject_id'],
@@ -228,7 +228,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $academicYear
                     );
 
-                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
+                $mapping = new SubjectMap($article, $mappingProf->getSubject(), $academicYear, $formData['mandatory']);
                 $mapping->setIsProf(true);
                 $this->getEntityManager()->persist($mapping);
 

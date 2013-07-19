@@ -489,6 +489,9 @@ abstract class Article
      */
     public function getSaleArticle()
     {
+        if (null == $this->_entityManager)
+            return null;
+        
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($this);
