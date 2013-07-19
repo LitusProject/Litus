@@ -15,9 +15,10 @@
 namespace TicketBundle\Form\Sale\Ticket;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event,
     Zend\Form\Element\Hidden,
     Zend\InputFilter\InputFilter,
@@ -45,6 +46,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->_event = $event;
 
+        $this->setAttribute('id', 'ticket_sale_form');
+
         $field = new Hidden('person_id');
         $field->setAttribute('id', 'personId');
         $this->add($field);
@@ -58,16 +61,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Select('number');
-        $field->setLabel('Number')
+        $field = new Select('number_member');
+        $field->setLabel('Number Member')
             ->setAttribute('options', $this->_getNumberOptions());
         $this->add($field);
 
-        $field = new Checkbox('member');
-        $field->setLabel('Member');
+        $field = new Select('number_non_member');
+        $field->setLabel('Number Non Member')
+            ->setAttribute('options', $this->_getNumberOptions());
         $this->add($field);
 
-        $field = new Submit('submit');
+        $field = new Checkbox('payed');
+        $field->setLabel('Payed');
+        $this->add($field);
+
+        $field = new Submit('sale_tickets');
         $field->setValue('Sale');
         $this->add($field);
     }
@@ -77,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $numbers = array();
         $max = $this->_event->getLimitPerPerson() == 0 ? 10 : $this->_event->getLimitPerPerson();
 
-        for($i = 1 ; $i <= $max ; $i++) {
+        for($i = 0 ; $i <= $max ; $i++) {
             $numbers[$i] = $i;
         }
         return $numbers;
@@ -113,6 +121,30 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'number_member',
+                    'required' => true,
+                    'validators' => array(
+                        new NumberTicketsValidator($this->_event->getLimitPerPerson()),
+                    )
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'number_non_member',
+                    'required' => true,
+                    'validators' => array(
+                        new NumberTicketsValidator($this->_event->getLimitPerPerson()),
+                    )
                 )
             )
         );

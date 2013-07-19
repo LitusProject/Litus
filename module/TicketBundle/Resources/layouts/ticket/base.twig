@@ -56,7 +56,7 @@
             <dd>{{ event.getNumberSold() }}</dd>
             {% if event.getNumberOfTickets() > 0 %}
                 <dt>Number Free</dt>
-                <dd>{{ event.getNumberOfTickets() - event.getNumberSold() }}</dd>
+                <dd>{{ event.getNumberFree() }}</dd>
             {% endif %}
         </dl>
 
