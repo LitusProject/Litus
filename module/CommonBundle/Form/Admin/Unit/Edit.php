@@ -14,8 +14,7 @@
 
 namespace CommonBundle\Form\Admin\Unit;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Entity\General\Organization\Unit,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Text,
@@ -39,6 +38,11 @@ class Edit extends Add
 
         $this->remove('submit');
 
+        $field = new Select('parent');
+        $field->setLabel('Parent')
+            ->setAttribute('options', $this->createUnitsArray($unit->getId()));
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Save')
             ->setAttribute('class', 'unit_edit');
@@ -52,8 +56,10 @@ class Edit extends Add
         $data = array(
             'name' => $unit->getName(),
             'organization' => $unit->getOrganization(),
+            'parent' => $unit->getParent(),
             'roles' => $this->_createRolesPopulationArray($unit->getRoles()),
             'coordinatorRoles' => $this->_createRolesPopulationArray($unit->getCoordinatorRoles()),
+            'displayed' => $unit->getDisplayed()
         );
 
         $this->setData($data);

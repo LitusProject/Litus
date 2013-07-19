@@ -14,7 +14,7 @@
 
 namespace CommonBundle\Form\Admin\Role;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Entity\Acl\Role,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
@@ -36,6 +36,12 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
         parent::__construct($entityManager, $name);
 
         $this->remove('name');
+
+        $field = new Select('parents');
+        $field->setLabel('Parents')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->createParentsArray($role->getName()));
+        $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Save')

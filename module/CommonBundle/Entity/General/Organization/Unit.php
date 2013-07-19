@@ -51,6 +51,14 @@ class Unit
     private $organization;
 
     /**
+     * @var \CommonBundle\Entity\General\Organization\Unit The unit's parent
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization\Unit", cascade={"persist"})
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id", nullable=true)
+     */
+    private $parent;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The roles associated with the unit
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
@@ -75,6 +83,13 @@ class Unit
     private $coordinatorRoles;
 
     /**
+     * @var boolean Whether or not this unit is displayed on the site
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $displayed;
+
+    /**
      * @var boolean Whether or not this unit is active
      *
      * @ORM\Column(type="boolean")
@@ -86,11 +101,15 @@ class Unit
      * @param \CommonBundle\Entity\General\Organization $organization The unit's organization
      * @param array $roles The roles associated with the unit
      * @param array $coordinatorRoles The roles associated with the coordinator of the unit
+     * @param boolean $displayed Whether or not this unit is displayed on the site
+     * @param \CommonBundle\Entity\General\Organization\Unit $parent The unit's parent
      */
-    public function __construct($name, Organization $organization, array $roles, array $coordinatorRoles)
+    public function __construct($name, Organization $organization, array $roles, array $coordinatorRoles, $displayed, Unit $parent = null)
     {
         $this->name = $name;
         $this->organization = $organization;
+        $this->parent = $parent;
+        $this->displayed = $displayed;
         $this->active = true;
 
         $this->coordinatorRoles = new ArrayCollection($coordinatorRoles);
@@ -142,6 +161,24 @@ class Unit
     }
 
     /**
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Organization\Unit $unit
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function setParent(Unit $parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getCoordinatorRoles()
@@ -174,6 +211,24 @@ class Unit
     public function setRoles(array $roles)
     {
         $this->roles = new ArrayCollection($roles);
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDisplayed()
+    {
+        return $this->displayed;
+    }
+
+    /**
+     * @param boolean $displayed
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function setDisplayed($displayed)
+    {
+        $this->displayed = $displayed;
         return $this;
     }
 
