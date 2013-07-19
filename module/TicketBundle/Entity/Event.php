@@ -14,7 +14,7 @@
 
 namespace TicketBundle\Entity;
 
-use CalendarBundle\Entity\Nodes\Event as CalendarEvent,
+use CalendarBundle\Entity\Node\Event as CalendarEvent,
     DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -37,7 +37,7 @@ class Event
     /**
      * @var string The activity of the event
      *
-     * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Nodes\Event")
+     * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Node\Event")
      * @ORM\JoinColumn(name="activity", referencedColumnName="id")
      */
     private $activity;
@@ -113,7 +113,7 @@ class Event
     private $tickets;
 
     /**
-     * @param \CalendarBundle\Entity\Nodes\Event $activity
+     * @param \CalendarBundle\Entity\Node\Event $activity
      * @param boolean $bookable
      * @param \DateTime $bookingsCloseDate
      * @param boolean $active
@@ -148,7 +148,7 @@ class Event
     }
 
     /**
-     * @return \CalendarBundle\Entity\Nodes\Event
+     * @return \CalendarBundle\Entity\Node\Event
      */
     public function getActivity()
     {
@@ -156,7 +156,7 @@ class Event
     }
 
     /**
-     * @param \CalendarBundle\Entity\Nodes\Event $activity
+     * @param \CalendarBundle\Entity\Node\Event $activity
      * @return \TicketBunlde\Entity\Event
      */
     public function setActivity(CalendarEvent $activity)

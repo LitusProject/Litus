@@ -71,10 +71,11 @@ return array(
             'ticket_sale_ticket' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/ticket/sale/ticket[/:action[/:id]][/page/:page][/]',
+                    'route' => '/ticket/sale/ticket[/:action[/:id[/:ticket]]][/page/:page][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'ticket'  => '[0-9]*',
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
