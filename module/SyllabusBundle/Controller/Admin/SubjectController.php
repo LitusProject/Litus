@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -17,6 +17,8 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    DateTime,
+    DateInterval,
     Zend\View\Model\ViewModel;
 
 /**
@@ -72,7 +74,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $academicYears = $this->getEntityManager()
@@ -210,15 +212,41 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear'))
-            return $this->getCurrentAcademicYear();
+        if (null === $this->getParam('academicyear')) {
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
 
-        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $start->setTime(0, 0);
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+
+            $next = clone $start;
+            $next->add(new DateInterval('P1Y'));
+            if ($next <= new DateTime())
+                $start = $next;
+        } else {
+            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
+
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+        }
+        $startAcademicYear->setTime(0, 0);
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($start);
+            ->findOneByStart($start);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(

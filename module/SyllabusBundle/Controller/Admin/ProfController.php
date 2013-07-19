@@ -1,6 +1,6 @@
 <?php
 /**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -49,7 +49,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $docent = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
                     ->findOneById($formData['prof_id']);
 
                 $mapping = $this->getEntityManager()
@@ -103,7 +103,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'success'),
+                'result' => (object) array("status" => "success"),
             )
         );
     }
@@ -112,10 +112,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $docents = array_merge(
             $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findAllByName($this->getParam('string')),
             $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findAllByUniversityIdentification($this->getParam('string'))
         );
 
@@ -230,15 +230,41 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear'))
-            return $this->getCurrentAcademicYear();
+        if (null === $this->getParam('academicyear')) {
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
 
-        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $start->setTime(0, 0);
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+
+            $next = clone $start;
+            $next->add(new DateInterval('P1Y'));
+            if ($next <= new DateTime())
+                $start = $next;
+        } else {
+            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
+
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+        }
+        $startAcademicYear->setTime(0, 0);
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($start);
+            ->findOneByStart($start);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
