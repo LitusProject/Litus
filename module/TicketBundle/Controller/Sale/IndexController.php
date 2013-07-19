@@ -42,7 +42,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                 $formData = $form->getFormData($formData);
 
                 $person = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($formData['person_id']);
 
                 $notEnoughTickets = false;

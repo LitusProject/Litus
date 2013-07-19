@@ -44,4 +44,79 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             )
         );
     }
+
+    public function unassignAction()
+    {
+        $this->initAjax();
+
+        if (!($ticket = $this->_getTicket()) && $ticket->getEvent()->areTicketsGenerated())
+            return new ViewModel();
+
+        $ticket->setStatus('empty');
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($ticket = $this->_getTicket()) && !$ticket->getEvent()->areTicketsGenerated())
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($ticket);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    private function _getTicket()
+    {
+        if (null === $this->getParam('ticket')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the ticket!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'ticket_sale_index'
+            );
+
+            return;
+        }
+
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneById($this->getParam('ticket'));
+
+        if (null === $ticket) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ticket with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'ticket_sale_index'
+            );
+
+            return;
+        }
+
+        return $ticket;
+    }
 }

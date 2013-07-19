@@ -76,7 +76,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $event = new Event(
                     $this->getEntityManager()
-                        ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                        ->getRepository('CalendarBundle\Entity\Node\Event')
                         ->findOneById($formData['event']),
                     $formData['bookable'],
                     strlen($formData['bookings_close_date']) ? DateTime::createFromFormat('d#m#Y H#i', $formData['bookings_close_date']) : null,
@@ -183,10 +183,17 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                             $this->getEntityManager()->flush();
                         }
                     }
+                } else {
+                    $tickets = $this->getEntityManager()
+                        ->getRepository('TicketBundle\Entity\Ticket')
+                        ->findAllEmptyByEvent($event);
+                    foreach($tickets as $ticket) {
+                        $this->getEntityManager()->remove($ticket);
+                    }
                 }
 
                 $event->setActivity($this->getEntityManager()
-                        ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                        ->getRepository('CalendarBundle\Entity\Node\Event')
                         ->findOneById($formData['event']))
                     ->setBookable($formData['bookable'])
                     ->setBookingsCloseDate(strlen($formData['bookings_close_date']) ? DateTime::createFromFormat('d#m#Y H#i', $formData['bookings_close_date']) : null)

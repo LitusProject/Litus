@@ -1,6 +1,31 @@
 {% extends 'ticket/base.twig' %}
 
 {% block content %}
+    <div class="flashmessage alert alert-success fade" id="ticket_unassign_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The ticket was succesfully unassigned.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="ticket_unassign_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while unassigning the ticket.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="ticket_delete_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The ticket was succesfully deleted.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="ticket_delete_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while deleting the ticket.') }}
+        </div>
+    </div>
+
     <table class="table table-bordered table-striped">
         <tr>
             <th>{{ translate('Person') }}</th>
@@ -13,17 +38,17 @@
 
         {% for ticket in paginator %}
             <tr class="item item-{{ ticket.getId() }}">
-                <td>{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
-                <td>{{ ticket.getStatus() }}</td>
+                <td class="person">{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
+                <td class="status">{{ ticket.getStatus() }}</td>
                 <td>{{ ticket.getNumber() }}</td>
-                <td>{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
-                <td>{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
+                <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
+                <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
                 <td class="actions">
                     {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getPerson() %}
-                        <a href="{{ url("ticket_sale_ticket", {"action": "unassign", "id": ticket.getId()}) }}" class="btn btn-danger">{{ translate('Unassign') }}</a>
+                        <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getPerson().getFullName() }}" class="btn btn-danger unassignTicket">{{ translate('Unassign') }}</a>
                     {% endif %}
                     {% if hasAccess('ticket_sale_ticket', 'delete') and not event.areTicketsGenerated() %}
-                        <a href="{{ url("ticket_sale_ticket", {"action": "delete", "id": ticket.getId()}) }}" class="btn btn-danger">{{ translate('Delete') }}</a>
+                        <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getPerson().getFullName() }}" class="btn btn-danger deleteTicket">{{ translate('Delete') }}</a>
                     {% endif %}
                 </td>
             </tr>
@@ -31,4 +56,103 @@
     </table>
 
     {% include 'site/partials/paginationControl.twig' %}
+
+    <div id="modalUnassign" class="modal fade hide">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Unassign Ticket') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{ translate('Are you sure you want to unassign the ticket of') }}: <b><span class="person"></span></b>?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+        </div>
+    </div>
+
+    <div id="modalDelete" class="modal fade hide">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Delete Ticket') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{ translate('Are you sure you want to delete the ticket of') }}: <b><span class="person"></span></b>?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('.unassignTicket').click(openUnassignModal);
+            $('.deleteTicket').click(openDeleteModal);
+        });
+
+        function openUnassignModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var modalUnassign = $('#modalUnassign');
+            modalUnassign.find('.person').html($(this).data('person'));
+            modalUnassign.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('ticket_sale_ticket', {"action": "unassign", "id": event.getId()})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#ticket_unassign_success').addClass('in');
+                        $this.parent().parent().find('.person').html('(none)');
+                        $this.parent().parent().find('.status').html('empty');
+                        $this.parent().parent().find('.bookDate').html('');
+                        $this.parent().parent().find('.soldDate').html('');
+                        $this.parent().parent().find('.actions').html('');
+                        modalUnassign.modal('hide');
+                    } else {
+                        errorUnassignTicket();
+                    }
+                }, 'json').error(errorUnassignTicket);
+            });
+            modalUnassign.modal();
+        }
+
+        function errorUnassignTicket() {
+            $('.flashmessage').removeClass('in');
+            $('#ticket_unassign_error').addClass('in');
+            $('#modalUnassign').modal('hide');
+        }
+
+        function openDeleteModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var modalDelete = $('#modalDelete');
+            modalDelete.find('.person').html($(this).data('person'));
+            modalDelete.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('ticket_sale_ticket', {"action": "delete", "id": event.getId()})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#ticket_delete_success').addClass('in');
+                        $this.parent().parent().remove();
+                        modalDelete.modal('hide');
+                    } else {
+                        errorDeleteTicket();
+                    }
+                }, 'json').error(errorDeleteTicket);
+            });
+            modalDelete.modal();
+        }
+
+        function errorDeleteTicket() {
+            $('.flashmessage').removeClass('in');
+            $('#ticket_delete_error').addClass('in');
+            $('#modalDelete').modal('hide');
+        }
+    </script>
 {% endblock %}

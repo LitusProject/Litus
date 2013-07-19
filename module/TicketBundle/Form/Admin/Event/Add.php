@@ -120,7 +120,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _createEventsArray()
     {
         $events = $this->_entityManager
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
         $eventsArray = array(

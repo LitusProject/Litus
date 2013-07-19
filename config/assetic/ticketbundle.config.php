@@ -45,6 +45,8 @@ return array(
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@ticket_css',
         ),
         'ticket_sale_ticket' => array(

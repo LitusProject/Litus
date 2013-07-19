@@ -14,7 +14,7 @@
 
 namespace TicketBundle\Entity;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -63,9 +63,9 @@ class Ticket
     private $status;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person The person how bought/reserved the ticket
+     * @var \CommonBundle\Entity\User\Person The person how bought/reserved the ticket
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -101,7 +101,7 @@ class Ticket
     /**
      * @param \TicketBundle\Entity\Event $event
      * @param string $status
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @param \DateTime $bookDate
      * @param \DateTime $soldDate
      * @param integer $number
@@ -169,6 +169,7 @@ class Ticket
             throw new \InvalidArgumentException('The TicketStatus is not valid.');
 
         if ($status == 'empty') {
+            $this->person = null;
             $this->bookDate = null;
             $this->soldDate = null;
         } elseif ($status == 'sold') {
@@ -183,7 +184,7 @@ class Ticket
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {
@@ -191,7 +192,7 @@ class Ticket
     }
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\User\Person $person
      * @return \TicketBundle\Entity\Ticket
      */
     public function setPerson(Person $person = null)
