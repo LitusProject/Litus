@@ -200,7 +200,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         $members = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-            ->findByUnit($unit);
+            ->findBy(array('unit' => $unit, 'academicYear' => $this->getCurrentAcademicYear());
 
         return new ViewModel(
             array(
