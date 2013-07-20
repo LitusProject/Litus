@@ -228,7 +228,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 if (isset($formData['organization'])) {
                     $organization = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['unit']);
+                        ->findOneById($formData['organization']);
                 } else {
                     $organization = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Organization')

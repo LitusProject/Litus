@@ -85,7 +85,7 @@ class Unit
     /**
      * @var boolean Whether or not this unit is displayed on the site
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
     private $displayed;
 
@@ -172,7 +172,7 @@ class Unit
      * @param \CommonBundle\Entity\General\Organization\Unit $unit
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
-    public function setParent(Unit $parent)
+    public function setParent(Unit $parent = null)
     {
         $this->parent = $parent;
         return $this;
