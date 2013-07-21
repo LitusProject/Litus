@@ -136,7 +136,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($saleArticle);
 
                 if (isset($formData['bookable']))
-                    $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle);
+                    $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
 
                 $this->getEntityManager()->flush();
 
