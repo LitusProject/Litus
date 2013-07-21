@@ -32,6 +32,11 @@ use CommonBundle\Entity\General\AcademicYear,
 abstract class Article
 {
     /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager;
+
+    /**
      * @var integer The ID of this article
      *
      * @ORM\Id
@@ -491,7 +496,7 @@ abstract class Article
     {
         if (null == $this->_entityManager)
             return null;
-        
+
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($this);
