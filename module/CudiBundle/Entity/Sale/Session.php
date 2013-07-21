@@ -213,7 +213,7 @@ class Session
     public function getTheoreticalRevenue()
     {
         return $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sale\Session')
             ->getTheoreticalRevenue($this);
     }
 
