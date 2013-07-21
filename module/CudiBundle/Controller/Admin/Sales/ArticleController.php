@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Sales;
+namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
@@ -135,8 +135,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->persist($saleArticle);
 
-                if ($formData['bookable'])
-                    $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle()));
+                if (isset($formData['bookable']))
+                    $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle);
 
                 $this->getEntityManager()->flush();
 

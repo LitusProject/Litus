@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Sales\Session;
+namespace CudiBundle\Controller\Admin\Sale\Session;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,

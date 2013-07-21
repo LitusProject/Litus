@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Sales;
+namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
