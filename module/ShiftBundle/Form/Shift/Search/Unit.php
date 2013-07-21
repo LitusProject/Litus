@@ -56,7 +56,7 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $units = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findAllActive();
+            ->findAllActiveAndDisplayed();
 
         $unitsArray = array(
             '' => ''

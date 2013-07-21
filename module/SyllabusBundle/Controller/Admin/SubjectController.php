@@ -74,7 +74,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $academicYears = $this->getEntityManager()

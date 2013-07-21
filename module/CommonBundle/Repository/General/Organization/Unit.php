@@ -17,4 +17,10 @@ class Unit extends EntityRepository
         return $this->_em->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findBy(array('active' => true), array('name' => 'ASC'));
     }
+
+    public function findAllActiveAndDisplayed()
+    {
+        return $this->_em->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findBy(array('displayed' => true, 'active' => true), array('name' => 'ASC'));
+    }
 }
