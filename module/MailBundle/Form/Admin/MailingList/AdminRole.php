@@ -64,7 +64,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
     {
         $roles = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Acl\Role')
-            ->findAll();
+            ->findBy(array(), array('name' => 'ASC'));
 
         $rolesArray = array();
         foreach ($roles as $role) {
@@ -73,9 +73,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (empty($rolesArray))
-            throw new \RuntimeException('There needs to be at least one role before you can add a page');
-
-        asort($rolesArray);
+            throw new \RuntimeException('There needs to be at least one role before you can map a role');
 
         return $rolesArray;
     }

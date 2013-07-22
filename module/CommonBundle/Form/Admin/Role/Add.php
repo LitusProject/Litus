@@ -78,15 +78,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $roles = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Acl\Role')
-            ->findAll();
+            ->findBy(array(), array('name' => 'ASC'));
 
         $parents = array();
         foreach ($roles as $role) {
             if ($role->getName() != $exclude)
                 $parents[$role->getName()] = $role->getName();
         }
-
-        asort($parents);
 
         return $parents;
     }

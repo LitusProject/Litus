@@ -94,12 +94,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
+        if (empty($organizations))
+            throw new \RuntimeException('There needs to be at least one organization before you can add a unit');
+
         $organizationsArray = array();
         foreach ($organizations as $organization)
-            $organizationsArray[$organization->getName()] = $organization->getName();
-
-        if (empty($organizationsArray))
-            throw new \RuntimeException('There needs to be at least one organization before you can add a unit');
+            $organizationsArray[$organization->getId()] = $organization->getName();
 
         return $organizationsArray;
     }

@@ -119,7 +119,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $categories = $this->_entityManager
             ->getRepository('PageBundle\Entity\Category')
-            ->findAll();
+            ->findBy(array(), array('name' => 'ASC'));
 
         if (empty($categories))
             throw new \RuntimeException('There needs to be at least one category before you can add a page');
@@ -128,8 +128,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         foreach($categories as $category)
             $categoryOptions[$category->getId()] = $category->getName();
 
-        asort($categoryOptions);
-
         return $categoryOptions;
     }
 
@@ -137,7 +135,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $pages = $this->_entityManager
             ->getRepository('PageBundle\Entity\Node\Page')
-            ->findByCategory($category);
+            ->findByCategory($category, array('title' => 'ASC'));
 
         $pageOptions = array(
             '' => ''
@@ -147,7 +145,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 $pageOptions[$page->getId()] = $page->getTitle();
         }
 
-        asort($pageOptions);
         return $pageOptions;
     }
 
@@ -155,7 +152,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $roles = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Acl\Role')
-            ->findAll();
+            ->findBy(array(), array('name' => 'ASC'));
 
         $rolesArray = array();
         foreach ($roles as $role) {
@@ -165,8 +162,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         if (empty($rolesArray))
             throw new \RuntimeException('There needs to be at least one role before you can add a page');
-
-        asort($rolesArray);
 
         return $rolesArray;
     }

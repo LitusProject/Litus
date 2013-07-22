@@ -55,8 +55,8 @@ class Edit extends Add
     {
         $data = array(
             'name' => $unit->getName(),
-            'organization' => $unit->getOrganization(),
-            'parent' => $unit->getParent(),
+            'organization' => $unit->getOrganization()->getId(),
+            'parent' => $unit->getParent()->getId(),
             'roles' => $this->_createRolesPopulationArray($unit->getRoles()),
             'coordinatorRoles' => $this->_createRolesPopulationArray($unit->getCoordinatorRoles()),
             'displayed' => $unit->getDisplayed()
