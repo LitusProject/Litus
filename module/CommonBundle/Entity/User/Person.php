@@ -291,7 +291,7 @@ abstract class Person
     public function getFlattenedRoles()
     {
         return $this->_flattenRolesInheritance(
-            $this->roles->toArray()
+            $this->getRoles()
         );
     }
 
