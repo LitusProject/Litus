@@ -15,6 +15,7 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Organization\UnitMap,
     CommonBundle\Form\Admin\Unit\Add as AddForm,
@@ -45,7 +46,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(false),
             )
         );
     }
@@ -279,7 +280,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The key was successfully edited!'
+                        'The unit was successfully edited!'
                     )
                 );
 
@@ -336,6 +337,44 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 'result' => (object) array('status' => 'success'),
             )
         );
+    }
+
+    public function pruneAction()
+    {
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAll();
+
+        foreach ($units as $unit) {
+            foreach ($unit->getRoles() as $role) {
+                if ($this->_findRoleWithParent($role, $unit->getParent()))
+                    $unit->removeRole($role);
+            }
+
+            foreach ($unit->getCoordinatorRoles() as $coordinatorRole) {
+                if ($this->_findCoordinatorRoleWithParent($coordinatorRole, $unit->getParent()))
+                    $unit->removeCoordinatorRole($coordinatorRole);
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Succes',
+                'The tree was succesfully pruned!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'common_admin_unit',
+            array(
+                'action' => 'manage'
+            )
+        );
+
+        return new ViewModel();
     }
 
     private function _getUnit()
@@ -430,5 +469,27 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $member;
+    }
+
+    private function _findRoleWithParent(Role $role, Unit $parent = null)
+    {
+        if (null === $parent)
+            return false;
+
+        if (in_array($role, $parent->getRoles(false)))
+            return true;
+
+        return $this->_findRoleWithParent($role, $parent->getParent());
+    }
+
+    private function _findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
+    {
+        if (null === $parent)
+            return false;
+
+        if (in_array($role, $parent->getCoordinatorRoles(false)))
+            return true;
+
+        return $this->_findCoordinatorRoleWithParent($role, $parent->getParent());
     }
 }

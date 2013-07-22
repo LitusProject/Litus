@@ -15,7 +15,7 @@
 namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Entity\Acl\Action as AclAction,
+    CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\Acl\Resource,
     CommonBundle\Entity\General\Config,
@@ -182,7 +182,7 @@ abstract class InstallController extends AdminController
                         ->findOneBy(array('name' => $action, 'resource' => $route));
 
                     if (null === $repositoryCheck) {
-                        $actionResource = new AclAction(
+                        $actionResource = new Action(
                             $action,
                             $routeResource
                         );

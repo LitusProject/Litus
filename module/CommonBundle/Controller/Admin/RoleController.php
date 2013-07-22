@@ -18,7 +18,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Role\Add as AddForm,
     CommonBundle\Form\Admin\Role\Edit as EditForm,
-    CommonBundle\Entity\Acl\Action as AclAction,
+    CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\Acl\Resource,
     Zend\View\Model\ViewModel;
@@ -255,9 +255,10 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             ->findAll();
 
         foreach ($roles as $role) {
-            foreach ($role->getActions() as $action)
+            foreach ($role->getActions() as $action) {
                 if ($this->_findActionWithParents($action, $role->getParents()))
                     $role->removeAction($action);
+            }
         }
 
         $this->getEntityManager()->flush();
@@ -388,13 +389,14 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         }
     }
 
-    private function _findActionWithParents(AclAction $action, array $parents)
+    private function _findActionWithParents(Action $action, array $parents)
     {
         foreach ($parents as $parent) {
             if (in_array($action, $parent->getActions()))
                 return true;
 
-            return $this->_findActionWithParents($action, $parent->getParents());
+            if ($this->_findActionWithParents($action, $parent->getParents()))
+                return true;
         }
 
         return false;

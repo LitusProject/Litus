@@ -14,7 +14,8 @@
 
 namespace CommonBundle\Entity\General\Organization;
 
-use CommonBundle\Entity\General\Organization,
+use CommonBundle\Entity\Acl\Role,
+    CommonBundle\Entity\General\Organization,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -112,8 +113,8 @@ class Unit
         $this->displayed = $displayed;
         $this->active = true;
 
-        $this->coordinatorRoles = new ArrayCollection($coordinatorRoles);
         $this->roles = new ArrayCollection($roles);
+        $this->coordinatorRoles = new ArrayCollection($coordinatorRoles);
     }
 
     /**
@@ -179,30 +180,13 @@ class Unit
     }
 
     /**
+     * @param boolean $mergeParentRoles
      * @return array
      */
-    public function getCoordinatorRoles()
-    {
-        return $this->coordinatorRoles->toArray();
-    }
-
-    /**
-     * @param array $coordinatorRoles
-     * @return \CommonBundle\Entity\General\Organization\Unit
-     */
-    public function setCoordinatorRoles(array $coordinatorRoles)
-    {
-        $this->coordinatorRoles = new ArrayCollection($coordinatorRoles);
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRoles()
+    public function getRoles($mergeParentRoles = true)
     {
         return array_merge(
-            null !== $this->getParent()
+            $mergeParentRoles && null !== $this->getParent()
                 ? $this->getParent()->getRoles()
                 : array(),
             $this->roles->toArray()
@@ -216,6 +200,48 @@ class Unit
     public function setRoles(array $roles)
     {
         $this->roles = new ArrayCollection($roles);
+        return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\Acl\Role $role
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function removeRole(Role $role) {
+        $this->roles->removeElement($role);
+        return $this;
+    }
+
+    /**
+     * @param boolean $mergeParentRoles
+     * @return array
+     */
+    public function getCoordinatorRoles($mergeParentRoles = true)
+    {
+        return array_merge(
+            $mergeParentRoles && null !== $this->getParent()
+                ? $this->getParent()->getCoordinatorRoles()
+                : array(),
+            $this->coordinatorRoles->toArray()
+        );
+    }
+
+    /**
+     * @param array $coordinatorRoles
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function setCoordinatorRoles(array $coordinatorRoles)
+    {
+        $this->coordinatorRoles = new ArrayCollection($coordinatorRoles);
+        return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\Acl\Role $coordinatorRole
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function removeCoordinatorRole(Role $coordinatorRole) {
+        $this->coordinatorRoles->removeElement($coordinatorRole);
         return $this;
     }
 
