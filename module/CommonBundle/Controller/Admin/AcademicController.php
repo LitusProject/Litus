@@ -117,13 +117,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     );
                 }
 
-                $academic->addUniversityStatus(
-                    new UniversityStatus(
-                        $academic,
-                        $formData['university_status'],
-                        $this->getCurrentAcademicYear()
-                    )
-                );
+                if ('' != $formData['university_status']) {
+                    $academic->addUniversityStatus(
+                        new UniversityStatus(
+                            $academic,
+                            $formData['university_status'],
+                            $this->getCurrentAcademicYear()
+                        )
+                    );
+                }
 
                 $academic->activate(
                     $this->getEntityManager(),
@@ -233,16 +235,18 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
 
-                if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
-                    $status->setStatus($formData['university_status']);
-                } else {
-                    $academic->addUniversityStatus(
-                        new UniversityStatus(
-                            $academic,
-                            $formData['university_status'],
-                            $this->getCurrentAcademicYear()
-                        )
-                    );
+                if ('' != $formData['university_status']) {
+                    if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
+                        $status->setStatus($formData['university_status']);
+                    } else {
+                        $academic->addUniversityStatus(
+                            new UniversityStatus(
+                                $academic,
+                                $formData['university_status'],
+                                $this->getCurrentAcademicYear()
+                            )
+                        );
+                    }
                 }
 
                 if ($formData['primary_address_address_city'] != 'other') {

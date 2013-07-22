@@ -51,14 +51,12 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic');
                 if ($formData['person_id'] == '') {
-                    // No autocompletion used, we assume the username was entered
                     $person = $repository->findOneByUsername($formData['person_name']);
                 } else {
                     $person = $repository->findOneById($formData['person_id']);
                 }
 
                 if ($formData['responsible']) {
-
                     if (!$shift->canHaveAsResponsible($this->getEntityManager(), $person)) {
                         $this->_invalidAdd($shift);
                         return new ViewModel();
@@ -69,7 +67,6 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                     $this->getEntityManager()->persist($responsible);
                     $this->getEntityManager()->flush();
                 } else {
-
                     if (!$shift->canHaveAsVolunteer($this->getEntityManager(), $person)) {
                         $this->_invalidAdd($shift);
                         return new ViewModel();

@@ -78,7 +78,15 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         $field = new Select('university_status');
         $field->setLabel('Status')
             ->setRequired()
-            ->setAttribute('options', UniversityStatus::$possibleStatuses);
+            ->setAttribute(
+                'options',
+                array_merge(
+                    array(
+                        '' => ''
+                    ),
+                    UniversityStatus::$possibleStatuses
+                )
+            );
         $collection->add($field);
 
         $field = new Submit('submit');
