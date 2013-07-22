@@ -14,8 +14,9 @@
 
 namespace MailBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+use CommonBundle\Entity\User\Person\Academic,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a list.
@@ -55,36 +56,59 @@ abstract class MailingList
     private $admins;
 
     /**
+     * @var array The admins of this list
+     *
+     * @ORM\OneToMany(targetEntity="MailBundle\Entity\MailingList\AdminRoleMap", mappedBy="list", cascade={"remove"})
+     */
+    private $adminRoles;
+
+    public function __construct()
+    {
+        $this->entries = new ArrayCollection();
+        $this->admins = new ArrayCollection();
+        $this->adminRoles = new ArrayCollection();
+    }
+
+    /**
      * @return int
      */
     public function getId() {
         return $this->id;
     }
 
-    public abstract function getName();
+    /**
+     * @return string
+     */
+    abstract public function getName();
 
-    public function canBeEditedBy($person, $entityManager, $editAdmin)
+    /**
+     * This method checks whether the list can be edited by the given academic.
+     *
+     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic that should be checked
+     * @param boolean $editAdmin Whether or not to check for permission to edit the admins of the list
+     * @return boolean
+     */
+    public function canBeEditedBy(Academic $academic, $editAdmin)
     {
-        foreach ($person->getFlattenedRoles() as $role) {
+        foreach ($academic->getFlattenedRoles() as $role) {
             if ($role->getName() == 'editor')
                 return true;
+
+            if ($this->adminRoles->contains($role)) {
+                if ($editAdmin && !$adminMap->canEditAdmin())
+                    return false;
+
+                return true;
+            }
         }
 
-        $adminMap = $entityManager
-            ->getRepository('MailBundle\Entity\MailingList\AdminMap')
-            ->findOneBy(
-                array(
-                    'list' => $this,
-                    'academic' => $person,
-                )
-            );
+        foreach ($this->admins as $admin) {
+            if ($admin->getAcademic() == $academic) {
+                if ($editAdmin && !$admin->canEditAdmin())
+                    return false;
 
-        if (!$adminMap)
-            return false;
-
-        if ($editAdmin && !$adminMap->isEditAdmin())
-            return false;
-
-        return true;
+                return true;
+            }
+        }
     }
 }

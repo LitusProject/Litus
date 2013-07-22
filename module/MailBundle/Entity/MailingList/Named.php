@@ -39,6 +39,7 @@ class Named extends \MailBundle\Entity\MailingList
      */
     public function __construct($name)
     {
+        parent::__construct();
         $this->setName($name);
     }
 

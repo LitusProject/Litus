@@ -19,12 +19,20 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Entity\Entry\External as ExternalEntry,
     MailBundle\Entity\MailingList\Named as NamedList,
     MailBundle\Entity\MailingList\AdminMap as ListAdmin,
+    MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
     MailBundle\Form\Admin\MailingList\Admin as AdminForm,
+    MailBundle\Form\Admin\MailingList\AdminRole as AdminRoleForm,
     MailBundle\Form\Admin\MailingList\Entry\Academic as AcademicForm,
     MailBundle\Form\Admin\MailingList\Entry\External as ExternalForm,
     Zend\View\Model\ViewModel;
 
+/**
+ * MailingListController
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
 class MailingListController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
@@ -59,7 +67,6 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         return new ViewModel(
             array(
                 'person' => $person,
-                'entityManager' => $this->getEntityManager(),
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
@@ -253,16 +260,16 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if (!$this->_checkAccess($list, true))
             return new ViewModel();
 
-        $form = new AdminForm($this->getEntityManager());
+        $adminForm = new AdminForm($this->getEntityManager());
+        $adminRoleForm = new AdminRoleForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $adminForm->setData($formData);
+            $adminRoleForm->setData($formData);
 
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $entry = null;
+            if ($adminForm->isValid()) {
+                $formData = $adminForm->getFormData($formData);
 
                 if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                     $academic = $this->getEntityManager()
@@ -288,7 +295,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                         new FlashMessage(
                             FlashMessage::ERROR,
                             'ERROR',
-                            'This member already has admin rights to this list!'
+                            'This member already has admin rights on this list!'
                         )
                     );
                 } else {
@@ -316,17 +323,73 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
 
                 return new ViewModel();
             }
+
+            if ($adminRoleForm->isValid()) {
+                $formData = $adminRoleForm->getFormData($formData);
+
+                $role = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName($formData['role']);
+
+                $repositoryCheck = $this->getEntityManager()
+                    ->getRepository('MailBundle\Entity\MailingList\AdminRoleMap')
+                    ->findOneBy(
+                        array(
+                            'list' => $list,
+                            'role' => $role
+                        )
+                    );
+
+                if (null !== $repositoryCheck) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'ERROR',
+                            'This role already has admin rights on this list!'
+                        )
+                    );
+                } else {
+                    $adminRole = new ListAdminRole($list, $role, $formData['edit_admin']);
+
+                    $this->getEntityManager()->persist($adminRole);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCES',
+                            'The admin role was succesfully added!'
+                        )
+                    );
+                }
+
+                $this->redirect()->toRoute(
+                    'mail_admin_list',
+                    array(
+                        'action' => 'admins',
+                        'id' => $list->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
         }
 
         $admins = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList\AdminMap')
             ->findByList($list);
 
+        $adminRoles = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\MailingList\AdminRoleMap')
+            ->findByList($list);
+
         return new ViewModel(
             array(
                 'list' => $list,
-                'form' => $form,
+                'adminForm' => $adminForm,
+                'adminRoleForm' => $adminRoleForm,
                 'admins' => $admins,
+                'adminRoles' => $adminRoles,
             )
         );
     }
@@ -382,6 +445,26 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
 
         $this->getEntityManager()->remove($admin);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function deleteAdminRoleAction()
+    {
+        $this->initAjax();
+
+        if (!($adminRole = $this->_getAdminRole()))
+            return new ViewModel();
+
+        if (!$this->_checkAccess($adminRole->getList(), true))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($adminRole);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -532,10 +615,56 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         return $admin;
     }
 
+    private function _getAdminRole()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the admin role!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'mail_admin_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $adminRole = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\MailingList\AdminRoleMap')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $adminRole) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No admin role with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'mail_admin_list',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $adminRole;
+    }
+
     private function _checkAccess($list, $adminEdit) {
         $person = $this->getAuthentication()->getPersonObject();
-        if (!$list->canBeEditedBy($person, $this->getEntityManager(), $adminEdit)) {
-
+        if (!$list->canBeEditedBy($person, $adminEdit)) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,

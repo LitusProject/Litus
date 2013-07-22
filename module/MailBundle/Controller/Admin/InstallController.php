@@ -93,7 +93,7 @@ Jorn Hendrickx',
                         'groups', 'send'
                     ),
                     'mail_admin_list' => array(
-                        'manage', 'add', 'entries', 'admins', 'delete', 'deleteEntry', 'deleteAdmin'
+                        'manage', 'add', 'entries', 'admins', 'delete', 'deleteAdmin', 'deleteAdminRole', 'deleteEntry'
                     ),
                     'mail_admin_message' => array(
                         'manage', 'edit', 'delete'

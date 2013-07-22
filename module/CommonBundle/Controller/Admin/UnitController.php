@@ -161,7 +161,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 $repositoryCheck = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                    ->findOneByUnitAndAcademicAndAcademicYear($unit, $academic, $this->getCurrentAcademicYear());
+                    ->findOneBy(
+                        array(
+                            'unit' => $unit,
+                            'academic' => $academic,
+                            'academicYear' => $this->getCurrentAcademicYear()
+                        )
+                    );
 
                 if (null !== $repositoryCheck) {
                     $this->flashMessenger()->addMessage(

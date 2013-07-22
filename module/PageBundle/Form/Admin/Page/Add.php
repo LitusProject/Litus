@@ -163,6 +163,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 $rolesArray[$role->getName()] = $role->getName();
         }
 
+        if (empty($rolesArray))
+            throw new \RuntimeException('There needs to be at least one role before you can add a page');
+
         asort($rolesArray);
 
         return $rolesArray;

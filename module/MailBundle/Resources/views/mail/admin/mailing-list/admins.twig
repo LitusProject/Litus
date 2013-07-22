@@ -18,6 +18,19 @@
         </div>
     </div>
 
+    <div class="flashmessage success_message full_width adminRole_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The admin role was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width adminRole_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the admin role.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <h1>List</h1>
         <p>Name: <b>{{ list.getName() }}</b></p>
@@ -25,7 +38,7 @@
         <h1>Admins</h1>
 
         {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
+        {{ forms.renderForm(adminForm) }}
 
         <br style="clear:both">
 
@@ -36,12 +49,38 @@
                 <th width="90px">Actions</th>
             </tr>
             {% for admin in admins %}
-                <tr class="item item-{{ admin.getId() }}">
+                <tr class="item-admin item-admin-{{ admin.getId() }}">
                     <td>{{ admin.getAcademic().getFullName() }}</td>
-                    <td>{% if admin.isEditAdmin() %}&times;{% endif %}</td>
+                    <td>{% if admin.canEditAdmin() %}&times;{% endif %}</td>
                     <td>
                         {% if hasAccess('mail_admin_list', 'deleteAdmin') %}
                             <a href="#" data-id="{{ admin.getId() }}" data-name="{{ admin.getAcademic().getFullName() }}" class="delete">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h1>Admin Roles</h1>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(adminRoleForm) }}
+
+        <br style="clear:both">
+
+        <table class="full_width" style="margin-top: 5px;">
+            <tr>
+                <th>Name</th>
+                <th>Can Edit Admins</th>
+                <th width="90px">Actions</th>
+            </tr>
+            {% for adminRole in adminRoles %}
+                <tr class="item-adminRole item-adminRole-{{ adminRole.getId() }}">
+                    <td>{{ adminRole.getRole().getName() }}</td>
+                    <td>{% if adminRole.canEditAdmin() %}&times;{% endif %}</td>
+                    <td>
+                        {% if hasAccess('mail_admin_list', 'deleteAdmin') %}
+                            <a href="#" data-id="{{ adminRole.getId() }}" data-name="{{ adminRole.getRole().getName() }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -56,7 +95,27 @@
         </div>
         <div class="modal-body">
             <p>
-                You are about to delete the following admin: <b class="adminName"></b>!
+                You are about to delete the following admin: <b class="name"></b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="removeAdminRole">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Admin Role
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following admin role: <b class="name"></b>!
                 Please note that this operation cannot be undone!
             </p>
             <p>
@@ -85,34 +144,63 @@
                     $('#personId').val('');
                 }
             });
-            $('.item .delete').click(openModal);
+            $('.item-admin .delete').click(openAdminModal);
+            $('.item-adminRole .delete').click(openAdminRoleModal);
         });
 
-        function openModal(e) {
+        function openAdminModal(e) {
             var $this = $(this);
 
             e.preventDefault();
             var removeAdmin = $('#removeAdmin');
-            removeAdmin.find('.adminName').html($(this).data('name'));
+            removeAdmin.find('.name').html($(this).data('name'));
             var id = $this.data('id');
             removeAdmin.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('mail_admin_list', {"action": "deleteAdmin"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.admin_removed_success').removeClass('hide');
-                        $('.item-' + id).remove();
+                        $('.item-admin-' + id).remove();
                         removeAdmin.modal('hide');
                     } else {
-                        errorRemove();
+                        errorAdminRemove();
                     }
-                }, 'json').error(errorRemove);
+                }, 'json').error(errorAdminRemove);
             });
             removeAdmin.modal();
         }
 
-        function errorRemove() {
+        function errorAdminRemove() {
             $('.flashmessage').addClass('hide');
             $('.admin_removed_error').removeClass('hide');
+            $('#removeAdmin').modal('hide');
+        }
+
+        function openAdminRoleModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeAdminRole = $('#removeAdminRole');
+            removeAdminRole.find('.name').html($(this).data('name'));
+            var id = $this.data('id');
+            removeAdminRole.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('mail_admin_list', {"action": "deleteAdminRole"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.adminRole_removed_success').removeClass('hide');
+                        $('.item-adminRole-' + id).remove();
+                        removeAdminRole.modal('hide');
+                    } else {
+                        errorAdminRoleRemove();
+                    }
+                }, 'json').error(errorAdminRoleRemove);
+            });
+            removeAdminRole.modal();
+        }
+
+        function errorAdminRoleRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.adminRole_removed_error').removeClass('hide');
             $('#removeAdmin').modal('hide');
         }
     </script>

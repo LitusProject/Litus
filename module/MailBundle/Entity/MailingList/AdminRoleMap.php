@@ -14,7 +14,7 @@
 
 namespace MailBundle\Entity\MailingList;
 
-use CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Entity\Acl\Role,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList;
@@ -22,10 +22,10 @@ use CommonBundle\Entity\User\Person\Academic,
 /**
  * This entity maps admins to mailinglists.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\AdminMap")
- * @ORM\Table(name="mail.lists_admins")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\AdminRoleMap")
+ * @ORM\Table(name="mail.lists_admin_roles")
  */
-class AdminMap
+class AdminRoleMap
 {
     /**
      * @var integer The ID of the mapping
@@ -45,15 +45,15 @@ class AdminMap
     private $list;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The academic of the mapping
+     * @var \CommonBundle\Entity\Acl\Role The role of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
-     * @ORM\JoinColumn(name="academic", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @ORM\JoinColumn(name="role", referencedColumnName="name")
      */
-    private $academic;
+    private $role;
 
     /**
-     * @var boolean The flag whether the academic is allowed to edit the list of admins of the list too.
+     * @var boolean The flag whether the members of the role are allowed to edit the list of admins of the list too.
      *
      * @ORM\Column(name="edit_admin", type="boolean")
      */
@@ -61,13 +61,13 @@ class AdminMap
 
     /**
      * @param \MailBundle\Entity\MailingList The list of the mapping
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic of the mapping
-     * @param boolean $editAdmin The flag whether the academic is allowed to edit the list of admins of the list too.
+     * @param \CommonBundle\Entity\Acl\Role $role The role of the mapping
+     * @param boolean $editAdmin The flag whether the members of the role are allowed to edit the list of admins of the list too.
      */
-    public function __construct(MailingList $list, Academic $academic, $editAdmin)
+    public function __construct(MailingList $list, Role $role, $editAdmin)
     {
         $this->list = $list;
-        $this->academic = $academic;
+        $this->role = $role;
         $this->editAdmin = $editAdmin;
     }
 
@@ -85,8 +85,8 @@ class AdminMap
     /**
      * @return \CommonBundle\Entity\User\Person\Academic
      */
-    public function getAcademic() {
-        return $this->academic;
+    public function getRole() {
+        return $this->role;
     }
 
     /**
