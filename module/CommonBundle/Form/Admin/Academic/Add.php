@@ -71,13 +71,8 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         $collection->setLabel('University');
         $this->add($collection);
 
-        $field = new Text('university_identification');
-        $field->setLabel('Identification');
-        $collection->add($field);
-
         $field = new Select('university_status');
         $field->setLabel('Status')
-            ->setRequired()
             ->setAttribute(
                 'options',
                 array_merge(
@@ -87,6 +82,10 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                     UniversityStatus::$possibleStatuses
                 )
             );
+        $collection->add($field);
+
+        $field = new Text('university_identification');
+        $field->setLabel('Identification');
         $collection->add($field);
 
         $field = new Submit('submit');
@@ -134,18 +133,6 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                         array(
                             'name' => 'alnum'
                         ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'university_status',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
                     ),
                 )
             )

@@ -95,18 +95,25 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $collection->setLabel('University');
         $this->add($collection);
 
-        $field = new Text('university_email');
-        $field->setLabel('University E-mail');
+        $field = new Select('university_status');
+        $field->setLabel('Status')
+            ->setAttribute(
+                'options',
+                array_merge(
+                    array(
+                        '' => ''
+                    ),
+                    UniversityStatus::$possibleStatuses
+                )
+            );
         $collection->add($field);
 
         $field = new Text('university_identification');
         $field->setLabel('Identification');
         $collection->add($field);
 
-        $field = new Select('university_status');
-        $field->setLabel('Status')
-            ->setRequired()
-            ->setAttribute('options', UniversityStatus::$possibleStatuses);
+        $field = new Text('university_email');
+        $field->setLabel('University E-mail');
         $collection->add($field);
 
         $field = new Submit('submit');
@@ -256,18 +263,6 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         array(
                             'name' => 'alnum'
                         ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'university_status',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
                     ),
                 )
             )
