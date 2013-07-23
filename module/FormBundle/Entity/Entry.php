@@ -26,7 +26,7 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Entry")
- * @ORM\Table(name="forms.fieldentries")
+ * @ORM\Table(name="forms.entries")
  */
 class Entry
 {
