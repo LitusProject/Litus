@@ -94,11 +94,13 @@ abstract class MailingList
             if ($role->getName() == 'editor')
                 return true;
 
-            if ($this->adminRoles->contains($role)) {
-                if ($editAdmin && !$adminMap->canEditAdmin())
-                    return false;
+            foreach ($this->adminRoles as $adminRole) {
+                if ($adminRole->getRole() == $role) {
+                    if ($editAdmin && !$adminRole->canEditAdmin())
+                        return false;
 
-                return true;
+                    return true;
+                }
             }
         }
 
