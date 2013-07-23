@@ -27,20 +27,6 @@ return array(
                     ),
                 ),
             ),
-            'secretary_admin_mail_promotion' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/secretary/promotion[/:action[/:id]][/]',
-                    'constraints' => array(
-                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'           => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'secretary_admin_mail_promotion',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
             'secretary_admin_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -112,7 +98,6 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'secretary_install'              => 'SecretaryBundle\Controller\Admin\InstallController',
-            'secretary_admin_mail_promotion' => 'SecretaryBundle\Controller\Admin\MailingList\PromotionController',
             'secretary_admin_registration'   => 'SecretaryBundle\Controller\Admin\RegistrationController',
 
             'secretary_registration'         => 'SecretaryBundle\Controller\RegistrationController',

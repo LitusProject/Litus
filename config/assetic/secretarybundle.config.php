@@ -24,14 +24,6 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'secretary_admin_mail_promotion' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_modal',
-            '@common_remote_typeahead',
-        ),
         'secretary_registration' => array(
             '@common_jquery',
             '@bootstrap_css',
