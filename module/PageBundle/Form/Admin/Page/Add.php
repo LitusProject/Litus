@@ -119,7 +119,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $categories = $this->_entityManager
             ->getRepository('PageBundle\Entity\Category')
-            ->findBy(array(), array('name' => 'ASC'));
+            ->findAll();
 
         if (empty($categories))
             throw new \RuntimeException('There needs to be at least one category before you can add a page');
@@ -128,6 +128,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         foreach($categories as $category)
             $categoryOptions[$category->getId()] = $category->getName();
 
+        asort($categoryOptions);
+
         return $categoryOptions;
     }
 
@@ -135,7 +137,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $pages = $this->_entityManager
             ->getRepository('PageBundle\Entity\Node\Page')
-            ->findByCategory($category, array('title' => 'ASC'));
+            ->findByCategory($category, array('name' => 'ASC'));
 
         $pageOptions = array(
             '' => ''
