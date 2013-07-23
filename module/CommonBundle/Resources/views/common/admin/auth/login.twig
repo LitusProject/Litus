@@ -12,7 +12,7 @@
             padding: 0;
             margin: 0;
             border: 0;
-            font-family: tahoma, arial;
+            font-family: Tahoma, Verdana, Segoe, sans-serif;
             font-size: 11px;
             color: #7f7c7c;
         }
@@ -22,15 +22,15 @@
         }
 
         #layout {
-            margin: 130px auto;
             width: 247px;
+            margin: 130px auto;
         }
 
         header {
             margin: 0 6px 5px 0;
+            text-align: right;
             font-weight: bold;
             color: #fff;
-            text-align: right;
         }
 
         span {
@@ -39,8 +39,7 @@
 
         section {
             padding: 12px;
-            height: 105px;
-            background: #eeeeee;
+            background: #eee;
             border: 5px solid #d7d4d4;
         }
 
@@ -79,8 +78,8 @@
 
         a.shibboleth {
             display: block;
-            text-align: center;
             width: 100%;
+            text-align: center;
             text-decoration: none;
         }
 
@@ -114,23 +113,25 @@
 <div id="layout">
     <header><span>Litus Admin</span>/Login</header>
 
-    <section>
+    <section id="login_section">
         <div id="form_container">
 			<a class="shibboleth" href="{{ shibbolethUrl }}">&rarr; {% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
-            <div class="divider"></div>
-            {% do form.prepare() %}
-            {% autoescape false %}
-                {{ form().openTag(form) }}
-                    {% for element in form.getElements() %}
-                        {% if element.getAttribute('type') == 'checkbox' %}
-                            {{ formlabel().openTag(element) }}{{ formElement(element) }} {{ translate(element.getLabel()) }}{{ formlabel().closeTag() }}
-                        {% else %}
-                            {{ formElement(element) }}
-                        {% endif %}
-                    {% endfor %}
-                {{ form().closeTag() }}
-            {% endautoescape %}
-            <span id="icon"></span>
+            <div id="login_form" style="display: none;">
+                <div class="divider"></div>
+                {% do form.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(form) }}
+                        {% for element in form.getElements() %}
+                            {% if element.getAttribute('type') == 'checkbox' %}
+                                {{ formlabel().openTag(element) }}{{ formElement(element) }} {{ translate(element.getLabel()) }}{{ formlabel().closeTag() }}
+                            {% else %}
+                                {{ formElement(element) }}
+                            {% endif %}
+                        {% endfor %}
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+                <span id="icon"></span>
+            </div>
         </div>
 
         <div id="error_container" style="display: none;">
@@ -164,7 +165,15 @@
         'json');
     }
 
+    function showLoginForm() {
+        $('#login_form').slideDown(500, function() {
+            $('#login_section').height('105px');
+        });
+    }
+
     $(document).ready(function () {
+        setTimeout('showLoginForm()', 5000);
+
         $('#password').keypress(function(e) {
             if (e.keyCode == 13) {
             	e.preventDefault();
