@@ -88,7 +88,7 @@ abstract class MailingList
      * @param boolean $editAdmin Whether or not to check for permission to edit the admins of the list
      * @return boolean
      */
-    public function canBeEditedBy(Academic $academic, $editAdmin)
+    public function canBeEditedBy(Academic $academic, $editAdmin = false)
     {
         foreach ($academic->getFlattenedRoles() as $role) {
             if ($role->getName() == 'editor')
