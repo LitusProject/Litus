@@ -57,8 +57,8 @@ class Edit extends Add
             'name' => $unit->getName(),
             'organization' => $unit->getOrganization()->getId(),
             'parent' => $unit->getParent()->getId(),
-            'roles' => $this->_createRolesPopulationArray($unit->getRoles()),
-            'coordinatorRoles' => $this->_createRolesPopulationArray($unit->getCoordinatorRoles()),
+            'roles' => $this->_createRolesPopulationArray($unit->getRoles(false)),
+            'coordinatorRoles' => $this->_createRolesPopulationArray($unit->getCoordinatorRoles(false)),
             'displayed' => $unit->getDisplayed()
         );
 

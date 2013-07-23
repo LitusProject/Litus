@@ -256,7 +256,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'expire'
                     ),
                     'common_admin_unit' => array(
-                        'add', 'delete', 'deleteMember', 'edit', 'manage', 'members'
+                        'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
                         'activate', 'edit', 'fileServer', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'

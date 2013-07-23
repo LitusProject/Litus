@@ -82,6 +82,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 if (isset($formData['roles'])) {
                     foreach ($formData['roles'] as $role) {
+                        if ('student' == $role) continue;
                         $roles[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName($role);
@@ -185,7 +186,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 if (isset($formData['roles'])) {
                     foreach ($formData['roles'] as $role) {
-                        if($role == 'student') continue;
+                        if ('student' == $role) continue;
                         $roles[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName($role);
