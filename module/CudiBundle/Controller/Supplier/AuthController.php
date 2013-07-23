@@ -52,7 +52,7 @@ class AuthController extends \CudiBundle\Component\Controller\SupplierController
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'ERROR',
+                            'Error',
                             'You could not be logged in!'
                         )
                     );

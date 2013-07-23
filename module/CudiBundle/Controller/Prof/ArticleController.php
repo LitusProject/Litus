@@ -441,7 +441,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the article!'
                 )
             );
@@ -465,7 +465,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No article with the given ID was found!'
                 )
             );
@@ -493,7 +493,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the subject!'
                 )
             );
@@ -521,7 +521,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No subject with the given ID was found!'
                 )
             );

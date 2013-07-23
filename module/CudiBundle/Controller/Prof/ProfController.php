@@ -148,7 +148,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the subject!'
                 )
             );
@@ -177,7 +177,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No subject with the given ID was found!'
                 )
             );
@@ -202,7 +202,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the mapping!'
                 )
             );
@@ -226,7 +226,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No mapping with the given ID was found!'
                 )
             );

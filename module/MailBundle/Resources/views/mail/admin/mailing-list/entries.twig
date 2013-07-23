@@ -30,7 +30,7 @@
 
         <br style="clear:both">
 
-        <table class="full_width" style="margin-top: 5px;">
+        <table class="manage">
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -71,6 +71,22 @@
             </div>
         </div>
     </div>
+
+    {% if hasAccess('mail_admin_list', 'deleteAllEntries') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Delete All Entries</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to delete all entries!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('mail_admin_list', {"action": "deleteAllEntries", "id": list.getId() }) }}">&rarr; Delete All Entries</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}

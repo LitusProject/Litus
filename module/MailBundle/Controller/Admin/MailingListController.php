@@ -114,7 +114,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        'SUCCES',
+                        'Success',
                         'The list was succesfully created!'
                     )
                 );
@@ -177,7 +177,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                         $this->flashMessenger()->addMessage(
                             new FlashMessage(
                                 FlashMessage::ERROR,
-                                'SUCCES',
+                                'Success',
                                 'This external address already has been subscribed to this list!'
                             )
                         );
@@ -213,7 +213,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                         $this->flashMessenger()->addMessage(
                             new FlashMessage(
                                 FlashMessage::ERROR,
-                                'SUCCES',
+                                'Success',
                                 'This member already has been subscribed to this list!'
                             )
                         );
@@ -229,7 +229,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
-                            'SUCCES',
+                            'Success',
                             'The entry was succesfully created!'
                         )
                     );
@@ -303,7 +303,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'ERROR',
+                            'Error',
                             'This member already has admin rights on this list!'
                         )
                     );
@@ -316,7 +316,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
-                            'SUCCES',
+                            'Success',
                             'The admin was succesfully added!'
                         )
                     );
@@ -353,7 +353,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'ERROR',
+                            'Error',
                             'This role already has admin rights on this list!'
                         )
                     );
@@ -366,7 +366,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
-                            'SUCCES',
+                            'Success',
                             'The admin role was succesfully added!'
                         )
                     );
@@ -441,6 +441,39 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 'result' => (object) array('status' => 'success'),
             )
         );
+    }
+
+    public function deleteAllEntriesAction()
+    {
+        if (!($list = $this->_getList()))
+            return new ViewModel();
+
+        $entries = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Entry')
+            ->findByList($list);
+
+        foreach ($entries as $entry)
+            $this->getEntityManager()->remove($entry);
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Success',
+                'All entries were removed from the list.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'mail_admin_list',
+            array(
+                'action' => 'entries',
+                'id' => $list->getId(),
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function deleteAdminAction()

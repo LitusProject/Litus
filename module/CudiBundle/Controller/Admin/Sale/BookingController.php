@@ -301,7 +301,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'The booking could not be assigned! Not enough articles in stock.'
                 )
             );

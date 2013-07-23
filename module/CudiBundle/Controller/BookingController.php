@@ -291,7 +291,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        'SUCCES',
+                        'Success',
                         'The textbooks have been booked!'
                     )
                 );
@@ -477,7 +477,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::SUCCESS,
-                    'SUCCES',
+                    'Success',
                     'The textbooks have been booked!'
                 )
             );
@@ -492,7 +492,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::ERROR,
-                'ERROR',
+                'Error',
                 'The textbooks couldn\'t be booked!'
             )
         );

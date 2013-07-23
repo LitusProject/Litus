@@ -174,7 +174,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'ERROR',
+                            'Error',
                             'This academic already is a member of this unit!'
                         )
                     );
@@ -187,7 +187,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
-                            'SUCCES',
+                            'Success',
                             'The member was succesfully added!'
                         )
                     );

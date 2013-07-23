@@ -46,7 +46,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login first!'
                 )
             );
@@ -100,7 +100,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login first!'
                 )
             );
@@ -331,7 +331,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login first!'
                 )
             );
@@ -355,7 +355,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login first!'
                 )
             );
@@ -382,7 +382,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login first!'
                 )
             );
@@ -407,7 +407,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login first!'
                 )
             );
@@ -504,7 +504,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login first!'
                 )
             );

@@ -31,7 +31,7 @@ return array(
     'Please login to get access to these pages.' => 'Please login to get access to these pages.',
 
     'SUCCESS' => 'SUCCESS',
-    'ERROR' => 'ERROR',
+    'Error' => 'Error',
     'You have been successfully logged in!' => 'You have been successfully logged in!',
     'You could be logged in!' => 'You could be logged in!',
     'You have been successfully logged out!' => 'You have been successfully logged out!',

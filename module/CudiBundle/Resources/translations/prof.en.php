@@ -148,7 +148,7 @@ return array(
     'None' => 'None',
     'Glued' => 'Glued',
 
-    'ERROR' => 'ERROR',
+    'Error' => 'Error',
     'SUCCESS' => 'SUCCESS',
     'The article was successfully created!' => 'The article was successfully created!',
     'The article was successfully updated!' => 'The article was successfully updated!',

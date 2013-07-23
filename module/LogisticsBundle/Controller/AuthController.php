@@ -56,7 +56,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'ERROR',
+                            'Error',
                             'The given username and password did not match. Please try again.'
                         )
                     );

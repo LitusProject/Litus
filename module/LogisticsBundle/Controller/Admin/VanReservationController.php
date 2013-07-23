@@ -132,7 +132,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        'SUCCES',
+                        'Success',
                         'The reservation was succesfully created!'
                     )
                 );

@@ -148,8 +148,8 @@ return array(
     'None' => 'Los',
     'Glued' => 'Gelijmd',
 
-    'ERROR' => 'FOUT',
-    'SUCCESS' => 'SUCCES',
+    'Error' => 'FOUT',
+    'SUCCESS' => 'Success',
     'The article was successfully created!' => 'Het artikel is succesvol aangemaakt!',
     'The article was successfully updated!' => 'Het artikel is succesvol aangepast!',
     'No ID was given to identify the article!' => 'Er was geen ID opgegeven om het artikel te identificeren!',

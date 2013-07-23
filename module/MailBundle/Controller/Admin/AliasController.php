@@ -70,7 +70,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        'SUCCES',
+                        'Success',
                         'The alias was succesfully created!'
                     )
                 );

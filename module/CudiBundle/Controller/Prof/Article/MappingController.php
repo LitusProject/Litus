@@ -173,7 +173,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the mapping!'
                 )
             );
@@ -201,7 +201,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No mapping with the given ID was found!'
                 )
             );
@@ -229,7 +229,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the subject!'
                 )
             );
@@ -257,7 +257,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No subject with the given ID was found!'
                 )
             );
@@ -284,7 +284,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the article!'
                 )
             );
@@ -308,7 +308,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No article with the given ID was found!'
                 )
             );

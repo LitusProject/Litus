@@ -36,7 +36,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login to view the CV book.'
                 )
             );
@@ -57,7 +57,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'You don\'t have access to the CVs of this year.'
                 )
             );
@@ -90,7 +90,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login to view the CV book.'
                 )
             );
@@ -111,7 +111,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'You don\'t have access to the CVs of this year.'
                 )
             );
@@ -146,7 +146,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'Please login to view the CV book.'
                 )
             );
@@ -167,7 +167,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'You don\'t have access to the CVs of this year.'
                 )
             );

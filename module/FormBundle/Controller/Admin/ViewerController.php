@@ -119,7 +119,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'SUCCES',
+                            'Success',
                             'This user has already been given access to this list!'
                         )
                     );

@@ -54,7 +54,7 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'ERROR',
+                            'Error',
                             'The given username and password did not match. Please try again.'
                         )
                     );

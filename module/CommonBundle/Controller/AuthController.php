@@ -63,7 +63,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'ERROR',
+                            'Error',
                             'You could not be logged in!'
                         )
                     );

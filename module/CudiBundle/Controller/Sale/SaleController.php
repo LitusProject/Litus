@@ -117,7 +117,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::ERROR,
-                            'ERROR',
+                            'Error',
                             'The sale could not be returned!'
                         )
                     );

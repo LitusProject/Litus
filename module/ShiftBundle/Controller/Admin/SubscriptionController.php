@@ -288,7 +288,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::ERROR,
-                'ERROR',
+                'Error',
                 'Unable to add the given person to the shift!'
             )
         );

@@ -86,7 +86,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        'SUCCES',
+                        'Success',
                         'The driver was succesfully created!'
                     )
                 );

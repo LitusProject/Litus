@@ -231,7 +231,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the article!'
                 )
             );
@@ -255,7 +255,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No article with the given ID was found!'
                 )
             );
@@ -280,7 +280,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No ID was given to identify the file!'
                 )
             );
@@ -304,7 +304,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
-                    'ERROR',
+                    'Error',
                     'No file with the given ID was found!'
                 )
             );

@@ -66,7 +66,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        'SUCCES',
+                        'Success',
                         'The publication was succesfully created!'
                     )
                 );

@@ -107,7 +107,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::SUCCESS,
-                    'SUCCES',
+                    'Success',
                     'The publication was succesfully created!'
                 )
             );
