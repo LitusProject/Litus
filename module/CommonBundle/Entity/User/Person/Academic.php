@@ -340,18 +340,19 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function getUnitRoles()
     {
         $latestStartDate = null;
-        $unitMap = null;
+        $unitMaps = array();
         foreach($this->unitMap as $map) {
             $startDate = $map->getAcademicYear()->getStartDate();
-            if ($startDate > $latestStartDate) {
+            if ($startDate >= $latestStartDate) {
                 $latestStartDate = $startDate;
-                $unitMap = $map;
+                $unitMaps[] = $map;
             }
         }
 
         $roles = array();
-        if (null !== $unitMap) {
+        foreach ($unitMaps as $unitMap) {
             $roles = array_merge(
+                $roles,
                 $unitMap->getUnit()->getRoles(),
                 $unitMap->isCoordinator() ? $unitMap->getUnit()->getCoordinatorRoles() : array()
             );

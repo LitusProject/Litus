@@ -652,7 +652,8 @@ abstract class Person
     private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
     {
         foreach ($inheritanceRoles as $role) {
-            $return[] = $role;
+            if (!in_array($role, $return))
+                $return[] = $role;
             $return = $this->_flattenRolesInheritance($role->getParents(), $return);
         }
 
