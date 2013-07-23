@@ -92,7 +92,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $organizations = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
+            ->findBy(array(), array('name' => 'ASC'));
 
         if (empty($organizations))
             throw new \RuntimeException('There needs to be at least one organization before you can add a unit');
