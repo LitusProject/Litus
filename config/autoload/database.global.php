@@ -32,10 +32,12 @@ return array(
         ),
         'configuration' => array(
             'odm_default' => array(
-                  'generate_proxies'   => ('development' == getenv('APPLICATION_ENV')),
+                  //'generate_proxies'   => ('development' == getenv('APPLICATION_ENV')),
+                  'generate_proxies'   => true,
                   'proxy_dir'          => 'data/proxies',
 
-                  'generate_hydrators' => ('development' == getenv('APPLICATION_ENV')),
+                  //'generate_hydrators' => ('development' == getenv('APPLICATION_ENV')),
+                  'generate_hydrators' => true,
                   'hydrator_dir'       => 'data/hydrators',
 
                   'default_db'         => $databaseConfig['document']['dbname'],
