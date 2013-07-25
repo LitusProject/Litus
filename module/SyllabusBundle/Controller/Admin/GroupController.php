@@ -16,8 +16,9 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    SyllabusBundle\Entity\Group,
+    DateInterval,
     DateTime,
+    SyllabusBundle\Entity\Group,
     SyllabusBundle\Entity\StudyGroupMap,
     SyllabusBundle\Form\Admin\Group\Add as AddForm,
     SyllabusBundle\Form\Admin\Group\Edit as EditForm,
