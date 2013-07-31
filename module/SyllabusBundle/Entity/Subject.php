@@ -109,6 +109,16 @@ class Subject
     }
 
     /**
+     * @param string $name
+     * @return \SyllabusBundle\Entity\Subject
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
      * @return integer
      */
     public function getSemester()

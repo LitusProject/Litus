@@ -276,7 +276,10 @@ class Study
                             $subject = new SubjectEntity($code, html_entity_decode(trim((string) $subjectData->titel)), (int) $subjectData->periode, (int) $subjectData->pts);
                             $this->getEntityManager()->persist($subject);
                         }
+                    } else {
+                        $subject->setTitle(html_entity_decode(trim((string) $subjectData->titel)));
                     }
+
                     if (!isset($this->_subjects[$code]))
                         $this->_createProf($subject, $subjectData->docenten->children());
 
