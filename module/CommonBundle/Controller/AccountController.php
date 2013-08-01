@@ -114,6 +114,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $academic = $this->getAuthentication()->getPersonObject();
 
+        $studentDomain = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('student_email_domain');
+
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
@@ -321,6 +325,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             array(
                 'form' => $form,
                 'termsAndConditions' => $termsAndConditions,
+                'studentDomain' => $studentDomain,
             )
         );
     }

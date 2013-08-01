@@ -193,7 +193,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
 
-                $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . '@student.kuleuven.be';
+                $studentDomain = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('student_email_domain');
+
+                $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . $studentDomain;
 
                 $birthday = DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00');
                 if(!$birthday)

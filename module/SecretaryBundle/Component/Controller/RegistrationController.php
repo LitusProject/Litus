@@ -213,7 +213,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     protected function _parseUniversityEmail($email)
     {
-        return preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $email)) . '@student.kuleuven.be';
+        $studentDomain = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('student_email_domain');
+
+        return preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $email)) . $studentDomain;
     }
 
     protected function _uploadProfileImage(Academic $academic)

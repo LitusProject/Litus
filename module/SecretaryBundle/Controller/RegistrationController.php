@@ -69,6 +69,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $academic = null;
         }
 
+        $studentDomain = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('student_email_domain');
+
         $termsAndConditions = $this->_getTermsAndConditions();
 
         if (null !== $academic) {
@@ -237,6 +241,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     array(
                         'form' => $form,
                         'termsAndConditions' => $termsAndConditions,
+                        'studentDomain' => $studentDomain,
                     )
                 );
             }
@@ -252,6 +257,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     array(
                         'form' => $form,
                         'termsAndConditions' => $termsAndConditions,
+                        'studentDomain' => $studentDomain,
                         'organizations' => $organizations,
                     )
                 );
@@ -277,6 +283,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
             return new ViewModel();
         }
+
+        $studentDomain = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('student_email_domain');
 
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
@@ -488,6 +498,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             array(
                 'form' => $form,
                 'termsAndConditions' => $termsAndConditions,
+                'studentDomain' => $studentDomain,
             )
         );
     }

@@ -114,7 +114,7 @@
             cityChange();
 
             $('#university_email').wrap('<div class=\"input-append\" />');
-            $('#university_email').after('<span class=\"add-on\">@student.kuleuven.be</span>');
+            $('#university_email').after('<span class=\"add-on\">{{ studentDomain }}</span>');
 
             $('#first_name').blur(nameChange);
             $('#last_name').blur(nameChange);

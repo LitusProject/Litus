@@ -218,7 +218,12 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         )
                     ),
                     'description' => 'The keys for extra info from Shibboleth',
-                )
+                ),
+                array(
+                    'key'         => 'student_email_domain',
+                    'value'       => '@student.kuleuven.be',
+                    'description' => 'The domain for the student email',
+                ),
             )
         );
     }
