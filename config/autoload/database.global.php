@@ -21,6 +21,28 @@ if (!file_exists(__DIR__ . '/../database.config.php')) {
 $databaseConfig = include __DIR__ . '/../database.config.php';
 
 return array(
+    'service_manager' => array(
+        'factories' => array(
+            'doctrine.cache.orm_default' => function ($serviceManager) {
+                if ('development' == getenv('APPLICATION_ENV')) {
+                    $cache = new \Doctrine\Common\Cache\ArrayCache();
+                } else {
+                    if (!extension_loaded('memcached'))
+                        throw new \RuntimeException('Litus requires the memcached extension to be loaded');
+
+                    $cache = new \Doctrine\Common\Cache\MemcachedCache();
+                    $memcached = new \Memcached();
+
+                    if(!$memcached->addServer('localhost', 11211))
+                        throw now \RuntimeException('Failed to connect to the memcached server');
+
+                    $cache->setMemcached($memcached);
+                }
+
+                return $cache;
+            }
+        )
+    ),
     'doctrine' => array(
         'cache' => array(
             'apc' => array(
@@ -46,9 +68,9 @@ return array(
                 'generate_proxies' => ('development' == getenv('APPLICATION_ENV')),
                 'proxyDir'         => 'data/proxies/',
 
-                'metadataCache'    => ('development' == getenv('APPLICATION_ENV') ? 'array' : 'apc'),
-                'queryCache'       => ('development' == getenv('APPLICATION_ENV') ? 'array' : 'apc'),
-                'resultCache'      => ('development' == getenv('APPLICATION_ENV') ? 'array' : 'apc'),
+                'metadataCache'    => 'orm_default',
+                'queryCache'       => 'orm_default',
+                'resultCache'      => 'orm_default',
             )
         ),
         'connection' => array(

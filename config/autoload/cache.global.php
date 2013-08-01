@@ -12,24 +12,39 @@
  * @license http://litus.cc/LICENSE
  */
 
-if (!extension_loaded('apc'))
-    throw new \RuntimeException('Litus requires the APC extension to be loaded');
-
 return array(
     'service_manager' => array(
         'factories' => array(
             'cache' => function ($serviceManager) {
-                return \Zend\Cache\StorageFactory::factory(
-                    array(
-                        'adapter' => array(
-                            'name' => 'apc',
-                            'options' => array(
-                                'ttl' => 0,
-                                'namespace' => 'litus_cache',
+                if (('development' == getenv('APPLICATION_ENV'))) {
+                    return \Zend\Cache\StorageFactory::factory(
+                        array(
+                            'adapter' => array(
+                                'name' => 'memory',
+                                'options' => array(
+                                    'ttl' => 0,
+                                ),
                             ),
-                        ),
-                    )
-                );
+                        )
+                    );
+                } else {
+                    if (!extension_loaded('memcached'))
+                        throw new \RuntimeException('Litus requires the memcached extension to be loaded');
+
+                    return \Zend\Cache\StorageFactory::factory(
+                        array(
+                            'adapter' => array(
+                                'name' => 'memcached',
+                                'options' => array(
+                                    'ttl' => 0,
+                                    'servers' => array(
+                                        array('localhost', 11211)
+                                    )
+                                ),
+                            ),
+                        )
+                    );
+                }
             },
         ),
     ),
