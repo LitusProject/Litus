@@ -40,7 +40,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     public function onDispatch(MvcEvent $e)
     {
         $result = parent::onDispatch($e);
-
+        
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
