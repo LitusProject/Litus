@@ -1,13 +1,5 @@
-# Do not version SublimeText's configuration and workspace
-*.sublime-project
-*.sublime-workspace
-
-# Exclude the custom folder attributes file
-.DS_Store
-
 # These files contain sensitive data
 config/database.config.php
-config/ldap.config.php
 config/lilo.config.php
 
 # We don't want cached data in our repository
