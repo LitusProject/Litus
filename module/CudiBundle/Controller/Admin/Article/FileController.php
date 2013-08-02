@@ -68,6 +68,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function uploadAction()
     {
+        $this->initAjax();
+
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 
@@ -109,13 +111,13 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 ->getRepository('Cudibundle\Entity\File\Mapping')
                 ->findOneByArticleAndFile($article, $file);
 
-            $this->flashMessenger()->addMessage(
+            /*$this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::SUCCESS,
                     'SUCCESS',
                     'The file was successfully uploaded!'
                 )
-            );
+            );*/
 
             return new ViewModel(
                 array(
