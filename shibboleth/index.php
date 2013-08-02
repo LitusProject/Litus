@@ -30,8 +30,9 @@ $shibbolethPersonKey = $em->getRepository('CommonBundle\Entity\General\Config')
 $shibbolethSessionKey = $em->getRepository('CommonBundle\Entity\General\Config')
     ->getConfigValue('shibboleth_session_key');
 
+$code = null;
 if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
-    $checkCode = $em->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
+    $code = $em->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
         ->findOneByCode(substr($_SERVER[$shibbolethSessionKey], 1));
 
     $shibbolethExtraInfoKeys = unserialize(
@@ -42,8 +43,8 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
     foreach($shibbolethExtraInfoKeys as $key => $value)
         $extraInfo[$key] = isset($_SERVER[$value]) ? $_SERVER[$value] : '';
 
-    if (null === $checkCode) {
-        $newCode = new CommonBundle\Entity\User\Shibboleth\Code(
+    if (null === $code) {
+        $code = new CommonBundle\Entity\User\Shibboleth\Code(
             $_SERVER[$shibbolethPersonKey],
             substr($_SERVER[$shibbolethSessionKey], 1),
             ($_GET['source'] == 'register') ? 1800 : 300,
@@ -51,7 +52,7 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
             isset($_GET['redirect']) ? $_GET['redirect'] : null
         );
 
-        $em->persist($newCode);
+        $em->persist($code);
         $em->flush();
     }
 }
@@ -65,5 +66,5 @@ if ('/' == substr($shibbolethHandler, -1))
 
 http_response_code(307);
 header(
-    'Location: ' . $shibbolethHandler . (isset($newCode) ? '/identification/' . $newCode->getUniversityIdentification() . '/hash/' . $newCode->hash() : '')
+    'Location: ' . $shibbolethHandler . (null !== $code ? '/identification/' . $code->getUniversityIdentification() . '/hash/' . $code->hash() : '')
 );
