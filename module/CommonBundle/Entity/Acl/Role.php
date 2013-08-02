@@ -134,6 +134,17 @@ class Role
     }
 
     /**
+     * Allow this role access to the given action.
+     *
+     * @param \CommonBundle\Entity\Acl\Action $action The action the role should have access to
+     * @return \CommonBundle\Entity\Acl\Role
+     */
+    public function addAction(Action $action)
+    {
+        $this->actions->add($action);
+    }
+
+    /**
      * Remove the given action from the role.
      *
      * @param \CommonBundle\Entity\Acl\Action $action The action the role should have access to

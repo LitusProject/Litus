@@ -133,7 +133,7 @@ abstract class InstallController extends AdminController
                         ->findOneBy(array('name' => $action, 'resource' => $resource));
 
                     if (!in_array($action, $role->getActions()))
-                        $role->allow($action);
+                        $role->addAction($action);
                 }
             }
 
