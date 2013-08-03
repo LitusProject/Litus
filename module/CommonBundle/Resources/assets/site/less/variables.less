@@ -167,14 +167,14 @@
 
         [class*="span"] {
             float: left;
+            min-height: 1px;
             margin-left: @gridGutterWidth;
         }
 
         .container,
+        .navbar-static-top .container,
         .navbar-fixed-top .container,
-        .navbar-fixed-bottom .container {
-            .span(@gridColumns);
-        }
+        .navbar-fixed-bottom .container { .span(@gridColumns); }
 
         .spanX (@gridColumns);
         .offsetX (@gridColumns);
@@ -186,6 +186,23 @@
             .spanX(@index - 1);
         }
         .spanX (0) {}
+
+        .offsetX (@index) when (@index > 0) {
+            .offset@{index} { .offset(@index); }
+            .offset@{index}:first-child { .offsetFirstChild(@index); }
+            .offsetX(@index - 1);
+        }
+        .offsetX (0) {}
+
+        .offset (@columns) {
+            margin-left: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) + (@fluidGridGutterWidth*2);
+            *margin-left: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) - (.5 / @gridRowWidth * 100 * 1%) + (@fluidGridGutterWidth*2) - (.5 / @gridRowWidth * 100 * 1%);
+        }
+
+        .offsetFirstChild (@columns) {
+            margin-left: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) + (@fluidGridGutterWidth);
+            *margin-left: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) - (.5 / @gridRowWidth * 100 * 1%) + @fluidGridGutterWidth - (.5 / @gridRowWidth * 100 * 1%);
+        }
 
         .span (@columns) {
             width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1));
@@ -205,25 +222,34 @@
                 margin-left: 0;
             }
 
+            .controls-row [class*="span"] + [class*="span"] {
+                margin-left: @fluidGridGutterWidth;
+            }
+
             .spanX (@gridColumns);
+            .offsetX (@gridColumns);
         }
     }
 
     .input(@gridColumnWidth, @gridGutterWidth) {
         .spanX (@index) when (@index > 0) {
-            (~"input.span@{index}, textarea.span@{index}, .uneditable-input.span@{index}") { .span(@index); }
+            input.span@{index}, textarea.span@{index}, .uneditable-input.span@{index} { .span(@index); }
             .spanX(@index - 1);
         }
         .spanX (0) {}
 
         .span(@columns) {
-            width: ((@gridColumnWidth) * @columns) + (@gridGutterWidth * (@columns - 1)) - 10;
+            width: ((@gridColumnWidth) * @columns) + (@gridGutterWidth * (@columns - 1)) - 14;
         }
 
         input,
         textarea,
         .uneditable-input {
             margin-left: 0;
+        }
+
+        .controls-row [class*="span"] + [class*="span"] {
+            margin-left: @gridGutterWidth;
         }
 
         .spanX (@gridColumns);
