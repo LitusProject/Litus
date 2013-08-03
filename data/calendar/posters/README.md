@@ -1,5 +1,5 @@
-About this directory:
-=====================
+About this Directory
+====================
 
 This directory is used to store our calendar posters,
 and as such should be writeable by the webserver
