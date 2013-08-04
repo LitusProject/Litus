@@ -1,5 +1,6 @@
 # These files contain sensitive data
 config/database.config.php
+config/ldap.config.php
 config/lilo.config.php
 
 # We don't want cached data in our repository
