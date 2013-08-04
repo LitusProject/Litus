@@ -1,5 +1,5 @@
-About this Directory
-====================
+About this directory:
+=====================
 
-This directory is used to store our company files,
+This directory is used to store our company relations files,
 and as such should be writeable by the webserver
