@@ -189,28 +189,28 @@
         			    <h1 class="site-name">{{ translate('Vlaamse Technische Kring') }}</h1>
                     </a>
 
-        			<div id="carouselHeader" class="carousel slide visible-desktop">
-                        <div class="carousel-inner">
+                    {% if banners|length > 0 %}
+            			<div id="carouselHeader" class="carousel slide visible-desktop">
+                            <div class="carousel-inner">
+                                {% for key, banner in banners %}
+                                    <div class="item item-{{ key }}">
+                                        {% if banner.getUrl() != '' %}
+                                        <a href="{{ banner.getUrl() }}">
+                                        {% endif %}
+                                            <img src="/banner/view/image{{ banner.getImage() }}" alt="">
+                                        {% if banner.getUrl() != '' %}
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
 
-                            {% for key, banner in banners %}
-                                <div class="item item-{{ key }}">
-                                    {% if banner.getUrl() != '' %}
-                                    <a href="{{ banner.getUrl() }}">
-                                    {% endif %}
-                                        <img src="/banner/view/image{{ banner.getImage() }}" alt="">
-                                    {% if banner.getUrl() != '' %}
-                                    </a>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-
-                        </div>
-
-                        {% if banners|length > 1 %}
-                            <a class="carousel-control left" href="#carouselHeader" data-slide="prev">&lsaquo;</a>
-                            <a class="carousel-control right" href="#carouselHeader" data-slide="next">&rsaquo;</a>
-                        {% endif %}
-        			</div>
+                            {% if banners|length > 1 %}
+                                <a class="carousel-control left" href="#carouselHeader" data-slide="prev">&lsaquo;</a>
+                                <a class="carousel-control right" href="#carouselHeader" data-slide="next">&rsaquo;</a>
+                            {% endif %}
+            			</div>
+                    {% endif %}
         		</div>
         	</div>
         </header>
