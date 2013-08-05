@@ -21,7 +21,8 @@ return array(
             'cache_dir'   => 'data/cache',
             'matcher'     => array(),
             'collectors'  => array(
-                  'db' => null,
+                'config' => null,
+                'db' => null,
             ),
         ),
         'toolbar' => array(
