@@ -27,7 +27,6 @@ use BrBundle\Entity\Cv\Util,
  */
 class CvController extends \BrBundle\Component\Controller\CorporateController
 {
-
     public function groupedAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
@@ -54,22 +53,11 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $academicYear = $this->getAcademicYear();
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to the CVs of this year.'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_index',
+            return new ViewModel(
                 array(
-                    'language' => $this->getLanguage()->getAbbrev(),
+                    'no_access' => true,
                 )
             );
-
-            return new ViewModel();
         }
 
         $result = Util::getGrouped($this->getEntityManager(), $academicYear);
@@ -221,7 +209,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             ->findAllByAcademicYear($academicYear);
     }
 
-    private function _doFilter($entries, $filters) {
+    private function _doFilter($entries, $filters)
+    {
 
         if (isset($filters['string'])) {
             $entries = $this->_filterString($entries, $filters['string']);
@@ -234,7 +223,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return $entries;
     }
 
-    private function _filterString($entries, $string) {
+    private function _filterString($entries, $string)
+    {
         $result = array();
         $words = preg_split('/[\s,]+/', $string);
         foreach ($entries as $entry) {
@@ -252,7 +242,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return $result;
     }
 
-    private function _filterGrade($entries, $grade) {
+    private function _filterGrade($entries, $grade)
+    {
         $result = array();
         $min = $grade['min'] * 100;
         $max = $grade['max'] * 100;
@@ -265,7 +256,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return $result;
     }
 
-    public function cvPhotoAction() {
+    public function cvPhotoAction()
+    {
         $imagePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.profile_path') . '/' . $this->getParam('image');

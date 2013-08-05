@@ -1,6 +1,10 @@
 {% extends 'corporate/base.twig' %}
 
 {% block content %}
+    <div class="flashmessage alert alert-error fade in">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {% autoescape false %}{{ translate('You don\'t have access to the CVs of this year.') }}{% endautoescape %}
+    </div>
 
     <div class="navbar">
         <div class="navbar-inner">
