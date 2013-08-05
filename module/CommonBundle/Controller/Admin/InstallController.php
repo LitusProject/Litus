@@ -115,7 +115,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ),
                 array(
                     'key'         => 'shibboleth_url',
-                    'value'       => 'https://arianna.vtk.be/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%2Fshibboleth%2F',
+                    'value'       => 'https://arianna.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%3A8443%2Fshibboleth%2F',
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
                 ),
                 array(
@@ -189,26 +189,6 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The Piwik ID of the site that should be queried',
                 ),
                 array(
-                    'key'         => 'common.ldap_people_ou',
-                    'value'       => 'ou=people,dc=ldap,dc=vtk,dc=be',
-                    'description' => 'The LDAP identifier for the organizational unit containing the people',
-                ),
-                array(
-                    'key'         => 'common.ldap_students_ou',
-                    'value'       => 'ou=students,ou=people,dc=ldap,dc=vtk,dc=be',
-                    'description' => 'The LDAP identifier for the organizational unit containing the students',
-                ),
-                array(
-                    'key'         => 'common.ldap_students_cn',
-                    'value'       => 'cn=students,ou=groups,dc=ldap,dc=vtk,dc=be',
-                    'description' => 'The LDAP identifier for the students group',
-                ),
-                array(
-                    'key'         => 'common.ldap_users_cn',
-                    'value'       => 'cn=users,ou=groups,dc=ldap,dc=vtk,dc=be',
-                    'description' => 'The LDAP identifier for the users group',
-                ),
-                array(
                     'key'         => 'shibboleth_extra_info',
                     'value'       => serialize(
                         array(
@@ -264,7 +244,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'fileServer', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'common_session' => array(
                         'manage', 'expire'
