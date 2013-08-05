@@ -12,4 +12,37 @@ use Doctrine\ORM\EntityRepository;
  */
 class Company extends EntityRepository
 {
+    public function findAll()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('BrBundle\Entity\Company', 'c')
+            ->where(
+                $query->expr()->eq('c.active', 'true')
+            )
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByName($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('BrBundle\Entity\Company', 'c')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->like($query->expr()->lower('c.name'), ':name')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

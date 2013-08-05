@@ -37,15 +37,18 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'BrBundle\Entity\Company',
-            $this->getParam('page'),
-            array(
-                'active' => true
-            ),
-            array(
-                'name' => 'ASC'
-            )
+        if (null !== $this->getParam('field'))
+            $companies = $this->_search();
+
+        if (!isset($companies)) {
+            $companies = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company')
+                ->findAll();
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $companies,
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -352,6 +355,44 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 'logoPath' => $filePath,
             )
         );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $companies = $this->_search();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($companies, $numResults);
+
+        $result = array();
+        foreach($companies as $company) {
+            $item = (object) array();
+            $item->id = $company->getId();
+            $item->name = $company->getName();
+            $item->vatNumber = $company->getVatNumber();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company')
+                    ->findAllByName($this->getParam('string'));
+        }
     }
 
     private function _getCompany()
