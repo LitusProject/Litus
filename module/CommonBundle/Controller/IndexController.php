@@ -84,14 +84,34 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findWeekFromNow();
 
+        $piwikEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.piwik_enabled');
+
+        $piwik = null;
+        if ('development' != getenv('APPLICATION_ENV') && $piwikEnabled) {
+            $piwik = array(
+                'url' => parse_url(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('common.piwik_api_url'),
+                    PHP_URL_HOST
+                ),
+                'site_id' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.piwik_id_site')
+            );
+        }
+
         return new ViewModel(
             array(
-                'notifications' => $notifications,
                 'bookings' => $bookings,
-                'newsItems' => $newsItems,
                 'calendarItems' => $calendarItems,
-                'sportInfo' => $this->_getSportResults(),
                 'cudi' => $cudi,
+                'newsItems' => $newsItems,
+                'notifications' => $notifications,
+                'piwik' => $piwik,
+                'sportInfo' => $this->_getSportResults(),
             )
         );
     }
