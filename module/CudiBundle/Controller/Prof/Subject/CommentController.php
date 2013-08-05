@@ -16,7 +16,9 @@ namespace CudiBundle\Controller\Prof\Subject;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     SyllabusBundle\Entity\Subject\Comment,
-    CudiBundle\Form\Prof\Comment\Add as AddForm,
+    SyllabusBundle\Entity\Subject\Reply,
+    CudiBundle\Form\Prof\Comment\Add as AddCommentForm,
+    CudiBundle\Form\Prof\Comment\Reply as AddReplyForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -35,51 +37,93 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findBySubject($subject);
 
-        $form = new AddForm();
+        $commentForm = new AddCommentForm();
+        $replyForm = new AddReplyForm();
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
 
-            if($form->isValid()) {
-                $formData = $form->getFormData($formData);
+            if ($formData['reply']) {
+                $replyForm->setData($formData);
 
-                $comment = new Comment(
-                    $this->getEntityManager(),
-                    $this->getAuthentication()->getPersonObject(),
-                    $subject,
-                    $formData['text'],
-                    'external'
-                );
+                if ($replyForm->isValid()) {
+                    $formData = $replyForm->getFormData($formData);
 
-                $this->getEntityManager()->persist($comment);
-                $this->getEntityManager()->flush();
+                    $reply = new Reply(
+                        $this->getEntityManager(),
+                        $this->getAuthentication()->getPersonObject(),
+                        $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+                            ->findOneById($formData['comment']),
+                        $formData['reply']
+                    );
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The comment was successfully created!'
-                    )
-                );
+                    $this->getEntityManager()->persist($reply);
+                    $this->getEntityManager()->flush();
 
-                $this->redirect()->toRoute(
-                    'cudi_prof_subject_comment',
-                    array(
-                        'action' => 'manage',
-                        'id' => $subject->getId(),
-                        'language' => $this->getLanguage()->getAbbrev(),
-                    )
-                );
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The reply was successfully created!'
+                        )
+                    );
 
-                return new ViewModel();
+                    $this->redirect()->toRoute(
+                        'cudi_prof_subject_comment',
+                        array(
+                            'action' => 'manage',
+                            'id' => $subject->getId(),
+                            'language' => $this->getLanguage()->getAbbrev(),
+                        )
+                    );
+
+                    return new ViewModel();
+                }
+            } else {
+                $commentForm->setData($formData);
+
+                if($commentForm->isValid()) {
+                    $formData = $commentForm->getFormData($formData);
+
+                    $comment = new Comment(
+                        $this->getEntityManager(),
+                        $this->getAuthentication()->getPersonObject(),
+                        $subject,
+                        $formData['text'],
+                        'external'
+                    );
+
+                    $this->getEntityManager()->persist($comment);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The comment was successfully created!'
+                        )
+                    );
+
+                    $this->redirect()->toRoute(
+                        'cudi_prof_subject_comment',
+                        array(
+                            'action' => 'manage',
+                            'id' => $subject->getId(),
+                            'language' => $this->getLanguage()->getAbbrev(),
+                        )
+                    );
+
+                    return new ViewModel();
+                }
             }
         }
 
         return new ViewModel(
             array(
                 'subject' => $subject,
-                'form' => $form,
+                'commentForm' => $commentForm,
+                'replyForm' => $replyForm,
                 'comments' => $comments,
             )
         );

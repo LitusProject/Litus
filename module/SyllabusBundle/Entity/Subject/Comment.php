@@ -73,6 +73,14 @@ class Comment
     private $type;
 
     /**
+     * @var \Doctrine\Common\Collection\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Subject\Reply", mappedBy="comment")
+     * @ORM\OrderBy({"date" = "ASC"})
+     */
+    private $replies;
+
+    /**
      * @var array The possible types of a comment
      */
     private static $POSSIBLE_TYPES = array(
@@ -161,5 +169,13 @@ class Comment
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collection\ArrayCollection
+     */
+    public function getReplies()
+    {
+        return $this->replies;
     }
 }

@@ -55,6 +55,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findLast(10);
 
+        $subjectReplies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject\Reply')
+            ->findLast(10);
+
         $activeSessions = array();
         if ($this->getAuthentication()->isAuthenticated()) {
             $activeSessions = $this->getEntityManager()
@@ -68,6 +72,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'profActions' => $profActions,
                 'subjectComments' => $subjectComments,
+                'subjectReplies' => $subjectReplies,
                 'activeSessions' => $activeSessions,
                 'currentSession' => $currentSession,
                 'piwik' => $piwik,

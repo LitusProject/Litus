@@ -64,6 +64,9 @@ return array(
     'Are you sure you want to remove your comment?' => 'Ben je zeker dat je de commentaar wil verwijderen?',
     'Yes' => 'Ja',
     'No' => 'Neen',
+    'Reply' => 'Antwoord',
+    'Add Reply' => 'Antwoord Toevoegen',
+    'The reply was successfully created!' => 'Het antwoord is succesvol toegevoegd!',
 
     'The file was successfully uploaded!' => 'Het bestand is succesvol geupload!',
     'An error occurred while uploading the file.' => 'Er is een fout opgetreden tijdens het uploaden van het bestand.',
@@ -93,6 +96,9 @@ return array(
     'Filename' => 'Bestandsnaam',
     'added a file on <b>%date%</b>' => 'voegde een bestand toe op <b>%date%</b>',
     'removed a file on <b>%date%</b>' => 'verwijderde een bestand op <b>%date%</b>',
+    'Your Recent Conversations' => 'Je Recente Conversaties',
+    'replied on' => 'antwoorde op',
+    'commented on' => 'gaf commentaar op',
     'Please login to get access to these pages.' => 'Gelieve aan te melden om toegang te krijgen tot deze pagina\'s.',
 
     'Your Subjects' => 'Jouw Vakken',

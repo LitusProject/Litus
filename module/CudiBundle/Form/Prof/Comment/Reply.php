@@ -14,16 +14,17 @@
 
 namespace CudiBundle\Form\Prof\Comment;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
- * Add Comment
+ * Add Reply
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Reply extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @param null|string|int $name Optional name for the element
@@ -32,8 +33,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::__construct($name);
 
-        $field = new Textarea('text');
-        $field->setLabel('Comment')
+        $field = new Hidden('comment');
+        $this->add($field);
+
+        $field = new Textarea('reply');
+        $field->setLabel('Reply')
             ->setAttribute('class', 'input-xlarge')
             ->setAttribute('rows', 5)
             ->setRequired();
@@ -48,7 +52,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'text',
+                    'name'     => 'comment',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'int'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'reply',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

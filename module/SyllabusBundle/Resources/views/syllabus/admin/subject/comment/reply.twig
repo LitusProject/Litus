@@ -1,0 +1,29 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/subject/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action" class="full_width">
+        <h1>Subject</h1>
+
+        <p>Code: <b>{{ comment.getSubject().getCode() }}</b></p>
+        <p>Name: <b>{{ comment.getSubject().getName() }}</b></p>
+        <p>Semester: <b>{{ comment.getSubject().getSemester() }}</b></p>
+        <p>Credits: <b>{{ comment.getSubject().getCredits() }}</b></p>
+        <br />
+
+        <b>{{ comment.getPerson().getFullName() }}</b> on <b>{{ comment.getDate().format('d M Y H:i') }}</b> :<br />
+        <pre style="padding-left: 20px;">{{ comment.getText() }}</pre>
+        <hr />
+        {% for reply in replies %}
+            <b>{{ reply.getPerson().getFullName() }}</b> on <b>{{ reply.getDate().format('d M Y H:m') }}</b> :<br />
+            <pre style="padding-left: 20px;">{{ reply.getText() }}</pre>
+            <hr />
+        {% endfor %}
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}

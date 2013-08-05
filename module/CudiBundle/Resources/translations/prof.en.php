@@ -64,6 +64,9 @@ return array(
     'Are you sure you want to remove your comment?' => 'Are you sure you want to remove your comment?',
     'Yes' => 'Yes',
     'No' => 'No',
+    'Reply' => 'Reply',
+    'Add Reply' => 'Add Reply',
+    'The reply was successfully created!' => 'The reply was successfully created!',
 
     'The file was successfully uploaded!' => 'The file was successfully uploaded!',
     'An error occurred while uploading the file.' => 'An error occurred while uploading the file.',
@@ -93,6 +96,9 @@ return array(
     'Filename' => 'Filename',
     'added a file on <b>%date%</b>' => 'added a file on <b>%date%</b>',
     'removed a file on <b>%date%</b>' => 'removed a file on <b>%date%</b>',
+    'Your Recent Conversations' => 'Your Recent Conversations',
+    'replied on' => 'replied on',
+    'commented on' => 'commented on',
     'Please login to get access to these pages.' => 'Please login to get access to these pages.',
 
     'Your Subjects' => 'Your Subjects',
