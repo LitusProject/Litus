@@ -12,20 +12,21 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Company\User;
+namespace BrBundle\Form\Admin\Person;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
- * Edit a user's data.
+ * Edit Person
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CommonBundle\Form\Admin\Person\Add
+abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
