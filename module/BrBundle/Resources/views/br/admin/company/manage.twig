@@ -18,45 +18,64 @@
             </div>
         </div>
 
-        <table class="full_width manage">
-            <thead>
+        <div id="company_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
                 <tr>
                     <th>Name</th>
                     <th width="175px">VAT Number</th>
                     <th width="120px">Action</th>
                 </tr>
-            </thead>
+            </table>
+        </div>
 
-            <tbody>
-                {% for company in paginator %}
-                    <tr class="item item-{{ company.getId() }}">
-                        <td>{{ company.getName() }}</td>
-                        <td>{{ company.getVatNumber() }}</td>
-                        <td class="actions">
-                            <ul>
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th width="175px">VAT Number</th>
+                        <th width="120px">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for company in paginator %}
+                        <tr class="item item-{{ company.getId() }}">
+                            <td>{{ company.getName() }}</td>
+                            <td>{{ company.getVatNumber() }}</td>
+                            <td class="actions">
                                 {% if hasAccess('br_admin_company_job', 'manage') %}
-                                    <li><a href="{{ url('br_admin_company_job', {"action": "manage", "id": company.getId()}) }}" class="view">Job</a></li>
+                                    <a href="{{ url('br_admin_company_job', {"action": "manage", "id": company.getId()}) }}" class="view">Job</a>
                                 {% endif %}
                                 {% if hasAccess('br_admin_company_event', 'manage') %}
-                                    <li><a href="{{ url('br_admin_company_event', {"action": "manage", "id": company.getId()}) }}" class="view">Events</a></li>
+                                    <a href="{{ url('br_admin_company_event', {"action": "manage", "id": company.getId()}) }}" class="view">Events</a>
                                 {% endif %}
                                 {% if hasAccess('br_admin_company', 'edit') %}
-                                    <li><a href="{{ url('br_admin_company', {"action": "edit", "id": company.getId()}) }}" class="edit">Edit</a></li>
+                                    <a href="{{ url('br_admin_company', {"action": "edit", "id": company.getId()}) }}" class="edit">Edit</a>
                                 {% endif %}
                                 {% if hasAccess('br_admin_company', 'delete') %}
-                                    <li><a href="#" class="delete" data-id="{{ company.getId() }}" data-name="{{ company.getName() }}">Delete</a></li>
+                                    <a href="#" class="delete" data-id="{{ company.getId() }}" data-name="{{ company.getName() }}">Delete</a>
                                 {% endif %}
                                 {% if hasAccess('br_admin_company_user', 'manage') %}
                                     <a href="{{ url('br_admin_company_user', {"action": "manage", "id": company.getId()}) }}" class="corporate_user">Users</a>
                                 {% endif %}
-                            </ul>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-        {% include 'admin/partials/paginationControl.twig' %}
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
     </div>
 
     <div class="modal hide fade" id="removeCompany">
@@ -83,6 +102,53 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            {% if hasAccess('br_admin_company', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#company_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('br_admin_company', {'action': 'manage'}) }}manage/',
+                url: '{{ url('br_admin_company', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#company_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#company_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.vatNumber + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+
+                            {% if hasAccess('syllabus_admin_subject', 'manage') %}
+                                actions.append('<a href="{{ url('syllabus_admin_subject') }}manage/' + this.id + '" class="view">View</a>')
+                            {% endif %}
+
+                            {% if hasAccess('br_admin_company_job', 'manage') %}
+                                actions.append('<a href="{{ url('br_admin_company_job') }}manage/' + this.id + '" class="view">Job</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_company_event', 'manage') %}
+                                actions.append('<a href="{{ url('br_admin_company_event') }}manage/' + this.id + '" class="view">Events</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_company', 'edit') %}
+                                actions.append('<a href="{{ url('br_admin_company') }}edit/' + this.id + '" class="edit">Edit</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_company', 'delete') %}
+                                actions.append('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + this.name + '">Delete</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_company_user', 'manage') %}
+                                actions.append('<a href="{{ url('br_admin_company_user') }}manage/' + this.id + '" class="corporate_user">Users</a>')
+                            {% endif %}
+                    });
+                    $('#company_search table').change();
+                    $('.item .delete').unbind('click').click(openModal);
+                },
+                clear: function () {
+                    $('#company_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+
             $('.item .delete').click(openModal);
         });
 
