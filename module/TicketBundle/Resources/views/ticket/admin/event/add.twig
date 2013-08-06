@@ -23,7 +23,8 @@
                     $('#prices').show();
                     $('#options').hide();
 
-                    addOption();
+                    if (currentCount == 0)
+                        addOption();
                 }
             }).trigger('change');
         });
