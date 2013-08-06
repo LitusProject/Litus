@@ -86,17 +86,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Only Members');
         $this->add($field);
 
+        $field = new Checkbox('enable_options');
+        $field->setLabel('Enable Options');
+        $this->add($field);
+
+        $collection = new Collection('prices');
+        $collection->setLabel('Prices');
+        $this->add($collection);
+
         $field = new Text('price_members');
         $field->setLabel('Price Members');
-        $this->add($field);
+        $collection->add($field);
 
         $field = new Text('price_non_members');
         $field->setLabel('Price Non Members');
-        $this->add($field);
+        $collection->add($field);
 
         $field = new Collection('options');
         $field->setLabel('Options')
-            ->setCount(1)
+            ->setCount(0)
             ->setShouldCreateTemplate(true)
             ->setAllowAdd(true)
             ->setTargetElement(
