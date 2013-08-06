@@ -13,21 +13,36 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        var currentCount = 1;
+        var currentCount = 0;
         $(document).ready(function () {
-            $('input[name="options[' + (currentCount - 1) + '][option]"]').keyup(add_option);
+            $('#enable_options').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#prices').hide();
+                    $('#options').show();
+                } else {
+                    $('#prices').show();
+                    $('#options').hide();
+
+                    addOption();
+                }
+            }).trigger('change');
         });
 
-        function add_option() {
+        function triggerKeyUp() {
             if ($(this).val().length > 0) {
                 $(this).unbind('keyup');
-                var template = $('#data-template').data('template');
-                template = template.replace(/__index__/g, currentCount);
-                currentCount++;
-
-                $('form > fieldset').append(template);
-                $('input[name="options[' + (currentCount - 1) + '][option]"]').keyup(add_option);
+                addOption();
             }
+        }
+
+        function addOption() {
+            var template = $('#data-template').data('template');
+            template = template.replace(/__index__/g, currentCount);
+            currentCount++;
+
+            $('form > fieldset#options').append(template);
+            $('input[name="options[' + (currentCount - 1) + '][option]"]').keyup(triggerKeyUp);
+
         }
     </script>
 {% endblock %}
