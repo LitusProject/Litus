@@ -17,6 +17,7 @@ namespace TicketBundle\Form\Admin\Event;
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
@@ -91,6 +92,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('price_non_members');
         $field->setLabel('Price Non Members');
+        $this->add($field);
+
+        $field = new Collection('options');
+        $field->setLabel('Options')
+            ->setCount(1)
+            ->setShouldCreateTemplate(true)
+            ->setAllowAdd(true)
+            ->setTargetElement(
+                array(
+                    'type' => 'TicketBundle\Form\Admin\Event\Option',
+                )
+            );
         $this->add($field);
 
         $field = new Submit('submit');
