@@ -15,10 +15,16 @@
 namespace TicketBundle\Form\Sale\Ticket;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+<<<<<<< HEAD
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
+=======
+    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+>>>>>>> 7dbdccb4bf2d4332647dd4dce51d97e936d83ea6
     TicketBundle\Entity\Event,
     Zend\Form\Element\Hidden,
     Zend\InputFilter\InputFilter,
@@ -46,8 +52,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->_event = $event;
 
+<<<<<<< HEAD
         $this->setAttribute('id', 'ticket_sale_form');
 
+=======
+>>>>>>> 7dbdccb4bf2d4332647dd4dce51d97e936d83ea6
         $field = new Hidden('person_id');
         $field->setAttribute('id', 'personId');
         $this->add($field);
@@ -61,6 +70,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setRequired();
         $this->add($field);
 
+<<<<<<< HEAD
         $field = new Select('number_member');
         $field->setLabel('Number Member')
             ->setAttribute('options', $this->_getNumberOptions());
@@ -76,6 +86,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
 
         $field = new Submit('sale_tickets');
+=======
+        $field = new Select('number');
+        $field->setLabel('Number')
+            ->setAttribute('options', $this->_getNumberOptions());
+        $this->add($field);
+
+        $field = new Checkbox('member');
+        $field->setLabel('Member');
+        $this->add($field);
+
+        $field = new Submit('submit');
+>>>>>>> 7dbdccb4bf2d4332647dd4dce51d97e936d83ea6
         $field->setValue('Sale');
         $this->add($field);
     }
@@ -85,7 +107,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $numbers = array();
         $max = $this->_event->getLimitPerPerson() == 0 ? 10 : $this->_event->getLimitPerPerson();
 
+<<<<<<< HEAD
         for($i = 0 ; $i <= $max ; $i++) {
+=======
+        for($i = 1 ; $i <= $max ; $i++) {
+>>>>>>> 7dbdccb4bf2d4332647dd4dce51d97e936d83ea6
             $numbers[$i] = $i;
         }
         return $numbers;
@@ -125,6 +151,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
+<<<<<<< HEAD
         $inputFilter->add(
             $factory->createInput(
                 array(
@@ -149,6 +176,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
+=======
+>>>>>>> 7dbdccb4bf2d4332647dd4dce51d97e936d83ea6
         return $inputFilter;
     }
 }
