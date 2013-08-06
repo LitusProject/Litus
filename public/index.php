@@ -12,6 +12,9 @@
  * @license http://litus.cc/LICENSE
  */
 
+if (false === getenv('APPLICATION_ENV'))
+    putenv('APPLICATION_ENV=development');
+
 if ('development' == getenv('APPLICATION_ENV')) {
     ini_set('display_errors', true);
     error_reporting(E_ALL);
