@@ -15,16 +15,24 @@
     <script type="text/javascript">
         var currentCount = 0;
         $(document).ready(function () {
+            $('#only_members').change(function () {
+                if ($(this).is(':checked')) {
+                    $('form .price_non_members').closest('.row').hide();
+                } else {
+                    $('form .price_non_members').show();
+                }
+            }).trigger('change');
+
             $('#enable_options').change(function () {
                 if ($(this).is(':checked')) {
                     $('#prices').hide();
                     $('#options').show();
-                } else {
-                    $('#prices').show();
-                    $('#options').hide();
 
                     if (currentCount == 0)
                         addOption();
+                } else {
+                    $('#prices').show();
+                    $('#options').hide();
                 }
             }).trigger('change');
         });
@@ -44,6 +52,11 @@
             $('form > fieldset#options').append(template);
             $('input[name="options[' + (currentCount - 1) + '][option]"]').keyup(triggerKeyUp);
 
+            if ($('#only_members').is(':checked')) {
+                $('form .price_non_members').closest('.row').hide();
+            } else {
+                $('form .price_non_members').show();
+            }
         }
     </script>
 {% endblock %}

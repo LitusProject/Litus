@@ -46,12 +46,13 @@ class Option extends Fieldset
         $this->add($field);
 
         $field = new Text('price_non_members');
-        $field->setLabel('Price Non Members');
+        $field->setLabel('Price Non Members')
+            ->setAttribute('class', $field->getAttribute('class') . ' price_non_members');
         $this->add($field);
     }
 
     public function getInputFilter()
-    {
+    {// todo: pass this to upper form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 

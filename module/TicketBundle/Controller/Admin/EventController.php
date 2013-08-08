@@ -17,6 +17,7 @@ namespace TicketBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     TicketBundle\Entity\Event,
+    TicketBundle\Entity\Option,
     TicketBundle\Entity\Ticket,
     TicketBundle\Form\Admin\Event\Add as AddForm,
     TicketBundle\Form\Admin\Event\Edit as EditForm,
@@ -85,9 +86,16 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData['number_of_tickets'],
                     $formData['limit_per_person'],
                     $formData['only_members'],
-                    $formData['price_members'],
-                    $formData['price_non_members']
+                    $formData['enable_options'] ? 0 : $formData['price_members'],
+                    $formData['enable_options'] && !$formData['only_members'] ? 0 : $formData['price_non_members']
                 );
+
+                foreach($formData['options'] as $option) {
+                    if (strlen($option['option']) == 0)
+                        break;
+                    $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
+                    $this->getEntityManager()->persist($option);
+                }
 
                 if ($formData['generate_tickets']) {
                     for($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {

@@ -108,6 +108,13 @@ class Event
     /**
      * @var \Doctrine\Common\Collection\ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Option", mappedBy="event")
+     */
+    private $options;
+
+    /**
+     * @var \Doctrine\Common\Collection\ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Ticket", mappedBy="event")
      */
     private $tickets;
@@ -333,6 +340,14 @@ class Event
     public function getTickets()
     {
         return $this->tickets;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collection\ArrayCollection
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     /**

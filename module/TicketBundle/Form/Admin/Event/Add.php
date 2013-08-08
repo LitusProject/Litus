@@ -46,6 +46,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($name);
 
+        $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
+
         $this->_entityManager = $entityManager;
 
         $field = new Select('event');
@@ -91,7 +93,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $collection = new Collection('prices');
-        $collection->setLabel('Prices');
+        $collection->setLabel('Prices')
+            ->setAttribute('class', $field->getAttribute('class') . ' half_width');
         $this->add($collection);
 
         $field = new Text('price_members');
@@ -99,11 +102,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $collection->add($field);
 
         $field = new Text('price_non_members');
-        $field->setLabel('Price Non Members');
+        $field->setLabel('Price Non Members')
+            ->setAttribute('class', $field->getAttribute('class') . ' price_non_members');
         $collection->add($field);
 
         $field = new Collection('options');
         $field->setLabel('Options')
+            ->setAttribute('class', $field->getAttribute('class') . ' half_width')
             ->setCount(0)
             ->setShouldCreateTemplate(true)
             ->setAllowAdd(true)
@@ -122,20 +127,33 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function populateFromEvent(Event $event)
     {
-        $this->setData(
-            array(
-                'event' => $event->getActivity()->getId(),
-                'active' => $event->isActive(),
-                'bookable' => $event->isBookable(),
-                'bookings_close_date' => $event->getBookingsCloseDate() ? $event->getBookingsCloseDate()->format('d/m/Y H:i') : '',
-                'generate_tickets' => $event->areTicketsGenerated(),
-                'number_of_tickets' => $event->getNumberOfTickets(),
-                'limit_per_person' => $event->getLimitPerPerson(),
-                'only_members' => $event->isOnlyMembers(),
-                'price_members' => number_format($event->getPriceMembers()/100, 2),
-                'price_non_members' => number_format($event->getPriceNonMembers()/100, 2),
-            )
+        $data = array(
+            'event' => $event->getActivity()->getId(),
+            'active' => $event->isActive(),
+            'bookable' => $event->isBookable(),
+            'bookings_close_date' => $event->getBookingsCloseDate() ? $event->getBookingsCloseDate()->format('d/m/Y H:i') : '',
+            'generate_tickets' => $event->areTicketsGenerated(),
+            'number_of_tickets' => $event->getNumberOfTickets(),
+            'limit_per_person' => $event->getLimitPerPerson(),
+            'only_members' => $event->isOnlyMembers(),
         );
+
+        if (sizeof($event->getOptions()) == 0) {
+            $data['price_members'] = number_format($event->getPriceMembers()/100, 2);
+            $data['price_non_members'] = $event->isOnlyMembers() ? '' : number_format($event->getPriceNonMembers()/100, 2);
+        } else {
+            $data['enable_options'] = true;
+
+            foreach($event->getOptions() as $option) {
+                $data['options'][] = array(
+                    'option' => $option->getName(),
+                    'price_members' => number_format($option->getPriceMembers()/100, 2),
+                    'price_non_members' => $event->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers()/100, 2),
+                );
+            }
+        }
+
+        $this->setData($data);
     }
 
     private function _createEventsArray()
@@ -241,35 +259,37 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'price_members',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator()
-                    ),
+        if (!isset($this->data['enable_options']) || !$this->data['enable_options']) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'price_members',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PriceValidator()
+                        ),
+                    )
                 )
-            )
-        );
+            );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'price_non_members',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator()
-                    ),
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'price_non_members',
+                        'required' => isset($this->data['only_members']) && $this->data['only_members'] ? false : true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PriceValidator()
+                        ),
+                    )
                 )
-            )
-        );
+            );
+        }
 
         return $inputFilter;
     }
