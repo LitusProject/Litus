@@ -39,3 +39,53 @@
         {% endif %}
     </aside>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        var currentCount = 0;
+        $(document).ready(function () {
+            $('#only_members').change(function () {
+                if ($(this).is(':checked')) {
+                    $('form .price_non_members').closest('.row').hide();
+                } else {
+                    $('form .price_non_members').show();
+                }
+            }).trigger('change');
+
+            $('#enable_options').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#prices').hide();
+                    $('#options').show();
+
+                    if (currentCount == 0)
+                        addOption();
+                } else {
+                    $('#prices').show();
+                    $('#options').hide();
+                }
+            }).trigger('change');
+        });
+
+        function triggerKeyUp() {
+            if ($(this).val().length > 0) {
+                $(this).unbind('keyup');
+                addOption();
+            }
+        }
+
+        function addOption() {
+            var template = $('#data-template').data('template');
+            template = template.replace(/__index__/g, currentCount);
+            currentCount++;
+
+            $('form > fieldset#options').append(template);
+            $('input[name="options[' + (currentCount - 1) + '][option]"]').keyup(triggerKeyUp);
+
+            if ($('#only_members').is(':checked')) {
+                $('form .price_non_members').closest('.row').hide();
+            } else {
+                $('form .price_non_members').show();
+            }
+        }
+    </script>
+{% endblock %}
