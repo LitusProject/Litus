@@ -42,13 +42,13 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        var currentCount = 0;
+        var currentCount = {{ event.getOptions()|length }};
         $(document).ready(function () {
             $('#only_members').change(function () {
                 if ($(this).is(':checked')) {
                     $('form .price_non_members').closest('.row').hide();
                 } else {
-                    $('form .price_non_members').show();
+                    $('form .price_non_members').closest('.row').show();
                 }
             }).trigger('change');
 
@@ -57,8 +57,7 @@
                     $('#prices').hide();
                     $('#options').show();
 
-                    if (currentCount == 0)
-                        addOption();
+                    addOption();
                 } else {
                     $('#prices').show();
                     $('#options').hide();

@@ -33,7 +33,7 @@ class Collection extends \Zend\Form\Element\Collection
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
     }
-    
+
     /**
      * @return boolean
      */
@@ -58,7 +58,8 @@ class Collection extends \Zend\Form\Element\Collection
             }
         }
 
-        parent::prepareElement($form);
+        if ($this->shouldCreateTemplate())
+            parent::prepareElement($form);
     }
 
     /**
@@ -71,7 +72,6 @@ class Collection extends \Zend\Form\Element\Collection
      */
     public function populateValues($data)
     {
-        //print_r($data);
         foreach($data as $key => $value) {
             if (!$this->has($key) && !is_numeric($key))
                 unset($data[$key]);

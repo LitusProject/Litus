@@ -291,6 +291,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             );
         }
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'options[0]price_members',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator()
+                    ),
+                )
+            )
+        );
+
         return $inputFilter;
     }
 }

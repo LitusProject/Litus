@@ -52,14 +52,14 @@ class Option extends Fieldset
     }
 
     public function getInputFilter()
-    {// todo: pass this to upper form
+    {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'name',
+                    'name'     => 'option',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -67,7 +67,7 @@ class Option extends Fieldset
                 )
             )
         );
-        
+
         $inputFilter->add(
             $factory->createInput(
                 array(
