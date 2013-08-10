@@ -92,7 +92,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 foreach($formData['options'] as $option) {
                     if (strlen($option['option']) == 0)
-                        break;
+                        continue;
                     $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
                     $this->getEntityManager()->persist($option);
                 }
@@ -212,6 +212,17 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setOnlyMembers($formData['only_members'])
                     ->setPriceMembers($formData['price_members'])
                     ->setPriceNonMembers($formData['price_non_members']);
+
+                foreach($event->getOptions() as $option) {
+                    $this->getEntityManager()->remove($option);
+                }
+
+                foreach($formData['options'] as $option) {
+                    if (strlen($option['option']) == 0)
+                        continue;
+                    $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
+                    $this->getEntityManager()->persist($option);
+                }
 
                 $this->getEntityManager()->flush();
 
