@@ -199,10 +199,10 @@ class Event
     }
 
     /**
-     * @param \DateTime $bookingsCloseDate
+     * @param \DateTime|null $bookingsCloseDate
      * @return \TicketBunlde\Entity\Event
      */
-    public function setBookingsCloseDate(DateTime $bookingsCloseDate)
+    public function setBookingsCloseDate(DateTime $bookingsCloseDate = null)
     {
         $this->bookingsCloseDate = $bookingsCloseDate;
         return $this;

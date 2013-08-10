@@ -19,7 +19,7 @@
                 if ($(this).is(':checked')) {
                     $('form .price_non_members').closest('.row').hide();
                 } else {
-                    $('form .price_non_members').show();
+                    $('form .price_non_members').closest('.row').show();
                 }
             }).trigger('change');
 
