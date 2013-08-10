@@ -49,14 +49,6 @@ return array(
             '@bootstrap_js_modal',
             '@ticket_css',
         ),
-        'ticket_sale_ticket' => array(
-            '@common_jquery',
-            '@bootstrap_css',
-            '@bootstrap_js_dropdown',
-            '@bootstrap_js_alert',
-            '@ticket_css',
-            '@ticket_js',
-        ),
     ),
     'routes' => array(),
 );
