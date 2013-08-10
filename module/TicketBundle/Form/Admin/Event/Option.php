@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     Ticketbundle\Entity\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilterProviderInterface,
     Zend\Form\Fieldset,
     Zend\Form\Element\Submit;
 
@@ -28,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Option extends Fieldset
+class Option extends Fieldset implements InputFilterProviderInterface
 {
     public function __construct()
     {
@@ -51,53 +52,37 @@ class Option extends Fieldset
         $this->add($field);
     }
 
-    public function getInputFilter()
+    public function getInputFilterSpecification()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'option',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
+        $required = isset($_POST['option']) && strlen($_POST['option']) > 0 ? true : false;
+        return array(
+            array(
+                'name'     => 'option',
+                'required' => $required,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+            ),
+            array(
+                'name'     => 'price_members',
+                'required' => $required,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    new PriceValidator()
+                ),
+            ),
+            array(
+                'name'     => 'price_non_members',
+                'required' => isset($_POST['only_members']) && $_POST['only_members'] ? false : $required,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    new PriceValidator()
+                ),
+            ),
         );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'price_members',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator()
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'price_non_members',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator()
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

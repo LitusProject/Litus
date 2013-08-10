@@ -42,8 +42,12 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        var currentCount = {{ event.getOptions()|length }};
+        var currentCount = 0;
         $(document).ready(function () {
+            while ($('input[name="options[' + (currentCount) + '][option]"]').length) {
+                currentCount++;
+            }
+
             $('#only_members').change(function () {
                 if ($(this).is(':checked')) {
                     $('form .price_non_members').closest('.row').hide();

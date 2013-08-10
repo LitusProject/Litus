@@ -24,6 +24,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     Ticketbundle\Entity\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilterProviderInterface,
     Zend\Form\Element\Submit;
 
 /**
@@ -31,7 +32,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilterProviderInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -171,38 +172,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $eventsArray;
     }
 
-    public function getInputFilter()
+    public function getInputFilterSpecification()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'event',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'bookings_close_date',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
+        return array(
+            array(
+                'name'     => 'event',
+                'required' => true,
+            ),
+            array(
+                'name'     => 'bookings_close_date',
+                'required' => false,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => 'd/m/Y H:i',
                         ),
-                        new DateCompareValidator('now', 'd/m/Y H:i'),
                     ),
-                )
+                    new DateCompareValidator('now', 'd/m/Y H:i'),
+                ),
             )
         );
 
