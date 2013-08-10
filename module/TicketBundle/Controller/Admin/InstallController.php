@@ -34,6 +34,21 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'ticketbundle' => array(
+                    'ticket_admin_event' => array(
+                        'add', 'delete', 'edit', 'manage', 'old'
+                    ),
+                    'ticket_admin_ticket' => array(
+                        'manage'
+                    ),
+                    'ticket_sale_index' => array(
+                        'sale'
+                    ),
+                    'ticket_sale_ticket' => array(
+                        'delete', 'overview', 'sale', 'unassign', 'undoSale'
+                    ),
+                    'ticket_sale_person' => array(
+                        'typeahead'
+                    ),
                 )
             )
         );

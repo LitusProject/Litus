@@ -92,6 +92,14 @@ class Ticket
     private $number;
 
     /**
+     * @var \TicketBundle\Entity\Option The option of the ticket
+     *
+     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Option")
+     * @ORM\JoinColumn(name="option", referencedColumnName="id")
+     */
+    private $option;
+
+    /**
      * @var boolean Flag whether the ticket was sold to a member
      *
      * @ORM\Column(type="boolean", nullable=true)
@@ -252,6 +260,24 @@ class Ticket
     public function setNumber($number)
     {
         $this->number = $number;
+        return $this;
+    }
+
+    /**
+     * @return \TicketBundle\Entity\Option
+     */
+    public function getOption()
+    {
+        return $this->option;
+    }
+
+    /**
+     * @param \TicketBundle\Entity\Option $option
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setOption(Option $option)
+    {
+        $this->option = $option;
         return $this;
     }
 
