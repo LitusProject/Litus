@@ -52,7 +52,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                         ->getRepository('TicketBundle\Entity\Ticket')
                         ->findAllEmptyByEvent($event);
 
-                    if ($event->getNumberFree() > $formData['number_member'] + $formData['number_non_member']) {
+                    if ($event->getNumberFree() > $formData['number_member'] + $formData['number_non_member'] || $event->getNumberOfTickets() == 0) {
                         $number = $formData['number_member'];
                         for($i = 0 ; $i < count($tickets) ; $i++) {
                             if (0 == $number)
@@ -78,7 +78,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                         $notEnoughTickets = true;
                     }
                 } else {
-                    if ($event->getNumberFree() > $formData['number_member'] + $formData['number_non_member']) {
+                    if ($event->getNumberFree() > $formData['number_member'] + $formData['number_non_member'] || $event->getNumberOfTickets() == 0) {
                         for($i = 0 ; $i < $formData['number_member'] ; $i++) {
                             $ticket = new Ticket(
                                 $event,

@@ -51,7 +51,7 @@
             <dt>Bookable</dt>
             <dd>{% if event.isBookable() %}yes{% else %}no{% endif %}</dd>
             <dt>Bookings Close Date</dt>
-            <dd>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}</dd>
+            <dd>{% if event.getBookingsCloseDate() %}{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}{% else %}<i>No End Date</i>{% endif %}</dd>
             <dt>Number Sold</dt>
             <dd>{{ event.getNumberSold() }}</dd>
             {% if event.getNumberOfTickets() > 0 %}

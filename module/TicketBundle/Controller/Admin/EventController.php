@@ -90,11 +90,13 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData['enable_options'] && !$formData['only_members'] ? 0 : $formData['price_non_members']
                 );
 
-                foreach($formData['options'] as $option) {
-                    if (strlen($option['option']) == 0)
-                        continue;
-                    $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
-                    $this->getEntityManager()->persist($option);
+                if ($formData['enable_options']) {
+                    foreach($formData['options'] as $option) {
+                        if (strlen($option['option']) == 0)
+                            continue;
+                        $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
+                        $this->getEntityManager()->persist($option);
+                    }
                 }
 
                 if ($formData['generate_tickets']) {
@@ -210,18 +212,20 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setNumberOfTickets($formData['number_of_tickets'])
                     ->setLimitPerPerson($formData['limit_per_person'])
                     ->setOnlyMembers($formData['only_members'])
-                    ->setPriceMembers($formData['price_members'])
-                    ->setPriceNonMembers($formData['price_non_members']);
+                    ->setPriceMembers($formData['enable_options'] ? 0 : $formData['price_members'])
+                    ->setPriceNonMembers($formData['enable_options'] && !$formData['only_members'] ? 0 : $formData['price_non_members']);
 
                 foreach($event->getOptions() as $option) {
                     $this->getEntityManager()->remove($option);
                 }
 
-                foreach($formData['options'] as $option) {
-                    if (strlen($option['option']) == 0)
-                        continue;
-                    $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
-                    $this->getEntityManager()->persist($option);
+                if ($formData['enable_options']) {
+                    foreach($formData['options'] as $option) {
+                        if (strlen($option['option']) == 0)
+                            continue;
+                        $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
+                        $this->getEntityManager()->persist($option);
+                    }
                 }
 
                 $this->getEntityManager()->flush();

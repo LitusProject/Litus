@@ -43,11 +43,12 @@
             $('#sale_tickets').click(function (e) {
                 e.preventDefault();
 
-                $('#saleConfirmModal .numberTickets').html(parseInt($('select#number_non_member').val()) + parseInt($('select#number_member').val()));
-                var price = $('select#number_member').val() * {{ (event.getPriceMembers()/100)|number_format(2) }}
-                    + $('select#number_non_member').val() * {{ (event.getPriceNonMembers()/100)|number_format(2) }};
+                var price = 0;
+                $('.ticket_option').each(function () {
+                    price += $(this).val() * $(this).data('price');
+                });
 
-                $('#saleConfirmModal .price').html('&euro; ' + price.toFixed(2));
+                $('#saleConfirmModal .price').html('&euro; ' + (price/100).toFixed(2));
                 $('#saleConfirmModal').modal();
             });
 

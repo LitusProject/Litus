@@ -14,6 +14,8 @@
 
 namespace TicketBundle\Component\Validator;
 
+use TicketBundle\Entity\Event;
+
 /**
  * Check whether number of member + number of non member does not exceed max
  *
@@ -24,9 +26,9 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var integer
+     * @var \TicketBundle\Entity\Event
      */
-    private $_max;
+    private $_event;
 
     /**
      * Error messages
@@ -40,14 +42,14 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param integer $max The max number of tickets
+     * @param \TicketBundle\Entity\Event $event The event
      * @param mixed $opts The validator's options
      */
-    public function __construct($max, $opts = null)
+    public function __construct(Event $event, $opts = null)
     {
         parent::__construct($opts);
 
-        $this->_max = $max;
+        $this->_event = $event;
     }
 
 
@@ -62,7 +64,22 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if ($value + $context['number_member'] > $this->_max && $this->_max != 0) {
+        $number = 0;
+        if (count($this->_event->getOptions()) == 0) {
+            $number += $context['number_member'];
+            if (!$this->_event->isOnlyMembers()) {
+                $number += $context['number_non_member'];
+            }
+        } else {
+            foreach($this->_event->getOptions() as $option) {
+                $number += $context['option_' . $option->getId() . '_number_member'];
+                if (!$this->_event->isOnlyMembers()) {
+                    $number += $context['option_' . $option->getId() . '_number_non_member'];
+                }
+            }
+        }
+
+        if ($number > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
             $this->error(self::NOT_VALID);
             return false;
         }

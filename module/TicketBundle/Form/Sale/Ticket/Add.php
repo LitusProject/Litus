@@ -61,15 +61,41 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Select('number_member');
-        $field->setLabel('Number Member')
-            ->setAttribute('options', $this->_getNumberOptions());
-        $this->add($field);
+        if (count($event->getOptions()) == 0) {
+            $field = new Select('number_member');
+            $field->setLabel('Number Member')
+                ->setAttribute('options', $this->_getNumberOptions())
+                ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
+                ->setAttribute('data-price', $event->getPriceMembers());
+            $this->add($field);
 
-        $field = new Select('number_non_member');
-        $field->setLabel('Number Non Member')
-            ->setAttribute('options', $this->_getNumberOptions());
-        $this->add($field);
+            if (!$event->isOnlyMembers()) {
+                $field = new Select('number_non_member');
+                $field->setLabel('Number Non Member')
+                    ->setAttribute('options', $this->_getNumberOptions())
+                    ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
+                    ->setAttribute('data-price', $event->getPriceNonMembers());
+                $this->add($field);
+            }
+        } else {
+            foreach($event->getOptions() as $option) {
+                $field = new Select('option_' . $option->getId() . '_number_member');
+                $field->setLabel(ucfirst($option->getName()) . ' (Member)')
+                    ->setAttribute('options', $this->_getNumberOptions())
+                    ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
+                    ->setAttribute('data-price', $option->getPriceMembers());
+                $this->add($field);
+
+                if (!$event->isOnlyMembers()) {
+                    $field = new Select('option_' . $option->getId() . '_number_non_member');
+                    $field->setLabel(ucfirst($option->getName()) . ' (Non Member)')
+                        ->setAttribute('options', $this->_getNumberOptions())
+                        ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
+                        ->setAttribute('data-price', $option->getPriceNonMembers());
+                    $this->add($field);
+                }
+            }
+        }
 
         $field = new Checkbox('payed');
         $field->setLabel('Payed');
@@ -125,29 +151,61 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'number_member',
-                    'required' => true,
-                    'validators' => array(
-                        new NumberTicketsValidator($this->_event->getLimitPerPerson()),
+        if (count($this->_event->getOptions()) == 0) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'number_member',
+                        'required' => true,
+                        'validators' => array(
+                            new NumberTicketsValidator($this->_event),
+                        )
                     )
                 )
-            )
-        );
+            );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'number_non_member',
-                    'required' => true,
-                    'validators' => array(
-                        new NumberTicketsValidator($this->_event->getLimitPerPerson()),
+            if (!$this->_event->isOnlyMembers()) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'number_non_member',
+                            'required' => true,
+                            'validators' => array(
+                                new NumberTicketsValidator($this->_event),
+                            )
+                        )
                     )
-                )
-            )
-        );
+                );
+            }
+        } else {
+            foreach($this->_event->getOptions() as $option) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'option_' . $option->getId() . '_number_member',
+                            'required' => true,
+                            'validators' => array(
+                                new NumberTicketsValidator($this->_event),
+                            )
+                        )
+                    )
+                );
+
+                if (!$this->_event->isOnlyMembers()) {
+                    $inputFilter->add(
+                        $factory->createInput(
+                            array(
+                                'name'     => 'option_' . $option->getId() . '_number_non_member',
+                                'required' => true,
+                                'validators' => array(
+                                    new NumberTicketsValidator($this->_event),
+                                )
+                            )
+                        )
+                    );
+                }
+            }
+        }
 
         return $inputFilter;
     }
