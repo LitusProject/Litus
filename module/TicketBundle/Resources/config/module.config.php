@@ -132,7 +132,7 @@ return array(
     ),
     'assetic_configuration' => array(
         'modules' => array(
-            'sportbundle' => array(
+            'ticketbundle' => array(
                 'root_path' => __DIR__ . '/../assets',
                 'collections' => array(
                     'ticket_css' => array(
