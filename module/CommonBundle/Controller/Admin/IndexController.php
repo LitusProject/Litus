@@ -26,8 +26,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
+        $piwikEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.piwik_enabled');
+
         $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if ('development' != getenv('APPLICATION_ENV') && $piwikEnabled) {
             $analytics = new Analytics(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')

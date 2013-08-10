@@ -174,6 +174,11 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'Show sport information on homepage',
                 ),
                 array(
+                    'key'         => 'common.piwik_enabled',
+                    'value'       => '0',
+                    'description' => 'Whether or not Piwik support should be enabled',
+                ),
+                array(
                     'key'         => 'common.piwik_api_url',
                     'value'       => 'http://analytics.vtk.be/',
                     'description' => 'The URL to the Piwik installation',
