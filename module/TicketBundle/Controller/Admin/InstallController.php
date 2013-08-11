@@ -41,7 +41,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'manage'
                     ),
                     'ticket_sale_index' => array(
-                        'sale'
+                        'sale', 'validate'
                     ),
                     'ticket_sale_ticket' => array(
                         'delete', 'overview', 'sale', 'unassign', 'undoSale'

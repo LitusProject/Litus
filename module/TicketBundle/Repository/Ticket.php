@@ -2,7 +2,8 @@
 
 namespace TicketBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Entity\User\Person,
+    Doctrine\ORM\EntityRepository,
     TicketBundle\Entity\Event as EventEntity;
 
 /**
@@ -45,6 +46,21 @@ class Ticket extends EntityRepository
                 $query->expr()->eq('t.event', ':event')
             )
             ->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByPerson(Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->eq('t.person', ':person')
+            )
+            ->setParameter('person', $person)
             ->getQuery()
             ->getResult();
 

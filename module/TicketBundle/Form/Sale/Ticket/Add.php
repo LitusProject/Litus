@@ -18,6 +18,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event,
     Zend\Form\Element\Hidden,
@@ -32,6 +33,11 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @var \TicketBundle\Entity\Event
      */
     private $_event;
@@ -40,10 +46,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      * @param \TicketBundle\Entity\Event $event
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Event $event, $name = null)
+    public function __construct(EntityManager $entityManager, Event $event, $name = null)
     {
         parent::__construct($name);
 
+        $this->_entityManager = $entityManager;
         $this->_event = $event;
 
         $this->setAttribute('id', 'ticket_sale_form');
@@ -158,7 +165,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'name'     => 'number_member',
                         'required' => true,
                         'validators' => array(
-                            new NumberTicketsValidator($this->_event),
+                            new NumberTicketsValidator($this->_entityManager, $this->_event),
                         )
                     )
                 )
@@ -171,7 +178,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'name'     => 'number_non_member',
                             'required' => true,
                             'validators' => array(
-                                new NumberTicketsValidator($this->_event),
+                                new NumberTicketsValidator($this->_entityManager, $this->_event),
                             )
                         )
                     )
@@ -185,7 +192,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'name'     => 'option_' . $option->getId() . '_number_member',
                             'required' => true,
                             'validators' => array(
-                                new NumberTicketsValidator($this->_event),
+                                new NumberTicketsValidator($this->_entityManager, $this->_event),
                             )
                         )
                     )
@@ -198,7 +205,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'name'     => 'option_' . $option->getId() . '_number_non_member',
                                 'required' => true,
                                 'validators' => array(
-                                    new NumberTicketsValidator($this->_event),
+                                    new NumberTicketsValidator($this->_entityManager, $this->_event),
                                 )
                             )
                         )

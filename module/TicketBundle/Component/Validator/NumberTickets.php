@@ -14,7 +14,8 @@
 
 namespace TicketBundle\Component\Validator;
 
-use TicketBundle\Entity\Event;
+use Doctrine\ORM\EntityManager,
+    TicketBundle\Entity\Event;
 
 /**
  * Check whether number of member + number of non member does not exceed max
@@ -24,6 +25,11 @@ use TicketBundle\Entity\Event;
 class NumberTickets extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
 
     /**
      * @var \TicketBundle\Entity\Event
@@ -42,13 +48,15 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
+     * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \TicketBundle\Entity\Event $event The event
      * @param mixed $opts The validator's options
      */
-    public function __construct(Event $event, $opts = null)
+    public function __construct(EntityManager $entityManager, Event $event, $opts = null)
     {
         parent::__construct($opts);
 
+        $this->_entityManager = $entityManager;
         $this->_event = $event;
     }
 
@@ -79,7 +87,20 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
             }
         }
 
-        if ($number > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
+        $person = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($context['person_id']);
+
+        if (null == $person ) {
+            $this->error(self::NOT_VALID);
+            return false;
+        }
+
+        $tickets = $this->_entityManager
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllByPerson($person);
+
+        if ($number + count($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
             $this->error(self::NOT_VALID);
             return false;
         }

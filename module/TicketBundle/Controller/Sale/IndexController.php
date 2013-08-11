@@ -35,7 +35,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        $form = new AddForm($event);
+        $form = new AddForm($this->getEntityManager(), $event);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -190,6 +190,54 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                 'form' => $form,
             )
         );
+    }
+
+    public function validateAction()
+    {
+        $event = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event')
+            ->findOneById($this->getParam('id'));
+
+        $form = new AddForm($this->getEntityManager(), $event);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info' => array('status' => 'success'),
+                    )
+                );
+            } else {
+                $errors = $form->getMessages();
+                $formErrors = array();
+
+                foreach ($form->getElements() as $key => $element) {
+                    if (!isset($errors[$element->getName()]))
+                        continue;
+
+                    $formErrors[$element->getAttribute('id')] = array();
+
+                    foreach ($errors[$element->getName()] as $error) {
+                        $formErrors[$element->getAttribute('id')][] = $error;
+                    }
+                }
+
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form' => array(
+                            'errors' => $formErrors
+                        ),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel();
     }
 
     private function _createTicket(Event $event, Person $person, $member, $payed, Option $option = null)
