@@ -250,7 +250,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             null,
             $event->generateTicketNumber($this->getEntityManager())
         );
-        $ticket->setMember(false)
+        $ticket->setMember($member)
             ->setStatus($payed ? 'sold' : 'booked')
             ->setOption($option);
 

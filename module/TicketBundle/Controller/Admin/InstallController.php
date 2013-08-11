@@ -49,6 +49,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'ticket_sale_person' => array(
                         'typeahead'
                     ),
+                    'ticket' => array(
+                        'event'
+                    ),
                 )
             )
         );

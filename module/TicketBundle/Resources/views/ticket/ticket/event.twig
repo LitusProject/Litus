@@ -11,11 +11,36 @@
         <i class="icon-time"></i> {{ dateLocalized(event.getActivity().getStartDate(), 'HH:mm') }}{% if event.getActivity().getEndDate() %} - {{ dateLocalized(event.getActivity().getEndDate(), 'HH:mm') }}{% endif %}
 
         <div style="padding-left: 10px">
+            <h2>{{ translate('Prices') }}</h2>
+            {% if event.getOptions()|length == 0 %}
+                <dl class="dl-horizontal">
+                    <dt>{{ translate('Member') }}</dt>
+                    <dd>&euro;{{ (event.getPriceMembers()/100)|number_format(2) }}</dd>
+                    {% if not event.isOnlyMembers() %}
+                        <dt>{{ translate('Non Member') }}</dt>
+                        <dd>&euro;{{ (event.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                    {% endif %}
+                </dl>
+            {% else %}
+                <dl class="dl-horizontal">
+                    {% for option in event.getOptions() %}
+                        <dt>{{ option.getName() }}&mdash;{{ translate('Member') }}</dt>
+                        <dd>&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
+                        {% if not event.isOnlyMembers() %}
+                            <dt>{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
+                            <dd>&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                        {% endif %}
+                    {% endfor %}
+                </dl>
+            {% endif %}
+
+
             <h2>{{ translate('Your Tickets') }}</h2>
 
             <table class="table table-bordered table-striped">
                 <tr>
                     <th width="80px">{{ translate('Status') }}</th>
+                    <th width="160px">{{ translate('Option') }}</th>
                     <th>{{ translate('Number') }}</th>
                     <th width="120px">{{ translate('Book Date') }}</th>
                     <th width="120px">{{ translate('Sold Date') }}</th>
@@ -24,12 +49,17 @@
                 {% for ticket in tickets %}
                     <tr class="item">
                         <td>{{ translate(ticket.getStatus()) }}</td>
+                        <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}{{ translate('Member') }}{% else %}{{ translate('Non Member') }}{% endif %})</td>
                         <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
                         <td>{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                         <td>{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
                     </tr>
                 {% endfor %}
             </table>
+
+            <h2>{{ translate('Book Tickets') }}</h2>
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
         </div>
     </div>
 {% endblock %}

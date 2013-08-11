@@ -14,7 +14,8 @@
 
 namespace TicketBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager,
+use CommonBundle\Entity\User\Person,
+    Doctrine\ORM\EntityManager,
     TicketBundle\Entity\Event;
 
 /**
@@ -37,6 +38,11 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     private $_event;
 
     /**
+     * @var \CommonBundle\Entity\User\Person
+     */
+    private $_person;
+
+    /**
      * Error messages
      *
      * @var array
@@ -52,12 +58,13 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
      * @param \TicketBundle\Entity\Event $event The event
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, Event $event, $opts = null)
+    public function __construct(EntityManager $entityManager, Event $event, Person $person = null, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
         $this->_event = $event;
+        $this->_person = $person;
     }
 
 
@@ -87,10 +94,14 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
             }
         }
 
-        $person = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($context['person_id']);
-
+        if ($this->_person == null) {
+            $person = $this->_entityManager
+                ->getRepository('CommonBundle\Entity\User\Person')
+                ->findOneById($context['person_id']);
+        } else {
+            $person = $this->_person;
+        }
+        
         if (null == $person ) {
             $this->error(self::NOT_VALID);
             return false;

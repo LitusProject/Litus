@@ -53,8 +53,9 @@
     <table class="table table-bordered table-striped">
         <tr>
             <th>{{ translate('Person') }}</th>
-            <th width="80px">{{ translate('Status') }}</th>
-            <th width="130px">{{ translate('Number') }}</th>
+            <th width="60px">{{ translate('Status') }}</th>
+            <th width="140px">{{ translate('Option') }}</th>
+            <th width="90px">{{ translate('Number') }}</th>
             <th width="120px">{{ translate('Book Date') }}</th>
             <th width="120px">{{ translate('Sold Date') }}</th>
             <th width="190px">{{ translate('Action') }}</th>
@@ -64,6 +65,7 @@
             <tr class="item item-{{ ticket.getId() }}">
                 <td class="person">{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
                 <td class="status">{{ ticket.getStatus() }}</td>
+                <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
                 <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
                 <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                 <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
