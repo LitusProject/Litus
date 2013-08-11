@@ -17,6 +17,7 @@ namespace TicketBundle\Form\Admin\Event;
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Component\Validator\Price as PriceValidator,
@@ -93,6 +94,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
         $field->setLabel('Only Members');
         $this->add($field);
 
+        $field = new Hidden('enable_options_hidden');
+        $this->add($field);
+
         $field = new Checkbox('enable_options');
         $field->setLabel('Enable Options');
         $this->add($field);
@@ -149,9 +153,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             $data['price_non_members'] = $event->isOnlyMembers() ? '' : number_format($event->getPriceNonMembers()/100, 2);
         } else {
             $data['enable_options'] = true;
+            $data['enable_options_hidden'] = '1';
+            $this->get('enable_options')
+                ->setAttribute('disabled', 'disabled');
 
             foreach($event->getOptions() as $option) {
                 $data['options'][] = array(
+                    'option_id' => $option->getId(),
                     'option' => $option->getName(),
                     'price_members' => number_format($option->getPriceMembers()/100, 2),
                     'price_non_members' => $event->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers()/100, 2),
@@ -179,7 +187,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
 
     public function getInputFilterSpecification()
     {
-        return array(
+        $inputs = array(
             array(
                 'name'     => 'event',
                 'required' => true,
@@ -203,105 +211,75 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
         );
 
         if (isset($this->data['generate_tickets']) && $this->data['generate_tickets']) {
-            $inputFilter->add(
-                $factory->createInput(
+            $inputs[] = array(
+                'name'     => 'number_of_tickets',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array('name' => 'int'),
                     array(
-                        'name'     => 'number_of_tickets',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                            array(
-                                'name' => 'greaterthan',
-                                'options' => array(
-                                    'min' => 0,
-                                )
-                            )
-                        ),
+                        'name' => 'greaterthan',
+                        'options' => array(
+                            'min' => 0,
+                        )
                     )
-                )
+                ),
             );
         } else {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'number_of_tickets',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
-                    )
-                )
+            $inputs[] = array(
+                'name'     => 'number_of_tickets',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array('name' => 'int'),
+                ),
             );
         }
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'limit_per_person',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                    ),
-                )
-            )
+        $inputs[] = array(
+            'name'     => 'limit_per_person',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array('name' => 'int'),
+            ),
         );
 
-        if (!isset($this->data['enable_options']) || !$this->data['enable_options']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'price_members',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new PriceValidator()
-                        ),
-                    )
-                )
+        $inputs[] = array(
+            'name'     => 'enable_options_hidden',
+            'required' => false,
+        );
+
+        if ((!isset($this->data['enable_options']) || !$this->data['enable_options']) && $this->data['enable_options_hidden'] != '1') {
+            $inputs[] = array(
+                'name'     => 'price_members',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    new PriceValidator()
+                ),
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'price_non_members',
-                        'required' => isset($this->data['only_members']) && $this->data['only_members'] ? false : true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new PriceValidator()
-                        ),
-                    )
-                )
+            $inputs[] = array(
+                'name'     => 'price_non_members',
+                'required' => isset($this->data['only_members']) && $this->data['only_members'] ? false : true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    new PriceValidator()
+                ),
             );
         }
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'options[0]price_members',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator()
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        return $inputs;
     }
 }

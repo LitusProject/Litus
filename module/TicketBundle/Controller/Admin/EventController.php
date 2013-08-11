@@ -214,19 +214,25 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setLimitPerPerson($formData['limit_per_person'])
                     ->setAllowRemove($formData['allow_remove'])
                     ->setOnlyMembers($formData['only_members'])
-                    ->setPriceMembers($formData['enable_options'] ? 0 : $formData['price_members'])
-                    ->setPriceNonMembers($formData['enable_options'] && !$formData['only_members'] ? 0 : $formData['price_non_members']);
+                    ->setPriceMembers(sizeof($event->getOptions()) ? 0 : $formData['price_members'])
+                    ->setPriceNonMembers(sizeof($event->getOptions()) && !$formData['only_members'] ? 0 : $formData['price_non_members']);
 
-                foreach($event->getOptions() as $option) {
-                    $this->getEntityManager()->remove($option);
-                }
-
-                if ($formData['enable_options']) {
-                    foreach($formData['options'] as $option) {
-                        if (strlen($option['option']) == 0)
+                if (sizeof($event->getOptions())) {
+                    foreach($formData['options'] as $optionData) {
+                        if (strlen($optionData['option']) == 0)
                             continue;
-                        $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
-                        $this->getEntityManager()->persist($option);
+
+                        if (isset($optionData['option_id']) && is_numeric($optionData['option_id'])) {
+                            $option = $this->getEntityManager()
+                                ->getRepository('TicketBundle\Entity\Option')
+                                ->findOneById($optionData['option_id']);
+                            $option->setName($optionData['option'])
+                                ->setPriceMembers($optionData['price_members'])
+                                ->setPriceNonMembers(!$formData['only_members'] ? 0 : $optionData['price_non_members']);
+                        } else {
+                            $option = new Option($event, $optionData['option'], $optionData['price_members'], !$formData['only_members'] ? 0 : $optionData['price_non_members']);
+                            $this->getEntityManager()->persist($option);
+                        }
                     }
                 }
 

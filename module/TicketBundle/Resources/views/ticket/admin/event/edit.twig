@@ -48,6 +48,9 @@
                 currentCount++;
             }
 
+            if ($('#enable_options_hidden').val() && !$('#enable_options').is(':checked'))
+                $('#enable_options').prop('checked', true);
+
             $('#only_members').change(function () {
                 if ($(this).is(':checked')) {
                     $('form .price_non_members').closest('.row').hide();

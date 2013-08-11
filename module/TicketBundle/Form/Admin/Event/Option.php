@@ -14,7 +14,8 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
     Ticketbundle\Entity\Event,
@@ -37,6 +38,9 @@ class Option extends Fieldset implements InputFilterProviderInterface
 
         $this->setLabel('Option');
 
+        $field = new Hidden('option_id');
+        $this->add($field);
+
         $field = new Text('option');
         $field->setLabel('Name')
             ->setRequired(true);
@@ -54,8 +58,21 @@ class Option extends Fieldset implements InputFilterProviderInterface
 
     public function getInputFilterSpecification()
     {
-        $required = isset($_POST['option']) && strlen($_POST['option']) > 0 ? true : false;
+        $required = isset($_POST['options'][$this->getName()]['option']) && strlen($_POST['options'][$this->getName()]['option']) > 0 ? true : false;
+
         return array(
+            array(
+                'name'     => 'option_id',
+                'required' => false,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'int',
+                    )
+                ),
+            ),
             array(
                 'name'     => 'option',
                 'required' => $required,
