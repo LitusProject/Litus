@@ -32,7 +32,10 @@ class PersonController extends \CudiBundle\Component\Controller\ProfController
                 ->findAllByName($this->getParam('string')),
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findAllByUniversityIdentification($this->getParam('string'))
+                ->findAllByUniversityIdentification($this->getParam('string')),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->findAllByBarcode($this->getParam('string'))
         );
 
         $result = array();
