@@ -52,15 +52,19 @@ class Ticket extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByPerson(Person $person)
+    public function findAllByEventAndPerson(EventEntity $event, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->where(
-                $query->expr()->eq('t.person', ':person')
+                $query->expr()->andX(
+                    $query->expr()->eq('t.person', ':person'),
+                    $query->expr()->eq('t.event', ':event')
+                )
             )
             ->setParameter('person', $person)
+            ->setParameter('event', $event)
             ->getQuery()
             ->getResult();
 

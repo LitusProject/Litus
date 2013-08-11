@@ -1,0 +1,35 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ event.getActivity().getTitle(language) }}</h1>
+    </div>
+
+    <div class="item">
+        <span class="date left">{{ dateLocalized(event.getActivity().getStartDate(), 'd MMM') }}</span>
+
+        <i class="icon-time"></i> {{ dateLocalized(event.getActivity().getStartDate(), 'HH:mm') }}{% if event.getActivity().getEndDate() %} - {{ dateLocalized(event.getActivity().getEndDate(), 'HH:mm') }}{% endif %}
+
+        <div style="padding-left: 10px">
+            <h2>{{ translate('Your Tickets') }}</h2>
+
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th width="80px">{{ translate('Status') }}</th>
+                    <th>{{ translate('Number') }}</th>
+                    <th width="120px">{{ translate('Book Date') }}</th>
+                    <th width="120px">{{ translate('Sold Date') }}</th>
+                </tr>
+
+                {% for ticket in tickets %}
+                    <tr class="item">
+                        <td>{{ translate(ticket.getStatus()) }}</td>
+                        <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
+                        <td>{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
+                        <td>{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

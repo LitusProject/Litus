@@ -98,7 +98,7 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
 
         $tickets = $this->_entityManager
             ->getRepository('TicketBundle\Entity\Ticket')
-            ->findAllByPerson($person);
+            ->findAllByEventAndPerson($this->_event, $person);
 
         if ($number + count($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
             $this->error(self::NOT_VALID);

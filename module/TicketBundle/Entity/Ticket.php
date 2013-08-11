@@ -181,6 +181,8 @@ class Ticket
             $this->bookDate = null;
             $this->soldDate = null;
         } elseif ($status == 'sold') {
+            if ($this->bookDate == null)
+                $this->bookDate = new DateTime();
             $this->soldDate = new DateTime();
         } elseif ($status == 'booked') {
             $this->bookDate = new DateTime();

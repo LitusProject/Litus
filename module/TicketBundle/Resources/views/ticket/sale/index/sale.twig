@@ -52,7 +52,8 @@
                 $('#sale_confirm').addClass('disabled').prop('disabled');
 
                 var data = {
-                    person_id: $('#person_id').val(),
+                    person_id: $('#personId').val(),
+                    person: $('#personSearch').val(),
                     payed: $('#payed').val()
                 }
                 $('.ticket_option').each(function () {

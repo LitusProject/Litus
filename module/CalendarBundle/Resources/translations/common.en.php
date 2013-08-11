@@ -5,4 +5,6 @@ return array(
     'Previous' => 'Previous',
     'Next' => 'Next',
     'Download' => 'Download',
+    'Shifts' => 'Shifts',
+    'Tickets' => 'Tickets',
 );

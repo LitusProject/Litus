@@ -64,7 +64,7 @@
             <tr class="item item-{{ ticket.getId() }}">
                 <td class="person">{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
                 <td class="status">{{ ticket.getStatus() }}</td>
-                <td>{{ ticket.getNumber() }}</td>
+                <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
                 <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                 <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
                 <td class="actions">

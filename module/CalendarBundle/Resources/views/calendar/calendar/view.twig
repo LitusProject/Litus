@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="page-header">
+        {% if hasAccess('ticket', 'index') and ticketEvent is not null %}
+            <div class="pull-right" style="line-height: 50px">
+                <a href="{{ url('ticket', {'id': ticketEvent.getId()}) }}" class="btn"><span class="icon-tags"></span> {{ translate('Tickets') }}</a>
+            </div>
+        {% endif %}
         {% if hasAccess('shift', 'index') and hasShifts %}
             <div class="pull-right" style="line-height: 50px">
                 <form action="{{ url('shift') }}" method="post">
@@ -16,7 +21,7 @@
     <div class="item">
         <span class="date left">{{ dateLocalized(event.getStartDate(), 'd MMM') }}</span>
 
-        <i class="icon-time"></i> {{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}
+        <i class="icon-time"></i> {{ dateLocalized(event.getStartDate(), 'HH:mm') }}{% if event.getEndDate() %} - {{ dateLocalized(event.getEndDate(), 'HH:mm') }}{% endif %}&mdash;{{ event.getTitle(language) }}
         {% if event.getPoster() %}
             <div class="row">
                 <div class="span3">
