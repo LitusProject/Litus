@@ -15,6 +15,8 @@
 namespace TicketBundle\Entity;
 
 use CalendarBundle\Entity\Node\Event as CalendarEvent,
+    CommonBundle\Entity\User\Person,
+    DateInterval,
     DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -92,6 +94,13 @@ class Event
     private $onlyMembers;
 
     /**
+     * @var integer Flag whether users can remove there ticket
+     *
+     * @ORM\Column(name="allow_remove", type="boolean")
+     */
+    private $allowRemove;
+
+    /**
      * @var integer The price for members
      *
      * @ORM\Column(name="price_members", type="smallint")
@@ -127,11 +136,12 @@ class Event
      * @param boolean $ticketsGenerated
      * @param integer $numberOfTickets
      * @param integer $limitPerPerson
+     * @param boolean $allowRemove
      * @param boolean $onlyMembers
      * @param integer $priceMembers
      * @param integer $priceNonMembers
      */
-    public function __construct(CalendarEvent $activity, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $onlyMembers, $priceMembers, $priceNonMembers)
+    public function __construct(CalendarEvent $activity, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $allowRemove, $onlyMembers, $priceMembers, $priceNonMembers)
     {
         $this->activity = $activity;
         $this->bookable = $bookable;
@@ -141,6 +151,7 @@ class Event
         $this->numberOfTickets = $numberOfTickets;
         $this->limitPerPerson = $limitPerPerson;
         $this->onlyMembers = $onlyMembers;
+        $this->allowRemove = $allowRemove;
 
         $this->setPriceMembers($priceMembers)
             ->setPriceNonMembers($priceNonMembers);
@@ -178,6 +189,14 @@ class Event
     public function isBookable()
     {
         return $this->bookable;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isStillBookable()
+    {
+        return $this->bookable && new DateTime() < $this->getBookingsCloseDate();
     }
 
     /**
@@ -283,6 +302,24 @@ class Event
     /**
      * @return boolean
      */
+    public function allowRemove()
+    {
+        return $this->allowRemove;
+    }
+
+    /**
+     * @param boolean $allowRemove
+     * @return \TicketBunlde\Entity\Event
+     */
+    public function setAllowRemove($allowRemove)
+    {
+        $this->allowRemove = $allowRemove;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
     public function isOnlyMembers()
     {
         return $this->onlyMembers;
@@ -382,5 +419,36 @@ class Event
         } while($ticket !== null);
 
         return $number;
+    }
+
+    /**
+     * Check whether or not the given person can sign out from this shift.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @return boolean
+     */
+    public function canRemoveReservation(EntityManager $entityManager, Person $person)
+    {
+        if (!$this->allowRemove())
+            return false;
+
+        $now = new DateTime();
+
+        $removeReservationThreshold = new DateInterval(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('ticket.remove_reservation_treshold')
+        );
+
+        if ($this->getBookingsCloseDate() == null) {
+            $getStartDate = clone $this->getActivity()->getStartDate();
+        } else {
+            $getStartDate = clone $this->getBookingsCloseDate();
+        }
+
+        if ($getStartDate->sub($removeReservationThreshold) < $now)
+             return false;
+
+        return true;
     }
 }

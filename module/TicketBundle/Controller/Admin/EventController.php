@@ -85,6 +85,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData['generate_tickets'],
                     $formData['number_of_tickets'],
                     $formData['limit_per_person'],
+                    $formData['allow_remove'],
                     $formData['only_members'],
                     $formData['enable_options'] ? 0 : $formData['price_members'],
                     $formData['enable_options'] && !$formData['only_members'] ? 0 : $formData['price_non_members']
@@ -211,6 +212,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setTicketsGenerated($formData['generate_tickets'])
                     ->setNumberOfTickets($formData['number_of_tickets'])
                     ->setLimitPerPerson($formData['limit_per_person'])
+                    ->setAllowRemove($formData['allow_remove'])
                     ->setOnlyMembers($formData['only_members'])
                     ->setPriceMembers($formData['enable_options'] ? 0 : $formData['price_members'])
                     ->setPriceNonMembers($formData['enable_options'] && !$formData['only_members'] ? 0 : $formData['price_non_members']);

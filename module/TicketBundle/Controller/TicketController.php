@@ -189,6 +189,28 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'event' => $event,
                 'tickets' => $tickets,
                 'form' => $form,
+                'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager(), $this->getAuthentication()->getPersonObject()),
+            )
+        );
+    }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($ticket = $this->_getTicket()))
+            return new ViewModel();
+
+        if ($ticket->getEvent()->areTicketsGenerated()) {
+            $ticket->setStatus('empty');
+        } else {
+            $this->getEntityManager()->remove($ticket);
+        }
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
             )
         );
     }
@@ -227,5 +249,24 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         return $event;
+    }
+
+    private function _getTicket()
+    {
+        if (null === $this->getParam('id')) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneById($this->getParam('id'));
+
+        if (null == $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        return $ticket;
     }
 }

@@ -85,6 +85,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             ->setValue(0);
         $this->add($field);
 
+        $field = new Checkbox('allow_remove');
+        $field->setLabel('Allow Users To Remove Reservations');
+        $this->add($field);
+
         $field = new Checkbox('only_members');
         $field->setLabel('Only Members');
         $this->add($field);
@@ -136,6 +140,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             'generate_tickets' => $event->areTicketsGenerated(),
             'number_of_tickets' => $event->getNumberOfTickets(),
             'limit_per_person' => $event->getLimitPerPerson(),
+            'allow_remove' => $event->allowRemove(),
             'only_members' => $event->isOnlyMembers(),
         );
 
