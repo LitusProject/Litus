@@ -35,7 +35,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function sendAction()
     {
-        $currentYear = $this->getCurrentAcademicYear();
+        $currentYear = $this->getCurrentAcademicYear(false);
 
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
@@ -105,7 +105,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                             $studies = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
-                                ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
+                                ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear(false));
 
                             foreach  ($studies as $study) {
                                 $children = $study->getStudy()->getAllChildren();
