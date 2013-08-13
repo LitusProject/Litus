@@ -142,7 +142,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!$organization)
             return parent::getCurrentAcademicYear();
-        
+
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 
