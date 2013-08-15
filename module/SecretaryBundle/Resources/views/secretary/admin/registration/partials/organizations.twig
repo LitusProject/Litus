@@ -1,0 +1,10 @@
+<header id="controller_sub_header">
+    <nav id="controller_sub_nav">
+        <ul id="supplier_nav">
+            <li><a {% if currentOrganization is null %} class="active" {% endif %}href="{{ url("secretary_admin_registration", {"action": "manage", "academicyear": activeAcademicYear.getCode()}) }}">All</a></li>
+            {% for organization in organizations %}
+                <li><a {% if organization.getId() == currentOrganization.getId() %} class="active" {% endif %}href="{{ url("secretary_admin_registration", {"action": "manage", "academicyear": activeAcademicYear.getCode(), "organization": organization.getId()}) }}">{{ organization.getName() }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</header>

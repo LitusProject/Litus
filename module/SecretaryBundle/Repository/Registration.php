@@ -3,6 +3,7 @@
 namespace SecretaryBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Query\Expr\Join,
     Doctrine\ORM\EntityRepository;
@@ -38,8 +39,30 @@ class Registration extends EntityRepository
         return null;
     }
 
-    public function findAllByUniversityIdentification($universityIdentification, AcademicYear $academicYear)
+    public function findAllByUniversityIdentification($universityIdentification, AcademicYear $academicYear, Organization $organization = null)
     {
+        $ids = array(0);
+        if ($organization !== null) {
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('a.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'a')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('m.organization', ':organization'),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('organization', $organization)
+                ->setParameter('academicYear', $academicYear)
+                ->getQuery()
+                ->getResult();
+
+            foreach($resultSet as $result) {
+                $ids[] = $result['id'];
+            }
+        }
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SecretaryBundle\Entity\Registration', 'r')
@@ -47,7 +70,8 @@ class Registration extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('a.universityIdentification'), ':universityIdentification'),
-                    $query->expr()->eq('r.academicYear', ':academicYear')
+                    $query->expr()->eq('r.academicYear', ':academicYear'),
+                    $organization == null ? '1=1' : $query->expr()->in('a.id', $ids)
                 )
             )
             ->setParameter('universityIdentification', '%'.strtolower($universityIdentification).'%')
@@ -59,8 +83,30 @@ class Registration extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByName($name, AcademicYear $academicYear)
+    public function findAllByName($name, AcademicYear $academicYear, Organization $organization = null)
     {
+        $ids = array(0);
+        if ($organization !== null) {
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('a.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'a')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('m.organization', ':organization'),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('organization', $organization)
+                ->setParameter('academicYear', $academicYear)
+                ->getQuery()
+                ->getResult();
+
+            foreach($resultSet as $result) {
+                $ids[] = $result['id'];
+            }
+        }
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SecretaryBundle\Entity\Registration', 'r')
@@ -83,7 +129,8 @@ class Registration extends EntityRepository
                             ':name'
                         )
                     ),
-                    $query->expr()->eq('r.academicYear', ':academicYear')
+                    $query->expr()->eq('r.academicYear', ':academicYear'),
+                    $organization == null ? '1=1' : $query->expr()->in('a.id', $ids)
                 )
             )
             ->setParameter('name', '%'.strtolower($name).'%')
@@ -95,22 +142,47 @@ class Registration extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByBarcode($barcode, AcademicYear $academicYear)
+    public function findAllByBarcode($barcode, AcademicYear $academicYear, Organization $organization = null)
     {
         if (!is_numeric($barcode))
             return array();
+
+        $ids = array(0);
+        if ($organization !== null) {
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('a.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'a')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('m.organization', ':organization'),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('organization', $organization)
+                ->setParameter('academicYear', $academicYear)
+                ->getQuery()
+                ->getResult();
+
+            foreach($resultSet as $result) {
+                $ids[] = $result['id'];
+            }
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CommonBundle\Entity\User\Barcode', 'b')
             ->where(
-                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
+                    $organization == null ? '1=1' : $query->expr()->in('b.person', $ids)
+                )
             )
             ->setParameter('barcode', '%'.$barcode.'%')
             ->getQuery()
             ->getResult();
 
-        $ids = array();
+        $ids = array(0);
         foreach($resultSet as $result) {
             $ids[] = $result->getPerson()->getId();
         }
