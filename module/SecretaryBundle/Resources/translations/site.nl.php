@@ -42,7 +42,7 @@ return array(
     'Internet' => 'Internet',
     'University E-mail' => 'Universiteits E-mail',
     'Personal E-mail' => 'Persoonlijke E-mail',
-    'I want to receive VTK e-mail at my personal e-mail address' => 'Ik wil VTK e-mail ontvangen op mijn persoonlijk e-mail adres',
+    'I want to receive e-mail at my personal e-mail address' => 'Ik wil e-mail ontvangen op mijn persoonlijk e-mail adres',
     'Organization' => 'Organisatie',
     'I want to become a member of the organization (&euro;10)' => 'Ik wil lid worden van de organisatie (&euro;10)',
     'I have read and agree with the terms and conditions' => 'Ik heb de voorwaarden gelezen en ga hiermee akkoord',
