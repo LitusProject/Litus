@@ -57,6 +57,25 @@
                 {% endfor %}
 
                 {% include 'prof/partials/paginationControl.twig' %}
+
+                <div class="page-header">
+                    <h2>{{ translate('Your Recent Conversations') }}</h2>
+                    {% for conversation in recentConversations %}
+                        <div class="action">
+                            <b>{{ conversation['content'].getPerson().getFullName() }}</b> 
+                            {% if conversation['type'] == 'reply' %}
+                                {{ translate('replied on') }}
+                            {% else %}
+                                {{ translate('commented on') }}
+                            {% endif %}
+                            <b>{{ dateLocalized(conversation['content'].getDate(), 'd MMM Y HH:mm') }}</b>
+                            <div class="info">
+                                {{ translate('Subject') }}: <b>{{ conversation['content'].getSubject().getName() }}</b><br />
+                                <a href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": conversation['content'].getSubject().getId()}) }}">{{ translate('View') }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
 
             <div class="span3">

@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'syllabus/admin/study/partials/navigation.twig' %}
+	{% include 'syllabus/admin/subject/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage success_message full_width comment_removed_success hide">
@@ -46,6 +46,9 @@
 	                <td>{{ comment.getSummary() }}</td>
 	                <td>{{ comment.getType()|capitalize }}</td>
 					<td class="actions">
+						{% if hasAccess('syllabus_admin_subject_comment', 'reply') %}
+						    <a href="{{ url('syllabus_admin_subject_comment', {'action': 'reply', 'id': comment.getId()}) }}" class="comment_add">Reply</a>
+						{% endif %}
 						<a href="#" class="view" data-text="{{ comment.getText() }}">View</a>
 						{% if hasAccess('syllabus_admin_subject_comment', 'delete') %}
 						    <a href="#" class="delete" data-id="{{ comment.getId() }}" data-author="{{ comment.getPerson().getFullName() }}">Delete</a>
