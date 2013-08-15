@@ -358,6 +358,11 @@ VTK Cudi
                     'value'       => '0',
                     'description' => 'Flag whether to show the light version of the sale app (no queue)',
                 ),
+                array(
+                    'key'         => 'cudi.order_job_id',
+                    'value'       => 'vtk-{{ date }}',
+                    'description' => 'The job id for a XML exported order',
+                ),
             )
         );
 
