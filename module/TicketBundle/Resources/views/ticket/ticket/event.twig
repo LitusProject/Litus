@@ -1,0 +1,138 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-success fade" id="ticket_delete_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The ticket was succesfully deleted.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="ticket_delete_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while deleting the ticket.') }}
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ event.getActivity().getTitle(language) }}</h1>
+    </div>
+
+    <div class="item">
+        <span class="date left">{{ dateLocalized(event.getActivity().getStartDate(), 'd MMM') }}</span>
+
+        <i class="icon-time"></i> {{ dateLocalized(event.getActivity().getStartDate(), 'HH:mm') }}{% if event.getActivity().getEndDate() %} - {{ dateLocalized(event.getActivity().getEndDate(), 'HH:mm') }}{% endif %}
+
+        <div style="padding-left: 10px">
+            <h2>{{ translate('Prices') }}</h2>
+            {% if event.getOptions()|length == 0 %}
+                <dl class="dl-horizontal">
+                    <dt>{{ translate('Member') }}</dt>
+                    <dd>&euro;{{ (event.getPriceMembers()/100)|number_format(2) }}</dd>
+                    {% if not event.isOnlyMembers() %}
+                        <dt>{{ translate('Non Member') }}</dt>
+                        <dd>&euro;{{ (event.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                    {% endif %}
+                </dl>
+            {% else %}
+                <dl class="dl-horizontal">
+                    {% for option in event.getOptions() %}
+                        <dt>{{ option.getName() }}&mdash;{{ translate('Member') }}</dt>
+                        <dd>&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
+                        {% if not event.isOnlyMembers() %}
+                            <dt>{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
+                            <dd>&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                        {% endif %}
+                    {% endfor %}
+                </dl>
+            {% endif %}
+
+
+            <h2>{{ translate('Your Tickets') }}</h2>
+
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th width="80px">{{ translate('Status') }}</th>
+                    <th width="160px">{{ translate('Option') }}</th>
+                    <th>{{ translate('Number') }}</th>
+                    <th width="120px">{{ translate('Book Date') }}</th>
+                    <th width="120px">{{ translate('Sold Date') }}</th>
+                    <th width="90px">{{ translate('Actions') }}</th>
+                </tr>
+
+                {% for ticket in tickets %}
+                    <tr class="item">
+                        <td>{{ translate(ticket.getStatus()) }}</td>
+                        <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}{{ translate('Member') }}{% else %}{{ translate('Non Member') }}{% endif %})</td>
+                        <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
+                        <td>{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
+                        <td>{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
+                        <td class="actions">
+                            {% if hasAccess('ticket', 'delete') and canRemoveReservations %}
+                                <a href="#" data-id="{{ ticket.getId() }}" class="btn btn-danger deleteTicket">{{ translate('Remove') }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% if event.isStillBookable() %}
+                <h2>{{ translate('Book Tickets') }}</h2>
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(form) }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="modalDelete" class="modal fade hide">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Delete Ticket') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{ translate('Are you sure you want to delete the ticket') }}?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('.deleteTicket').click(openDeleteModal);
+        });
+
+        function openDeleteModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var modalDelete = $('#modalDelete');
+            modalDelete.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('ticket', {"action": "delete"})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#ticket_delete_success').addClass('in');
+                        $this.parent().parent().remove();
+                        modalDelete.modal('hide');
+                    } else {
+                        errorDeleteTicket();
+                    }
+                }, 'json').error(errorDeleteTicket);
+            });
+            modalDelete.modal();
+        }
+
+        function errorDeleteTicket() {
+            $('.flashmessage').removeClass('in');
+            $('#ticket_delete_error').addClass('in');
+            $('#modalDelete').modal('hide');
+        }
+    </script>
+{% endblock %}

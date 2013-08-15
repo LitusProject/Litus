@@ -30,7 +30,6 @@ class Tabs extends \Zend\Form\Element
         'type' => 'tabs',
         'tabs' => array(),
         'class' => '',
-        'class' => '',
     );
 
     /**
