@@ -277,7 +277,7 @@ class Study
                             $this->getEntityManager()->persist($subject);
                         }
                     } else {
-                        $subject->setTitle(html_entity_decode(trim((string) $subjectData->titel)));
+                        $subject->setName(html_entity_decode(trim((string) $subjectData->titel)));
                     }
 
                     if (!isset($this->_subjects[$code]))
