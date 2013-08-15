@@ -1,0 +1,108 @@
+{% extends 'ticket/base.twig' %}
+
+{% block content %}
+    <h2>{{ translate('Sale') }}</h2>
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
+
+    <div id="saleConfirmModal" class="modal fade hide">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Sale Confirmation') }}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="flashmessage alert alert-error fade" id="sale_invalid">
+                <div class="content">
+                    {{ translate('The form is not valid.') }}
+                </div>
+            </div>
+            <p>
+                {% autoescape false %}{{ translate('You are going to sell <span class="numberTickets"></span> tickets.') }}{% endautoescape %}
+            </p>
+            <p>
+                {% autoescape false %}{{ translate('Price: <b class="price"></b>') }}{% endautoescape %}
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
+            <button class="btn btn-success" id="sale_confirm">{{ translate('Sale') }}</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("ticket_sale_person_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+
+            $('#sale_tickets').click(function (e) {
+                e.preventDefault();
+
+                $('#sale_invalid').removeClass('in');
+                $('#sale_confirm').addClass('disabled').prop('disabled');
+
+                var data = {
+                    person_id: $('#personId').val(),
+                    person: $('#personSearch').val(),
+                    payed: $('#payed').val()
+                }
+                $('.ticket_option').each(function () {
+                    data[$(this).attr('id')] = $(this).val();
+                });
+
+                $.ajax({
+                    method: 'POST',
+                    url: '{{ url('ticket_sale_index', {'action': 'validate', 'id': event.getId()}) }}',
+                    data: data,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 'success') {
+                            $('#sale_invalid').removeClass('in');
+                            $('#sale_confirm').removeClass('disabled').prop('disabled', false);
+                        } else {
+                            $('#sale_invalid').addClass('in');
+                            $('ul.errors').remove();
+                            $('.control-group').removeClass('error');
+                            for(element in data.errors) {
+                                var list = $('<ul>', {'class': 'errors'});
+                                for (error in data.errors[element])
+                                    list.append($('<li>').html(data.errors[element][error]));
+                                var div = $('<div>', {'class': 'help-inline'}).append(list);
+                                $('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
+                            }
+                        }
+                    },
+                    error: function () {
+                        $('#sale_invalid').addClass('in');
+                        $('#sale_confirm').addClass('disabled').prop('disabled');
+                    }
+                });
+
+                var price = 0;
+                $('.ticket_option').each(function () {
+                    price += $(this).val() * $(this).data('price');
+                });
+
+                $('#saleConfirmModal .price').html('&euro; ' + (price/100).toFixed(2));
+                $('#saleConfirmModal').modal();
+            });
+
+            $('#sale_confirm').click(function (e) {
+                if ($(this).hasClass('disabled'))
+                    return;
+
+                $('#ticket_sale_form').submit();
+            });
+        });
+    </script>
+{% endblock %}

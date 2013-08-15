@@ -97,6 +97,37 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
+    public function findAllByBarcode($barcode)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $barcodes = $query->select('b')
+            ->from('CommonBundle\Entity\User\Barcode', 'b')
+            ->where(
+                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+            )
+            ->setParameter('barcode', strtolower($barcode) . '%')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($barcodes as $barcode)
+            $ids[] = $barcode->getPerson()->getId();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('CommonBundle\Entity\User\Person\Academic', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('p.id', $ids),
+                    $query->expr()->eq('p.canLogin', 'true')
+                )
+            )
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findOneByUsername($username)
     {
         $query = $this->_em->createQueryBuilder();
