@@ -81,11 +81,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ('organization' == $type) {
                     $people = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Status\Organization')
-                        ->findAllByStatus($status, $this->getCurrentAcademicYear());
+                        ->findAllByStatus($status, $this->getCurrentAcademicYear(false));
                 } else {
                     $people = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Status\University')
-                        ->findAllByStatus($status, $this->getCurrentAcademicYear());
+                        ->findAllByStatus($status, $this->getCurrentAcademicYear(false));
                 }
 
                 $mail->addTo($mailAddress, $mailName);

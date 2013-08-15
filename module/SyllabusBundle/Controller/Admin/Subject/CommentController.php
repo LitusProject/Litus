@@ -19,7 +19,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateInterval,
     DateTime,
     SyllabusBundle\Entity\Subject\Comment,
-    SyllabusBundle\Form\Admin\Subject\Comment\Add as AddForm,
+    SyllabusBundle\Entity\Subject\Reply,
+    SyllabusBundle\Form\Admin\Subject\Comment\Add as AddCommentForm,
+    SyllabusBundle\Form\Admin\Subject\Reply\Add as AddReplyForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -64,7 +66,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findBySubject($subject);
 
-        $form = new AddForm();
+        $form = new AddCommentForm();
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -109,6 +111,63 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 'subject' => $subject,
                 'form' => $form,
                 'comments' => $comments,
+            )
+        );
+    }
+
+    public function replyAction()
+    {
+        if (!($comment = $this->_getComment()))
+            return new ViewModel();
+
+        $replies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject\Reply')
+            ->findAllByComment($comment);
+
+        $form = new AddReplyForm();
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $reply = new Reply(
+                    $this->getEntityManager(),
+                    $this->getAuthentication()->getPersonObject(),
+                    $comment,
+                    $formData['text']
+                );
+
+                $this->getEntityManager()->persist($reply);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The reply was successfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'syllabus_admin_subject_comment',
+                    array(
+                        'action' => 'reply',
+                        'id' => $comment->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'comment' => $comment,
+                'replies' => $replies,
+                'form' => $form,
             )
         );
     }
