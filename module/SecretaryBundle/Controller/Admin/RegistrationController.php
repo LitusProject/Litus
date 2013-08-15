@@ -38,6 +38,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
         $paginator = $this->paginator()->createFromEntity(
             'SecretaryBundle\Entity\Registration',
             $this->getParam('page'),
@@ -55,6 +59,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'paginationControl' => $this->paginator()->createControl(),
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
+                'organizations' => $organizations,
+                'currentOrganization' => $this->_getOrganization(),
             )
         );
     }
@@ -66,6 +72,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
         $form = new BarcodeForm(
@@ -115,6 +125,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'activeAcademicYear' => $registration->getAcademicYear(),
                 'academicYears' => $academicYears,
                 'form' => $form,
+                'organizations' => $organizations,
+                'currentOrganization' => $this->_getOrganization(),
             )
         );
     }
@@ -126,6 +138,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
         $metaData = $this->getEntityManager()
@@ -215,6 +231,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'activeAcademicYear' => $registration->getAcademicYear(),
                 'academicYears' => $academicYears,
                 'form' => $form,
+                'organizations' => $organizations,
+                'currentOrganization' => $this->_getOrganization(),
             )
         );
     }
@@ -222,6 +240,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     public function searchAction()
     {
         $academicYear = $this->_getAcademicYear();
+        $organization = $this->_getOrganization();
 
         $this->initAjax();
 
@@ -231,7 +250,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findAllByUniversityIdentification(
                         $this->getParam('string'),
-                        $academicYear
+                        $academicYear,
+                        $organization
                     );
                 break;
             case 'name':
@@ -239,7 +259,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findAllByName(
                         $this->getParam('string'),
-                        $academicYear
+                        $academicYear,
+                        $organization
                     );
                 break;
             case 'barcode':
@@ -247,7 +268,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findAllByBarcode(
                         $this->getParam('string'),
-                        $academicYear
+                        $academicYear,
+                        $organization
                     );
                 break;
         }
@@ -272,6 +294,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
                 $item->payed = $registration->hasPayed();
                 $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
+                $item->organization = $registration->getAcademic()->getOrganization($academicYear)->getName();
                 $result[] = $item;
             }
         }
@@ -362,5 +385,17 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $registration;
+    }
+
+    private function _getOrganization()
+    {
+        if (null === $this->getParam('organization'))
+            return;
+
+        $organization = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findOneById($this->getParam('organization'));
+
+        return $organization;
     }
 }
