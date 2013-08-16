@@ -67,7 +67,7 @@
             var discounts = [];
             var $this = $(this);
             $($(this).data('saleInterfaceSettings').discounts).each(function () {
-                if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
+                if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
                     discounts.push(this.type);
             });
             return discounts;
@@ -252,7 +252,7 @@
 
         var bestPrice = data.price;
         $(data.discounts).each(function () {
-            if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
+            if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
                 bestPrice = this.value < bestPrice ? this.value : bestPrice;
         });
 
@@ -330,7 +330,7 @@
             }
         });
 
-        if ($.inArray(id, settings.membershipArticles))
+        if ($.inArray(id, settings.membershipArticles) != -1)
             $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
 
         if (settings.isSell)
@@ -349,7 +349,7 @@
             }
         });
 
-        if ($.inArray(id, settings.membershipArticles))
+        if ($.inArray(id, settings.membershipArticles) != -1)
             $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);
 
         if (settings.isSell)
@@ -479,7 +479,7 @@
             if (number == 0) {
                 var bestPrice = parseInt($(this).data('info').price, 10);
                 $($(this).data('info').discounts).each(function () {
-                    if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0)
+                    if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
                         bestPrice = this.value < bestPrice ? this.value : bestPrice;
                 });
                 $(this).find('.price').append(
@@ -491,7 +491,7 @@
                 var bestPrice = parseInt($(this).data('info').price, 10);
                 var discount = null;
                 $($(this).data('info').discounts).each(function () {
-                    if ($this.find('.discounts input[value="' + this.type + '"]:checked').length > 0) {
+                    if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked')) {
                         if ((this.applyOnce && !appliedOnce) || !this.applyOnce) {
                             bestPrice = this.value < bestPrice ? this.value : bestPrice;
                             discount = this;
