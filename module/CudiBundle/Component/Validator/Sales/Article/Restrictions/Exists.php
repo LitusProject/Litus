@@ -47,7 +47,7 @@ class Exists extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new Discount validator.
+     * Create a new Restriction validator.
      *
      * @param mixed $opts The validator's options
      */

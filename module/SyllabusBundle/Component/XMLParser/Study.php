@@ -80,6 +80,9 @@ class Study
         $this->_mailTransport = $mailTransport;
         $this->_callback = $callback;
 
+        if ($this->_entityManager->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('syllabus.enable_update') != '1')
+            return;
+
         $urls = $this->_getUrls();
 
         /*

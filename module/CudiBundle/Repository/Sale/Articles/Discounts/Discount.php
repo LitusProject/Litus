@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Sale\Articles\Discounts;
 
 use CudiBundle\Entity\Sale\Article,
+    CommonBundle\Entity\General\Organization,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
 
@@ -46,6 +47,59 @@ class Discount extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setParameter('type', $type)
             ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
+    public function findOneByArticleAndTypeAndOrganization(Article $article, $type, Organization $organization = null)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $query->select('d')
+            ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('d.article', ':article'),
+                    $query->expr()->eq('d.type', ':type'),
+                    $organization == null ? $query->expr()->isNull('d.organization') : $query->expr()->eq('d.organization', ':organization')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('type', $type);
+
+        if ($organization != null)
+            $query->setParameter('organization', $organization);
+
+        $resultSet = $query->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        $query = $this->_em->createQueryBuilder();
+        $query->select('d')
+            ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
+            ->innerJoin('d.template', 't', Join::WITH,
+                $query->expr()->andX(
+                    $query->expr()->eq('t.type', ':type'),
+                    $organization == null ? $query->expr()->isNull('d.organization') : $query->expr()->eq('d.organization', ':organization')
+                )
+            )
+            ->where(
+                   $query->expr()->eq('d.article', ':article')
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('type', $type);
+
+        if ($organization != null)
+            $query->setParameter('organization', $organization);
+
+        $resultSet = $query->setMaxResults(1)
             ->getQuery()
             ->getResult();
 
