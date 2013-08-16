@@ -15,6 +15,7 @@
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
 use CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article as Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -369,5 +370,30 @@ class Discount
     {
         return $entityManager->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findOneByArticleAndPersonAndDiscountType($article, $person, $this->getRawType()) != null;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\User\Person $person
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return boolean
+     */
+    public function canBeApplied(Person $person, AcademicYear $academicYear, EntityManager $entityManager)
+    {
+        if ($this->getType() == 'member') {
+            if (!$person->isMember($academicYear))
+                return false;
+
+            if ($this->getOrganization() !== null) {
+                $organization = $entityManager->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
+                    ->findOneByAcademicAndAcademicYear($person, $academicYear);
+                if (null == $organization)
+                    return false;
+                if ($organization != $this->getOrganization())
+                    return false;
+            }
+        }
+        return true;
     }
 }

@@ -464,12 +464,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         );
 
         foreach($article->getDiscounts() as $discount) {
-            if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager))
+            if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager) &&
+                    $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                 $result['discounts'][] = array(
                     'type' => $discount->getRawType(),
                     'value' => $discount->apply($article->getSellPrice()),
                     'applyOnce' => $discount->applyOnce(),
                 );
+            }
         }
 
         return json_encode(
