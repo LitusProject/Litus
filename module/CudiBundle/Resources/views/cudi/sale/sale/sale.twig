@@ -13,7 +13,9 @@
                 authSession: '{{ authSession.getId() }}',
                 authKey: '{{ key }}',
                 lightVersion: {% if lightVersion %}true{% else %}false{% endif %},
-                membershipArticle: {{ membershipArticle.getId() }},
+                membershipArticles: [{% for article in membershipArticles %}
+                    {{ article.getId() }},
+                {% endfor %}],
 
                 paydesks: [
                     {% for paydesk in paydesks %}

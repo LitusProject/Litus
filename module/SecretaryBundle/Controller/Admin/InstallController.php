@@ -35,7 +35,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'secretary.membership_article',
-                    'value'       => '427',
+                    'value'       => serialize(
+                        array(
+                            '1' => '427',
+                        )
+                    ),
                     'description' => 'The article for the membership',
                 ),
                 array(

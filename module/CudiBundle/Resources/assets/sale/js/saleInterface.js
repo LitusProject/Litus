@@ -2,7 +2,7 @@
     var defaults = {
         isSell: true,
         discounts: [],
-        membershipArticle: 0,
+        membershipArticles: 0,
         lightVersion: false,
 
         tCurrentCustomer: 'Current Customer',
@@ -330,7 +330,7 @@
             }
         });
 
-        if (id == settings.membershipArticle)
+        if ($.inArray(id, settings.membershipArticles))
             $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
 
         if (settings.isSell)
@@ -349,7 +349,7 @@
             }
         });
 
-        if (id == settings.membershipArticle)
+        if ($.inArray(id, settings.membershipArticles))
             $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);
 
         if (settings.isSell)
