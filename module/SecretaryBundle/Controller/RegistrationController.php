@@ -174,7 +174,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['tshirt_size']
                         );
 
-                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
+                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $this->getCurrentAcademicYear());
                     } else {
                         $metaData = new MetaData(
                             $academic,
@@ -436,25 +436,33 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($this->getEntityManager()
+                $membershipArticles = array();
+                $ids = unserialize(
+                    $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('secretary.membership_article')
-                    );
+                );
+
+                foreach($ids as $organizationId => $articleId) {
+                    $membershipArticles[$organizationId] = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($articleId);
+                }
 
                 if ($metaData->becomeMember()) {
-                    $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
+                    $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $this->getCurrentAcademicYear());
                 } else {
-                    $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                            $membershipArticle,
-                            $academic
-                        );
+                    foreach($membershipArticles as $membershipArticle) {
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Booking')
+                            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                                $membershipArticle,
+                                $academic
+                            );
 
-                    if (null === $booking)
-                        $this->getEntityManager()->remove($booking);
+                        if (null !== $booking)
+                            $this->getEntityManager()->remove($booking);
+                    }
                 }
 
                 $academic->activate(

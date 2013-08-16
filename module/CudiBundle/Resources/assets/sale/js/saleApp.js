@@ -8,7 +8,7 @@ var currentView = 'selectPaydesk';
         authSession: 0,
         authKey: '',
         lightVersion: false,
-        membershipArticle: 0,
+        membershipArticles: [0],
 
         tPaydeskSelectTitle: 'Select Paydesk',
         tPaydeskChoose: 'Choose',
@@ -59,7 +59,7 @@ var currentView = 'selectPaydesk';
 
         collect = $this.collect({
             lightVersion: settings.lightVersion,
-            membershipArticle: settings.membershipArticle,
+            membershipArticles: settings.membershipArticles,
             saveComment: function (id, comment) {
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
@@ -111,7 +111,7 @@ var currentView = 'selectPaydesk';
 
         sale = $this.sale({
             lightVersion: settings.lightVersion,
-            membershipArticle: settings.membershipArticle,
+            membershipArticles: settings.membershipArticles,
             discounts: settings.discounts,
             saveComment: function (id, comment) {
                 $.webSocket('send', {name: settings.socketName, text:

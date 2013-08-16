@@ -46,8 +46,6 @@ class Collection extends \Zend\Form\Element\Collection
                 $elementOrFieldset->prepareElement($form);
             }
         }
-
-        parent::prepareElement($form);
     }
 
     /**

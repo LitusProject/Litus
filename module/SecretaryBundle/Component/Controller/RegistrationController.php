@@ -250,14 +250,29 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
     }
 
-    protected function _bookRegistrationArticles(Academic $academic, $tshirtSize)
+    protected function _bookRegistrationArticles(Academic $academic, $tshirtSize, AcademicYear $academicYear)
     {
-        $membershipArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getEntityManager()
+        $organizationMap = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
+            ->findOneByAcademicAndAcademicYear($academic, $academicYear);
+
+        if (null !== $organizationMap) {
+            $organization = $organizationMap->getOrganization();
+        } else {
+            $organization = current($this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Organization')
+                ->findAll());
+        }
+
+        $ids = unserialize(
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
-            );
+        );
+
+        $membershipArticle = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findOneById($ids[$organization->getId()]);
 
         $booking = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')

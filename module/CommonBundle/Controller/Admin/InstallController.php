@@ -16,7 +16,8 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Address\City,
     CommonBundle\Entity\General\Address\Street,
-    CommonBundle\Entity\General\Language;
+    CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\General\Organization;
 
 /**
  * InstallController
@@ -29,6 +30,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->_installLanguages();
         $this->_installCities();
+        $this->_installOrganizations();
 
         $this->installConfig(
             array(
@@ -430,6 +432,32 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ->findOneByCityAndName($city, $streetData['name']);
                 if (null === $street)
                     $this->getEntityManager()->persist(new Street($city, $streetData['register'], $streetData['name']));
+            }
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    private function _installOrganizations()
+    {
+        $currentOrganizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+        if (sizeof($currentOrganizations) > 0)
+            return;
+
+        $organizations = array(
+            'VTK',
+        );
+
+        foreach($organizations as $name) {
+            $organization = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Organization')
+                ->findOneByName($name);
+
+            if (null === $organization) {
+                $organization = new Organization($name);
+                $this->getEntityManager()->persist($organization);
             }
         }
 

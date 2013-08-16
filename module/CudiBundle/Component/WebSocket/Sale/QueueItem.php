@@ -194,9 +194,11 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($item->getPerson());
 
-        $memberShipArticle = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.membership_article');
+        $memberShipArticles = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
 
         $soldArticles = array();
 
@@ -229,7 +231,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
             }
 
-            if ($booking->getArticle()->getId() == $memberShipArticle) {
+            if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 try {
                     $booking->getPerson()
                         ->addOrganizationStatus(
