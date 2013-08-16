@@ -109,69 +109,122 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The time a reservation can be extended',
                 ),
                 array(
-                    'key'         => 'cudi.booking_assigned_mail_subject',
-                    'value'       => 'New Assignments',
-                    'description' => 'The subject of the mail sent by new assignments',
-                ),
-                array(
                     'key'         => 'cudi.booking_assigned_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'New Assignments',
+                                'content' => 'Dear,
 
 The following bookings are assigned to you:
-{{ bookings }}
+{{ bookings }}#expires#expires on#expires#
 
 These reservations will expire after the first sale session after its expiration date.
 
 Please cancel a reservation if you don\'t need the article, this way we can help other students.
 
 The opening hours of Cudi are:
-{{ openingHours }}
+{{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Nieuwe Toewijzingen',
+                                'content' => 'Beste,
+
+De volgende reservaties zijn aan u toegewezen:
+{{ bookings }}#expires#vervalt op#expires#
+
+Deze reservaties zullen vervallen op het einde van de eerste verkoop sessie na de vervaldatum.
+
+Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op deze manier kunnen we andere studenten helpen.
+
+De openingsuren van cudi zijn:
+{{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
+
+VTK Cudi
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The mail sent when a booking is assigned'
                 ),
                 array(
-                    'key'         => 'cudi.booking_expire_warning_mail_subject',
-                    'value'       => 'Assignment Expiration Warning',
-                    'description' => 'The subject of the mail sent by warning for expirations',
-                ),
-                array(
                     'key'         => 'cudi.booking_expire_warning_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Assignment Expiration Warning',
+                                'content' => 'Dear,
 
 The following bookings are going to expire soon:
-{{ bookings }}
+{{ bookings }}#expires#expires on#expires#
 
 These reservations will expire after the first sale session after its expiration date.
 
 Please cancel a reservation if you don\'t need the article, this way we can help other students.
 
 The opening hours of Cudi are:
-{{ openingHours }}
+{{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Waarschuwing Vervallen Toewijzingen',
+                                'content' => 'Beste,
+
+De volgende reservaties gaan binnekort vervallen:
+{{ bookings }}#expires#vervalt op#expires#
+
+Deze reservaties zullen vervallen op het einde van de eerste verkoop sessie na de vervaldatum.
+
+Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op deze manier kunnen we andere studenten helpen.
+
+De openingsuren van cudi zijn:
+{{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
+
+VTK Cudi
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The mail sent when a booking is about to expire'
-                ),
-                array(
-                    'key'         => 'cudi.booking_expire_mail_subject',
-                    'value'       => 'Assignment Expiration',
-                    'description' => 'The subject of the mail sent by warning for expirations',
                 ),
                 array(
                     'key'         => 'cudi.booking_expire_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Assignment Expiration',
+                                'content' => 'Dear,
 
 The following bookings are expired:
-{{ bookings }}
+{{ bookings }}#expires#expired on#expires#
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --',
-                    'description' => 'The mail sent when a booking is about to expire'
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Vervallen Toewijzingen',
+                                'content' => 'Beste,
+
+De volgende reservaties zijn vervallen:
+{{ bookings }}#expires#verviel op#expires#
+
+VTK Cudi
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
+                    'description' => 'The mail sent when a booking is expired'
                 ),
                 array(
                     'key'         => 'cudi.queue_item_barcode_prefix',
@@ -338,20 +391,33 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.catalog_update_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Catalog Updates',
+                                'content' => 'Dear,
 
 The catalog of our cudi has been updated:
-{{ updates }}
+{{ updates }}#bookable#is now bookable#bookable# #unbookable#is not bookable anymore#unbookable# #added#is added to the catalog#added# #removed#is removed from the catalog#removed#
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Catalogus Aanpassingen',
+                                'content' => 'Beste,
+
+De catalogus van onze cudi is geupdate:
+{{ updates }}#bookable#is nu reserveerbaar#bookable# #unbookable#is niet meer reserveerbaar#unbookable# #added#is toegevoegd aan de catalogus#added# #removed#is verwijderd van de catalogus#removed#
+
+VTK Cudi
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The content of the mail send for catalog updates',
-                ),
-                array(
-                    'key'         => 'cudi.catalog_update_mail_subject',
-                    'value'       => 'Catalog Updates',
-                    'description' => 'The subject for the mail send for catalog updates',
                 ),
                 array(
                     'key'         => 'cudi.sale_light_version',
