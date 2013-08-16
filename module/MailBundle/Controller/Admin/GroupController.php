@@ -92,9 +92,20 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $mail->addTo($mailAddress, $mailName);
 
                 $emailValidator = new EmailAddressValidator();
+                $i = 0;
                 foreach($people as $person) {
-                    if (null !== $person->getPerson()->getEmail() && $emailValidator->isValid($person->getPerson()->getEmail()))
+                    if (null !== $person->getPerson()->getEmail() && $emailValidator->isValid($person->getPerson()->getEmail())) {
+                        $i++;
                         $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
+                    }
+
+                    if ($i == 500) {
+                        $i = 0;
+                        if ('development' != getenv('APPLICATION_ENV'))
+                            $this->getMailTransport()->send($mail);
+
+                        $mail->setBcc(array());
+                    }
                 }
 
                 if ('development' != getenv('APPLICATION_ENV'))
