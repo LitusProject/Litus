@@ -75,14 +75,23 @@ class Template
     private $applyOnce;
 
     /**
+     * @var \CommonBundle\Entity\General\Organization The organization for the discount
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
+     * @ORM\JoinColumn(name="organization", referencedColumnName="id")
+     */
+    private $organization;
+
+    /**
      * @param string $name The name of the discount
      * @param integer $value The value of the discount
      * @param string $method The method of the discount
      * @param string $type The type of the discount
      * @param string $rounding The type of the rounding
      * @param boolean $applyOnce Apply the discount only once
+     * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
      */
-    public function __construct($name, $value, $method, $type, $rounding, $applyOnce)
+    public function __construct($name, $value, $method, $type, $rounding, $applyOnce, $organization = null)
     {
         $this->name = $name;
         $this->value = $value * 100;
@@ -90,6 +99,7 @@ class Template
         $this->type = $type;
         $this->rounding = $rounding;
         $this->applyOnce = $applyOnce;
+        $this->organization = $organization;
     }
 
     /**
@@ -130,6 +140,14 @@ class Template
     public function getType()
     {
         return Discount::$POSSIBLE_TYPES[$this->type];
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 
     /**
