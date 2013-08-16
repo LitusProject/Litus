@@ -72,9 +72,17 @@ class Exists extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
+        if ($context['organization'] != '0') {
+            $organization = $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Organization')
+                ->findOneById($context['organization']);
+        } else {
+            $organization = null;
+        }
+
         $discount = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
-            ->findOneByArticleAndType($this->_article, $value);
+            ->findOneByArticleAndTypeAndOrganization($this->_article, $value, $organization);
 
         if (null === $discount)
             return true;
