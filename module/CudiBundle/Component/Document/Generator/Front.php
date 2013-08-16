@@ -103,6 +103,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         $union_name = $configs->getConfigValue('union_name');
         $logo = $configs->getConfigValue('union_logo');
         $union_url = $configs->getConfigValue('union_url');
+        $union_mail = $configs->getConfigValue('cudi.mail');
         $university = $configs->getConfigValue('university');
         $faculty = $configs->getConfigValue('faculty');
         $address_name = $configs->getConfigValue('cudi.front_address_name');
@@ -110,10 +111,12 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Address')
             ->findOneById($configs->getConfigValue('cudi.billing_address'));
 
+        $academicYear = $this->_getCurrentAcademicYear();
+
         $subjects = array();
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
-            ->findAllByArticleAndAcademicYear($this->_article->getMainArticle(), $this->_getCurrentAcademicYear());
+            ->findAllByArticleAndAcademicYear($this->_article->getMainArticle(), $academicYear);
         foreach ($mappings as $mapping) {
             $subjects[] = new Object(
                 'subject',
@@ -180,6 +183,11 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                         )
                     ),
                     new Object(
+                        'academic_year',
+                        null,
+                        $academicYear->getCode()
+                    ),
+                    new Object(
                         'university',
                         null,
                         strtoupper($university)
@@ -212,6 +220,11 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                                 'site',
                                 null,
                                 $union_url
+                            ),
+                            new Object(
+                                'email',
+                                null,
+                                $union_mail
                             )
                         )
                     ),
