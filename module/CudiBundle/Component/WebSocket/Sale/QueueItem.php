@@ -332,7 +332,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->persist(new AccoCard($item->getPerson(), $hasAccoCard));
         }
 
-        //$this->_entityManager->flush();
+        $this->_entityManager->flush();
 
         return $saleItems;
     }

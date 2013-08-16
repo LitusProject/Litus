@@ -75,6 +75,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => 'http://onderwijsaanbod.kuleuven.be/opleidingen/{{ language }}/xml/SC_{{ id }}.xml',
                     'description' => 'The department url',
                 ),
+                array(
+                    'key'         => 'syllabus.enable_update',
+                    'value'       => '0',
+                    'description' => 'Enable Syllabus update',
+                ),
             )
         );
 

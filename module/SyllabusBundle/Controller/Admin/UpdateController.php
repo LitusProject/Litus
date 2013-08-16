@@ -31,9 +31,13 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
         $port = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.update_socket_port');
+        $allowUpdate = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.enable_update') == '1';
 
         return new ViewModel(
             array(
+                'allowUpdate' => $allowUpdate,
                 'socketUrl' => 'ws://' . $address . ':' . $port,
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
