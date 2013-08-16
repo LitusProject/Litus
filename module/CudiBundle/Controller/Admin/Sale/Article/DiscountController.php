@@ -42,13 +42,22 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 
                 $discount = new Discount($article);
 
+                if ($formData['organization'] != '0') {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization']);
+                } else {
+                    $organization = null;
+                }
+
                 if ($formData['template'] == 0) {
                     $discount->setDiscount(
                         $formData['value'],
                         $formData['method'],
                         $formData['type'],
                         $formData['rounding'],
-                        $formData['apply_once']
+                        $formData['apply_once'],
+                        $organization
                     );
                 } else {
                     $template = $this->getEntityManager()

@@ -76,6 +76,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field->setValue($template->getMethod());
             $this->add($field);
 
+            $field = new Hidden('template_' . $template->getId() . '_organization');
+            $field->setValue($template->getOrganization() ? $template->getOrganization()->getId() : '0');
+            $this->add($field);
+
             $field = new Hidden('template_' . $template->getId() . '_type');
             $field->setValue($template->getType());
             $this->add($field);
@@ -109,6 +113,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('options', Discount::$POSSIBLE_TYPES);
         $this->add($field);
 
+        $field = new Select('organization');
+        $field->setAttribute('id', 'discount_template_organization')
+            ->setAttribute('options', $this->_getOrganizations())
+            ->setLabel('Organization')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Select('rounding');
         $field->setAttribute('id', 'discount_template_rounding')
             ->setLabel('Rounding')
@@ -137,6 +148,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $templateOptions[$template->getId()] = $template->getName();
 
         return $templateOptions;
+    }
+
+    private function _getOrganizations()
+    {
+        $organizations = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
+        $organizationsOptions = array(0 => 'All');
+        foreach($organizations as $organization)
+            $organizationsOptions[$organization->getId()] = $organization->getName();
+
+        return $organizationsOptions;
     }
 
     private function _getRoundings()
@@ -196,6 +220,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         new DiscountValidator($this->_article, $this->_entityManager),
                     ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'organization',
+                    'required' => $required,
                 )
             )
         );
