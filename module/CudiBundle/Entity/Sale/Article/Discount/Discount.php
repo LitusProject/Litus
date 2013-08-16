@@ -86,6 +86,14 @@ class Discount
     private $article;
 
     /**
+     * @var \CommonBundle\Entity\General\Organization The organization for the discount
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
+     * @ORM\JoinColumn(name="organization", referencedColumnName="id")
+     */
+    private $organization;
+
+    /**
      * @var array The possible types of a discount
      */
     public static $POSSIBLE_TYPES = array(
@@ -173,10 +181,11 @@ class Discount
      * @param string $type The type of the discount
      * @param string $rounding The type of the rounding
      * @param boolean $applyOnce Apply the discount only once
+     * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
      *
      * @return \CudiBundle\Entity\Sale\Article\Discount\Discount
      */
-    public function setDiscount($value, $method, $type, $rounding, $applyOnce)
+    public function setDiscount($value, $method, $type, $rounding, $applyOnce, $organization = null)
     {
         if (!self::isValidDiscountType($type))
             throw new \InvalidArgumentException('The discount type is not valid.');
@@ -193,6 +202,7 @@ class Discount
         $this->type = $type;
         $this->rounding = $rounding;
         $this->applyOnce = $applyOnce;
+        $this->organization = $organization;
         return $this;
     }
 
@@ -277,11 +287,21 @@ class Discount
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Articl
+     * @return \CudiBundle\Entity\Sale\Article
      */
     public function getArticle()
     {
         return $this->article;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Organization
+     */
+    public function getOrganization()
+    {
+        if (!isset($this->organization) && isset($this->template))
+            return $this->template->getOrganization();
+        return $this->organization;
     }
 
     /**
