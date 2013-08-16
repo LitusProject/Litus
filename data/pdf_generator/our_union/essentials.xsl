@@ -1,4 +1,4 @@
-<xsl:stylesheet 
+<xsl:stylesheet
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -20,6 +20,6 @@
             <xsl:attribute name="src"><xsl:text>url('</xsl:text><xsl:value-of select="."/><xsl:text>')</xsl:text></xsl:attribute>
         </fo:external-graphic>
     </xsl:template>
-    
+
 </xsl:stylesheet>
 
