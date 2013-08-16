@@ -36,13 +36,19 @@ class Booking
      */
     public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        $message = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_assigned_mail');
+        if (!($language = $person->getLanguage())) {
+            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
 
-        $subject = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_assigned_mail_subject');
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.booking_assigned_mail')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = $mailData[$language->getAbbrev()]['subject'];
 
         $mailAddress = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -56,10 +62,6 @@ class Booking
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findWeekFromNow();
 
-        $language = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
         $openingHourText = '';
         foreach($openingHours as $openingHour) {
             $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
@@ -70,12 +72,19 @@ class Booking
             $openingHourText .= "\r\n";
         }
 
-        if ($openingHourText == '')
-            $openingHourText = 'No opening hours known.' . PHP_EOL;
+        if ($openingHourText != '') {
+            $openingHourText = '';
+            $message = str_replace('#no_opening_hours#', '', $message);
+        } else {
+            $message = preg_replace('/#no_opening_hours#.*#no_opening_hours#/', '', $message);
+        }
+
+        preg_match('/#expires#(.*)#expires#/', $message, $matches);
+        $message = preg_replace('/#expires#.*#expires#/', '', $message);
 
         $list = '';
         foreach($bookings as $booking) {
-            $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . " " . ($booking->getExpirationDate() ? "(expires " . $booking->getExpirationDate()->format('d M Y') : "") . ")\r\n";
+            $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . ' ' . ($booking->getExpirationDate() ? '(' . $matches[1] . ' ' . $booking->getExpirationDate()->format('d/m/Y') : '') . ")\r\n";
         }
 
         $mail = new Message();
@@ -91,6 +100,8 @@ class Booking
             )
             ->setSubject($subject);
 
+        echo str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message));
+
         if ('development' != getenv('APPLICATION_ENV'))
             $mailTransport->send($mail);
     }
@@ -104,13 +115,19 @@ class Booking
      */
     public static function sendExpireWarningMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        $message = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_expire_warning_mail');
+        if (!($language = $person->getLanguage())) {
+            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
 
-        $subject = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_expire_warning_mail_subject');
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.booking_expire_warning_mail')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = $mailData[$language->getAbbrev()]['subject'];
 
         $mailAddress = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -124,10 +141,6 @@ class Booking
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findWeekFromNow();
 
-        $language = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
         $openingHourText = '';
         foreach($openingHours as $openingHour) {
             $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
@@ -138,12 +151,19 @@ class Booking
             $openingHourText .= "\r\n";
         }
 
-        if ($openingHourText == '')
-            $openingHourText = 'No opening hours known.' . PHP_EOL;
+        if ($openingHourText != '') {
+            $openingHourText = '';
+            $message = str_replace('#no_opening_hours#', '', $message);
+        } else {
+            $message = preg_replace('/#no_opening_hours#.*#no_opening_hours#/', '', $message);
+        }
+
+        preg_match('/#expires#(.*)#expires#/', $message, $matches);
+        $message = preg_replace('/#expires#.*#expires#/', '', $message);
 
         $list = '';
         foreach($bookings as $booking) {
-            $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . " " . ($booking->getExpirationDate() ? "(expires " . $booking->getExpirationDate()->format('d M Y') : "") . ")\r\n";
+            $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . ' ' . ($booking->getExpirationDate() ? '(' . $matches[1] . ' ' . $booking->getExpirationDate()->format('d/m/Y') : '') . ")\r\n";
         }
 
         $mail = new Message();
@@ -172,13 +192,19 @@ class Booking
      */
     public static function sendExpireMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        $message = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_expire_mail');
+        if (!($language = $person->getLanguage())) {
+            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
 
-        $subject = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_expire_mail_subject');
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.booking_expire_mail')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = $mailData[$language->getAbbrev()]['subject'];
 
         $mailAddress = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -206,12 +232,19 @@ class Booking
             $openingHourText .= "\r\n";
         }
 
-        if ($openingHourText == '')
-            $openingHourText = 'No opening hours known.' . PHP_EOL;
+        if ($openingHourText != '') {
+            $openingHourText = '';
+            $message = str_replace('#no_opening_hours#', '', $message);
+        } else {
+            $message = preg_replace('/#no_opening_hours#.*#no_opening_hours#/', '', $message);
+        }
+
+        preg_match('/#expired#(.*)#expired#/', $message, $matches);
+        $message = preg_replace('/#expired#.*#expired#/', '', $message);
 
         $list = '';
         foreach($bookings as $booking) {
-            $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . " " . ($booking->getExpirationDate() ? "(expires " . $booking->getExpirationDate()->format('d M Y') : "") . ")\r\n";
+            $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . ' ' . ($booking->getExpirationDate() ? '(' . $matches[1] . ' ' . $booking->getExpirationDate()->format('d/m/Y') : '') . ")\r\n";
         }
         
         $mail = new Message();
