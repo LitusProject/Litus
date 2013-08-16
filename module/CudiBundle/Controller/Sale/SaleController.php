@@ -33,12 +33,18 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
 
-        $membershipArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getEntityManager()
+        $membershipArticles = array();
+        $ids = unserialize(
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
-            );
+        );
+
+        foreach($ids as $organizationId => $articleId) {
+            $membershipArticles[$organizationId] = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($articleId);
+        }
 
         return new ViewModel(
             array(
@@ -49,7 +55,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
                 'paydesks' => $paydesks,
-                'membershipArticle' => $membershipArticle,
+                'membershipArticles' => $membershipArticles,
             )
         );
     }

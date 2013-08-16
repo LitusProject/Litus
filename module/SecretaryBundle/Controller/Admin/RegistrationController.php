@@ -17,6 +17,7 @@ namespace SecretaryBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Barcode,
+    CudiBundle\Entity\Sale\Booking,
     DateInterval,
     DateTime,
     SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
@@ -157,12 +158,27 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 $registration->setPayed($formData['payed']);
 
-                $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($this->getEntityManager()
+                $organizationMap = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
+                    ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
+
+                if (null !== $organizationMap) {
+                    $organization = $organizationMap->getOrganization();
+                } else {
+                    $organization = current($this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findAll());
+                }
+
+                $ids = unserialize(
+                    $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('secretary.membership_article')
-                    );
+                );
+
+                $membershipArticle = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findOneById($ids[$organization->getId()]);
 
                 if ($registration->hasPayed()) {
                     $booking = $this->getEntityManager()

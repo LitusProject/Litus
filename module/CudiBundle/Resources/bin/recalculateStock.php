@@ -22,6 +22,9 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
+if (false === getenv('APPLICATION_ENV'))
+    putenv('APPLICATION_ENV=development');
+
 chdir(dirname(dirname(dirname(dirname(__DIR__)))));
 
 include 'init_autoloader.php';
@@ -55,12 +58,14 @@ if (isset($opts->r)) {
         ->getRepository('CudiBundle\Entity\Stock\Period')
         ->findAllArticlesByPeriod($period);
 
-    $membership = $entityManager
-        ->getRepository('CommonBundle\Entity\General\Config')
-        ->getConfigValue('secretary.membership_article');
+    $membership = unserialize(
+        $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.membership_article')
+    );
 
     foreach($articles as $article) {
-        if ($article->getId() == $membership) {
+        if (is_array($article->getId(), $membership)) {
             $article->setStockValue(0);
             continue;
         }

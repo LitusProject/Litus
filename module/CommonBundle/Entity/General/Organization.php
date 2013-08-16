@@ -45,11 +45,7 @@ class Organization
      */
     public function __construct($name)
     {
-        $start->setTime(0, 0);
-        $universityStart->setTime(0, 0);
-
-        $this->start = $start;
-        $this->universityStart = $universityStart;
+        $this->name = $name;
     }
 
     /**
