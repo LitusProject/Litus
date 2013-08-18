@@ -98,11 +98,6 @@ class Study
         return $this->id;
     }
 
-    public function setKulId($kulId)
-    {
-        $this->kulId = $kulId;
-    }
-
     /**
      * @return string
      */
