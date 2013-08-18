@@ -26,6 +26,22 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 {
     public function individualAction()
     {
-        return new ViewModel();
+        list($records, $totalNumber) = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findAllPaginator($this->getParam('page'), $this->paginator()->getItemsPerPage());
+
+        $paginator = $this->paginator()->createFromPaginatorRepository(
+            $records,
+            $this->getParam('page'),
+            $totalNumber
+        );
+
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 }

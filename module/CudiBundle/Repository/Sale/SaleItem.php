@@ -15,6 +15,40 @@ use CommonBundle\Entity\User\Person,
  */
 class SaleItem extends EntityRepository
 {
+    public function findAll()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllPaginator($currentPage, $itemsPerPage)
+    {
+        $currentPage = $currentPage == 0 ? $currentPage = 1 : $currentPage;
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->orderBy('i.timestamp', 'DESC')
+            ->setMaxResults($itemsPerPage)
+            ->setFirstResult(($currentPage - 1) * $itemsPerPage)
+            ->getQuery()
+            ->getResult();
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $totalNumber = $query->select('COUNT(i.id)')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return array($resultSet, $totalNumber);
+    }
+
     public function findOneByPersonAndArticle(Person $person, ArticleEntity $article)
     {
         $query = $this->_em->createQueryBuilder();

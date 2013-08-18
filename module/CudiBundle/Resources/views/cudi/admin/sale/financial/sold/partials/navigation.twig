@@ -1,0 +1,18 @@
+<header id="controller_sub_header">
+    <nav id="controller_sub_nav">
+        <ul>
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'individual') %}
+                <li><a {% if 'individual' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "individual"}) }}">Individual</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'sessions') %}
+                <li><a {% if 'sessions' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "sessions"}) }}">Sale Sessions</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'article') %}
+                <li><a {% if 'article' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "article"}) }}">Article</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'supplier') %}
+                <li><a {% if 'supplier' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "supplier"}) }}">Supplier</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

@@ -839,7 +839,7 @@ return array(
             'cudi_prof_help'                       => 'CudiBundle\Controller\Prof\HelpController',
 
             'cudi_booking'                         => 'CudiBundle\Controller\BookingController',
-            'cudi_opening_hour'                   => 'CudiBundle\Controller\OpeningHourController',
+            'cudi_opening_hour'                    => 'CudiBundle\Controller\OpeningHourController',
         ),
     ),
     'assetic_configuration' => array(
