@@ -174,10 +174,12 @@ class Study
 
             $mainStudy = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Study')
-                ->findOneByTitlePhaseAndLanguage($mainTitle, $phaseNumber, $language);
+                ->findOneByKulId($data->attributes()->objid);
             if (null == $mainStudy) {
-                $mainStudy = new StudyEntity($mainTitle, $phaseNumber, $language);
+                $mainStudy = new StudyEntity($mainTitle, $data->attributes()->objid, $phaseNumber, $language);
                 $this->getEntityManager()->persist($mainStudy);
+            } else {
+                $mainStudy->setTitle($mainTitle);
             }
 
             if ($phase->tcs->children()->count() > 0) {
@@ -186,37 +188,43 @@ class Study
                     $titles = explode('+', $title);
 
                     if (count($titles) == 2) {
-                        if (isset($subStudies[$titles[0]])) {
-                            $subStudy = $subStudies[$titles[0]];
+                        if (isset($subStudies[(string)$studyData->afstudeerrichting->attributes()->objid])) {
+                            $subStudy = $subStudies[(string)$studyData->afstudeerrichting->attributes()->objid];
                         } else {
                             $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[0])));
 
                             $subStudy = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\Study')
-                                ->findOneByTitlePhaseLanguageAndParent($subTitle, $phaseNumber, $language, $mainStudy);
+                                ->findOneByKulId($studyData->afstudeerrichting->attributes()->objid);
                             if (null == $subStudy) {
-                                $subStudy = new StudyEntity($subTitle, $phaseNumber, $language, $mainStudy);
+                                $subStudy = new StudyEntity($subTitle, $studyData->afstudeerrichting->attributes()->objid, $phaseNumber, $language, $mainStudy);
                                 $this->getEntityManager()->persist($subStudy);
+                            } else {
+                                $subStudy->setTitle($subTitle);
                             }
-                            $subStudies[$titles[0]] = $subStudy;
+                            $subStudies[(string)$studyData->afstudeerrichting->attributes()->objid] = $subStudy;
                         }
 
                         $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[1])));
                         $study = $this->getEntityManager()
                             ->getRepository('SyllabusBundle\Entity\Study')
-                            ->findOneByTitlePhaseLanguageAndParent($subTitle, $phaseNumber, $language, $subStudy);
+                            ->findOneByKulId($studyData->attributes()->objid);
                         if (null == $study) {
-                            $study = new StudyEntity($subTitle, $phaseNumber, $language, $subStudy);
+                            $study = new StudyEntity($subTitle, $studyData->attributes()->objid, $phaseNumber, $language, $subStudy);
                             $this->getEntityManager()->persist($study);
+                        } else {
+                            $study->setTitle($subTitle);
                         }
                     } else {
                         $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $title)));
                         $study = $this->getEntityManager()
                             ->getRepository('SyllabusBundle\Entity\Study')
-                            ->findOneByTitlePhaseLanguageAndParent($subTitle, $phaseNumber, $language, $mainStudy);
+                            ->findOneByKulId($studyData->attributes()->objid);
                         if (null == $study) {
-                            $study = new StudyEntity($subTitle, $phaseNumber, $language, $mainStudy);
+                            $study = new StudyEntity($subTitle, $studyData->attributes()->objid, $phaseNumber, $language, $mainStudy);
                             $this->getEntityManager()->persist($study);
+                        } else {
+                            $study->setTitle($subTitle);
                         }
                     }
                     $studies[$phaseNumber][(int) $studyData->attributes()->objid] = $study;
