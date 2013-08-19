@@ -24,7 +24,8 @@ if ('production' == getenv('APPLICATION_ENV')) {
             'factories' => array(
                 'lilo' => function ($serviceManager) {
                     return new \CommonBundle\Component\Lilo\Client(
-                        $serviceManager->get('lilo_connection')
+                        $serviceManager->get('lilo_connection'),
+                        $serviceManager->get('authentication')
                     );
                 },
                 'lilo_connection' => function ($serviceManager) {

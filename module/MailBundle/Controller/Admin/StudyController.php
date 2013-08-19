@@ -69,7 +69,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                     if ($studyIds) {
                         foreach ($studyIds as $studyId) {
-
                             $study = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\Study')
                                 ->findOneById($studyId);

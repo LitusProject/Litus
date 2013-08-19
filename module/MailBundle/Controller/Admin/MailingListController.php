@@ -122,7 +122,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 $this->redirect()->toRoute(
                     'mail_admin_list',
                     array(
-                        'action' => 'manage',
+                        'action' => 'add',
                     )
                 );
 

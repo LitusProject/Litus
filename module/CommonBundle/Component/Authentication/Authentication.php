@@ -19,7 +19,7 @@ use CommonBundle\Component\Authentication\Action\Doctrine,
     Zend\Authentication\AuthenticationService;
 
 /**
- * Implementing our own authentication mechanism.
+ * Authentication
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
