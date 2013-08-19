@@ -25,7 +25,7 @@ class News extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllSite()
+    public function findAllActive()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
@@ -44,7 +44,7 @@ class News extends EntityRepository
         return $resultSet;
     }
 
-    public function findNbSite($nbResults = 3)
+    public function findNbActive($nbResults = 3)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')

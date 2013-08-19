@@ -32,7 +32,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('NewsBundle\Entity\Node\News')
-                ->findAllSite(),
+                ->findAllActive(),
             $this->getParam('page')
         );
 

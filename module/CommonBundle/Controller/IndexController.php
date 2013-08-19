@@ -46,7 +46,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $newsItems = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
-            ->findNbSite(5);
+            ->findNbActive(5);
 
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
