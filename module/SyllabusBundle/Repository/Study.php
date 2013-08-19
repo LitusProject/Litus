@@ -161,4 +161,26 @@ class Study extends EntityRepository
 
         return $result;
     }
+
+    public function findOneByKulId($kulId)
+    {
+        if (! is_numeric($kulId))
+            return null;
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->where(
+                $query->expr()->eq('s.kulId', ':kulId')
+            )
+            ->setParameter('kulId', $kulId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }
