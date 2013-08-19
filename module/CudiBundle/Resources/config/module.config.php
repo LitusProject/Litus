@@ -226,11 +226,14 @@ return array(
             'cudi_admin_sales_financial_sold' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/financial/sold[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/sales/financial/sold[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_sales_financial_sold',
@@ -241,11 +244,14 @@ return array(
             'cudi_admin_sales_financial_ordered' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/financial/ordered[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/sales/financial/ordered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_sales_financial_ordered',
@@ -256,11 +262,14 @@ return array(
             'cudi_admin_sales_financial_delivered' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/financial/delivered[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/sales/financial/delivered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_sales_financial_delivered',
@@ -271,11 +280,14 @@ return array(
             'cudi_admin_sales_financial_split' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/financial/split[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/sales/financial/split[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_sales_financial_split',

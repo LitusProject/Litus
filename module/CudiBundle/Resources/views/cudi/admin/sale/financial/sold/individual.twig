@@ -3,6 +3,8 @@
 {% block content %}
     {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
 
+    {% include 'cudi/admin/sale/financial/sold/partials/years.twig' %}
+
     {% include 'cudi/admin/sale/financial/sold/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
@@ -79,21 +81,21 @@
                 searchDiv: $('#sold_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('cudi_admin_sales_financial_sold', {'action': 'individual'}) }}',
-                url: '{{ url('cudi_admin_sales_financial_sold', {'action': 'individualSearch'}) }}',
+                searchPage: '{{ url('cudi_admin_sales_financial_sold', {'action': 'individual', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_sold', {'action': 'individualSearch', 'academicyear': activeAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#sold_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#sold_search table').append(row = $('<tr>', {class: 'item'}));
-                        row.append('<td>' + this.person + '</td>')
+                        row.append('<td>' + this.timestamp + '</td>')
+                            .append('<td class="widest">' + this.session + '</td>')
                             .append('<td>' + this.article + '</td>')
-                            .append('<td>&times;' + this.number + '</td>')
-                            .append('<td>' + this.bookDate + '</td>')
-                            .append('<td class="status">' + this.status + '</td>')
-                            .append(actions = $('<td>', {'class': 'actions'}));
-                        {% if hasAccess('cudi_admin_sales_booking', 'edit') %}
-                            actions.append(button = $('<a href="{{ url('cudi_admin_sales_booking', {'action': 'edit'}) }}' + this.id + '/period/{{ activePeriod.getId() }}" class="edit">Edit</a>'));
-                        {% endif %}
+                            .append('<td>' + this.person + '</td>')
+                            .append('<td>' + this.organization + '</td>')
+                            .append('<td>' + this.number + '</td>')
+                            .append('<td>&euro; ' + this.sellPrice + '</td>')
+                            .append('<td>&euro; ' + this.purchasePrice + '</td>')
+                            .append('<td class="wider">' + this.discount + '</td>');
                     });
                     $('#sold_search table').change();
                 },
