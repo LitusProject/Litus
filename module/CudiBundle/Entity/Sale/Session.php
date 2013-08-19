@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CommonBundle\Entity\General\Bank\CashRegister,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -253,5 +254,19 @@ class Session
         }
 
         return true;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        $start = AcademicYear::getStartOfAcademicYear($this->getOpenDate());
+
+        $start->setTime(0, 0);
+
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($start);
     }
 }
