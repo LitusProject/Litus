@@ -139,29 +139,22 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    // public function deleteAction()
-    // {
-    //     if (null !== $this->getRequest()->getParam('id')) {
-    //         $section = $this->getEntityManager()
-    //             ->getRepository('Litus\Entity\Br\Contracts\Section')
-    //             ->findOneById($this->getRequest()->getParam('id'));
-    //     } else {
-    //         $section = null;
-    //     }
+    public function deleteAction()
+    {
+        $this->initAjax();
 
-    //     $this->view->sectionDeleted = false;
+        if (!($section = $this->_getSection()))
+            return new ViewModel();
 
-    //     if (null === $this->getRequest()->getParam('confirm')) {
-    //         $this->view->section = $section;
-    //     } else {
-    //         if (1 == $this->getRequest()->getParam('confirm')) {
-    //             $this->getEntityManager()->remove($section);
-    //             $this->view->sectionDeleted = true;
-    //         } else {
-    //             $this->_redirect('manage');
-    //         }
-    //     }
-    // }
+        $this->getEntityManager()->remove($section);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
 
 
     private function _getSection()

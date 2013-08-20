@@ -85,9 +85,10 @@ return array(
         ),
         'br_admin_section' => array(
             '@common_jquery',
-            '@common_jqueryui',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'br_corporate_index' => array(
             '@common_jquery',
