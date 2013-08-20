@@ -343,8 +343,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'origsec' => $sections,
-                    'sections' => $contractComposition,
                 ),
             )
         );
