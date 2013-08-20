@@ -15,7 +15,7 @@ class Contract extends EntityRepository
     public function findAllContractIds()
     {
         $result = $this->_em
-            ->createQuery('SELECT c.id FROM Litus\Entity\Br\Contract c')
+            ->createQuery('SELECT c.id FROM BrBundle\Entity\Contract c')
             ->getResult();
 
         $return = array();
@@ -28,7 +28,7 @@ class Contract extends EntityRepository
     public function findNextInvoiceNb()
     {
         $highestInvoiceNb = $this->_em
-            ->createQuery('SELECT MAX(c.invoiceNb) AS highest FROM Litus\Entity\Br\Contract c')
+            ->createQuery('SELECT MAX(c.invoiceNb) AS highest FROM BrBundle\Entity\Contract c')
             ->getResult();
 
         $highestInvoiceNb = $highestInvoiceNb[0]['highest'];
@@ -39,7 +39,7 @@ class Contract extends EntityRepository
     public function findNextContractNb()
     {
         $highestContractNb = $this->_em
-            ->createQuery('SELECT MAX(c.contractNb) AS highest FROM Litus\Entity\Br\Contract c')
+            ->createQuery('SELECT MAX(c.contractNb) AS highest FROM BrBundle\Entity\Contract c')
             ->getResult();
 
         $highestContractNb = $highestContractNb[0]['highest'];

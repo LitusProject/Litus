@@ -17,6 +17,7 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Contract\Section,
     BrBundle\Form\Admin\Section\Add as AddForm,
     BrBundle\Form\Admin\Section\Edit as EditForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -45,9 +46,6 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
     {
         $form = new AddForm($this->getEntityManager());
 
-        $this->view->form = $form;
-        $this->view->sectionCreated = false;
-
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -56,36 +54,48 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                 $formData = $form->getFormData($formData);
 
                 $newSection = new Section(
+                    $this->getEntityManager(),
                     $formData['name'],
+                    $formData['invoice_description'],
                     $formData['content'],
                     $this->getAuthentication()->getPersonObject(),
                     $formData['price'],
                     $formData['vat_type']
                 );
 
-                if($formData['invoice_description'] == '')
-                    $newSection->setInvoiceDescription(null);
-                else
-                    $newSection->setInvoiceDescription($formData['invoice_description']);
-
                 $this->getEntityManager()->persist($newSection);
+                $this->getEntityManager()->flush();
 
-                $this->view->form = new AddForm();
-                $this->view->sectionCreated = true;
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The section was succesfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_section',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
             }
         }
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function editAction()
     {
-        $section = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\Br\Contracts\Section')
-                    ->find($this->getRequest()->getParam('id'));
+        $section = $this->_getSection();
 
-        $form = new EditForm($section);
-
-        $this->view->form = $form;
-        $this->view->sectionEdited = false;
+        $form = new EditForm($this->getEntityManager(), $section);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -97,35 +107,100 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                 $section->setName($formData['name'])
                     ->setContent($formData['content'])
                     ->setPrice($formData['price'])
-                    ->setVatType($formData['vat_type'])
-                    ->setInvoiceDescription('' == $formData['invoice_description'] ? null : $formData['invoice_description']);
+                    ->setVatType($this->getEntityManager(), $formData['vat_type'])
+                    ->setInvoiceDescription($formData['invoice_description']);
 
-                $this->view->sectionEdited = true;
+                $this->getEntityManager()->flush();
+
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The section was succesfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_section',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
             }
         }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function deleteAction()
     {
-        if (null !== $this->getRequest()->getParam('id')) {
-            $section = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Br\Contracts\Section')
-                ->findOneById($this->getRequest()->getParam('id'));
-        } else {
-            $section = null;
+        $this->initAjax();
+
+        if (!($section = $this->_getSection()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($section);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+
+    private function _getSection()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the section!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_section',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
         }
 
-        $this->view->sectionDeleted = false;
+        $section = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract\Section')
+            ->findOneById($this->getParam('id'));
 
-        if (null === $this->getRequest()->getParam('confirm')) {
-            $this->view->section = $section;
-        } else {
-            if (1 == $this->getRequest()->getParam('confirm')) {
-                $this->getEntityManager()->remove($section);
-                $this->view->sectionDeleted = true;
-            } else {
-                $this->_redirect('manage');
-            }
+        if (null === $section) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No section with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_section',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
         }
+
+        return $section;
     }
 }
