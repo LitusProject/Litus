@@ -38,6 +38,17 @@
             }
         });
 
+        if (opts.defaultPage) {
+            opts.defaultPage.prepend(
+                $('<div>', {'class': 'search-button'})
+            ).click(function () {
+                if (opts.searchDiv)
+                    opts.searchDiv.show();
+                opts.defaultPage.hide();
+                opts.searchString.focus();
+            });
+        }
+
         if (opts.searchDiv) {
             opts.searchDiv.append(
                 $('<div>', {'class': 'moreResults', 'style': 'text-align:right;display:none;'}).append(
