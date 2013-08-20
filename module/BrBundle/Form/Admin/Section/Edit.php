@@ -31,4 +31,28 @@ class Edit extends Add
             )
         );
     }
+
+    public function getInputFilter()
+    {
+        $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
+
+        $inputFilter->remove('name');
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new CompanyNameValidator($this->_entityManager, $this->_company),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
+    }
 }

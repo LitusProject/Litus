@@ -50,14 +50,13 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            // TODO: validator
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $newSection = new Section(
                     $this->getEntityManager(),
                     $formData['name'],
-                    $formData['invoice_description'] == '' ? null : $formData['invoice_description'],
+                    $formData['invoice_description'],
                     $formData['content'],
                     $this->getAuthentication()->getPersonObject(),
                     $formData['price'],

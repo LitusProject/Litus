@@ -14,13 +14,14 @@
 
 namespace BrBundle\Form\Admin\Section;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    BrBundle\Entity\Contract\Section,
-    Doctrine\ORM\EntityManager,
-    CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    BrBundle\Entity\Contract\Section,
+    BrBundle\Component\Validator\SectionName as SectionNameValidator,
+    Doctrine\ORM\EntityManager,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -31,12 +32,19 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param mixed $opts The validator's options
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
+
+        $this->_entityManager = $entityManager;
 
         $field = new Text('name');
         $field->setLabel('Name')
@@ -87,5 +95,69 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $typesArray[$type] = $value . '%';
 
         return $typesArray;
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new SectionNameValidator($this->_entityManager),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'price',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'invoice_description',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'content',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }
