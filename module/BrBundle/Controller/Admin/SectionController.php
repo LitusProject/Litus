@@ -17,6 +17,7 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Contract\Section,
     BrBundle\Form\Admin\Section\Add as AddForm,
     BrBundle\Form\Admin\Section\Edit as EditForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -43,40 +44,50 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        $sectionCreated = false;
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
+            // TODO: validator
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $newSection = new Section(
                     $this->getEntityManager(),
                     $formData['name'],
-                    $formData['invoice_description'],
+                    $formData['invoice_description'] == '' ? null : $formData['invoice_description'],
                     $formData['content'],
                     $this->getAuthentication()->getPersonObject(),
                     $formData['price'],
                     $formData['vat_type']
                 );
 
-                if($formData['invoice_description'] == '')
-                    $newSection->setInvoiceDescription(null);
-                else
-                    $newSection->setInvoiceDescription($formData['invoice_description']);
-
                 $this->getEntityManager()->persist($newSection);
+                $this->getEntityManager()->flush();
 
-                $sectionCreated = true;
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The section was succesfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_section',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
             }
         }
         return new ViewModel(
             array(
                 'form' => $form,
-                'sectionCreated' => $sectionCreated,
             )
         );
     }
