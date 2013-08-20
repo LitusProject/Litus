@@ -10,6 +10,18 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
+        <h1>Sale Session</h1>
+        <p>Manager: <b>{{ session.getManager().getFullName() }}</b></p>
+        <p>Date openend: <b>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</b></p>
+        {% if not session.isOpen() %}<p>Date closed: <b>{{ session.getCloseDate().format('Y-m-d H:i:s')}}</b></p>{% endif %}
+        {% set theoreticalRevenue = session.getTheoreticalRevenue() %}
+        {% set actualRevenue = session.getActualRevenue() %}
+        <p>Theoretical Revenue: <b>&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</b></p>
+        {% if not session.isOpen() %}
+            <p>Actual Revenue: <b>&euro; {{ (actualRevenue/100)|number_format(2) }}</b></p>
+            <p>Delta: <b>&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</b></p>
+        {% endif %}
+        <br />
         <div id="sold_search" style="display:none;">
             <div style="padding:4px;text-align:right">
                 Search:
@@ -26,7 +38,6 @@
             <table class="full_width manage">
                 <tr>
                     <th width="100px">Date</th>
-                    <th width="100px" class="widest">Sale Session</th>
                     <th>Article</th>
                     <th width="120px">Person</th>
                     <th width="70px">Org.</th>
@@ -42,7 +53,6 @@
             <table class="full_width manage">
                 <tr>
                     <th width="100px">Date</th>
-                    <th width="100px" class="widest">Sale Session</th>
                     <th>Article</th>
                     <th width="120px">Person</th>
                     <th width="70px">Org.</th>
@@ -55,7 +65,6 @@
                 {% for item in paginator %}
                     <tr class="item">
                         <td>{{ item.getTimestamp().format('d/m/Y H:i') }}</td>
-                        <td class="widest">{{ item.getSession().getOpenDate().format('d/m/Y H:i') }}</td>
                         <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
                         <td>{{ item.getPerson().getFullName() }}</td>
                         <td>{{ item.getPerson().getOrganization(item.getSession().getAcademicYear()).getName() }}</td>
@@ -70,40 +79,4 @@
             {% include 'admin/partials/paginationControl.twig' %}
         </div>
     </div>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            {% if hasAccess('cudi_admin_sales_financial_sold', 'individualSearch') %}
-            $.searchDatabase({
-                defaultPage: $('#default_page'),
-                searchDiv: $('#sold_search'),
-                searchString: $('#searchString'),
-                searchField: $('#searchField'),
-                searchPage: '{{ url('cudi_admin_sales_financial_sold', {'action': 'individual', 'academicyear': activeAcademicYear.getCode()}) }}',
-                url: '{{ url('cudi_admin_sales_financial_sold', {'action': 'individualSearch', 'academicyear': activeAcademicYear.getCode()}) }}',
-                display: function (data) {
-                    $('#sold_search table').find('tr.item').remove();
-                    $(data).each(function () {
-                        $('#sold_search table').append(row = $('<tr>', {class: 'item'}));
-                        row.append('<td>' + this.timestamp + '</td>')
-                            .append('<td class="widest">' + this.session + '</td>')
-                            .append('<td>' + this.article + '</td>')
-                            .append('<td>' + this.person + '</td>')
-                            .append('<td>' + this.organization + '</td>')
-                            .append('<td>' + this.number + '</td>')
-                            .append('<td>&euro; ' + this.sellPrice + '</td>')
-                            .append('<td>&euro; ' + this.purchasePrice + '</td>')
-                            .append('<td class="wider">' + this.discount + '</td>');
-                    });
-                    $('#sold_search table').change();
-                },
-                clear: function () {
-                    $('#sold_search table').find('tr.item').remove();
-                }
-            });
-            {% endif %}
-        });
-    </script>
 {% endblock %}

@@ -5,6 +5,7 @@ namespace CudiBundle\Repository\Sale;
 use CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article as ArticleEntity,
+    CudiBundle\Entity\Sale\Session as SessionEntity,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     Doctrine\ORM\Query\Expr\OrderBy;
@@ -25,6 +26,21 @@ class SaleItem extends EntityRepository
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery()
             ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findNumberBySession(SessionEntity $session)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('COUNT(i.id)')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->where(
+                $query->expr()->eq('i.session', ':session')
+            )
+            ->setParameter('session', $session)
+            ->getQuery()
+            ->getSingleScalarResult();
 
         return $resultSet;
     }
@@ -199,6 +215,18 @@ class SaleItem extends EntityRepository
             $query,
             new OrderBy('i.timestamp', 'DESC')
         );
+    }
+
+    public function findAllBySessionPaginator(SessionEntity $session, $currentPage, $itemsPerPage)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->where(
+                $query->expr()->eq('i.session', ':session')
+            )
+            ->setParameter('session', $session);
+
+        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
     }
 
     public function findOneByPersonAndArticle(Person $person, ArticleEntity $article)

@@ -135,6 +135,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
+        foreach($paginator as $item) {
+            $item->setEntityManager($this->getEntityManager());
+        }
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -143,5 +147,91 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                 'activeAcademicYear' => $academicYear,
             )
         );
+    }
+
+    public function sessionAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        if (!($session = $this->_getSession()))
+            return new ViewModel();
+
+        if (null !== $this->getParam('field'))
+            list($records, $totalNumber) = $this->_individualSessionSearch($session, $this->getParam('page'), $this->paginator()->getItemsPerPage());
+
+        if (!isset($records)) {
+            list($records, $totalNumber) = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findAllBySessionPaginator($session, $this->getParam('page'), $this->paginator()->getItemsPerPage());
+        }
+
+        $paginator = $this->paginator()->createFromPaginatorRepository(
+            $records,
+            $this->getParam('page'),
+            $totalNumber
+        );
+
+        return new ViewModel(
+            array(
+                'session' => $session,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+            )
+        );
+    }
+
+    private function _getSession()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the session!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_sales_session',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $session = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $session) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No session with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_sales_session',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $session->setEntityManager($this->getEntityManager());
+
+        return $session;
     }
 }

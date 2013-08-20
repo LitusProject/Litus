@@ -5,7 +5,7 @@
                 <li><a {% if 'individual' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "individual", "academicyear": activeAcademicYear.getCode()}) }}">Individual</a></li>
             {% endif %}
             {% if hasAccess('cudi_admin_sales_financial_sold', 'sessions') %}
-                <li><a {% if 'sessions' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "sessions", "academicyear": activeAcademicYear.getCode()}) }}">Sale Sessions</a></li>
+                <li><a {% if 'sessions' == getParam('action') or 'session' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "sessions", "academicyear": activeAcademicYear.getCode()}) }}">Sale Sessions</a></li>
             {% endif %}
             {% if hasAccess('cudi_admin_sales_financial_sold', 'article') %}
                 <li><a {% if 'article' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "article", "academicyear": activeAcademicYear.getCode()}) }}">Article</a></li>
