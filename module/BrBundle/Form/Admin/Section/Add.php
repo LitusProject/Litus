@@ -17,6 +17,7 @@ namespace BrBundle\Form\Admin\Section;
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Validator\Price as PriceValidator,
     BrBundle\Entity\Contract\Section,
     BrBundle\Component\Validator\SectionName as SectionNameValidator,
     Doctrine\ORM\EntityManager,
@@ -80,6 +81,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
+    public function populateFromSection(Section $section)
+    {
+        $formData = array(
+            'name'  => $section->getName(),
+            'price' => number_format($section->getPrice()/100, 2),
+            'vat_type' => $section->getVatType(),
+            'invoice_description' => $section->getInvoiceDescription(),
+            'content' => $section->getContent(),
+        );
+
+        $this->setData($formData);
+    }
+
+
     /**
      * Retrieve the different VAT types applicable.
      *
@@ -126,9 +141,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        new PriceValidator(),
                     ),
                 )
             )

@@ -91,34 +91,53 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    // public function editAction()
-    // {
-    //     $section = $this->getEntityManager()
-    //                 ->getRepository('Litus\Entity\Br\Contracts\Section')
-    //                 ->find($this->getRequest()->getParam('id'));
+    public function editAction()
+    {
+        $section = $this->_getSection();
 
-    //     $form = new EditForm($section);
+        $form = new EditForm($this->getEntityManager(), $section);
 
-    //     $this->view->form = $form;
-    //     $this->view->sectionEdited = false;
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-    //     if ($this->getRequest()->isPost()) {
-    //         $formData = $this->getRequest()->getPost();
-    //         $form->setData($formData);
+            if($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
-    //         if($form->isValid()) {
-    //             $formData = $form->getFormData($formData);
+                $section->setName($formData['name'])
+                    ->setContent($formData['content'])
+                    ->setPrice($formData['price'])
+                    ->setVatType($this->getEntityManager(), $formData['vat_type'])
+                    ->setInvoiceDescription($formData['invoice_description']);
 
-    //             $section->setName($formData['name'])
-    //                 ->setContent($formData['content'])
-    //                 ->setPrice($formData['price'])
-    //                 ->setVatType($formData['vat_type'])
-    //                 ->setInvoiceDescription('' == $formData['invoice_description'] ? null : $formData['invoice_description']);
+                $this->getEntityManager()->flush();
 
-    //             $this->view->sectionEdited = true;
-    //         }
-    //     }
-    // }
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The section was succesfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_section',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
 
     // public function deleteAction()
     // {
@@ -143,4 +162,52 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
     //         }
     //     }
     // }
+
+
+    private function _getSection()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the section!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_section',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $section = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract\Section')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $section) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No section with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_section',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $section;
+    }
 }

@@ -74,9 +74,10 @@ class Section
     private $price;
 
     /**
-     * @var string The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
+     * @var string The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are indexes in a configurable
+     * array of possible values
      *
-     * @ORM\Column(name="vat_type", type="string", length=1)
+     * @ORM\Column(name="vat_type", type="integer")
      */
     private $vatType;
 
@@ -197,12 +198,10 @@ class Section
      */
     public function setVatType(EntityManager $entityManager, $vatType)
     {
-        try {
-            $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.vat_types');
-            $types = unserialize($types);
-            $vatType = $types[$vatType];
-        } catch (\InvalidArgumentException $e) {
+        $types = $entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.vat_types');
+        $types = unserialize($types);
+        if (!isset($types[$vatType])) {
             throw new \InvalidArgumentException('Invalid VAT type: ' . $vatType);
         }
 
@@ -227,14 +226,14 @@ class Section
      */
     public function getVatPercentage(EntityManager $entityManager)
     {
-        return intval(
-            $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue(self::VAT_CONFIG_PREFIX . '.' . $this->getVatType())
-        );
+        $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.vat_types');
+        $types = unserialize($types);
+        return $types[$this->getVatType()];
     }
 
     /**
-     * @param int $price
+     * @param float $price
      * @return \BrBundle\Entity\Contract\Section
      */
     public function setPrice($price)
@@ -246,7 +245,7 @@ class Section
             throw new \InvalidArgumentException('Invalid price');
         }
 
-        $this->price = $price;
+        $this->price = $price * 100;
 
         return $this;
     }
