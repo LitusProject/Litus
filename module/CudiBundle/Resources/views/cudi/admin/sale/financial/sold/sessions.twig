@@ -1,0 +1,31 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/sold/partials/years.twig' %}
+
+    {% include 'cudi/admin/sale/financial/sold/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th width="100px">Open Date</th>
+                <th width="100px">End Date</th>
+                <th>Person</th>
+            </tr>
+
+            {% for item in paginator %}
+                <tr class="item">
+                    <td>{{ item.getOpenDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ item.getCloseDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ item.getManager().getFullName() }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

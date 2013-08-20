@@ -119,4 +119,29 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                     ->findAllByDiscountPaginator($this->getParam('string'), $page, $numberRecords, $academicYear);
         }
     }
+
+    public function sessionsAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Session')
+                ->findAllByAcademicYear($academicYear),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+            )
+        );
+    }
 }

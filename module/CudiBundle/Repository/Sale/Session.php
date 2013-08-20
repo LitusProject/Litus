@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Sale;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Session as SessionEntity,
     DateTime,
     Doctrine\ORM\EntityRepository;
@@ -101,6 +102,24 @@ class Session extends EntityRepository
                 $query->expr()->isNull('s.closeDate')
             )
             ->orderBy('s.openDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('CudiBundle\Entity\Sale\Session', 's')
+            ->where($query->expr()->orX(
+                    $query->expr()->gt('s.openDate', ':start'),
+                    $query->expr()->lt('s.openDate', ':end')
+                )
+            )
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate())
             ->getQuery()
             ->getResult();
 
