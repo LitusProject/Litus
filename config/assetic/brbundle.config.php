@@ -81,6 +81,8 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_css',
         ),
         'br_admin_cv_entry' => array(
             '@common_jquery',

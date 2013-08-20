@@ -1,4 +1,16 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Controller\Admin;
 
@@ -22,8 +34,15 @@ namespace BrBundle\Controller\Admin;
 // use \Zend\Json\Json;
 // use \Zend\Registry;
 
-use Zend\View\Model\ViewModel;
+use BrBundle\Entity\Contract,
+    BrBundle\Form\Admin\Contract\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
+/**
+ * ContractController
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ */
 class ContractController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     // private $_json = null;
@@ -87,54 +106,65 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //     $this->_forward('add');
     // }
 
-    // public function addAction()
-    // {
-    //     $form = new AddForm();
+    public function addAction()
+    {
+        $contractCreated = false;
+        $form = new AddForm($this->getEntityManager());
 
-    //     $this->view->form = $form;
-    //     $this->view->contractCreated = false;
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-    //     if ($this->getRequest()->isPost()) {
-    //         $formData = $this->getRequest()->getPost();
-    //         $form->setData($formData);
+            if ($form->isValid()) {
+                $company = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company')
+                    ->findOneById($formData['company']);
 
-    //         if ($form->isValid()) {
-    //             $company = $this->getEntityManager()
-    //                 ->getRepository('Litus\Entity\Users\People\Company')
-    //                 ->findOneById($formData['company']);
+                $newContract = new Contract(
+                    $this->getAuthentication()->getPersonObject(),
+                    $company,
+                    $formData['discount'],
+                    $formData['title']
+                );
 
-    //             $newContract = new Contract(
-    //                 $this->getAuthentication()->getPersonObject(),
-    //                 $company,
-    //                 $formData['discount'],
-    //                 $formData['title']
-    //             );
+                $newContract->setContractNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextContractNb()
+                );
 
-    //             $newContract->setContractNb(
-    //                 $this->getEntityManager()
-    //                     ->getRepository('Litus\Entity\Br\Contract')
-    //                     ->findNextContractNb()
-    //             );
+                $contractComposition = array();
+                foreach ($formData['sections'] as $id) {
+                    $section = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract\Section')
+                        ->findOneById($id);
 
-    //             $contractComposition = array();
-    //             foreach ($formData['sections'] as $id) {
-    //                 $section = $this->getEntityManager()
-    //                     ->getRepository('Litus\Entity\Br\Contracts\Section')
-    //                     ->findOneById($id);
+                    $contractComposition[] = $section;
+                }
+                $newContract->addSections($contractComposition);
 
-    //                 $contractComposition[] = $section;
-    //             }
-    //             $newContract->addSections($contractComposition);
+                $this->getEntityManager()->persist($newContract);
+                $this->getEntityManager()->flush();
 
-    //             $this->getEntityManager()->persist($newContract);
+                $contractCreated = true;
+                return new ViewModel(
+                    array(
+                        'contractCreated' => $contractCreated,
+                        'form' => $form,
+                        'contractId' => $newContract->getId(),
+                        'sections' => $contractComposition,
+                    )
+                );
+            }
+        }
 
-    //             $this->view->contractId = $newContract->getId();
-    //             $this->view->sections = $contractComposition;
-
-    //             $this->view->contractCreated = true;
-    //         }
-    //     }
-    // }
+        return new ViewModel(
+            array(
+                'contractCreated' => $contractCreated,
+                'form' => $form,
+            )
+        );
+    }
 
     public function manageAction()
     {
@@ -280,36 +310,40 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //     }
     // }
 
-    // public function composeAction()
-    // {
-    //     $this->_initAjax();
+    public function composeAction()
+    {
+        $this->initAjax();
 
-    //     $postData = $this->getRequest()->getPost();
-    //     parse_str($postData['sections'], $sections);
-    //     $updateCompositionResult = array(
-    //         'result' => true
-    //     );
+        $postData = $this->getRequest()->getPost();
+        parse_str($postData['sections'], $sections);
 
-    //     $contract = $this->getEntityManager()
-    //         ->getRepository('Litus\Entity\Br\Contract')
-    //         ->findOneById($postData['contractId']);
+        $contract = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findOneById($postData['contractId']);
 
-    //     $contractComposition = array();
-    //     foreach ($sections['contractComposition'] as $position => $id) {
-    //         $contractComposition[$position] = $this->getEntityManager()
-    //             ->getRepository('Litus\Entity\Br\Contracts\Section')
-    //             ->findOneById($id);
-    //     }
+        $contractComposition = array();
+        foreach ($sections as $position => $id) {
+            $contractComposition[$position] = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract\Section')
+                ->findOneById($id);
+        }
 
-    //     $contract->resetComposition()
-    //         ->setDirty();
+        $contract->resetComposition()
+            ->setDirty();
 
-    //     // Avoiding duplicate key violations
-    //     $this->getEntityManager()->flush();
+        // Saving the new contract composition
+        $contract->addSections($contractComposition);
 
-    //     // Saving the new contract composition
-    //     $contract->addSections($contractComposition);
+        // Avoiding duplicate key violations
+        $this->getEntityManager()->flush();
 
-    //     echo $this->_json->encode($updateCompositionResult);
-    // }
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                    'sections' => $contractComposition,
+                ),
+            )
+        );
+    }
 }

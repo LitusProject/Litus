@@ -20,6 +20,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Form\Admin\Driver\Edit,
     Zend\View\Model\ViewModel;
 
+/**
+ * DriverController
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ */
 class DriverController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
