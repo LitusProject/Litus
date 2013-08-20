@@ -7,7 +7,7 @@
 		{% include 'admin/partials/flashMessenger.twig' %}
 
 		{% if sectionCreated %}
-	        <div class="success_message">
+			<div class="flashmessage success_message full_width">
 	            <div class="title">Success</div>
 	            <div class="content">
 	                <p>The section was successfully created!</p>
@@ -15,7 +15,8 @@
 	        </div>
 		{% endif %}
 
-		{{ form }}
+		{% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 	</div>
 
 	<aside>

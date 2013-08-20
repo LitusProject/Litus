@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('vat_type');
         $field->setLabel('VAT Type')
             ->setRequired()
-            ->setOptions($this->_getVatTypes($entityManager));
+            ->setAttribute('options', $this->_getVatTypes($entityManager));
         $this->add($field);
 
         $field = new Text('invoice_description');
@@ -67,7 +67,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
+        $field->setValue('Add')
             ->setAttribute('class', 'contracts_add');
         $this->add($field);
     }
@@ -80,8 +80,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getVatTypes(EntityManager $entityManager)
     {
         $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->findAllByPrefix(Section::VAT_CONFIG_PREFIX);
-
+            ->getConfigValue('br.vat_types');
+        $types = unserialize($types);
         $typesArray = array();
         foreach ($types as $type => $value)
             $typesArray[$type] = $value . '%';

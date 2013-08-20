@@ -27,7 +27,6 @@ use CommonBundle\Component\Util\AcademicYear,
  */
 class Section
 {
-    const VAT_CONFIG_PREFIX = 'br.vat';
 
     /**
      * @var int A generated ID
@@ -90,20 +89,20 @@ class Section
 
     /**
      * @param string $name The name of this section
+     * @param string $description The description on the invoice of this section
      * @param string $content The content of this section
      * @param \CommonBundle\Entity\User\Person $author The author of this section
      * @param int $price
      * @param string $vatType see setVatType($vatType)
      */
-    public function __construct(EntityManager $entityManager, $name, $content, Person $author, $price, $vatType)
+    public function __construct(EntityManager $entityManager, $name, $description, $content, Person $author, $price, $vatType)
     {
         $this->setName($name);
+        $this->setInvoiceDescription($description);
         $this->setContent($content);
         $this->setAuthor($author);
         $this->setPrice($price);
         $this->setVatType($entityManager, $vatType);
-
-        $this->setInvoiceDescription();
 
         $this->year = AcademicYear::getAcademicYear();
     }
@@ -152,7 +151,7 @@ class Section
      */
     public function setAuthor(Person $author)
     {
-        if (null === $auth)
+        if (null === $author)
             throw new \InvalidArgumentException('Invalid author');
 
         $this->author = $author;
@@ -174,7 +173,7 @@ class Section
      */
     public function setContent($content)
     {
-        if ((null === $name) || !is_string($name))
+        if ((null === $content) || !is_string($content))
             throw new \InvalidArgumentException('Invalid content');
 
         $this->content = $content;
@@ -199,8 +198,10 @@ class Section
     public function setVatType(EntityManager $entityManager, $vatType)
     {
         try {
-            $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue(self::VAT_CONFIG_PREFIX . '.' . $vatType);
+            $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.vat_types');
+            $types = unserialize($types);
+            $vatType = $types[$vatType];
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException('Invalid VAT type: ' . $vatType);
         }
@@ -272,7 +273,7 @@ class Section
      */
     public function setInvoiceDescription($description)
     {
-        if ((null === $name) || !is_string($name))
+        if ((null === $description) || !is_string($description))
             throw new \InvalidArgumentException('Invalid description');
 
         $this->invoiceDescription = $description;

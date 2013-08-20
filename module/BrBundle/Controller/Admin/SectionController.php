@@ -43,10 +43,8 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
+        $sectionCreated = false;
         $form = new AddForm($this->getEntityManager());
-
-        $this->view->form = $form;
-        $this->view->sectionCreated = false;
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -56,7 +54,9 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                 $formData = $form->getFormData($formData);
 
                 $newSection = new Section(
+                    $this->getEntityManager(),
                     $formData['name'],
+                    $formData['invoice_description'],
                     $formData['content'],
                     $this->getAuthentication()->getPersonObject(),
                     $formData['price'],
@@ -70,62 +70,67 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->persist($newSection);
 
-                $this->view->form = new AddForm();
-                $this->view->sectionCreated = true;
+                $sectionCreated = true;
             }
         }
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'sectionCreated' => $sectionCreated,
+            )
+        );
     }
 
-    public function editAction()
-    {
-        $section = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\Br\Contracts\Section')
-                    ->find($this->getRequest()->getParam('id'));
+    // public function editAction()
+    // {
+    //     $section = $this->getEntityManager()
+    //                 ->getRepository('Litus\Entity\Br\Contracts\Section')
+    //                 ->find($this->getRequest()->getParam('id'));
 
-        $form = new EditForm($section);
+    //     $form = new EditForm($section);
 
-        $this->view->form = $form;
-        $this->view->sectionEdited = false;
+    //     $this->view->form = $form;
+    //     $this->view->sectionEdited = false;
 
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+    //     if ($this->getRequest()->isPost()) {
+    //         $formData = $this->getRequest()->getPost();
+    //         $form->setData($formData);
 
-            if($form->isValid()) {
-                $formData = $form->getFormData($formData);
+    //         if($form->isValid()) {
+    //             $formData = $form->getFormData($formData);
 
-                $section->setName($formData['name'])
-                    ->setContent($formData['content'])
-                    ->setPrice($formData['price'])
-                    ->setVatType($formData['vat_type'])
-                    ->setInvoiceDescription('' == $formData['invoice_description'] ? null : $formData['invoice_description']);
+    //             $section->setName($formData['name'])
+    //                 ->setContent($formData['content'])
+    //                 ->setPrice($formData['price'])
+    //                 ->setVatType($formData['vat_type'])
+    //                 ->setInvoiceDescription('' == $formData['invoice_description'] ? null : $formData['invoice_description']);
 
-                $this->view->sectionEdited = true;
-            }
-        }
-    }
+    //             $this->view->sectionEdited = true;
+    //         }
+    //     }
+    // }
 
-    public function deleteAction()
-    {
-        if (null !== $this->getRequest()->getParam('id')) {
-            $section = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Br\Contracts\Section')
-                ->findOneById($this->getRequest()->getParam('id'));
-        } else {
-            $section = null;
-        }
+    // public function deleteAction()
+    // {
+    //     if (null !== $this->getRequest()->getParam('id')) {
+    //         $section = $this->getEntityManager()
+    //             ->getRepository('Litus\Entity\Br\Contracts\Section')
+    //             ->findOneById($this->getRequest()->getParam('id'));
+    //     } else {
+    //         $section = null;
+    //     }
 
-        $this->view->sectionDeleted = false;
+    //     $this->view->sectionDeleted = false;
 
-        if (null === $this->getRequest()->getParam('confirm')) {
-            $this->view->section = $section;
-        } else {
-            if (1 == $this->getRequest()->getParam('confirm')) {
-                $this->getEntityManager()->remove($section);
-                $this->view->sectionDeleted = true;
-            } else {
-                $this->_redirect('manage');
-            }
-        }
-    }
+    //     if (null === $this->getRequest()->getParam('confirm')) {
+    //         $this->view->section = $section;
+    //     } else {
+    //         if (1 == $this->getRequest()->getParam('confirm')) {
+    //             $this->getEntityManager()->remove($section);
+    //             $this->view->sectionDeleted = true;
+    //         } else {
+    //             $this->_redirect('manage');
+    //         }
+    //     }
+    // }
 }
