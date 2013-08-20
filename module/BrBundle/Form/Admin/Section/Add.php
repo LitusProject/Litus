@@ -18,11 +18,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     BrBundle\Entity\Contract\Section,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Form,
-    Zend\Form\Element\Select,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Form\Element\Textarea;
+    CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
+    Zend\Form\Element\Submit;
 
 /**
  * Add a section.
@@ -41,42 +40,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('name');
         $field->setLabel('Name')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Text('price');
         $field->setLabel('Price')
             ->setRequired()
-            ->setValue('0')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setValue('0');
+        $this->add($field);
 
         $field = new Select('vat_type');
         $field->setLabel('VAT Type')
             ->setRequired()
-            ->setMultiOptions($this->_getVatTypes($entityManager))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setOptions($this->_getVatTypes($entityManager));
+        $this->add($field);
 
         $field = new Text('invoice_description');
         $field->setLabel('Description on Invoice')
-            ->setRequired(false)
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired(false);
+        $this->add($field);
 
         $field = new Textarea('content');
         $field->setLabel('Content')
             ->setRequired()
-            ->setValue('<entry></entry>')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setValue('<entry></entry>');
+        $this->add($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add')
-            ->setAttrib('class', 'contracts_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+            ->setAttribute('class', 'contracts_add');
+        $this->add($field);
     }
 
     /**
