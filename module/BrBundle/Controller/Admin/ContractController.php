@@ -322,7 +322,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($postData['contractId']);
 
         $contractComposition = array();
-        foreach ($sections as $position => $id) {
+        foreach ($sections['contractComposition'] as $position => $id) {
             $contractComposition[$position] = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract\Section')
                 ->findOneById($id);
@@ -331,16 +331,19 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $contract->resetComposition()
             ->setDirty();
 
+        // Avoiding duplicate key violations
+        $this->getEntityManager()->flush();
+
         // Saving the new contract composition
         $contract->addSections($contractComposition);
 
-        // Avoiding duplicate key violations
         $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
                 'result' => (object) array(
                     'status' => 'success',
+                    'origsec' => $sections,
                     'sections' => $contractComposition,
                 ),
             )
