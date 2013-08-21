@@ -115,6 +115,21 @@ return array(
                     ),
                 ),
             ),
+            'br_admin_contract' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/contract[/:action[/:id[/:confirm]]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'confirm' => '[01]',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'br_admin_contract',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'br_admin_section' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -368,6 +383,7 @@ return array(
             'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
             'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
             'br_admin_section'         => 'BrBundle\Controller\Admin\SectionController',
+            'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
 
             'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
             'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',

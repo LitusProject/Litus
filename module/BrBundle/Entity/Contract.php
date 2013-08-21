@@ -25,7 +25,7 @@ use BrBundle\Entity\Company,
 /**
  * This is the entity for a contract.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Br\Contract")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract")
  * @ORM\Table(name="br.contracts")
  */
 class Contract
