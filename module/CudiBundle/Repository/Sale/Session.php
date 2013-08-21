@@ -113,7 +113,8 @@ class Session extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Sale\Session', 's')
-            ->where($query->expr()->orX(
+            ->where(
+                $query->expr()->andX(
                     $query->expr()->gt('s.openDate', ':start'),
                     $query->expr()->lt('s.openDate', ':end')
                 )

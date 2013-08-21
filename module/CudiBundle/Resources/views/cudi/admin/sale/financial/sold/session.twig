@@ -80,3 +80,38 @@
         </div>
     </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'sessionSearch') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#sold_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('cudi_admin_sales_financial_sold', {'action': 'session', 'id': session.getId()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_sold', {'action': 'sessionSearch', 'id': session.getId()}) }}',
+                display: function (data) {
+                    $('#sold_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#sold_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.timestamp + '</td>')
+                            .append('<td>' + this.article + '</td>')
+                            .append('<td>' + this.person + '</td>')
+                            .append('<td>' + this.organization + '</td>')
+                            .append('<td>' + this.number + '</td>')
+                            .append('<td>&euro; ' + this.sellPrice + '</td>')
+                            .append('<td>&euro; ' + this.purchasePrice + '</td>')
+                            .append('<td class="wider">' + this.discount + '</td>');
+                    });
+                    $('#sold_search table').change();
+                },
+                clear: function () {
+                    $('#sold_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

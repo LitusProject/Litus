@@ -16,6 +16,7 @@ namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Sale\Session,
     Zend\View\Model\ViewModel;
 
 /**
@@ -151,17 +152,17 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function sessionAction()
     {
-        $academicYear = $this->getAcademicYear();
+        if (!($session = $this->_getSession()))
+            return new ViewModel();
+
+        $academicYear = $session->getAcademicYear();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($session = $this->_getSession()))
-            return new ViewModel();
-
         if (null !== $this->getParam('field'))
-            list($records, $totalNumber) = $this->_individualSessionSearch($session, $this->getParam('page'), $this->paginator()->getItemsPerPage());
+            list($records, $totalNumber) = $this->_sessionSearch($this->getParam('page'), $this->paginator()->getItemsPerPage(), $session);
 
         if (!isset($records)) {
             list($records, $totalNumber) = $this->getEntityManager()
@@ -184,6 +185,65 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                 'activeAcademicYear' => $academicYear,
             )
         );
+    }
+
+    public function sessionSearchAction()
+    {
+        $this->initAjax();
+
+        if (!($session = $this->_getSession()))
+            return new ViewModel();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        list($records, $totalNumber) = $this->_sessionSearch(0, $numResults, $session);
+
+        $result = array();
+        foreach($records as $soldItem) {
+            $soldItem->getSession()->setEntityManager($this->getEntityManager());
+
+            $item = (object) array();
+            $item->id = $soldItem->getId();
+            $item->timestamp = $soldItem->getTimestamp()->format('d/m/Y H:i');
+            $item->article = $soldItem->getArticle()->getMainArticle()->getTitle();
+            $item->person = $soldItem->getPerson()->getFullName();
+            $item->organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear())->getName();
+            $item->number = $soldItem->getNumber();
+            $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
+            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _sessionSearch($page, $numberRecords, Session $session)
+    {
+        switch($this->getParam('field')) {
+            case 'article':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByArticleAndSessionPaginator($this->getParam('string'), $session, $page, $numberRecords);
+            case 'person':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByPersonAndSessionPaginator($this->getParam('string'), $session, $page, $numberRecords);
+            case 'organization':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByOrganizationAndSessionPaginator($this->getParam('string'), $session, $page, $numberRecords);
+            case 'discount':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByDiscountAndSessionPaginator($this->getParam('string'), $session, $page, $numberRecords);
+        }
     }
 
     private function _getSession()
