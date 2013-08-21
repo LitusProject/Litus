@@ -147,6 +147,7 @@ class Study extends EntityRepository
                 $query->expr()->eq('m.academicYear', ':academicYear')
             )
             ->setParameter('academicYear', $academicYear->getId())
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 

@@ -40,7 +40,7 @@ class Article extends EntityRepository
 
         return $resultSet;
     }
-    
+
     public function findAllByAcademicYearSortBarcode(AcademicYear $academicYear)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear);
@@ -354,6 +354,7 @@ class Article extends EntityRepository
             ->setParameter('title', '%'.strtolower($title).'%')
             ->setParameter('barcode', strtolower($title).'%')
             ->orderBy('m.title', 'ASC')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 
