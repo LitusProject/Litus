@@ -27,7 +27,6 @@ use CommonBundle\Component\Util\AcademicYear,
  */
 class Section
 {
-    const VAT_CONFIG_PREFIX = 'br.vat';
 
     /**
      * @var int A generated ID
@@ -75,9 +74,10 @@ class Section
     private $price;
 
     /**
-     * @var string The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
+     * @var string The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are indexes in a configurable
+     * array of possible values
      *
-     * @ORM\Column(name="vat_type", type="string", length=1)
+     * @ORM\Column(name="vat_type", type="integer")
      */
     private $vatType;
 
@@ -90,20 +90,20 @@ class Section
 
     /**
      * @param string $name The name of this section
+     * @param string $description The description on the invoice of this section
      * @param string $content The content of this section
      * @param \CommonBundle\Entity\User\Person $author The author of this section
      * @param int $price
      * @param string $vatType see setVatType($vatType)
      */
-    public function __construct(EntityManager $entityManager, $name, $content, Person $author, $price, $vatType)
+    public function __construct(EntityManager $entityManager, $name, $description, $content, Person $author, $price, $vatType)
     {
         $this->setName($name);
+        $this->setInvoiceDescription($description);
         $this->setContent($content);
         $this->setAuthor($author);
         $this->setPrice($price);
         $this->setVatType($entityManager, $vatType);
-
-        $this->setInvoiceDescription();
 
         $this->year = AcademicYear::getAcademicYear();
     }
@@ -152,7 +152,7 @@ class Section
      */
     public function setAuthor(Person $author)
     {
-        if (null === $auth)
+        if (null === $author)
             throw new \InvalidArgumentException('Invalid author');
 
         $this->author = $author;
@@ -174,7 +174,7 @@ class Section
      */
     public function setContent($content)
     {
-        if ((null === $name) || !is_string($name))
+        if ((null === $content) || !is_string($content))
             throw new \InvalidArgumentException('Invalid content');
 
         $this->content = $content;
@@ -198,10 +198,10 @@ class Section
      */
     public function setVatType(EntityManager $entityManager, $vatType)
     {
-        try {
-            $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue(self::VAT_CONFIG_PREFIX . '.' . $vatType);
-        } catch (\InvalidArgumentException $e) {
+        $types = $entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.vat_types');
+        $types = unserialize($types);
+        if (!isset($types[$vatType])) {
             throw new \InvalidArgumentException('Invalid VAT type: ' . $vatType);
         }
 
@@ -226,14 +226,14 @@ class Section
      */
     public function getVatPercentage(EntityManager $entityManager)
     {
-        return intval(
-            $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue(self::VAT_CONFIG_PREFIX . '.' . $this->getVatType())
-        );
+        $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.vat_types');
+        $types = unserialize($types);
+        return $types[$this->getVatType()];
     }
 
     /**
-     * @param int $price
+     * @param float $price
      * @return \BrBundle\Entity\Contract\Section
      */
     public function setPrice($price)
@@ -245,7 +245,7 @@ class Section
             throw new \InvalidArgumentException('Invalid price');
         }
 
-        $this->price = $price;
+        $this->price = $price * 100;
 
         return $this;
     }
@@ -272,7 +272,7 @@ class Section
      */
     public function setInvoiceDescription($description)
     {
-        if ((null === $name) || !is_string($name))
+        if ((null === $description) || !is_string($description))
             throw new \InvalidArgumentException('Invalid description');
 
         $this->invoiceDescription = $description;

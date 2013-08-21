@@ -78,6 +78,17 @@ The VTK Corporate Team',
 </section>',
                     'description' => 'The foreword of the CV Book',
                 ),
+                array(
+                    'key'         => 'br.vat_types',
+                    'value'       => serialize(
+                        array(
+                            6,
+                            11,
+                            21
+                        )
+                    ),
+                    'description' => 'The possible amounts of VAT'
+                )
             )
         );
     }
@@ -105,7 +116,9 @@ The VTK Corporate Team',
                     'br_admin_cv_entry' => array(
                         'manage', 'delete', 'export', 'exportAcademics'
                     ),
-
+                    'br_admin_section' => array(
+                        'manage', 'add', 'edit', 'delete',
+                    ),
                     'br_career_index' => array(
                         'index'
                     ),
