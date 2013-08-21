@@ -234,29 +234,23 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //     }
     // }
 
-    // public function deleteAction()
-    // {
-    //     if (null !== $this->getRequest()->getParam('id')) {
-    //         $contract = $this->getEntityManager()
-    //             ->getRepository('Litus\Entity\Br\Contract')
-    //             ->findOneById($this->getRequest()->getParam('id'));
-    //     } else {
-    //         $contract = null;
-    //     }
+    public function deleteAction()
+    {
+        $this->initAjax();
 
-    //     $this->view->contractDeleted = false;
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
-    //     if (null === $this->getRequest()->getParam('confirm')) {
-    //         $this->view->contract = $contract;
-    //     } else {
-    //         if (1 == $this->getRequest()->getParam('confirm')) {
-    //             $this->getEntityManager()->remove($contract);
-    //             $this->view->contractDeleted = true;
-    //         } else {
-    //             $this->_redirect('manage');
-    //         }
-    //     }
-    // }
+        $this->getEntityManager()->remove($contract);
+        $this->getEntityManager()->flush();
+
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
 
     // public function signAction()
     // {
@@ -346,5 +340,52 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 ),
             )
         );
+    }
+
+   private function _getContract()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the contract!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_contract',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $contract = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $contract) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No contract with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_contract',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $contract;
     }
 }
