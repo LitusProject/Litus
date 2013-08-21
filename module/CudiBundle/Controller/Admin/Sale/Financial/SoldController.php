@@ -16,6 +16,7 @@ namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Session,
     Zend\View\Model\ViewModel;
 
@@ -255,7 +256,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $academicYear = $this->getAcademicYear();
         if (null !== $this->getParam('field'))
-            $records = $this->_articleSearch($academicYear);
+            $records = $this->_articlesSearch($academicYear);
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -292,7 +293,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
         $academicYear = $this->getAcademicYear();
 
-        $articles = $this->_articleSearch($academicYear);
+        $articles = $this->_articlesSearch($academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -323,7 +324,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _articleSearch(AcademicYear $academicYear)
+    private function _articlesSearch(AcademicYear $academicYear)
     {
         switch($this->getParam('field')) {
             case 'title':
@@ -356,6 +357,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
         if (null !== $this->getParam('field'))
             list($records, $totalNumber) = $this->_articleSearch($this->getParam('page'), $this->paginator()->getItemsPerPage(), $article, $this->getAcademicYear());
 
@@ -378,12 +383,70 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'article' => $article,
+                'organizations' => $organizations,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
+    }
+
+    public function articleSearchAction()
+    {
+        $this->initAjax();
+
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+
+        $academicYear = $this->getAcademicYear();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        list($records, $totalNumber) = $this->_articleSearch(0, $numResults, $article, $academicYear);
+
+        $result = array();
+        foreach($records as $soldItem) {
+            $soldItem->getSession()->setEntityManager($this->getEntityManager());
+
+            $item = (object) array();
+            $item->id = $soldItem->getId();
+            $item->timestamp = $soldItem->getTimestamp()->format('d/m/Y H:i');
+            $item->session = $soldItem->getSession()->getOpenDate()->format('d/m/Y H:i');
+            $item->person = $soldItem->getPerson()->getFullName();
+            $item->organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear())->getName();
+            $item->number = $soldItem->getNumber();
+            $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
+            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _articleSearch($page, $numberRecords, Article $article, AcademicYear $academicYear)
+    {
+        switch($this->getParam('field')) {
+            case 'person':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByPersonAndArticlePaginator($this->getParam('string'), $article, $page, $numberRecords, $academicYear);
+            case 'organization':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByOrganizationAndArticlePaginator($this->getParam('string'), $article, $page, $numberRecords, $academicYear);
+            case 'discount':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByDiscountAndArticlePaginator($this->getParam('string'), $article, $page, $numberRecords, $academicYear);
+        }
     }
 
     private function _getSession()

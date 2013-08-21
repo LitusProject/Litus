@@ -17,7 +17,18 @@
         <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
         <p>Purchase Price: <b>&euro; {{ (article.getPurchasePrice()/100)|number_format(2) }}</b></p>
         <p>Sell Price: <b>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</b></p>
+
+        {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
         <p>Number Sold: <b>{{ article.getNumberSold(activeAcademicYear) }}</b></p>
+        <p>Total Revenue: <b>&euro; {{ (article.getTotalRevenue(activeAcademicYear)/100)|number_format(2) }}</b></p>
+
+        {% if organizations|length > 1 %}
+            {% for organization in organizations %}
+                <h2>{{ organization.getName() }}</h2>
+                <p>Number Sold: <b>{{ article.getNumberSold(activeAcademicYear, organization) }}</b></p>
+                <p>Total Revenue: <b>&euro; {{ (article.getTotalRevenue(activeAcademicYear, organization)/100)|number_format(2) }}</b></p>
+            {% endfor %}
+        {% endif %}
         <br />
 
         <div id="controller_action">
@@ -85,19 +96,18 @@
                 searchDiv: $('#sold_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('cudi_admin_sales_financial_sold', {'action': 'session', 'id': session.getId()}) }}',
-                url: '{{ url('cudi_admin_sales_financial_sold', {'action': 'sessionSearch', 'id': session.getId()}) }}',
+                searchPage: '{{ url('cudi_admin_sales_financial_sold', {'action': 'article', 'id': article.getId(), 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_sold', {'action': 'articleSearch', 'id': article.getId(), 'academicyear': activeAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#sold_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#sold_search table').append(row = $('<tr>', {class: 'item'}));
                         row.append('<td>' + this.timestamp + '</td>')
-                            .append('<td>' + this.article + '</td>')
+                            .append('<td>' + this.session + '</td>')
                             .append('<td>' + this.person + '</td>')
                             .append('<td>' + this.organization + '</td>')
                             .append('<td>' + this.number + '</td>')
                             .append('<td>&euro; ' + this.sellPrice + '</td>')
-                            .append('<td>&euro; ' + this.purchasePrice + '</td>')
                             .append('<td>' + this.discount + '</td>');
                     });
                     $('#sold_search table').change();

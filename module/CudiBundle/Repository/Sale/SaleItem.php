@@ -4,6 +4,7 @@ namespace CudiBundle\Repository\Sale;
 
 use CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Sale\Article as ArticleEntity,
     CudiBundle\Entity\Sale\Session as SessionEntity,
     Doctrine\ORM\EntityRepository,
@@ -45,26 +46,134 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findNumberByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear)
+    public function findNumberByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('COUNT(i.id)')
-            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
-            ->innerJoin('i.session', 's')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('i.article', ':article'),
-                    $query->expr()->gt('s.openDate', ':start'),
-                    $query->expr()->lt('s.openDate', ':end')
+        if (null !== $organization) {
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('p.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'p')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('m.academicYear', ':academicYear'),
+                        $query->expr()->eq('m.organization', ':organization')
+                    )
                 )
-            )
-            ->setParameter('article', $article)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate())
-            ->getQuery()
-            ->getSingleScalarResult();
+                ->setParameter('academicYear', $academicYear)
+                ->setParameter('organization', $organization)
+                ->getQuery()
+                ->getResult();
 
-        return $resultSet;
+            $ids = array(0);
+            foreach($resultSet as $item) {
+                $ids[] = $item['id'];
+            }
+
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('SUM(i.number)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+                ->innerJoin('i.queueItem', 'q')
+                ->innerJoin('i.session', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('i.article', ':article'),
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end'),
+                        $query->expr()->in('q.person', $ids)
+                    )
+                )
+                ->setParameter('article', $article)
+                ->setParameter('start', $academicYear->getUniversityStartDate())
+                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            return $resultSet;
+        } else {
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('SUM(i.number)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+                ->innerJoin('i.session', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('i.article', ':article'),
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end')
+                    )
+                )
+                ->setParameter('article', $article)
+                ->setParameter('start', $academicYear->getUniversityStartDate())
+                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            return $resultSet;
+        }
+    }
+
+    public function findTotalRevenueByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
+    {
+        if (null !== $organization) {
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('p.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'p')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('m.academicYear', ':academicYear'),
+                        $query->expr()->eq('m.organization', ':organization')
+                    )
+                )
+                ->setParameter('academicYear', $academicYear)
+                ->setParameter('organization', $organization)
+                ->getQuery()
+                ->getResult();
+
+            $ids = array(0);
+            foreach($resultSet as $item) {
+                $ids[] = $item['id'];
+            }
+
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('SUM(i.price)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+                ->innerJoin('i.queueItem', 'q')
+                ->innerJoin('i.session', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('i.article', ':article'),
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end'),
+                        $query->expr()->in('q.person', $ids)
+                    )
+                )
+                ->setParameter('article', $article)
+                ->setParameter('start', $academicYear->getUniversityStartDate())
+                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            return $resultSet;
+        } else {
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('SUM(i.price)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+                ->innerJoin('i.session', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('i.article', ':article'),
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end')
+                    )
+                )
+                ->setParameter('article', $article)
+                ->setParameter('start', $academicYear->getUniversityStartDate())
+                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            return $resultSet;
+        }
     }
 
     public function findAllPaginator($currentPage, $itemsPerPage, AcademicYear $academicYear)
@@ -201,6 +310,51 @@ class SaleItem extends EntityRepository
         );
     }
 
+    public function findAllByPersonAndArticlePaginator($name, ArticleEntity $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.queueItem', 'q')
+            ->innerJoin('q.person', 'p')
+            ->innerJoin('i.session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('i.article', ':article'),
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
+                            ),
+                            ':name'
+                        )
+                    ),
+                    $query->expr()->andX(
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end')
+                    )
+                )
+            )
+            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('article', $article)
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate());
+
+        return $this->_findAllPaginator(
+            $currentPage,
+            $itemsPerPage,
+            $query,
+            new OrderBy('i.timestamp', 'DESC')
+        );
+    }
+
     public function findAllByOrganizationPaginator($organization, $currentPage, $itemsPerPage, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -239,6 +393,48 @@ class SaleItem extends EntityRepository
         );
     }
 
+    public function findAllByOrganizationAndArticlePaginator($organization, ArticleEntity $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p.id')
+            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+            ->innerJoin('m.academic', 'p')
+            ->innerJoin('m.organization', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.academicYear', ':academicYear'),
+                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('organization', '%'.strtolower($organization).'%')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($resultSet as $item) {
+            $ids[] = $item['id'];
+        }
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.queueItem', 'q')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('q.person', $ids),
+                    $query->expr()->eq('i.article', ':article')
+                )
+            )
+            ->setParameter('article', $article);
+
+        return $this->_findAllPaginator(
+            $currentPage,
+            $itemsPerPage,
+            $query,
+            new OrderBy('i.timestamp', 'DESC')
+        );
+    }
+
     public function findAllByDiscountPaginator($discount, $currentPage, $itemsPerPage, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -254,6 +450,34 @@ class SaleItem extends EntityRepository
                 )
             )
             ->setParameter('discount', '%'.strtolower($discount).'%')
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate());
+
+        return $this->_findAllPaginator(
+            $currentPage,
+            $itemsPerPage,
+            $query,
+            new OrderBy('i.timestamp', 'DESC')
+        );
+    }
+
+    public function findAllByDiscountAndArticlePaginator($discount, ArticleEntity $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('i.article', ':article'),
+                    $query->expr()->like($query->expr()->lower('i.discountType'), ':discount'),
+                    $query->expr()->andX(
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end')
+                    )
+                )
+            )
+            ->setParameter('discount', '%'.strtolower($discount).'%')
+            ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getUniversityStartDate())
             ->setParameter('end', $academicYear->getUniversityEndDate());
 

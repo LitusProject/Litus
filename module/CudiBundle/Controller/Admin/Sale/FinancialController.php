@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Sale\Financial;
+namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
@@ -26,6 +26,17 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
 {
     public function overviewAction()
     {
-        return new ViewModel();
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+            )
+        );
     }
 }

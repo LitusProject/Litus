@@ -113,6 +113,11 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'cudi_admin_sales_financial' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
         'cudi_admin_sales_financial_sold' => array(
             '@common_jquery',
             '@admin_css',

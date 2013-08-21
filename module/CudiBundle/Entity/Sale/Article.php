@@ -16,6 +16,7 @@ namespace CudiBundle\Entity\Sale;
 
 use CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sale\Article\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
@@ -552,10 +553,27 @@ class Article
         return $this;
     }
 
-    public function getNumberSold(AcademicYear $academicYear)
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
     {
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-            ->findNumberByArticleAndAcademicYear($this, $academicYear);
+            ->findNumberByArticleAndAcademicYear($this, $academicYear, $organization);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findTotalRevenueByArticleAndAcademicYear($this, $academicYear, $organization);
     }
 }
