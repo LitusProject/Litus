@@ -36,6 +36,8 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Contract,
     BrBundle\Form\Admin\Contract\Add as AddForm,
+    BrBundle\Form\Admin\Contract\Edit as EditForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -108,7 +110,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $contractCreated = false;
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
@@ -146,22 +147,52 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->persist($newContract);
                 $this->getEntityManager()->flush();
 
-                $contractCreated = true;
-                return new ViewModel(
-                    array(
-                        'contractCreated' => $contractCreated,
-                        'form' => $form,
-                        'contractId' => $newContract->getId(),
-                        'sections' => $contractComposition,
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The contract was succesfully created!'
                     )
                 );
+
+                $this->redirect()->toRoute(
+                    'br_admin_contract',
+                    array(
+                        'action' => 'sort',
+                        'id'     => $newContract->getId(),
+                    )
+                );
+
+                return new ViewModel();
             }
         }
 
         return new ViewModel(
             array(
-                'contractCreated' => $contractCreated,
                 'form' => $form,
+            )
+        );
+    }
+
+    public function sortAction()
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
+
+        if ($this->getRequest()->isPost()) {
+
+            $this->redirect()->toRoute(
+                'br_admin_contract',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+        }
+
+        return new ViewModel(
+            array(
+                'contract' => $contract,
             )
         );
     }
@@ -183,56 +214,75 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    // public function editAction()
-    // {
-    //     $contractRepository = $this->getEntityManager()->getRepository('Litus\Entity\Br\Contract');
-    //     $contract = $contractRepository->findOneById($this->getRequest()->getParam('id'));
+    public function editAction()
+    {
+        $contractRepository = $this->getEntityManager()->getRepository('BrBundle\Entity\Contract');
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
-    //     $form = new EditForm($contract);
+        $form = new EditForm($this->getEntityManager(), $contract);
 
-    //     $this->view->form = $form;
-    //     $this->view->contractEdited = false;
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-    //     if ($this->getRequest()->isPost()) {
-    //         $formData = $this->getRequest()->getPost();
-    //         $form->setData($formData);
+            if($form->isValid()) {
+                $company = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company')
+                    ->findOneById($formData['company']);
 
-    //         if($form->isValid()) {
-    //             $company = $this->getEntityManager()
-    //                 ->getRepository('Litus\Entity\Users\People\Company')
-    //                 ->findOneById($formData['company']);
+                $contract->setCompany($company)
+                    ->setDiscount($formData['discount'])
+                    ->setTitle($formData['title'])
+                    ->setContractNb($formData['contract_nb']);
 
-    //             $contract->setCompany($company)
-    //                 ->setDiscount($formData['discount'])
-    //                 ->setTitle($formData['title'])
-    //                 ->setContractNb($formData['contract_nb']);
+                if($contract->isSigned())
+                    $contract->setInvoiceNb($formData['invoice_nb']);
 
-    //             if($contract->isSigned())
-    //                 $contract->setInvoiceNb($formData['invoice_nb']);
+                $contractComposition = array();
+                foreach ($formData['sections'] as $id) {
+                    $section = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract\Section')
+                        ->findOneById($id);
 
-    //             $contractComposition = array();
-    //             foreach ($formData['sections'] as $id) {
-    //                 $section = $this->getEntityManager()
-    //                     ->getRepository('Litus\Entity\Br\Contracts\Section')
-    //                     ->findOneById($id);
+                    $contractComposition[] = $section;
+                }
 
-    //                 $contractComposition[] = $section;
-    //             }
+                $contract->resetComposition()
+                    ->setDirty();
 
-    //             $contract->resetComposition()
-    //                 ->setDirty();
+                $this->getEntityManager()->flush();
 
-    //             $this->_flush();
+                $contract->addSections($contractComposition);
 
-    //             $contract->addSections($contractComposition);
+                $this->getEntityManager()->flush();
 
-    //             $this->view->contractId = $contract->getId();
-    //             $this->view->sections = $contractComposition;
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The contract was succesfully updated!'
+                    )
+                );
 
-    //             $this->view->contractUpdated = true;
-    //         }
-    //     }
-    // }
+                $this->redirect()->toRoute(
+                    'br_admin_contract',
+                    array(
+                        'action' => 'sort',
+                        'id'     => $contract->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
 
     public function deleteAction()
     {

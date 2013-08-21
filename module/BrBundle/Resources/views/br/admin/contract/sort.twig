@@ -1,0 +1,45 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/contract/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+
+        <i>Drag and drop your sections in the desired order. All changes will be saved <b>automatically</b>!</i>
+
+        <div class="sortable">
+            <span id="contractId" style="display: none;">{{ contract.getId() }}</span>
+            <ul id="contractComposition">
+                {% for composition in contract.getComposition() %}
+                    <li id="contractComposition_{{ composition.getSection().getId() }}" class="sections">{{ composition.getSection().getName() }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <form method="post" class="form" novalidate="1">
+            <input type="submit" id="submit" name="submit" class="contracts_add" value="Done">
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#contractComposition').sortable({
+            update : function () {
+                $.post(
+                    '{{ url('br_admin_contract', {"action": "compose"}) }}?format=json',
+                    {
+                        contractId: $('#contractId').text(), sections: $('#contractComposition').sortable('serialize')
+                    },
+                    function(data) {},
+                    'json'
+                );
+            }
+        });
+    });
+    </script>
+{% endblock %}

@@ -14,7 +14,7 @@
 
 namespace BrBundle\Form\Admin\Contract;
 
-use BrBundle\Entity\Contract\Section,
+use BrBundle\Entity\Contract,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
@@ -73,6 +73,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'contracts_add');
         $this->add($field);
+    }
+
+    public function _populateFromContract(Contract $contract)
+    {
+
+        $formData = array(
+            'company'       => $contract->getCompany()->getId(),
+            'discount'      => $contract->getDiscount(),
+            'title'         => $contract->getTitle(),
+            'sections'      => $this->_getActiveSections($contract),
+            'contract_nb'   => $contract->getContractNb()
+        );
+
+        $this->setData($formData);
+    }
+
+    private function _getActiveSections(Contract $contract)
+    {
+        $return = array();
+        foreach ($contract->getComposition() as $contractComposition)
+            $return[] = $contractComposition->getSection()->getId();
+        return $return;
     }
 
     private function _getCompanies()

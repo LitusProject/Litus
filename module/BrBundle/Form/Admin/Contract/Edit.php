@@ -1,65 +1,63 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Admin\Form\Contract;
+namespace BrBundle\Form\Admin\Contract;
 
-use \Litus\Form\Admin\Decorator\ButtonDecorator;
-use \Litus\Form\Admin\Decorator\FieldDecorator;
-use \Litus\Entity\Br\Contract;
+use BrBundle\Entity\Contract,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    Doctrine\ORM\EntityManager,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
-use \Zend\Form\Element\Submit;
-use \Zend\Form\Element\Hidden;
-use \Zend\Form\Element\Text;
-
+/**
+ * The form used to edit an existing contract
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ */
 class Edit extends Add {
 
-    public function __construct(Contract $contract, $options = null)
+    public function __construct(EntityManager $entityManager, Contract $contract, $options = null)
     {
-        parent::__construct($options);
+        parent::__construct($entityManager, $options);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Hidden('id');
         $field->setValue($contract->getId());
-        $this->addElement($field);
+        $this->add($field);
 
         $field = new Text('contract_nb');
         $field->setLabel('Contract number')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired(true);
+        $this->add($field);
 
         if($contract->isSigned()) {
             $field = new Text('invoice_nb');
             $field->setLabel('Invoice number')
-                ->setRequired()
+                ->setRequired(true)
                 ->setValue($contract->getInvoiceNb())
-                ->setDecorators(array(new FieldDecorator()))
-                ->setAttrib('disabled', 'disabled');
-            $this->addElement($field);
+                ->setAttribute('disabled', 'disabled');
+            $this->add($field);
         }
 
         $field = new Submit('Save');
         $field->setValue('Save')
-            ->setAttrib('class', 'contracts_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+            ->setAttribute('class', 'contracts_edit');
+        $this->add($field);
 
-        $this->populate(
-            array(
-                'company'       => $contract->getCompany()->getId(),
-                'discount'      => $contract->getDiscount(),
-                'title'         => $contract->getTitle(),
-                'sections'      => $this->_getActiveSections($contract),
-                'contract_nb'   => $contract->getContractNb()
-            )
-        );
-    }
-
-    private function _getActiveSections(Contract $contract)
-    {
-        $return = array();
-        foreach ($contract->getComposition() as $contractComposition)
-            $return[] = $contractComposition->getSection()->getId();
-        return $return;
+        $this->_populateFromContract($contract);
     }
 }

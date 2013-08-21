@@ -93,7 +93,8 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        $section = $this->_getSection();
+        if (!($section = $this->_getSection()))
+            return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $section);
 
