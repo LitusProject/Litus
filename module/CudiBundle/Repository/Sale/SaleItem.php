@@ -45,6 +45,28 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
+    public function findNumberByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('COUNT(i.id)')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('i.article', ':article'),
+                    $query->expr()->gt('s.openDate', ':start'),
+                    $query->expr()->lt('s.openDate', ':end')
+                )
+            )
+            ->setParameter('article', $article)
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $resultSet;
+    }
+
     public function findAllPaginator($currentPage, $itemsPerPage, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -99,6 +121,32 @@ class SaleItem extends EntityRepository
                 )
             )
             ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate());
+
+        return $this->_findAllPaginator(
+            $currentPage,
+            $itemsPerPage,
+            $query,
+            new OrderBy('i.timestamp', 'DESC')
+        );
+    }
+
+    public function findAllByArticleEntityPaginator(ArticleEntity $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('i.article', ':article'),
+                    $query->expr()->andX(
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end')
+                    )
+                )
+            )
+            ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getUniversityStartDate())
             ->setParameter('end', $academicYear->getUniversityEndDate());
 

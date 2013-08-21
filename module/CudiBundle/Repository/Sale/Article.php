@@ -7,7 +7,8 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CudiBundle\Entity\Article as ArticleEntity,
     CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join;
+    Doctrine\ORM\Query\Expr\Join,
+    Doctrine\ORM\Query\Expr\OrderBy;
 
 /**
  * Article
@@ -39,7 +40,7 @@ class Article extends EntityRepository
 
         return $resultSet;
     }
-
+    
     public function findAllByAcademicYearSortBarcode(AcademicYear $academicYear)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear);

@@ -15,6 +15,7 @@
 namespace CudiBundle\Entity\Sale;
 
 use CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sale\Article\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
@@ -144,6 +145,11 @@ class Article
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Article\Restriction", mappedBy="article", cascade={"persist", "remove"})
      */
     private $restrictions;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
 
     /**
      * @param \CudiBundle\Entity\Article $mainArticle The main article of this sale article
@@ -533,5 +539,23 @@ class Article
             $article->addBarcode(new Barcode($article, $barcode->getBarcode()));
 
         return $article;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return \CudiBundle\Entity\Sale\Session
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    public function getNumberSold(AcademicYear $academicYear)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findNumberByArticleAndAcademicYear($this, $academicYear);
     }
 }

@@ -161,6 +161,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
         if (null !== $this->getParam('field'))
             list($records, $totalNumber) = $this->_sessionSearch($this->getParam('page'), $this->paginator()->getItemsPerPage(), $session);
 
@@ -179,6 +183,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'session' => $session,
+                'organizations' => $organizations,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'academicYears' => $academicYears,
@@ -246,6 +251,141 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
+    public function articlesAction()
+    {
+        $academicYear = $this->getAcademicYear();
+        if (null !== $this->getParam('field'))
+            $records = $this->_articleSearch($academicYear);
+
+        if (!isset($records)) {
+            $records = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findAllByAcademicYear($academicYear);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $records,
+            $this->getParam('page')
+        );
+
+        foreach($paginator as $item) {
+            $item->setEntityManager($this->getEntityManager());
+        }
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+            )
+        );
+    }
+
+    public function articlesSearchAction()
+    {
+        $this->initAjax();
+
+        $academicYear = $this->getAcademicYear();
+
+        $articles = $this->_articleSearch($academicYear);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($articles, $numResults);
+
+        $result = array();
+        foreach($articles as $article) {
+            $article->setEntityManager($this->getEntityManager());
+
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->title = $article->getMainArticle()->getTitle();
+            $item->author = $article->getMainArticle()->getAuthors();
+            $item->barcode = $article->getBarcode();
+            $item->publishers = $article->getMainArticle()->getPublishers();
+            $item->purchasePrice = number_format($article->getPurchasePrice()/100, 2);
+            $item->sellPrice = number_format($article->getSellPrice()/100, 2);
+            $item->numberSold = $article->getNumberSold($academicYear);
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _articleSearch(AcademicYear $academicYear)
+    {
+        switch($this->getParam('field')) {
+            case 'title':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
+            case 'author':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findAllByAuthorAndAcademicYear($this->getParam('string'), $academicYear);
+            case 'publisher':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findAllByPublisherAndAcademicYear($this->getParam('string'), $academicYear);
+            case 'barcode':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear);
+        }
+    }
+
+    public function articleAction()
+    {
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        if (null !== $this->getParam('field'))
+            list($records, $totalNumber) = $this->_articleSearch($this->getParam('page'), $this->paginator()->getItemsPerPage(), $article, $this->getAcademicYear());
+
+        if (!isset($records)) {
+            list($records, $totalNumber) = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findAllByArticleEntityPaginator($article, $this->getParam('page'), $this->paginator()->getItemsPerPage(), $this->getAcademicYear());
+        }
+
+        $paginator = $this->paginator()->createFromPaginatorRepository(
+            $records,
+            $this->getParam('page'),
+            $totalNumber
+        );
+
+        foreach($paginator as $item) {
+            $item->getSession()->setEntityManager($this->getEntityManager());
+        }
+
+        return new ViewModel(
+            array(
+                'article' => $article,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+            )
+        );
+    }
+
     private function _getSession()
     {
         if (null === $this->getParam('id')) {
@@ -258,9 +398,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_sales_session',
+                'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'manage'
+                    'action' => 'sessions'
                 )
             );
 
@@ -281,9 +421,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_sales_session',
+                'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'manage'
+                    'action' => 'sessions'
                 )
             );
 
@@ -293,5 +433,54 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         $session->setEntityManager($this->getEntityManager());
 
         return $session;
+    }
+
+    private function _getArticle()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the article!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_sales_financial_sold',
+                array(
+                    'action' => 'articles'
+                )
+            );
+
+            return;
+        }
+
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $article) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No article with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_sales_financial_sold',
+                array(
+                    'action' => 'articles'
+                )
+            );
+
+            return;
+        }
+
+        $article->setEntityManager($this->getEntityManager());
+
+        return $article;
     }
 }

@@ -10,31 +10,21 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        <h1>Sale Session</h1>
-        <p>Manager: <b>{{ session.getManager().getFullName() }}</b></p>
-        <p>Date openend: <b>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</b></p>
-        {% if not session.isOpen() %}<p>Date closed: <b>{{ session.getCloseDate().format('Y-m-d H:i:s')}}</b></p>{% endif %}
-
-        {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
-        {% set actualRevenue = session.getActualRevenue() %}
-        {% set theoreticalRevenue = session.getTheoreticalRevenue() %}
-        <p>Actual Revenue: <b>&euro; {{ (actualRevenue/100)|number_format(2) }}</b></p>
-        <p>Theoretical Revenue: <b>&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</b></p>
-        <p>Delta: <b>&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</b></p>
-
-        {% if organizations|length > 1 %}
-            {% for organization in organizations %}
-                <h2>{{ organization.getName() }}</h2>
-                {% set theoreticalRevenue = session.getTheoreticalRevenue(organization) %}
-                <p>Theoretical Revenue: <b>&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</b></p>
-            {% endfor %}
-        {% endif %}
+        <h1>Article</h1>
+        <p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+        <p>Author: <b>{{ article.getMainArticle().getAuthors() }}</b></p>
+        <p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
+        <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
+        <p>Purchase Price: <b>&euro; {{ (article.getPurchasePrice()/100)|number_format(2) }}</b></p>
+        <p>Sell Price: <b>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</b></p>
+        <p>Number Sold: <b>{{ article.getNumberSold(activeAcademicYear) }}</b></p>
         <br />
+
+        <div id="controller_action">
         <div id="sold_search" style="display:none;">
             <div style="padding:4px;text-align:right">
                 Search:
                 <select id="searchField">
-                    <option value="article">Article</option>
                     <option value="person">Person</option>
                     <option value="organization">Organization</option>
                     <option value="discount">Discount</option>
@@ -46,13 +36,12 @@
             <table class="full_width manage">
                 <tr>
                     <th width="100px">Date</th>
-                    <th>Article</th>
-                    <th width="120px">Person</th>
+                    <th width="100px">Sale Session</th>
+                    <th>Person</th>
                     <th width="70px">Org.</th>
                     <th width="80px">Number</th>
                     <th width="70px">Sell Price</th>
-                    <th width="110px">Purchase Price</th>
-                    <th width="70px" class="wider">Discount</th>
+                    <th width="70px">Discount</th>
                 </tr>
             </table>
         </div>
@@ -61,24 +50,22 @@
             <table class="full_width manage">
                 <tr>
                     <th width="100px">Date</th>
-                    <th>Article</th>
-                    <th width="120px">Person</th>
+                    <th width="100px">Sale Session</th>
+                    <th>Person</th>
                     <th width="70px">Org.</th>
                     <th width="80px">Number</th>
                     <th width="70px">Sell Price</th>
-                    <th width="110px">Purchase Price</th>
-                    <th width="70px" class="wider">Discount</th>
+                    <th width="70px">Discount</th>
                 </tr>
 
                 {% for item in paginator %}
                     <tr class="item">
                         <td>{{ item.getTimestamp().format('d/m/Y H:i') }}</td>
-                        <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
+                        <td>{{ item.getSession().getOpenDate().format('d/m/Y H:i') }}</td>
                         <td>{{ item.getPerson().getFullName() }}</td>
                         <td>{{ item.getPerson().getOrganization(item.getSession().getAcademicYear()).getName() }}</td>
                         <td>{{ item.getNumber() }}</td>
                         <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
-                        <td>&euro; {{ (item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
                         <td class="wider">{{ item.getDiscountType() }}</td>
                     </tr>
                 {% endfor %}
@@ -111,7 +98,7 @@
                             .append('<td>' + this.number + '</td>')
                             .append('<td>&euro; ' + this.sellPrice + '</td>')
                             .append('<td>&euro; ' + this.purchasePrice + '</td>')
-                            .append('<td class="wider">' + this.discount + '</td>');
+                            .append('<td>' + this.discount + '</td>');
                     });
                     $('#sold_search table').change();
                 },

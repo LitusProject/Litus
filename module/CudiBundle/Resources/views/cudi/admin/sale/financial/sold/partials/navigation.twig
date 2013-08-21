@@ -7,11 +7,11 @@
             {% if hasAccess('cudi_admin_sales_financial_sold', 'sessions') %}
                 <li><a {% if 'sessions' == getParam('action') or 'session' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "sessions", "academicyear": activeAcademicYear.getCode()}) }}">Sale Sessions</a></li>
             {% endif %}
-            {% if hasAccess('cudi_admin_sales_financial_sold', 'article') %}
-                <li><a {% if 'article' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "article", "academicyear": activeAcademicYear.getCode()}) }}">Article</a></li>
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'articles') %}
+                <li><a {% if 'articles' == getParam('action') or 'article' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "articles", "academicyear": activeAcademicYear.getCode()}) }}">Article</a></li>
             {% endif %}
-            {% if hasAccess('cudi_admin_sales_financial_sold', 'supplier') %}
-                <li><a {% if 'supplier' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "supplier", "academicyear": activeAcademicYear.getCode()}) }}">Supplier</a></li>
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'suppliers') %}
+                <li><a {% if 'suppliers' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_sold", {"action": "suppliers", "academicyear": activeAcademicYear.getCode()}) }}">Supplier</a></li>
             {% endif %}
         </ul>
     </nav>
