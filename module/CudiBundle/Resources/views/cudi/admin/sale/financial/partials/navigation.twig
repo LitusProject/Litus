@@ -15,6 +15,9 @@
             {% if hasAccess('cudi_admin_sales_financial_sold', 'individual') %}
                 <li><a {% if 'cudi_admin_sales_financial_sold' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_sold', {"action": "individual"}) }}">Sold Items</a></li>
             {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial', 'overview') %}
+                <li><a {% if 'cudi_admin_sales_financial' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial') }}">Overview</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
