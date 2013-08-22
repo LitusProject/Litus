@@ -232,6 +232,17 @@ class Session
     }
 
     /**
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getPurchasedAmount(Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->getPurchasedAmountBySession($this, $organization);
+    }
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
      * @return \CudiBundle\Entity\Sale\Session

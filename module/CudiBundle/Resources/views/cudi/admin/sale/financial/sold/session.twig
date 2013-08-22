@@ -16,6 +16,7 @@
         {% if not session.isOpen() %}<p>Date closed: <b>{{ session.getCloseDate().format('Y-m-d H:i:s')}}</b></p>{% endif %}
 
         {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
+        <p>Purchase Price: <b>&euro; {{ (session.getPurchasedAmount()/100)|number_format(2) }}</b></p>
         {% set actualRevenue = session.getActualRevenue() %}
         {% set theoreticalRevenue = session.getTheoreticalRevenue() %}
         <p>Actual Revenue: <b>&euro; {{ (actualRevenue/100)|number_format(2) }}</b></p>
@@ -25,8 +26,8 @@
         {% if organizations|length > 1 %}
             {% for organization in organizations %}
                 <h2>{{ organization.getName() }}</h2>
-                {% set theoreticalRevenue = session.getTheoreticalRevenue(organization) %}
-                <p>Theoretical Revenue: <b>&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</b></p>
+                <p>Purchase Price: <b>&euro; {{ (session.getPurchasedAmount(organization)/100)|number_format(2) }}</b></p>
+                <p>Theoretical Revenue: <b>&euro; {{ (session.getTheoreticalRevenue(organization)/100)|number_format(2) }}</b></p>
             {% endfor %}
         {% endif %}
         <br />
