@@ -16,7 +16,7 @@ namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company,
     BrBundle\Entity\Contract\Composition,
-    BrBundle\Entity\Contract\Section,
+    BrBundle\Entity\Product,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -63,7 +63,7 @@ class Contract
     private $company;
 
     /**
-     * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
+     * @var \BrBundle\Entity\Br\Contracts\Composition The products this contract contains
      *
      * @ORM\OneToMany(
      *      targetEntity="BrBundle\Entity\Contract\Composition",
@@ -221,27 +221,27 @@ class Contract
     }
 
     /**
-     * @param \BrBundle\Entity\Br\Contracts\Section $section The section that should be added
-     * @param int $position The position of this section
+     * @param \BrBundle\Entity\Br\Contracts\Section $product The product that should be added
+     * @param int $position The position of this product
      * @return \BrBundle\Entity\Br\Contract
      */
-    public function addSection(Section $section, $position)
+    public function addSection(Section $product, $position)
     {
         $this->composition->add(
-            new Composition($this, $section, $position)
+            new Composition($this, $product, $position)
         );
 
         return $this;
     }
 
     /**
-     * @param array $sections The array containing all sections that should be added; the array keys will be used as the position
+     * @param array $products The array containing all products that should be added; the array keys will be used as the position
      * @return \BrBundle\Entity\Br\Contract
      */
-    public function addSections(array $sections)
+    public function addSections(array $products)
     {
-        foreach ($sections as $position => $section)
-            $this->addSection($section, $position);
+        foreach ($products as $position => $product)
+            $this->addSection($product, $position);
 
         return $this;
     }

@@ -15,7 +15,7 @@
 namespace BrBundle\Entity\Contract;
 
 use BrBundle\Entity\Contract,
-    BrBundle\Entity\Contract\Section,
+    BrBundle\Entity\Product,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,7 +25,7 @@ use BrBundle\Entity\Contract,
  * @ORM\Table(
  *      name="br.contracts_compositions",
  *      uniqueConstraints={
- *          @ORM\UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})
+ *          @ORM\UniqueConstraint(name="contract_product_unique", columns={"contract", "product"})
  *      }
  * )
  */
@@ -43,15 +43,15 @@ class Composition
     private $contract;
 
     /**
-     * @var \BrBundle\Entity\Contract\Section The section described in this object
+     * @var \BrBundle\Entity\Product The product described in this object
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Contract\Section", fetch="EAGER")
-     * @ORM\JoinColumn(name="section", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product", fetch="EAGER")
+     * @ORM\JoinColumn(name="product", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $section;
+    private $product;
 
     /**
-     * @var int The position number of the section in the contract
+     * @var int The position number of the product in the contract
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -60,13 +60,13 @@ class Composition
 
     /**
      * @param \BrBundle\Entity\Contract $contract The contract this object is a part of
-     * @param \BrBundle\Entity\Contract\Section $section The section described in this object
-     * @param int $position The position number of the section in the contract
+     * @param \BrBundle\Entity\Product $product The product described in this object
+     * @param int $position The position number of the product in the contract
      */
-    public function __construct(Contract $contract, Section $section, $position)
+    public function __construct(Contract $contract, Section $product, $position)
     {
         $this->setContract($contract);
-        $this->setSection($section);
+        $this->setSection($product);
         $this->setPosition($position);
     }
 
@@ -94,24 +94,24 @@ class Composition
     }
 
     /**
-     * @return \BrBundle\Entity\Contract\Section
+     * @return \BrBundle\Entity\Product
      */
-    public function getSection()
+    public function getProduct()
     {
-        return $this->section;
+        return $this->product;
     }
 
     /**
      * @throws \InvalidArgumentException
-     * @param \BrBundle\Entity\Contract\Section $section
+     * @param \BrBundle\Entity\Product $product
      * @return \BrBundle\Entity\Contract\Composition
      */
-    public function setSection(Section $section)
+    public function setProduct(Product $product)
     {
-        if ($section === null)
+        if ($product === null)
             throw new \InvalidArgumentException('Contract cannot be null.');
 
-        $this->section = $section;
+        $this->product = $product;
 
         return $this;
     }

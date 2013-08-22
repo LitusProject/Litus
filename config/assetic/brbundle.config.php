@@ -92,7 +92,7 @@ return array(
             '@bootstrap_js_modal',
             '@common_download_file',
         ),
-        'br_admin_section' => array(
+        'br_admin_product' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',

@@ -121,7 +121,7 @@ The VTK Corporate Team',
                     'br_admin_cv_entry' => array(
                         'manage', 'delete', 'export', 'exportAcademics'
                     ),
-                    'br_admin_section' => array(
+                    'br_admin_product' => array(
                         'manage', 'add', 'edit', 'delete',
                     ),
                     'br_career_index' => array(

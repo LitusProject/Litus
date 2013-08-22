@@ -12,21 +12,21 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Section;
+namespace BrBundle\Form\Admin\Product;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    BrBundle\Entity\Contract\Section,
-    BrBundle\Component\Validator\SectionName as SectionNameValidator,
+    BrBundle\Entity\Product,
+    BrBundle\Component\Validator\ProductName as ProductNameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Add a section.
+ * Add a product.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -69,7 +69,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(false);
         $this->add($field);
 
-        $field = new Textarea('content');
+        $field = new Textarea('contract_text');
         $field->setLabel('Content')
             ->setRequired()
             ->setValue('<entry></entry>');
@@ -81,14 +81,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    public function populateFromSection(Section $section)
+    public function populateFromProduct(Product $product)
     {
         $formData = array(
-            'name'  => $section->getName(),
-            'price' => number_format($section->getPrice()/100, 2),
-            'vat_type' => $section->getVatType(),
-            'invoice_description' => $section->getInvoiceDescription(),
-            'content' => $section->getContent(),
+            'name'  => $product->getName(),
+            'price' => number_format($product->getPrice()/100, 2),
+            'vat_type' => $product->getVatType(),
+            'invoice_description' => $product->getInvoiceDescription(),
+            'contract_text' => $product->getContractText(),
         );
 
         $this->setData($formData);
@@ -126,7 +126,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new SectionNameValidator($this->_entityManager),
+                        new ProductNameValidator($this->_entityManager),
                     ),
                 )
             )

@@ -1,16 +1,16 @@
 <header id="controller_header">
-    <div class="title"><span class="sections">Sections</span></div>
+    <div class="title"><span class="products">Products</span></div>
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('br_admin_section', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_section', {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('br_admin_product', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_product', {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('br_admin_section', 'manage') %}
+            {% if hasAccess('br_admin_product', 'manage') %}
                 <li>
                 	<a
                 		{% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
-                		href="{{ url('br_admin_section', {"action": "manage"}) }}"
+                		href="{{ url('br_admin_product', {"action": "manage"}) }}"
                 	>
                 		Manage
                 	</a>

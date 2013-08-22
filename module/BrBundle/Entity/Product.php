@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Entity\Contract;
+namespace BrBundle\Entity;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
@@ -20,12 +20,12 @@ use CommonBundle\Component\Util\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * A section represents a part of a contract.
+ * A product is something that can be sold to companies.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract\Section")
- * @ORM\Table(name="br.contracts_sections")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Product")
+ * @ORM\Table(name="br.contracts_products")
  */
-class Section
+class Product
 {
 
     /**
@@ -38,21 +38,21 @@ class Section
     private $id;
 
     /**
-     * @var string The name of this section
+     * @var string The name of this product
      *
      * @ORM\Column(type="string", unique=true)
      */
     private $name;
 
     /**
-     * @var string The content of this section
+     * @var string The contractText of this product
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="contract_text", type="text")
      */
-    private $content;
+    private $contractText;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The author of this section
+     * @var \CommonBundle\Entity\User\Person The author of this product
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
@@ -60,14 +60,14 @@ class Section
     private $author;
 
     /**
-     * @var string The academic year in which this section was written
+     * @var string The academic year in which this product was written
      *
      * @ORM\Column(type="string", length=9)
      */
     private $year;
 
     /**
-     * @var int The price (VAT excluded!) a company has to pay when they agree to this section of the contract
+     * @var int The price (VAT excluded!) a company has to pay when they agree to this product of the contract
      *
      * @ORM\Column(type="integer")
      */
@@ -82,25 +82,25 @@ class Section
     private $vatType;
 
     /**
-     * @var string The short description of this section shown in invoices
+     * @var string The short description of this product shown in invoices
      *
      * @ORM\Column(name="invoice_description", type="string", nullable=true)
      */
     private $invoiceDescription;
 
     /**
-     * @param string $name The name of this section
-     * @param string $description The description on the invoice of this section
-     * @param string $content The content of this section
-     * @param \CommonBundle\Entity\User\Person $author The author of this section
+     * @param string $name The name of this product
+     * @param string $description The description on the invoice of this product
+     * @param string $contractText The contract text of this product
+     * @param \CommonBundle\Entity\User\Person $author The author of this product
      * @param int $price
      * @param string $vatType see setVatType($vatType)
      */
-    public function __construct(EntityManager $entityManager, $name, $description, $content, Person $author, $price, $vatType)
+    public function __construct(EntityManager $entityManager, $name, $description, $contractText, Person $author, $price, $vatType)
     {
         $this->setName($name);
         $this->setInvoiceDescription($description);
-        $this->setContent($content);
+        $this->setContractText($contractText);
         $this->setAuthor($author);
         $this->setPrice($price);
         $this->setVatType($entityManager, $vatType);
@@ -125,8 +125,8 @@ class Section
     }
 
     /**
-     * @param string $name The name of this section
-     * @return \BrBundle\Entity\Contract\Section
+     * @param string $name The name of this product
+     * @return \BrBundle\Entity\Product
      */
     public function setName($name)
     {
@@ -147,8 +147,8 @@ class Section
     }
 
     /**
-     * @param \Litus\Entity\Users\Person $author The author of this section
-     * @return \BrBundle\Entity\Contract\Section
+     * @param \Litus\Entity\Users\Person $author The author of this product
+     * @return \BrBundle\Entity\Product
      */
     public function setAuthor(Person $author)
     {
@@ -163,21 +163,21 @@ class Section
     /**
      * @return string
      */
-    public function getContent()
+    public function getContractText()
     {
-        return $this->content;
+        return $this->contractText;
     }
 
     /**
-     * @param string $content The content of this section
-     * @return \BrBundle\Entity\Contract\Section
+     * @param string $contractText The contract text of this product
+     * @return \BrBundle\Entity\Product
      */
-    public function setContent($content)
+    public function setContractText($contractText)
     {
-        if ((null === $content) || !is_string($content))
-            throw new \InvalidArgumentException('Invalid content');
+        if ((null === $contractText) || !is_string($contractText))
+            throw new \InvalidArgumentException('Invalid contract text');
 
-        $this->content = $content;
+        $this->contractText = $contractText;
 
         return $this;
     }
@@ -194,7 +194,7 @@ class Section
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
      * @throws \InvalidArgumentException
-     * @return \BrBundle\Entity\Contract\Section
+     * @return \BrBundle\Entity\Product
      */
     public function setVatType(EntityManager $entityManager, $vatType)
     {
@@ -219,7 +219,7 @@ class Section
     }
 
     /**
-     * Returns the VAT percentage for this section.
+     * Returns the VAT percentage for this product.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @return int
@@ -234,7 +234,7 @@ class Section
 
     /**
      * @param float $price
-     * @return \BrBundle\Entity\Contract\Section
+     * @return \BrBundle\Entity\Product
      */
     public function setPrice($price)
     {
@@ -268,7 +268,7 @@ class Section
 
     /**
      * @param string|null $description
-     * @return \BrBundle\Entity\Contract\Section
+     * @return \BrBundle\Entity\Product
      */
     public function setInvoiceDescription($description)
     {

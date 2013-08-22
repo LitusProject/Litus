@@ -12,17 +12,17 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Section;
+namespace BrBundle\Form\Admin\Product;
 
-use BrBundle\Entity\Contract\Section,
-    BrBundle\Component\Validator\SectionName as SectionNameValidator,
+use BrBundle\Entity\Product,
+    BrBundle\Component\Validator\ProductName as ProductNameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Edit a section.
+ * Edit a product.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
@@ -30,24 +30,24 @@ class Edit extends Add
 {
 
     /**
-     * @var \BrBundle\Entity\Contract\Section
+     * @var \BrBundle\Entity\Contract\Product
      */
-    private $_section;
+    private $_product;
 
-    public function __construct(EntityManager $entityManager, Section $section, $options = null)
+    public function __construct(EntityManager $entityManager, Product $product, $options = null)
     {
         parent::__construct($entityManager, $options);
 
-        $this->_section = $section;
+        $this->_product = $product;
 
         $this->remove('submit');
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'sections_edit');
+            ->setAttribute('class', 'products_edit');
         $this->add($field);
 
-        $this->populateFromSection($section);
+        $this->populateFromProduct($product);
     }
 
     public function getInputFilter()
@@ -65,7 +65,7 @@ class Edit extends Add
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new SectionNameValidator($this->_entityManager, $this->_section),
+                        new ProductNameValidator($this->_entityManager, $this->_product),
                     ),
                 )
             )
