@@ -130,6 +130,21 @@ return array(
                     ),
                 ),
             ),
+            'br_admin_order' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/order[/:action[/:id[/:confirm]]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'confirm' => '[01]',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'br_admin_order',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'br_admin_product' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -382,6 +397,7 @@ return array(
             'br_admin_company_user'    => 'BrBundle\Controller\Admin\Company\UserController',
             'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
             'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
+            'br_admin_order'           => 'BrBundle\Controller\Admin\OrderController',
             'br_admin_product'         => 'BrBundle\Controller\Admin\ProductController',
             'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
 
