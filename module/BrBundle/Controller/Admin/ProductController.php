@@ -56,6 +56,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 $newProduct = new Product(
                     $this->getEntityManager(),
                     $formData['name'],
+                    $formData['description'],
                     $formData['invoice_description'],
                     $formData['contract_text'],
                     $this->getAuthentication()->getPersonObject(),
@@ -63,6 +64,14 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                     $formData['vat_type'],
                     $this->getCurrentAcademicYear()
                 );
+
+                if ('' != $formData['event']) {
+                    $newProduct->setEvent(
+                        $this->getEntityManager()
+                            ->getRepository('CalendarBundle\Entity\Node\Event')
+                            ->findOneById($formData['event'])
+                    );
+                }
 
                 $this->getEntityManager()->persist($newProduct);
                 $this->getEntityManager()->flush();
@@ -107,13 +116,23 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 $formData = $form->getFormData($formData);
 
                 $product->setName($formData['name'])
+                    ->setDescription($formData['description'])
                     ->setContractTExt($formData['contract_text'])
                     ->setPrice($formData['price'])
                     ->setVatType($this->getEntityManager(), $formData['vat_type'])
                     ->setInvoiceDescription($formData['invoice_description']);
 
-                $this->getEntityManager()->flush();
+                if ('' != $formData['event']) {
+                    $product->setEvent(
+                        $this->getEntityManager()
+                            ->getRepository('CalendarBundle\Entity\Node\Event')
+                            ->findOneById($formData['event'])
+                    );
+                } else {
+                    $product->setEvent(null);
+                }
 
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(

@@ -172,7 +172,6 @@ class Shift
      * @param integer $nbResponsibles
      * @param integer $nbVolunteers
      * @param \CommonBundle\Entity\General\Organization\Unit $unit
-     * @param \CalendarBundle\Entity\Node\Event $event
      * @param \CommonBundle\Entity\General\Location $location
      * @param string $name
      * @param string $description

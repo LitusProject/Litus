@@ -52,6 +52,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Textarea('description');
+        $field->setLabel('Description')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Text('price');
         $field->setLabel('Price')
             ->setRequired()
@@ -65,14 +70,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Text('invoice_description');
-        $field->setLabel('Description on Invoice')
+        $field->setLabel('Invoice Text')
             ->setRequired(false);
         $this->add($field);
 
         $field = new Textarea('contract_text');
-        $field->setLabel('Content')
-            ->setRequired()
-            ->setValue('<entry></entry>');
+        $field->setLabel('Contract Text')
+            ->setRequired(false);
+        $this->add($field);
+
+        $field = new Select('event');
+        $field->setLabel('Event')
+            ->setAttribute('options', $this->_createEventsArray());
         $this->add($field);
 
         $field = new Submit('submit');
@@ -81,19 +90,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
+    private function _createEventsArray()
+    {
+        $events = $this->_entityManager
+            ->getRepository('CalendarBundle\Entity\Node\Event')
+            ->findAllActive();
+
+        $eventsArray = array(
+            '' => ''
+        );
+        foreach ($events as $event)
+            $eventsArray[$event->getId()] = $event->getTitle();
+
+        return $eventsArray;
+    }
+
     public function populateFromProduct(Product $product)
     {
         $formData = array(
             'name'  => $product->getName(),
+            'description' => $product->getDescription(),
             'price' => number_format($product->getPrice()/100, 2),
             'vat_type' => $product->getVatType(),
             'invoice_description' => $product->getInvoiceDescription(),
             'contract_text' => $product->getContractText(),
+            'event' => null === $product->getEvent() ? '' : $product->getEvent()->getId(),
         );
 
         $this->setData($formData);
     }
-
 
     /**
      * Retrieve the different VAT types applicable.
@@ -135,6 +160,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'description',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    )
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'price',
                     'required' => true,
                     'filters'  => array(
@@ -162,7 +199,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'content',
+                    'name'     => 'contract_text',
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

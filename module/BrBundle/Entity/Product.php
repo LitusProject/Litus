@@ -45,6 +45,13 @@ class Product
     private $name;
 
     /**
+     * @var string The description of this product
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
+    /**
      * @var string The contractText of this product
      *
      * @ORM\Column(name="contract_text", type="text")
@@ -66,6 +73,14 @@ class Product
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      */
     private $academicYear;
+
+    /**
+     * @var \CalendarBundle\Entity\Node\Event The shift's event
+     *
+     * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Node\Event")
+     * @ORM\JoinColumn(name="event", referencedColumnName="id")
+     */
+    private $event;
 
     /**
      * @var int The price (VAT excluded!) a company has to pay when they agree to this product of the contract
@@ -91,16 +106,19 @@ class Product
 
     /**
      * @param string $name The name of this product
-     * @param string $description The description on the invoice of this product
+     * @param string $description The description of this product
+     * @param string $invoiceDescription The description on the invoice of this product
      * @param string $contractText The contract text of this product
      * @param \CommonBundle\Entity\User\Person $author The author of this product
      * @param int $price
      * @param string $vatType see setVatType($vatType)
+     * @param \CalendarBundle\Entity\Node\Event $event
      */
-    public function __construct(EntityManager $entityManager, $name, $description, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear)
+    public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear)
     {
         $this->setName($name);
-        $this->setInvoiceDescription($description);
+        $this->setDescription($description);
+        $this->setInvoiceDescription($invoiceDescription);
         $this->setContractText($contractText);
         $this->setAuthor($author);
         $this->setPrice($price);
@@ -261,6 +279,28 @@ class Product
     /**
      * @return string
      */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     * @return \BrBundle\Entity\Product
+     */
+    public function setDescription($description)
+    {
+        if ((null === $description) || !is_string($description) || '' == $description)
+            throw new \InvalidArgumentException('Invalid description');
+
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getInvoiceDescription()
     {
         return $this->invoiceDescription;
@@ -277,6 +317,24 @@ class Product
 
         $this->invoiceDescription = $description;
 
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
+     * @param \CalendarBundle\Entity\Node\Event $event
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setEvent($event)
+    {
+        $this->event = $event;
         return $this;
     }
 }
