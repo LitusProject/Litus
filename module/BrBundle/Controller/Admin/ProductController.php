@@ -60,7 +60,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                     $formData['contract_text'],
                     $this->getAuthentication()->getPersonObject(),
                     $formData['price'],
-                    $formData['vat_type']
+                    $formData['vat_type'],
+                    $this->getCurrentAcademicYear()
                 );
 
                 $this->getEntityManager()->persist($newProduct);

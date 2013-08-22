@@ -14,7 +14,7 @@
 
 namespace BrBundle\Entity;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -23,7 +23,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * A product is something that can be sold to companies.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Product")
- * @ORM\Table(name="br.contracts_products")
+ * @ORM\Table(name="br.products")
  */
 class Product
 {
@@ -60,11 +60,12 @@ class Product
     private $author;
 
     /**
-     * @var string The academic year in which this product was written
+     * @var \CommonBundle\Entity\General\AcademicYear
      *
-     * @ORM\Column(type="string", length=9)
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      */
-    private $year;
+    private $academicYear;
 
     /**
      * @var int The price (VAT excluded!) a company has to pay when they agree to this product of the contract
@@ -96,7 +97,7 @@ class Product
      * @param int $price
      * @param string $vatType see setVatType($vatType)
      */
-    public function __construct(EntityManager $entityManager, $name, $description, $contractText, Person $author, $price, $vatType)
+    public function __construct(EntityManager $entityManager, $name, $description, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear)
     {
         $this->setName($name);
         $this->setInvoiceDescription($description);
@@ -104,8 +105,7 @@ class Product
         $this->setAuthor($author);
         $this->setPrice($price);
         $this->setVatType($entityManager, $vatType);
-
-        $this->year = AcademicYear::getAcademicYear();
+        $this->academicYear = $academicYear;
     }
 
     /**
@@ -185,9 +185,9 @@ class Product
     /**
      * @return string
      */
-    public function getYear()
+    public function getAcademicYear()
     {
-        return $this->year;
+        return $this->academicYear;
     }
 
     /**
