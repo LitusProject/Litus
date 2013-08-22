@@ -23,8 +23,7 @@
 		<table class="full_width manage">
             <tr>
                 <th>Name</th>
-                <th width="150px">Author</th>
-                <th width="75px">Year</th>
+                <th width="150px">Created By</th>
                 <th width="70px">Actions</th>
             </tr>
 
@@ -32,7 +31,6 @@
 				<tr class="item item-{{ product.getId() }}">
                     <td>{{ product.getName() }}</td>
                     <td>{{ product.getAuthor().getFullName() }}</td>
-                    <td>{{ product.getYear() }}</td>
                     <td class="actions">
                     	{% if hasAccess('br_admin_product', 'edit') %}
                         	<a href="{{ url('br_admin_product', {"action": "edit", "id": product.getId()}) }}" class="edit">Edit</a>
