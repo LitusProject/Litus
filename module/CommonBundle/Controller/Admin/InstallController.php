@@ -96,6 +96,16 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The path to the logo of the union',
                 ),
                 array(
+                    'key'         => 'union_address',
+                    'value'       => 'Studentenwijk Arenberg 6/0, 3001 Heverlee',
+                    'description' => 'The address of this union',
+                ),
+                array(
+                    'key'         => 'union_city',
+                    'value'       => 'Heverlee',
+                    'description' => 'The city where this union is located',
+                ),
+                array(
                     'key'         => 'union_url',
                     'value'       => 'http://vtk.be',
                     'description' => 'The URL of the union',

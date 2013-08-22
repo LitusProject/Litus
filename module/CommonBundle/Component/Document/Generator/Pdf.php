@@ -121,6 +121,7 @@ abstract class Pdf
         $xmlPath = $this->_xmlFile->getFilename();
 
         $pdfDir = dirname($this->_pdfPath);
+
         if (!file_exists($pdfDir)) {
             if(!mkdir($pdfDir, 0770))
                 throw new \RuntimeException('Failed to create the PDF directory');

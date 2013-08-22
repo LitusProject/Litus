@@ -88,7 +88,12 @@ The VTK Corporate Team',
                         )
                     ),
                     'description' => 'The possible amounts of VAT'
-                )
+                ),
+                array(
+                    'key'         => 'br.contract_footer',
+                    'value'       => 'Contract Footer',
+                    'description' => 'The footer used in contracts',
+                ),
             )
         );
     }

@@ -12,12 +12,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Document\Pdf;
+namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Contract,
-    CommonBundle\Component\Util\TmpFile,
+use BrBundle\Entity\Contract as ContractEntity,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-    CommonBundle\Component\Util\Xml\Object as XmlObject;
+    CommonBundle\Component\Util\Xml\Object as XmlObject,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Generate a PDF for a contract.
@@ -25,7 +26,7 @@ use BrBundle\Entity\Contract,
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
+class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
      * @var \Litus\Entity\Br\Contract
@@ -36,20 +37,25 @@ class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \BrBundle\Entity\Contract $contract The contract for which we want to generate a PDF
      */
-    public function __construct(EntityManager $entityManager, Contract $contract)
+    public function __construct(EntityManager $entityManager, ContractEntity $contract)
     {
+
         parent::__construct(
-            Registry::get('litus.resourceDirectory') . '/pdf_generators/contract.xsl',
-            Registry::get('litus.resourceDirectory') . '/pdf/br/' . $contract->getId() . '/contract.pdf'
+            $entityManager,
+            $entityManager->getRepository('CommonBUndle\Entity\General\Config')
+                ->getConfigValue('br.pdf_generator_path') . '/contract/contract.xsl',
+            $entityManager->getRepository('CommonBUndle\Entity\General\Config')
+                ->getConfigValue('br.file_path') . '/contracts/'
+                . $contract->getId() . '/contract.pdf'
         );
         $this->_contract = $contract;
     }
 
-    protected function _generateXml(TmpFile $tmpFile)
+    protected function generateXml(TmpFile $xmlFile)
     {
-        $xml = new XmlGenerator($tmpFile);
+        $xml = new XmlGenerator($xmlFile);
 
-        $configs = $this->_getConfigRepository();
+        $configs = $this->getConfigRepository();
 
         $title = $this->_contract->getTitle();
         /** @var \Litus\Entity\Users\People\Company $company  */
@@ -59,17 +65,17 @@ class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
         $ourContactPerson = $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName();
         $entries = $this->_contract->getComposition();
 
-        $unionName = $configs->getConfigValue('br.contract.union_name');
-        $unionNameShort = $configs->getConfigValue('br.contract.union_name_short');
-        $unionAddress = $configs->getConfigValue('br.contract.union_address');
+        $unionNameShort = $configs->getConfigValue('union_short_name');
+        $unionName = $configs->getConfigValue('union_name');
+        $unionAddress = $configs->getConfigValue('union_address');
 
-        $location = $configs->getConfigValue('br.contract.location');
+        $location = $configs->getConfigValue('union_city');
 
-        $brName = $configs->getConfigValue('br.contract.br_name');
-        $logo = $configs->getConfigValue('br.contract.logo');
+        $brName = $configs->getConfigValue('union_name'); // TODO: this was br_name
+        $logo = $configs->getConfigValue('union_logo');
 
-        $sub_entries = $configs->getConfigValue('br.contract.sub_entries');
-        $footer = $configs->getConfigValue('br.contract.footer');
+        // $sub_entries = $configs->getConfigValue('sub_entries'); // TODO
+        $footer = $configs->getConfigValue('br.contract_footer');
 
         // Generate the xml
 
@@ -113,13 +119,15 @@ class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
 
                         // params of <company>
                         array(
-                            'contact_person' => $company->getFirstName() . ' ' . $company->getLastName()
+                            // 'contact_person' => $company->getFirstName() . ' ' . $company->getLastName()
+                            'contract_person' => 'FirstName LastName' // TODO
                         ),
 
                         // children of <company>
                         array(
                             new XmlObject('name', null, $company->getName()),
-                            new XmlObject('address', null, self::_formatAddress($company->getAddress()))
+                            // new XmlObject('address', null, self::_formatAddress($company->getAddress()))
+                            new XmlObject('address', null, 'Company Address') // TODO
                         )
                     ),
 
@@ -132,13 +140,14 @@ class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
                         // children of <union_address>
                         array(
                             new XmlObject('name', null, $unionName),
-                            new XmlObject('address', null, self::_formatAddress($unionAddress))
+                            // new XmlObject('address', null, self::_formatAddress($unionAddress))
+                            new XmlObject('address', null, 'Union Address') // TODO
                         )
                     ),
 
                     new XmlObject('entries', null, $entry_s),
 
-                    new XmlObject('sub_entries', null, $sub_entries),
+                    // new XmlObject('sub_entries', null, $sub_entries), // TODO
 
                     new XmlObject('footer', null, $footer)
                 )

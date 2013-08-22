@@ -37,6 +37,9 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Contract,
     BrBundle\Form\Admin\Contract\Add as AddForm,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
+    BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
+    BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
+    BrBundle\Component\Document\Generator\Pdf\Letter as LetterGenerator,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
@@ -76,37 +79,28 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //     $this->_json = new Json();
     // }
 
-    // private function _generateFiles($id, $invoiceOnly = false)
-    // {
-    //     $contract = $this->getEntityManager()
-    //         ->getRepository('Litus\Entity\Br\Contract')
-    //         ->find($id);
+    private function _generateFiles($id, $invoiceOnly = false)
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
-    //     if (null === $contract)
-    //         throw new \InvalidArgumentException('No contract found with the given ID');
+        if ($contract->isDirty()) {
+            if (!$invoiceOnly) {
+                $generator = new ContractGenerator($this->getEntityManager(), $contract);
+                $generator->generate();
 
-    //     if ($contract->isDirty()) {
-    //         if (!$invoiceOnly) {
-    //             $generator = new ContractGenerator($contract);
-    //             $generator->generate();
+                $generator = new LetterGenerator($contract);
+                $generator->generate();
+            }
 
-    //             $generator = new LetterGenerator($contract);
-    //             $generator->generate();
-    //         }
+            if (-1 != $contract->getInvoiceNb()) {
+                $generator = new InvoiceGenerator($contract);
+                $generator->generate();
+            }
 
-    //         if (-1 != $contract->getInvoiceNb()) {
-    //             $generator = new InvoiceGenerator($contract);
-    //             $generator->generate();
-    //         }
-
-    //         $contract->setDirty(false);
-    //     }
-    // }
-
-    // public function indexAction()
-    // {
-    //     $this->_forward('add');
-    // }
+            $contract->setDirty(false);
+        }
+    }
 
     public function addAction()
     {
@@ -328,31 +322,27 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //     $this->_forward('manage');
     // }
 
-    // public function downloadAction()
-    // {
-    //     if ('pdf' == $this->getRequest()->getParam('format')) {
-    //         $this->broker('viewRenderer')->setNoRender();
-    //         $this->_generateFiles(
-    //             $this->getRequest()->getParam('id')
-    //         );
+    public function downloadAction()
+    {
+        $this->_generateFiles(
+            $this->getParam('id')
+        );
 
-    //         $file = FileUtil::getRealFilename(
-    //             Registry::get('litus.resourceDirectory') . '/pdf/br/'
-    //                 . $this->getRequest()->getParam('id') . '/'
-    //                 . $this->getRequest()->getParam('type') .
-    //                 '.pdf'
-    //         );
+        // TODO: ability to download letter, contract and invoice
+        $file = FileUtil::getRealFilename(
+            $this->getEntityManager()
+                ->getRepository('CommonBUndle\Entity\General\Config')
+                ->getConfigValue('br.file_path') . '/contracts/'
+                . $this->getRequest()->getParam('id') . '/contract.pdf'
+        );
 
-    //         $this->getResponse()->setHeader(
-    //             'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
-    //         );
-    //         $this->getResponse()->setHeader('Content-Length', filesize($file));
+        $this->getResponse()->setHeader(
+            'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
+        );
+        $this->getResponse()->setHeader('Content-Length', filesize($file));
 
-    //         readfile($file);
-    //     } else {
-    //         $this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contract');
-    //     }
-    // }
+        readfile($file);
+    }
 
     public function composeAction()
     {

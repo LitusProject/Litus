@@ -1,25 +1,30 @@
 <?php
 
-namespace Litus\Br;
+namespace BrBundle\Component\Document\Generator\Pdf;
 
-use \Litus\Util\TmpFile;
+use BrBundle\Entity\Contract as ContractEntity,
+    CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
+    CommonBundle\Component\Util\Xml\Object as XmlObject,
+    Doctrine\ORM\EntityManager;
 
-use \Litus\Util\Xml\XmlObject;
-use \Litus\Util\Xml\XmlGenerator;
-
-use \Litus\Entity\Br\Contract;
-
-use \Zend\Registry;
-
-class LetterGenerator extends DocumentGenerator {
+class Letter extends DocumentGenerator {
 
     /**
      * @var \Litus\Entity\Br\Contractt
      */
     private $_contract;
 
-    public function __construct(Contract $contract)
+    public function __construct(EntityManager $entityManager, Contract $contract)
     {
+
+        parent::__construct(
+            $entityManager->getRepository('CommonBUndle\Entity\General\Config')
+                ->getConfigValue('br.pdf_generator_path') . '/contract/letter.xsl',
+            $entityManager->getRepository('CommonBUndle\Entity\General\Config')
+                ->getConfigValue('br.file_path') . '/contracts/'
+                . $contract->getId() . '/letter.pdf'
+        );
         parent::__construct(
             Registry::get('litus.resourceDirectory') . '/pdf_generators/letter.xsl',
             Registry::get('litus.resourceDirectory') . '/pdf/br/' . $contract->getId() . '/letter.pdf'

@@ -43,6 +43,9 @@
                             {% if hasAccess('br_admin_contract', 'edit') %}
                                 <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
+                            {% if hasAccess('br_admin_contract', 'download') %}
+                                <a href="{{ url('br_admin_contract', {"action": "download", "id": contract.getId()}) }}" class="download">Download</a>
+                            {% endif %}
                             {% if hasAccess('br_admin_contract', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ contract.getId() }}" data-name="{{ contract.getTitle() }}">Delete</a>
                             {% endif %}
