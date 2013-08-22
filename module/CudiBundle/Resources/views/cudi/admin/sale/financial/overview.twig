@@ -9,6 +9,20 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        
+        <h1>Sale</h1>
+        {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
+        <p>Total Theoretical Revenue: <b>&euro; {{ (data['totalTheoreticalRevenue']/100)|number_format(2) }}</b></p>
+        <p>Total Actual Revenue: <b>&euro; {{ (data['totalActualRevenue']/100)|number_format(2) }}</b></p>
+        <p>Total Purchased: <b>&euro; {{ (data['totalPurchasedAmount']/100)|number_format(2) }}</b></p>
+        <p>Total Articles Sold: <b>{{ data['totalNumberSold'] }}</b></p>
+        <p>Number Unique Clients: <b>{{ data['uniqueClients'] }}</b></p>
+
+        <h1>Orders</h1>
+        total price ordered
+        total number (individual) articles ordered
+
+        <h1>Deliveries</h1>
+        total price delivered
+        total number (individual) articles delivered
     </div>
 {% endblock %}

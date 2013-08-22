@@ -32,8 +32,55 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
+        $sessions = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->findAllByAcademicYear($academicYear);
+
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
+        $data =  array(
+            'totalTheoreticalRevenue' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Session')
+                ->getTheoreticalRevenueByAcademicYear($academicYear),
+            'totalActualRevenue' => 0,
+            'totalPurchasedAmount' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Session')
+                ->getPurchasedAmountByAcademicYear($academicYear),
+            'totalNumberSold' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findNumberByAcademicYear($academicYear),
+            'uniqueClients' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findUniqueClients($academicYear),
+        );
+
+        $organizationsList = array();
+        foreach($organizations as $organization) {
+            $organizationsList[$organization->getId()] = array(
+                'entity' => $organization,
+                'data' => array(
+                    'totalTheoreticalRevenue' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Session')
+                        ->getTheoreticalRevenueByAcademicYear($academicYear, $organization),
+                    'totalPurchasedAmount' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Session')
+                        ->getPurchasedAmountByAcademicYear($academicYear, $organization),
+                ),
+            );
+        }
+
+        foreach($sessions as $session) {
+            $session->setEntityManager($this->getEntityManager());
+
+            $data['totalActualRevenue'] += $session->getActualRevenue();
+        }
+
         return new ViewModel(
             array(
+                'organizations' => $organizations,
+                'data' => $data,
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )

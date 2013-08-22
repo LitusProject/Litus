@@ -99,6 +99,73 @@ class Session extends EntityRepository
         }
     }
 
+    public function getTheoreticalRevenueByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
+    {
+        if ($organization !== null) {
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('p.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'p')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('m.organization', ':organization'),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('organization', $organization)
+                ->setParameter('academicYear', $academicYear)
+                ->getQuery()
+                ->getResult();
+
+            $ids = array(0);
+            foreach($resultSet as $item) {
+                $ids[] = $item['id'];
+            }
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('SUM(s.price)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 's')
+                ->innerJoin('s.session', 'e')
+                ->innerJoin('s.queueItem', 'q')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->in('q.person', $ids),
+                        $query->expr()->gt('e.openDate', ':start'),
+                        $query->expr()->lt('e.openDate', ':end')
+                    )
+                )
+                ->setParameter('start', $academicYear->getUniversityStartDate())
+                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            if (null === $resultSet)
+                $resultSet = 0;
+
+            return $resultSet;
+        } else {
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('SUM(s.price)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 's')
+                ->innerJoin('s.session', 'e')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->gt('e.openDate', ':start'),
+                        $query->expr()->lt('e.openDate', ':end')
+                    )
+                )
+                ->setParameter('start', $academicYear->getUniversityStartDate())
+                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            if (null === $resultSet)
+                $resultSet = 0;
+
+            return $resultSet;
+        }
+    }
+
     public function getPurchasedAmountBySession(SessionEntity $session, Organization $organization = null)
     {
         if ($organization !== null) {
@@ -152,6 +219,75 @@ class Session extends EntityRepository
                     $query->expr()->eq('s.session', ':session')
                 )
                 ->setParameter('session', $session->getId())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            if (null === $resultSet)
+                $resultSet = 0;
+
+            return $resultSet;
+        }
+    }
+
+    public function getPurchasedAmountByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
+    {
+        if ($organization !== null) {
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('p.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'p')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('m.organization', ':organization'),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('organization', $organization)
+                ->setParameter('academicYear', $academicYear)
+                ->getQuery()
+                ->getResult();
+
+            $ids = array(0);
+            foreach($resultSet as $item) {
+                $ids[] = $item['id'];
+            }
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('SUM(a.purchasePrice)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 's')
+                ->innerJoin('s.session', 'e')
+                ->innerJoin('s.article', 'a')
+                ->innerJoin('s.queueItem', 'q')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->in('q.person', $ids),
+                        $query->expr()->gt('e.openDate', ':start'),
+                        $query->expr()->lt('e.openDate', ':end')
+                    )
+                )
+                ->setParameter('start', $academicYear->getUniversityStartDate())
+                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            if (null === $resultSet)
+                $resultSet = 0;
+
+            return $resultSet;
+        } else {
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('SUM(a.purchasePrice)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 's')
+                ->innerJoin('s.session', 'e')
+                ->innerJoin('s.article', 'a')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->gt('e.openDate', ':start'),
+                        $query->expr()->lt('e.openDate', ':end')
+                    )
+                )
+                ->setParameter('start', $academicYear->getUniversityStartDate())
+                ->setParameter('end', $academicYear->getUniversityEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
 

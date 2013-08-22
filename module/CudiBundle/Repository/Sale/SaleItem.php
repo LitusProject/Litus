@@ -50,6 +50,52 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
+    public function findNumberByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('SUM(i.number)')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('s.openDate', ':start'),
+                    $query->expr()->lt('s.openDate', ':end')
+                )
+            )
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
+    }
+
+    public function findUniqueClients(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('COUNT(DISTINCT q.person)')
+            ->from('CudiBundle\Entity\Sale\QueueItem', 'q')
+            ->innerJoin('q.session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('s.openDate', ':start'),
+                    $query->expr()->lt('s.openDate', ':end')
+                )
+            )
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
+    }
+
     public function findNumberBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {

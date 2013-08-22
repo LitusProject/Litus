@@ -4,19 +4,19 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('cudi_admin_sales_financial_split', 'split') %}
-                <li><a {% if 'sales' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_split', {"action": "manage"}) }}">Split View</a></li>
+                <li><a {% if 'sales' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_split', {"action": "manage", 'academicyear': activeAcademicYear.getCode()}) }}">Split View</a></li>
             {% endif %}
             {% if hasAccess('cudi_admin_sales_financial_delivered', 'individual') %}
-                <li><a {% if 'sales' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_delivered', {"action": "individual"}) }}">Delivered Items</a></li>
+                <li><a {% if 'sales' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_delivered', {"action": "individual", 'academicyear': activeAcademicYear.getCode()}) }}">Delivered Items</a></li>
             {% endif %}
             {% if hasAccess('cudi_admin_sales_financial_ordered', 'individual') %}
-                <li><a {% if 'orderedItems' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_ordered', {"action": "individual"}) }}">Ordered Items</a></li>
+                <li><a {% if 'orderedItems' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_ordered', {"action": "individual", 'academicyear': activeAcademicYear.getCode()}) }}">Ordered Items</a></li>
             {% endif %}
             {% if hasAccess('cudi_admin_sales_financial_sold', 'individual') %}
-                <li><a {% if 'cudi_admin_sales_financial_sold' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_sold', {"action": "individual"}) }}">Sold Items</a></li>
+                <li><a {% if 'cudi_admin_sales_financial_sold' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_sold', {"action": "individual", 'academicyear': activeAcademicYear.getCode()}) }}">Sold Items</a></li>
             {% endif %}
             {% if hasAccess('cudi_admin_sales_financial', 'overview') %}
-                <li><a {% if 'cudi_admin_sales_financial' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial') }}">Overview</a></li>
+                <li><a {% if 'cudi_admin_sales_financial' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial', {'academicyear': activeAcademicYear.getCode()}) }}">Overview</a></li>
             {% endif %}
         </ul>
     </nav>
