@@ -231,7 +231,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'cudi_admin_sales_article',
                     array(
-                        'action' => 'manage'
+                        'action' => 'edit',
+                        'id' => $saleArticle->getId(),
                     )
                 );
 
