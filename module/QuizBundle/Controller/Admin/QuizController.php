@@ -37,6 +37,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -79,7 +80,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $form  = new EditForm($this->getEntityManager(), $quiz);
@@ -144,7 +145,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getQuiz()
     {
-        if($this->getParam('id') === null) {
+        if ($this->getParam('id') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -167,7 +168,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Quiz')
             ->findOneById($this->getParam('id'));
 
-        if($quiz === null) {
+        if ($quiz === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
