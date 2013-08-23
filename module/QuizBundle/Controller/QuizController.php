@@ -1,37 +1,39 @@
 <?php
 
-namespace QuizBundle\Controller\Admin;
+namespace QuizBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     QuizBundle\Entity\Point,
     Zend\View\Model\ViewModel;
 
 /**
- * ModerateController
+ * QuizController
  *
- * Controller for /admin/quiz/:quizid/moderate[/:action[/:roundid/:teamid]]
+ * Controller for /quiz/:quizid[/:action[/:roundid/:teamid]]
  *
  * @author Lars Vierbergen <vierbergenlars@gmail.com>
  */
-class ModerateController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class QuizController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $rounds = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Round')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Round')
+            ->findByQuiz($quiz);
+
         $teams = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Team')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Team')
+            ->findByQuiz($quiz);
+
         $allPoints = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Point')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Point')
+            ->findByQuiz($quiz);
 
         $points = array();
-        foreach($allPoints as $point) {
+        foreach ($allPoints as $point) {
             $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
         }
 
@@ -49,20 +51,19 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if(!($team = $this->_getTeam()) || !($round = $this->_getRound()))
+        if (!($team = $this->_getTeam()) || !($round = $this->_getRound()))
             return new ViewModel;
 
         $point = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Point')
-                ->findOneBy(
-                    array(
-                        'team' => $team,
-                        'round' => $round,
-                    )
-                );
+            ->getRepository('QuizBundle\Entity\Point')
+            ->findOneBy(
+                array(
+                    'team' => $team,
+                    'round' => $round,
+                )
+            );
 
-        if($point === null) {
-            // If the point does not exist yet, create it.
+        if ($point === null) {
             $point = new Point($round, $team, 0);
             $this->getEntityManager()->persist($point);
         }
@@ -74,7 +75,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'json' => array(
+                'result' => array(
                     'status' => 'success'
                 ),
             )
@@ -83,32 +84,34 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $rounds = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Round')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Round')
+            ->findByQuiz($quiz);
+
         $teams = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Team')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Team')
+            ->findByQuiz($quiz);
+
         $allPoints = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Point')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Point')
+            ->findByQuiz($quiz);
 
         $points = array();
         $totals = array();
-        foreach($allPoints as $point) {
+        foreach ($allPoints as $point) {
             $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
-            if(!isset($totals[$point->getTeam()->getId()])) // If no point yet counted, set to zero
+            if(!isset($totals[$point->getTeam()->getId()]))
                 $totals[$point->getTeam()->getId()] = 0;
             $totals[$point->getTeam()->getId()] += $point->getPoint();
         }
 
-        arsort($totals); // Reverse sort of the totals (highest points first)
+        arsort($totals);
 
         $teams_indexed = array();
-        foreach($teams as $team) {
+        foreach ($teams as $team) {
             $teams_indexed[$team->getId()] = $team;
         }
 
@@ -119,6 +122,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
                 'teams' => $teams_indexed,
                 'points' => $points,
                 'total_points' => $totals,
+                'order'=> $this->getRequest()->getQuery('order', 'ASC'),
             )
         );
     }
@@ -133,7 +137,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
      */
     private function _getQuiz()
     {
-        if($this->getParam('quizid') === null) {
+        if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -156,7 +160,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('QuizBundle\Entity\Quiz')
             ->findOneById($this->getParam('quizid'));
 
-        if($quiz === null) {
+        if ($quiz === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -183,7 +187,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
      */
     private function _getRound()
     {
-        if($this->getParam('roundid') === null) {
+        if ($this->getParam('roundid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -193,7 +197,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'quiz_admin_moderate',
+                'quiz_quiz',
                 array(
                     'action' => 'manage',
                 )
@@ -206,7 +210,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('QuizBundle\Entity\Round')
             ->findOneById($this->getParam('roundid'));
 
-        if($round === null) {
+        if ($round === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -216,7 +220,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'quiz_admin_moderate',
+                'quiz_quiz',
                 array(
                     'action' => 'manage'
                 )
@@ -233,7 +237,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
      */
     private function _getTeam()
     {
-        if($this->getParam('teamid') === null) {
+        if ($this->getParam('teamid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -243,7 +247,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'quiz_admin_moderate',
+                'quiz_quiz',
                 array(
                     'action' => 'manage',
                 )
@@ -256,7 +260,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('QuizBundle\Entity\Team')
             ->findOneById($this->getParam('teamid'));
 
-        if($team === null) {
+        if ($team === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -266,7 +270,7 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'quiz_admin_moderate',
+                'quiz_quiz',
                 array(
                     'action' => 'manage'
                 )
@@ -277,5 +281,4 @@ class ModerateController extends \CommonBundle\Component\Controller\ActionContro
 
         return $team;
     }
-
 }

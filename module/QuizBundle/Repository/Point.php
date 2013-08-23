@@ -20,17 +20,18 @@ class Point extends EntityRepository
     public function findByQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
-        return $query->select('point')
-            ->from('QuizBundle\Entity\Point', 'point')
-            ->from('QuizBundle\Entity\Round', 'round')
-            ->from('QuizBundle\Entity\Team', 'team')
-            ->where('point.team = team.id')
-                ->andWhere('point.round = round.id')
-                ->andWhere('team.quiz = :quiz')
-                ->andWhere('round.quiz = :quiz')
-            ->orderBy('round.order', 'ASC')
-            ->setParameter('quiz', $quiz->getId())
+        $resultSet = $query->select('p')
+            ->from('QuizBundle\Entity\Point', 'p')
+            ->innerJoin('p.round', 'r')
+            ->innerJoin('p.team', 't')
+            ->where(
+                $query->expr()->eq('r.quiz', ':quiz')
+            )
+            ->orderBy('r.order', 'ASC')
+            ->setParameter('quiz', $quiz)
             ->getQuery()
             ->getResult();
+
+        return $resultSet;
     }
 }
