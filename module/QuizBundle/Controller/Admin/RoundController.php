@@ -19,7 +19,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $paginator = $this->paginator()->createFromArray(
@@ -40,10 +40,11 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $form = new AddForm($this->getEntityManager(), $quiz);
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -93,7 +94,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if(!($round = $this->_getRound()))
+        if (!($round = $this->_getRound()))
             return new ViewModel;
 
         $form  = new EditForm($this->getEntityManager(), $round);
@@ -161,7 +162,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function _getQuiz()
     {
-        if($this->getParam('quizid') === null) {
+        if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -184,7 +185,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('QuizBundle\Entity\Quiz')
             ->findOneById($this->getParam('quizid'));
 
-        if($quiz === null) {
+        if ($quiz === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -211,7 +212,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function _getRound()
     {
-        if($this->getParam('id') === null) {
+        if ($this->getParam('id') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -235,7 +236,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('QuizBundle\Entity\Round')
             ->findOneById($this->getParam('id'));
 
-        if($round === null) {
+        if ($round === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -257,5 +258,4 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $round;
     }
-
 }

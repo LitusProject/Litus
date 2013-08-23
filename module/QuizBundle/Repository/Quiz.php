@@ -16,10 +16,12 @@ class Quiz extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
 
-        return $query->select('quiz')
-            ->from('QuizBundle\Entity\Quiz', 'quiz')
-            ->orderBy('quiz.timestamp', 'ASC')
+        $resultSet = $query->select('q')
+            ->from('QuizBundle\Entity\Quiz', 'q')
+            ->orderBy('q.timestamp', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return $resultSet;
     }
 }

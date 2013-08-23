@@ -21,12 +21,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    protected $_entityManager = null;
 
     /**
      * @var \QuizBundle\Entity\Quiz The quiz the team will belong to
      */
-    private $_quiz = null;
+    protected $_quiz = null;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
@@ -53,15 +53,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'quiz_team_add');
+            ->setAttribute('class', 'add');
         $this->add($field);
+    }
+
+    /**
+     * Populates the form with values from the entity
+     *
+     * @param \QuizBundle\Entity\Team $team
+     */
+    public function populateFromTeam(Team $team)
+    {
+        $this->setData(
+            array(
+                'name' => $team->getName(),
+                'number' => $team->getNumber(),
+            )
+        );
     }
 
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
-
 
         $inputFilter->add(
             $factory->createInput(
@@ -93,20 +107,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         return $inputFilter;
-    }
-
-    /**
-     * Populates the form with values from the entity
-     *
-     * @param \QuizBundle\Entity\Team $team
-     */
-    public function populateFromTeam(Team $team)
-    {
-        $data = array(
-            'name' => $team->getName(),
-            'number' => $team->getNumber(),
-        );
-
-        $this->setData($data);
     }
 }

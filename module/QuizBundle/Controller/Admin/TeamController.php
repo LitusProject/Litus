@@ -19,7 +19,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $paginator = $this->paginator()->createFromArray(
@@ -40,10 +40,11 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $form = new AddForm($this->getEntityManager(), $quiz);
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -93,7 +94,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if(!($team = $this->_getTeam()))
+        if (!($team = $this->_getTeam()))
             return new ViewModel;
 
         $form  = new EditForm($this->getEntityManager(), $team);
@@ -160,7 +161,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getQuiz()
     {
-        if($this->getParam('quizid') === null) {
+        if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -183,7 +184,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Quiz')
             ->findOneById($this->getParam('quizid'));
 
-        if($quiz === null) {
+        if ($quiz === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -210,7 +211,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getTeam()
     {
-        if($this->getParam('id') === null) {
+        if ($this->getParam('id') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -234,7 +235,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Team')
             ->findOneById($this->getParam('id'));
 
-        if($team === null) {
+        if ($team === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -256,5 +257,4 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
         return $team;
     }
-
 }

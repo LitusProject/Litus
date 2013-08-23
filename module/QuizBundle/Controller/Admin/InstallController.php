@@ -23,10 +23,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
     protected function initConfig()
     {
-        $this->installConfig(
-            array(
-            )
-        );
     }
 
     protected function initAcl()

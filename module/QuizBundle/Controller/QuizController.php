@@ -17,21 +17,23 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $rounds = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Round')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Round')
+            ->findByQuiz($quiz);
+
         $teams = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Team')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Team')
+            ->findByQuiz($quiz);
+
         $allPoints = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Point')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Point')
+            ->findByQuiz($quiz);
 
         $points = array();
-        foreach($allPoints as $point) {
+        foreach ($allPoints as $point) {
             $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
         }
 
@@ -49,20 +51,19 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if(!($team = $this->_getTeam()) || !($round = $this->_getRound()))
+        if (!($team = $this->_getTeam()) || !($round = $this->_getRound()))
             return new ViewModel;
 
         $point = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Point')
-                ->findOneBy(
-                    array(
-                        'team' => $team,
-                        'round' => $round,
-                    )
-                );
+            ->getRepository('QuizBundle\Entity\Point')
+            ->findOneBy(
+                array(
+                    'team' => $team,
+                    'round' => $round,
+                )
+            );
 
-        if($point === null) {
-            // If the point does not exist yet, create it.
+        if ($point === null) {
             $point = new Point($round, $team, 0);
             $this->getEntityManager()->persist($point);
         }
@@ -74,7 +75,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'json' => array(
+                'result' => array(
                     'status' => 'success'
                 ),
             )
@@ -83,32 +84,34 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if(!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
         $rounds = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Round')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Round')
+            ->findByQuiz($quiz);
+
         $teams = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Team')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Team')
+            ->findByQuiz($quiz);
+
         $allPoints = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Point')
-                ->findByQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Point')
+            ->findByQuiz($quiz);
 
         $points = array();
         $totals = array();
-        foreach($allPoints as $point) {
+        foreach ($allPoints as $point) {
             $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
-            if(!isset($totals[$point->getTeam()->getId()])) // If no point yet counted, set to zero
+            if(!isset($totals[$point->getTeam()->getId()]))
                 $totals[$point->getTeam()->getId()] = 0;
             $totals[$point->getTeam()->getId()] += $point->getPoint();
         }
 
-        arsort($totals); // Reverse sort of the totals (highest points first)
+        arsort($totals);
 
         $teams_indexed = array();
-        foreach($teams as $team) {
+        foreach ($teams as $team) {
             $teams_indexed[$team->getId()] = $team;
         }
 
@@ -134,7 +137,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getQuiz()
     {
-        if($this->getParam('quizid') === null) {
+        if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -157,7 +160,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Quiz')
             ->findOneById($this->getParam('quizid'));
 
-        if($quiz === null) {
+        if ($quiz === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -184,7 +187,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getRound()
     {
-        if($this->getParam('roundid') === null) {
+        if ($this->getParam('roundid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -207,7 +210,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Round')
             ->findOneById($this->getParam('roundid'));
 
-        if($round === null) {
+        if ($round === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -234,7 +237,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getTeam()
     {
-        if($this->getParam('teamid') === null) {
+        if ($this->getParam('teamid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -257,7 +260,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Team')
             ->findOneById($this->getParam('teamid'));
 
-        if($team === null) {
+        if ($team === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -278,5 +281,4 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         return $team;
     }
-
 }

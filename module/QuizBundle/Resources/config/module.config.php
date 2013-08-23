@@ -42,20 +42,6 @@ return array(
                     ),
                 ),
             ),
-            // Alias: /admin/quiz/:id -> /admin/quiz/edit/:id
-            array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/quiz/:id[/]',
-                    'constraints' => array(
-                        'id'      => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'quiz_admin_quiz',
-                        'action'     => 'edit',
-                    ),
-                ),
-            ),
             'quiz_admin_round' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -68,7 +54,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'quiz_admin_round',
-                        'action' => 'manage',
+                        'action'     => 'manage',
                     ),
                 ),
             ),
@@ -84,7 +70,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'quiz_admin_team',
-                        'action' => 'manage',
+                        'action'     => 'manage',
                     ),
                 ),
             ),
@@ -95,12 +81,12 @@ return array(
                     'constraints' => array(
                         'quizid'  => '[0-9]+',
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'roundid'      => '[0-9]*',
-                        'teamid'    => '[0-9]*',
+                        'roundid' => '[0-9]*',
+                        'teamid'  => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'quiz_quiz',
-                        'action' => 'manage',
+                        'action'     => 'manage',
                     ),
                 ),
             ),
@@ -110,20 +96,6 @@ return array(
         'template_path_stack' => array(
             'quiz_layout' => __DIR__ . '/../layouts',
             'quiz_view' => __DIR__ . '/../views',
-        ),
-    ),
-    'translator' => array(
-        'translation_files' => array(
-            /*array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.nl.php',
-                'locale'   => 'nl'
-            ),*/
         ),
     ),
     'doctrine' => array(

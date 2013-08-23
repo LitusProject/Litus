@@ -21,12 +21,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    protected $_entityManager = null;
 
     /**
      * @var \QuizBundle\Entity\Quiz The quiz the round will belong to
      */
-    private $_quiz = null;
+    protected $_quiz = null;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
@@ -58,15 +58,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'quiz_round_add');
+            ->setAttribute('class', 'add');
         $this->add($field);
+    }
+
+    /**
+     * Populates the form with values from the entity
+     *
+     * @param \QuizBundle\Entity\Round $round
+     */
+    public function populateFromRound(Round $round)
+    {
+        $this->setData(
+            array(
+                'name' => $round->getName(),
+                'max_points' => $round->getMaxPoints(),
+                'order' => $round->getOrder(),
+            )
+        );
     }
 
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
-
 
         $inputFilter->add(
             $factory->createInput(
@@ -90,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator,
+                        new PositiveNumberValidator(),
                     )
                 )
             )
@@ -106,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator,
+                        new PositiveNumberValidator(),
                         new UniqueRoundValidator($this->_entityManager, $this->_quiz),
                     )
                 )
@@ -114,21 +129,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         return $inputFilter;
-    }
-
-    /**
-     * Populates the form with values from the entity
-     *
-     * @param \QuizBundle\Entity\Round $round
-     */
-    public function populateFromRound(Round $round)
-    {
-        $data = array(
-            'name' => $round->getName(),
-            'max_points' => $round->getMaxPoints(),
-            'order' => $round->getOrder(),
-        );
-
-        $this->setData($data);
     }
 }
