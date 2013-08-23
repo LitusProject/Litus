@@ -358,7 +358,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         foreach ($registrationArticles as $registrationArticle) {
             $booking = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldByArticleAndPerson(
+                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Article')
                         ->findOneById($registrationArticle),
@@ -366,19 +366,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
             // Already got this article, continue
-            if (null !== $booking)
-                continue;
-
-            $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneAssignedByArticleAndPerson(
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($registrationArticle),
-                    $academic
-                );
-
-            // Already booked this article, continue
             if (null !== $booking)
                 continue;
 
