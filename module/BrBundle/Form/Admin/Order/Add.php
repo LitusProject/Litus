@@ -164,6 +164,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             );
         }
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'company',
+                    'required' => true,
+                )
+            )
+        );
+
         return $inputFilter;
     }
 }

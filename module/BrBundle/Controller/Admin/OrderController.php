@@ -63,23 +63,26 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     $this->getAuthentication()->getPersonObject()
                 );
 
-                $this->getEntityManager()->persist($order);
-
                 $products = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Product')
                     ->findByAcademicYear($this->getCurrentAcademicYear());
 
+                $anyEntry = false;
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
                     if ($quantity != 0)
                     {
+                        $anyEntry = true;
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $this->getEntityManager()->persist($orderEntry);
                     }
                 }
 
-                $this->getEntityManager()->flush();
+                if ($anyEntry) {
+                    $this->getEntityManager()->persist($order);
+                    $this->getEntityManager()->flush();
+                }
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(

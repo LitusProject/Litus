@@ -129,4 +129,20 @@ class Order
     {
         return $this->orderEntries->toArray();
     }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        $result = '';
+        foreach ($this->getEntries() as $entry)
+        {
+            $result = $result .
+                $entry->getProduct()->getName() . ': ' .
+                $entry->getQuantity() . ', ';
+        }
+
+        return rtrim($result, ' ,');
+    }
 }
