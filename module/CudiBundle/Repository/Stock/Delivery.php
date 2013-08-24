@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Stock;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period as PeriodEntity,
     CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository,
@@ -63,6 +64,30 @@ class Delivery extends EntityRepository
 
         $resultSet = $query->getQuery()
             ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findNumberByArticleAndAcademicYear(Article $article, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('SUM(d.number)')
+            ->from('CudiBundle\Entity\Stock\Delivery', 'd')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('d.article', ':article'),
+                    $query->expr()->gt('d.timestamp', ':start'),
+                    $query->expr()->lt('d.timestamp', ':end')
+                )
+            )
+            ->setParameter('article', $article)
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if (null == $resultSet)
+            return 0;
 
         return $resultSet;
     }
