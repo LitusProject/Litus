@@ -98,9 +98,10 @@ return array(
             'common_admin_cache' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/cache[/:action][/]',
+                    'route' => '/admin/cache[/:action[/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'common_admin_cache',

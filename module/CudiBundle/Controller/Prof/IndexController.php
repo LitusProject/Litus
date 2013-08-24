@@ -38,14 +38,18 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
             foreach($paginator as $action)
                 $action->setEntityManager($this->getEntityManager());
 
+            $recentConversations = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+                ->findRecentConversationsByPersonAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+
             return new ViewModel(
                 array(
                     'paginator' => $paginator,
                     'paginationControl' => $this->paginator()->createControl(),
+                    'recentConversations' => $recentConversations,
                 )
             );
         }
-
         return new ViewModel();
     }
 }

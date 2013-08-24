@@ -71,6 +71,25 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllByISBN($isbn)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Article', 'a')
+            ->where($query->expr()->andX(
+                    $query->expr()->like($query->expr()->concat('a.isbn', '\'\''), ':isbn'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
+                )
+            )
+            ->setParameter('isbn', '%'.strtolower($isbn).'%')
+            ->orderBy('a.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllByPublisher($publisher)
     {
         $query = $this->_em->createQueryBuilder();

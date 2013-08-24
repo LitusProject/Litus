@@ -47,10 +47,15 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByEvent($event)) > 0;
 
+        $ticketEvent = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event')
+            ->findOneByActivity($event);
+
         return new ViewModel(
             array(
                 'event' => $event,
                 'hasShifts' => $hasShifts,
+                'ticketEvent' => $ticketEvent,
             )
         );
     }

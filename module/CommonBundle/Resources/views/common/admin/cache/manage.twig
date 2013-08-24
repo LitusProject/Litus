@@ -15,7 +15,14 @@
                     <td>{{ item }}</td>
                 </tr>
             {% endfor %}
+            {% for key in paginator %}
+                <tr>
+                    <td>{{ key }}</td>
+                </tr>
+            {% endfor %}
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     {% if hasAccess('common_admin_cache', 'flush') %}

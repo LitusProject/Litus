@@ -234,7 +234,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'cudi_admin_article',
                     array(
-                        'action' => 'manage'
+                        'action' => 'edit',
+                        'id' => $article->getId(),
                     )
                 );
 
@@ -316,6 +317,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->id = $article->getId();
             $item->title = $article->getTitle();
             $item->author = $article->getAuthors();
+            $item->isbn = $article->getISBN();
             $item->publisher = $article->getPublishers();
             $item->yearPublished = $article->getYearPublished() ? $article->getYearPublished() : '';
             $item->isInternal = $article->isInternal();
@@ -613,6 +615,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByAuthor($this->getParam('string'));
+            case 'isbn':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article')
+                    ->findAllByISBN($this->getParam('string'));
             case 'publisher':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')

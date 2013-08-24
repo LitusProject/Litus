@@ -21,15 +21,17 @@ class Team extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
 
-        return $query->select('team')
-            ->from('QuizBundle\Entity\Team', 'team')
+        $resultSet = $query->select('t')
+            ->from('QuizBundle\Entity\Team', 't')
             ->where(
-                $query->expr()->eq('team.quiz', ':quiz')
+                $query->expr()->eq('t.quiz', ':quiz')
             )
-            ->orderBy('team.number', 'ASC')
+            ->orderBy('t.number', 'ASC')
             ->setParameter('quiz', $quiz->getId())
             ->getQuery()
             ->getResult();
+
+        return $resultSet;
     }
 
     /**
@@ -40,19 +42,20 @@ class Team extends EntityRepository
     public function getNextTeamNumberForQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('team')
-            ->from('QuizBundle\Entity\Team', 'team')
+        $resultSet = $query->select('t')
+            ->from('QuizBundle\Entity\Team', 't')
             ->where(
-                $query->expr()->eq('team.quiz', ':quiz')
+                $query->expr()->eq('t.quiz', ':quiz')
             )
-            ->orderBy('team.number', 'DESC')
+            ->orderBy('t.number', 'DESC')
             ->setParameter('quiz', $quiz->getId())
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
-        if($result === null)
+        if($resultSet === null)
             return 1;
-        return $result->getNumber() + 1;
+
+        return $resultSet->getNumber() + 1;
     }
 }

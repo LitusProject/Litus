@@ -40,7 +40,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     public function onDispatch(MvcEvent $e)
     {
         $result = parent::onDispatch($e);
-        
+
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
@@ -107,8 +107,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-        $this->getTranslator()->setCache($this->getCache());
-        $this->getTranslator()->setLocale($language->getAbbrev());
+        $this->getTranslator()->setCache($this->getCache())
+            ->setLocale($language->getAbbrev());
+
+        $this->getMvcTranslator()->setCache($this->getCache())
+            ->setLocale($language->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
     }
@@ -135,8 +138,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = true)
     {
+        if (!$organization)
+            return parent::getCurrentAcademicYear();
+
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 

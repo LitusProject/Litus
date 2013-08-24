@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     MailBundle\Form\Admin\Mail\Mail as MailForm,
     Zend\Mail\Message,
+    Zend\Validator\EmailAddress as EmailAddressValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -81,18 +82,30 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ('organization' == $type) {
                     $people = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Status\Organization')
-                        ->findAllByStatus($status, $this->getCurrentAcademicYear());
+                        ->findAllByStatus($status, $this->getCurrentAcademicYear(false));
                 } else {
                     $people = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Status\University')
-                        ->findAllByStatus($status, $this->getCurrentAcademicYear());
+                        ->findAllByStatus($status, $this->getCurrentAcademicYear(false));
                 }
 
                 $mail->addTo($mailAddress, $mailName);
 
+                $emailValidator = new EmailAddressValidator();
+                $i = 0;
                 foreach($people as $person) {
-                    if (null !== $person->getPerson()->getEmail())
+                    if (null !== $person->getPerson()->getEmail() && $emailValidator->isValid($person->getPerson()->getEmail())) {
+                        $i++;
                         $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
+                    }
+
+                    if ($i == 500) {
+                        $i = 0;
+                        if ('development' != getenv('APPLICATION_ENV'))
+                            $this->getMailTransport()->send($mail);
+
+                        $mail->setBcc(array());
+                    }
                 }
 
                 if ('development' != getenv('APPLICATION_ENV'))

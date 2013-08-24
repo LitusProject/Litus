@@ -32,6 +32,13 @@ class Study
     private $id;
 
     /**
+     * @var integer The id of the KUL
+     *
+     * @ORM\Column(type="integer", name="kul_id", nullable=true)
+     */
+    private $kulId;
+
+    /**
      * @var string The title of the study
      *
      * @ORM\Column(type="string")
@@ -69,13 +76,15 @@ class Study
 
     /**
      * @param string $title
-     * @param string $subTitle
+     * @param integer $kulId
      * @param integer $phase
      * @param string $language
+     * @param \SyllabusBundle\Entity\Study $parent
      */
-    public function __construct($title, $phase, $language, Study $parent = null)
+    public function __construct($title, $kulId, $phase, $language, Study $parent = null)
     {
         $this->title = $title;
+        $this->kulId = $kulId;
         $this->phase = $phase;
         $this->language = $language;
         $this->parent = $parent;
@@ -95,6 +104,16 @@ class Study
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
     }
 
     /**

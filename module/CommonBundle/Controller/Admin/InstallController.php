@@ -16,7 +16,8 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Address\City,
     CommonBundle\Entity\General\Address\Street,
-    CommonBundle\Entity\General\Language;
+    CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\General\Organization;
 
 /**
  * InstallController
@@ -29,6 +30,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->_installLanguages();
         $this->_installCities();
+        $this->_installOrganizations();
 
         $this->installConfig(
             array(
@@ -125,12 +127,12 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ),
                 array(
                     'key'         => 'shibboleth_person_key',
-                    'value'       => 'Shib-Person-uid',
+                    'value'       => 'Shib_Person_uid',
                     'description' => 'The key in the $_SERVER array that accesses the university identification',
                 ),
                 array(
                     'key'         => 'shibboleth_session_key',
-                    'value'       => 'Shib-Session-ID',
+                    'value'       => 'Shib_Session_ID',
                     'description' => 'The key in the $_SERVER array that accesses the shibboleth session',
                 ),
                 array(
@@ -147,6 +149,22 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
+                ),
+                array(
+                    'key'         => 'shibboleth_extra_info',
+                    'value'       => serialize(
+                        array(
+                            'first_name' => 'Shib_Person_givenName',
+                            'last_name' => 'Shib_Person_surname',
+                            'email' => 'Shib_Person_mail',
+                        )
+                    ),
+                    'description' => 'The keys for extra info from Shibboleth',
+                ),
+                array(
+                    'key'         => 'student_email_domain',
+                    'value'       => '@student.kuleuven.be',
+                    'description' => 'The domain for the student email',
                 ),
                 array(
                     'key'         => 'system_administrator_mail',
@@ -192,22 +210,6 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'key'         => 'common.piwik_id_site',
                     'value'       => '1',
                     'description' => 'The Piwik ID of the site that should be queried',
-                ),
-                array(
-                    'key'         => 'shibboleth_extra_info',
-                    'value'       => serialize(
-                        array(
-                            'first_name' => 'Shib_Person_givenName',
-                            'last_name' => 'Shib_Person_surname',
-                            'email' => 'Shib_Person_mail',
-                        )
-                    ),
-                    'description' => 'The keys for extra info from Shibboleth',
-                ),
-                array(
-                    'key'         => 'student_email_domain',
-                    'value'       => '@student.kuleuven.be',
-                    'description' => 'The domain for the student email',
                 ),
             )
         );
@@ -324,6 +326,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'syllabus_install' => array(
                         'index'
                     ),
+                    'ticket_install' => array(
+                        'index'
+                    ),
                     'wiki_install' => array(
                         'index'
                     ),
@@ -407,6 +412,32 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ->findOneByCityAndName($city, $streetData['name']);
                 if (null === $street)
                     $this->getEntityManager()->persist(new Street($city, $streetData['register'], $streetData['name']));
+            }
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    private function _installOrganizations()
+    {
+        $currentOrganizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+        if (sizeof($currentOrganizations) > 0)
+            return;
+
+        $organizations = array(
+            'VTK',
+        );
+
+        foreach($organizations as $name) {
+            $organization = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Organization')
+                ->findOneByName($name);
+
+            if (null === $organization) {
+                $organization = new Organization($name);
+                $this->getEntityManager()->persist($organization);
             }
         }
 

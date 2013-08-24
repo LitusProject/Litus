@@ -75,6 +75,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => 'http://onderwijsaanbod.kuleuven.be/opleidingen/{{ language }}/xml/SC_{{ id }}.xml',
                     'description' => 'The department url',
                 ),
+                array(
+                    'key'         => 'syllabus.enable_update',
+                    'value'       => '0',
+                    'description' => 'Enable Syllabus update',
+                ),
             )
         );
 
@@ -102,7 +107,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'edit', 'manage', 'search', 'typeahead'
                     ),
                     'syllabus_admin_subject_comment' => array(
-                        'delete', 'manage', 'subject'
+                        'delete', 'manage', 'subject', 'reply'
                     ),
                     'syllabus_admin_update' => array(
                         'index', 'updateNow'

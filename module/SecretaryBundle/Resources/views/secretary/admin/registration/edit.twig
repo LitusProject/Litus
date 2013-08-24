@@ -5,6 +5,8 @@
 
     {% include 'secretary/admin/registration/partials/navigation.twig' %}
 
+    {% include 'secretary/admin/registration/partials/organizations.twig' %}
+
     <div id="controller_action">
         <p>Name: <b>{{ registration.getAcademic().getFullName() }}</b></p>
         <p>University Identification: <b>{{ registration.getAcademic().getUniversityIdentification() }}</b></p>

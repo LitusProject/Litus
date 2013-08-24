@@ -17,7 +17,7 @@
         tBank: 'Bank',
 
         discounts: [],
-        membershipArticle: 0,
+        membershipArticles: 0,
         lightVersion: false,
 
         saveComment: function (id, comment) {},

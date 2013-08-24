@@ -26,7 +26,7 @@ class Edit extends Add {
 
         $field = new Submit('submit');
         $field->setValue('Edit')
-            ->setAttribute('class', 'quiz_edit');
+            ->setAttribute('class', 'edit');
         $this->add($field);
 
         $this->populateFromQuiz($quiz);

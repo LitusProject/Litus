@@ -21,15 +21,17 @@ class Round extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
 
-        return $query->select('round')
-            ->from('QuizBundle\Entity\Round', 'round')
+        $resultSet = $query->select('r')
+            ->from('QuizBundle\Entity\Round', 'r')
             ->where(
-                $query->expr()->eq('round.quiz', ':quiz')
+                $query->expr()->eq('r.quiz', ':quiz')
             )
-            ->orderBy('round.order', 'ASC')
-            ->setParameter('quiz', $quiz->getId())
+            ->orderBy('r.order', 'ASC')
+            ->setParameter('quiz', $quiz)
             ->getQuery()
             ->getResult();
+
+        return $resultSet;
     }
 
     /**
@@ -40,19 +42,20 @@ class Round extends EntityRepository
     public function getNextRoundOrderForQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('round')
-            ->from('QuizBundle\Entity\Round', 'round')
+        $resultSet = $query->select('r')
+            ->from('QuizBundle\Entity\Round', 'r')
             ->where(
-                $query->expr()->eq('round.quiz', ':quiz')
+                $query->expr()->eq('r.quiz', ':quiz')
             )
-            ->orderBy('round.order', 'DESC')
-            ->setParameter('quiz', $quiz->getId())
+            ->orderBy('r.order', 'DESC')
+            ->setParameter('quiz', $quiz)
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
-        if($result === null)
+        if($resultSet === null)
             return 1;
-        return $result->getOrder() + 1;
+
+        return $resultSet->getOrder() + 1;
     }
 }

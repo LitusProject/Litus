@@ -194,9 +194,11 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($item->getPerson());
 
-        $memberShipArticle = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.membership_article');
+        $memberShipArticles = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
 
         $soldArticles = array();
 
@@ -229,7 +231,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
             }
 
-            if ($booking->getArticle()->getId() == $memberShipArticle) {
+            if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 try {
                     $booking->getPerson()
                         ->addOrganizationStatus(
@@ -285,7 +287,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $bestDiscount = null;
                 foreach($soldArticle['article']->getDiscounts() as $discount) {
                     if (in_array($discount->getRawType(), $discounts)) {
-                        if ($discount->getType() == 'member' && !$item->getPerson()->isMember($this->_getCurrentAcademicYear()))
+                        if (!$discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager))
                             continue;
                         if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager))
                             continue;
@@ -330,7 +332,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->persist(new AccoCard($item->getPerson(), $hasAccoCard));
         }
 
-        //$this->_entityManager->flush();
+        $this->_entityManager->flush();
 
         return $saleItems;
     }
@@ -373,12 +375,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
 
                 foreach($booking->getArticle()->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager))
+                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager) &&
+                            $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($booking->getArticle()->getSellPrice()),
                             'applyOnce' => $discount->applyOnce(),
                         );
+                    }
                 }
 
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()] = $result;
@@ -411,12 +415,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
 
                 foreach($article->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager))
+                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager) &&
+                            $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($article->getSellPrice()),
                             'applyOnce' => $discount->applyOnce(),
                         );
+                    }
                 }
                 $results['assigned_' . $article->getId()] = $result;
             }

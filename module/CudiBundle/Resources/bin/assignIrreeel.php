@@ -23,6 +23,9 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
+if (false === getenv('APPLICATION_ENV'))
+    putenv('APPLICATION_ENV=development');
+
 chdir(dirname(dirname(dirname(dirname(__DIR__)))));
 
 include 'init_autoloader.php';

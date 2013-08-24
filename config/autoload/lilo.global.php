@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-if ('production' == getenv('APPLICATION_ENV')) {
+if ('development' != getenv('APPLICATION_ENV')) {
     if (!file_exists(__DIR__ . '/../lilo.config.php')) {
         throw new RuntimeException(
             'The Lilo configuration file (' . (__DIR__ . '/../lilo.config.php') . ') was not found'
@@ -24,7 +24,8 @@ if ('production' == getenv('APPLICATION_ENV')) {
             'factories' => array(
                 'lilo' => function ($serviceManager) {
                     return new \CommonBundle\Component\Lilo\Client(
-                        $serviceManager->get('lilo_connection')
+                        $serviceManager->get('lilo_connection'),
+                        $serviceManager->get('authentication')
                     );
                 },
                 'lilo_connection' => function ($serviceManager) {

@@ -151,7 +151,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $internet->add($field);
 
         $field = new Checkbox('primary_email');
-        $field->setLabel('I want to receive VTK e-mail at my personal e-mail address')
+        $field->setLabel('I want to receive e-mail at my personal e-mail address')
             ->setValue(true);
         $internet->add($field);
 
