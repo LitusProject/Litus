@@ -127,12 +127,12 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ),
                 array(
                     'key'         => 'shibboleth_person_key',
-                    'value'       => 'Shib-Person-uid',
+                    'value'       => 'Shib_Person_uid',
                     'description' => 'The key in the $_SERVER array that accesses the university identification',
                 ),
                 array(
                     'key'         => 'shibboleth_session_key',
-                    'value'       => 'Shib-Session-ID',
+                    'value'       => 'Shib_Session_ID',
                     'description' => 'The key in the $_SERVER array that accesses the shibboleth session',
                 ),
                 array(
@@ -149,6 +149,22 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
+                ),
+                array(
+                    'key'         => 'shibboleth_extra_info',
+                    'value'       => serialize(
+                        array(
+                            'first_name' => 'Shib_Person_givenName',
+                            'last_name' => 'Shib_Person_surname',
+                            'email' => 'Shib_Person_mail',
+                        )
+                    ),
+                    'description' => 'The keys for extra info from Shibboleth',
+                ),
+                array(
+                    'key'         => 'student_email_domain',
+                    'value'       => '@student.kuleuven.be',
+                    'description' => 'The domain for the student email',
                 ),
                 array(
                     'key'         => 'system_administrator_mail',
@@ -195,42 +211,6 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'value'       => '1',
                     'description' => 'The Piwik ID of the site that should be queried',
                 ),
-                array(
-                    'key'         => 'common.ldap_people_ou',
-                    'value'       => 'ou=people,dc=ldap,dc=vtk,dc=be',
-                    'description' => 'The LDAP identifier for the organizational unit containing the people',
-                ),
-                array(
-                    'key'         => 'common.ldap_students_ou',
-                    'value'       => 'ou=students,ou=people,dc=ldap,dc=vtk,dc=be',
-                    'description' => 'The LDAP identifier for the organizational unit containing the students',
-                ),
-                array(
-                    'key'         => 'common.ldap_students_cn',
-                    'value'       => 'cn=students,ou=groups,dc=ldap,dc=vtk,dc=be',
-                    'description' => 'The LDAP identifier for the students group',
-                ),
-                array(
-                    'key'         => 'common.ldap_users_cn',
-                    'value'       => 'cn=users,ou=groups,dc=ldap,dc=vtk,dc=be',
-                    'description' => 'The LDAP identifier for the users group',
-                ),
-                array(
-                    'key'         => 'shibboleth_extra_info',
-                    'value'       => serialize(
-                        array(
-                            'first_name' => 'Shib_Person_givenName',
-                            'last_name' => 'Shib_Person_surname',
-                            'email' => 'Shib_Person_mail',
-                        )
-                    ),
-                    'description' => 'The keys for extra info from Shibboleth',
-                ),
-                array(
-                    'key'         => 'student_email_domain',
-                    'value'       => '@student.kuleuven.be',
-                    'description' => 'The domain for the student email',
-                ),
             )
         );
     }
@@ -271,7 +251,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'fileServer', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'common_session' => array(
                         'manage', 'expire'
