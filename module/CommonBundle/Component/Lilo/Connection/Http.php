@@ -69,7 +69,12 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     {
         $client = new Client($this->_getRequestUrl($data));
         $client->setMethod(Request::METHOD_POST)
-            ->setRawBody((string) $data);
+            ->setParameterPost(
+                array(
+                    'data' => (string) $data,
+                    'key' => $this->_secretKey,
+                )
+            );
 
         $client->send();
     }
@@ -85,6 +90,6 @@ class Http extends \CommonBundle\Component\Lilo\Connection
         return (true === $this->_secure ? 'https://' : 'http://')
             . $this->_host
             . '/api/'
-            . ($data instanceof ExceptionData ? 'exception' : 'log') . '/';
+            . ($data instanceof ExceptionData ? 'exception' : 'log') . '/add';
     }
 }
