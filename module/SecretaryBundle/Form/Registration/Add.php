@@ -168,10 +168,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $organization->add($field);
         }
 
+        $registration_enabled = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled');
+
         $field = new Checkbox('become_member');
-        $field->setLabel('I want to become a member of the organization (&euro;10)')
+        $field->setLabel('I want to become a member of the organization')
             ->setValue(true);
         $organization->add($field);
+
+        if ('1' != $registration_enabled)
+            $field->setAttribute('disabled', 'disabled');
 
         $field = new Checkbox('conditions');
         $field->setLabel('I have read and agree with the terms and conditions');
