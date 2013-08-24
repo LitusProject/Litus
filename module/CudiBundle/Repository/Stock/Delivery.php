@@ -92,6 +92,31 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    public function findNumberBySupplier(Supplier $supplier, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('SUM(d.number)')
+            ->from('CudiBundle\Entity\Stock\Delivery', 'd')
+            ->innerJoin('d.article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.supplier', ':supplier'),
+                    $query->expr()->gt('d.timestamp', ':start'),
+                    $query->expr()->lt('d.timestamp', ':end')
+                )
+            )
+            ->setParameter('supplier', $supplier)
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
+    }
+
     public function findAllPaginator($currentPage, $itemsPerPage, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -162,6 +187,65 @@ class Delivery extends EntityRepository
                 )
             )
             ->setParameter('supplier', '%'.strtolower($supplier).'%')
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate());
+
+        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
+    }
+
+    public function findAllByArticleEntityPaginator(Article $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->from('CudiBundle\Entity\Stock\Delivery', 'd')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('d.article', ':article'),
+                    $query->expr()->gt('d.timestamp', ':start'),
+                    $query->expr()->lt('d.timestamp', ':end')
+                )
+            )
+            ->setParameter('article', $article)
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate());
+
+        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
+    }
+
+    public function findAllBySupplierEntityPaginator(Supplier $supplier, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->from('CudiBundle\Entity\Stock\Delivery', 'd')
+            ->innerJoin('d.article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.supplier', ':supplier'),
+                    $query->expr()->gt('d.timestamp', ':start'),
+                    $query->expr()->lt('d.timestamp', ':end')
+                )
+            )
+            ->setParameter('supplier', $supplier)
+            ->setParameter('start', $academicYear->getUniversityStartDate())
+            ->setParameter('end', $academicYear->getUniversityEndDate());
+
+        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
+    }
+
+    public function findAllByArticleTitleAndSupplierAndAcademicYear($title, $currentPage, $itemsPerPage, Supplier $supplier, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->from('CudiBundle\Entity\Stock\Delivery', 'd')
+            ->innerJoin('d.article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('m.title'), ':title'),
+                    $query->expr()->eq('a.supplier', ':supplier'),
+                    $query->expr()->gt('d.timestamp', ':start'),
+                    $query->expr()->lt('d.timestamp', ':end')
+                )
+            )
+            ->setParameter('title', '%'.strtolower($title).'%')
+            ->setParameter('supplier', $supplier)
             ->setParameter('start', $academicYear->getUniversityStartDate())
             ->setParameter('end', $academicYear->getUniversityEndDate());
 
