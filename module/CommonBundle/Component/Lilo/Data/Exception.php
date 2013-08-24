@@ -35,11 +35,15 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     public function __construct(\Exception $exception)
     {
         $this->_data = array(
-            'url' => $this->_formatUrl(),
-            'exception_class' => get_class($exception),
+            'class' => get_class($exception),
             'message' => $exception->getMessage(),
-            'backtrace' => $this->_formatBacktrace($exception),
-            'enviroment' => $_SERVER['HTTP_USER_AGENT']
+            'trace' => $this->_formatBacktrace($exception),
+            'environment' => array(
+                'person' => '',
+                'session' => '',
+                'url' => $this->_formatUrl(),
+                'userAgent' => $_SERVER['HTTP_USER_AGENT'],
+            ),
         );
     }
 
@@ -61,14 +65,18 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _formatBacktrace(\Exception $exception)
     {
-        $backtrace = array(
-            0 => $exception->getMessage()
-        );
+        $backtrace = array();
         foreach ($exception->getTrace() as $t) {
             if (!isset($t['file']))
                 continue;
 
-            $backtrace[] = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at ' . (isset($t['class']) ? $t['class'] . '.' : '') . $t['function'] . '(' . basename($t['file']) . ':' . $t['line'] . ')';
+            $backtrace[] = array(
+                'file' => basename($t['file']),
+                'line' => $t['line'],
+                'class' => isset($t['class']) ? $t['class'] : '',
+                'function' => $t['function'],
+                'args' => '',
+            );
         }
 
         return $backtrace;
