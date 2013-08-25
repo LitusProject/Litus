@@ -14,7 +14,6 @@
             <div style="padding:4px;text-align:right">
                 Search:
                 <select id="searchField">
-                    <option value="article">Article</option>
                     <option value="supplier">Supplier</option>
                 </select>
                 is
@@ -24,11 +23,11 @@
             <table class="full_width manage">
                 <tr>
                     <th width="100px">Date</th>
-                    <th>Article</th>
-                    <th width="120px">Barcode</th>
+                    <th>Person</th>
                     <th width="70px">Supplier</th>
                     <th width="70px">Number</th>
                     <th width="70px">Price</th>
+                    <th width="70px">Actions</th>
                 </tr>
             </table>
         </div>
@@ -37,21 +36,25 @@
             <table class="full_width manage">
                 <tr>
                     <th width="100px">Date</th>
-                    <th>Article</th>
-                    <th width="120px">Barcode</th>
+                    <th>Person</th>
                     <th width="70px">Supplier</th>
                     <th width="70px">Number</th>
                     <th width="70px">Price</th>
+                    <th width="70px">Actions</th>
                 </tr>
 
                 {% for item in paginator %}
                     <tr class="item">
-                        <td>{{ item.getOrder().getDateOrdered().format('d/m/Y H:i') }}</td>
-                        <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
-                        <td>{{ item.getArticle().getBarcode() }}</td>
-                        <td>{{ item.getArticle().getSupplier().getName() }}</td>
-                        <td>{{ item.getNumber() }}</td>
-                        <td>&euro; {{ (item.getNumber() * item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
+                        <td>{{ item.getDateOrdered().format('d/m/Y H:i') }}</td>
+                        <td>{{ item.getPerson().getFullName() }}</td>
+                        <td>{{ item.getSupplier().getName() }}</td>
+                        <td>{{ item.getTotalNumber() }}</td>
+                        <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
+                        <td class="actions">
+                            {% if hasAccess('cudi_admin_sales_financial_ordered', 'order') %}
+                                <a href="{{ url('cudi_admin_sales_financial_ordered', {'action': 'order', 'id': item.getId(), 'academicyear': activeAcademicYear.getCode()}) }}" class="view">View</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -64,24 +67,26 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('cudi_admin_sales_financial_ordered', 'individualSearch') %}
+            {% if hasAccess('cudi_admin_sales_financial_ordered', 'ordersSearch') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#ordered_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'individual', 'academicyear': activeAcademicYear.getCode()}) }}',
-                url: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'individualSearch', 'academicyear': activeAcademicYear.getCode()}) }}',
+                searchPage: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'orders', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'ordersSearch', 'academicyear': activeAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#ordered_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#ordered_search table').append(row = $('<tr>', {class: 'item'}));
                         row.append('<td>' + this.dateOrdered + '</td>')
-                            .append('<td>' + this.article + '</td>')
-                            .append('<td>' + this.barcode + '</td>')
+                            .append('<td>' + this.person + '</td>')
                             .append('<td>' + this.supplier + '</td>')
                             .append('<td>' + this.number + '</td>')
-                            .append('<td>&euro; ' + this.price + '</td>');
+                            .append('<td>&euro; ' + this.price + '</td>')
+                            .append('<td>' + {% if hasAccess('cudi_admin_sales_financial_ordered', 'order') %}
+                                '<a href="{{ url('cudi_admin_sales_financial_ordered', {'action': 'order'}) }}' + this.id + '/{{ activeAcademicYear.getCode() }}" class="view">View</a>'
+                            {% endif %} + '</td>');
                     });
                     $('#ordered_search table').change();
                 },

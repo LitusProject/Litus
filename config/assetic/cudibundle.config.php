@@ -133,11 +133,6 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-        'cudi_admin_sales_financial_split' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'cudi_admin_supplier' => array(
             '@common_jquery',
             '@admin_css',

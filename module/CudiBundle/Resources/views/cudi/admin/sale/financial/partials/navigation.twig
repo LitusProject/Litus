@@ -3,9 +3,6 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('cudi_admin_sales_financial_split', 'split') %}
-                <li><a {% if 'cudi_admin_sales_financial_split' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_split', {"action": "manage", 'academicyear': activeAcademicYear.getCode()}) }}">Split View</a></li>
-            {% endif %}
             {% if hasAccess('cudi_admin_sales_financial_delivered', 'individual') %}
                 <li><a {% if 'cudi_admin_sales_financial_delivered' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_delivered', {"action": "individual", 'academicyear': activeAcademicYear.getCode()}) }}">Delivered Items</a></li>
             {% endif %}

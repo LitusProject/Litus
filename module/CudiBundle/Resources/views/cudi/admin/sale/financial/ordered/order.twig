@@ -10,12 +10,19 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
+        <h1>Order</h1>
+        <p>Date Ordered: <b>{{ order.getDateOrdered().format('d/m/Y H:i') }}</b></p>
+        <p>Person: <b>{{ order.getPerson().getFullName() }}</b></p>
+        <p>Supplier: <b>{{ order.getSupplier().getName() }}</b></p>
+        <p>Total Number: <b>{{ order.getTotalNumber() }}</b></p>
+        <p>Total Price: <b>{{ (order.getPrice()/100)|number_format(2) }}</b></p>
+
+        <br />
         <div id="ordered_search" style="display:none;">
             <div style="padding:4px;text-align:right">
                 Search:
                 <select id="searchField">
                     <option value="article">Article</option>
-                    <option value="supplier">Supplier</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -23,10 +30,8 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th width="100px">Date</th>
                     <th>Article</th>
                     <th width="120px">Barcode</th>
-                    <th width="70px">Supplier</th>
                     <th width="70px">Number</th>
                     <th width="70px">Price</th>
                 </tr>
@@ -36,20 +41,16 @@
         <div id="default_page">
             <table class="full_width manage">
                 <tr>
-                    <th width="100px">Date</th>
                     <th>Article</th>
                     <th width="120px">Barcode</th>
-                    <th width="70px">Supplier</th>
                     <th width="70px">Number</th>
                     <th width="70px">Price</th>
                 </tr>
 
                 {% for item in paginator %}
                     <tr class="item">
-                        <td>{{ item.getOrder().getDateOrdered().format('d/m/Y H:i') }}</td>
                         <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
                         <td>{{ item.getArticle().getBarcode() }}</td>
-                        <td>{{ item.getArticle().getSupplier().getName() }}</td>
                         <td>{{ item.getNumber() }}</td>
                         <td>&euro; {{ (item.getNumber() * item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
                     </tr>
@@ -64,22 +65,20 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('cudi_admin_sales_financial_ordered', 'individualSearch') %}
+            {% if hasAccess('cudi_admin_sales_financial_ordered', 'orderSearch') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#ordered_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'individual', 'academicyear': activeAcademicYear.getCode()}) }}',
-                url: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'individualSearch', 'academicyear': activeAcademicYear.getCode()}) }}',
+                searchPage: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'order', 'academicyear': activeAcademicYear.getCode(), 'id': order.getId()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'orderSearch', 'academicyear': activeAcademicYear.getCode(), 'id': order.getId()}) }}',
                 display: function (data) {
                     $('#ordered_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#ordered_search table').append(row = $('<tr>', {class: 'item'}));
-                        row.append('<td>' + this.dateOrdered + '</td>')
-                            .append('<td>' + this.article + '</td>')
+                        row.append('<td>' + this.article + '</td>')
                             .append('<td>' + this.barcode + '</td>')
-                            .append('<td>' + this.supplier + '</td>')
                             .append('<td>' + this.number + '</td>')
                             .append('<td>&euro; ' + this.price + '</td>');
                     });

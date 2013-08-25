@@ -292,24 +292,6 @@ return array(
                     ),
                 ),
             ),
-            'cudi_admin_sales_financial_split' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/sales/financial/split[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]*',
-                        'page'   => '[0-9]*',
-                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string' => '[%a-zA-Z0-9:.,_-]*',
-                        'academicyear' => '[0-9]{4}-[0-9]{4}',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'cudi_admin_sales_financial_split',
-                        'action'     => 'individual',
-                    ),
-                ),
-            ),
             'cudi_admin_supplier' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -837,7 +819,6 @@ return array(
             'cudi_admin_sales_financial_sold'      => 'CudiBundle\Controller\Admin\Sale\Financial\SoldController',
             'cudi_admin_sales_financial_delivered' => 'CudiBundle\Controller\Admin\Sale\Financial\DeliveredController',
             'cudi_admin_sales_financial_ordered'   => 'CudiBundle\Controller\Admin\Sale\Financial\OrderedController',
-            'cudi_admin_sales_financial_split'     => 'CudiBundle\Controller\Admin\Sale\Financial\SplitController',
             'cudi_admin_supplier'                  => 'CudiBundle\Controller\Admin\SupplierController',
             'cudi_admin_supplier_user'             => 'CudiBundle\Controller\Admin\Supplier\UserController',
             'cudi_admin_stock'                     => 'CudiBundle\Controller\Admin\StockController',
