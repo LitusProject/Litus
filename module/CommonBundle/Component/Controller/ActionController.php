@@ -27,7 +27,8 @@ use CommonBundle\Component\Acl\Acl,
     Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
-    Zend\Paginator\Adapter\ArrayAdapter;
+    Zend\Paginator\Adapter\ArrayAdapter,
+    Zend\View\Model\ViewModel;
 
 /**
  * We extend the basic Zend controller to simplify database access, authentication
@@ -61,7 +62,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->_initViewHelpers();
 
         if (null !== $this->initAuthentication())
-            return;
+            return new ViewModel();
 
         $this->initLocalization();
 

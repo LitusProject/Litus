@@ -33,6 +33,6 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
             )
         );
 
-        return;
+        return new ViewModel();
     }
 }

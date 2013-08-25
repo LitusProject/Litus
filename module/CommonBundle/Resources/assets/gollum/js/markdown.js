@@ -50,7 +50,7 @@ var LanguageDefinition = {
                             },
 
   'function-link'       :   {
-                              exec: function(txt, selText, $field, uploadURL, progressURL, uploadProgressName, progressId) {
+                              exec: function(txt, selText, $field, uploadURL) {
                                 var modal = $('<div>', {'class': 'modal fade'});
                                 modal.append(
                                     $('<div>', {'class': 'modal-header'}).append(
@@ -59,7 +59,6 @@ var LanguageDefinition = {
                                     ),
                                     $('<div>', {'class': 'modal-body'}).append(
                                         form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
-                                            $('<input>', {'type': 'hidden', 'name': uploadProgressName}).val(progressId),
                                             $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'file'}),
                                             $('<b>').html('Link Text'),
                                             $('<br />'),
@@ -99,9 +98,6 @@ var LanguageDefinition = {
                                 $(document.body).append(modal);
                                 progress.hide();
                                 form.formUploadProgress({
-                                    url: progressURL,
-                                    name: progressId,
-                                    interval: 1000,
                                     onProgress: function (data) {
                                         progress.find('.bar').width(((data.current / data.total) * 100) + '%');
                                     },
@@ -144,7 +140,7 @@ var LanguageDefinition = {
                             },
 
   'function-image'      :   {
-                              exec: function(txt, selText, $field, uploadURL, progressURL, uploadProgressName, progressId) {
+                              exec: function(txt, selText, $field, uploadURL) {
                                 var modal = $('<div>', {'class': 'modal fade'});
                                 modal.append(
                                     $('<div>', {'class': 'modal-header'}).append(
@@ -153,7 +149,6 @@ var LanguageDefinition = {
                                     ),
                                     $('<div>', {'class': 'modal-body'}).append(
                                         form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
-                                            $('<input>', {'type': 'hidden', 'name': uploadProgressName}).val(progressId),
                                             $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'image'}),
                                             $('<b>').html('Alternative Text'),
                                             $('<br />'),
@@ -178,9 +173,6 @@ var LanguageDefinition = {
                                 $(document.body).append(modal);
                                 progress.hide();
                                 form.formUploadProgress({
-                                    url: progressURL,
-                                    name: progressId,
-                                    interval: 1000,
                                     onProgress: function (data) {
                                         progress.find('.bar').width(((data.current / data.total) * 100) + '%');
                                     },
