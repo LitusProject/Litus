@@ -52,7 +52,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'uploadBanner');
         $this->setAttribute('enctype', 'multipart/form-data');
-        $this->setAttribute('data-upload', 'progress');
 
         $field = new Text('name');
         $field->setLabel('Name')
