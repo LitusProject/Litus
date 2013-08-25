@@ -49,7 +49,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
                 ? $person->getUniversityStatus($this->getCurrentAcademicYear())->getStatus()
                 : '';
             $result['organization_status'] = (null !== $person->getOrganizationStatus($this->getCurrentAcademicYear()))
-                ? $person->getOrganizationStatus($this->getCurrentAcademicYear())->getStatus()
+                ? $person->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus()
                 : '';
         }
 
