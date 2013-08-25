@@ -89,8 +89,8 @@
                         {% if hasAccess('sport_admin_run', 'queue') or hasAccess('ticket_admin_event', 'manage') or hasAccess('quiz_admin_quiz', 'manage') %}
                             <li>
                                 <div class="subtitle">
-                                        <b>App's</b><br />
-                                        24h-Run, Tickets &amp; Quiz
+                                        <b>Apps</b><br />
+                                        24h-Run, Quiz &amp; Tickets
                                 </div>
 
                                 <ul
@@ -289,7 +289,7 @@
                                     {% endif %}
                                 >
                                     {% if hasAccess('banner_admin_banner', 'manage') %}
-                                        <li><a href="{{ url('banner_admin_banner') }}">Banner</a></li>
+                                        <li><a href="{{ url('banner_admin_banner') }}">Banners</a></li>
                                     {% endif %}
                                     {% if hasAccess('calendar_admin_calendar', 'manage') %}
                                         <li><a href="{{ url('calendar_admin_calendar') }}">Calendar</a></li>
