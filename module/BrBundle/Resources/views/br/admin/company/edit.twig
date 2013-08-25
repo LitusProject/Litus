@@ -69,9 +69,6 @@
 	    $(document).ready(function () {
             $('textarea#description').gollum({
                 uploadURL: '{{ url('br_admin_company', {'action': 'upload'}) }}',
-                progressURL: '/progress.php',
-                uploadProgressName: '{{ uploadProgressName }}',
-                progressId: '{{ uploadProgressId }}',
             });
             $('textarea#summary').gollum({
                 toolbar: {
