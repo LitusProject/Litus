@@ -252,6 +252,17 @@ class Supplier
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return integer
+     */
+    public function getNumberOrdered(AcademicYear $academicYear)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+            ->findNumberBySupplier($this, $academicYear);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */

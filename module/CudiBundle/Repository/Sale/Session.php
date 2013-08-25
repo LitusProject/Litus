@@ -134,8 +134,8 @@ class Session extends EntityRepository
                         $query->expr()->lt('e.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -154,8 +154,8 @@ class Session extends EntityRepository
                         $query->expr()->lt('e.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -265,8 +265,8 @@ class Session extends EntityRepository
                         $query->expr()->lt('e.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -286,8 +286,8 @@ class Session extends EntityRepository
                         $query->expr()->lt('e.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -362,8 +362,8 @@ class Session extends EntityRepository
                     $query->expr()->lt('s.openDate', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
             ->getQuery()
             ->getResult();
 

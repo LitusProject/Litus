@@ -17,6 +17,7 @@ namespace CudiBundle\Controller\Admin\Sale\Financial;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Stock\Order\Order,
+    CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
 /**
@@ -258,12 +259,112 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function suppliersAction()
     {
-        return new ViewModel();
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Supplier')
+                ->findAll(),
+            $this->getParam('page')
+        );
+
+        foreach($paginator as $item) {
+            $item->setEntityManager($this->getEntityManager());
+        }
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+            )
+        );
     }
 
     public function supplierAction()
     {
-        return new ViewModel();
+        if (!($supplier = $this->_getSupplier()))
+            return new ViewModel();
+
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        if (null !== $this->getParam('field'))
+            list($records, $totalNumber) = $this->_supplierSearch($this->getParam('page'), $this->paginator()->getItemsPerPage(), $supplier, $this->getAcademicYear());
+
+        if (!isset($records)) {
+            list($records, $totalNumber) = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                ->findAllBySupplierEntityPaginator($supplier, $this->getParam('page'), $this->paginator()->getItemsPerPage(), $this->getAcademicYear());
+        }
+
+        $paginator = $this->paginator()->createFromPaginatorRepository(
+            $records,
+            $this->getParam('page'),
+            $totalNumber
+        );
+
+        return new ViewModel(
+            array(
+                'supplier' => $supplier,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+            )
+        );
+    }
+
+    public function supplierSearchAction()
+    {
+        $this->initAjax();
+
+        if (!($supplier = $this->_getSupplier()))
+            return new ViewModel();
+
+        $academicYear = $this->getAcademicYear();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        list($records, $totalNumber) = $this->_supplierSearch(0, $numResults, $supplier, $academicYear);
+
+        $result = array();
+        foreach($records as $order) {
+            $item = (object) array();
+            $item->id = $order->getId();
+            $item->timestamp = $order->getOrder()->getDateOrdered()->format('d/m/Y H:i');
+            $item->article = $order->getArticle()->getMainArticle()->getTitle();
+            $item->barcode = $order->getArticle()->getBarcode();
+            $item->number = $order->getNumber();
+            $item->price = number_format($order->getNumber() * $order->getArticle()->getPurchasePrice()/100, 2);
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _supplierSearch($page, $numberRecords, Supplier $supplier, AcademicYear $academicYear)
+    {
+        switch($this->getParam('field')) {
+            case 'article':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                    ->findAllByArticleTitleAndSupplierAndAcademicYear($this->getParam('string'), $page, $numberRecords, $supplier, $academicYear);
+        }
     }
 
     public function articlesAction()
@@ -321,5 +422,54 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         return $orders;
+    }
+
+    private function _getSupplier()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the supplier!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_sales_financial_ordered',
+                array(
+                    'action' => 'suppliers'
+                )
+            );
+
+            return;
+        }
+
+        $supplier = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Supplier')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $supplier) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No supplier with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_sales_financial_ordered',
+                array(
+                    'action' => 'suppliers'
+                )
+            );
+
+            return;
+        }
+
+        $supplier->setEntityManager($this->getEntityManager());
+
+        return $supplier;
     }
 }

@@ -54,6 +54,18 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             'uniqueClients' => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                 ->findUniqueClients($academicYear),
+            'totalOrderedPrice' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                ->getOrderedAmountByAcademicYear($academicYear),
+            'totalNumberOrdered' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                ->getNumberByAcademicYear($academicYear),
+            'totalDeliveredPrice' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Delivery')
+                ->getDeliveredAmountByAcademicYear($academicYear),
+            'totalNumberDelivered' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Delivery')
+                ->getNumberByAcademicYear($academicYear),
         );
 
         $organizationsList = array();
@@ -79,7 +91,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'organizations' => $organizations,
+                'organizationsList' => $organizationsList,
                 'data' => $data,
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,

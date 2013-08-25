@@ -62,8 +62,8 @@ class SaleItem extends EntityRepository
                     $query->expr()->lt('s.openDate', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -85,8 +85,8 @@ class SaleItem extends EntityRepository
                     $query->expr()->lt('s.openDate', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -133,8 +133,8 @@ class SaleItem extends EntityRepository
                         $query->expr()->lt('s.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->setParameter('supplier', $supplier)
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -151,8 +151,8 @@ class SaleItem extends EntityRepository
                         $query->expr()->lt('s.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->setParameter('supplier', $supplier)
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -201,8 +201,8 @@ class SaleItem extends EntityRepository
                     )
                 )
                 ->setParameter('article', $article)
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
         } else {
@@ -218,8 +218,8 @@ class SaleItem extends EntityRepository
                     )
                 )
                 ->setParameter('article', $article)
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
         }
@@ -267,8 +267,8 @@ class SaleItem extends EntityRepository
                         $query->expr()->lt('s.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->setParameter('supplier', $supplier)
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -285,8 +285,8 @@ class SaleItem extends EntityRepository
                         $query->expr()->lt('s.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->setParameter('supplier', $supplier)
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -335,8 +335,8 @@ class SaleItem extends EntityRepository
                         $query->expr()->lt('s.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->setParameter('supplier', $supplier)
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -353,8 +353,8 @@ class SaleItem extends EntityRepository
                         $query->expr()->lt('s.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->setParameter('supplier', $supplier)
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -403,8 +403,8 @@ class SaleItem extends EntityRepository
                     )
                 )
                 ->setParameter('article', $article)
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
         } else {
@@ -420,8 +420,8 @@ class SaleItem extends EntityRepository
                     )
                 )
                 ->setParameter('article', $article)
-                ->setParameter('start', $academicYear->getUniversityStartDate())
-                ->setParameter('end', $academicYear->getUniversityEndDate())
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
         }
@@ -443,8 +443,8 @@ class SaleItem extends EntityRepository
                     $query->expr()->lt('s.openDate', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
     }
@@ -486,8 +486,8 @@ class SaleItem extends EntityRepository
                 )
             )
             ->setParameter('article', '%'.strtolower($article).'%')
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator(
             $currentPage,
@@ -513,8 +513,8 @@ class SaleItem extends EntityRepository
                 )
             )
             ->setParameter('supplier', $supplier)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator(
             $currentPage,
@@ -539,8 +539,8 @@ class SaleItem extends EntityRepository
                 )
             )
             ->setParameter('article', $article)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator(
             $currentPage,
@@ -582,8 +582,8 @@ class SaleItem extends EntityRepository
                 )
             )
             ->setParameter('name', '%'.strtolower($name).'%')
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator(
             $currentPage,
@@ -627,8 +627,8 @@ class SaleItem extends EntityRepository
             )
             ->setParameter('name', '%'.strtolower($name).'%')
             ->setParameter('article', $article)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator(
             $currentPage,
@@ -733,8 +733,8 @@ class SaleItem extends EntityRepository
                 )
             )
             ->setParameter('discount', '%'.strtolower($discount).'%')
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator(
             $currentPage,
@@ -761,8 +761,8 @@ class SaleItem extends EntityRepository
             )
             ->setParameter('discount', '%'.strtolower($discount).'%')
             ->setParameter('article', $article)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator(
             $currentPage,

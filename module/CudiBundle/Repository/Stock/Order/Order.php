@@ -100,8 +100,8 @@ class Order extends EntityRepository
                     $query->expr()->lt('o.dateOrdered', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('o.dateOrdered', 'DESC'));
     }
@@ -140,8 +140,8 @@ class Order extends EntityRepository
                 )
             )
             ->setParameter('supplier', '%'.strtolower($supplier).'%')
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('o.dateOrdered', 'DESC'));
     }

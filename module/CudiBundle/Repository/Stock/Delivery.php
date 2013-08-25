@@ -81,8 +81,8 @@ class Delivery extends EntityRepository
                 )
             )
             ->setParameter('article', $article)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -106,8 +106,53 @@ class Delivery extends EntityRepository
                 )
             )
             ->setParameter('supplier', $supplier)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate())
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
+    }
+
+    public function getDeliveredAmountByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('SUM(d.number * a.purchasePrice)')
+            ->from('CudiBundle\Entity\Stock\Delivery', 'd')
+            ->innerJoin('d.article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('d.timestamp', ':start'),
+                    $query->expr()->lt('d.timestamp', ':end')
+                )
+            )
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
+    }
+
+    public function getNumberByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('SUM(d.number)')
+            ->from('CudiBundle\Entity\Stock\Delivery', 'd')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('d.timestamp', ':start'),
+                    $query->expr()->lt('d.timestamp', ':end')
+                )
+            )
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -127,8 +172,8 @@ class Delivery extends EntityRepository
                     $query->expr()->lt('d.timestamp', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
     }
@@ -167,8 +212,8 @@ class Delivery extends EntityRepository
                 )
             )
             ->setParameter('article', '%'.strtolower($article).'%')
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
     }
@@ -187,8 +232,8 @@ class Delivery extends EntityRepository
                 )
             )
             ->setParameter('supplier', '%'.strtolower($supplier).'%')
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
     }
@@ -205,8 +250,8 @@ class Delivery extends EntityRepository
                 )
             )
             ->setParameter('article', $article)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
     }
@@ -224,8 +269,8 @@ class Delivery extends EntityRepository
                 )
             )
             ->setParameter('supplier', $supplier)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
     }
@@ -246,8 +291,8 @@ class Delivery extends EntityRepository
             )
             ->setParameter('title', '%'.strtolower($title).'%')
             ->setParameter('supplier', $supplier)
-            ->setParameter('start', $academicYear->getUniversityStartDate())
-            ->setParameter('end', $academicYear->getUniversityEndDate());
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate());
 
         return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('d.timestamp', 'DESC'));
     }
