@@ -48,7 +48,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-        $this->setAttribute('data-upload', 'progress');
 
         $years = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\AcademicYear')

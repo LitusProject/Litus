@@ -20,9 +20,6 @@
             "help": ["help", "Help", "help"],
         },
         uploadURL: '',
-        progressURL: '',
-        uploadProgressName: '',
-        progressId: 1,
         width: '600px',
     };
 
@@ -112,7 +109,7 @@
         var cursor = null;
 
         if (definitionObject.exec && typeof definitionObject.exec == 'function') {
-            definitionObject.exec(txt, selText, $that, options.uploadURL, options.progressURL, options.uploadProgressName, options.progressId);
+            definitionObject.exec(txt, selText, $that, options.uploadURL);
             return;
         }
 

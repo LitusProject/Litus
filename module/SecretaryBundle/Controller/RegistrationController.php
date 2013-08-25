@@ -284,6 +284,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
+        $registrationEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled') == '1';
+
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
@@ -388,31 +392,35 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
 
                 if (null !== $metaData) {
-                    if (null !== $metaData->getTshirtSize()) {
-                        $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Booking')
-                            ->findOneAssignedByArticleAndPerson(
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                                    ->findOneById($tshirts[$metaData->getTshirtSize()]),
-                                $academic
-                            );
+                    if ($registrationEnabled) {
+                        if (null !== $metaData->getTshirtSize()) {
+                            $booking = $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                ->findOneAssignedByArticleAndPerson(
+                                    $this->getEntityManager()
+                                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                                        ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                                    $academic
+                                );
 
-                        if (null !== $booking)
-                            $this->getEntityManager()->remove($booking);
+                            if (null !== $booking)
+                                $this->getEntityManager()->remove($booking);
+                        }
+                        $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
+                    } else {
+                        $becomeMember = $metaData->becomeMember();
                     }
-
-                    $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
 
                     if ($becomeMember) {
-                        $metaData->setBecomeMember($becomeMember)
-                            ->setReceiveIrReeelAtCudi($formData['irreeel'])
-                            ->setBakskeByMail($formData['bakske'])
-                            ->setTshirtSize($formData['tshirt_size']);
-                    } else {
-                        $metaData->setBakskeByMail($formData['bakske']);
+                        if ($registrationEnabled) {
+                            $metaData->setBecomeMember($becomeMember)
+                                ->setTshirtSize($formData['tshirt_size']);
+                        }
+
+                        $metaData->setReceiveIrReeelAtCudi($formData['irreeel']);
                     }
-                } else {
+                    $metaData->setBakskeByMail($formData['bakske']);
+                } elseif ($registrationEnabled) {
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -436,32 +444,34 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                $membershipArticles = array();
-                $ids = unserialize(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('secretary.membership_article')
-                );
+                if ($registrationEnabled) {
+                    $membershipArticles = array();
+                    $ids = unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('secretary.membership_article')
+                    );
 
-                foreach($ids as $organizationId => $articleId) {
-                    $membershipArticles[$organizationId] = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($articleId);
-                }
+                    foreach($ids as $organizationId => $articleId) {
+                        $membershipArticles[$organizationId] = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Article')
+                            ->findOneById($articleId);
+                    }
 
-                if ($metaData->becomeMember()) {
-                    $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $this->getCurrentAcademicYear());
-                } else {
-                    foreach($membershipArticles as $membershipArticle) {
-                        $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Booking')
-                            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                                $membershipArticle,
-                                $academic
-                            );
+                    if ($metaData->becomeMember()) {
+                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $this->getCurrentAcademicYear());
+                    } else {
+                        foreach($membershipArticles as $membershipArticle) {
+                            $booking = $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                                    $membershipArticle,
+                                    $academic
+                                );
 
-                        if (null !== $booking)
-                            $this->getEntityManager()->remove($booking);
+                            if (null !== $booking)
+                                $this->getEntityManager()->remove($booking);
+                        }
                     }
                 }
 
