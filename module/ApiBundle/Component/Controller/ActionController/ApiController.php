@@ -18,7 +18,9 @@ use ApiBundle\Component\Controller\Request\Exception\NoPostRequestException,
     ApiBundle\Component\Controller\Request\Exception\NoKeyException,
     ApiBundle\Component\Controller\Request\Exception\InvalidKeyException,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity
+    DateInterval,
+    DateTime,
     Zend\Mvc\MvcEvent;
 
 /**
