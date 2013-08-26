@@ -158,16 +158,16 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     $orderEntry = $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Product\OrderEntry')
                         ->findOneByOrderAndProduct($order, $product);
-                    if (null === $orderEntry && $quantity != 0)
+                    if (null === $orderEntry && 0 != $quantity)
                     {
                         $orderEntry = new OrderEntry($order, $product, $quantity);
-                        $contractEntry = new ContractEntry($contract, $orderEntry);
+                        $contractEntry = new ContractEntry($order->getContract(), $orderEntry);
                         $this->getEntityManager()->persist($orderEntry);
                         $this->getEntityManager()->persist($contractEntry);
+                    } elseif (0 != $quantity) {
+                        $orderEntry->setQuantity($quantity);
                     }
                 }
-
-                $order->getContract()->updateEntries();
 
                 $this->getEntityManager()->flush();
 
