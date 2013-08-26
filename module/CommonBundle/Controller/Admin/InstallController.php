@@ -241,7 +241,6 @@ VTK'
                     'value'       => '1',
                     'description' => 'The Piwik ID of the site that should be queried',
                 ),
-<<<<<<< HEAD
                 array(
                     'key'         => 'common.ldap_people_ou',
                     'value'       => 'ou=people,dc=ldap,dc=vtk,dc=be',
@@ -278,8 +277,6 @@ VTK'
                     'value'       => '@student.kuleuven.be',
                     'description' => 'The domain for the student email',
                 ),
-=======
->>>>>>> master
             )
         );
     }
