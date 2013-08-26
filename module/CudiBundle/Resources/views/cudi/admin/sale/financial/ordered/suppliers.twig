@@ -1,0 +1,41 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/ordered/partials/years.twig' %}
+
+    {% include 'cudi/admin/sale/financial/ordered/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Name</th>
+                <th width="120px">Vat Number</th>
+                <th width="120px">Phone Number</th>
+                <th width="120px">Number Ordered</th>
+                <th width="120px">Total Purchased</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for item in paginator %}
+                <tr class="item">
+                    <td>{{ item.getName() }}</td>
+                    <td>{{ item.VATNumber() }}</td>
+                    <td>{{ item.getPhoneNumber() }}</td>
+                    <td>{{ item.getNumberOrdered(activeAcademicYear) }}</td>
+                    <td>&euro; {{ (item.getTotalPurchase(activeAcademicYear)/100)|number_format(2) }}</td>
+                    <td class="actions">
+                        {% if hasAccess('cudi_admin_sales_financial_ordered', 'supplier') %}
+                            <a href="{{ url('cudi_admin_sales_financial_ordered', {'action': 'supplier', 'id': item.getId(), 'academicyear': activeAcademicYear.getCode()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

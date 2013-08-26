@@ -96,6 +96,7 @@ class SubjectProfMap extends EntityRepository
             )
             ->setParameter('prof', $prof->getId())
             ->setParameter('academicYear', $academicYear->getId())
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 

@@ -15,6 +15,7 @@
 namespace CommonBundle\Entity\General;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    DateInterval,
     Doctrine\ORM\Mapping as ORM;
 
 /**
