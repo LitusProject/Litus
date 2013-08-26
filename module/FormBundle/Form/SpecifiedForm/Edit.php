@@ -15,7 +15,7 @@
 namespace FormBundle\Form\SpecifiedForm;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\User\Person,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,

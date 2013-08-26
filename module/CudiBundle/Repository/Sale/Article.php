@@ -7,7 +7,8 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CudiBundle\Entity\Article as ArticleEntity,
     CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join;
+    Doctrine\ORM\Query\Expr\Join,
+    Doctrine\ORM\Query\Expr\OrderBy;
 
 /**
  * Article
@@ -353,6 +354,7 @@ class Article extends EntityRepository
             ->setParameter('title', '%'.strtolower($title).'%')
             ->setParameter('barcode', strtolower($title).'%')
             ->orderBy('m.title', 'ASC')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 

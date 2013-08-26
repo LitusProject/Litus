@@ -1,0 +1,18 @@
+<header id="controller_sub_header">
+    <nav id="controller_sub_nav">
+        <ul>
+            {% if hasAccess('cudi_admin_sales_financial_ordered', 'individual') %}
+                <li><a {% if 'individual' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_ordered", {"action": "individual", "academicyear": activeAcademicYear.getCode()}) }}">Individual</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_ordered', 'orders') %}
+                <li><a {% if 'orders' == getParam('action') or 'order' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_ordered", {"action": "orders", "academicyear": activeAcademicYear.getCode()}) }}">Orders</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_ordered', 'articles') %}
+                <li><a {% if 'articles' == getParam('action') or 'article' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_ordered", {"action": "articles", "academicyear": activeAcademicYear.getCode()}) }}">Articles</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_ordered', 'suppliers') %}
+                <li><a {% if 'suppliers' == getParam('action') or 'supplier' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_ordered", {"action": "suppliers", "academicyear": activeAcademicYear.getCode()}) }}">Suppliers</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
