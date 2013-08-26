@@ -203,6 +203,26 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
+
+        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
         return $quiz;
     }
 
@@ -249,6 +269,25 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
                 array(
                     'action' => 'manage',
                     'quizid' => $this->getParam('quizid'),
+                )
+            );
+
+            return;
+        }
+
+        if (!$team->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
                 )
             );
 
