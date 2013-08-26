@@ -14,7 +14,9 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CommonBundle\Entity\General\Bank\CashRegister,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\Organization,
+    CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -81,16 +83,16 @@ class Session
     private $comment;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $_entityManager;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The restrictions of this sale session
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Session\Restriction", mappedBy="session")
      */
     private $restrictions;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
 
     /**
      * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
@@ -208,13 +210,14 @@ class Session
     }
 
     /**
+     * @param \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
-    public function getTheoreticalRevenue()
+    public function getTheoreticalRevenue(Organization $organization = null)
     {
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->getTheoreticalRevenue($this);
+            ->getTheoreticalRevenue($this, $organization);
     }
 
     /**
@@ -229,6 +232,17 @@ class Session
     }
 
     /**
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getPurchasedAmount(Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->getPurchasedAmountBySession($this, $organization);
+    }
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
      * @return \CudiBundle\Entity\Sale\Session
@@ -237,6 +251,16 @@ class Session
     {
         $this->_entityManager = $entityManager;
         return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNumberSaleItems()
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findNumberBySession($this);
     }
 
     /**
@@ -253,5 +277,19 @@ class Session
         }
 
         return true;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        $start = AcademicYear::getStartOfAcademicYear($this->getOpenDate());
+
+        $start->setTime(0, 0);
+
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($start);
     }
 }

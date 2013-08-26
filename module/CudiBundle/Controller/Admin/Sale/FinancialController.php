@@ -24,172 +24,78 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class FinancialController extends \CudiBundle\Component\Controller\ActionController
 {
-    public function salesAction()
+    public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Sale\Session',
-            $this->getParam('page'),
-            array(),
-            array('openDate' => 'DESC')
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $sessions = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->findAllByAcademicYear($academicYear);
+
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
+        $data =  array(
+            'totalTheoreticalRevenue' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Session')
+                ->getTheoreticalRevenueByAcademicYear($academicYear),
+            'totalActualRevenue' => 0,
+            'totalPurchasedAmount' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Session')
+                ->getPurchasedAmountByAcademicYear($academicYear),
+            'totalNumberSold' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findNumberByAcademicYear($academicYear),
+            'uniqueClients' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findUniqueClients($academicYear),
+            'totalOrderedPrice' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                ->getOrderedAmountByAcademicYear($academicYear),
+            'totalNumberOrdered' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                ->getNumberByAcademicYear($academicYear),
+            'totalDeliveredPrice' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Delivery')
+                ->getDeliveredAmountByAcademicYear($academicYear),
+            'totalNumberDelivered' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Delivery')
+                ->getNumberByAcademicYear($academicYear),
         );
 
-        foreach($paginator as $item) {
-            $item->setEntityManager($this->getEntityManager());
+        $organizationsList = array();
+        foreach($organizations as $organization) {
+            $organizationsList[$organization->getId()] = array(
+                'entity' => $organization,
+                'data' => array(
+                    'totalTheoreticalRevenue' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Session')
+                        ->getTheoreticalRevenueByAcademicYear($academicYear, $organization),
+                    'totalPurchasedAmount' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Session')
+                        ->getPurchasedAmountByAcademicYear($academicYear, $organization),
+                ),
+            );
+        }
+
+        foreach($sessions as $session) {
+            $session->setEntityManager($this->getEntityManager());
+
+            $data['totalActualRevenue'] += $session->getActualRevenue();
         }
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'organizationsList' => $organizationsList,
+                'data' => $data,
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
             )
         );
-    }
-
-    public function stockAction()
-    {
-        if (!($period = $this->getActiveStockPeriod()))
-            return new ViewModel();
-
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Period')
-                ->findAllArticlesByPeriod($period),
-            $this->getParam('page')
-        );
-
-        return new ViewModel(
-            array(
-                'period' => $period,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-            )
-        );
-    }
-
-    public function suppliersAction()
-    {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Supplier',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC'
-            )
-        );
-
-        $suppliers = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findAll();
-
-        return new ViewModel(
-            array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'suppliers' => $suppliers,
-            )
-        );
-    }
-
-    public function deliveriesAction()
-    {
-        if (!($supplier = $this->_getSupplier()))
-            return new ViewModel();
-
-        $suppliers = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findAll();
-
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\Delivery',
-            $this->getParam('page'),
-            array(),
-            array(
-                'timestamp' => 'DESC',
-            )
-        );
-
-        return new ViewModel(
-            array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'supplier' => $supplier,
-                'suppliers' => $suppliers,
-            )
-        );
-    }
-
-    public function retoursAction()
-    {
-        if (!($supplier = $this->_getSupplier()))
-            return new ViewModel();
-
-        $suppliers = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findAll();
-
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\Retour',
-            $this->getParam('page'),
-            array(),
-            array(
-                'timestamp' => 'DESC',
-            )
-        );
-
-        return new ViewModel(
-            array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'supplier' => $supplier,
-                'suppliers' => $suppliers,
-            )
-        );
-    }
-
-    private function _getSupplier()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial',
-                array(
-                    'action' => 'suppliers'
-                )
-            );
-
-            return;
-        }
-
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial',
-                array(
-                    'action' => 'suppliers'
-                )
-            );
-
-            return;
-        }
-
-        return $supplier;
     }
 }

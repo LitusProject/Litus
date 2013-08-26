@@ -226,15 +226,69 @@ return array(
             'cudi_admin_sales_financial' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/financial[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/sales/financial[/:action[/:id][/:academicyear]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_financial',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
+            'cudi_admin_sales_financial_sold' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/financial/sold[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
-                        'controller' => 'cudi_admin_sales_financial',
-                        'action'     => 'sales',
+                        'controller' => 'cudi_admin_sales_financial_sold',
+                        'action'     => 'individual',
+                    ),
+                ),
+            ),
+            'cudi_admin_sales_financial_ordered' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/financial/ordered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_financial_ordered',
+                        'action'     => 'individual',
+                    ),
+                ),
+            ),
+            'cudi_admin_sales_financial_delivered' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/financial/delivered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_financial_delivered',
+                        'action'     => 'individual',
                     ),
                 ),
             ),
@@ -762,6 +816,9 @@ return array(
             'cudi_admin_sales_session_restriction' => 'CudiBundle\Controller\Admin\Sale\Session\RestrictionController',
             'cudi_admin_sales_session_openinghour' => 'CudiBundle\Controller\Admin\Sale\Session\OpeningHourController',
             'cudi_admin_sales_financial'           => 'CudiBundle\Controller\Admin\Sale\FinancialController',
+            'cudi_admin_sales_financial_sold'      => 'CudiBundle\Controller\Admin\Sale\Financial\SoldController',
+            'cudi_admin_sales_financial_delivered' => 'CudiBundle\Controller\Admin\Sale\Financial\DeliveredController',
+            'cudi_admin_sales_financial_ordered'   => 'CudiBundle\Controller\Admin\Sale\Financial\OrderedController',
             'cudi_admin_supplier'                  => 'CudiBundle\Controller\Admin\SupplierController',
             'cudi_admin_supplier_user'             => 'CudiBundle\Controller\Admin\Supplier\UserController',
             'cudi_admin_stock'                     => 'CudiBundle\Controller\Admin\StockController',
@@ -791,7 +848,7 @@ return array(
             'cudi_prof_help'                       => 'CudiBundle\Controller\Prof\HelpController',
 
             'cudi_booking'                         => 'CudiBundle\Controller\BookingController',
-            'cudi_opening_hour'                   => 'CudiBundle\Controller\OpeningHourController',
+            'cudi_opening_hour'                    => 'CudiBundle\Controller\OpeningHourController',
         ),
     ),
     'assetic_configuration' => array(

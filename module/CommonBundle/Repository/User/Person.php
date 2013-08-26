@@ -143,6 +143,7 @@ class Person extends EntityRepository
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 
