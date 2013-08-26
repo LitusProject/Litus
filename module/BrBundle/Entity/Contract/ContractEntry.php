@@ -61,14 +61,23 @@ class ContractEntry
     private $contractText;
 
     /**
+     * @var int The position number of the entry in the contract
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $position;
+
+    /**
      * @param \BrBundle\Entity\Contract $contract The contract of which this entry is part.
      * @param \BrBundle\Entity\Product\OrderEntry $orderEntry The order entry corresponding to this contract entry.
+     * @param int $position The position number of the entry in the contract
      */
-    public function __construct(Contract $contract, OrderEntry $orderEntry)
+    public function __construct(Contract $contract, OrderEntry $orderEntry, $position)
     {
         $this->contract = $contract;
         $this->orderEntry = $orderEntry;
-        $this->contractText = $orderEntry->getProduct()->getContractText();
+        $this->setContractText($orderEntry->getProduct()->getContractText());
+        $this->setPosition($position);
     }
 
     /**
@@ -110,6 +119,31 @@ class ContractEntry
     public function setContractText($contractText)
     {
         $this->contractText = $contractText;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Sets the position to the given value.
+     *
+     * @throws \InvalidArgumentException
+     * @param $position int
+     * @return \BrBundle\Entity\Contract\Composition
+     */
+    public function setPosition($position)
+    {
+        if ($position < 0)
+            throw new \InvalidArgumentException("Position must be a positive number");
+
+        $this->position = round($position);
+
         return $this;
     }
 }

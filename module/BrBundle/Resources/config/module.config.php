@@ -126,7 +126,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'br_admin_contract',
-                        'action'     => 'manage',
+                        'action'     => 'view',
                     ),
                 ),
             ),

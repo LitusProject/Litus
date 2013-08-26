@@ -42,6 +42,9 @@
                         {% if hasAccess('br_admin_order', 'delete') %}
                         	<a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getCompany().getName() }} ({{ order.getDescription() }})">Delete</a>
                         {% endif %}
+                        {% if hasAccess('br_admin_contract', 'view') %}
+                            <a href="{{ url('br_admin_contract', {"action": "view", "id": order.getContract().getId()}) }}" class="contract">Contract</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

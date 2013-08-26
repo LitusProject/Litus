@@ -58,6 +58,7 @@ class Contract
      *      cascade={"all"},
      *      orphanRemoval=true
      * )
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $contractEntries;
 

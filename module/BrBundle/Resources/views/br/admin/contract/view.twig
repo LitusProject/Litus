@@ -1,0 +1,71 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/contract/partials/navigation.twig' %}
+
+    <div class="flashmessage success_message full_width entries_composed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The contract order was successfully saved!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width entries_composed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying save the new contract order.</p>
+        </div>
+    </div>
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+
+        <i>Drag and drop your sections in the desired order. All changes will be saved <b>automatically</b>!</i>
+
+        <div class="sortable">
+            <span id="contractId" style="display: none;">{{ contract.getId() }}</span>
+            <ul id="contractComposition">
+                {% for entry in contract.getEntries() %}
+                    <li id="contractComposition_{{ entry.getId() }}" class="sections">
+                        <dl class="dl-horizontal">
+                            <dt>{{ entry.getOrderEntry().getProduct().getName() }}</dt>
+                            <dd>{{ entry.getContractText() }}</dd>
+                        </dl>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#contractComposition').sortable({
+            update : function () {
+                $.post(
+                    '{{ url('br_admin_contract', {"action": "compose"}) }}?format=json',
+                    {
+                        contractId: $('#contractId').text(), sections: $('#contractComposition').sortable('serialize')
+                    },
+                    function(data) {
+                        if (data && 'success' == data.status) {
+                            $('.flashmessage').addClass('hide');
+                            $('.entries_composed_success').removeClass('hide');
+                        } else {
+                            errorCompose();
+                        }
+                    },
+                    'json'
+                ).error(errorCompose);
+            }
+        });
+
+        function errorCompose() {
+            $('.flashmessage').addClass('hide');
+            $('.entries_composed_error').removeClass('hide');
+        }
+    });
+    </script>
+{% endblock %}

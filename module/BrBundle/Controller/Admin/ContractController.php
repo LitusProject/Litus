@@ -79,219 +79,37 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //     $this->_json = new Json();
     // }
 
-    private function _generateFiles($id, $invoiceOnly = false)
+    // private function _generateFiles($id, $invoiceOnly = false)
+    // {
+    //     if (!($contract = $this->_getContract()))
+    //         return new ViewModel();
+
+    //     if ($contract->isDirty()) {
+    //         if (!$invoiceOnly) {
+    //             $generator = new ContractGenerator($this->getEntityManager(), $contract);
+    //             $generator->generate();
+
+    //             $generator = new LetterGenerator($contract);
+    //             $generator->generate();
+    //         }
+
+    //         if (-1 != $contract->getInvoiceNb()) {
+    //             $generator = new InvoiceGenerator($contract);
+    //             $generator->generate();
+    //         }
+
+    //         $contract->setDirty(false);
+    //     }
+    // }
+
+    public function viewAction()
     {
         if (!($contract = $this->_getContract()))
             return new ViewModel();
-
-        if ($contract->isDirty()) {
-            if (!$invoiceOnly) {
-                $generator = new ContractGenerator($this->getEntityManager(), $contract);
-                $generator->generate();
-
-                $generator = new LetterGenerator($contract);
-                $generator->generate();
-            }
-
-            if (-1 != $contract->getInvoiceNb()) {
-                $generator = new InvoiceGenerator($contract);
-                $generator->generate();
-            }
-
-            $contract->setDirty(false);
-        }
-    }
-
-    public function addAction()
-    {
-        $form = new AddForm($this->getEntityManager());
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $company = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Company')
-                    ->findOneById($formData['company']);
-
-                $newContract = new Contract(
-                    $this->getAuthentication()->getPersonObject(),
-                    $company,
-                    $formData['discount'],
-                    $formData['title']
-                );
-
-                $newContract->setContractNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextContractNb()
-                );
-
-                $contractComposition = array();
-                foreach ($formData['sections'] as $id) {
-                    $section = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract\Section')
-                        ->findOneById($id);
-
-                    $contractComposition[] = $section;
-                }
-                $newContract->addSections($contractComposition);
-
-                $this->getEntityManager()->persist($newContract);
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The contract was succesfully created!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'br_admin_contract',
-                    array(
-                        'action' => 'sort',
-                        'id'     => $newContract->getId(),
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
-    }
-
-    public function sortAction()
-    {
-        if (!($contract = $this->_getContract()))
-            return new ViewModel();
-
-        if ($this->getRequest()->isPost()) {
-
-            $this->redirect()->toRoute(
-                'br_admin_contract',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-        }
 
         return new ViewModel(
             array(
                 'contract' => $contract,
-            )
-        );
-    }
-
-    public function manageAction()
-    {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract')
-            ->findAll(),
-            $this->getParam('page')
-        );
-
-        return new ViewModel(
-            array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-            )
-        );
-    }
-
-    public function editAction()
-    {
-        $contractRepository = $this->getEntityManager()->getRepository('BrBundle\Entity\Contract');
-        if (!($contract = $this->_getContract()))
-            return new ViewModel();
-
-        $form = new EditForm($this->getEntityManager(), $contract);
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if($form->isValid()) {
-                $company = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Company')
-                    ->findOneById($formData['company']);
-
-                $contract->setCompany($company)
-                    ->setDiscount($formData['discount'])
-                    ->setTitle($formData['title'])
-                    ->setContractNb($formData['contract_nb']);
-
-                if($contract->isSigned())
-                    $contract->setInvoiceNb($formData['invoice_nb']);
-
-                $contractComposition = array();
-                foreach ($formData['sections'] as $id) {
-                    $section = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract\Section')
-                        ->findOneById($id);
-
-                    $contractComposition[] = $section;
-                }
-
-                $contract->resetComposition()
-                    ->setDirty();
-
-                $this->getEntityManager()->flush();
-
-                $contract->addSections($contractComposition);
-
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The contract was succesfully updated!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'br_admin_contract',
-                    array(
-                        'action' => 'sort',
-                        'id'     => $contract->getId(),
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
-    }
-
-    public function deleteAction()
-    {
-        $this->initAjax();
-
-        if (!($contract = $this->_getContract()))
-            return new ViewModel();
-
-        $this->getEntityManager()->remove($contract);
-        $this->getEntityManager()->flush();
-
-
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -322,27 +140,27 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //     $this->_forward('manage');
     // }
 
-    public function downloadAction()
-    {
-        $this->_generateFiles(
-            $this->getParam('id')
-        );
+    // public function downloadAction()
+    // {
+    //     $this->_generateFiles(
+    //         $this->getParam('id')
+    //     );
 
-        // TODO: ability to download letter, contract and invoice
-        $file = FileUtil::getRealFilename(
-            $this->getEntityManager()
-                ->getRepository('CommonBUndle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/contracts/'
-                . $this->getRequest()->getParam('id') . '/contract.pdf'
-        );
+    //     // TODO: ability to download letter, contract and invoice
+    //     $file = FileUtil::getRealFilename(
+    //         $this->getEntityManager()
+    //             ->getRepository('CommonBUndle\Entity\General\Config')
+    //             ->getConfigValue('br.file_path') . '/contracts/'
+    //             . $this->getRequest()->getParam('id') . '/contract.pdf'
+    //     );
 
-        $this->getResponse()->setHeader(
-            'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
-        );
-        $this->getResponse()->setHeader('Content-Length', filesize($file));
+    //     $this->getResponse()->setHeader(
+    //         'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
+    //     );
+    //     $this->getResponse()->setHeader('Content-Length', filesize($file));
 
-        readfile($file);
-    }
+    //     readfile($file);
+    // }
 
     public function composeAction()
     {
@@ -357,19 +175,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         $contractComposition = array();
         foreach ($sections['contractComposition'] as $position => $id) {
-            $contractComposition[$position] = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract\Section')
+            $contractEntry = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract\ContractEntry')
                 ->findOneById($id);
+
+            $contractEntry->setPosition($position);
         }
-
-        $contract->resetComposition()
-            ->setDirty();
-
-        // Avoiding duplicate key violations
-        $this->getEntityManager()->flush();
-
-        // Saving the new contract composition
-        $contract->addSections($contractComposition);
 
         $this->getEntityManager()->flush();
 
@@ -394,7 +205,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'br_admin_contract',
+                'br_admin_order',
                 array(
                     'action' => 'manage'
                 )
@@ -417,7 +228,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             );
 
             $this->redirect()->toRoute(
-                'br_admin_contract',
+                'br_admin_order',
                 array(
                     'action' => 'manage'
                 )

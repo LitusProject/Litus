@@ -1,20 +1,13 @@
 <header id="controller_header">
-    <div class="title"><span class="contracts">Contracts</span></div>
+    <div class="title"><span class="contract">Contracts</span></div>
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('br_admin_contract', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('br_admin_contract', 'edit') %}
+                <li><a {% if 'edit' == getParam('action') or 'sort' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "edit", "id": getParam('id')}) }}">Edit</a></li>
             {% endif %}
-            {% if hasAccess('br_admin_contract', 'manage') %}
-                <li>
-                	<a
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
-                		href="{{ url('br_admin_contract', {"action": "manage"}) }}"
-                	>
-                		Manage
-                	</a>
-                </li>
+            {% if hasAccess('br_admin_contract', 'view') %}
+                <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "view", "id" : getParam('id')}) }}">View</a></li>
             {% endif %}
         </ul>
     </nav>
