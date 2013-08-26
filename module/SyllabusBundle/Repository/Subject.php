@@ -34,6 +34,7 @@ class Subject extends EntityRepository
             )
             ->setParameter('academicYear', $academicYear->getId())
             ->setParameter('name', strtolower(trim($name)) . '%')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 

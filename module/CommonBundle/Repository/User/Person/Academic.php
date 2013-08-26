@@ -188,6 +188,7 @@ class Academic extends \CommonBundle\Repository\User\Person
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 

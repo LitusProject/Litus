@@ -1,0 +1,100 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/delivered/partials/years.twig' %}
+
+    {% include 'cudi/admin/sale/financial/delivered/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Supplier</h1>
+        <p>Name: <b>{{ supplier.getName() }}</b></p>
+        <p>VAT Number: <b>{{ supplier.getVATNumber() }}</b></p>
+        <p>Phone Number: <b>{{ supplier.getPhoneNumber() }}</b></p>
+
+        {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
+        <p>Number Ordered: <b>{{ supplier.getNumberOrdered(activeAcademicYear) }}</b></p>
+        <p>Total Purchase: <b>&euro; {{ (supplier.getTotalPurchase(activeAcademicYear)/100)|number_format(2) }}</b></p>
+        <br />
+
+        <div id="ordered_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="article">Article</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th width="100px">Date</th>
+                    <th>Article</th>
+                    <th width="120px">Barcode</th>
+                    <th width="70px">Number</th>
+                    <th width="70px">Price</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th width="100px">Date</th>
+                    <th>Article</th>
+                    <th width="120px">Barcode</th>
+                    <th width="70px">Number</th>
+                    <th width="70px">Price</th>
+                </tr>
+
+                {% for item in paginator %}
+                    <tr class="item">
+                        <td>{{ item.getOrder().getDateOrdered().format('d/m/Y H:i') }}</td>
+                        <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
+                        <td>{{ item.getArticle().getBarcode() }}</td>
+                        <td>{{ item.getNumber() }}</td>
+                        <td>&euro; {{ (item.getNumber() * item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('cudi_admin_sales_financial_ordered', 'supplierSearch') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#ordered_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'supplier', 'id': supplier.getId(), 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'supplierSearch', 'id': supplier.getId(), 'academicyear': activeAcademicYear.getCode()}) }}',
+                display: function (data) {
+                    $('#ordered_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#ordered_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.timestamp + '</td>')
+                            .append('<td>' + this.article + '</td>')
+                            .append('<td>' + this.barcode + '</td>')
+                            .append('<td>' + this.number + '</td>')
+                            .append('<td>&euro; ' + this.price + '</td>');
+                    });
+                    $('#ordered_search table').change();
+                },
+                clear: function () {
+                    $('#ordered_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

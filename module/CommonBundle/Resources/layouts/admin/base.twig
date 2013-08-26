@@ -89,8 +89,8 @@
                         {% if hasAccess('sport_admin_run', 'queue') or hasAccess('ticket_admin_event', 'manage') or hasAccess('quiz_admin_quiz', 'manage') %}
                             <li>
                                 <div class="subtitle">
-                                        <b>App's</b><br />
-                                        24h-Run, Tickets &amp; Quiz
+                                        <b>Apps</b><br />
+                                        24h-Run, Quiz &amp; Tickets
                                 </div>
 
                                 <ul
@@ -133,14 +133,14 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('cudi_admin_article', 'manage') or hasAccess('cudi_admin_sales_article', 'manage') or hasAccess('cudi_admin_sales_booking', 'manage') or hasAccess('cudi_admin_sales_session', 'manage') or hasAccess('cudi_admin_sales_session_openinghour', 'sales') or hasAccess('cudi_admin_sales_financial', 'sales') or hasAccess('cudi_admin_stock', 'manage') or hasAccess('cudi_admin_supplier', 'manage') or hasAccess('cudi_admin_prof_action', 'manage') %}
+                        {% if hasAccess('cudi_admin_article', 'manage') or hasAccess('cudi_admin_sales_article', 'manage') or hasAccess('cudi_admin_sales_booking', 'manage') or hasAccess('cudi_admin_sales_session', 'manage') or hasAccess('cudi_admin_sales_session_openinghour', 'sales') or hasAccess('cudi_admin_sales_financial', 'overview') or hasAccess('cudi_admin_stock', 'manage') or hasAccess('cudi_admin_supplier', 'manage') or hasAccess('cudi_admin_prof_action', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>CuDi</b><br />
                                     Articles, Financial &amp; Stock
                                 </div>
                                 <ul
-                                    {% if 'cudi_admin_article' == getParam('controller') or 'cudi_admin_article_subject' == getParam('controller') or 'cudi_admin_article_comment' == getParam('controller') or 'cudi_admin_article_file' == getParam('controller') or 'cudi_admin_sales_article' == getParam('controller') or 'cudi_admin_sales_article_discount' == getParam('controller') or 'cudi_admin_sales_article_barcode' == getParam('controller') or 'cudi_admin_sales_article_restriction' == getParam('controller') or 'cudi_admin_sales_booking' == getParam('controller') or 'cudi_admin_sales_session' == getParam('controller') or 'cudi_admin_sales_financial' == getParam('controller') or 'cudi_admin_supplier' == getParam('controller') or 'cudi_admin_supplier_user' == getParam('controller') or 'cudi_admin_stock' == getParam('controller') or 'cudi_admin_stock_period' == getParam('controller') or 'cudi_admin_stock_order' == getParam('controller') or 'cudi_admin_stock_delivery' == getParam('controller') or 'cudi_admin_stock_retour' == getParam('controller') or 'cudi_admin_prof_action' == getParam('controller') or 'cudi_admin_sales_session_openinghour' == getParam('controller') %}
+                                    {% if 'cudi_admin_article' == getParam('controller') or 'cudi_admin_article_subject' == getParam('controller') or 'cudi_admin_article_comment' == getParam('controller') or 'cudi_admin_article_file' == getParam('controller') or 'cudi_admin_sales_article' == getParam('controller') or 'cudi_admin_sales_article_discount' == getParam('controller') or 'cudi_admin_sales_article_barcode' == getParam('controller') or 'cudi_admin_sales_article_restriction' == getParam('controller') or 'cudi_admin_sales_booking' == getParam('controller') or 'cudi_admin_sales_session' == getParam('controller') or 'cudi_admin_sales_financial' == getParam('controller') or 'cudi_admin_sales_financial_sold' == getParam('controller') or 'cudi_admin_sales_financial_delivered' == getParam('controller') or 'cudi_admin_sales_financial_ordered' == getParam('controller') or 'cudi_admin_sales_financial_split' == getParam('controller') or 'cudi_admin_supplier' == getParam('controller') or 'cudi_admin_supplier_user' == getParam('controller') or 'cudi_admin_stock' == getParam('controller') or 'cudi_admin_stock_period' == getParam('controller') or 'cudi_admin_stock_order' == getParam('controller') or 'cudi_admin_stock_delivery' == getParam('controller') or 'cudi_admin_stock_retour' == getParam('controller') or 'cudi_admin_prof_action' == getParam('controller') or 'cudi_admin_sales_session_openinghour' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
@@ -159,7 +159,7 @@
                                     {% if hasAccess('cudi_admin_sales_session_openinghour', 'manage') %}
                                         <li><a href="{{ url('cudi_admin_sales_session_openinghour') }}">Opening Hours</a></li>
                                     {% endif %}
-                                    {% if hasAccess('cudi_admin_sales_financial', 'sales') %}
+                                    {% if hasAccess('cudi_admin_sales_financial', 'overview') %}
                                         <li><a href="{{ url('cudi_admin_sales_financial') }}">Financial</a></li>
                                     {% endif %}
                                     {% if hasAccess('cudi_admin_stock', 'manage') %}
@@ -289,7 +289,7 @@
                                     {% endif %}
                                 >
                                     {% if hasAccess('banner_admin_banner', 'manage') %}
-                                        <li><a href="{{ url('banner_admin_banner') }}">Banner</a></li>
+                                        <li><a href="{{ url('banner_admin_banner') }}">Banners</a></li>
                                     {% endif %}
                                     {% if hasAccess('calendar_admin_calendar', 'manage') %}
                                         <li><a href="{{ url('calendar_admin_calendar') }}">Calendar</a></li>

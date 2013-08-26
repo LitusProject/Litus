@@ -32,11 +32,6 @@ use CommonBundle\Entity\General\AcademicYear,
 abstract class Article
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager;
-
-    /**
      * @var integer The ID of this article
      *
      * @ORM\Id
@@ -142,6 +137,11 @@ abstract class Article
      * @ORM\Column(type="string")
      */
     private $type;
+    
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager;
 
     /**
      * @var array The possible types of an article

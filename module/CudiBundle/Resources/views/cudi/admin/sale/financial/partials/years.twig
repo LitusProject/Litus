@@ -1,0 +1,9 @@
+<header id="controller_sub_header">
+    <nav id="controller_sub_nav">
+        <ul>
+            {% for academicYear in academicYears %}
+                <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial", {"action": getParam('action'), "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</header>
