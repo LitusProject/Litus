@@ -35,7 +35,6 @@ namespace BrBundle\Controller\Admin;
 // use \Zend\Registry;
 
 use BrBundle\Entity\Contract,
-    BrBundle\Form\Admin\Contract\Add as AddForm,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
@@ -110,6 +109,56 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'contract' => $contract,
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
+
+        $form = new EditForm($this->getEntityManager(), $contract);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                foreach ($contract->getEntries() as $entry)
+                {
+                    $entry->setContractText($formData['entry_' . $entry->getId()]);
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The contract was succesfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_contract',
+                    array(
+                        'action' => 'view',
+                        'id' => $contract->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+
+        return new ViewModel(
+            array(
+                'contract' => $contract,
+                'form' => $form,
             )
         );
     }
@@ -238,5 +287,52 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         return $contract;
+    }
+
+   private function _getEntry()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the entry!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $entry = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract\ContractEntry')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $entry) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No entry with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $entry;
     }
 }

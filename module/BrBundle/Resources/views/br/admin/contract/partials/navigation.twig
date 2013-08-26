@@ -4,10 +4,10 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('br_admin_contract', 'edit') %}
-                <li><a {% if 'edit' == getParam('action') or 'sort' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "edit", "id": getParam('id')}) }}">Edit</a></li>
+                <li><a {% if 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "edit", "id" : contract.getId()}) }}">Edit</a></li>
             {% endif %}
             {% if hasAccess('br_admin_contract', 'view') %}
-                <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "view", "id" : getParam('id')}) }}">View</a></li>
+                <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "view", "id" : contract.getId()}) }}">View</a></li>
             {% endif %}
         </ul>
     </nav>
