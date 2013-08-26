@@ -287,13 +287,19 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('shift.mail_name');
 
-                    $message = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('shift.praesidium_removed_mail');
+                    if (!($language = $volunteer->getPerson()->getLanguage())) {
+                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                            ->findOneByAbbrev('en');
+                    }
 
-                    $subject = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('shift.praesidium_removed_mail_subject');
+                    $mailData = unserialize(
+                        $entityManager
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('shift.praesidium_removed_mail')
+                    );
+
+                    $message = $mailData[$language->getAbbrev()]['content'];
+                    $subject = $mailData[$language->getAbbrev()]['subject'];
 
                     $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
 
