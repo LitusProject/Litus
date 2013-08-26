@@ -54,6 +54,18 @@ class OrderEntry
     private $product;
 
     /**
+     * @var \BrBundle\Entity\Contract\ContractEntry The contract entry accompanying this order entry
+     *
+     * @ORM\OneToOne(
+     *      targetEntity="BrBundle\Entity\Contract\ContractEntry",
+     *      mappedBy="orderEntry",
+     *      cascade={"all"},
+     *      orphanRemoval=true
+     * )
+     */
+    private $contractEntry;
+
+    /**
      * @var int The quantity of this item.
      *
      * @ORM\Column(name="quantity", type="integer")
@@ -94,6 +106,14 @@ class OrderEntry
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * @return \BrBundle\Entity\Contract\ContractEntry
+     */
+    public function getContractEntry()
+    {
+        return $this->contractEntry;
     }
 
     /**

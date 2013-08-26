@@ -14,7 +14,9 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Product\Order,
+use BrBundle\Entity\Contract,
+    BrBundle\Entity\Contract\ContractEntry,
+    BrBundle\Entity\Product\Order,
     BrBundle\Entity\Product\OrderEntry,
     BrBundle\Form\Admin\Order\Add as AddForm,
     BrBundle\Form\Admin\Order\Edit as EditForm,
@@ -63,6 +65,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     $this->getAuthentication()->getPersonObject()
                 );
 
+                $contract = new Contract($order);
+
                 $products = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Product')
                     ->findByAcademicYear($this->getCurrentAcademicYear());
@@ -75,12 +79,16 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     {
                         $anyEntry = true;
                         $orderEntry = new OrderEntry($order, $product, $quantity);
+                        $contractEntry = new ContractEntry($contract, $orderEntry);
                         $this->getEntityManager()->persist($orderEntry);
+                        $this->getEntityManager()->persist($contractEntry);
                     }
                 }
 
+
                 if ($anyEntry) {
                     $this->getEntityManager()->persist($order);
+                    $this->getEntityManager()->persist($contract);
                     $this->getEntityManager()->flush();
                 }
 
@@ -130,10 +138,14 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $order->setCompany($company);
 
-                // Remove old entries
+                // Remove all entries that are no longer needed
                 foreach ($order->getEntries() as $entry)
                 {
-                    $this->getEntityManager()->remove($entry);
+                    $quantity = $formData['product-' . $entry->getProduct()->getId()];
+                    if (0 == $quantity)
+                    {
+                        $this->getEntityManager()->remove($entry);
+                    }
                 }
 
                 $products = $this->getEntityManager()
@@ -143,12 +155,19 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
-                    if ($quantity != 0)
+                    $orderEntry = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Product\OrderEntry')
+                        ->findOneByOrderAndProduct($order, $product);
+                    if (null === $orderEntry && $quantity != 0)
                     {
                         $orderEntry = new OrderEntry($order, $product, $quantity);
+                        $contractEntry = new ContractEntry($contract, $orderEntry);
                         $this->getEntityManager()->persist($orderEntry);
+                        $this->getEntityManager()->persist($contractEntry);
                     }
                 }
+
+                $order->getContract()->updateEntries();
 
                 $this->getEntityManager()->flush();
 

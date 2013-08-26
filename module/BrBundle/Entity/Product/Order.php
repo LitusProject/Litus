@@ -18,7 +18,9 @@ use BrBundle\Entity\Company,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  * An order of several products.
@@ -44,6 +46,18 @@ class Order
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
+
+    /**
+     * @var \BrBundle\Entity\Contract The contract accompanying this order
+     *
+     * @ORM\OneToOne(
+     *      targetEntity="BrBundle\Entity\Contract",
+     *      mappedBy="order",
+     *      cascade={"all"},
+     *      orphanRemoval=true
+     * )
+     */
+    private $contract;
 
     /**
      * @var \BrBundle\Entity\Product\OrderEntry The entries in this order
@@ -79,6 +93,7 @@ class Order
         $this->setCompany($company);
         $this->creationTime = new DateTime();
         $this->creationPerson = $creationPerson;
+        $this->orderEntries = new ArrayCollection();
     }
 
     /**
@@ -128,6 +143,14 @@ class Order
     public function getEntries()
     {
         return $this->orderEntries->toArray();
+    }
+
+    /**
+     * @return \BrBundle\Entity\Contract
+     */
+    public function getContract()
+    {
+        return $this->contract;
     }
 
     /**
