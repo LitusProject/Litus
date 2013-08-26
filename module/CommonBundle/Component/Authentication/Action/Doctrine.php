@@ -74,13 +74,19 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             $result->getPersonObject()
                 ->setCode($code);
 
-            $email = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.account_deactivated_mail');
+            if (!($language = $result->getPersonObject()->getLanguage())) {
+                $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                    ->findOneByAbbrev('en');
+            }
 
-            $subject = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.account_deactivated_subject');
+            $mailData = unserialize(
+                $entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue($messageConfig)
+            );
+
+            $message = $mailData[$language->getAbbrev()]['content'];
+            $subject = $mailData[$language->getAbbrev()]['subject'];
 
             $mailaddress = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -91,7 +97,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->getConfigValue('system_mail_name');
 
             $mail = new Message();
-            $mail->setBody(str_replace('{{ code }}', $code->getCode() , $email))
+            $mail->setBody(str_replace('{{ code }}', $code->getCode() , $message))
                 ->setFrom($mailaddress, $mailname)
                 ->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
                 ->setSubject($subject);
