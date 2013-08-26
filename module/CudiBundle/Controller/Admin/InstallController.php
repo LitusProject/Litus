@@ -477,7 +477,16 @@ VTK Cudi
                         'delete', 'manage'
                     ),
                     'cudi_admin_sales_financial' => array(
-                        'deliveries', 'retours', 'sales', 'stock', 'suppliers'
+                        'overview'
+                    ),
+                    'cudi_admin_sales_financial_delivered' => array(
+                        'article', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'supplierSearch', 'supplier', 'suppliers'
+                    ),
+                    'cudi_admin_sales_financial_ordered' => array(
+                        'individualSearch', 'individual', 'orderSearch', 'order', 'orders', 'ordersSearch', 'supplierSearch', 'supplier', 'suppliers'
+                    ),
+                    'cudi_admin_sales_financial_sold' => array(
+                        'article', 'articleSearch', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'sessionSearch', 'session', 'sessions', 'supplierSearch', 'supplier', 'suppliers'
                     ),
                     'cudi_admin_sales_session' => array(
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
