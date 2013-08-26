@@ -118,6 +118,21 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'cudi_admin_sales_financial_sold' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'cudi_admin_sales_financial_ordered' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'cudi_admin_sales_financial_delivered' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
         'cudi_admin_supplier' => array(
             '@common_jquery',
             '@admin_css',

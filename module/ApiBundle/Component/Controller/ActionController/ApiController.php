@@ -17,6 +17,10 @@ namespace ApiBundle\Component\Controller\ActionController;
 use ApiBundle\Component\Controller\Request\Exception\NoPostRequestException,
     ApiBundle\Component\Controller\Request\Exception\NoKeyException,
     ApiBundle\Component\Controller\Request\Exception\InvalidKeyException,
+    CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    DateInterval,
+    DateTime,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -74,5 +78,56 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return null;
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    protected function getCurrentAcademicYear($organization = false)
+    {
+        if (!$organization)
+            return parent::getCurrentAcademicYear();
+
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
+
+        $now = new DateTime();
+        $start = new DateTime(
+            str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.prof_start_academic_year')
+            )
+        );
+        $start->add(new DateInterval('P1Y'));
+
+        if ($now > $start) {
+            $startAcademicYear->add(new DateInterval('P1Y2M'));
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
+        }
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        if (null === $academicYear) {
+            $organizationStart = str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
+            );
+            $organizationStart = new DateTime($organizationStart);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
+            $this->getEntityManager()->persist($academicYear);
+            $this->getEntityManager()->flush();
+        }
+
+        return $academicYear;
     }
 }

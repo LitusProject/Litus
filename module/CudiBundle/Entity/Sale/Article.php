@@ -15,6 +15,8 @@
 namespace CudiBundle\Entity\Sale;
 
 use CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sale\Article\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
@@ -144,6 +146,11 @@ class Article
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Article\Restriction", mappedBy="article", cascade={"persist", "remove"})
      */
     private $restrictions;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
 
     /**
      * @param \CudiBundle\Entity\Article $mainArticle The main article of this sale article
@@ -533,5 +540,51 @@ class Article
             $article->addBarcode(new Barcode($article, $barcode->getBarcode()));
 
         return $article;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return \CudiBundle\Entity\Sale\Session
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findNumberByArticleAndAcademicYear($this, $academicYear, $organization);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return integer
+     */
+    public function getNumberDelivered(AcademicYear $academicYear)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Stock\Delivery')
+            ->findNumberByArticleAndAcademicYear($this, $academicYear);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findTotalRevenueByArticleAndAcademicYear($this, $academicYear, $organization);
     }
 }

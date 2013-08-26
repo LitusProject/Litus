@@ -61,7 +61,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
                 )
             );
         }
-        $startAcademicYear->setTime(0, 0);
+        $start->setTime(0, 0);
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
