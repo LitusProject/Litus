@@ -3,8 +3,8 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('br_admin_contract', 'edit') %}
-                <li><a {% if 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "edit", "id" : contract.getId()}) }}">Edit</a></li>
+            {% if hasAccess('br_admin_contract', 'edit') and not contract.isSigned() %}
+                <li id="edit_link"><a {% if 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "edit", "id" : contract.getId()}) }}">Edit</a></li>
             {% endif %}
             {% if hasAccess('br_admin_contract', 'view') %}
                 <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "view", "id" : contract.getId()}) }}">View</a></li>

@@ -38,7 +38,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form {
 
         $field = new Submit('Save');
         $field->setValue('Save')
-            ->setAttribute('class', 'contracts_edit');
+            ->setAttribute('class', 'contract_edit');
         $this->add($field);
     }
 

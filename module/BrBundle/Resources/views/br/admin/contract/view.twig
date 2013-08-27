@@ -12,7 +12,19 @@
     <div class="flashmessage error_message full_width entries_composed_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying save the new contract order.</p>
+            <p>An error occurred while trying to save the new contract order.</p>
+        </div>
+    </div>
+    <div class="flashmessage success_message full_width contract_signed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The contract was successfully signed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width contract_signed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to sign the contract.</p>
         </div>
     </div>
 
@@ -36,12 +48,33 @@
             </ul>
         </div>
 
+        <br/>
+        <br/>
+        <i><b>Warning: </b> when a contract it signed, it can no longer be edited!</i><br/>
+        {% if not contract.isSigned() %}
+            <input type="submit" id="sign" name="Sign" class="contract_edit" value="Sign"/>
+        {% endif %}
+        <input type="submit" id="download" name="Download" class="contract" value="Download"/>
+
     </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
     $(document).ready(function() {
+        $('#sign').click(function() {
+            $.post('{{ url('br_admin_contract', {"action" : "sign", "id" : contract.getId()})}}', function(data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.contract_signed_success').removeClass('hide');
+                    $('#sign').remove();
+                    $('#edit_link').remove();
+                } else {
+                    errorSign();
+                }
+            }, 'json').error(errorSign);
+        });
+
         $('#contractComposition').sortable({
             update : function () {
                 $.post(
@@ -65,6 +98,11 @@
         function errorCompose() {
             $('.flashmessage').addClass('hide');
             $('.entries_composed_error').removeClass('hide');
+        }
+
+        function errorSign() {
+            $('.flashmessage').addClass('hide');
+            $('.contract_signed_error').removeClass('hide');
         }
     });
     </script>

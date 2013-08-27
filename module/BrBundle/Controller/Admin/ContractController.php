@@ -115,7 +115,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($contract = $this->_getContract()))
+        if (!($contract = $this->_getContract(false)))
             return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $contract);
@@ -163,31 +163,26 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    // public function signAction()
-    // {
-    //     if (0 == $this->getRequest()->getParam('id'))
-    //         throw new \InvalidArgumentException('need a valid contract id');
+    public function signAction()
+    {
+        $this->initAjax();
 
-    //     $contractRepository = $this->getEntityManager()
-    //         ->getRepository('\Litus\Entity\Br\Contract');
+        if (!($contract = $this->_getContract(false)))
+            return new ViewModel();
 
-    //     $contract = $contractRepository->find(
-    //         $this->getRequest()->getParam('id')
-    //     );
+        // TODO : create invoice
 
-    //     if($contract->isSigned())
-    //         throw new \InvalidArgumentException('Contract "' . $contract->getTitle() . '" has already been signed');
+        // Flush here, otherwise we might create two contracts with the same invoiceNb
+        $this->getEntityManager()->flush();
 
-    //     $dirty = $contract->isDirty();
-
-    //     $contract->setDirty()
-    //         ->setInvoiceNb($contractRepository->findNextInvoiceNb());
-
-    //     // Flush here, otherwise we might create two contracts with the same invoiceNb
-    //     $this->_flush();
-
-    //     $this->_forward('manage');
-    // }
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                ),
+            )
+        );
+    }
 
     // public function downloadAction()
     // {
@@ -242,7 +237,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-   private function _getContract()
+   private function _getContract($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -286,53 +281,25 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
+        if ($contract->isSigned() && !$allowSigned) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'The given contract has been signed! Signed contracts cannot be modified.'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
         return $contract;
-    }
-
-   private function _getEntry()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the entry!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_order',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
-            return;
-        }
-
-        $entry = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract\ContractEntry')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $entry) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No entry with the given ID was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_order',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
-            return;
-        }
-
-        return $entry;
     }
 }

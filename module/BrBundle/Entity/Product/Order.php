@@ -154,6 +154,15 @@ class Order
     }
 
     /**
+     * @return \BrBundle\Entity\Invoice
+     */
+    public function getInvoice()
+    {
+        // TODO implement invoices
+        return NULL;
+    }
+
+    /**
      * @return string
      */
     public function getDescription()

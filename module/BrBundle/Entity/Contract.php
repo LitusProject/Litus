@@ -137,4 +137,12 @@ class Contract
     {
         return $this->contractEntries->toArray();
     }
+
+    /**
+     * @return bool
+     */
+    public function isSigned()
+    {
+        return (NULL !== $this->getOrder()->getInvoice());
+    }
 }
