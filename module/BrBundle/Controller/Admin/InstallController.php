@@ -94,6 +94,11 @@ The VTK Corporate Team',
                     'value'       => 'Contract Footer',
                     'description' => 'The footer used in contracts',
                 ),
+                array(
+                    'key'         => 'br.contract_name',
+                    'value'       => 'VTK Bedrijvenrelaties',
+                    'description' => 'The union name used in contracts',
+                ),
             )
         );
     }

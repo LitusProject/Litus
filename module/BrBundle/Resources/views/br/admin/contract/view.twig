@@ -50,11 +50,11 @@
 
         <br/>
         <br/>
-        <i><b>Warning: </b> when a contract it signed, it can no longer be edited!</i><br/>
+        <i><b>Warning: </b> when a contract it signed, the contract and its order can no longer be edited!</i><br/>
         {% if not contract.isSigned() %}
             <input type="submit" id="sign" name="Sign" class="contract_edit" value="Sign"/>
         {% endif %}
-        <input type="submit" id="download" name="Download" class="contract" value="Download"/>
+        <form action="{{ url('br_admin_contract', {"action" : "download", "id" : contract.getId()})}}"><input type="submit" class="contract" value="Download"/></form>
 
     </div>
 {% endblock %}

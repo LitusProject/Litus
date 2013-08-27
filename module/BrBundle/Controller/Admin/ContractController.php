@@ -40,6 +40,8 @@ use BrBundle\Entity\Contract,
     BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
     BrBundle\Component\Document\Generator\Pdf\Letter as LetterGenerator,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File as FileUtil,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -78,28 +80,28 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //     $this->_json = new Json();
     // }
 
-    // private function _generateFiles($id, $invoiceOnly = false)
-    // {
-    //     if (!($contract = $this->_getContract()))
-    //         return new ViewModel();
+    private function _generateFiles($id, $invoiceOnly = false)
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
-    //     if ($contract->isDirty()) {
-    //         if (!$invoiceOnly) {
-    //             $generator = new ContractGenerator($this->getEntityManager(), $contract);
-    //             $generator->generate();
+        if ($contract->isDirty()) {
+            if (!$invoiceOnly) {
+                $generator = new ContractGenerator($this->getEntityManager(), $contract);
+                $generator->generate();
 
-    //             $generator = new LetterGenerator($contract);
-    //             $generator->generate();
-    //         }
+                $generator = new LetterGenerator($contract);
+                $generator->generate();
+            }
 
-    //         if (-1 != $contract->getInvoiceNb()) {
-    //             $generator = new InvoiceGenerator($contract);
-    //             $generator->generate();
-    //         }
+            if (-1 != $contract->getInvoiceNb()) {
+                $generator = new InvoiceGenerator($contract);
+                $generator->generate();
+            }
 
-    //         $contract->setDirty(false);
-    //     }
-    // }
+            $contract->setDirty(false);
+        }
+    }
 
     public function viewAction()
     {
@@ -184,27 +186,36 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    // public function downloadAction()
-    // {
-    //     $this->_generateFiles(
-    //         $this->getParam('id')
-    //     );
+    public function downloadAction()
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
-    //     // TODO: ability to download letter, contract and invoice
-    //     $file = FileUtil::getRealFilename(
-    //         $this->getEntityManager()
-    //             ->getRepository('CommonBUndle\Entity\General\Config')
-    //             ->getConfigValue('br.file_path') . '/contracts/'
-    //             . $this->getRequest()->getParam('id') . '/contract.pdf'
-    //     );
+        $generator = new ContractGenerator($this->getEntityManager(), $contract);
+        $generator->generate();
 
-    //     $this->getResponse()->setHeader(
-    //         'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
-    //     );
-    //     $this->getResponse()->setHeader('Content-Length', filesize($file));
+        $file = FileUtil::getRealFilename(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.file_path') . '/contracts/'
+                . $this->getParam('id') . '/contract.pdf'
+        );
+        $fileHandler = fopen($file, 'r');
+        $content = fread($fileHandler, filesize($file));
 
-    //     readfile($file);
-    // }
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contract.pdf"',
+            'Content-Type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $content,
+            )
+        );
+    }
 
     public function composeAction()
     {

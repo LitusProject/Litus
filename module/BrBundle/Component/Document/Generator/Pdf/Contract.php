@@ -39,49 +39,53 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
      */
     public function __construct(EntityManager $entityManager, ContractEntity $contract)
     {
-
         parent::__construct(
             $entityManager,
-            $entityManager->getRepository('CommonBUndle\Entity\General\Config')
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.pdf_generator_path') . '/contract/contract.xsl',
-            $entityManager->getRepository('CommonBUndle\Entity\General\Config')
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.file_path') . '/contracts/'
                 . $contract->getId() . '/contract.pdf'
         );
         $this->_contract = $contract;
     }
 
-    protected function generateXml(TmpFile $xmlFile)
+    protected function generateXml(TmpFile $tmpFile)
     {
-        $xml = new XmlGenerator($xmlFile);
+        $xml = new XmlGenerator($tmpFile);
 
-        $configs = $this->getConfigRepository();
+        $configs = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
         $title = $this->_contract->getTitle();
         /** @var \Litus\Entity\Users\People\Company $company  */
-        $company = $this->_contract->getCompany();
-        $date = $this->_contract->getDate()->format('j F Y');
-        $ourContactPerson = $this->_contract->getAuthor();
-        $ourContactPerson = $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName();
-        $entries = $this->_contract->getComposition();
+        $company = $this->_contract->getOrder()->getCompany();
+        $date = $this->_contract->getOrder()->getCreationTime()->format('j F Y');
+        $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getFullName();
+        $entries = $this->_contract->getEntries();
 
-        $unionNameShort = $configs->getConfigValue('union_short_name');
         $unionName = $configs->getConfigValue('union_name');
+        $unionNameShort = $configs->getConfigValue('union_short_name');
         $unionAddress = $configs->getConfigValue('union_address');
 
         $location = $configs->getConfigValue('union_city');
 
-        $brName = $configs->getConfigValue('union_name'); // TODO: this was br_name
+        $brName = $configs->getConfigValue('br.contract_name');
         $logo = $configs->getConfigValue('union_logo');
 
-        // $sub_entries = $configs->getConfigValue('sub_entries'); // TODO
+        // $sub_entries = $configs->getConfigValue('br.contract.sub_entries'); // TODO ???
         $footer = $configs->getConfigValue('br.contract_footer');
 
         // Generate the xml
 
-        $entry_s = array();
+        $entry_array = array();
         foreach($entries as $entry) {
-            $entry_s[] = $entry->getSection()->getContent();
+            $entry_array[] = new XmlObject(
+                'entry',
+                null,
+                $entry->getContractText()
+            );
         }
 
         $xml->append(
@@ -119,15 +123,15 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
                         // params of <company>
                         array(
-                            // 'contact_person' => $company->getFirstName() . ' ' . $company->getLastName()
-                            'contract_person' => 'FirstName LastName' // TODO
+                            // TODO: don't just use first contact on the list
+                            // 'contact_person' => $company->getContacts()[0]->getFullName()
+                            'contact_person' => 'Contract Contact'
                         ),
 
                         // children of <company>
                         array(
                             new XmlObject('name', null, $company->getName()),
-                            // new XmlObject('address', null, self::_formatAddress($company->getAddress()))
-                            new XmlObject('address', null, 'Company Address') // TODO
+                            new XmlObject('address', null, self::formatAddress($company->getAddress()->getStreet() . ' ' . $company->getAddress()->getNumber() . ', ' . $company->getAddress()->getPostal() . ' ' . $company->getAddress()->getCity()))
                         )
                     ),
 
@@ -140,12 +144,11 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         // children of <union_address>
                         array(
                             new XmlObject('name', null, $unionName),
-                            // new XmlObject('address', null, self::_formatAddress($unionAddress))
-                            new XmlObject('address', null, 'Union Address') // TODO
+                            new XmlObject('address', null, self::formatAddress($unionAddress))
                         )
                     ),
 
-                    new XmlObject('entries', null, $entry_s),
+                    new XmlObject('entries', null, $entry_array),
 
                     // new XmlObject('sub_entries', null, $sub_entries), // TODO
 
