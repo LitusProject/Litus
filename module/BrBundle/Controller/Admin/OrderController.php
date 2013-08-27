@@ -120,7 +120,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder(false)))
             return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $order);
@@ -214,7 +214,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getOrder()
+    private function _getOrder($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -245,6 +245,25 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     FlashMessage::ERROR,
                     'Error',
                     'No order with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        if ($order->getContract()->isSigned() && !$allowSigned) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'The given order\'s contract has been signed! Signed orders cannot be modified.'
                 )
             );
 
