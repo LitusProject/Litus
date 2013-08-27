@@ -99,6 +99,11 @@ The VTK Corporate Team',
                     'value'       => 'VTK Bedrijvenrelaties',
                     'description' => 'The union name used in contracts',
                 ),
+                array(
+                    'key'         => 'br.contract_below_entries',
+                    'value'       => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, bijgevoegd bij dit contract.',
+                    'description' => 'The text just below the entries',
+                ),
             )
         );
     }

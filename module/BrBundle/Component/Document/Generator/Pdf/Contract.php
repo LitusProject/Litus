@@ -74,7 +74,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $brName = $configs->getConfigValue('br.contract_name');
         $logo = $configs->getConfigValue('union_logo');
 
-        // $sub_entries = $configs->getConfigValue('br.contract.sub_entries'); // TODO ???
+        $sub_entries = $configs->getConfigValue('br.contract_below_entries');
         $footer = $configs->getConfigValue('br.contract_footer');
 
         // Generate the xml
@@ -150,7 +150,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
                     new XmlObject('entries', null, $entry_array),
 
-                    // new XmlObject('sub_entries', null, $sub_entries), // TODO
+                    new XmlObject('sub_entries', null, $sub_entries),
 
                     new XmlObject('footer', null, $footer)
                 )
