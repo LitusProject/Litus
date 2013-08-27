@@ -33,7 +33,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'quiz' => $quiz,
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }

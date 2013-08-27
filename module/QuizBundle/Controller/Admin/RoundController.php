@@ -33,7 +33,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'quiz' => $quiz,
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
