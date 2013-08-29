@@ -20,7 +20,7 @@
 
     <div id="controller_action">
         <h1>{{ quiz.getName() }}: Teams</h1>
-        <table class="manage full_width">
+        <table class="manage">
             <thead>
                 <tr>
                     <th width="50px">#</th>
@@ -69,6 +69,21 @@
         </div>
     </div>
 
+    {% if hasAccess('quiz_admin_round', 'manage') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Manage rounds</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the rounds!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()}) }}">&rarr; Manage rounds</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}
