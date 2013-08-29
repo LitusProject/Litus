@@ -172,7 +172,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'company',
+                    'name'     => 'contact',
                     'required' => true,
                 )
             )
