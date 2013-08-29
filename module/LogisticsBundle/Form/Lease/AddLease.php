@@ -17,6 +17,7 @@ namespace LogisticsBundle\Form\Lease;
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+    LogisticsBundle\Component\Validator\LeaseValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -91,6 +92,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'useChecksum' => false,
                             ),
                         ),
+                        new LeaseValidator($this->_entityManager),
                     ),
                 )
             )
