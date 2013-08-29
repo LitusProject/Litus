@@ -241,8 +241,6 @@ VTK'
                     'value'       => '1',
                     'description' => 'The Piwik ID of the site that should be queried',
                 ),
-<<<<<<< HEAD
-<<<<<<< HEAD
                 array(
                     'key'         => 'common.ldap_people_ou',
                     'value'       => 'ou=people,dc=ldap,dc=vtk,dc=be',
@@ -279,9 +277,6 @@ VTK'
                     'value'       => '@student.kuleuven.be',
                     'description' => 'The domain for the student email',
                 ),
-=======
->>>>>>> master
-=======
                 array(
                     'key'         => 'common.robots',
                     'value'       => '#
@@ -295,11 +290,9 @@ Disallow: /*/run/group/getName/
 Disallow: /*/career/company/search/
 
 # We do not want them to access our admin
-Disallow: /admin/*
-',
+Disallow: /admin/*',
                     'description' => 'The robots.txt content',
                 ),
->>>>>>> master
             )
         );
     }
