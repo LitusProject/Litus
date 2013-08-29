@@ -69,9 +69,9 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         $unionName = $configs->getConfigValue('union_name');
         $unionNameShort = $configs->getConfigValue('union_short_name');
-        $unionAddress = $configs->getConfigValue('union_address');
+        $unionAddressArray = unserialize($configs->getConfigValue('union_address_array'));
 
-        $location = $configs->getConfigValue('union_city');
+        $location = $unionAddressArray['city'];
 
         $brName = $configs->getConfigValue('br.contract_name');
         $logo = $configs->getConfigValue('union_logo');
@@ -129,7 +129,42 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         // children of <company>
                         array(
                             new XmlObject('name', null, $company->getName()),
-                            new XmlObject('address', null, self::formatAddress($company->getAddress()->getStreet() . ' ' . $company->getAddress()->getNumber() . ', ' . $company->getAddress()->getPostal() . ' ' . $company->getAddress()->getCity()))
+                            new XmlObject(
+                                'address',
+                                null,
+                                array(
+                                    new XmlObject(
+                                        'street',
+                                        null,
+                                        $company->getAddress()->getStreet()
+                                    ),
+                                    new XmlObject(
+                                        'number',
+                                        null,
+                                        $company->getAddress()->getNumber()
+                                    ),
+                                    new XmlObject(
+                                        'mailbox',
+                                        null,
+                                        $company->getAddress()->getMailbox()
+                                    ),
+                                    new XmlObject(
+                                        'postal',
+                                        null,
+                                        $company->getAddress()->getPostal()
+                                    ),
+                                    new XmlObject(
+                                        'city',
+                                        null,
+                                        $company->getAddress()->getCity()
+                                    ),
+                                    new XmlObject(
+                                        'country',
+                                        null,
+                                        $company->getAddress()->getCountry()
+                                    )
+                                )
+                            )
                         )
                     ),
 
@@ -142,8 +177,42 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         // children of <union_address>
                         array(
                             new XmlObject('name', null, $unionName),
-                            new XmlObject('address', null, self::formatAddress($unionAddress))
-                        )
+                            new XmlObject(
+                                'address',
+                                null,
+                                array(
+                                    new XmlObject(
+                                        'street',
+                                        null,
+                                        $unionAddressArray['street']
+                                    ),
+                                    new XmlObject(
+                                        'number',
+                                        null,
+                                        $unionAddressArray['number']
+                                    ),
+                                    new XmlObject(
+                                        'mailbox',
+                                        null,
+                                        $unionAddressArray['mailbox']
+                                    ),
+                                    new XmlObject(
+                                        'postal',
+                                        null,
+                                        $unionAddressArray['postal']
+                                    ),
+                                    new XmlObject(
+                                        'city',
+                                        null,
+                                        $unionAddressArray['city']
+                                    ),
+                                    new XmlObject(
+                                        'country',
+                                        null,
+                                        $unionAddressArray['country']
+                                    )
+                                )
+                            )                        )
                     ),
 
                     new XmlObject('entries', null, $entry_s),

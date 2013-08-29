@@ -101,9 +101,18 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The address of this union',
                 ),
                 array(
-                    'key'         => 'union_city',
-                    'value'       => 'Heverlee',
-                    'description' => 'The city where this union is located',
+                    'key'         => 'union_address_array',
+                    'value'       => serialize(
+                        array(
+                            'street'  => 'Studentenwijk Arenberg',
+                            'number'  => '6',
+                            'mailbox' => '0',
+                            'postal'  => '3001',
+                            'city'    => 'Heverlee',
+                            'country' => 'België',
+                        )
+                    ),
+                    'description' => 'The address of this union in an array',
                 ),
                 array(
                     'key'         => 'union_url',
