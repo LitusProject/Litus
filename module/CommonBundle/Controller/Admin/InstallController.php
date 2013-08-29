@@ -277,6 +277,23 @@ VTK'
                     'value'       => '@student.kuleuven.be',
                     'description' => 'The domain for the student email',
                 ),
+                array(
+                    'key'         => 'common.robots',
+                    'value'       => '#
+# Robots File
+#
+
+# Taking care of AJAX locations
+User-agent: *
+Disallow: /*/calendar/month/
+Disallow: /*/run/group/getName/
+Disallow: /*/career/company/search/
+
+# We do not want them to access our admin
+Disallow: /admin/*
+',
+                    'description' => 'The robots.txt content',
+                ),
             )
         );
     }
@@ -326,6 +343,9 @@ VTK'
                         'login', 'logout', 'shibboleth'
                     ),
                     'common_index' => array(
+                        'index'
+                    ),
+                    'common_robots' => array(
                         'index'
                     ),
 
@@ -420,6 +440,9 @@ VTK'
                         ),
                         'common_account' => array(
                             'activate'
+                        ),
+                        'common_robots' => array(
+                            'index'
                         ),
                     ),
                 ),
