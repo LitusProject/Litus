@@ -164,9 +164,6 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
-
         $shibbolethUrl .= '%3Fsource=site';
 
         if (isset($_SERVER['REQUEST_URI']) && isset($_SERVER['HTTP_HOST']))
