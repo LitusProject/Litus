@@ -179,6 +179,25 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
+        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
         return $quiz;
     }
 
@@ -229,6 +248,24 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
+        if (!$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
         return $round;
     }
 
@@ -271,6 +308,25 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
             $this->redirect()->toRoute(
                 'quiz_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        if (!$team->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
                 array(
                     'action' => 'manage'
                 )

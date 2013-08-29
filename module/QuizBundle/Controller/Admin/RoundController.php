@@ -33,7 +33,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'quiz' => $quiz,
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -204,6 +204,25 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
+        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
         return $quiz;
     }
 
@@ -250,6 +269,25 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
                 array(
                     'action' => 'manage',
                     'quizid' => $this->getParam('quizid'),
+                )
+            );
+
+            return;
+        }
+
+        if (!$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
                 )
             );
 
