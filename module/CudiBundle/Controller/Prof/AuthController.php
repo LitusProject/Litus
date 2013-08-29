@@ -124,19 +124,21 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null === $code->getRedirect()) {
-                            $this->redirect()->toRoute(
-                                'cudi_prof_index'
-                            );
-                        } else {
+                        if (null !== $code->getRedirect()) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
+
+                            return new ViewModel();
                         }
                     }
                 }
             }
         }
+
+        $this->redirect()->toRoute(
+            'cudi_prof_index'
+        );
 
         return new ViewModel();
     }
