@@ -75,6 +75,9 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
+        if (isset($_SERVER['REQUEST_URI']) && isset($_SERVER['HTTP_HOST']))
+            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
         return $shibbolethUrl . '?source=logistics';
     }
 }
