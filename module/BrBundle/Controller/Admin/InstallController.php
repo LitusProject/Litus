@@ -99,7 +99,7 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                 ),
                 array(
                     'key'         => 'br.contract_name',
-                    'value'       => 'VTK Bedrijvenrelaties',
+                    'value'       => 'Vlaamse Technische Kring Bedrijvenrelaties',
                     'description' => 'The union name used in contracts',
                 ),
                 array(

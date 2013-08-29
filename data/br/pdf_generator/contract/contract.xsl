@@ -45,8 +45,8 @@
 	                </fo:block>
 	            </fo:static-content>
 	            <fo:flow flow-name="xsl-region-body">
-	                <fo:block margin-left="20px" margin-right="20px">
-	                    <fo:table table-layout="fixed" width="100%" margin-left="20px">
+	                <fo:block margin-left="20px" margin-right="5px">
+	                    <fo:table table-layout="fixed" width="100%" margin-left="5px">
 	                        <fo:table-column column-width="50%"/>
 	                        <fo:table-column column-width="50%"/>
 	
