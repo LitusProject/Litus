@@ -28,4 +28,18 @@ class Lease extends EntityRepository
                 ->getQuery()
                 ->execute();
     }
+
+    /**
+     * Finds all leases that have not yet been returned
+     * 
+     * @return array
+     */
+    public function findAllUnreturned()
+    {
+        return $this->createQueryBuilder('l')
+                ->select()
+                ->where('l.returned = false')
+                ->getQuery()
+                ->execute();
+    }
 }

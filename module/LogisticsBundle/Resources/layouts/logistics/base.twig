@@ -20,6 +20,11 @@
                         <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                     </li>
                 {% endif %}
+                {% if hasAccess('logistics_lease', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'logistics_lease' == getParam('controller') %}class="active"{% endif %}>
+                        <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>
+                    </li>
+                {% endif %}
             </ul>
             <ul class="nav pull-right lang-nav visible-desktop">
                 <li class="dropdown" id="langDropdown">

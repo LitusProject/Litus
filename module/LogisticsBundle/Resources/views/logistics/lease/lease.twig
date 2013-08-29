@@ -2,5 +2,8 @@
 {% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
+    <div class="page-title">
+        <h1>{{ translate('Lease') }}</h1>
+    </div>
     {{ forms.renderForm(form) }}
 {% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>{{ translate('Item name') }}</th>
+                <th>{{ translate('Barcode') }}</th>
+                <th>{{ translate('Leased to') }}</th>
+                <th>{{ translate('Leased on') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lease in leases %}
+                <tr>
+                    <td>{{ lease.getItem().getName() }}</td>
+                    <td>{{ lease.getItem().getBarcode() }}</td>
+                    <td>{{ lease.getLeasedTo() }}</td>
+                    <td>{{ lease.getLeasedDate()|date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -20,7 +20,15 @@ class LeaseController extends LogisticsController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $leases = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                ->findAllUnreturned();
+
+        return new ViewModel(
+            array(
+                'leases'=>$leases,
+            )
+        );
     }
 
     public function leaseAction()
@@ -54,7 +62,13 @@ class LeaseController extends LogisticsController
                     )
                 );
 
-                $this->redirect()->toRoute('logistics_lease');
+                $this->redirect()->toRoute(
+                    'logistics_lease',
+                    array(
+                        'action'=> 'show',
+                        'id'=>$lease->getId(),
+                    )
+                );
 
                 return new ViewModel;
             }
@@ -65,5 +79,52 @@ class LeaseController extends LogisticsController
                 'form'=> $form,
             )
         );
+    }
+
+    public function showAction()
+    {
+        if(!($lease = $this->_getLease()))
+            return new ViewModel;
+    }
+
+    /**
+     *
+     * @return null|\LogisticsBundle\Entity\Lease\Lease
+     */
+    private function _getLease()
+    {
+        if ($this->getParam('id') === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the lease!'
+                )
+            );
+
+            $this->redirect()->toRoute('logistics_lease');
+
+            return;
+        }
+
+        $lease = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                ->find($this->getParam('id'));
+
+        if ($lease === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No lease with the given id was found!'
+                )
+            );
+
+            $this->redirect()->toRoute('logistics_lease');
+
+            return;
+        }
+
+        return $lease;
     }
 }
