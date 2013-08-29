@@ -119,19 +119,21 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null === $code->getRedirect()) {
-                            $this->redirect()->toRoute(
-                                'logistics_index'
-                            );
-                        } else {
+                        if (null !== $code->getRedirect()) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
+
+                            return new ViewModel();
                         }
                     }
                 }
             }
         }
+
+        $this->redirect()->toRoute(
+            'logistics_index'
+        );
 
         return new ViewModel();
     }
