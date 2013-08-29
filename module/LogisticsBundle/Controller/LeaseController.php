@@ -32,15 +32,16 @@ class LeaseController extends LogisticsController
             $form->setData($formData);
 
             if($form->isValid()) {
+                $data = $form->getFormData($formData);
                 $item = $this->getEntityManager()
-                        ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-                        ->findOneByBarcode($form['barcode']);
+                        ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                        ->findOneByBarcode($data['barcode']);
                 $lease = new Lease(
                     $item,
                     new DateTime,
                     $this->getAuthentication()->getPersonObject(),
-                    $form['leased_to'],
-                    $form['leased_pawn']
+                    $data['leased_to'],
+                    $data['leased_pawn']
                 );
                 $this->getEntityManager()->persist($lease);
                 $this->getEntityManager()->flush();
@@ -48,6 +49,7 @@ class LeaseController extends LogisticsController
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
+                        'Success',
                         'The lease was successfully added!'
                     )
                 );

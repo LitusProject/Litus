@@ -27,7 +27,8 @@ class Lease
      * The leased item
      * @var \LogisticsBundle\Entity\Lease\Item
      *
-     * @ORM\ManyToOne(targetEntity="Item", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Item")
+     * @ORM\JoinColumn(name="item", referencedColumnName="id", nullable=false)
      */
     private $item;
 

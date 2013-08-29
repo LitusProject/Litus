@@ -55,6 +55,16 @@ return array(
             '@bootstrap_js_popover',
             '@logistics_css',
         ),
+        'logistics_lease' => array(
+            '@common_jquery',
+            '@common_jqueryui',
+            '@common_remote_typeahead',
+            '@common_jquery_form',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@logistics_css',
+        ),
     ),
     'routes' => array(),
 );

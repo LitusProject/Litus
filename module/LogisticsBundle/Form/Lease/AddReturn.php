@@ -16,7 +16,7 @@ namespace LogisticsBundle\Form\Lease;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+    CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -117,7 +117,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PositiveNumberValidator(false)
+                        new PriceValidator(),
                     ),
                 )
             )

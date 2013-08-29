@@ -101,6 +101,21 @@ return array(
                     ),
                 ),
             ),
+            'logistics_lease' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'       => '[/:language]/logistics/lease[/:action[/:id]][/page/:page][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                    ),
+                    'defaults'    => array(
+                        'controller' => 'logistics_lease',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         )
     ),
     'view_manager' => array(
@@ -195,6 +210,7 @@ return array(
 
             'logistics_index'                 => 'LogisticsBundle\Controller\IndexController',
             'logistics_auth'                  => 'LogisticsBundle\Controller\AuthController',
+            'logistics_lease'                 => 'LogisticsBundle\Controller\LeaseController',
         ),
     ),
 );
