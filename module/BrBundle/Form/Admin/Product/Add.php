@@ -76,7 +76,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Textarea('contract_text');
         $field->setLabel('Contract Text')
-            ->setRequired(false);
+            ->setRequired(false)
+            ->setValue('<entry>
+</entry>');
         $this->add($field);
 
         $field = new Select('event');

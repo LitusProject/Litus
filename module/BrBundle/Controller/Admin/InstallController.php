@@ -91,7 +91,10 @@ The VTK Corporate Team',
                 ),
                 array(
                     'key'         => 'br.contract_footer',
-                    'value'       => 'Contract Footer',
+                    'value'       => 'Vlaamse Technische Kring<br/>
+Faculteitskring van de burgerlijk ingenieurs aan de K.U.Leuven<br space="3mm"/>
+Studentenwijk Arenberg 6 bus 0, B-3001 Heverlee  -  KBC 745-0175900-11<br/>
+tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                     'description' => 'The footer used in contracts',
                 ),
                 array(
@@ -103,6 +106,11 @@ The VTK Corporate Team',
                     'key'         => 'br.contract_below_entries',
                     'value'       => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, bijgevoegd bij dit contract.',
                     'description' => 'The text just below the entries',
+                ),
+                array(
+                    'key'         => 'br.contract_language',
+                    'value'       => 'nl',
+                    'description' => 'The language used for the contracts.',
                 ),
             )
         );

@@ -61,7 +61,9 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $title = $this->_contract->getTitle();
         /** @var \Litus\Entity\Users\People\Company $company  */
         $company = $this->_contract->getOrder()->getCompany();
-        $date = $this->_contract->getOrder()->getCreationTime()->format('j F Y');
+
+        $date = $this->_contract->getOrder()->getCreationTime()->format('l j F Y');
+
         $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getFullName();
         $entries = $this->_contract->getEntries();
 
@@ -75,17 +77,13 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $logo = $configs->getConfigValue('union_logo');
 
         $sub_entries = $configs->getConfigValue('br.contract_below_entries');
-        $footer = $configs->getConfigValue('br.contract_footer');
+        $footer = XmlObject::fromString($configs->getConfigValue('br.contract_footer'));
 
         // Generate the xml
 
-        $entry_array = array();
+        $entry_s = array();
         foreach($entries as $entry) {
-            $entry_array[] = new XmlObject(
-                'entry',
-                null,
-                $entry->getContractText()
-            );
+            $entry_s[] = XmlObject::fromString($entry->getContractText());
         }
 
         $xml->append(
@@ -148,7 +146,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         )
                     ),
 
-                    new XmlObject('entries', null, $entry_array),
+                    new XmlObject('entries', null, $entry_s),
 
                     new XmlObject('sub_entries', null, $sub_entries),
 
