@@ -76,6 +76,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $brName = $configs->getConfigValue('br.contract_name');
         $logo = $configs->getConfigValue('union_logo');
 
+        $finalEntry = $configs->getConfigValue('br.contract_final_entry');
+
         $sub_entries = $configs->getConfigValue('br.contract_below_entries');
         $footer = XmlObject::fromString($configs->getConfigValue('br.contract_footer'));
 
@@ -85,6 +87,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         foreach($entries as $entry) {
             $entry_s[] = XmlObject::fromString($entry->getContractText());
         }
+        $entry_s[] = XmlObject::fromString($finalEntry);
 
         $xml->append(
             new XmlObject(
@@ -121,9 +124,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
                         // params of <company>
                         array(
-                            // TODO: don't just use first contact on the list
-                            // 'contact_person' => $company->getContacts()[0]->getFullName()
-                            'contact_person' => 'Contract Contact'
+                            'contact_person' => $this->_contract->getOrder()->getContact()->getFullName(),
                         ),
 
                         // children of <company>

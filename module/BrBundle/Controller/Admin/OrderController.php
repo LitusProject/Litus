@@ -56,12 +56,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $company = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Company')
-                    ->findOneById($formData['company']);
+                $contact = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\User\Person\Corporate')
+                    ->findOneById($formData['contact']);
 
                 $order = new Order(
-                    $company,
+                    $contact,
                     $this->getAuthentication()->getPersonObject()
                 );
 
@@ -72,6 +72,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findByAcademicYear($this->getCurrentAcademicYear());
 
                 $anyEntry = false;
+                $counter = 0;
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
@@ -79,7 +80,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     {
                         $anyEntry = true;
                         $orderEntry = new OrderEntry($order, $product, $quantity);
-                        $contractEntry = new ContractEntry($contract, $orderEntry);
+                        $contractEntry = new ContractEntry($contract, $orderEntry, $counter);
+                        $counter++;
                         $this->getEntityManager()->persist($orderEntry);
                         $this->getEntityManager()->persist($contractEntry);
                     }
@@ -132,11 +134,11 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             if($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $company = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Company')
-                    ->findOneById($formData['company']);
+                $contact = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\User\Person\Corporate')
+                    ->findOneById($formData['contact']);
 
-                $order->setCompany($company);
+                $order->setContact($setContact);
 
                 // Remove all entries that are no longer needed
                 foreach ($order->getEntries() as $entry)

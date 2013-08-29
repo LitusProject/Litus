@@ -71,6 +71,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('options', $this->_createCompanyArray());
         $this->add($field);
 
+        $field = new Select('contact');
+        $field->setLabel('Contact')
+            ->setAttribute('options', array());
+        $this->add($field);
+
         $this->addInputs();
 
         $field = new Submit('submit');

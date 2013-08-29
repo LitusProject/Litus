@@ -103,6 +103,11 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                     'description' => 'The union name used in contracts',
                 ),
                 array(
+                    'key'         => 'br.contract_final_entry',
+                    'value'       => '<entry>Contract opgemaakt in tweevoud te Heverlee op <date/></entry>',
+                    'description' => 'The final entry of every contract',
+                ),
+                array(
                     'key'         => 'br.contract_below_entries',
                     'value'       => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, bijgevoegd bij dit contract.',
                     'description' => 'The text just below the entries',
@@ -136,8 +141,14 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                     'br_admin_company_logo' => array(
                         'manage', 'add', 'delete'
                     ),
+                    'br_admin_contract' => array(
+                        'view', 'compose', 'download', 'edit', 'sign',
+                    ),
                     'br_admin_cv_entry' => array(
                         'manage', 'delete', 'export', 'exportAcademics'
+                    ),
+                    'br_admin_order' => array(
+                        'manage', 'add', 'edit', 'delete',
                     ),
                     'br_admin_product' => array(
                         'manage', 'add', 'edit', 'delete',

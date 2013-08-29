@@ -15,6 +15,7 @@
 namespace BrBundle\Entity\Product;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -40,12 +41,12 @@ class Order
     private $id;
 
     /**
-     * @var \BrBundle\Entity\Company The company of the logo
+     * @var \BrBundle\Entity\User\Person\Corporate The contact used in this order
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
-     * @ORM\JoinColumn(name="company", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\User\Person\Corporate")
+     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
      */
-    private $company;
+    private $contact;
 
     /**
      * @var \BrBundle\Entity\Contract The contract accompanying this order
@@ -88,9 +89,9 @@ class Order
 
     /**
      */
-    public function __construct(Company $company, Person $creationPerson)
+    public function __construct(CorporatePerson $contact, Person $creationPerson)
     {
-        $this->setCompany($company);
+        $this->setContact($contact);
         $this->creationTime = new DateTime();
         $this->creationPerson = $creationPerson;
         $this->orderEntries = new ArrayCollection();
@@ -109,15 +110,23 @@ class Order
      */
     public function getCompany()
     {
-        return $this->company;
+        return $this->contact->getCompany();
+    }
+
+    /**
+     * @return \BrBundle\Entity\User\Person\Corporate
+     */
+    public function getContact()
+    {
+        return $this->contact;
     }
 
     /**
      * @ return \BrBundle\Entity\Product\Order
      */
-    public function setCompany(Company $company)
+    public function setContact(CorporatePerson $contact)
     {
-        $this->company = $company;
+        $this->contact = $contact;
         return $this;
     }
 
