@@ -137,23 +137,27 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null === $code->getRedirect()) {
-                            $this->redirect()->toRoute(
-                                'common_index'
-                            );
-                        } else {
+                        if (null !== $code->getRedirect()) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
+
+                            return new ViewModel();
                         }
                     } else {
                         $this->redirect()->toRoute(
                             'secretary_registration'
                         );
+
+                        return new ViewModel();
                     }
                 }
             }
         }
+
+        $this->redirect()->toRoute(
+            'common_index'
+        );
 
         return new ViewModel();
     }

@@ -119,19 +119,21 @@ class AuthController extends \FormBundle\Component\Controller\FormController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null === $code->getRedirect()) {
-                            $this->redirect()->toRoute(
-                                'form_manage'
-                            );
-                        } else {
+                        if (null !== $code->getRedirect()) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
+
+                            return new ViewModel();
                         }
                     }
                 }
             }
         }
+
+        $this->redirect()->toRoute(
+            'form_manage'
+        );
 
         return new ViewModel();
     }
