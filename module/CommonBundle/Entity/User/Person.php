@@ -596,7 +596,7 @@ abstract class Person
      *
      * @return \CommonBundle\Entity\User\Person
      */
-    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $subjectConfig = 'common.account_activated_subject', $time = 86400)
+    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $time = 86400)
     {
         if ($onlyShibboleth) {
             $this->canlogin = true;
@@ -612,13 +612,19 @@ abstract class Person
             $entityManager->persist($code);
             $this->setCode($code);
 
-            $message = $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue($messageConfig);
+            if (!($language = $this->getLanguage())) {
+                $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                    ->findOneByAbbrev('en');
+            }
 
-            $subject = $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue($subjectConfig);
+            $mailData = unserialize(
+                $entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue($messageConfig)
+            );
+
+            $message = $mailData[$language->getAbbrev()]['content'];
+            $subject = $mailData[$language->getAbbrev()]['subject'];
 
             $mailAddress = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')

@@ -75,9 +75,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
-
         return $shibbolethUrl . '?source=form';
     }
 }

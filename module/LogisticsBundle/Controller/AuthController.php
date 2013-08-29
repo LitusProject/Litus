@@ -119,26 +119,20 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        $this->redirect()->toRoute(
-                            'logistics_index'
-                        );
+                        if (null === $code->getRedirect()) {
+                            $this->redirect()->toRoute(
+                                'logistics_index'
+                            );
+                        } else {
+                            $this->redirect()->toUrl(
+                                $code->getRedirect()
+                            );
+                        }
                     }
                 }
             }
         }
 
         return new ViewModel();
-    }
-
-    private function _getShibbolethUrl()
-    {
-        $shibbolethUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_url');
-
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
-
-        return $shibbolethUrl . '?source=logistics';
     }
 }
