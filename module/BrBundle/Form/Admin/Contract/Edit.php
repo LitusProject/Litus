@@ -44,6 +44,12 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form {
 
     private function _createFromContract(Contract $contract)
     {
+        $field = new Text('title');
+        $field->setLabel('Title')
+            ->setValue($contract->getTitle())
+            ->setRequired(true);
+        $this->add($field);
+
         foreach ($contract->getEntries() as $entry)
         {
             $field = new Textarea('entry_' . $entry->getId());
@@ -52,5 +58,25 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form {
                 ->setRequired(false);
             $this->add($field);
         }
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'title',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

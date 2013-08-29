@@ -78,7 +78,7 @@ class Contract
     public function __construct(Order $order)
     {
         $this->setOrder($order);
-        $this->setTitle('Temporary Title - Cannot be changed yet');
+        $this->setTitle('Contract ' . $order->getCompany()->getName());
     }
 
     /**

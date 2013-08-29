@@ -129,6 +129,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             if($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
+                $contract->setTitle($formData['title']);
+
                 foreach ($contract->getEntries() as $entry)
                 {
                     $entry->setContractText($formData['entry_' . $entry->getId()]);
