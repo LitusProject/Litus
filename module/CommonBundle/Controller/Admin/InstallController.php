@@ -46,29 +46,59 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'common.account_deactivated_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'VTK Account Deactivated',
+                                'content' => 'Dear {{ name }},
 
 Your account on VTK has been deactivated.
-Click here to activate it again: http://litus/account/activate/code/{{ code }}',
+Click here to activate it again: http://litus/account/activate/code/{{ code }}
+
+With best regards,
+VTK'
+                            ),
+                            'nl' => array(
+                                'subject' => 'VTK Account Gedeactiveerd',
+                                'content' => 'Beste {{ name }},
+
+Uw account op VTK is gedeactiveerd.
+Klik hier om deze opnieuw te activeren: http://litus/account/activate/code/{{ code }}
+
+Met vriendelijke groeten,
+VTK'
+                            ),
+                        )
+                    ),
                     'description' => 'The email sent when an account is deactivated',
                 ),
                 array(
-                    'key'         => 'common.account_deactivated_subject',
-                    'value'       => 'Account Deactivated',
-                    'description' => 'The mail subject when an account is deactivated',
-                ),
-                array(
                     'key'         => 'common.account_activated_mail',
-                    'value'       => 'Dear {{ name }},
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'VTK Account Activated',
+                                'content' => 'Dear {{ name }},
 
 An account for you was created on VTK with username {{ username }}.
-Click here to activate it: http://litus/account/activate/code/{{ code }}',
+Click here to activate it: http://litus/account/activate/code/{{ code }}
+
+With best regards,
+VTK'
+                            ),
+                            'nl' => array(
+                                'subject' => 'VTK Account Geactiveerd',
+                                'content' => 'Beste {{ name }},
+
+Een account was voor u aangemaakt op VTK met gebruikersnaam{{ username }}.
+Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
+
+Met vriendelijke groeten,
+VTK'
+                            ),
+                        )
+                    ),
                     'description' => 'The email sent when an account is activated',
-                ),
-                array(
-                    'key'         => 'common.account_activated_subject',
-                    'value'       => 'Account Created',
-                    'description' => 'The mail subject when an account is activated',
                 ),
                 array(
                     'key'         => 'system_mail_address',
@@ -212,6 +242,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The Piwik ID of the site that should be queried',
                 ),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 array(
                     'key'         => 'common.ldap_people_ou',
                     'value'       => 'ou=people,dc=ldap,dc=vtk,dc=be',
@@ -249,6 +280,25 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The domain for the student email',
                 ),
 =======
+>>>>>>> master
+=======
+                array(
+                    'key'         => 'common.robots',
+                    'value'       => '#
+# Robots File
+#
+
+# Taking care of AJAX locations
+User-agent: *
+Disallow: /*/calendar/month/
+Disallow: /*/run/group/getName/
+Disallow: /*/career/company/search/
+
+# We do not want them to access our admin
+Disallow: /admin/*
+',
+                    'description' => 'The robots.txt content',
+                ),
 >>>>>>> master
             )
         );
@@ -299,6 +349,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'login', 'logout', 'shibboleth'
                     ),
                     'common_index' => array(
+                        'index'
+                    ),
+                    'common_robots' => array(
                         'index'
                     ),
 
@@ -393,6 +446,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         ),
                         'common_account' => array(
                             'activate'
+                        ),
+                        'common_robots' => array(
+                            'index'
                         ),
                     ),
                 ),

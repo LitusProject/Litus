@@ -255,6 +255,18 @@ return array(
                     ),
                 ),
             ),
+            'common_robots' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/robots.txt',
+                    'constraints' => array(
+                    ),
+                    'defaults' => array(
+                        'controller' => 'common_robots',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -357,6 +369,7 @@ return array(
             'common_account'        => 'CommonBundle\Controller\AccountController',
             'common_session'        => 'CommonBundle\Controller\SessionController',
             'common_auth'           => 'CommonBundle\Controller\AuthController',
+            'common_robots'         => 'CommonBundle\Controller\RobotsController',
         ),
     ),
     'view_manager' => array(

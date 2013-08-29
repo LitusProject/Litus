@@ -125,9 +125,15 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        $this->redirect()->toRoute(
-                            'common_admin_index'
-                        );
+                        if (null === $code->getRedirect()) {
+                            $this->redirect()->toRoute(
+                                'common_admin_index'
+                            );
+                        } else {
+                            $this->redirect()->toUrl(
+                                $code->getRedirect()
+                            );
+                        }
                     }
                 }
             }
@@ -142,8 +148,8 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
+        if (isset($_SERVER['REQUEST_URI']) && isset($_SERVER['HTTP_HOST']))
+            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         return $shibbolethUrl . '?source=admin';
     }
