@@ -72,7 +72,7 @@
                             <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
                             {% if not entry.isGuestEntry() %}
                                 <dt>{{ translate('Phone Number') }}</dt>
-                                <dd>{{ entry.getPersonInfo().getPhoneNumber() }}</dd>
+                                <dd>{{ entry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
                                 {% if entry.getPersonInfo().getAddress() %}
                                 <dt>{{ translate('Address') }}</dt>
                                     <dd>
