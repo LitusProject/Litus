@@ -96,7 +96,7 @@ if (isset($opts->r)) {
                     $dm->persist($newMessage);
                     $dm->flush();
 
-                    if ('production' == getenv('APPLICATION_ENV')) {
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $lilo->sendLog(
                             'Storing incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
                             array(
@@ -108,7 +108,7 @@ if (isset($opts->r)) {
                 }
             break;
             default:
-                if ('production' == getenv('APPLICATION_ENV')) {
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $lilo->sendLog(
                         'Invalid command specified in the subject line (' . $command . ')',
                         array(
