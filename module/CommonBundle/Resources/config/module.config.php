@@ -270,9 +270,10 @@ return array(
             'common_praesidium' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/praesidium[/:action][/]',
+                    'route' => '[/:language]/praesidium[/:action[/:academicyear]][/]',
                     'constraints' => array(
-                        'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
                         'controller' => 'common_praesidium',

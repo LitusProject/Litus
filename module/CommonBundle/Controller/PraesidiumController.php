@@ -15,6 +15,9 @@
 namespace CommonBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear,
+    DateInterval,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -26,6 +29,12 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
 {
     public function overviewAction()
     {
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $academicYear = $this->_getAcademicYear();
+
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActiveAndDisplayed();
@@ -36,7 +45,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                 'unit' => $unit,
                 'members' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                    ->findByUnitAndAcademicYear($unit, $this->getCurrentAcademicYear(true)),
+                    ->findByUnitAndAcademicYear($unit, $academicYear),
             );
         }
 
@@ -48,7 +57,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
         foreach($extraUnits as $unit) {
             $members = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                ->findByUnitAndAcademicYear($unit, $this->getCurrentAcademicYear(true));
+                ->findByUnitAndAcademicYear($unit, $academicYear);
 
             foreach($members as $member) {
                 if (!isset($extra[$member->getAcademic()->getId()]))
@@ -62,7 +71,66 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
             array(
                 'units' => $list,
                 'extraUnits' => $extra,
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
             )
         );
+    }
+
+    private function _getAcademicYear()
+    {
+        if (null === $this->getParam('academicyear')) {
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+
+            $next = clone $start;
+            $next->add(new DateInterval('P1Y'));
+            if ($next <= new DateTime())
+                $start = $next;
+        } else {
+            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
+
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+        }
+        $start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStart($start);
+
+        if (null === $academicYear) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No academic year was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'common_praesidium'
+            );
+
+            return;
+        }
+
+        return $academicYear;
     }
 }
