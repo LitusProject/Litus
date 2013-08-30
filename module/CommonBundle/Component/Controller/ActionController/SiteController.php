@@ -15,6 +15,7 @@
 namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Form\Auth\Login as LoginForm,
+    PageBundle\Entity\Node\Page,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -170,5 +171,87 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         return $shibbolethUrl;
+    }
+
+    protected function _buildSubmenu(Page $page)
+    {
+        $pages = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Node\Page')
+            ->findByParent($page->getId());
+
+        $links = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Link')
+            ->findByParent($page->getId());
+
+        $categories = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Category')
+            ->findByParent($page->getId());
+
+        $submenu = array();
+        foreach ($pages as $page) {
+            $submenu[] = array(
+                'type'     => 'page',
+                'name'     => $page->getName(),
+                'parent'   => $page->getParent()->getName(),
+                'title'    => $page->getTitle($this->getLanguage())
+            );
+        }
+
+        foreach ($links as $link) {
+            $submenu[] = array(
+                'type' => 'link',
+                'id'   => $link->getId(),
+                'name' => $link->getName($this->getLanguage())
+            );
+        }
+
+        $i = count($submenu);
+        foreach ($categories as $category) {
+            $submenu[$i] = array(
+                'type'  => 'category',
+                'name'  => $category->getName(),
+                'items' => array()
+            );
+
+            $pages = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Node\Page')
+                ->findByCategory($category);
+
+            $links = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Link')
+                ->findByCategory($category);
+
+            foreach ($pages as $page) {
+                $submenu[$i]['items'][] = array(
+                    'type'  => 'page',
+                    'name'  => $page->getName(),
+                    'title' => $page->getTitle($this->getLanguage())
+                );
+            }
+
+            foreach ($links as $link) {
+                $submenu[$i]['items'][] = array(
+                    'type' => 'link',
+                    'id'   => $link->getId(),
+                    'name' => $link->getName($this->getLanguage())
+                );
+            }
+
+            $sort = array();
+            foreach ($submenu[$i]['items'] as $key => $value)
+                $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+
+            array_multisort($sort, $submenu[$i]['items']);
+
+            $i++;
+        }
+
+        $sort = array();
+        foreach ($submenu as $key => $value)
+            $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+
+        array_multisort($sort, $submenu);
+
+        return $submenu;
     }
 }

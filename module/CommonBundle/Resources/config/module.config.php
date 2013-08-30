@@ -267,6 +267,19 @@ return array(
                     ),
                 ),
             ),
+            'common_praesidium' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/praesidium[/:action][/]',
+                    'constraints' => array(
+                        'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'common_praesidium',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -370,6 +383,7 @@ return array(
             'common_session'        => 'CommonBundle\Controller\SessionController',
             'common_auth'           => 'CommonBundle\Controller\AuthController',
             'common_robots'         => 'CommonBundle\Controller\RobotsController',
+            'common_praesidium'     => 'CommonBundle\Controller\PraesidiumController',
         ),
     ),
     'view_manager' => array(

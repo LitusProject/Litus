@@ -1,0 +1,41 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Praesidium') }}</h1>
+    </div>
+
+    {% for unit in units %}
+        <h3>{{ unit['unit'].getName() }}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small></h3>
+        <ul class="thumbnails">
+            {% for member in unit['members'] %}
+                <li class="span3">
+                    <div class="thumbnail" style="height: 250px;">
+                        {% if member.getAcademic().getPhotoPath() %}
+                            <img class="profileImagePreloaded holderjs" data-url="{{ url('common_account', {'action': 'photo', 'image': member.getAcademic().getPhotoPath()}) }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
+                        {% else %}
+                            <img data-src="holder.js/180x135/auto/text:Image" alt="">
+                        {% endif %}
+                        <h4>{{ member.getAcademic().getFullName() }}</h4>
+                        {% if member.isCoordinator() %}
+                            <p>{{ translate('Groupcoordinator') }}</p>
+                        {% endif %}
+                        {% for extraUnit in extraUnits[member.getAcademic().getId()] %}
+                            <p>{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.profileImagePreloaded').each(function () {
+                $(this).attr('src', $(this).data('url'));
+            });
+        });
+    </script>
+{% endblock %}

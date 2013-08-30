@@ -55,6 +55,7 @@ class Edit extends Add
     {
         $data = array(
             'name' => $unit->getName(),
+            'mail' => $unit->getMail(),
             'organization' => $unit->getOrganization()->getId(),
             'parent' => null === $unit->getParent() ? '' : $unit->getParent()->getId(),
             'roles' => $this->_createRolesPopulationArray($unit->getRoles(false)),
