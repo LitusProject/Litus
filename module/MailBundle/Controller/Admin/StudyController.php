@@ -226,7 +226,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $mail = new Message();
                         $mail->setBody($message)
                             ->setFrom($formData['from'])
-                            ->setSubject($formData['subject']);
+                            ->setSubject($storedMessage->getSubject());
 
                         $mail->addTo($formData['from']);
                     }
