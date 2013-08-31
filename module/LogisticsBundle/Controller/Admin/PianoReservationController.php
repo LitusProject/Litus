@@ -79,8 +79,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
 
                 $reservation = new PianoReservation(
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    DateTime::createFromFormat('D d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('D d#m#Y H#i', $formData['end_date']),
                     $piano,
                     $formData['additional_info'],
                     $this->getAuthentication()->getPersonObject(),

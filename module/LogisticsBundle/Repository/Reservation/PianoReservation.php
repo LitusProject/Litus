@@ -22,7 +22,7 @@ class PianoReservation extends EntityRepository
                 $query->expr()->gte('r.endDate', ':start')
             )
             ->setParameter('start', new DateTime())
-            ->orderBy('r.startDate')
+            ->orderBy('r.startDate', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -38,7 +38,7 @@ class PianoReservation extends EntityRepository
                 $query->expr()->lt('r.endDate', ':end')
             )
             ->setParameter('end', new DateTime())
-            ->orderBy('r.startDate')
+            ->orderBy('r.startDate', 'DESC')
             ->getQuery()
             ->getResult();
 
