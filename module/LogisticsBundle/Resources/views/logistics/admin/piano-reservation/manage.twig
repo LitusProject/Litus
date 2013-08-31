@@ -1,0 +1,38 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/piano-reservation/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Player</th>
+                <th>Creator</th>
+                <th width="100px">Start Date</th>
+                <th width="100px">End Date</th>
+                <th width="70px">Action</th>
+            </tr>
+
+            {% for reservation in paginator %}
+                <tr class="item item-{{ reservation.getId() }}">
+                    <td>{{ reservation.getPlayer().getFullName() }}</td>
+                    <td>{{ reservation.getCreator().getFullName() }}</td>
+                    <td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ reservation.getEndDate().format('d/m/Y H:i') }}</td>
+                    <td class="actions">
+                        {% if hasAccess('logistics_admin_piano_reservation', 'edit') %}
+                            <a href="{{ url('logistics_admin_piano_reservation', {"action": "edit", "id": reservation.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_piano_reservation', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ reservation.getId() }}" data-reason="{{ reservation.getReason() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

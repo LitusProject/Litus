@@ -1,6 +1,7 @@
 <?php
 return array(
     'Logistics' => 'Logistics',
+    'Van' => 'Van',
 
     'January' => 'January',
     'February' => 'February',
