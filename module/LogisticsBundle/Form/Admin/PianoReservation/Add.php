@@ -15,12 +15,16 @@
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    DateInterval,
+    DateTime,
     Doctrine\ORM\EntityManager,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator,
+    LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
+    LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -60,19 +64,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('data-provide', 'typeahead');
         $this->add($field);
 
-        $field = new Text('start_date');
+        $field = new Select('start_date');
         $field->setLabel('Start Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
+            ->setAttribute('options', $this->_getTimeSlots())
             ->setRequired();
         $this->add($field);
 
-        $field = new Text('end_date');
+        $field = new Select('end_date');
         $field->setLabel('End Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
+            ->setAttribute('options', $this->_getTimeSlots())
             ->setRequired();
         $this->add($field);
 
@@ -84,6 +84,58 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'reservation_add');
         $this->add($field);
+    }
+
+    private function _getTimeSlots()
+    {
+        $config = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('logistics.piano_time_slots')
+        );
+
+        $slotDuration = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('logistics.piano_time_slot_duration');
+
+        $now = new DateTime();
+        $maxDate = new DateTime();
+        $maxDate->add(
+            new DateInterval(
+                $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.piano_reservation_max_in_advance')
+            )
+        );
+
+        $list = array();
+
+        while($now < $maxDate) {
+            if (null !== $config[$now->format('N')]) {
+                foreach($config[$now->format('N')] as $slot) {
+                    $startSlot = clone $now;
+                    $startSlot->setTime(
+                        substr($slot['start'], 0, strpos($slot['start'], ':')),
+                        substr($slot['start'], strpos($slot['start'], ':') + 1)
+                    );
+
+                    $endSlot = clone $now;
+                    $endSlot->setTime(
+                        substr($slot['end'], 0, strpos($slot['end'], ':')),
+                        substr($slot['end'], strpos($slot['end'], ':') + 1)
+                    );
+
+                    while($startSlot <= $endSlot) {
+                        $list[$startSlot->format('D d/m/Y H:i')] = $startSlot->format('D d/m/Y H:i');
+                        $startSlot->add(new DateInterval('PT' . $slotDuration . 'M'));
+                    }
+                }
+            }
+
+            $now->add(new DateInterval('P1D'));
+        }
+
+        return $list;
     }
 
     public function getInputFilter()
@@ -103,7 +155,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'date',
                             'options' => array(
-                                'format' => 'd/m/Y H:i',
+                                'format' => 'D d/m/Y H:i',
                             ),
                         ),
                     ),
@@ -123,11 +175,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'date',
                             'options' => array(
-                                'format' => 'd/m/Y H:i',
+                                'format' => 'D d/m/Y H:i',
                             ),
                         ),
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager)
+                        new DateCompareValidator('start_date', 'D d/m/Y H:i'),
+                        new ReservationConflictValidator('start_date', 'D d/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager),
+                        new PianoDurationValidator('start_date', 'D d/m/Y H:i', $this->_entityManager),
                     ),
                 )
             )
@@ -145,49 +198,37 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        if (isset($this->data['player_id'])) {
-            if ($this->data['player_id'] == '' && $this->get('player')) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name' => 'player',
-                            'required' => false,
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new AcademicValidator(
-                                    $this->_entityManager,
-                                    array(
-                                        'byId' => false,
-                                    )
-                                )
-                            ),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'player_id',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new AcademicValidator(
+                            $this->_entityManager,
+                            array(
+                                'byId' => true,
+                            )
                         )
-                    )
-                );
-            } else {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name' => 'player_id',
-                            'required' => false,
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new AcademicValidator(
-                                    $this->_entityManager,
-                                    array(
-                                        'byId' => true,
-                                    )
-                                )
-                            ),
-                        )
-                    )
-                );
-            }
-        }
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'player',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
 
         return $inputFilter;
 

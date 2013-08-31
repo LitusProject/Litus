@@ -15,7 +15,7 @@
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator,
+    LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -30,7 +30,7 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
 class Edit extends Add
 {
     /**
-     * @var \LogisticsBundle\\Entity\Reservation\PianoReservation
+     * @var \LogisticsBundle\Entity\Reservation\PianoReservation
      */
     private $_reservation;
 

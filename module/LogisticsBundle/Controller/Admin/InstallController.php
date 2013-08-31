@@ -41,6 +41,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'Maximum duration of one time slot for a piano reservation in minutes',
                 ),
                 array(
+                    'key'         => 'logistics.piano_reservation_max_in_advance',
+                    'value'       => 'P30D',
+                    'description' => 'Maximum days a reservation is possible in advance',
+                ),
+                array(
                     'key'         => 'logistics.piano_time_slots',
                     'value'       => serialize(
                         array(
