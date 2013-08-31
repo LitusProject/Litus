@@ -86,7 +86,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
         if ('' != $this->getRequest()->getPost('language', '')) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev('' != $this->getRequest()->getPost('language'));
+                ->findOneByAbbrev($this->getRequest()->getPost('language'));
         }
 
         return parent::getLanguage();
