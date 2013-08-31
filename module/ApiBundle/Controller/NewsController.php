@@ -25,6 +25,20 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getLastAction()
     {
+        $items = $this->getEntityManager()
+            ->getRepository('NewsBundle\Entity\Node\News')
+            ->findNbActive($this->getRequest()->getPost('number', 5));
+
+        $result = array();
+        foreach ($items as $item) {
+            $result[] = array(
+                'creationTime' => $item->getCreationTime()->format('c'),
+                'endDate' => $item->getEndDate()->format('c'),
+                'message' => $item->getContent($this->getLanguage()),
+                'title' => $item->getTitle($this->getLanguage())
+            );
+        }
+
         return new ViewModel(
             array(
                 'result' => (object) $result

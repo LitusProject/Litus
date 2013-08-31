@@ -57,13 +57,24 @@ return array(
             'api_mail' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/api/mail[/:action[/type/:type]][/]',
+                    'route' => '/api/mail[/:action][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'type'   => '(tar|zip)'
                     ),
                     'defaults' => array(
                         'controller' => 'api_mail',
+                    ),
+                ),
+            ),
+            'api_news' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/api/news[/:action][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'api_news',
                     ),
                 ),
             ),
@@ -95,6 +106,7 @@ return array(
 
             'api_auth'      => 'ApiBundle\Controller\AuthController',
             'api_mail'      => 'ApiBundle\Controller\MailController',
+            'api_news'      => 'ApiBundle\Controller\NewsController',
         ),
     ),
 );

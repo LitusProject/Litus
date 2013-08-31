@@ -75,4 +75,20 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
     {
         return null;
     }
+
+    /**
+     * Returns the language that is currently requested.
+     *
+     * @return \CommonBundle\Entity\General\Language
+     */
+    protected function getLanguage()
+    {
+        if ('' != $this->getRequest()->getPost('language', '')) {
+            return $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('' != $this->getRequest()->getPost('language'));
+        }
+
+        return parent::getLanguage();
+    }
 }
