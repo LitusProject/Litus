@@ -156,11 +156,13 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        $this->redirect()->toUrl(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('wiki.url')
-                        );
+                        if (null !== $code->getRedirect()) {
+                            $this->redirect()->toUrl(
+                                $code->getRedirect()
+                            );
+
+                            return new ViewModel();
+                        }
                     } else {
                         $this->redirect()->toRoute(
                             'wiki_auth',
@@ -168,10 +170,18 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                                 'action' => 'login'
                             )
                         );
+
+                        return new ViewModel();
                     }
                 }
             }
         }
+
+        $this->redirect()->toUrl(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('wiki.url')
+        );
 
         return new ViewModel();
     }
