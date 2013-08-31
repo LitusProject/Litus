@@ -135,7 +135,7 @@ class Order
     {
         $price = 0;
         foreach($this->items as $item)
-            $price += $item->getPrice() * $item->getNumber();
+            $price += $item->getPrice();
         return $price;
     }
 
