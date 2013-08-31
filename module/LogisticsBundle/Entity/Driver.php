@@ -11,6 +11,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace LogisticsBundle\Entity;
 
 use CommonBundle\Entity\User\Person,
@@ -85,7 +86,8 @@ class Driver
      *
      * @return array The years in which this person was a driver.
      */
-    public function getYears() {
+    public function getYears()
+    {
         return $this->years->toArray();
     }
 
@@ -93,7 +95,8 @@ class Driver
      * @param array $years Sets the years in which this person was a driver.
      * @return \LogisticsBundle\Entity\Driver
      */
-    public function setYears(array $years) {
+    public function setYears(array $years)
+    {
         $this->years = new ArrayCollection($years);
         return $this;
     }
@@ -103,7 +106,8 @@ class Driver
      *
      * @return string The color code for this driver.
      */
-    public function getColor() {
+    public function getColor()
+    {
         if ($this->color)
             return $this->color;
         else
@@ -114,7 +118,8 @@ class Driver
      * @param string $color Sets the color used for this driver.
      * @return \LogisticsBundle\Entity\Driver
      */
-    public function setColor($color) {
+    public function setColor($color)
+    {
         $this->color = $color;
         return $this;
     }

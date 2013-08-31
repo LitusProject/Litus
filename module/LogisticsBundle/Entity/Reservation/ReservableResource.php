@@ -11,6 +11,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace LogisticsBundle\Entity\Reservation;
 
 use Doctrine\ORM\Mapping as ORM,
@@ -45,7 +46,8 @@ class ReservableResource
      *
      * @param string $name The name of the resource.
      */
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
         $this->reservations = new ArrayCollection();
     }
@@ -53,21 +55,24 @@ class ReservableResource
     /**
      * @return string The name of the resource.
      */
-    public function getName() {
+    public function getName()
+    {
         return $name;
     }
 
     /**
      * @return array An array of \LogisticsBundle\Entity\Reservation indicating when this resource is reserved.
      */
-    public function getReservations() {
+    public function getReservations()
+    {
         return $this->reservations->toArray();
     }
 
     /**
      * @param Reservation $reservation The reservation to add to this resource.
      */
-    public function addReservation(Reservation $reservation) {
+    public function addReservation(Reservation $reservation)
+    {
         $this->reservations->add($reservation);
     }
 

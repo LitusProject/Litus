@@ -29,8 +29,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findAllActive(),
+                ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+                ->findAllActive(),
             $this->getParam('page')
         );
 
@@ -58,8 +58,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findAllOld(),
+                ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+                ->findAllOld(),
             $this->getParam('page')
         );
 
@@ -301,8 +301,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         }
 
         $reservation = $this->getEntityManager()
-        ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-        ->findOneById($this->getParam('id'));
+            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->findOneById($this->getParam('id'));
 
         if (null === $reservation) {
             $this->flashMessenger()->addMessage(
