@@ -12,12 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\VanReservation;
+namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Entity\General\AcademicYear,
     LogisticsBundle\Component\Validator\ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\VanReservation,
+    LogisticsBundle\Entity\Reservation\PianoReservation,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -26,12 +25,12 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
 /**
  * This form allows the user to edit the reservation.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends Add
 {
     /**
-     * @var \LogisticsBundle\\Entity\Reservation\VanReservation
+     * @var \LogisticsBundle\\Entity\Reservation\PianoReservation
      */
     private $_reservation;
 
@@ -41,9 +40,9 @@ class Edit extends Add
      * @param LogisticsBundle\Entity\Reservation\VanReservation $reservation
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $currentYear, VanReservation $reservation, $name = null)
+    public function __construct(EntityManager $entityManager,PianoReservation $reservation, $name = null)
     {
-        parent::__construct($entityManager, $currentYear, $name);
+        parent::__construct($entityManager, $name);
 
         $this->_reservation = $reservation;
 
@@ -57,23 +56,17 @@ class Edit extends Add
         $this->_populateFromReservation($reservation);
     }
 
-    private function _populateFromReservation(VanReservation $reservation)
+    private function _populateFromReservation(PianoReservation $reservation)
     {
-        $data = array(
-            'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
-            'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
-            'reason' => $reservation->getReason(),
-            'load' => $reservation->getLoad(),
-            'additional_info' => $reservation->getAdditionalInfo(),
-            'driver' => $reservation->getDriver() === null ? -1 : $reservation->getDriver()->getPerson()->getId(),
+        $this->setData(
+            array(
+                'player_id' => $reservation->getPlayer()->getId(),
+                'player' => $reservation->getPlayer()->getFullName() . ' - ' . $reservation->getPlayer()->getUniversityIdentification(),
+                'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
+                'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
+                'additional_info' => $reservation->getAdditionalInfo(),
+            )
         );
-
-        if (null !== $reservation->getPassenger()) {
-            $data['passenger_id'] = $reservation->getPassenger()->getId();
-            $data['passenger'] = $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification();
-        }
-
-        $this->setData($data);
     }
 
     public function getInputFilter() {
@@ -99,7 +92,7 @@ class Edit extends Add
                             ),
                         ),
                         new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId())
+                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId())
                     ),
                 )
             )
