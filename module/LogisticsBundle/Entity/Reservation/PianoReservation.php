@@ -42,15 +42,14 @@ class PianoReservation extends Reservation
     /**
      * @param \DateTime $startDate
      * @param \DateTime $endDate
-     * @param string $reason
      * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
      * @param string $additionalInfo
      * @param \CommonBundle\Entity\User\Person $creator
      * @param \CommonBundle\Entity\User\Person $player
      */
-    public function __construct(DateTime $startDate, DateTime $endDate, $reason, ReservableResource $resource, $additionalInfo, Person $creator, Person $player)
+    public function __construct(DateTime $startDate, DateTime $endDate, ReservableResource $resource, $additionalInfo, Person $creator, Person $player)
     {
-        parent::__construct($startDate, $endDate, $reason, $resource, $additionalInfo, $creator);
+        parent::__construct($startDate, $endDate, '', $resource, $additionalInfo, $creator);
 
         $this->player = $player;
     }
@@ -68,7 +67,7 @@ class PianoReservation extends Reservation
      *
      * @return \LogisticsBundle\Entity\Reservation\PianoReservation
      */
-    public function setPlayer(Person $driver)
+    public function setPlayer(Person $player)
     {
         $this->player = $player;
         return $this;

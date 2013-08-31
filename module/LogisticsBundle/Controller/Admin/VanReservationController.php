@@ -108,11 +108,6 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                     ->findOneByName(VanReservation::VAN_RESOURCE_NAME);
 
-                if (null === $van) {
-                    $van = new ReservableResource(VanReservation::VAN_RESOURCE_NAME);
-                    $this->getEntityManager()->persist($van);
-                }
-
                 $reservation = new VanReservation(
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),

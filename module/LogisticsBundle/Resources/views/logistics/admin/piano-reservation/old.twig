@@ -22,7 +22,7 @@
                     <td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
                     <td>{{ reservation.getEndDate().format('d/m/Y H:i') }}</td>
                     <td class="actions">
-                        <a href="#" class="view">View</a>
+                        <a href="#" class="view" data-player="{{ reservation.getPlayer().getFullName() }}" data-start_date="{{ reservation.getStartDate().format('d/m/Y H:i') }}" data-additional_information="{{ reservation.getAdditionalInfo() }}">View</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -30,4 +30,42 @@
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
+
+    <div class="modal hide fade" id="reservationModal">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Reservation
+        </div>
+        <div class="modal-body">
+            <p>
+                Reservation of <b class="reservationPlayer"></b> on <b class="reservationStartDate"></b>!
+            </p>
+            <p class="reservationAdditionalInformation">
+            </p>
+            <div class="footer">
+                <input type="button" class="cancel" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.item .view').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var reservationModal = $('#reservationModal');
+            reservationModal.find('.reservationPlayer').html($(this).data('player'));
+            reservationModal.find('.reservationStartDate').html($(this).data('start_date'));
+            reservationModal.find('.reservationAdditionalInformation').html($(this).data('additional_information'));
+            reservationModal.modal();
+        }
+
+    </script>
 {% endblock %}

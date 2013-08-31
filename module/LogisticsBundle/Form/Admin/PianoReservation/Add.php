@@ -12,18 +12,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\VanReservation;
+namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
     LogisticsBundle\Component\Validator\ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\VanReservation,
+    LogisticsBundle\Entity\Reservation\PianoReservation,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -31,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 /**
  * The form used to add a new Reservation.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -44,14 +42,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $currentYear, $name = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
 
-        $field = new Hidden('passenger_id');
-        $field->setAttribute('id', 'passengerId');
+        $field = new Hidden('player_id');
+        $field->setAttribute('id', 'playerId');
+        $this->add($field);
+
+        $field = new Text('player');
+        $field->setLabel('Player')
+            ->setRequired()
+            ->setAttribute('id', 'playerSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead');
         $this->add($field);
 
         $field = new Text('start_date');
@@ -70,52 +76,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Text('reason');
-        $field->setLabel('Reason')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('load');
-        $field->setLabel('Load');
-        $this->add($field);
-
         $field = new Textarea('additional_info');
         $field->setLabel('Additional Information');
-        $this->add($field);
-
-        $field = new Select('driver');
-        $field->setLabel('Driver')
-            ->setRequired(false)
-            ->setAttribute('options', $this->_populateDriversArray($currentYear));
-        $this->add($field);
-
-        $field = new Text('passenger');
-        $field->setLabel('Passenger')
-            ->setAttribute('id', 'passengerSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead');
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'reservation_add');
         $this->add($field);
-    }
-
-    private function _populateDriversArray(AcademicYear $currentYear)
-    {
-        $drivers = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findAllByYear($currentYear);
-
-        $driversArray = array(
-            -1 => ''
-        );
-        foreach($drivers as $driver) {
-            $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();
-        }
-
-        return $driversArray;
     }
 
     public function getInputFilter()
@@ -159,31 +127,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                         ),
                         new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager)
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'reason',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'load',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager)
                     ),
                 )
             )
@@ -201,12 +145,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        if (isset($this->data['passenger_id'])) {
-            if ($this->data['passenger_id'] == '' && $this->get('passenger')) {
+        if (isset($this->data['player_id'])) {
+            if ($this->data['player_id'] == '' && $this->get('player')) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
-                            'name' => 'passenger',
+                            'name' => 'player',
                             'required' => false,
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -226,7 +170,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $inputFilter->add(
                     $factory->createInput(
                         array(
-                            'name' => 'passenger_id',
+                            'name' => 'player_id',
                             'required' => false,
                             'filters' => array(
                                 array('name' => 'StringTrim'),
