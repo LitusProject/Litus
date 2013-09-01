@@ -127,7 +127,7 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
             array(
                 'brbundle' => array(
                     'br_admin_company' => array(
-                        'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload'
+                        'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'contacts'
                     ),
                     'br_admin_company_event' => array(
                         'add', 'delete', 'edit', 'editPoster', 'manage', 'progress', 'upload'
