@@ -1,5 +1,33 @@
-{% extends 'logistics/base.twig' %}
+{% extends 'site/base.twig' %}
 
 {% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Piano') }}</h1>
+    </div>
 
+    <ul id="weeks" class="nav nav-tabs">
+        {% for key, week in timeSlots %}
+            <li><a href="#week-{{ key }}" data-toggle="tab">{{ dateLocalized(week['start'], 'd MMM') }} - {{ dateLocalized(week['end'], 'd MMM') }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+        {% for key, week in timeSlots %}
+            <div class="tab-pane fade" id="week-{{ key }}">
+                <ul>
+                    {% for slot in week['slots'] %}
+                        <li>{{ dateLocalized(slot['date'], 'd MMM HH:mm') }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#weeks a:first').click();
+        });
+    </script>
 {% endblock %}

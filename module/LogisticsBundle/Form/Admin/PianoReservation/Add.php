@@ -66,13 +66,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('start_date');
         $field->setLabel('Start Date')
-            ->setAttribute('options', $this->_getTimeSlots())
+            ->setAttribute('options', $this->_getTimeSlots(true))
             ->setRequired();
         $this->add($field);
 
         $field = new Select('end_date');
         $field->setLabel('End Date')
-            ->setAttribute('options', $this->_getTimeSlots())
+            ->setAttribute('options', $this->_getTimeSlots(false))
             ->setRequired();
         $this->add($field);
 
@@ -86,7 +86,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    private function _getTimeSlots()
+    private function _getTimeSlots($isStart)
     {
         $config = unserialize(
             $this->_entityManager
@@ -126,7 +126,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     );
 
                     while($startSlot <= $endSlot) {
-                        $list[$startSlot->format('D d/m/Y H:i')] = $startSlot->format('D d/m/Y H:i');
+                        $occupied = $this->_entityManager
+                            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                            ->isTimeInExistingReservation($startSlot, $isStart);
+
+                        if (!$occupied)
+                            $list[$startSlot->format('D d/m/Y H:i')] = $startSlot->format('D d/m/Y H:i');
+
                         $startSlot->add(new DateInterval('PT' . $slotDuration . 'M'));
                     }
                 }
