@@ -118,11 +118,10 @@ return array(
             'br_admin_contract' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/contract[/:action[/:id[/:confirm]]][/]',
+                    'route' => '/admin/contract[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
-                        'confirm' => '[01]',
                     ),
                     'defaults' => array(
                         'controller' => 'br_admin_contract',
@@ -130,14 +129,28 @@ return array(
                     ),
                 ),
             ),
-            'br_admin_order' => array(
+            'br_admin_invoice' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/order[/:action[/:id[/:confirm]]][/]',
+                    'route' => '/admin/invoice[/:action[/:id][/date/:date]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
-                        'confirm' => '[01]',
+                        'date'    => '[0-9]{2}/[0-9]{2}/[0-9]{4}'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'br_admin_invoice',
+                        'action'     => 'view',
+                    ),
+                ),
+            ),
+            'br_admin_order' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/order[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'br_admin_order',
@@ -148,11 +161,10 @@ return array(
             'br_admin_product' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/product[/:action[/:id[/:confirm]]][/]',
+                    'route' => '/admin/product[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
-                        'confirm' => '[01]',
                     ),
                     'defaults' => array(
                         'controller' => 'br_admin_product',
@@ -396,10 +408,11 @@ return array(
             'br_admin_company_job'     => 'BrBundle\Controller\Admin\Company\JobController',
             'br_admin_company_user'    => 'BrBundle\Controller\Admin\Company\UserController',
             'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
+            'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
             'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
+            'br_admin_invoice'         => 'BrBundle\Controller\Admin\InvoiceController',
             'br_admin_order'           => 'BrBundle\Controller\Admin\OrderController',
             'br_admin_product'         => 'BrBundle\Controller\Admin\ProductController',
-            'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
 
             'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
             'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',

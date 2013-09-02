@@ -56,6 +56,13 @@ class Invoice
     private $creationTime;
 
     /**
+     * @var \DateTime The time this invoice was paid.
+     *
+     * @ORM\Column(name="paid_time", type="datetime", nullable=true)
+     */
+    private $paidTime;
+
+    /**
      * @var \BrBundle\Entity\Invoice\InvoiceEntry The entries in this invoice
      *
      * @ORM\OneToMany(
@@ -119,7 +126,7 @@ class Invoice
     public function isExpired(EntityManager $entityManager)
     {
         $now = new DateTime();
-        return $now > $this->getExpirationTime($entityManager);
+        return !$this->isPaid() && $now > $this->getExpirationTime($entityManager);
     }
 
     /**
@@ -132,6 +139,35 @@ class Invoice
             ->getConfigValue('br.invoice_expire_time');
 
         return $this->getCreationTime()->add(new DateInterval($expireTime));
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPaidTime()
+    {
+        return $this->paidTime;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function setPaidTime($paidTime)
+    {
+        if ($this->isPaid())
+            throw new \InvalidArgumentException('This invoice has already been paid');
+
+        $this->paidTime = $paidTime;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaid()
+    {
+        return NULL !== $this->paidTime;
     }
 
     /**

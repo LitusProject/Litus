@@ -19,8 +19,6 @@ use BrBundle\Entity\Contract,
     BrBundle\Entity\Invoice\InvoiceEntry,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
-    BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
-    BrBundle\Component\Document\Generator\Pdf\Letter as LetterGenerator,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File as FileUtil,
     Zend\Http\Headers,
@@ -100,8 +98,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function signAction()
     {
-        $this->initAjax();
-
         if (!($contract = $this->_getContract(false)))
             return new ViewModel();
 
@@ -116,13 +112,23 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $this->getEntityManager()->persist($invoice);
         $this->getEntityManager()->flush();
 
-        return new ViewModel(
-            array(
-                'result' => (object) array(
-                    'status' => 'success',
-                ),
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Success',
+                'The contract was succesfully signed!'
             )
         );
+
+        $this->redirect()->toRoute(
+            'br_admin_contract',
+            array(
+                'action' => 'view',
+                'id' => $contract->getId(),
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function downloadAction()

@@ -152,6 +152,9 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                     'br_admin_cv_entry' => array(
                         'manage', 'delete', 'export', 'exportAcademics'
                     ),
+                    'br_admin_invoice' => array(
+                        'view', 'pay',
+                    ),
                     'br_admin_order' => array(
                         'manage', 'add', 'edit', 'delete',
                     ),
