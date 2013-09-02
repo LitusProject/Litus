@@ -15,6 +15,8 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Contract,
+    BrBundle\Entity\Invoice,
+    BrBundle\Entity\Invoice\InvoiceEntry,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
@@ -31,29 +33,6 @@ use BrBundle\Entity\Contract,
  */
 class ContractController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
-    private function _generateFiles($id, $invoiceOnly = false)
-    {
-        if (!($contract = $this->_getContract()))
-            return new ViewModel();
-
-        if ($contract->isDirty()) {
-            if (!$invoiceOnly) {
-                $generator = new ContractGenerator($this->getEntityManager(), $contract);
-                $generator->generate();
-
-                $generator = new LetterGenerator($contract);
-                $generator->generate();
-            }
-
-            if (-1 != $contract->getInvoiceNb()) {
-                $generator = new InvoiceGenerator($contract);
-                $generator->generate();
-            }
-
-            $contract->setDirty(false);
-        }
-    }
 
     public function viewAction()
     {
@@ -126,10 +105,15 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         if (!($contract = $this->_getContract(false)))
             return new ViewModel();
 
-        // TODO : create invoice
-        // TODO : disallow reordering when contract is signed
+        $invoice = new Invoice($contract->getOrder());
 
-        // Flush here, otherwise we might create two contracts with the same invoiceNb
+        foreach ($contract->getEntries() as $entry)
+        {
+            $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition());
+            $this->getEntityManager()->persist($invoiceEntry);
+        }
+
+        $this->getEntityManager()->persist($invoice);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -182,6 +166,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $contract = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
             ->findOneById($postData['contractId']);
+
+        // Don't allow reordering signed contract
+        if ($contract->isSigned())
+        {
+            return new ViewModel();
+        }
 
         $contractComposition = array();
         foreach ($sections['contractComposition'] as $position => $id) {

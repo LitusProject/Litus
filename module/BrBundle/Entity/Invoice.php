@@ -114,6 +114,27 @@ class Invoice
     }
 
     /**
+     * @return bool
+     */
+    public function isExpired(EntityManager $entityManager)
+    {
+        $now = new DateTime();
+        return $now > $this->getExpirationTime($entityManager);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getExpirationTime(EntityManager $entityManager)
+    {
+        $expireTime = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_expire_time');
+
+        return $this->getCreationTime()->add(new DateInterval($expireTime));
+    }
+
+    /**
      * @return array
      */
     public function getEntries()

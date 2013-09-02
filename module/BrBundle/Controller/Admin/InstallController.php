@@ -117,6 +117,11 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                     'value'       => 'nl',
                     'description' => 'The language used for the contracts.',
                 ),
+                array(
+                    'key'         => 'br.invoice_expire_time',
+                    'value'       => 'P30D',
+                    'description' => 'The time after which an invoice expires',
+                ),
             )
         );
     }

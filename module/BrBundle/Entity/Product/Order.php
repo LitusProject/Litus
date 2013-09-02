@@ -61,6 +61,18 @@ class Order
     private $contract;
 
     /**
+     * @var \BrBundle\Entity\Invoice The invoice accompanying this order
+     *
+     * @ORM\OneToOne(
+     *      targetEntity="BrBundle\Entity\Invoice",
+     *      mappedBy="order",
+     *      cascade={"all"},
+     *      orphanRemoval=true
+     * )
+     */
+    private $invoice;
+
+    /**
      * @var \BrBundle\Entity\Product\OrderEntry The entries in this order
      *
      * @ORM\OneToMany(
@@ -167,8 +179,7 @@ class Order
      */
     public function getInvoice()
     {
-        // TODO implement invoices
-        return NULL;
+        return $this->invoice;
     }
 
     /**

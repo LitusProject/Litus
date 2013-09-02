@@ -71,14 +71,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\Product')
                     ->findByAcademicYear($this->getCurrentAcademicYear());
 
-                $anyEntry = false;
                 $counter = 0;
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
                     if ($quantity != 0)
                     {
-                        $anyEntry = true;
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter);
                         $counter++;
@@ -87,8 +85,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 }
 
-
-                if ($anyEntry) {
+                if ($counter > 0) {
                     $this->getEntityManager()->persist($order);
                     $this->getEntityManager()->persist($contract);
                     $this->getEntityManager()->flush();
