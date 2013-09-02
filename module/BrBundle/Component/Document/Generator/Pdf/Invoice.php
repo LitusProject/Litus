@@ -91,7 +91,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf {
         $entries = array();
         foreach ($this->_invoice->getEntries() as $entry) {
             $product = $entry->getOrderEntry()->getProduct();
-            $price = $product->getPrice();
+            $price = $product->getPrice() / 100;
 
             if (($price > 0) ||
                     (($entry->getInvoiceDescription() !== null) && ($entry->getInvoiceDescription() != ''))) {
@@ -102,8 +102,8 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf {
                                     ? $product->getName()
                                     : $entry->getInvoiceDescription()
                         ),
-                        new XmlObject('price', null, $price . ' <euro/>'),
-                        new XmlObject('vat_type', null, $vatTypes[$product->getVatType()])
+                        new XmlObject('price', null, XmlObject::fromString('<euro/>' . number_format($price, 2))),
+                        new XmlObject('vat_type', null, $vatTypes[$product->getVatType()] . '%')
                     )
                 );
 
@@ -130,7 +130,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf {
             $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null, '-' . $discount . '%'),
-                    new XmlObject('price', null, ( -($discount * $totalExclusive) / 100 ) . ' <euro/>'),
+                    new XmlObject('price', null, XmlObject::fromString('<euro/>' . number_format(( -($discount * $totalExclusive) / 100 ), 2))),
                     new XmlObject('vat_type', null, ' ')
                 )
             );
@@ -249,9 +249,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf {
                     array(
                         // children of <total>
                         new XmlObject('vat_type_explanation', null, $vatTypeExplanation),
-                        new XmlObject('price_excl', null, $totalExclusive . ' <euro/>'),
-                        new XmlObject('price_vat', null, $totalVat . ' <euro/>'),
-                        new XmlObject('price_incl', null, $total . ' <euro/>')
+                        new XmlObject('price_excl', null, XmlObject::fromString('<euro/>' . number_format($totalExclusive, 2))),
+                        new XmlObject('price_vat', null, XmlObject::fromString('<euro/>' . number_format($totalVat, 2))),
+                        new XmlObject('price_incl', null, XmlObject::fromString('<euro/>' . number_format($total, 2)))
                     )
                 ),
 
