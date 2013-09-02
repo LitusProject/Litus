@@ -69,4 +69,33 @@ class PianoReservation extends EntityRepository
 
         return $resultSet;
     }
+
+    public function isTimeInExistingReservation(DateTime $date, $isStart)
+    {
+        $query = $this->_em->createQueryBuilder();
+
+        if ($isStart) {
+            $where = $query->expr()->andX(
+                $query->expr()->lte('r.startDate', ':date'),
+                $query->expr()->gt('r.endDate', ':date')
+            );
+        } else {
+            $where = $query->expr()->andX(
+                $query->expr()->lt('r.startDate', ':date'),
+                $query->expr()->gte('r.endDate', ':date')
+            );
+        }
+
+        $resultSet = $query->select('r')
+            ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
+            ->where(
+                $where
+            )
+            ->setParameter('date', $date)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        return isset($resultSet[0]);
+    }
 }
