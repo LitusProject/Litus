@@ -15,7 +15,6 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company,
-    BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Product,
     BrBundle\Entity\Product\Order,
     CommonBundle\Entity\User\Person,
@@ -50,6 +49,13 @@ class Invoice
     private $order;
 
     /**
+     * @var \DateTime The time of creation of this invoice
+     *
+     * @ORM\Column(name="creation_time", type="datetime")
+     */
+    private $creationTime;
+
+    /**
      * @var \BrBundle\Entity\Invoice\InvoiceEntry The entries in this invoice
      *
      * @ORM\OneToMany(
@@ -70,6 +76,7 @@ class Invoice
     public function __construct(Order $order)
     {
         $this->setOrder($order);
+        $this->creationTime = new DateTime();
     }
 
     /**
@@ -96,6 +103,14 @@ class Invoice
     {
         $this->order = $order;
         return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
     }
 
     /**
