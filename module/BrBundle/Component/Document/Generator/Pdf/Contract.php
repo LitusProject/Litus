@@ -25,11 +25,12 @@ use BrBundle\Entity\Contract as ContractEntity,
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Niels Avonds <niels.avonds@litus.cc>
  */
 class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \Litus\Entity\Br\Contract
+     * @var \BrBundle\Entity\Contract
      */
     private $_contract;
 

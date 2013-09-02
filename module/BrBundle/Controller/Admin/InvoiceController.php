@@ -43,6 +43,37 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function downloadAction()
+    {
+        if (!($invoice = $this->_getInvoice()))
+            return new ViewModel();
+
+        $generator = new InvoiceGenerator($this->getEntityManager(), $invoice);
+        $generator->generate();
+
+        $file = FileUtil::getRealFilename(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.file_path') . '/contracts/'
+                . $invoice->getOrder()->getContract()->getId() . '/invoice.pdf'
+        );
+        $fileHandler = fopen($file, 'r');
+        $content = fread($fileHandler, filesize($file));
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="invoice.pdf"',
+            'Content-Type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $content,
+            )
+        );
+    }
+
     public function payAction()
     {
         $this->initAjax();

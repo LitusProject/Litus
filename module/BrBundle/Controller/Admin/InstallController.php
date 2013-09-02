@@ -122,6 +122,26 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                     'value'       => 'P30D',
                     'description' => 'The time after which an invoice expires',
                 ),
+                array(
+                    'key'         => 'br.invoice_below_entries',
+                    'value'       => 'Dit komt onderaan op elke factuur.',
+                    'description' => 'The text just below the entries',
+                ),
+                array(
+                    'key'         => 'br.invoice_vat_explanation',
+                    'value'       => 'Dit legt de BTW uit.',
+                    'description' => 'The text that explains the VAT on invoices',
+                ),
+                array(
+                    'key'         => 'br.invoice_footer',
+                    'value'       => 'De footer van de facturen',
+                    'description' => 'The footer on each invoice',
+                ),
+                array(
+                    'key'         => 'br.vat_number',
+                    'value'       => 'BE 123-456-789',
+                    'description' => 'The VAT number of the union',
+                ),
             )
         );
     }

@@ -89,6 +89,14 @@ class InvoiceEntry
     }
 
     /**
+     * @return string
+     */
+    public function getInvoiceDescription()
+    {
+        return $this->getOrderEntry()->getProduct()->getInvoiceDescription();
+    }
+
+    /**
      * @return \BrBundle\Entity\Product\OrderEntry
      */
     public function getOrderEntry()
