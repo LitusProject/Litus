@@ -16,6 +16,7 @@ namespace BrBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
+    DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -83,6 +84,13 @@ class Product
     private $event;
 
     /**
+     * @var \DateTime The date of delivery
+     *
+     * @ORM\Column(name="delivery_date", type="datetime", nullable=true)
+     */
+    private $deliveryDate;
+
+    /**
      * @var int The price (VAT excluded!) a company has to pay when they agree to this product of the contract
      *
      * @ORM\Column(type="integer")
@@ -112,9 +120,10 @@ class Product
      * @param \CommonBundle\Entity\User\Person $author The author of this product
      * @param int $price
      * @param string $vatType see setVatType($vatType)
-     * @param \CalendarBundle\Entity\Node\Event $event
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param DateTime $deliveryDate
      */
-    public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear)
+    public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear, $deliveryDate)
     {
         $this->setName($name);
         $this->setDescription($description);
@@ -123,6 +132,7 @@ class Product
         $this->setAuthor($author);
         $this->setPrice($price);
         $this->setVatType($entityManager, $vatType);
+        $this->setDeliveryDate($deliveryDate);
         $this->academicYear = $academicYear;
     }
 
@@ -337,4 +347,24 @@ class Product
         $this->event = $event;
         return $this;
     }
+
+    /**
+     * @return DateTime
+     */
+    public function getDeliveryDate()
+    {
+        return $this->deliveryDate;
+    }
+
+    /**
+     * @param DateTime|null $deliveryDate
+     * @return \BrBundle\Entity\Product
+     */
+    public function setDeliveryDate($deliveryDate)
+    {
+        $this->deliveryDate = $deliveryDate;
+
+        return $this;
+    }
+
 }

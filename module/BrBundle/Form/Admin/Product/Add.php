@@ -83,7 +83,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('event');
         $field->setLabel('Event')
-            ->setAttribute('options', $this->_createEventsArray());
+            ->setAttribute('disable', array(2292))
+            ->setValueOptions($this->_createEventsArray());
+        $this->add($field);
+
+        $field = new Text('delivery_date');
+        $field->setLabel('Delivery Date')
+            ->setAttribute('placeholder', 'dd/mm/yyyy')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('class', $field->getAttribute('class') . ' input-medium start');
         $this->add($field);
 
         $field = new Submit('submit');
@@ -99,10 +107,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAllActive();
 
         $eventsArray = array(
-            '' => ''
         );
-        foreach ($events as $event)
-            $eventsArray[$event->getId()] = $event->getTitle();
+        $eventsArray[] =
+            array(
+                'label' => '',
+                'value' => '',
+            );
+        foreach ($events as $event) {
+            $eventsArray[] =
+                array(
+                    'label' => $event->getTitle(),
+                    'value' => $event->getId(),
+                    'attributes' => array(
+                        'data-date' => $event->getStartDate()->format('d/m/Y')
+                    ),
+                );
+        }
 
         return $eventsArray;
     }
@@ -117,6 +137,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'invoice_description' => $product->getInvoiceDescription(),
             'contract_text' => $product->getContractText(),
             'event' => null === $product->getEvent() ? '' : $product->getEvent()->getId(),
+            'delivery_date' => null === $product->getDeliveryDate() ? '' : $product->getDeliveryDate()->format('d/m/Y')
         );
 
         $this->setData($formData);
@@ -209,6 +230,27 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'start_date',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
 
         return $inputFilter;
     }

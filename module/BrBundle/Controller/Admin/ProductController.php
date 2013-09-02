@@ -18,6 +18,7 @@ use BrBundle\Entity\Product,
     BrBundle\Form\Admin\Product\Add as AddForm,
     BrBundle\Form\Admin\Product\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -62,7 +63,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                     $this->getAuthentication()->getPersonObject(),
                     $formData['price'],
                     $formData['vat_type'],
-                    $this->getCurrentAcademicYear()
+                    $this->getCurrentAcademicYear(),
+                    DateTime::createFromFormat('d#m#Y', $formData['delivery_date'])
                 );
 
                 if ('' != $formData['event']) {
@@ -94,6 +96,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 return new ViewModel();
             }
         }
+
         return new ViewModel(
             array(
                 'form' => $form,

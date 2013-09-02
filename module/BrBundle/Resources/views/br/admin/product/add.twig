@@ -51,3 +51,15 @@
 	    </div>
 	</aside>
 {% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			$('#event').change(function() {
+				$('#delivery_date').val($('#event').children(':selected').attr('data-date'));
+			});
+
+		});
+	</script>
+{% endblock %}
