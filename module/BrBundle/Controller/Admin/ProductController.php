@@ -25,6 +25,7 @@ use BrBundle\Entity\Product,
  * ProductController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Niels Avonds <niels.avonds@litus.cc>
  */
 class ProductController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

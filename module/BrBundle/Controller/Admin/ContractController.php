@@ -14,26 +14,6 @@
 
 namespace BrBundle\Controller\Admin;
 
-// use \Admin\Form\Contract\Add as AddForm;
-// use \Admin\Form\Contract\Edit as EditForm;
-
-// use \Litus\Util\File as FileUtil;
-// use \Litus\Br\ContractGenerator;
-// use \Litus\Br\LetterGenerator;
-// use \Litus\Br\InvoiceGenerator;
-// use \Litus\Entity\Br\Contract;
-// use \Litus\Entity\Br\Contracts\Composition;
-
-// use \RuntimeException;
-// use \DirectoryIterator;
-
-// use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-// use \Zend\Paginator\Paginator;
-// use \Zend\Paginator\Adapter\ArrayAdapter;
-// use \Zend\Json\Json;
-// use \Zend\Registry;
-
 use BrBundle\Entity\Contract,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
@@ -51,34 +31,6 @@ use BrBundle\Entity\Contract,
  */
 class ContractController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    // private $_json = null;
-
-    // public function init()
-    // {
-    //     parent::init();
-
-    //     $contextSwitch = $this->broker('contextSwitch');
-    //     $contextSwitch->setContext(
-    //         'pdf',
-    //         array(
-    //              'headers' => array(
-    //                  'Content-Type' => 'application/pdf',
-    //                  'Pragma' => 'public',
-    //                  'Cache-Control' => 'private, max-age=0, must-revalidate'
-    //              )
-    //         )
-    //     );
-
-    //     $contextSwitch->setActionContext('download', 'pdf')
-    //         ->initContext();
-
-    //     $this->broker('contextSwitch')
-    //         ->addActionContext('compose', 'json')
-    //         ->setAutoJsonSerialization(false)
-    //         ->initContext();
-
-    //     $this->_json = new Json();
-    // }
 
     private function _generateFiles($id, $invoiceOnly = false)
     {
@@ -175,6 +127,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
 
         // TODO : create invoice
+        // TODO : disallow reordering when contract is signed
 
         // Flush here, otherwise we might create two contracts with the same invoiceNb
         $this->getEntityManager()->flush();
