@@ -16,6 +16,7 @@ namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
+    LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -65,6 +66,7 @@ class Edit extends Add
                 'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
                 'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
                 'additional_info' => $reservation->getAdditionalInfo(),
+                'confirmed' => $reservation->isConfirmed(),
             )
         );
     }
@@ -88,11 +90,12 @@ class Edit extends Add
                         array(
                             'name' => 'date',
                             'options' => array(
-                                'format' => 'd/m/Y H:i',
+                                'format' => 'D d/m/Y H:i',
                             ),
                         ),
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId())
+                        new DateCompareValidator('start_date', 'D d/m/Y H:i'),
+                        new ReservationConflictValidator('start_date', 'D d/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId()),
+                        new PianoDurationValidator('start_date', 'D d/m/Y H:i', $this->_entityManager),
                     ),
                 )
             )

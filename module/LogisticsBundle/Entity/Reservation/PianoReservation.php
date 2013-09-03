@@ -40,6 +40,13 @@ class PianoReservation extends Reservation
     private $player;
 
     /**
+     * @var Flag whether this reservation is confirmed
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $confirmed;
+
+    /**
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
@@ -52,6 +59,7 @@ class PianoReservation extends Reservation
         parent::__construct($startDate, $endDate, '', $resource, $additionalInfo, $creator);
 
         $this->player = $player;
+        $this->confirmed = false;
     }
 
     /**
@@ -64,12 +72,29 @@ class PianoReservation extends Reservation
 
     /**
      * @param \CommonBundle\Entity\User\Person $player
-     *
      * @return \LogisticsBundle\Entity\Reservation\PianoReservation
      */
     public function setPlayer(Person $player)
     {
         $this->player = $player;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isConfirmed()
+    {
+        return $this->confirmed;
+    }
+
+    /**
+     * @param boolean $confirmed
+     * @return \LogisticsBundle\Entity\Reservation\PianoReservation
+     */
+    public function setConfirmed($confirmed = true)
+    {
+        $this->confirmed = $confirmed;
         return $this;
     }
 }

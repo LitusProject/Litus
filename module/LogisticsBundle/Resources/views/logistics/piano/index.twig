@@ -6,22 +6,28 @@
     </div>
 
     <ul id="weeks" class="nav nav-tabs">
-        {% for key, week in timeSlots %}
+        {% for key, week in form.getWeeks() %}
             <li><a href="#week-{{ key }}" data-toggle="tab">{{ dateLocalized(week['start'], 'd MMM') }} - {{ dateLocalized(week['end'], 'd MMM') }}</a></li>
         {% endfor %}
     </ul>
 
-    <div class="tab-content">
-        {% for key, week in timeSlots %}
-            <div class="tab-pane fade" id="week-{{ key }}">
-                <ul>
-                    {% for slot in week['slots'] %}
-                        <li>{{ dateLocalized(slot['date'], 'd MMM HH:mm') }}</li>
-                    {% endfor %}
-                </ul>
+    {% do form.prepare() %}
+    {% autoescape false %}
+        {{ form().openTag(form) }}
+            <div class="tab-content">
+                {% for key, week in form.getWeeks() %}
+                    <div class="tab-pane fade" id="week-{{ key }}">
+                        {{ _self.renderSelect(form.get('start_date_' ~ key)) }}
+                        {{ _self.renderSelect(form.get('end_date_' ~ key)) }}
+                        <div class="form-actions">
+                            {{ formElement(form.get('submit_' ~ key)) }}
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    </div>
+        {{ form().closeTag() }}
+    {% endautoescape %}
+
 {% endblock %}
 
 {% block content_script %}
@@ -31,3 +37,21 @@
         });
     </script>
 {% endblock %}
+
+{% macro renderSelect(element) %}
+    {% autoescape false %}
+        <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+            {{ formLabel().openTag(element) }}
+                {% if element.getLabel != '' %}{{ translate(element.getLabel()) }}{% endif %}
+            {{ formLabel().closeTag() }}
+            <div class="controls">
+                <div>{{ formElement(element) }}</div>
+                {% if element.getMessages()|length > 0 %}
+                    <div class="help-inline">
+                        {{ formElementErrors(element) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endautoescape %}
+{% endmacro %}
