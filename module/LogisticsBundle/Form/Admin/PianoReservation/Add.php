@@ -14,7 +14,8 @@
 
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
@@ -80,6 +81,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Additional Information');
         $this->add($field);
 
+        $field = new Checkbox('confirmed');
+        $field->setLabel('Confirmed');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'reservation_add');
@@ -118,14 +123,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         substr($slot['start'], 0, strpos($slot['start'], ':')),
                         substr($slot['start'], strpos($slot['start'], ':') + 1)
                     );
+                    $firstSlot = clone $startSlot;
 
-                    $endSlot = clone $now;
-                    $endSlot->setTime(
+                    $lastSlot = clone $now;
+                    $lastSlot->setTime(
                         substr($slot['end'], 0, strpos($slot['end'], ':')),
                         substr($slot['end'], strpos($slot['end'], ':') + 1)
                     );
 
-                    while($startSlot <= $endSlot) {
+                    while($startSlot <= $lastSlot) {
+                        if (($isStart && $startSlot == $lastSlot) || (!$isStart && $startSlot == $firstSlot)) {
+                            $startSlot->add(new DateInterval('PT' . $slotDuration . 'M'));
+                            continue;
+                        }
+
                         $occupied = $this->_entityManager
                             ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                             ->isTimeInExistingReservation($startSlot, $isStart);
