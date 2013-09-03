@@ -539,6 +539,14 @@ return array(
                             'output' => 'site_css.css'
                         ),
                     ),
+                    'flaty_css' => array(
+                        'assets' => array(
+                            'site/css/flaty.css',
+                        ),
+                        'options' => array(
+                            'output' => 'flaty_css.css'
+                        ),
+                    ),
 
                     'bootstrap_js_rowlink' => array(
                         'assets'  => array(

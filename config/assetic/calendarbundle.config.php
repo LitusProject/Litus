@@ -48,6 +48,7 @@ return array(
             '@bootstrap_css',
             '@bootstrap_responsive_css',
             '@site_css',
+            '@flaty_css',
             '@calendar_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',

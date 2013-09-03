@@ -55,6 +55,7 @@ return array(
             '@bootstrap_css',
             '@bootstrap_responsive_css',
             '@site_css',
+            '@flaty_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_modal',
             '@bootstrap_js_transition',
