@@ -1,0 +1,9 @@
+{% extends 'logistics/base.twig' %}
+{% import 'site/partials/form.twig' as forms %}
+
+{% block content %}
+    <div class="page-title">
+        <h1>{{ translate('Return') }}</h1>
+    </div>
+    {{ forms.renderForm(form) }}
+{% endblock %}

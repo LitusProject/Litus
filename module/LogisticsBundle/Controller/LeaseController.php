@@ -81,6 +81,59 @@ class LeaseController extends LogisticsController
         );
     }
 
+    public function returnAction() {
+        $form = new AddReturnForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if($form->isValid()) {
+                $data = $form->getFormData($formData);
+
+                $item = $this->getEntityManager()
+                        ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                        ->findOneByBarcode($data['barcode']);
+                /* @var $item \LogisticsBundle\Entity\Lease\Item */
+                $lease = current($this->getEntityManager()
+                        ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                        ->findUnreturnedByItem($item));
+                /* @var $lease \LogisticsBundle\Entity\Lease\Lease */
+                $lease->setReturned(true);
+                $lease->setReturnedTo($this->getAuthentication()->getPersonObject());
+                $lease->setReturnedDate(new DateTime);
+                $lease->setReturnedPawn($data['returned_pawn']);
+                $lease->setReturnedBy($data['returned_by']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The return was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'logistics_lease',
+                    array(
+                        'action'=> 'show',
+                        'id'=>$lease->getId(),
+                    )
+                );
+
+                return new ViewModel;
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form'=> $form,
+            )
+        );
+    }
+
     public function showAction()
     {
         if(!($lease = $this->_getLease()))

@@ -17,6 +17,7 @@ namespace LogisticsBundle\Form\Lease;
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
+    LogisticsBundle\Component\Validator\LeaseValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -90,6 +91,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'adapter'     => 'Ean12',
                                 'useChecksum' => false,
                             ),
+                            new LeaseValidator($this->_entityManager, true),
                         ),
                     ),
                 )
@@ -99,7 +101,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'returned_from',
+                    'name'     => 'returned_by',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
