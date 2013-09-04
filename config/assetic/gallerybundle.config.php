@@ -37,9 +37,9 @@ return array(
         'gallery' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@site_css',
             '@flaty_css',
             '@bootstrap_responsive_css',
+            '@site_css',
             '@gallery_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
