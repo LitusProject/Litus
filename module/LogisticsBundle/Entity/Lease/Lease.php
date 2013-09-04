@@ -151,7 +151,7 @@ class Lease
     /**
      * Get leasedBy
      *
-     * @return string
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getLeasedBy()
     {

@@ -85,6 +85,12 @@ class LeaseController extends LogisticsController
     {
         if(!($lease = $this->_getLease()))
             return new ViewModel;
+
+        return new ViewModel(
+            array(
+                'lease'=>$lease,
+            )
+        );
     }
 
     /**
