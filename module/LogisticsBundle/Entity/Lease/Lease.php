@@ -273,12 +273,12 @@ class Lease
     /**
      * Set returnedPawn
      *
-     * @param integer $returnedPawn
+     * @param float $returnedPawn
      * @return Lease
      */
     public function setReturnedPawn($returnedPawn)
     {
-        $this->returnedPawn = $returnedPawn;
+        $this->returnedPawn = $returnedPawn*100;
 
         return $this;
     }
