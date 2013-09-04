@@ -41,10 +41,23 @@ class Item
      * The barcode of the item
      * @var int
      *
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="bigint", unique=true)
      */
     private $barcode;
 
+    /**
+     * Create a new Item entity
+     * @param string $name The name of the item (preferrably unique)
+     * @param int $barcode The barcode of the item
+     * @param type $additionalInfo Extra information to show when leasing the item
+     */
+    public function __construct($name, $barcode, $additionalInfo = '')
+    {
+        $this->name = $name;
+        $this->barcode = $barcode;
+        $this->additionalInfo = $additionalInfo;
+    }
+    
     /**
      * Get id
      *
