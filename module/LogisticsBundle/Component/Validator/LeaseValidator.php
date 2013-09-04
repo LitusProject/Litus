@@ -27,13 +27,15 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
      */
     const NO_LEASE_ITEM = 'noLeaseItem';
     const ITEM_LEASED = 'itemLeased';
+    const ITEM_RETURNED = 'itemReturned';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
         self::NO_LEASE_ITEM => 'No lease item with this barcode exists',
-        self::ITEM_LEASED => 'This item is already leased to someone',
+        self::ITEM_LEASED => 'This item is already leased',
+        self::ITEM_RETURNED => 'This item is already returned',
     );
 
     /**
@@ -42,17 +44,24 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
+     * True if the item has to be leased for the validator to be valid.
+     * @var boolean
+     */
+    private $_mustBeLeased;
+
+    /**
      * Sets validator options
      *
-     * @param mixed $token
-     * @param string $format
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param boolean $mustBeLeased If true, the item must be leased to pass the validation. Else it shouldn't.
      * @return void
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, $mustBeLeased = false)
     {
         parent::__construct(null);
 
         $this->_entityManager = $entityManager;
+        $this->_mustBeLeased = !!$mustBeLeased;
     }
 
     /**
@@ -78,11 +87,24 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease')
                 ->findUnreturnedByItem($item);
 
-        if(count($unreturned) > 0) {
-            $this->error(self::ITEM_LEASED);
-            return false;
+        switch(count($unreturned)) {
+            case 0:
+                if($this->_mustBeLeased) {
+                    $this->error(self::ITEM_RETURNED);
+
+                    return false;
+                }
+
+                return true;
+            default:
+                if(!$this->_mustBeLeased) {
+                    $this->error(self::ITEM_LEASED);
+
+                    return false;
+                }
+
+                return true;
         }
 
-        return true;
     }
 }
