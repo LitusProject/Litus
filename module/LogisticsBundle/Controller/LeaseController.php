@@ -146,6 +146,31 @@ class LeaseController extends LogisticsController
         );
     }
 
+    public function searchAction()
+    {
+        $query = $this->getRequest()->getQuery('q');
+        $results = array();
+        if($query !== null) {
+            $items = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                    ->searchByName($query);
+            foreach($items as $item) {
+                /* @var $item \LogisticsBundle\Entity\Lease\Item */
+                $results[] = array(
+                    'id' => $item->getBarcode(),
+                    'value' => $item->getName(),
+                    'additional_info' => $item->getAdditionalInfo(),
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'result'=>$results,
+            )
+        );
+    }
+
     /**
      *
      * @return null|\LogisticsBundle\Entity\Lease\Lease

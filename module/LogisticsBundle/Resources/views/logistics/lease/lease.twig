@@ -7,3 +7,21 @@
     </div>
     {{ forms.renderForm(form) }}
 {% endblock %}
+
+{% block content_script %}
+<script>
+    $('#item').typeaheadRemote({
+        source: "{{ url('logistics_lease', { 'action': 'search' }) }}?q="
+    }).change(function(e) {
+        $('#additional_info').remove();
+        if ($(this).data('value')) {
+            $('#barcode').val($(this).data('value').id);
+            if($(this).data('value').additional_info) {
+                $('#item').parent().append('<span class="help-block" id="additional_info">'+$(this).data('value').additional_info+'</span>');
+            }
+        } else {
+            $('#barcode').val('');
+        }
+    });
+</script>
+{% endblock %}

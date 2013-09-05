@@ -46,7 +46,8 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->_entityManager = $entityManager;
 
         $field = new Text('item');
-        $field->setLabel('Search item');
+        $field->setLabel('Search item')
+            ->setAttribute('autocomplete', false);
         $this->add($field);
 
         $field = new Text('barcode');
