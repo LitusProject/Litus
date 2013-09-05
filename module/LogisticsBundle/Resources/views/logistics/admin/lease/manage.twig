@@ -17,6 +17,13 @@
             <p>An error occurred while trying to delete the item.</p>
         </div>
     </div>
+    <div class="flashmessage error_message full_width item_remove_error_unreturned_leases hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>There are still unreturned leases for the item.</p>
+            <p>The item cannot be deleted until all leases for this item have been returned.</p>
+        </div>
+    </div>
     <div id="controller_action">
         <table class="full_width manage">
             <thead>
@@ -86,10 +93,20 @@
             var id = $(this).data('id');
             removeItem.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('logistics_admin_lease', {"action": "delete"})}}' + $this.data('id'), function  (data) {
-                    if (data && 'success' == data.status) {
+                    if (data) {
                         $('.flashmessage').addClass('hide');
-                        $('.item_remove_success').removeClass('hide');
-                        $('.item[data-id='+id+']').remove();
+                        switch(data.status) {
+                            case 'success':
+                                $('.item_remove_success').removeClass('hide');
+                                $('.item[data-id='+id+']').remove();
+                                break;
+                            case 'unreturned_leases':
+                                $('.item_remove_error_unreturned_leases').removeClass('hide');
+                                break;
+                            default:
+                                errorRemove();
+                                break;
+                        }
                         removeItem.modal('hide');
                     } else {
                         errorRemove();

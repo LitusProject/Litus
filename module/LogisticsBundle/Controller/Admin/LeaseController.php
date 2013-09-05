@@ -140,6 +140,26 @@ class LeaseController extends AdminController
         if (!($item = $this->_getItem()))
             return new ViewModel;
 
+
+        $leaseRepo = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Lease\Lease');
+        /* @var $leaseRepo \LogisticsBundle\Repository\Lease\Lease */
+        if(count($leaseRepo->findUnreturnedByItem($item)) > 0) {
+
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'status' => 'unreturned_leases'
+                    ),
+                )
+            );
+        }
+
+        $leases = $leaseRepo->findByItem($item);
+        foreach($leases as $lease) {
+            $this->getEntityManager()->remove($lease);
+        }
+
         $this->getEntityManager()->remove($item);
 
         $this->getEntityManager()->flush();
