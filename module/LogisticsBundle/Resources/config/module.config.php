@@ -56,6 +56,21 @@ return array(
                     ),
                 ),
             ),
+            'logistics_admin_lease' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/lease[/:action[/:id]][/page/:page][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'logistics_admin_lease',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'logistics_index' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -207,6 +222,7 @@ return array(
             'logistics_install'               => 'LogisticsBundle\Controller\Admin\InstallController',
             'logistics_admin_driver'          => 'LogisticsBundle\Controller\Admin\DriverController',
             'logistics_admin_van_reservation' => 'LogisticsBundle\Controller\Admin\VanReservationController',
+            'logistics_admin_lease'           => 'LogisticsBundle\Controller\Admin\LeaseController',
 
             'logistics_index'                 => 'LogisticsBundle\Controller\IndexController',
             'logistics_auth'                  => 'LogisticsBundle\Controller\AuthController',

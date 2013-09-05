@@ -10,7 +10,7 @@
     <dd>
         <dl class="dl-horizontal">
             <dt>{{ translate('From') }}</dt>
-            <dd>{{ lease.getLeasedBy().getUsername() }}</dd>
+            <dd>{{ lease.getLeasedBy().getFullName() }}</dd>
             <dt>{{ translate('To') }}</dt>
             <dd>{{ lease.getLeasedTo() }}</dd>
             <dt>{{ translate('Date') }}</dt>
@@ -26,7 +26,7 @@
                 <dt>{{ translate('From') }}</dt>
                 <dd>{{ lease.getReturnedBy() }}</dd>
                 <dt>{{ translate('To') }}</dt>
-                <dd>{{ lease.getReturnedTo().getUsername() }}</dd>
+                <dd>{{ lease.getReturnedTo().getFullName() }}</dd>
                 <dt>{{ translate('Date') }}</dt>
                 <dd>{{ lease.getReturnedDate()|date }}</td>
                 <dt>{{ translate('Pawn') }}</dt>

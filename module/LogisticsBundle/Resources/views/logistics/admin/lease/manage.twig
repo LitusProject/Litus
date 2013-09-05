@@ -1,0 +1,108 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/lease/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width item_remove_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The item was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width item_remove_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the item.</p>
+        </div>
+    </div>
+    <div id="controller_action">
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="150px">Barcode</th>
+                    <th>Additional Info</th>
+                    <th width="100px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in paginator %}
+                    <tr class="item" data-id="{{ item.getId() }}">
+                        <td>{{ item.getName() }}</td>
+                        <td>{{ item.getBarcode() }}</td>
+                        <td>{{ item.getAdditionalInfo() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('logistics_admin_lease', 'edit') %}
+                                <a href="{{ url('logistics_admin_lease', {"action": "edit", "id": item.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('logistics_admin_lease', 'delete') %}
+                                <a href="#" data-id="{{ item.getId() }}" data-name="{{ item.getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal hide fade" id="removeItem">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Item
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following item: <b class="name"></b>?
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeItem = $('#removeItem');
+            removeItem.find('.name').html($(this).data('name'));
+            var id = $(this).data('id');
+            removeItem.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_lease', {"action": "delete"})}}' + $this.data('id'), function  (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.item_remove_success').removeClass('hide');
+                        $('.item[data-id='+id+']').remove();
+                        removeItem.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeItem.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.item_remove_error').removeClass('hide');
+            $('#removeItem').modal('hide');
+        }
+    </script>
+{% endblock %}

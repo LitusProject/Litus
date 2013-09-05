@@ -41,6 +41,13 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'logistics_admin_lease' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'logistics_index' => array(
             '@common_jquery',
             '@common_jqueryui',
