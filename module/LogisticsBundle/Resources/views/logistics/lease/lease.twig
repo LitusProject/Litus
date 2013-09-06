@@ -11,7 +11,7 @@
 {% block content_script %}
 <script>
     $('#item').typeaheadRemote({
-        source: "{{ url('logistics_lease', { 'action': 'search' }) }}?q="
+        source: "{{ url('logistics_lease', { 'action': 'typeahead' }) }}?q="
     }).change(function(e) {
         $('#additional_info').remove();
         if ($(this).data('value')) {

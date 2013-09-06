@@ -146,7 +146,7 @@ class LeaseController extends LogisticsController
         );
     }
 
-    public function searchAction()
+    public function typeaheadAction()
     {
         $query = $this->getRequest()->getQuery('q');
         $results = array();
