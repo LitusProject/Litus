@@ -57,6 +57,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('leased_to');
         $field->setLabel('Leased to')
+                ->setAttribute('autocomplete', false)
                 ->setRequired();
         $this->add($field);
 

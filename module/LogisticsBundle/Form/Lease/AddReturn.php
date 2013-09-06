@@ -57,6 +57,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('returned_by');
         $field->setLabel('Returned by')
+                ->setAttribute('autocomplete', false)
                 ->setRequired();
         $this->add($field);
 
@@ -92,8 +93,8 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'adapter'     => 'Ean12',
                                 'useChecksum' => false,
                             ),
-                            new LeaseValidator($this->_entityManager, true),
                         ),
+                        new LeaseValidator($this->_entityManager, true),
                     ),
                 )
             )

@@ -23,5 +23,9 @@
             $('#barcode').val('');
         }
     });
+
+    $('#returned_by').typeaheadRemote({
+        source: "{{ url('common_admin_academic_typeahead') }}"
+    });
 </script>
 {% endblock %}
