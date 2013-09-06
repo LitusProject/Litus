@@ -24,115 +24,121 @@ class LeaseController extends LogisticsController
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease')
                 ->findAllUnreturned();
 
+        $leaseForm = $this->_handleLeaseForm();
+        $returnForm = $this->_handleReturnForm();
+
         return new ViewModel(
             array(
                 'leases'=>$leases,
+                'leaseForm' => $leaseForm,
+                'returnForm' => $returnForm,
             )
         );
     }
 
-    public function leaseAction()
+    /**
+     * Handles submissions and creation of the lease form
+     * @return \LogisticsBundle\Form\Lease\AddLease
+     */
+    private function _handleLeaseForm()
     {
-        $form = new AddLeaseForm($this->getEntityManager());
+        $form = new AddLeaseForm($this->getEntityManager(), 'lease');
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            if(isset($formData['lease'])) {
+                $form->setData($formData);
 
-            if($form->isValid()) {
-                $data = $form->getFormData($formData);
-                $item = $this->getEntityManager()
-                        ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                        ->findOneByBarcode($data['barcode']);
-                $lease = new Lease(
-                    $item,
-                    new DateTime,
-                    $this->getAuthentication()->getPersonObject(),
-                    $data['leased_to'],
-                    $data['leased_pawn']
-                );
-                $this->getEntityManager()->persist($lease);
-                $this->getEntityManager()->flush();
+                if($form->isValid()) {
+                    $data = $form->getFormData($formData);
+                    $item = $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                            ->findOneByBarcode($data['barcode']);
+                    $lease = new Lease(
+                        $item,
+                        new DateTime,
+                        $this->getAuthentication()->getPersonObject(),
+                        $data['leased_to'],
+                        $data['leased_pawn']
+                    );
+                    $this->getEntityManager()->persist($lease);
+                    $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The lease was successfully added!'
-                    )
-                );
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'The lease was successfully added!'
+                        )
+                    );
 
-                $this->redirect()->toRoute(
-                    'logistics_lease',
-                    array(
-                        'action'=> 'show',
-                        'id'=>$lease->getId(),
-                    )
-                );
+                    $this->redirect()->toRoute(
+                        'logistics_lease',
+                        array(
+                            'action'=> 'show',
+                            'id'=>$lease->getId(),
+                        )
+                    );
 
-                return new ViewModel;
+                }
             }
         }
 
-        return new ViewModel(
-            array(
-                'form'=> $form,
-            )
-        );
+        return $form;
     }
 
-    public function returnAction()
+    /**
+     * Handles submissions and creation of the return form
+     * @return \LogisticsBundle\Form\Lease\AddReturn
+     */
+    private function _handleReturnForm()
     {
-        $form = new AddReturnForm($this->getEntityManager());
+        $form = new AddReturnForm($this->getEntityManager(), 'return');
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            if(isset($formData['return'])) {
+                $form->setData($formData);
 
-            if($form->isValid()) {
-                $data = $form->getFormData($formData);
+                if($form->isValid()) {
+                    $data = $form->getFormData($formData);
 
-                $item = $this->getEntityManager()
-                        ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                        ->findOneByBarcode($data['barcode']);
-                /* @var $item \LogisticsBundle\Entity\Lease\Item */
-                $lease = current($this->getEntityManager()
-                        ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-                        ->findUnreturnedByItem($item));
-                /* @var $lease \LogisticsBundle\Entity\Lease\Lease */
-                $lease->setReturned(true);
-                $lease->setReturnedTo($this->getAuthentication()->getPersonObject());
-                $lease->setReturnedDate(new DateTime);
-                $lease->setReturnedPawn($data['returned_pawn']);
-                $lease->setReturnedBy($data['returned_by']);
+                    $item = $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                            ->findOneByBarcode($data['barcode']);
+                    /* @var $item \LogisticsBundle\Entity\Lease\Item */
+                    $lease = current($this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                            ->findUnreturnedByItem($item));
+                    /* @var $lease \LogisticsBundle\Entity\Lease\Lease */
+                    $lease->setReturned(true);
+                    $lease->setReturnedTo($this->getAuthentication()->getPersonObject());
+                    $lease->setReturnedDate(new DateTime);
+                    $lease->setReturnedPawn($data['returned_pawn']);
+                    $lease->setReturnedBy($data['returned_by']);
 
-                $this->getEntityManager()->flush();
+                    $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The return was successfully added!'
-                    )
-                );
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'The return was successfully added!'
+                        )
+                    );
 
-                $this->redirect()->toRoute(
-                    'logistics_lease',
-                    array(
-                        'action'=> 'show',
-                        'id'=>$lease->getId(),
-                    )
-                );
-
-                return new ViewModel;
+                    $this->redirect()->toRoute(
+                        'logistics_lease',
+                        array(
+                            'action'=> 'show',
+                            'id'=>$lease->getId(),
+                        )
+                    );
+                }
             }
         }
 
-        return new ViewModel(
-            array(
-                'form'=> $form,
-            )
-        );
+        return $form;
     }
 
     public function showAction()

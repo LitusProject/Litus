@@ -47,11 +47,13 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('item');
         $field->setLabel('Search item')
+            ->setAttribute('class', 'js-item-search')
             ->setAttribute('autocomplete', false);
         $this->add($field);
 
         $field = new Text('barcode');
         $field->setLabel('Barcode')
+                ->setAttribute('class', 'js-item-barcode')
                 ->setRequired();
         $this->add($field);
 
@@ -66,8 +68,8 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                 ->setRequired();
         $this->add($field);
 
-        $field = new Submit('add');
-        $field->setValue('Add')
+        $field = new Submit('return');
+        $field->setValue('Register return')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
 
