@@ -24,12 +24,17 @@ class LeaseController extends LogisticsController
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease')
                 ->findAllUnreturned();
 
+        $paginator = $this->paginator()->createFromArray(
+                $leases, $this->getParam('page')
+        );
+
         $leaseForm = $this->_handleLeaseForm();
         $returnForm = $this->_handleReturnForm();
 
         return new ViewModel(
             array(
-                'leases'=>$leases,
+                'leases'=> $paginator,
+                'paginationControl'=>  $this->paginator()->createControl(),
                 'leaseForm' => $leaseForm,
                 'returnForm' => $returnForm,
             )
