@@ -51,6 +51,19 @@
         {% include 'site/partials/paginationControl.twig' %}
     </div>
 </div>
+<div class="row">
+    <div class="span12">
+        <div class="page-header">
+            <h1>{{ translate('Item search') }}</h1>
+        </div>
+        <form action="{{ url('logistics_lease', {'action': 'history' }) }}" id="search">
+            <div class="input-append">
+                <input class="js-item-search js-item-barcode" name="barcode">
+                <button class="btn">{{ translate('Search') }}</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
 
 {% block content_script %}

@@ -5,7 +5,7 @@
 <div class="row">
     <div class="span12">
         <div class="page-header">
-            <h1>{{ translate('Lease history') }} <small>{{ item.getName() }} ({{ item.getBarcode() }}</small></h1>
+            <h1>{{ translate('Lease history') }} <small>{{ item.getName() }} ({{ item.getBarcode() }})</small></h1>
         </div>
         <table class="table">
             <thead>
@@ -13,7 +13,6 @@
                     <th>{{ translate('Leased to') }}</th>
                     <th>{{ translate('Leased on') }}</th>
                     <th>{{ translate('Returned by') }}</th>
-                    <th>{{ translate('Pawn') }}</th>
                     <th>{{ translate('Actions') }}</th>
                 </tr>
             </thead>
@@ -23,7 +22,6 @@
                         <td>{{ lease.getLeasedTo() }}</td>
                         <td>{{ lease.getLeasedDate()|date }}</td>
                         <td>{{ lease.getReturnedBy() }}</td>
-                        <td>{{ lease.getLeasedPawn()|number_format(2) }}</td>
                         <td>
                             <a href="{{ url('logistics_lease',{ 'action': 'show', 'id': lease.getId() }) }}" class="btn btn-mini">{{ translate('Details') }}</a>
                         </td>
