@@ -13,7 +13,7 @@
         <tbody>
             {% for lease in leases %}
                 <tr>
-                    <td>{{ lease.getItem().getName() }}</td>
+                    <td><a href="{{ url('logistics_lease',{ 'action': 'show', 'id': lease.getId() }) }}">{{ lease.getItem().getName() }}</a></td>
                     <td>{{ lease.getItem().getBarcode() }}</td>
                     <td>{{ lease.getLeasedTo() }}</td>
                     <td>{{ lease.getLeasedDate()|date }}</td>
