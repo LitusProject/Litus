@@ -158,6 +158,28 @@ class LeaseController extends LogisticsController
         );
     }
 
+    public function historyAction()
+    {
+        if(!($item = $this->_getItem()))
+            return new ViewModel;
+
+        $leases = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                ->findByItem($item);
+
+        $paginator = $this->paginator()->createFromArray(
+            $leases, $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'item'=>$item,
+                'leases'=>$paginator,
+                'paginationControl'=>$this->paginator()->createControl()
+            )
+        );
+    }
+
     public function typeaheadAction()
     {
         $query = $this->getRequest()->getQuery('q');
@@ -250,5 +272,46 @@ class LeaseController extends LogisticsController
         }
 
         return $lease;
+    }
+
+    /**
+     *
+     * @return null|\LogisticsBundle\Entity\Lease\Item
+     */
+    private function _getItem()
+    {
+        if ($this->getParam('id') === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No barcode was given to identify the item!'
+                )
+            );
+
+            $this->redirect()->toRoute('logistics_lease');
+
+            return;
+        }
+
+        $item = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                ->findOneByBarcode($this->getParam('id'));
+
+        if ($item === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No item with the given barcode was found!'
+                )
+            );
+
+            $this->redirect()->toRoute('logistics_lease');
+
+            return;
+        }
+
+        return $item;
     }
 }
