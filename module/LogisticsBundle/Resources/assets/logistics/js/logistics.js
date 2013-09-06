@@ -14,7 +14,6 @@
         dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         buttonText: {},
-        editable: false,
         loadError: function () {},
         removeError: function () {},
         removeSuccess: function () {},
@@ -32,7 +31,7 @@
         tDriver: 'Driver',
         tPassenger: 'Passenger',
         tDelete: 'Delete',
-        tEdit: 'Edit',
+        tEdit: 'Edit'
     };
 
     var methods = {
@@ -58,7 +57,7 @@
         } else {
             $.error('Method ' +  method + ' does not exist on $.logisticsCalendar');
         }
-    }
+    };
 
     function _init($this) {
         var settings = $this.data('logisticsCalendar');
@@ -143,12 +142,12 @@
 
         $.post(settings.fetchUrl + start + '/' + end, function (data) {
             if (data && data.status == 'success') {
-                reservations = data.reservations;
+                var reservations = data.reservations;
 
                 var events = [];
                 var firstHour = 24;
 
-                for (index in reservations) {
+                for (var index in reservations) {
                     var reservation = reservations[index];
                     firstHour = Math.min(firstHour, new Date(reservation.start*1000).getHours());
 
@@ -207,7 +206,7 @@
 
         $('.popover #passengerSearch').typeaheadRemote(
             {
-                source: settings.passengerTypeaheadUrl,
+                source: settings.passengerTypeaheadUrl
             }
         ).change(function(e) {
             if ($(this).data('value')) {
@@ -245,9 +244,9 @@
                     settings.addError();
                     $('.popover form').find('ul.errors').remove();
                     if (data && data.errors) {
-                        for(element in data.errors) {
+                        for(var element in data.errors) {
                             var list = $('<ul>', {'class': 'errors'});
-                            for (error in data.errors[element])
+                            for (var error in data.errors[element])
                                 list.append($('<li>').html(data.errors[element][error]));
                             var div = $('<div>', {'class': 'help-inline'}).append(list);
                             $('.popover form').find('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
@@ -300,34 +299,34 @@
             content.find('dl').append(
                 $('<dt>').html(settings.tLoad),
                 $('<dd>').html(event.load)
-            )
+            );
         }
 
         if (event.additional) {
             content.find('dl').append(
                 $('<dt>').html(settings.tAdditionalInformation),
                 $('<dd>').html(event.additional)
-            )
+            );
         }
 
         if (event.passenger) {
             content.find('dl').append(
                 $('<dt>').html(settings.tPassenger),
                 $('<dd>').html(event.passenger)
-            )
+            );
         }
 
         if (event.driver) {
             content.find('dl').append(
                 $('<dt>').html(settings.tDriver),
                 $('<dd>').html(event.driver)
-            )
+            );
         }
 
         if (settings.editable) {
             content.append(
                 '<hr>'
-            )
+            );
 
             if (settings.deletable) {
                 content.append(
@@ -416,7 +415,7 @@
 
         $('.popover #passengerSearch').typeaheadRemote(
             {
-                source: settings.passengerTypeaheadUrl,
+                source: settings.passengerTypeaheadUrl
             }
         ).change(function(e) {
             if ($(this).data('value')) {
@@ -472,11 +471,11 @@
     }
 
     function _formatDate(date) {
-        return $.fullCalendar.formatDate(date, 'dd/MM/yyyy H:mm')
+        return $.fullCalendar.formatDate(date, 'dd/MM/yyyy H:mm');
     }
 
     function _getPopoverPlacement(startDay, view) {
-        var placement = 'rigth';
+        var placement = 'right';
         if (view.name == 'month') {
             placement = startDay.getDay() < 4 && startDay.getDay() > 0 ? 'right' : 'left';
         } else if (view.name == 'agendaWeek') {
