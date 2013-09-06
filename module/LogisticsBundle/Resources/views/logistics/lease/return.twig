@@ -22,6 +22,34 @@
         } else {
             $('#barcode').val('');
         }
+        $('#barcode').change();
+    });
+
+    $('#barcode').change(function() {
+        var $this = $(this);
+        if($this.val().length < 12)
+            return;
+        var $control_group = $this.parents('.control-group');
+        $control_group.removeClass('error');
+        var $controls = $control_group.find('.controls');
+        $controls.find('.help-inline').hide();
+        $.get("{{ url('logistics_lease', {'action':'availabilityCheck'}) }}"+$this.val(), function(data) {
+            if(!data)
+                return;
+            switch(data.status) {
+                case 'noSuchItem':
+                    $control_group.addClass('error');
+                    $controls.append('<div class="help-inline"><ul><li>{{ translate('No lease item with this barcode exists') }}</li></ul></div>');
+                    break;
+                case 'returned':
+                    $control_group.addClass('error');
+                    $controls.append('<div class="help-inline"><ul><li>{{ translate('This item is already returned') }}</li></ul></div>');
+                    break;
+                case 'leased':
+                    $control_group.addClass('success');
+                    break;
+            }
+        }, 'json');
     });
 
     $('#returned_by').typeaheadRemote({

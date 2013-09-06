@@ -81,7 +81,8 @@ class LeaseController extends LogisticsController
         );
     }
 
-    public function returnAction() {
+    public function returnAction()
+    {
         $form = new AddReturnForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
@@ -167,6 +168,34 @@ class LeaseController extends LogisticsController
         return new ViewModel(
             array(
                 'result'=>$results,
+            )
+        );
+    }
+
+    public function availabilityCheckAction()
+    {
+        $barcode = $this->getParam('id');
+        $item = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                ->findOneByBarcode($barcode);
+        if($item) {
+            $leases = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                    ->findUnreturnedByItem($item);
+            if(count($leases) > 0) {
+                $status = 'leased';
+            } else {
+                $status = 'returned';
+            }
+        } else {
+            $status = 'noSuchItem';
+        }
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => $status
+                )
             )
         );
     }
