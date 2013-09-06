@@ -58,7 +58,8 @@
         </div>
         <form action="{{ url('logistics_lease', {'action': 'history' }) }}" id="search">
             <div class="input-append">
-                <input class="js-item-search js-item-barcode" name="barcode">
+                <input class="js-item-search" type="text">
+                <input type="hidden" class="js-item-barcode" name="barcode">
                 <button class="btn">{{ translate('Search') }}</button>
             </div>
         </form>
@@ -75,22 +76,25 @@
         var $form = $this.parents('form');
         $form.find('.js-additional_info').remove();
         var $barcode = $form.find('.js-item-barcode');
-        if ($(this).data('value')) {
+        if(/^[0-9]{12}$/.test($this.val())) {
+            $barcode.val($this.val());
+        } else if ($this.data('value')) {
             $barcode.val($this.data('value').id);
             if($this.data('value').additional_info) {
-                $this.parent().append('<span class="help-block js-additional_info">'+$(this).data('value').additional_info+'</span>');
+                $this.parent().append('<span class="help-block js-additional_info">'+$this.data('value').additional_info+'</span>');
             }
         } else {
             $barcode.val('');
         }
-        $barcode.change();
+        if($barcode[0] !== $this[0])
+            $barcode.change();
     });
 
     $('.js-item-barcode').change(function() {
         var $this = $(this);
         if($this.val().length < 12)
             return;
-        var $control_group = $this.parents('.control-group');
+        var $control_group = $this.prev();
         $control_group.removeClass('error').removeClass('success');
         var $controls = $control_group.find('.controls');
         $controls.find('.help-inline').hide();
@@ -135,5 +139,6 @@
         $('#returned_pawn').val(pawn);
         $('#returned_by').focus();
     });
+
 </script>
 {% endblock %}

@@ -14,8 +14,8 @@
 
 namespace LogisticsBundle\Form\Lease;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\Hidden,
     CommonBundle\Component\Validator\Price as PriceValidator,
     LogisticsBundle\Component\Validator\LeaseValidator,
     Doctrine\ORM\EntityManager,
@@ -46,15 +46,13 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->_entityManager = $entityManager;
 
         $field = new Text('item');
-        $field->setLabel('Search item')
+        $field->setLabel('Item')
             ->setAttribute('class', 'js-item-search')
             ->setAttribute('autocomplete', false);
         $this->add($field);
 
-        $field = new Text('barcode');
-        $field->setLabel('Barcode')
-                ->setAttribute('class', 'js-item-barcode')
-                ->setRequired();
+        $field = new Hidden('barcode');
+        $field->setAttribute('class', 'js-item-barcode');
         $this->add($field);
 
         $field = new Text('leased_to');
@@ -69,7 +67,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
 
         $field = new Submit('lease');
-        $field->setValue('Register lease')
+        $field->setValue('Lease')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
 

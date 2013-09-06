@@ -14,7 +14,7 @@
 
 namespace LogisticsBundle\Form\Lease;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
+use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     LogisticsBundle\Component\Validator\LeaseValidator,
@@ -46,15 +46,13 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->_entityManager = $entityManager;
 
         $field = new Text('item');
-        $field->setLabel('Search item')
+        $field->setLabel('Item')
             ->setAttribute('class', 'js-item-search')
             ->setAttribute('autocomplete', false);
         $this->add($field);
 
-        $field = new Text('barcode');
-        $field->setLabel('Barcode')
-                ->setAttribute('class', 'js-item-barcode')
-                ->setRequired();
+        $field = new Hidden('barcode');
+        $field->setAttribute('class', 'js-item-barcode');
         $this->add($field);
 
         $field = new Text('returned_by');
@@ -69,7 +67,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
 
         $field = new Submit('return');
-        $field->setValue('Register return')
+        $field->setValue('Return')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
 

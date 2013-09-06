@@ -160,7 +160,7 @@ class LeaseController extends LogisticsController
 
     public function historyAction()
     {
-        if(!($item = $this->_getItem()))
+        if(!($item = $this->_getItem($this->getRequest()->getQuery('barcode'))))
             return new ViewModel;
 
         $leases = $this->getEntityManager()
@@ -276,16 +276,17 @@ class LeaseController extends LogisticsController
 
     /**
      *
+     * @param int|null $barcode If set, search for the item by barcode instead of by id.
      * @return null|\LogisticsBundle\Entity\Lease\Item
      */
-    private function _getItem()
+    private function _getItem($barcode = null)
     {
-        if ($this->getParam('id') === null) {
+        if ($this->getParam('id') === null && $barcode === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No barcode was given to identify the item!'
+                    'No id or barcode was given to identify the item!'
                 )
             );
 
@@ -294,16 +295,22 @@ class LeaseController extends LogisticsController
             return;
         }
 
-        $item = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                ->findOneByBarcode($this->getParam('id'));
+        if($barcode) {
+            $item = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                    ->findOneByBarcode($barcode);
+        } else {
+            $item = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Lease\Item')
+                    ->find($this->getParam('id'));
+        }
 
         if ($item === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No item with the given barcode was found!'
+                    'No item with the given id or barcode was found!'
                 )
             );
 
