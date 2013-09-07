@@ -328,7 +328,7 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.printers_enable',
-                    'value'       => 1,
+                    'value'       => '1',
                     'description' => 'Flag whether the printers are enabled',
                 ),
                 array(
