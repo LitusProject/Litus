@@ -127,7 +127,7 @@ class Printer
     private static function _print(EntityManager $entityManager, $printer, $data)
     {
         $enabled = $entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.printers_enable') == 1;
+            ->getConfigValue('cudi.printers_enable') == '1';
 
         if (!$enabled)
             return;
