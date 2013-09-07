@@ -100,8 +100,6 @@ class Booking
             )
             ->setSubject($subject);
 
-        echo str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message));
-
         if ('development' != getenv('APPLICATION_ENV'))
             $mailTransport->send($mail);
     }

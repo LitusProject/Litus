@@ -89,7 +89,36 @@ class PianoReservation extends EntityRepository
                         )
                     ),
                     $query->expr()->eq('r.player', ':person'),
-                $query->expr()->eq('r.confirmed', 'true')
+                    $query->expr()->eq('r.confirmed', 'true')
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByDatesAndPerson(DateTime $start, DateTime $end, Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orx(
+                        $query->expr()->andx(
+                            $query->expr()->gte('r.startDate', ':start'),
+                            $query->expr()->lte('r.startDate', ':end')
+                        ),
+                        $query->expr()->andx(
+                            $query->expr()->gte('r.endDate', ':start'),
+                            $query->expr()->lte('r.endDate', ':end')
+                        )
+                    ),
+                    $query->expr()->eq('r.player', ':person')
                 )
             )
             ->setParameter('start', $start)

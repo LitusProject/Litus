@@ -34,7 +34,7 @@ class PianoReservationConflict extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::CONFLICT_EXISTS => 'A conflicting reservation already exists for this resource',
+        self::CONFLICT_EXISTS => 'A conflicting reservation already exists',
         self::INVALID_FORMAT  => 'One of the dates is not in the correct format',
     );
 
