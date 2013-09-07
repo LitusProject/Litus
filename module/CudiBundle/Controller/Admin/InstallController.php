@@ -327,6 +327,11 @@ VTK Cudi
                     'description' => 'The port of the print socket',
                 ),
                 array(
+                    'key'         => 'cudi.printers_enable',
+                    'value'       => 1,
+                    'description' => 'Flag whether the printers are enabled',
+                ),
+                array(
                     'key'         => 'cudi.printers',
                     'value'       => serialize(
                         array(
@@ -339,7 +344,7 @@ VTK Cudi
                             'paydesk_3' => 'SaleThree_Printer',
                         )
                     ),
-                    'description' => 'The port of the print socket',
+                    'description' => 'The names of the printers',
                 ),
                 array(
                     'key'         => 'cudi.tshirt_article',
