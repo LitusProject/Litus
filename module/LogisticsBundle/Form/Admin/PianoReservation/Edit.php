@@ -15,7 +15,7 @@
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
+    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     Doctrine\ORM\EntityManager,

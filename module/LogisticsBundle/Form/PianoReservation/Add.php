@@ -20,7 +20,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
     DateInterval,
     DateTime,
     Doctrine\ORM\EntityManager,
-    LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
+    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     Zend\InputFilter\InputFilter,
@@ -179,6 +179,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $factory = new InputFactory();
 
         foreach($this->_weeks as $key => $week) {
+            if (!isset($this->data['submit_' . $key]))
+                continue;
+
             $inputFilter->add(
                 $factory->createInput(
                     array(
