@@ -87,7 +87,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     $player
                 );
 
-                $reservation->setConfirmed(isset($formData['confirmed']));
+                $reservation->setConfirmed(isset($formData['confirmed']) && $formData['confirmed']);
 
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
@@ -142,7 +142,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     ->setEndDate(DateTime::createFromFormat('D d#m#Y H#i', $formData['end_date']))
                     ->setAdditionalInfo($formData['additional_info'])
                     ->setPlayer($player)
-                    ->setConfirmed(isset($formData['confirmed']));
+                    ->setConfirmed(isset($formData['confirmed']) && $formData['confirmed']);
 
                 $this->getEntityManager()->flush();
 

@@ -2,7 +2,8 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use DateTime,
+use CommonBundle\Entity\User\Person,
+    DateTime,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -70,6 +71,36 @@ class PianoReservation extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllConfirmedByDatesAndPerson(DateTime $start, DateTime $end, Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orx(
+                        $query->expr()->andx(
+                            $query->expr()->gte('r.startDate', ':start'),
+                            $query->expr()->lte('r.startDate', ':end')
+                        ),
+                        $query->expr()->andx(
+                            $query->expr()->gte('r.endDate', ':start'),
+                            $query->expr()->lte('r.endDate', ':end')
+                        )
+                    ),
+                    $query->expr()->eq('r.player', ':person'),
+                $query->expr()->eq('r.confirmed', 'true')
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function isTimeInExistingReservation(DateTime $date, $isStart)
     {
         $query = $this->_em->createQueryBuilder();
@@ -77,12 +108,14 @@ class PianoReservation extends EntityRepository
         if ($isStart) {
             $where = $query->expr()->andX(
                 $query->expr()->lte('r.startDate', ':date'),
-                $query->expr()->gt('r.endDate', ':date')
+                $query->expr()->gt('r.endDate', ':date'),
+                $query->expr()->eq('r.confirmed', 'true')
             );
         } else {
             $where = $query->expr()->andX(
                 $query->expr()->lt('r.startDate', ':date'),
-                $query->expr()->gte('r.endDate', ':date')
+                $query->expr()->gte('r.endDate', ':date'),
+                $query->expr()->eq('r.confirmed', 'true')
             );
         }
 
@@ -97,5 +130,39 @@ class PianoReservation extends EntityRepository
             ->getResult();
 
         return isset($resultSet[0]);
+    }
+
+    /**
+     * Finds all resources conflicting with the given start and end date for the given resource. Additionally, one id can be ignored to avoid conflicts with
+     * the resource itself.
+     *
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
+     * @param int $ignoreId
+     * @return array
+     */
+    public function findAllConflictingIgnoringId($startDate, $endDate, $resource, $ignoreId) {
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+        ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
+        ->where(
+            $query->expr()->andx(
+                $query->expr()->eq('r.resource', ':resource'),
+                $query->expr()->lt('r.startDate', ':end_date'),
+                $query->expr()->gt('r.endDate', ':start_date'),
+                $query->expr()->neq('r.id', ':id'),
+                $query->expr()->eq('r.confirmed', 'true')
+            )
+        )
+        ->setParameter('resource', $resource)
+        ->setParameter('start_date', $startDate)
+        ->setParameter('end_date', $endDate)
+        ->setParameter('id', $ignoreId)
+        ->getQuery()
+        ->getResult();
+
+        return $resultSet;
     }
 }

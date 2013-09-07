@@ -38,7 +38,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 foreach($form->getWeeks() as $key => $week) {
-                    if (!isset($formData['submit_' . $key])) {
+                    if (isset($formData['submit_' . $key])) {
                         $weekIndex = $key;
                         break;
                     }
@@ -57,6 +57,20 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                         $this->getAuthentication()->getPersonObject(),
                         $this->getAuthentication()->getPersonObject()
                     );
+
+                    $startWeek = new DateTime();
+                    $startWeek->setISODate($reservation->getStartDate()->format('Y'), $weekIndex)
+                        ->setTime(0, 0);
+                    $endWeek = clone $startWeek;
+                    $endWeek->add(new DateInterval('P7D'));
+
+                    $otherReservations = $this->getEntityManager()
+                        ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                        ->findAllConfirmedByDatesAndPerson($startWeek, $endWeek, $this->getAuthentication()->getPersonObject());
+
+                    if (sizeof($otherReservations) == 0) {
+                        $reservation->setConfirmed();
+                    }
 
                     $this->getEntityManager()->persist($reservation);
                     $this->getEntityManager()->flush();
