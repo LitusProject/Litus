@@ -64,6 +64,49 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     ),
                     'description' => 'Available time slots for a piano reservation',
                 ),
+                array(
+                    'key'         => 'logistics.piano_mail_to',
+                    'value'       => 'vice@vtk.be',
+                    'description' => 'The mail address piano reservation mails are send to',
+                ),
+                array(
+                    'key'         => 'logistics.piano_new_reservation',
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'New Piano Reservation',
+                                'content' => 'Dear,
+
+A new piano reservation was made:
+{{ name }} from {{ start }} until {{ end }}.
+
+VTK
+
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                        )
+                    ),
+                    'description' => 'The mail sent when a new piano reservation is created'
+                ),
+                array(
+                    'key'         => 'logistics.piano_new_reservation_confirmed',
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'New Piano Reservation',
+                                'content' => 'Dear,
+
+A new piano reservation was made and confirmed:
+{{ name }} from {{ start }} until {{ end }}.
+
+VTK
+
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                        )
+                    ),
+                    'description' => 'The mail sent when a new piano reservation is created and confirmed'
+                ),
             )
         );
 
@@ -78,6 +121,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'logistics_admin_driver' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'logistics_admin_piano_reservation' => array(
+                        'add', 'delete', 'edit', 'manage', 'old'
+                    ),
                     'logistics_admin_van_reservation' => array(
                         'add', 'delete', 'edit', 'manage', 'old'
                     ),
@@ -86,6 +132,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     ),
                     'logistics_auth' => array(
                         'login', 'logout', 'shibboleth',
+                    ),
+                    'logistics_piano' => array(
+                        'index', 'overview'
                     ),
                 )
             )

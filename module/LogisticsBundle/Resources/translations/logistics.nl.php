@@ -63,4 +63,15 @@ return array(
     'The reservation was successfully added.' => 'De reservatie is succesvol toegevoegd.',
     'There was an error while updating the reservation.' => 'Er is een fout opgetreden tijdens het aanpassen van de reservatie.',
     'The reservation was successfully updated.' => 'De reservatie is succesvol aangepast.',
+
+    'Piano' => 'Piano',
+    'Reservations' => 'Reservaties',
+    'Confirmed' => 'Bevestigd',
+    'Start Date' => 'Start Datum',
+    'End Date' => 'Eind Datum',
+    'The reservation was succesfully created!' => 'De reservatie is succesvol aangemaakt!',
+    'Book' => 'Reserveer',
+    'The reservation is to long' => 'De reservatie duurt te lang',
+    'A conflicting reservation already exists' => 'Een conflicterende reservatie bestaat reeds',
+    'One of the dates is not in the correct format' => 'Eén van de data is niet in het correcte formaat',
 );

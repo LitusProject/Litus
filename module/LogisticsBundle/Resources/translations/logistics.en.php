@@ -63,4 +63,15 @@ return array(
     'The reservation was successfully added.' => 'The reservation was successfully added.',
     'There was an error while updating the reservation.' => 'There was an error while updating the reservation.',
     'The reservation was successfully updated.' => 'The reservation was successfully updated.',
+
+    'Piano' => 'Piano',
+    'Reservations' => 'Reservations',
+    'Confirmed' => 'Confirmed',
+    'Start Date' => 'Start Date',
+    'End Date' => 'End Date',
+    'The reservation was succesfully created!' => 'The reservation was succesfully created!',
+    'Book' => 'Book',
+    'The reservation is to long' => 'The reservation is to long',
+    'A conflicting reservation already exists' => 'A conflicting reservation already exists',
+    'One of the dates is not in the correct format' => 'One of the dates is not in the correct format',
 );

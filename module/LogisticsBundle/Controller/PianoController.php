@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     LogisticsBundle\Form\PianoReservation\Add as AddForm,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -69,8 +70,52 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findAllConfirmedByDatesAndPerson($startWeek, $endWeek, $this->getAuthentication()->getPersonObject());
 
                     if (sizeof($otherReservations) == 0) {
+                        $mailData = unserialize(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('logistics.piano_new_reservation')
+                        );
                         $reservation->setConfirmed();
+                    } else {
+                        $mailData = unserialize(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('logistics.piano_new_reservation')
+                        );
                     }
+
+                    $message = $mailData['en']['content'];
+                    $subject = $mailData['en']['subject'];
+
+                    $mail = new Message();
+                    $mail->setBody(
+                            str_replace('{{ name }}', $this->getAuthentication()->getPersonObject()->getFullName(),
+                                str_replace('{{ start }}', $reservation->getStartDate()->format('D d/m/Y H:i'),
+                                    str_replace('{{ end }}', $reservation->getEndDate()->format('D d/m/Y H:i'), $message)
+                                )
+                            )
+                        )
+                        ->setFrom(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('system_mail_address')
+                        )
+                        ->setReplyTo($this->getAuthentication()->getPersonObject()->getEmail(), $this->getAuthentication()->getPersonObject()->getFullName())
+                        ->addTo(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('logistics.piano_mail_to')
+                        )
+                        ->addBcc(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('system_administrator_mail'),
+                            'System Administrator'
+                        )
+                        ->setSubject($subject);
+
+                    if ('development' != getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
 
                     $this->getEntityManager()->persist($reservation);
                     $this->getEntityManager()->flush();
@@ -98,6 +143,26 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function overviewAction()
+    {
+        $form = new AddForm($this->getEntityManager());
+
+        $reservations = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+            ->findAllByDatesAndPerson(
+                $this->getCurrentAcademicYear()->getUniversityStartDate(),
+                $this->getCurrentAcademicYear()->getUniversityEndDate(),
+                $this->getAuthentication()->getPersonObject()
+            );
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'reservations' => $reservations,
             )
         );
     }

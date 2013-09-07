@@ -9,6 +9,12 @@
         {% for key, week in form.getWeeks() %}
             <li><a href="#week-{{ key }}" data-toggle="tab">{{ dateLocalized(week['start'], 'd MMM') }} - {{ dateLocalized(week['end'], 'd MMM') }}</a></li>
         {% endfor %}
+
+        {% if hasAccess('logistics_piano', 'overview') %}
+            <li class="pull-right {% if 'overview' == getParam('action') %}active{% endif %}">
+                <a href="{{ url('logistics_piano', {'action': 'overview'}) }}">{{ translate('Reservations') }}</a>
+            </li>
+        {% endif %}
     </ul>
 
     {% do form.prepare() %}
