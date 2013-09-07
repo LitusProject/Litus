@@ -38,7 +38,7 @@ var UploadKit = function(input) {
     this.infoNotMultiple;
 
   var $info = this.$info = $('<div class="uk-info"/>').html(infoHtml).appendTo($element);
-  var $table = this.$table = $('<table class="table table-condensed"/>').appendTo($element).hide();
+  var $table = this.$table = $('<table class="table table-condensed no-hover"/>').appendTo($element).hide();
   var $thead = this.$thead = $('<thead/>').html('<tr><th class="uk-close-column"></th><th class="uk-icon-column"></th><th class="uk-title-column">' + this.fileColumnTitle +'</th><th class="uk-size-column">' + this.sizeColumnTitle + '</th><th class="uk-progress-column">' + this.progressColumnTitle + '</th></tr>').appendTo($table);
   var $tbody = this.$tbody = $('<tbody/>').appendTo($table);
   var $browseButton = this.$browseButton = $('<a id="uk-browse-button-' + id + '" class="btn" href="#"/>').html('<i class="icon-file"/>' + this.browseLabel).appendTo($element);
