@@ -78,6 +78,19 @@ return array(
                     ),
                 ),
             ),
+            'api_calendar' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/api/calendar[/:action][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'api_calendar',
+                    ),
+                ),
+            ),
+
         ),
     ),
     'view_manager' => array(
@@ -107,6 +120,8 @@ return array(
             'api_auth'      => 'ApiBundle\Controller\AuthController',
             'api_mail'      => 'ApiBundle\Controller\MailController',
             'api_news'      => 'ApiBundle\Controller\NewsController',
+            'api_calendar'  => 'ApiBundle\Controller\CalendarController',
+
         ),
     ),
 );

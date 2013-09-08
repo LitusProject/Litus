@@ -23,11 +23,24 @@ use Zend\View\Model\ViewModel;
  */
 class CalendarController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getEvents()
+
+    /**
+    * @param \DateTime The startdate of a event
+    * @return array
+    */
+    public function getEvents(DateTime $startDate = null)
     {
-        $items = $this->getEntityManager()
+        if($startDate == null){
+            $items = $this->getEntityManager()
             ->getRepository('CalendarBundle/Entity/Node/Event')
             ->findAll();
+        }
+        else{
+            $items = $this->getEntityManager()
+            ->getRepository('CalendarBundle/Entity/Node/Event')
+            ->findBy(array('start_date' => $start_date));
+        }
+        
         
         $result = array();
         foreach ($items as $item) {
@@ -35,7 +48,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
                 'title' => $item->getTitle($this->getLanguage()),
                 'content' => $item->getContent($this->getLanguage()),
                 'summary' => $item->getSummary($this->getLanguage()),
-                'startData' => $item->getStartDate()format('c'),
+                'startDate' => $item->getStartDate()->format('c'),
                 'endDate' => $item->getEndDate()->format('c'),
                 'poster' => $item-> getPoster(),
                 'location' => $item ->getLocation()
@@ -48,4 +61,5 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
             )
         );
     }
+
 }
