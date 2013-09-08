@@ -44,6 +44,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     private $_language;
 
     /**
+     * @var \CommonBundle\Entity\General\AcademicYear
+     */
+    private $_academicYear;
+
+    /**
      * Execute the request.
      *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
@@ -358,6 +363,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getCurrentAcademicYear()
     {
+        if (null !== $this->_academicYear)
+            return $this->_academicYear;
+
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 
@@ -378,6 +386,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
         }
+
+        $this->_academicYear = $academicYear;
 
         return $academicYear;
     }

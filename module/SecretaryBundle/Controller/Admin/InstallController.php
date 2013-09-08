@@ -34,6 +34,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'Flag whether the registration module is enabled or not',
                 ),
                 array(
+                    'key'         => 'secretary.registration_open_before_academic_year',
+                    'value'       => 'P1W',
+                    'description' => 'The date interval the registrations for the new academic year will open before the start of it',
+                ),
+                array(
                     'key'         => 'secretary.membership_article',
                     'value'       => serialize(
                         array(
