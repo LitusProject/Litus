@@ -36,9 +36,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         $semester = (new DateTime() < $academicYear->getUniversityStartDate()) ? 1 : 2;
 
-        $mailData = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('mail.start_cudi_mail');
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('mail.start_cudi_mail')
+        );
 
         $mailSubject = str_replace(
             array(
@@ -152,7 +154,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'subject' => $mailSubject,
-                'mail' => $mail,
+                'mail' => $message,
                 'semester' => $semester,
                 'form' => $form,
             )
