@@ -32,6 +32,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class AdminController extends \CommonBundle\Component\Controller\ActionController
 {
     /**
+     * @var \CommonBundle\Entity\General\AcademicYear
+     */
+    private $_academicYear;
+
+    /**
      * Execute the request.
      *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
@@ -143,6 +148,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         if (!$organization)
             return parent::getCurrentAcademicYear();
 
+        if (null !== $this->_academicYear)
+            return $this->_academicYear;
+
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 
@@ -180,6 +188,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
         }
+
+        $this->_academicYear = $academicYear;
 
         return $academicYear;
     }
