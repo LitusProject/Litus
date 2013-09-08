@@ -25,21 +25,20 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 {
     public function getEvents()
     {
-        /*
-        TODO : ask how to filter on these events (how do we get the most recent ones)
         $items = $this->getEntityManager()
             ->getRepository('CalendarBundle/Entity/Node/Event')
-        */
+            ->findAll();
+        
         $result = array();
         foreach ($items as $item) {
             $result[] = array(
                 'title' => $item->getTitle($this->getLanguage()),
                 'content' => $item->getContent($this->getLanguage()),
-                'summary' => $item->getSummary($this->getLanguage());
+                'summary' => $item->getSummary($this->getLanguage()),
                 'startData' => $item->getStartDate()format('c'),
                 'endDate' => $item->getEndDate()->format('c'),
                 'poster' => $item-> getPoster(),
-                'location' => $item ->getLocation(),
+                'location' => $item ->getLocation()
             );
         }
         
