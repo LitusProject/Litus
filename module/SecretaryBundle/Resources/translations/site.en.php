@@ -50,7 +50,7 @@ return array(
     'I want to receive \'t Bakske by e-mail' => 'I want to receive \'t Bakske by e-mail',
     'T-shirt Size' => 'T-shirt Size',
     'Register' => 'Register',
-    'Become A Member' => 'Become A Member',
+    'Become a Member' => 'Become a Member',
     'You haven\'t checked the option to become a member. Being a member has many advantages.' => 'You haven\'t checked the option to become a member. Being a member has many advantages.',
     'Are you sure you want to continue?' => 'Are you sure you want to continue?',
     'Your registration was succesfully updated!' => 'Your registration was succesfully updated!',
