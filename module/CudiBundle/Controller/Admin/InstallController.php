@@ -340,13 +340,13 @@ VTK Cudi
                     'key'         => 'cudi.printers',
                     'value'       => serialize(
                         array(
-                            'signin'    => 'vtk-SignIn_Printer',
-                            'collect_1' => 'vtk-Collect_Printer',
-                            'collect_2' => 'vtk-Collect_Printer',
-                            'collect_3' => 'vtk-Collect_Printer',
-                            'paydesk_1' => 'vtk-SaleOne_Printer',
-                            'paydesk_2' => 'vtk-SaleTwo_Printer',
-                            'paydesk_3' => 'vtk-SaleThree_Printer',
+                            'signin'    => 'LITUS-SignIn',
+                            'collect_1' => 'LITUS-Collect',
+                            'collect_2' => 'LITUS-Collect',
+                            'collect_3' => 'LITUS-Collect',
+                            'paydesk_1' => 'LITUS-SaleOne',
+                            'paydesk_2' => 'LITUS-SaleTwo',
+                            'paydesk_3' => 'LITUS-SaleThree',
                         )
                     ),
                     'description' => 'The names of the printers',
