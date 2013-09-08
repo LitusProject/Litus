@@ -146,7 +146,7 @@ class Printer
                 'id' => $printers[$printer],
                 'ticket' => $data,
                 'key' => $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.queue_socket_key'),
+                    ->getConfigValue('cudi.printer_socket_key'),
             )
         );
 

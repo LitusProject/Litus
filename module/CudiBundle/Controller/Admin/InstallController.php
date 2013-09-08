@@ -332,16 +332,21 @@ VTK Cudi
                     'description' => 'Flag whether the printers are enabled',
                 ),
                 array(
+                    'key'         => 'cudi.printer_socket_key',
+                    'value'       => '3A4P4xq18P3S7ipeKSyuzQKf66c3d1xv',
+                    'description' => 'The key used for printing',
+                ),
+                array(
                     'key'         => 'cudi.printers',
                     'value'       => serialize(
                         array(
-                            'signin'    => 'SignIn_Printer',
-                            'collect_1' => 'Collect_Printer',
-                            'collect_2' => 'Collect_Printer',
-                            'collect_3' => 'Collect_Printer',
-                            'paydesk_1' => 'SaleOne_Printer',
-                            'paydesk_2' => 'SaleTwo_Printer',
-                            'paydesk_3' => 'SaleThree_Printer',
+                            'signin'    => 'vtk-SignIn_Printer',
+                            'collect_1' => 'vtk-Collect_Printer',
+                            'collect_2' => 'vtk-Collect_Printer',
+                            'collect_3' => 'vtk-Collect_Printer',
+                            'paydesk_1' => 'vtk-SaleOne_Printer',
+                            'paydesk_2' => 'vtk-SaleTwo_Printer',
+                            'paydesk_3' => 'vtk-SaleThree_Printer',
                         )
                     ),
                     'description' => 'The names of the printers',
