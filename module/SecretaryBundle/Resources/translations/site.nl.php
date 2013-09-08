@@ -55,7 +55,7 @@ return array(
     'Are you sure you want to continue?' => 'Ben je zeker dat je wil verdergaan?',
     'Your registration was succesfully updated!' => 'Je inschrijving is succesvol opgeslagen!',
     'You are succesfully registered!' => 'Je ben succesvol ingeschreven!',
-    'Terms And Conditions' => 'Voorwaarden',
+    'Terms and Conditions' => 'Voorwaarden',
     'Close' => 'Sluit',
     'Read Them' => 'Lees Ze',
 
