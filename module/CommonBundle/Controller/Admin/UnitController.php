@@ -99,6 +99,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 $unit = new Unit(
                     $formData['name'],
+                    $formData['mail'],
                     $organization,
                     $roles,
                     $coordinatorRoles,
@@ -268,6 +269,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 $unit->setName($formData['name'])
+                    ->setMail($formData['mail'])
                     ->setOrganization($organization)
                     ->setParent($parent)
                     ->setRoles($roles)

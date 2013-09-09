@@ -92,4 +92,7 @@ return array(
     'Opening Hours' => 'Openingsuren',
 
     'The value may not be zero' => 'De waarde mag niet nul zijn',
+
+    'Praesidium' => 'Praesidium',
+    'Groupcoordinator' => 'Groepscoördinator',
 );
