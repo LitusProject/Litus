@@ -15,4 +15,25 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class UnitMap extends EntityRepository
 {
+    public function findByUnitAndAcademicYear(Unit $unit, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('u')
+            ->from('CommonBundle\Entity\User\Person\Organization\UnitMap', 'u')
+            ->innerJoin('u.academic', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('u.unit', ':unit'),
+                    $query->expr()->eq('u.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('unit', $unit)
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('a.lastName', 'ASC')
+            ->addOrderBy('a.firstName', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }
