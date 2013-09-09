@@ -460,7 +460,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = false)
     {
         if (null !== $this->_academicYear)
             return $this->_academicYear;
