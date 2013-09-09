@@ -312,6 +312,9 @@ Disallow: /admin/*
                     'common_robots' => array(
                         'index'
                     ),
+                    'common_praesidium' => array(
+                        'overview'
+                    ),
 
                     'all_install' => array(
                         'index'
