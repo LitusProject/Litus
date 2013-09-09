@@ -90,6 +90,18 @@ return array(
                     ),
                 ),
             ),
+            'api_cudi' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/api/cudi[/:action][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'api_cudi',
+                    ),
+                ),
+            ),
 
         ),
     ),
@@ -121,6 +133,7 @@ return array(
             'api_mail'      => 'ApiBundle\Controller\MailController',
             'api_news'      => 'ApiBundle\Controller\NewsController',
             'api_calendar'  => 'ApiBundle\Controller\CalendarController',
+            'api_cudi'      => 'ApiBundle\Controller\CudiController',
 
         ),
     ),

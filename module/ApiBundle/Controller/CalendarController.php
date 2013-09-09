@@ -14,8 +14,11 @@
 
 namespace ApiBundle\Controller;
 
-use Zend\View\Model\ViewModel;
-
+use DateInterval,
+    DateTime,
+    IntlDateFormatter,
+    Zend\Http\Headers,
+    Zend\View\Model\ViewModel;
 /**
  * CalendarController
  *
@@ -25,22 +28,20 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 {
 
     /**
-    * @param \DateTime The startdate of a event
     * @return array
     */
-    public function getEvents(DateTime $startDate = null)
+    
+    public function getEventAction()
     {
-        if($startDate == null){
-            $items = $this->getEntityManager()
-            ->getRepository('CalendarBundle/Entity/Node/Event')
-            ->findAll();
-        }
-        else{
-            $items = $this->getEntityManager()
-            ->getRepository('CalendarBundle/Entity/Node/Event')
-            ->findBy(array('start_date' => $start_date));
-        }
-        
+        $date = date("Y-m-d H:i:s");
+        echo $date;
+        $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
+        echo $first;
+        $last = strtotime("+60 days", $date);
+        echo "qsdfqsdfsfd     ".$last;
+        $items = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Node\Event')
+            ->findAllBetween($date, $date);
         
         $result = array();
         foreach ($items as $item) {
@@ -60,6 +61,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
                 'result' => (object) $result
             )
         );
+        
     }
 
 }

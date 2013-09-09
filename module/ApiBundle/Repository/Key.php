@@ -28,6 +28,26 @@ class Key extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllBetween(DateTime $first, DateTime $last)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gte('e.startDate', ':first'),
+                    $query->expr()->lt('e.startDate', ':last')
+                )
+            )
+            ->orderBy('e.startDate', 'ASC')
+            ->setParameter('first', $first)
+            ->setParameter('last', $last)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+    
     public function findOneActiveByCode($code)
     {
         $query = $this->_em->createQueryBuilder();

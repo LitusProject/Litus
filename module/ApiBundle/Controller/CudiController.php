@@ -12,13 +12,53 @@
  * @license http://litus.cc/LICENSE
  */
 
+
+namespace ApiBundle\Controller;
+
+use DateInterval,
+    Zend\Http\Headers,
+    Zend\View\Model\ViewModel;
+
 /**
  * CudiController
  *
  * @author Koen Certyn
  */
-class CudiController extends \ApiBundle\Component\Controller\ActionController\ApiController{
 
+class CudiController extends \ApiBundle\Component\Controller\ActionController\ApiController
+{
 	
+	/**
+	* Returns all the bookings and totals of a given user.
+	*
+	* @param 	$authenticatedPerson
+	*			User who's bookings are being searched for.
+	*
+	* @return 	Array
+	*/
+	public function viewAction($authenticatedPerson = null)
+    {
+        if (null === $authenticatedPerson) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllOpenByPerson($authenticatedPerson);
+
+        $total = 0;
+        foreach ($bookings as $booking) {
+            $total += $booking->getArticle()->getSellPrice();
+        }
+
+        return new ViewModel(
+            array(
+                'bookings' => $bookings,
+                'total' => $total,
+            )
+        );
+    }
+
 
 }
