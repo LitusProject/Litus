@@ -44,6 +44,9 @@
                     <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
                     <td>{{ item.getNumber() }}</td>
                     <td class="actions">
+                        {% if not order.isOrdered() and hasAccess('cudi_admin_stock_order', 'editItem') %}
+                            <a href="{{ url('cudi_admin_stock_order', {'action': 'editItem', 'id': item.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
                         {% if not order.isOrdered() and hasAccess('cudi_admin_stock_order', 'delete') %}
                             <a href="#" class="delete" data-id="{{ item.getId() }}" data-title="{{ item.getArticle().getMainArticle().getTitle() }}" data-number="{{ item.getNumber() }}">Delete</a>
                         {% endif %}
