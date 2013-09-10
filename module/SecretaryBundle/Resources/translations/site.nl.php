@@ -21,6 +21,8 @@ return array(
     'Subjects' => 'Vakken',
     'Complete' => 'Voltooi',
 
+    'Choose your organization:' => 'Kies je organisatie:',
+
     'To register, please login first with your KU Leuven account' => 'Meld je eerst aan met je KU Leuven account om je te registreren',
     'Personal' => 'Persoonlijk',
     'First Name' => 'Voornaam',

@@ -158,16 +158,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 $registration->setPayed($formData['payed']);
 
+                $organization = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization')
+                    ->findOneById($formData['organization']);
+
                 $organizationMap = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
                     ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
 
                 if (null !== $organizationMap) {
-                    $organization = $organizationMap->getOrganization();
+                    $organizationMap->setOrganization($organization);
                 } else {
-                    $organization = current($this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findAll());
+                    $this->getEntityManager()->persist(new AcademicYearMap($registration->getAcademic(), $registration->getAcademicYear(), $organization));
                 }
 
                 $ids = unserialize(

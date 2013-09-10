@@ -92,7 +92,7 @@ if (isset($opts->p) && isset($opts->t)) {
             break;
         default:
             echo 'Invalid ticket type: ' . $opts->t . PHP_EOL;
-            echo 'Possible printers:' . PHP_EOL;
+            echo 'Possible ticket types:' . PHP_EOL;
             echo '    -> signin' . PHP_EOL;
             echo '    -> collect' . PHP_EOL;
             echo '    -> sale' . PHP_EOL;
