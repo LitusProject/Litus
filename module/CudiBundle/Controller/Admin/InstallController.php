@@ -413,7 +413,7 @@ VTK Cudi
                                 'subject' => 'Catalogus Aanpassingen',
                                 'content' => 'Beste,
 
-De catalogus van onze cudi is geupdate:
+De catalogus van onze cudi is aangepast:
 {{ updates }}#bookable#is nu reserveerbaar#bookable# #unbookable#is niet meer reserveerbaar#unbookable# #added#is toegevoegd aan de catalogus#added# #removed#is verwijderd van de catalogus#removed#
 
 VTK Cudi
