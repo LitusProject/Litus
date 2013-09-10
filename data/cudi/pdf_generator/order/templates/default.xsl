@@ -51,6 +51,9 @@
                         </fo:static-content>
                         <fo:flow flow-name="xsl-region-body">
                             <fo:block>
+                                <fo:block text-align="left" padding-before="2mm" padding-after="5mm">
+                                    <xsl:value-of select="/order/comment"/>
+                                </fo:block>
                                 <fo:table table-layout="fixed" width="100%" font-size="8pt" border-style="solid" border-width="0.5mm" border-color="black">
                                     <fo:table-column column-width="18%"/>
                                     <fo:table-column column-width="55%"/>
@@ -157,7 +160,9 @@
                             </fo:block>
                         </fo:static-content>
                         <fo:flow flow-name="xsl-region-body">
-                            <fo:block></fo:block>
+                            <fo:block text-align="left" padding-before="2mm" padding-after="5mm">
+                                <xsl:value-of select="/order/comment"/>
+                            </fo:block>
                         </fo:flow>
                     </fo:page-sequence>
                 </xsl:when>
