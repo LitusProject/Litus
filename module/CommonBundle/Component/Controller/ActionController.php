@@ -463,26 +463,14 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 ->findOneByAbbrev($this->getParam('language'));
         }
 
-        if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-            if (strpos($locale, '_') > 0)
-                $locale = substr($locale, 0, strpos($locale, '_'));
-
-            if ($locale) {
-                $language = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev($locale);
-            }
-        }
-
         if (!isset($language)) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev('en');
+                ->findOneByAbbrev('nl');
 
             if (null === $language) {
                 $language = new Language(
-                    'en', 'English'
+                    'nl', 'Nederlands'
                 );
 
                 $this->getEntityManager()->persist($language);

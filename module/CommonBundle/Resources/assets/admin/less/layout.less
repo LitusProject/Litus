@@ -508,13 +508,14 @@ h2 {
                 font-size: @tSizeSmall;
                 font-weight: bold;
                 color: @cWhite;
-                background: url(@iSideboxBackground) repeat-x 0 0;
+                background: @cSideboxTitleBackground;
             }
 
             .content {
                 padding: @defaultSpacing;
                 color: @cWhite;
-                background: @cSideboxBackground url(@iSideboxBackground) repeat-x 0 -@sideboxTitleHeight;
+                font-weight: 200;
+                background: @cSideboxBackground;
 
                 p {
                     margin-top: 2 * @defaultSpacing;

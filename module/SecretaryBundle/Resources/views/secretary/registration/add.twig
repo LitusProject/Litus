@@ -12,6 +12,7 @@
             {% if form %}
                 {% if organizations|length > 1 %}
                     <div id="organizationSelector">
+                        <p style="text-align: center;">{{ translate('Choose your organization:') }}</p>
                         <ul style="list-style: none; width: 300px; margin: 0 auto;">
                             {% for organization in organizations %}
                                 <li style="margin-bottom: 10px;">
