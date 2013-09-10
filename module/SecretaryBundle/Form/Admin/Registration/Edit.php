@@ -84,10 +84,30 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ->setValue($metaData->getTshirtSize());
         $this->add($field);
 
+        $organization = $registration->getAcademic()->getOrganization($registration->getAcademicYear());
+        $field = new Select('organization');
+        $field->setLabel('Organization')
+            ->setAttribute('options', $this->_getOrganizations())
+            ->setValue($organization ? $organization->getId() : 0);
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Save')
             ->setAttribute('class', 'secretary_edit');
         $this->add($field);
+    }
+
+    private function _getOrganizations()
+    {
+        $organizations = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
+        $organizationOptions = array();
+        foreach($organizations as $organization)
+            $organizationOptions[$organization->getId()] = $organization->getName();
+
+        return $organizationOptions;
     }
 
     public function getInputFilter()

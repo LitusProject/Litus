@@ -21,6 +21,8 @@ return array(
     'Subjects' => 'Subjects',
     'Complete' => 'Complete',
 
+    'Choose your organization:' => 'Choose your organization:',
+
     'To register, please login first with your KU Leuven account' => 'To register, please login first with your KU Leuven account',
     'Personal' => 'Personal',
     'First Name' => 'First Name',
