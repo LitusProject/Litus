@@ -102,6 +102,18 @@ return array(
                     ),
                 ),
             ),
+            'api_shift' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/api/shift[/:action][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'api_shift',
+                    ),
+                ),
+            ),
 
         ),
     ),
@@ -134,6 +146,7 @@ return array(
             'api_news'      => 'ApiBundle\Controller\NewsController',
             'api_calendar'  => 'ApiBundle\Controller\CalendarController',
             'api_cudi'      => 'ApiBundle\Controller\CudiController',
+            'api_shift'      => 'ApiBundle\Controller\ShiftController',
 
         ),
     ),

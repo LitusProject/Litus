@@ -20,34 +20,38 @@ use DateInterval,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 /**
- * CalendarController
+ * ShiftController
  *
  * @author Koen Certyn
  */
-class CalendarController extends \ApiBundle\Component\Controller\ActionController\ApiController
+class ShiftController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
 
     /**
+    * Returns all the active shifts by the current person
+    *
     * @return array
     */
-    
-    public function getEventAction()
+    public function myShiftAction()
     {
-        $items = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive();
+        if($this->getAuthentication()->getPersonObject() != null){
+            $myShifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+        }
+        else{
+            return new ViewModel();
+        }
         
-        $result = array();
-        foreach ($items as $item) {
+        
+        foreach ($myShifts as $shift) {
             $result[] = array(
-                'title' => $item->getTitle($this->getLanguage()),
-                'content' => $item->getContent($this->getLanguage()),
-                'summary' => $item->getSummary($this->getLanguage()),
-                'startDate' => $item->getStartDate()->format('c'),
-                'endDate' => $item->getEndDate()->format('c'),
-                'poster' => $item-> getPoster(),
-                'location' => $item ->getLocation()
-            );
+                'name' => $shift->getName(),
+                'discription' => $shift->getDiscription(),
+                'startDate' => $shift->getStartDate(),
+                'endDate' => $shift->getEndDate(),
+                'manager' => $shift->getManager(), 
+                );
         }
         
         return new ViewModel(
