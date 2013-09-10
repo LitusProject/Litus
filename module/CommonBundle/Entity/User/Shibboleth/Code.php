@@ -60,7 +60,7 @@ class Code
     /**
      * @var string The code
      *
-     * @ORM\Column(type="string", length=32, unique=true)
+     * @ORM\Column(type="string", length=64, unique=true)
      */
     private $code;
 

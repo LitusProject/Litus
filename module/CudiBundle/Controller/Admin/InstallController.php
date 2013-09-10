@@ -327,6 +327,11 @@ VTK Cudi
                     'description' => 'The port of the print socket',
                 ),
                 array(
+                    'key'         => 'cudi.printers_enable',
+                    'value'       => '1',
+                    'description' => 'Flag whether the printers are enabled',
+                ),
+                array(
                     'key'         => 'cudi.printers',
                     'value'       => serialize(
                         array(
@@ -339,7 +344,7 @@ VTK Cudi
                             'paydesk_3' => 'SaleThree_Printer',
                         )
                     ),
-                    'description' => 'The port of the print socket',
+                    'description' => 'The names of the printers',
                 ),
                 array(
                     'key'         => 'cudi.tshirt_article',
@@ -408,7 +413,7 @@ VTK Cudi
                                 'subject' => 'Catalogus Aanpassingen',
                                 'content' => 'Beste,
 
-De catalogus van onze cudi is geupdate:
+De catalogus van onze cudi is aangepast:
 {{ updates }}#bookable#is nu reserveerbaar#bookable# #unbookable#is niet meer reserveerbaar#unbookable# #added#is toegevoegd aan de catalogus#added# #removed#is verwijderd van de catalogus#removed#
 
 VTK Cudi
@@ -504,7 +509,7 @@ VTK Cudi
                         'add', 'delete', 'manage', 'supplier', 'typeahead'
                     ),
                     'cudi_admin_stock_order' => array(
-                        'add', 'cancel', 'delete', 'edit', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier'
+                        'add', 'cancel', 'delete', 'edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier'
                     ),
                     'cudi_admin_stock_period' => array(
                         'manage', 'new', 'search', 'view'

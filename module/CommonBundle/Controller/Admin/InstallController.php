@@ -162,7 +162,7 @@ VTK'
                 ),
                 array(
                     'key'         => 'shibboleth_session_key',
-                    'value'       => 'Shib_Session_ID',
+                    'value'       => 'Shib_Session_Index',
                     'description' => 'The key in the $_SERVER array that accesses the shibboleth session',
                 ),
                 array(
@@ -311,6 +311,9 @@ Disallow: /admin/*
                     ),
                     'common_robots' => array(
                         'index'
+                    ),
+                    'common_praesidium' => array(
+                        'overview'
                     ),
 
                     'all_install' => array(

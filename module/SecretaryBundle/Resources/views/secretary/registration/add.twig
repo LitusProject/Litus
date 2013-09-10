@@ -12,6 +12,7 @@
             {% if form %}
                 {% if organizations|length > 1 %}
                     <div id="organizationSelector">
+                        <p style="text-align: center;">{{ translate('Choose your organization:') }}</p>
                         <ul style="list-style: none; width: 300px; margin: 0 auto;">
                             {% for organization in organizations %}
                                 <li style="margin-bottom: 10px;">
@@ -43,7 +44,7 @@
     <div id="modalMemberWarning" class="modal fade hide">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Become A Member') }}</h3>
+            <h3>{{ translate('Become a Member') }}</h3>
         </div>
         <div class="modal-body">
             <p>
@@ -62,7 +63,7 @@
     <div id="modalTermsAndCoditions" class="modal fade hide">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Terms And Conditions') }}</h3>
+            <h3>{{ translate('Terms and Conditions') }}</h3>
         </div>
         <div class="modal-body">
             <p>

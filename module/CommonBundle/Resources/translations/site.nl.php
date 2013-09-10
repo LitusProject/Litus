@@ -57,7 +57,7 @@ return array(
     'Choose Your Study' => 'Kies Je Studierichting',
     'Subjects' => 'Vakken',
     'Choose Your Subjects' => 'Kies Je Vakken',
-    'Your data was succesfully updated!' => 'Je gegevens zijn succesvol geupdate!',
+    'Your data was succesfully updated!' => 'Je gegevens zijn succesvol aangepast!',
     'Sessions' => 'Sessies',
     'Expire' => 'Vervallen',
     'The session was successfully expired!' => 'De sessie is succesvol vervallen!',
@@ -92,4 +92,7 @@ return array(
     'Opening Hours' => 'Openingsuren',
 
     'The value may not be zero' => 'De waarde mag niet nul zijn',
+
+    'Praesidium' => 'Praesidium',
+    'Groupcoordinator' => 'Groepscoördinator',
 );

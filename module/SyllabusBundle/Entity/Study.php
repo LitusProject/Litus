@@ -41,7 +41,7 @@ class Study
     /**
      * @var string The title of the study
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=300)
      */
     private $title;
 
