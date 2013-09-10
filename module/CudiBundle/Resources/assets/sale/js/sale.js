@@ -17,19 +17,22 @@
         tBank: 'Bank',
 
         discounts: [],
-        membershipArticles: 0,
+        membershipArticles: [{'id': 0, 'barcode': 0}],
         lightVersion: false,
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
         finish: function (id, articles, discounts, payMethod) {},
         cancel: function (id) {},
-        translateStatus: function (status) {return status},
+        translateStatus: function (status) {return status;},
         addArticle: function (id, barcode) {},
     };
 
     var methods = {
         init : function (options) {
+
+            membershipArticles = [{'id': 5, 'barcode': 10}, {'id': 7, 'barcode': 90}];
+
             var settings = $.extend(defaults, options);
             settings.isSell = true;
             settings.conclude = function (id, articles) {

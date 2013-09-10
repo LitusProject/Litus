@@ -2,7 +2,7 @@
     var defaults = {
         isSell: true,
         discounts: [],
-        membershipArticles: 0,
+        membershipArticles: [{'id': 0, 'barcode': 0}],
         lightVersion: false,
 
         tCurrentCustomer: 'Current Customer',
@@ -29,7 +29,7 @@
         showQueue: function () {},
         conclude: function (id, articles) {},
         cancel: function (id) {},
-        translateStatus: function (status) {return status},
+        translateStatus: function (status) {return status;},
         addArticle: function (id, barcode) {},
     };
 
@@ -330,7 +330,7 @@
             }
         });
 
-        if ($.inArray(id, settings.membershipArticles) != -1)
+        if (_isMemberShipArticleId(id, settings.membershipArticles))
             $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
 
         if (settings.isSell)
@@ -349,7 +349,7 @@
             }
         });
 
-        if ($.inArray(id, settings.membershipArticles) != -1)
+        if (_isMemberShipArticleId(id, settings.membershipArticles))
             $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);
 
         if (settings.isSell)
@@ -519,5 +519,13 @@
         $this.find('.money .total').html('&euro; ' + (total / 100).toFixed(2));
 
         return total;
+    }
+
+    function _isMemberShipArticleId(id, membershipArticles) {
+        $(membershipArticles).each(function () {
+            if (this.id == id)
+                return true;
+        });
+        return false;
     }
 })(jQuery);

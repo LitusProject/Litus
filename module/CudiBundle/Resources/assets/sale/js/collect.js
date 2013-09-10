@@ -6,14 +6,14 @@
         tConclude: 'Finish',
         tCancel: 'Cancel',
 
-        membershipArticles: 0,
+        membershipArticles: [{'id': 0, 'barcode': 0}],
         lightVersion: false,
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
         finish: function (id, articles) {},
         cancel: function (id) {},
-        translateStatus: function (status) {return status},
+        translateStatus: function (status) {return status;},
         addArticle: function (id, barcode) {},
     };
 
