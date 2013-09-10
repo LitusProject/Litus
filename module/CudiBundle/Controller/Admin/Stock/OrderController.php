@@ -21,6 +21,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
     CudiBundle\Form\Admin\Stock\Orders\Comment as CommentForm,
+    CudiBundle\Form\Admin\Stock\Orders\Edit as EditForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -259,6 +260,59 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'form' => $form,
                 'suppliers' => $suppliers,
                 'currentAcademicYear' => $academicYear,
+            )
+        );
+    }
+
+    public function editItemAction()
+    {
+        if (!($item = $this->_getOrderItem()))
+            return new ViewModel();
+
+        $form = new EditForm($item);
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $item->setNumber($formData['number']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The order item was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'cudi_admin_stock_order',
+                    array(
+                        'action' => 'edit',
+                        'id' => $item->getOrder()->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $suppliers = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Supplier')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'order' => $item->getOrder(),
+                'item' => $item,
+                'form' => $form,
+                'suppliers' => $suppliers,
+                'supplier' => $item->getOrder()->getSupplier(),
             )
         );
     }
