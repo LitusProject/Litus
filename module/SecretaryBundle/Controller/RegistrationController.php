@@ -168,21 +168,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $metaData = new MetaData(
                             $academic,
                             $this->getCurrentAcademicYear(),
-                            $formData['become_member'],
-                            $formData['irreeel'],
-                            $formData['bakske'],
-                            $formData['tshirt_size']
+                            $formData['become_member']
                         );
 
-                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $this->getCurrentAcademicYear());
+                        $this->_bookRegistrationArticles($academic, $this->getCurrentAcademicYear());
                     } else {
                         $metaData = new MetaData(
                             $academic,
                             $this->getCurrentAcademicYear(),
-                            $formData['become_member'],
-                            false,
-                            $formData['bakske'],
-                            null
+                            $formData['become_member']
                         );
                     }
 
@@ -385,27 +379,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
                 }
 
-                $tshirts = unserialize(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.tshirt_article')
-                );
-
                 if (null !== $metaData) {
                     if ($registrationEnabled) {
-                        if (null !== $metaData->getTshirtSize()) {
-                            $booking = $this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                ->findOneAssignedByArticleAndPerson(
-                                    $this->getEntityManager()
-                                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                                        ->findOneById($tshirts[$metaData->getTshirtSize()]),
-                                    $academic
-                                );
-
-                            if (null !== $booking)
-                                $this->getEntityManager()->remove($booking);
-                        }
                         $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
                     } else {
                         $becomeMember = $metaData->becomeMember();
@@ -413,31 +388,21 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                     if ($becomeMember) {
                         if ($registrationEnabled) {
-                            $metaData->setBecomeMember($becomeMember)
-                                ->setTshirtSize($formData['tshirt_size']);
+                            $metaData->setBecomeMember($becomeMember);
                         }
-
-                        $metaData->setReceiveIrReeelAtCudi($formData['irreeel']);
                     }
-                    $metaData->setBakskeByMail($formData['bakske']);
                 } elseif ($registrationEnabled) {
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
                             $this->getCurrentAcademicYear(),
-                            $formData['become_member'],
-                            $formData['irreeel'],
-                            $formData['bakske'],
-                            $formData['tshirt_size']
+                            $formData['become_member']
                         );
                     } else {
                         $metaData = new MetaData(
                             $academic,
                             $this->getCurrentAcademicYear(),
-                            $formData['become_member'],
-                            false,
-                            $formData['bakske'],
-                            null
+                            $formData['become_member']
                         );
                     }
 
@@ -459,7 +424,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($metaData->becomeMember()) {
-                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $this->getCurrentAcademicYear());
+                        $this->_bookRegistrationArticles($academic, $this->getCurrentAcademicYear());
                     } else {
                         foreach($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()

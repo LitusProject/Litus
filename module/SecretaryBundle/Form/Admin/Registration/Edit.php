@@ -65,20 +65,6 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ->setValue($registration->hasPayed());
         $this->add($field);
 
-        $field = new Checkbox('bakske');
-        $field->setLabel('Bakske by E-mail')
-            ->setValue($metaData->bakskeByMail());
-        $this->add($field);
-
-        $field = new Select('tshirt_size');
-        $field->setLabel('T-shirt Size')
-            ->setAttribute(
-                'options',
-                MetaData::$possibleSizes
-            )
-            ->setValue($metaData->getTshirtSize());
-        $this->add($field);
-
         $organization = $registration->getAcademic()->getOrganization($registration->getAcademicYear());
         $field = new Select('organization');
         $field->setLabel('Organization')
@@ -109,7 +95,6 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
-
 
         return $inputFilter;
     }
