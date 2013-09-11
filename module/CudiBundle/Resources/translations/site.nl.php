@@ -61,8 +61,8 @@ return array(
 
     'An error occurred while updating your preferences.' => 'Er is een fout opgetreden tijdens het aanpassen van je voorkeuren.',
     'Your preferences where succesfully saved.' => 'Je voorkeuren zijn succesvol opgeslagen.',
-    'Send a mail when the catalogus is updated' => 'Verstuur een mail wanneer de catalogus aangepast wordt',
-    'Keep me updated' => 'Hou me op de hoogte',
-    'Don\'t send a mail when the catalogus is updated' => 'Verstuur geen mail wanneer de catalogus aangepast wordt',
-    'Don\'t keep me updated' => 'Hou me niet op de hoogte',
+    'You will receive an e-mail when the catalog is updated.' => 'Je krijgt een e-mail wanneer de catalogus aangepast wordt.',
+    'Keep Me Updated' => 'Verwittig Me',
+    'You won\'t receive an e-mail when the catalog is updated.' => 'Er wordt geen e-mail verstuurd wanneer de catalogus aangepast wordt.',
+    'Don\'t Keep Me Updated' => 'Verwittig Me Niet',
 );
