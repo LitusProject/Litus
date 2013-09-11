@@ -377,9 +377,32 @@
     }
 
     function _gotBarcode($this, barcode) {
+        var settings = $this.data('saleInterfaceSettings');
+        var found = false;
         $this.find('tbody tr:not(.inactive)').each(function () {
             if ($(this).data('info').barcode == barcode) {
                 $(this).find('.addArticle').click();
+                found = true;
+                return false;
+            }
+        });
+
+        if (found)
+            return;
+
+        $(settings.membershipArticles).each(function () {
+            if (this.barcode == barcode) {
+                $this.find('tbody').prepend(_addArticleRow($this, settings, {
+                    articleId: this.id,
+                    barcode: this.barcode,
+                    title: this.title,
+                    price: this.price,
+                    collected: 0,
+                    number: 1,
+                    status: 'assigned',
+                    sellable: true,
+                }));
+                _addArticle($this, this.id);
                 return false;
             }
         });
@@ -522,10 +545,13 @@
     }
 
     function _isMemberShipArticleId(id, membershipArticles) {
+        var found = false;
         $(membershipArticles).each(function () {
-            if (this.id == id)
-                return true;
+            if (this.id == id) {
+                found = true;
+                return false;
+            }
         });
-        return false;
+        return found;
     }
 })(jQuery);

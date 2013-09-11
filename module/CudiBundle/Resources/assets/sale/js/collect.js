@@ -6,7 +6,7 @@
         tConclude: 'Finish',
         tCancel: 'Cancel',
 
-        membershipArticles: [{'id': 0, 'barcode': 0}],
+        membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
         lightVersion: false,
 
         saveComment: function (id, comment) {},

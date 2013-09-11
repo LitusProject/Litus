@@ -14,7 +14,7 @@
                 authKey: '{{ key }}',
                 lightVersion: {% if lightVersion %}true{% else %}false{% endif %},
                 membershipArticles: [{% for article in membershipArticles %}
-                    {'id': {{ article.getId() }}, 'barcode': {{ article.getBarcode() }} },
+                    {'id': {{ article.getId() }}, 'barcode': {{ article.getBarcode() }}, 'title': '{{ article.getMainArticle().getTitle() }}', 'price': {{ article.getSellPrice() }} },
                 {% endfor %}],
 
                 paydesks: [
