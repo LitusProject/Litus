@@ -8,7 +8,7 @@ var currentView = 'selectPaydesk';
         authSession: 0,
         authKey: '',
         lightVersion: false,
-        membershipArticles: [0],
+        membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
 
         tPaydeskSelectTitle: 'Select Paydesk',
         tPaydeskChoose: 'Choose',
@@ -17,7 +17,7 @@ var currentView = 'selectPaydesk';
 
         paydesks: [],
         discounts: [],
-        translateStatus: function (status) {return status},
+        translateStatus: function (status) {return status;},
     };
 
     var firstAction = true;

@@ -266,7 +266,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $item->getPerson(),
                 $article,
                 'sold',
-                $number
+                $number,
+                true
             );
             $this->_entityManager->persist($booking);
 
@@ -277,6 +278,24 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'article' => $booking->getArticle(),
                     'number' => $booking->getNumber(),
                 );
+            }
+
+            if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
+                try {
+                    $booking->getPerson()
+                        ->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $booking->getPerson(),
+                                'member',
+                                $this->_getCurrentAcademicYear()
+                            )
+                        );
+
+                    $registration = $this->_entityManager
+                        ->getRepository('SecretaryBundle\Entity\Registration')
+                        ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+                    $registration->setPayed();
+                } catch(\Exception $e) {}
             }
         }
 
