@@ -2,7 +2,7 @@
     var defaults = {
         isSell: true,
         discounts: [],
-        membershipArticles: 0,
+        membershipArticles: [{'id': 0, 'barcode': 0}],
         lightVersion: false,
 
         tCurrentCustomer: 'Current Customer',
@@ -29,7 +29,7 @@
         showQueue: function () {},
         conclude: function (id, articles) {},
         cancel: function (id) {},
-        translateStatus: function (status) {return status},
+        translateStatus: function (status) {return status;},
         addArticle: function (id, barcode) {},
     };
 
@@ -330,7 +330,7 @@
             }
         });
 
-        if ($.inArray(id, settings.membershipArticles) != -1)
+        if (_isMemberShipArticleId(id, settings.membershipArticles))
             $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
 
         if (settings.isSell)
@@ -349,7 +349,7 @@
             }
         });
 
-        if ($.inArray(id, settings.membershipArticles) != -1)
+        if (_isMemberShipArticleId(id, settings.membershipArticles))
             $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);
 
         if (settings.isSell)
@@ -377,9 +377,32 @@
     }
 
     function _gotBarcode($this, barcode) {
+        var settings = $this.data('saleInterfaceSettings');
+        var found = false;
         $this.find('tbody tr:not(.inactive)').each(function () {
             if ($(this).data('info').barcode == barcode) {
                 $(this).find('.addArticle').click();
+                found = true;
+                return false;
+            }
+        });
+
+        if (found)
+            return;
+
+        $(settings.membershipArticles).each(function () {
+            if (this.barcode == barcode) {
+                $this.find('tbody').prepend(_addArticleRow($this, settings, {
+                    articleId: this.id,
+                    barcode: this.barcode,
+                    title: this.title,
+                    price: this.price,
+                    collected: 0,
+                    number: 1,
+                    status: 'assigned',
+                    sellable: true,
+                }));
+                _addArticle($this, this.id);
                 return false;
             }
         });
@@ -519,5 +542,16 @@
         $this.find('.money .total').html('&euro; ' + (total / 100).toFixed(2));
 
         return total;
+    }
+
+    function _isMemberShipArticleId(id, membershipArticles) {
+        var found = false;
+        $(membershipArticles).each(function () {
+            if (this.id == id) {
+                found = true;
+                return false;
+            }
+        });
+        return found;
     }
 })(jQuery);
