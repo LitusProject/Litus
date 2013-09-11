@@ -45,7 +45,7 @@
 
         <br style="clear:both"/>
 
-        <table class="full_width manage" id="articleFiles">
+        <table class="manage" id="articleFiles">
             <thead>
                 <tr>
                     <th width="200px">Name</th>
@@ -90,6 +90,22 @@
             </tbody>
         </table>
     </div>
+
+    <aside>
+        {% if hasAccess('cudi_admin_article', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Back To Article</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to go back to the article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_article', {"action": "edit", "id": article.getId()}) }}">&rarr; Back To Article</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 
     <div class="modal hide fade" id="removeFile">
         <div class="modal-header">
