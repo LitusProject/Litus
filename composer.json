@@ -16,7 +16,8 @@
         "widmogrod/zf2-assetic-module": "@dev",
         "zf-commons/zfc-twig": "@dev",
         "twitter/bootstrap": "2.3.*",
-        "zendframework/zend-developer-tools": "dev-master"
+        "zendframework/zend-developer-tools": "dev-master",
+        "symfony/process": "2.3.4"
     },
     "autoload": {
         "psr-0": {

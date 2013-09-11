@@ -507,6 +507,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             } else {
                 $articles[$saleItem->getArticle()->getId()]['number'] += $saleItem->getNumber();
             }
+            $this->_entityManager->remove($saleItem);
         }
 
         foreach($articles as $article) {
