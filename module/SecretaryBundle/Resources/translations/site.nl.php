@@ -21,7 +21,7 @@ return array(
     'Subjects' => 'Vakken',
     'Complete' => 'Voltooi',
 
-    'Choose your organization:' => 'Kies je organisatie:',
+    'Choose your study:' => 'Kies je studierichting:',
 
     'To register, please login first with your KU Leuven account' => 'Meld je eerst aan met je KU Leuven account om je te registreren',
     'Personal' => 'Persoonlijk',
@@ -45,8 +45,8 @@ return array(
     'University E-mail' => 'Universiteits E-mail',
     'Personal E-mail' => 'Persoonlijke E-mail',
     'I want to receive e-mail at my personal e-mail address' => 'Ik wil e-mail ontvangen op mijn persoonlijk e-mail adres',
-    'Organization' => 'Organisatie',
-    'I want to become a member of the organization' => 'Ik wil lid worden van de organisatie',
+    'Student Association' => 'Studentenkring',
+    'I want to become a member of the student association (&euro; { price })' => 'Ik wil lid worden van de studentenkring (&euro; { price })',
     'I have read and agree with the terms and conditions' => 'Ik heb de voorwaarden gelezen en ga hiermee akkoord',
     'Register' => 'Schrijf In',
     'Become a Member' => 'Lid Worden',

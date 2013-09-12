@@ -468,8 +468,9 @@
                 data = row.data('info');
                 if (data.status == 'assigned') {
                     data.number++;
+                    data.currentNumber++;
                     row.find('td:nth-child(4)').html('').append(
-                        $('<span>', {class: 'currentNumber'}).html(data.collected),
+                        $('<span>', {class: 'currentNumber'}).html(data.currentNumber),
                         '/' + data.number
                     );
                 } else {

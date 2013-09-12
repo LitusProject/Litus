@@ -21,6 +21,8 @@ use CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\SaleItem,
     CudiBundle\Entity\User\Person\Sale\Acco as AccoCard,
+    DateInterval,
+    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -455,7 +457,16 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
      */
     private function _getCurrentAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $start = new DateTime();
+        $start->add(
+            new DateInterval(
+                $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.registration_open_before_academic_year')
+            )
+        );
+
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear($start);
         $startAcademicYear->setTime(0, 0);
 
         $academicYear = $this->_entityManager
@@ -475,6 +486,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->persist($academicYear);
             $this->_entityManager->flush();
         }
+
+        print_r($academicYear);exit;
 
         return $academicYear;
     }

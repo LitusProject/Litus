@@ -112,6 +112,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_number',
                 'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
                 'validators' => array(
                     array(
                         'name' => 'alnum',
@@ -128,6 +131,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_mailbox',
                 'required' => false,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
                 'validators' => array(
                     array(
                         'name' => 'alnum',
@@ -166,6 +172,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_city',
                 'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'alnum',
+                        'options' => array(
+                            'allowWhiteSpace' => true,
+                        ),
+                    ),
+                ),
             )
         );
 
@@ -173,6 +190,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_country',
                 'required' => false,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
             )
         );
 
