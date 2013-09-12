@@ -78,6 +78,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Contract Text')
             ->setRequired(false)
             ->setValue('<entry>
+A single entry is a single bullet on the contract. Formatting options are indicated on the right and entries can be nested by including an "entries" tag in a parent entry, like so:
+    <entries>
+        <entry>
+            This is a nested entry.
+        </entry>
+    </entries>
 </entry>');
         $this->add($field);
 
