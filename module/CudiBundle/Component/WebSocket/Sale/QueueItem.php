@@ -487,8 +487,6 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->flush();
         }
 
-        print_r($academicYear);exit;
-
         return $academicYear;
     }
 }
