@@ -41,7 +41,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         $authenticatedPerson = null;
         //---END DUMMYCODE---
 
-        if($this->getAuthentication()->getPersonObject() != null){
+        if($authenticatedPerson != null){
             $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($authenticatedPerson);
