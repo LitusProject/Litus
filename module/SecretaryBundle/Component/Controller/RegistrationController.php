@@ -278,28 +278,30 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 ->getConfigValue('secretary.membership_article')
         );
 
-        $membershipArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($ids[$organization->getId()]);
+        if (isset($ids[$organization->getId()])) {
+            $membershipArticle = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($ids[$organization->getId()]);
 
-        $booking = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                $membershipArticle,
-                $academic
-            );
+            $booking = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                    $membershipArticle,
+                    $academic
+                );
 
-        if (null === $booking) {
-            $booking = new Booking(
-                $this->getEntityManager(),
-                $academic,
-                $membershipArticle,
-                'assigned',
-                1,
-                true
-            );
+            if (null === $booking) {
+                $booking = new Booking(
+                    $this->getEntityManager(),
+                    $academic,
+                    $membershipArticle,
+                    'assigned',
+                    1,
+                    true
+                );
 
-            $this->getEntityManager()->persist($booking);
+                $this->getEntityManager()->persist($booking);
+            }
         }
 
         $tshirts = unserialize(
