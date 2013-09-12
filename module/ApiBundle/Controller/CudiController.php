@@ -37,8 +37,15 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 	*
 	* @return 	Array
 	*/
-	public function viewAction($authenticatedPerson = null)
+	public function viewAction()
     {
+        //TODO key needs to be given and person needs to be get from the key
+        //$authenticatedPerson = $key->getPerson();
+
+        //-----DUMMYCODE-----
+        $authenticatedPerson = null;
+        //---END DUMMYCODE---
+
         if (null === $authenticatedPerson) {
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
