@@ -52,8 +52,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getConfigValue('secretary.registration_enabled');
 
         if ('1' !== $enabled) {
-            //$this->getResponse()->setStatusCode(404);
-            //return new ViewModel();
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
         }
 
         return $result;
@@ -106,7 +106,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         }
 
         if ($this->getRequest()->isPost()) {
-            if ($this->_isValidCode() && false) {
+            if ($this->_isValidCode()) {
                 $code = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
@@ -261,12 +261,12 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
             }
         } else {
-            if ($this->_isValidCode() || true) {
+            if ($this->_isValidCode()) {
                 $code = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), array());//unserialize($code->getInfo()));
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
 
                 return new ViewModel(
                     array(
