@@ -25,7 +25,14 @@
 
             $('#company').change(function(){
 
-                $.post('{{ url('br_admin_company', {"action": "contacts"})}}' + $('#company').val(), function (data) {
+                var company = $('#company').val();
+
+                if (company == '') {
+                    $('#contact').empty();
+                    return;
+                }
+
+                $.post('{{ url('br_admin_company', {"action": "contacts"})}}' + company, function (data) {
                     if (data) {
                         // $('#contacts').attr('options', data);
                         var optionsAsString = "";
@@ -40,13 +47,14 @@
                 }, 'json').error(errorContacts);
             });
 
-            function errorContacts()
-            {
-                $('.flashmessage').addClass('hide');
-                $('.contacts_error').removeClass('hide');
-            }
-
         });
+
+        function errorContacts()
+        {
+            $('.flashmessage').addClass('hide');
+            $('.contacts_error').removeClass('hide');
+        }
+
     </script>
 
 {% endblock %}

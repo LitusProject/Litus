@@ -19,6 +19,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CommonBundle\Entity\General\AcademicYear,
+    BrBundle\Entity\Company,
     BrBundle\Entity\Product\Order,
     BrBundle\Component\Validator\ProductName as ProductNameValidator,
     Doctrine\ORM\EntityManager,
@@ -55,6 +56,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private $_inputs = array();
 
     /**
+     * @var The contacts field
+     */
+    private $_contacts;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\AcademicYear
      * @param mixed $opts The validator's options
@@ -71,10 +77,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('options', $this->_createCompanyArray());
         $this->add($field);
 
-        $field = new Select('contact');
-        $field->setLabel('Contact')
+        $this->_contacts = new Select('contact');
+        $this->_contacts->setLabel('Contact')
             ->setAttribute('options', array());
-        $this->add($field);
+        $this->add($this->_contacts);
 
         $this->addInputs();
 
@@ -99,6 +105,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $companyArray;
     }
 
+    private function _createContactsArray(Company $company)
+    {
+        $contacts = $company->getContacts();
+
+        $contactsArray = array(
+            '' => ''
+        );
+        foreach ($contacts as $contact)
+            $contactsArray[$contact->getId()] = $contact->getFullName();
+
+        return $contactsArray;
+    }
+
     private function addInputs()
     {
 
@@ -120,9 +139,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function populateFromOrder(Order $order)
     {
+        $this->_contacts
+            ->setAttribute('options', $this->_createContactsArray($order->getCompany()));
+
         $formData = array(
             'company' => $order->getCompany()->getId(),
+            'contact' => $order->getContact()->getId(),
         );
+
 
         $products = $this->_entityManager
             ->getRepository('BrBundle\Entity\Product')

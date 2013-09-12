@@ -135,7 +135,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\User\Person\Corporate')
                     ->findOneById($formData['contact']);
 
-                $order->setContact($setContact);
+                $order->setContact($contact);
 
                 // Remove all entries that are no longer needed
                 foreach ($order->getEntries() as $entry)
