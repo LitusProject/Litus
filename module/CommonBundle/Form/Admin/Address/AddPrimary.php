@@ -178,6 +178,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
                 array(
                     'name'     => $this->_prefix . 'address_street_other',
                     'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
                             'name' => 'alpha',
@@ -199,6 +202,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
                     'validators' => array(
                         array(
                             'name' => 'alnum',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
                         ),
                     ),
                 )
@@ -208,6 +214,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
                 array(
                     'name'     => $this->_prefix . 'address_city_other',
                     'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
                             'name' => 'alpha',
@@ -221,6 +230,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_number',
                 'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
                 'validators' => array(
                     array(
                         'name' => 'alnum',
@@ -243,13 +255,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
                         'options' => array(
                             'allowWhiteSpace' => true,
                         ),
-                        'validators' => array(
-                            array(
-                                'name' => 'StringLength',
-                                array(
-                                    'max' => 5,
-                                )
-                            )
+                    ),
+                    array(
+                        'name' => 'StringLength',
+                        array(
+                            'max' => 5,
                         )
                     ),
                 ),

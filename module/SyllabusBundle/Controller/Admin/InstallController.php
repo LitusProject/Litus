@@ -129,6 +129,14 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'actions' => array(
                     ),
                 ),
+                'guest' => array(
+                    'system' => true,
+                    'actions' => array(
+                        'syllabus_subject' => array(
+                            'typeahead'
+                        ),
+                    ),
+                ),
             )
         );
     }

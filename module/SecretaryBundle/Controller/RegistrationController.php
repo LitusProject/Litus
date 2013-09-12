@@ -52,8 +52,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getConfigValue('secretary.registration_enabled');
 
         if ('1' !== $enabled) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            //$this->getResponse()->setStatusCode(404);
+            //return new ViewModel();
         }
 
         return $result;
@@ -92,8 +92,21 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
+        $ids = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        $membershipArticles = array();
+        foreach($ids as $organization => $id) {
+            $membershipArticles[$organization] = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($id);
+        }
+
         if ($this->getRequest()->isPost()) {
-            if ($this->_isValidCode()) {
+            if ($this->_isValidCode() && false) {
                 $code = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
@@ -242,16 +255,18 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'form' => $form,
                         'termsAndConditions' => $termsAndConditions,
                         'studentDomain' => $studentDomain,
+                        'organizations' => $organizations,
+                        'membershipArticles' => $membershipArticles,
                     )
                 );
             }
         } else {
-            if ($this->_isValidCode()) {
+            if ($this->_isValidCode() || true) {
                 $code = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), array());//unserialize($code->getInfo()));
 
                 return new ViewModel(
                     array(
@@ -259,6 +274,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'termsAndConditions' => $termsAndConditions,
                         'studentDomain' => $studentDomain,
                         'organizations' => $organizations,
+                        'membershipArticles' => $membershipArticles,
                     )
                 );
             }
@@ -306,6 +322,19 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $this->getEntityManager(),
             $this->getParam('identification')
         );
+
+        $ids = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        $membershipArticles = array();
+        foreach($ids as $organization => $id) {
+            $membershipArticles[$organization] = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($id);
+        }
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -517,6 +546,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'form' => $form,
                 'termsAndConditions' => $termsAndConditions,
                 'studentDomain' => $studentDomain,
+                'membershipArticles' => $membershipArticles,
             )
         );
     }
