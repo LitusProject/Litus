@@ -28,9 +28,10 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 {
 
     /**
+    * Returns all active events
+    *
     * @return array
     */
-    
     public function getEventAction()
     {
         $items = $this->getEntityManager()
@@ -57,5 +58,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
         );
         
     }
+
+    
 
 }

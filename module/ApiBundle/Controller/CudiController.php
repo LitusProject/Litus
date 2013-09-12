@@ -16,6 +16,7 @@
 namespace ApiBundle\Controller;
 
 use DateInterval,
+    DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -56,6 +57,57 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             array(
                 'bookings' => $bookings,
                 'total' => $total,
+            )
+        );
+    }
+
+    /**
+    * Returns the openinghours of Cudi.
+    *
+    * @return array
+    */
+    public function weekAction()
+    {
+        $openingHours = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
+            ->findCurrentWeek();
+        echo implode(",", $openingHours);
+        $start = new DateTime();
+        $start->setTime(0, 0);
+        if ($start->format('N') > 5)
+            $start->add(new DateInterval('P' . (8 - $start->format('N')) .'D'));
+        else
+            $start->sub(new DateInterval('P' . ($start->format('N') - 1) .'D'));
+
+        $startHour = 12;
+        $endHour = 20;
+
+        $week = array();
+        $openingHoursArray = array();
+        $start->sub(new DateInterval('P1D'));
+        for($i = 0 ; $i < 5 ; $i ++) {
+            $start->add(new DateInterval('P1D'));
+            $week[] = clone $start;
+            $openingHoursArray[$i] = array();
+        }
+
+        foreach($openingHours as $openingHour) {
+            if ($openingHour->getStart()->format('H') < $startHour)
+                $startHour = $openingHour->getStart()->format('H');
+
+            if ($openingHour->getEnd()->format('H') > $endHour)
+                $endHour = $openingHour->getEnd()->format('H');
+
+            $openingHoursArray[$openingHour->getStart()->format('N') - 1][] = $openingHour;
+        }
+
+        return new ViewModel(
+            array(
+                'openingHours' => $openingHours,
+                'openingHoursTimeline' => $openingHoursArray,
+                'week' => $week,
+                'startHour' => $startHour,
+                'endHour' => $endHour,
             )
         );
     }
