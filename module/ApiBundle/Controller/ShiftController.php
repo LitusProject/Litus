@@ -34,6 +34,13 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
     */
     public function myShiftAction()
     {
+        //TODO key needs to be given and person needs to be get from the key
+        //$authenticatedPerson = $key->getPerson();
+
+        //-----DUMMYCODE-----
+        $authenticatedPerson = null;
+        //---END DUMMYCODE---
+
         if($this->getAuthentication()->getPersonObject() != null){
             $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')

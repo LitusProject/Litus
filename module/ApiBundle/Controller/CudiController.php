@@ -46,10 +46,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         $authenticatedPerson = null;
         //---END DUMMYCODE---
 
-        if (null === $authenticatedPerson) {
-            $this->getResponse()->setStatusCode(404);
+        if($authenticatedPerson == null)
             return new ViewModel();
-        }
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
