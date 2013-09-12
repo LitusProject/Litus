@@ -64,7 +64,7 @@ class Session extends EntityRepository
             }
 
             $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('SUM(s.price * s.number)')
+            $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.queueItem', 'q')
                 ->where(
@@ -83,7 +83,7 @@ class Session extends EntityRepository
             return $resultSet;
         } else {
             $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('SUM(s.price * s.number)')
+            $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->where(
                     $query->expr()->eq('s.session', ':session')
@@ -123,7 +123,7 @@ class Session extends EntityRepository
             }
 
             $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('SUM(s.price * s.number)')
+            $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.session', 'e')
                 ->innerJoin('s.queueItem', 'q')
@@ -145,7 +145,7 @@ class Session extends EntityRepository
             return $resultSet;
         } else {
             $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('SUM(s.price * s.number)')
+            $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.session', 'e')
                 ->where(

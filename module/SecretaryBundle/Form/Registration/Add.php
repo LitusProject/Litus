@@ -156,14 +156,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $internet->add($field);
 
         $organization = new Collection('organization');
-        $organization->setLabel('Organization')
+        $organization->setLabel('Student Association')
             ->setAttribute('id', 'organization_info');
         $this->add($organization);
 
         $organizations = $this->_getOrganizations();
         if (sizeof($organizations) > 1) {
             $field = new Select('organization');
-            $field->setLabel('Organization')
+            $field->setLabel('Student Association')
                 ->setAttribute('options', $organizations);
             $organization->add($field);
         }
@@ -173,7 +173,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getConfigValue('secretary.registration_enabled');
 
         $field = new Checkbox('become_member');
-        $field->setLabel('I want to become a member of the organization')
+        $field->setLabel('I want to become a member of the student association (&euro; { price })')
             ->setValue(true);
         $organization->add($field);
 
@@ -265,6 +265,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($metaData && $metaData->becomeMember()) {
+            if ($this->get('organization')->has('organization')) {
+                $this->get('organization')->get('organization')
+                    ->setAttribute('disabled', true);
+            }
             $this->get('organization')->get('become_member')
                 ->setAttribute('disabled', true);
             $this->get('organization')->get('conditions')

@@ -133,6 +133,19 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->getParam('identification')
         );
 
+        $ids = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        $membershipArticles = array();
+        foreach($ids as $organization => $id) {
+            $membershipArticles[$organization] = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($id);
+        }
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
@@ -341,6 +354,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 'form' => $form,
                 'termsAndConditions' => $termsAndConditions,
                 'studentDomain' => $studentDomain,
+                'membershipArticles' => $membershipArticles,
             )
         );
     }

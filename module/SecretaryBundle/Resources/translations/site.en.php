@@ -21,7 +21,7 @@ return array(
     'Subjects' => 'Subjects',
     'Complete' => 'Complete',
 
-    'Choose your organization:' => 'Choose your organization:',
+    'Choose your study:' => 'Choose your study:',
 
     'To register, please login first with your KU Leuven account' => 'To register, please login first with your KU Leuven account',
     'Personal' => 'Personal',
@@ -45,8 +45,8 @@ return array(
     'University E-mail' => 'University E-mail',
     'Personal E-mail' => 'Personal E-mail',
     'I want to receive e-mail at my personal e-mail address' => 'I want to receive e-mail at my personal e-mail address',
-    'Organization' => 'Organization',
-    'I want to become a member of the organization' => 'I want to become a member of the organization',
+    'Student Association' => 'Student Association',
+    'I want to become a member of the student association (&euro; { price })' => 'I want to become a member of the student association (&euro; { price })',
     'I have read and agree with the terms and conditions' => 'I have read and agree with the terms and conditions',
     'I want to receive my Ir.Reëel at CuDi' => 'I want to receive my Ir.Reëel at CuDi',
     'I want to receive \'t Bakske by e-mail' => 'I want to receive \'t Bakske by e-mail',

@@ -52,6 +52,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            var membershipArticles = {
+                {% for organization, membershipArticle in membershipArticles %}
+                    '{{ organization }}': {{ (membershipArticle.getSellPrice()/100)|number_format(2) }}
+                {% endfor %}
+            };
+
+            $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#register_form #organization').val()]));
+
             $('#conditions').parent().append(
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
