@@ -247,7 +247,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $session->setEntityManager($this->getEntityManager());
-        
+
         $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 
         if($this->getRequest()->isPost()) {
@@ -258,6 +258,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $cashRegister = new CashRegister();
+                $this->getEntityManager()->persist($cashRegister);
 
                 $devices = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
@@ -287,7 +288,6 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $session->close($cashRegister);
 
-                $this->getEntityManager()->persist($cashRegister);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
