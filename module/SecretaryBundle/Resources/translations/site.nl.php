@@ -14,7 +14,7 @@
 
 return array(
     'Registration' => 'Inschrijving',
-    'There is already a user with your university identification!' => 'Er is reeds een gebruiker met je universiteits identificatie!',
+    'There already is a user with your university identification!' => 'Er is reeds een gebruiker met je universiteits identificatie!',
 
     'Start' => 'Start',
     'Studies' => 'Studierichtingen',
@@ -23,7 +23,7 @@ return array(
 
     'Choose your study:' => 'Kies je studierichting:',
 
-    'To register, please login first with your KU Leuven account' => 'Meld je eerst aan met je KU Leuven account om je te registreren',
+    'To register, please login first with your KU Leuven account.' => 'Meld je eerst aan met je KU Leuven account om je te registreren.',
     'Personal' => 'Persoonlijk',
     'First Name' => 'Voornaam',
     'Last Name' => 'Achternaam',
