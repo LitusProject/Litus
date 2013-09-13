@@ -32,22 +32,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     protected function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-
-            $next = clone $start;
-            $next->add(new DateInterval('P1Y'));
-            if ($next <= new DateTime())
-                $start = $next;
+            return $this->getCurrentAcademicYear();
         } else {
             $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
 

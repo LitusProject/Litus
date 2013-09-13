@@ -9,19 +9,5 @@
         <phone>0472/ 24 97 08</phone>
     </cudi>
     <items>
-        <item>
-            <barcode>0132037947</barcode>
-            <title>Digital and Analog Communication Systems</title>
-            <author>Couch</author>
-            <publisher>Pearson</publisher>
-            <amount>25</amount>
-        </item>
-        <item>
-            <barcode>9781112330117</barcode>
-            <title>Digitale en Analoge Communicatie</title>
-            <author>Bart Nauwelaerts</author>
-            <publisher>VTK</publisher>
-            <amount>2</amount>
-        </item>
     </items>
 </stock>
