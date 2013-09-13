@@ -267,6 +267,30 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function assignAllAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
+
+        $counter = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->assignAllByArticle($saleArticle, $this->getMailTransport());
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The article is successfully assigned to ' . $counter . ' persons'
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
+    }
+
     public function searchAction()
     {
         $this->initAjax();

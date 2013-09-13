@@ -75,7 +75,18 @@
                             </fo:table-header>
 
                             <fo:table-body>
-                                <xsl:apply-templates select="items"/>
+                                <xsl:choose>
+                                    <xsl:when test="count($items_count) != 0">
+                                        <xsl:apply-templates select="items"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <fo:table-row>
+                                            <fo:table-cell number-columns-spanned="6">
+                                                <fo:block></fo:block>
+                                            </fo:table-cell>
+                                        </fo:table-row>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </fo:table-body>
                         </fo:table>
                     </fo:block>
@@ -83,6 +94,8 @@
             </fo:page-sequence>
         </fo:root>
     </xsl:template>
+
+    <xsl:param name="items_count" select="/items/*"/>
 
     <xsl:template name="date" match="date">
         <xsl:value-of select="/stock/@date"/>

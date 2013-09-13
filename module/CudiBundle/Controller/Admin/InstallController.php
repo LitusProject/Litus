@@ -366,9 +366,7 @@ VTK Cudi
                 array(
                     'key'         => 'cudi.registration_articles',
                     'value'       => serialize(
-                        array(
-                            11,
-                        )
+                        array()
                     ),
                     'description' => 'The articles assigned at registration',
                 ),
@@ -470,7 +468,7 @@ VTK Cudi
                         'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
                     ),
                     'cudi_admin_sales_article' => array(
-                        'activate', 'add', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead'
+                        'activate', 'add', 'assignAll', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead'
                     ),
                     'cudi_admin_sales_article_barcode' => array(
                         'delete', 'manage'

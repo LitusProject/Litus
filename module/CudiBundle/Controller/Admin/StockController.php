@@ -285,6 +285,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($delivery);
                     $this->getEntityManager()->flush();
 
+                    $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
+                        ->assignAllByArticle($article, $this->getMailTransport());
+                    $this->getEntityManager()->flush();
+
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
@@ -373,7 +378,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $file = new TmpFile();
-                $document = new StockGenerator($this->getEntityManager(), $formData['articles'], $formData['order'], isset($formData['in_stock']), $this->getAcademicYear(), $file);
+                $document = new StockGenerator($this->getEntityManager(), $formData['articles'], $formData['order'], isset($formData['in_stock']) && $formData['in)stock'], $this->getAcademicYear(), $file);
                 $document->generate();
 
                 $headers = new Headers();
@@ -425,7 +430,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 if ($formData['articles'] == 'internal' && !$item->getMainArticle()->isInternal())
                     continue;
 
-                if ($item->getStockValue() <= 0 && isset($formData['in_stock']))
+                if ($item->getStockValue() <= 0 && isset($formData['in_stock']) && $formData['in_stock'])
                     continue;
 
                 $articles[] = $item;

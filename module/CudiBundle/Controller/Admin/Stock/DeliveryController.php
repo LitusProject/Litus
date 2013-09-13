@@ -118,6 +118,11 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->persist($item);
                 $this->getEntityManager()->flush();
 
+                $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->assignAllByArticle($article, $this->getMailTransport());
+                $this->getEntityManager()->flush();
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -166,11 +171,29 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
+        if (!($period = $this->getActiveStockPeriod()))
+            return new ViewModel();
+
         if (!($delivery = $this->_getDelivery()))
             return new ViewModel();
 
         $delivery->getArticle()->addStockValue(-$delivery->getNumber());
         $this->getEntityManager()->remove($delivery);
+        $this->getEntityManager()->flush();
+
+        $nbToMuchAssigned = $period->getNbAssigned($delivery->getArticle()) - $delivery->getArticle()->getStockValue();
+        if ($nbToMuchAssigned > 0) {
+            $bookings = $entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                ->findLastAssignedByArticle($delivery->getArticle());
+
+            foreach($bookings as $booking) {
+                if ($nbToMuchAssigned <= 0)
+                    break;
+                $booking->setStatus('booked', $entityManager);
+                $nbToMuchAssigned -= $booking->getNumber();
+            }
+        }
         $this->getEntityManager()->flush();
 
         return new ViewModel(
