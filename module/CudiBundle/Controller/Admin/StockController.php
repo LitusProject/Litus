@@ -285,10 +285,16 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($delivery);
                     $this->getEntityManager()->flush();
 
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->assignAllByArticle($article, $this->getMailTransport());
-                    $this->getEntityManager()->flush();
+                    $enableAssignment = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_automatic_assignment');
+
+                    if ($enableAssignment == '1') {
+                        $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Booking')
+                            ->assignAllByArticle($article, $this->getMailTransport());
+                        $this->getEntityManager()->flush();
+                    }
 
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
