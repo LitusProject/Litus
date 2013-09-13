@@ -285,6 +285,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($delivery);
                     $this->getEntityManager()->flush();
 
+                    $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
+                        ->assignAllByArticle($article, $this->getMailTransport());
+                    $this->getEntityManager()->flush();
+
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
