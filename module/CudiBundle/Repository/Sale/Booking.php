@@ -929,6 +929,62 @@ class Booking extends EntityRepository
         return $counter;
     }
 
+    public function assignAllByArticle(ArticleEntity $article, TransportInterface $mailTransport)
+    {
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+
+        $period->setEntityManager($this->getEntityManager());
+
+        $counter = 0;
+        $persons = array();
+
+        $available = $article->getStockValue() - $period->getNbAssigned($article);
+
+        if ($available <= 0)
+            continue;
+
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllBookedByArticleAndPeriod($article, $period);
+
+        foreach($bookings as $booking) {
+            if ($available <= 0)
+                break;
+
+            $counter++;
+
+            if ($available < $booking->getNumber()) {
+                $new = new BookingEntity(
+                    $this->getEntityManager(),
+                    $booking->getPerson(),
+                    $booking->getArticle(),
+                    'booked',
+                    $booking->getNumber() - $available
+                );
+                $this->getEntityManager()->persist($new);
+
+                $booking->setNumber($available);
+            }
+
+            $booking->setStatus('assigned', $this->getEntityManager());
+            $available -= $booking->getNumber();
+
+            if (!isset($persons[$booking->getPerson()->getId()]))
+                $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+
+            $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
+        }
+
+        $this->getEntityManager()->flush();
+
+        foreach($persons as $person)
+            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
+
+        return $counter;
+    }
+
     public function expireBookings(TransportInterface $mailTransport)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
