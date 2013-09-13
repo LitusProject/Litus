@@ -366,9 +366,7 @@ VTK Cudi
                 array(
                     'key'         => 'cudi.registration_articles',
                     'value'       => serialize(
-                        array(
-                            11,
-                        )
+                        array()
                     ),
                     'description' => 'The articles assigned at registration',
                 ),

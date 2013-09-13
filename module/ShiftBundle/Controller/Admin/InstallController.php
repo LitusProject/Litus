@@ -188,9 +188,6 @@ U bent verwijderd van de volgende shift door een administrator:
                         'guest',
                     ),
                     'actions' => array(
-                        'shift' => array(
-                            'export', 'index', 'responsible', 'signout', 'volunteer'
-                        ),
                     ),
                 ),
             )
