@@ -40,7 +40,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->installAcl(
             array(
-                'bannerBundle' => array(
+                'bannerbundle' => array(
                     'banner' => array(
                         'view'
                     ),
