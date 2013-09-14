@@ -83,6 +83,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('cudi_admin_sales_article', 'assignAll') %}
+            <div class="sidebox">
+                <div class="title">Assign All</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to assign this article to all persons!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="assignAll">&rarr; Assign All</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
         {% if hasAccess('cudi_admin_article_file', 'front') and article.getMainArticle().isInternal() %}
             <div class="sidebox">
                 <div class="title">Download Front Page</div>
@@ -142,6 +155,25 @@
             </div>
         </div>
     </div>
+
+    <div class="modal hide fade" id="assignAllModal">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Assign All
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to assign this article to all persons!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="sell" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -152,6 +184,7 @@
             });
 
             $('.sellProfVersion').click(openSellProfModal);
+            $('.assignAll').click(openAssignAllModal);
 
             {% if article.getMainArticle().isInternal() %}
             var field = $('<span>').css({
@@ -182,9 +215,19 @@
             var $this = $(this);
 
             e.preventDefault();
-            var assignAllBooking = $('#sellProfVersion');
-            assignAllBooking.find('.sell').unbind('click').click(function () {
+            var sellProfVersion = $('#sellProfVersion');
+            sellProfVersion.find('.sell').unbind('click').click(function () {
                 window.location.href = '{{ url('cudi_admin_sales_article', {"action": "sellProf", "id": article.getId()})}}';
+            });
+            sellProfVersion.modal();
+        }
+        function openAssignAllModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var assignAllBooking = $('#assignAllModal');
+            assignAllBooking.find('.sell').unbind('click').click(function () {
+                window.location.href = '{{ url('cudi_admin_sales_article', {"action": "assignAll", "id": article.getId()})}}';
             });
             assignAllBooking.modal();
         }
