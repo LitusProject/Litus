@@ -21,7 +21,7 @@ fieldset {
 
 input, select {
     height: @inputHeight;
-    background: @cWhite url(@iFormsBackground) repeat-x;
+    #gradient > .vertical(@cFormsGradientStart, @cWhite, 45%);
     border: 1px solid @cBorder;
     color: @cText;
 }
@@ -67,7 +67,7 @@ textarea {
     width: @textareaWidth;
     height: @textareaHeight;
     padding: @inputIndent;
-    background: @cWhite url(@iFormsBackground) repeat-x;
+    #gradient > .vertical(@cFormsGradientStart, @cWhite, 45%);
     border: 1px solid @cBorder;
     color: @cText;
 }

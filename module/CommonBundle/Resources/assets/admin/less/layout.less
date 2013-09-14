@@ -115,7 +115,7 @@ h2 {
             text-indent: @tIndent;
             font-weight: bold;
             color: @cTopmenuTitle;
-            background: url(@iMenuBackground);
+            background: @cAccent;
         }
 
         ul {
@@ -159,7 +159,7 @@ h2 {
             text-indent: @tIndent;
             font-weight: bold;
             color: @cAccent;
-            background: @cSubmenuBackground;
+            background: @cSubmenuTitleBackground;
         }
 
         .subtitle {
@@ -167,7 +167,7 @@ h2 {
             height: @menuSubtitleHeight - @defaultSpacing;
             padding-left: @tIndent;
             padding-top: @defaultSpacing;
-            background: url(@iMenuBackground) 0 -@menuTitleHeight;
+            #gradient > .vertical(@cSubmenuGradientStart, @cSubmenuGradientStop);
             cursor: pointer;
 
             b {
