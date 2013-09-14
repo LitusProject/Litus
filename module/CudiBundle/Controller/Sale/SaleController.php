@@ -17,7 +17,7 @@ namespace CudiBundle\Controller\Sale;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sale\Returned as ReturnedLog,
     CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
+    CudiBundle\Form\Sale\Sale\ReturnArticle as ReturnForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -66,7 +66,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
-        $form = new ReturnSaleForm($this->getEntityManager());
+        $form = new ReturnForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -81,7 +81,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneByBarcode($formData['article']);
+                    ->findOneById($formData['article_id']);
 
                 $booking = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -144,6 +144,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         return new ViewModel(
             array(
                 'form' => $form,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
             )
         );
     }
