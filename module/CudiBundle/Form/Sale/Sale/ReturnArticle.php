@@ -29,7 +29,7 @@ use CommonBundle\Component\Validator\Username as UsernameValidator,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ReturnSale extends \CommonBundle\Component\Form\Bootstrap\Form
+class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -53,18 +53,25 @@ class ReturnSale extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('person');
         $field->setLabel('Person')
             ->setAttribute('placeholder', 'Student')
-            ->setAttribute('style', 'width: 400px;')
+            ->setAttribute('style', 'width: 300px;')
             ->setAttribute('id', 'personSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
             ->setRequired();
         $this->add($field);
 
+        $field = new Hidden('article_id');
+        $field->setAttribute('id', 'articleId');
+        $this->add($field);
+
         $field = new Text('article');
         $field->setLabel('Article')
             ->setRequired()
             ->setAttribute('autocomplete', 'off')
-            ->setAttribute('placeholder', 'Article Barcode');
+            ->setAttribute('style', 'width: 400px;')
+            ->setAttribute('placeholder', 'Article')
+            ->setAttribute('id', 'articleSearch')
+            ->setAttribute('data-provide', 'typeahead');
         $this->add($field);
 
         $field = new Submit('submit');
@@ -115,13 +122,27 @@ class ReturnSale extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'article',
+                    'name'     => 'article_id',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new BarcodeValidator($this->_entityManager),
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'article',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 )
             )
