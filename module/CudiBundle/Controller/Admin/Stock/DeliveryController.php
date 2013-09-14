@@ -118,7 +118,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->persist($item);
                 $this->getEntityManager()->flush();
 
-                $$enableAssignment = $this->getEntityManager()
+                $enableAssignment = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.enable_automatic_assignment');
 
