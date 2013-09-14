@@ -19,6 +19,18 @@
                     $('#personId').val('');
                 }
             });
+
+            $('#articleSearch').typeaheadRemote(
+                {
+                    source: '{{ url("cudi_admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#articleId').val($(this).data('value').id);
+                } else {
+                    $('#articleId').val('');
+                }
+            });
         });
     </script>
 {% endblock %}
