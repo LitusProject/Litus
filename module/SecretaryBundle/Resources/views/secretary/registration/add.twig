@@ -17,7 +17,7 @@
                             {% for organization in organizations %}
                                 <li style="margin-bottom: 10px;">
                                     <a class="thumbnail" id="organization-{{ organization.getId() }}" data-id="{{ organization.getId() }}" href="#" style="padding: 20px;text-decoration: none;">
-                                        {{ translate(organization.getName()) }}
+                                        {{ organization.getName() }}
                                     </a>
                                 </li>
                             {% endfor %}
