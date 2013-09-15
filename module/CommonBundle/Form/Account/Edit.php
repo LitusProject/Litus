@@ -53,7 +53,10 @@ class Edit extends \SecretaryBundle\Form\Registration\Edit
             ->setAttribute('data-type', 'image');
         $this->get('personal')->add($field);
 
-        if ('praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()) {
+        if (
+            null !== $academic->getOrganizationStatus($academicYear)
+            && 'praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()
+        ) {
             $this->get('organization')
                 ->get('become_member')
                 ->setValue(false)
