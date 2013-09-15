@@ -17,7 +17,6 @@ namespace SecretaryBundle\Form\Registration;
 use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
@@ -101,11 +100,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'f' => 'F'
                 )
             );
-        $personal->add($field);
-
-        $field = new File('profile');
-        $field->setLabel('Profile Image')
-            ->setAttribute('data-type', 'image');
         $personal->add($field);
 
         $field = new Text('phone_number');
@@ -362,29 +356,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'name'     => 'sex',
                     'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'profile',
-                    'required' => false,
-                    'validators' => array(
-                        array(
-                            'name' => 'fileextension',
-                            'options' => array(
-                                'extension' => 'jpg,png',
-                            ),
-                        ),
-                        array(
-                            'name' => 'filefilessize',
-                            'options' => array(
-                                'extension' => '2MB',
-                            ),
-                        ),
-                    ),
                 )
             )
         );
