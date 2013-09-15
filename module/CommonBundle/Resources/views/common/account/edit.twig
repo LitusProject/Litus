@@ -58,6 +58,7 @@
                 {% endfor %}
             };
 
+            $('#register_form #organization').closest('.control-group').hide();
             $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#register_form #organization').val()]));
 
             $('#conditions').parent().append(
@@ -103,6 +104,7 @@
             else
                 $('#organization_info .control-group').hide();
             $('#become_member, #conditions').closest('.control-group').show();
+            $('#register_form #organization').closest('.control-group').hide();
         }
     </script>
 {% endblock %}
