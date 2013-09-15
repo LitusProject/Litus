@@ -17,9 +17,11 @@ namespace LogisticsBundle\Form\PianoReservation;
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    CommonBundle\Entity\General\Language,
     DateInterval,
     DateTime,
     Doctrine\ORM\EntityManager,
+    IntlDateFormatter,
     LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
@@ -39,19 +41,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_entityManager = null;
 
     /**
+     * @var \CommonBundle\Entity\General\Language
+     */
+    protected $_language = null;
+
+    /**
      * @var array
      */
     private $_weeks;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\Language $language
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, Language $language, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+        $this->_language = $language;
 
         $this->_weeks = $this->_getTimeSlots();
 
@@ -79,6 +88,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function _getTimeSlots()
     {
+        $formatter = new IntlDateFormatter(
+            $this->_language->getAbbrev(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'E d/M/Y H:mm'
+        );
+
         $config = unserialize(
             $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -126,7 +144,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ->isTimeInExistingReservation($startSlot, true);
 
                             $listStart[] = array(
-                                'label' => $startSlot->format('D d/m/Y H:i'),
+                                'label' => $formatter->format($startSlot),
                                 'value' => $startSlot->format('D d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
@@ -140,7 +158,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ->isTimeInExistingReservation($startSlot, false);
 
                             $listEnd[] = array(
-                                'label' => $startSlot->format('D d/m/Y H:i'),
+                                'label' => $formatter->format($startSlot),
                                 'value' => $startSlot->format('D d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
