@@ -29,7 +29,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager(), $this->getLanguage());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
