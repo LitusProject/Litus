@@ -1,18 +1,6 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    {% if sportInfo is not null %}
-        <div class="alert alert-info">
-            <h4>{{ translate('24h-Run') }}</h4>
-            {% if sportInfo.behind == 0 %}
-                {{ translate('We have run already %laps% laps and we are the first team.')|replace({'%laps%': sportInfo.nbLaps}) }}
-            {% else %}
-                {{ translate('We have run already %laps% laps and we are %behind% laps behind the first team.')|replace({'%laps%': sportInfo.nbLaps, '%behind%': sportInfo.behind}) }}
-            {% endif %}
-            <span class="pull-right">{{ translate('Current Runner:') }} <b>{{ sportInfo.currentLap.getRunner().getFullName() }}</b></span>
-        </div>
-    {% endif %}
-
     {% if bookings is not null %}
         <div class="alert alert-success">
             <p class="pull-right hidden-phone">
