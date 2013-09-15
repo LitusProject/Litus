@@ -48,13 +48,9 @@ class Edit extends Add
         parent::__construct($cache, $entityManager, $identification, $name);
 
         if ('praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()) {
-            $this->remove('become_member');
-
-            $field = new Checkbox('become_member');
-            $field->setLabel('I want to become a member of the student association (&euro; { price })')
+            $this->get('become_member')
                 ->setValue(false)
                 ->setAttribute('disabled', 'disabled');
-            $this->get('organization')->add($field);
         }
 
         $this->remove('register');
