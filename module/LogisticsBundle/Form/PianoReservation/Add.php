@@ -153,19 +153,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 }
             }
 
-            if (!isset($weeks[$now->format('W')])) {
-                $end = (clone $now);
-                $end->add(new DateInterval('P6D'));
-                $weeks[$now->format('W')] = array(
-                    'start' => clone $now,
-                    'end' => $end,
-                    'slotsStart' => array(),
-                    'slotsEnd' => array(),
-                );
-            }
+            if (sizeof($listStart) > 0 && sizeof($listEnd) > 0) {
+                if (!isset($weeks[$now->format('W')])) {
+                    $end = (clone $now);
+                    $end->add(new DateInterval('P6D'));
+                    $weeks[$now->format('W')] = array(
+                        'start' => clone $now,
+                        'end' => $end,
+                        'slotsStart' => array(),
+                        'slotsEnd' => array(),
+                    );
+                }
 
-            $weeks[$now->format('W')]['slotsStart'] = array_merge($weeks[$now->format('W')]['slotsStart'], $listStart);
-            $weeks[$now->format('W')]['slotsEnd'] = array_merge($weeks[$now->format('W')]['slotsEnd'], $listEnd);
+                $weeks[$now->format('W')]['slotsStart'] = array_merge($weeks[$now->format('W')]['slotsStart'], $listStart);
+                $weeks[$now->format('W')]['slotsEnd'] = array_merge($weeks[$now->format('W')]['slotsEnd'], $listEnd);
+            }
 
             $now->add(new DateInterval('P1D'));
         }
