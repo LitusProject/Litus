@@ -67,8 +67,20 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 ->findOneByUniversityIdentification($this->getParam('identification'));
 
             if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
-                $this->getResponse()->setStatusCode(404);
-                return new ViewModel();
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'WARNING',
+                        'You already have registered for this academic year.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'secretary_registration',
+                    array(
+                        'action' => 'studies',
+                    )
+                );
             }
         } else {
             $academic = null;
