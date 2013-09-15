@@ -69,7 +69,16 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                         ->findAllConfirmedByDatesAndPerson($startWeek, $endWeek, $this->getAuthentication()->getPersonObject());
 
-                    if (sizeof($otherReservations) == 0) {
+                    $deadline = new DateTime();
+                    $deadline->add(
+                        new DateInterval(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('logistics.piano_auto_confirm_deadline')
+                        )
+                    );
+
+                    if (sizeof($otherReservations) == 0 && $reservation->getStartDate() > $deadline) {
                         $mailData = unserialize(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
