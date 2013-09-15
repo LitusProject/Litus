@@ -81,8 +81,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         foreach($enrollments as $enrollment)
             $this->getEntityManager()->remove($enrollment);
 
+        $studies = array();
+
         if (!empty($data['studies'])) {
             foreach($data['studies'] as $id) {
+                if (isset($studies[$id]))
+                    continue;
+
+                $studies[$id] = true;
+
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($id);
@@ -202,8 +209,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         foreach($enrollments as $enrollment)
             $this->getEntityManager()->remove($enrollment);
 
+        $subjects = array();
+
         if (!empty($data['subjects'])) {
             foreach($data['subjects'] as $id) {
+                if (isset($subjects[$id]))
+                    continue;
+
+                $subjects[$id] = true;
+
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject')
                     ->findOneById($id);
