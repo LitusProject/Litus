@@ -301,7 +301,7 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     public function getOrganization(AcademicYearEntity $academicYear)
     {
-        foreach($this->organizationMap as $map) {
+        foreach ($this->organizationMap as $map) {
             if ($map->getAcademicYear() == $academicYear)
                 return $map->getOrganization();
         }
@@ -313,7 +313,7 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     public function getUnit(AcademicYearEntity $academicYear)
     {
-        foreach($this->unitMap as $map) {
+        foreach ($this->unitMap as $map) {
             if ($map->getAcademicYear() == $academicYear)
                 return $map->getUnit();
         }
@@ -341,7 +341,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     {
         $latestStartDate = null;
         $unitMaps = array();
-        foreach($this->unitMap as $map) {
+        foreach ($this->unitMap as $map) {
             $startDate = $map->getAcademicYear()->getStartDate();
             if ($startDate >= $latestStartDate) {
                 $latestStartDate = $startDate;
