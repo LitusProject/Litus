@@ -18,7 +18,9 @@ use BrBundle\Entity\Contract as ContractEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    IntlDateFormatter,
+    Zend\I18n\Translator\Translator;
 
 /**
  * Generate a PDF for a contract.
@@ -35,10 +37,15 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
     private $_contract;
 
     /**
+     * @var \Zend\I18n\Translator\Translator
+     */
+    private $_translator;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \BrBundle\Entity\Contract $contract The contract for which we want to generate a PDF
      */
-    public function __construct(EntityManager $entityManager, ContractEntity $contract)
+    public function __construct(EntityManager $entityManager, ContractEntity $contract, Translator $translator)
     {
         parent::__construct(
             $entityManager,
@@ -50,6 +57,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                 ->getConfigValue('br.file_path') . '/contracts/'
                 . $contract->getId() . '/contract.pdf'
         );
+        $this->_translator = $translator;
         $this->_contract = $contract;
     }
 
@@ -63,7 +71,11 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         /** @var \Litus\Entity\Users\People\Company $company  */
         $company = $this->_contract->getOrder()->getCompany();
 
-        $date = $this->_contract->getOrder()->getCreationTime()->format('l j F Y');
+        $locale = $configs->getConfigValue('br.contract_language');
+        $this->_translator->setLocale($locale);
+
+        $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
+        $date = $formatter->format($this->_contract->getOrder()->getCreationTime());
 
         $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getFullName();
         $entries = $this->_contract->getEntries();
@@ -163,7 +175,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                                     new XmlObject(
                                         'country',
                                         null,
-                                        $company->getAddress()->getCountry()
+                                        $this->_translator->translate($company->getAddress()->getCountry())
                                     )
                                 )
                             )
