@@ -54,7 +54,7 @@
         $(document).ready(function () {
             var membershipArticles = {
                 {% for organization, membershipArticle in membershipArticles %}
-                    '{{ organization }}': {{ (membershipArticle.getSellPrice()/100)|number_format(2) }}
+                    '{{ organization }}': {{ (membershipArticle.getSellPrice()/100)|number_format(2) }},
                 {% endfor %}
             };
 

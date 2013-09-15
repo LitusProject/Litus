@@ -185,7 +185,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             )
                         );
 
-                    $this->_uploadProfileImage($academic);
                     if (isset($formData['organization'])) {
                         $this->_setOrganization(
                             $academic,
@@ -416,7 +415,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $academic->addUniversityStatus($status);
                 }
 
-                $this->_uploadProfileImage($academic);
                 if (isset($formData['organization'])) {
                     $this->_setOrganization(
                         $academic,
@@ -706,11 +704,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        $this->getEntityManager()->remove($code);
-        $this->getEntityManager()->flush();
+        if (null !== $code) {
+            $this->getEntityManager()->remove($code);
+            $this->getEntityManager()->flush();
 
-        $authentication->authenticate(
-            $this->getParam('identification'), '', true
-        );
+            $authentication->authenticate(
+                $this->getParam('identification'), '', true
+            );
+        }
     }
 }
