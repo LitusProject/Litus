@@ -119,7 +119,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      * @param int $itemsPerPage The number of items on each page
      * @return \Zend\Paginator\Paginator
      */
-    public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = null)
+    public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = array())
     {
         return $this->createFromArray(
             (0 == count($conditions)) ?
