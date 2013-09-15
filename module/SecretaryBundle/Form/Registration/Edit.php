@@ -48,7 +48,8 @@ class Edit extends Add
         parent::__construct($cache, $entityManager, $identification, $name);
 
         if ('praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()) {
-            $this->get('become_member')
+            $this->get('organization')
+                ->get('become_member')
                 ->setValue(false)
                 ->setAttribute('disabled', 'disabled');
         }
