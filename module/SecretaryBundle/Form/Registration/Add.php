@@ -161,12 +161,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($organization);
 
         $organizations = $this->_getOrganizations();
-        if (sizeof($organizations) > 1) {
-            $field = new Select('organization');
-            $field->setLabel('Student Association')
-                ->setAttribute('options', $organizations);
-            $organization->add($field);
-        }
+        $field = new Select('organization');
+        $field->setLabel('Student Association')
+            ->setAttribute('options', $organizations);
+        $organization->add($field);
 
         $registration_enabled = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
