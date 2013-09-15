@@ -160,7 +160,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('options', $organizations);
         $organization->add($field);
 
-        $registration_enabled = $this->_entityManager
+        $registrationEnabled = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.registration_enabled');
 
@@ -169,7 +169,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue(true);
         $organization->add($field);
 
-        if ('1' != $registration_enabled)
+        if ('1' != $registrationEnabled)
             $field->setAttribute('disabled', 'disabled');
 
         $field = new Checkbox('conditions');

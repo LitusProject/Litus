@@ -65,6 +65,25 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $academic = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('identification'));
+
+            if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'WARNING',
+                        'You already have registered for this academic year.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'secretary_registration',
+                    array(
+                        'action' => 'studies',
+                    )
+                );
+
+                return new ViewModel();
+            }
         } else {
             $academic = null;
         }
