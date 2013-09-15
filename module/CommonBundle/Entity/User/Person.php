@@ -535,6 +535,8 @@ abstract class Person
             if ($status->getAcademicYear() == $academicYear)
                 return $status;
         }
+
+        return null;
     }
 
     /**

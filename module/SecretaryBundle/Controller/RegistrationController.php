@@ -65,6 +65,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $academic = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('identification'));
+
+            if ($academic->getOrganizationStatus($this->getCurrentAcademicYear()) !== null) {
+                $this->getResponse()->setStatusCode(404);
+                return new ViewModel();
+            }
         } else {
             $academic = null;
         }
