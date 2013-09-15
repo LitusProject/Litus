@@ -28,7 +28,7 @@ use Doctrine\ORM\EntityManager,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \SecretaryBundle\Form\Registration\Add
+class Edit extends \SecretaryBundle\Form\Registration\Edit
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -46,7 +46,7 @@ class Edit extends \SecretaryBundle\Form\Registration\Add
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null, CacheStorage $cache, EntityManager $entityManager, $identification, $name = null)
     {
-        parent::__construct($cache, $entityManager, $identification, $name);
+        parent::__construct($academic, $academicYear, $metaData, $cache, $entityManager, $identification, $name);
 
         $field = new File('profile');
         $field->setLabel('Profile Image')
