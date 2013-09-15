@@ -105,6 +105,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_street',
                 'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
             )
         );
 
@@ -162,7 +165,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'alnum',
+                        'name' => 'digits',
                     ),
                 ),
             )
@@ -175,21 +178,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
-                'validators' => array(
-                    array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                    ),
-                ),
             )
         );
 
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_country',
-                'required' => false,
+                'required' => true,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
