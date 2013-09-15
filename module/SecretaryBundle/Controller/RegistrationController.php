@@ -81,6 +81,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'action' => 'studies',
                     )
                 );
+
+                return new ViewModel();
             }
         } else {
             $academic = null;
