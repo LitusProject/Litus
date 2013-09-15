@@ -106,6 +106,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_street',
                 'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
             )
         );
 
@@ -118,10 +121,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
+                        'name' => 'digits',
                     ),
                     new NotZeroValidator(),
                 ),
@@ -138,9 +138,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                 'validators' => array(
                     array(
                         'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
                         'validators' => array(
                             array(
                                 'name' => 'StringLength',
@@ -163,7 +160,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'alnum',
+                        'name' => 'digits',
                     ),
                 ),
             )
@@ -175,14 +172,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                    ),
                 ),
             )
         );
