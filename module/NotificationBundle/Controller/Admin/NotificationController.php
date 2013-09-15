@@ -34,7 +34,9 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $paginator = $this->paginator()->createFromEntity(
             'NotificationBundle\Entity\Node\Notification',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array('startDate' => 'ASC')
         );
 
         return new ViewModel(
