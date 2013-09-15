@@ -219,6 +219,8 @@ class Academic extends \CommonBundle\Entity\User\Person
             if ($status->getAcademicYear() == $academicYear)
                 return $status;
         }
+
+        return null;
     }
 
     /**
@@ -305,6 +307,8 @@ class Academic extends \CommonBundle\Entity\User\Person
             if ($map->getAcademicYear() == $academicYear)
                 return $map->getOrganization();
         }
+
+        return null;
     }
 
     /**
@@ -317,6 +321,8 @@ class Academic extends \CommonBundle\Entity\User\Person
             if ($map->getAcademicYear() == $academicYear)
                 return $map->getUnit();
         }
+
+        return null;
     }
 
     /**
