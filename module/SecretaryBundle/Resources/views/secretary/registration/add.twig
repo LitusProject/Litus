@@ -87,7 +87,6 @@
 
             {% if organizations|length > 1 %}
                 $('#organizationSelector a').click(function (e) {
-                console.log(membershipArticles);
                     e.preventDefault();
                     $('#organizationSelector').hide();
                     $('#registerForm').show();
@@ -95,6 +94,7 @@
                     $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$(this).data('id')]));
                 });
             {% else %}
+                $('#registerForm #organization').closest('.control-group').hide();
                 $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#registerForm #organization').val()]));
             {% endif %}
 
