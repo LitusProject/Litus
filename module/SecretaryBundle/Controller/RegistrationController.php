@@ -66,7 +66,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('identification'));
 
-            if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+            if (null !== $academic && null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::WARNING,
