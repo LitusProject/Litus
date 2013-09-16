@@ -49,6 +49,8 @@
             </tbody>
         </table>
     {% include 'admin/partials/paginationControl.twig' %}
+        <button class="js-sortable-save">Save</button>
+        <button class="js-sortable-cancel">Cancel</button>
     </div>
 
     <div class="modal hide fade" id="removeRound">
@@ -122,5 +124,15 @@
             $('.round_remove_error').removeClass('hide');
             $('#removeRound').modal('hide');
         }
+    </script>
+    <script>
+        $('.manage').sortableTable({
+            buttons: {
+                save: $('.js-sortable-save'),
+                cancel: $('.js-sortable-cancel')
+            },
+            submitUrl: "{{ url('quiz_admin_round', {"action": "sort", "quizid": quiz.getId()}) }}"
+
+        });
     </script>
 {% endblock %}
