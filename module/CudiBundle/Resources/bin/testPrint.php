@@ -65,6 +65,7 @@ if (isset($opts->p) && isset($opts->t)) {
         'name' => 'Kristof Mariën',
         'queuenumber' => '3',
         'totalAmount' => '63,00',
+        'title' => 'Litus Cursusdienst',
         'items' => array(
             array(
                 'title' => 'Fundamentals of Computer Graphics',

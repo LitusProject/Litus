@@ -337,6 +337,11 @@ VTK Cudi
                     'description' => 'The key used for printing',
                 ),
                 array(
+                    'key'         => 'cudi.ticket_title',
+                    'value'       => 'Litus Cursusdienst',
+                    'description' => 'The title printed on a ticket',
+                ),
+                array(
                     'key'         => 'cudi.printers',
                     'value'       => serialize(
                         array(
