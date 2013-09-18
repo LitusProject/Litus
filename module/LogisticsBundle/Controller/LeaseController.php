@@ -185,12 +185,20 @@ class LeaseController extends LogisticsController
     public function typeaheadAction()
     {
         $query = $this->getRequest()->getQuery('q');
+        $purpose = $this->getRequest()->getQuery('purpose');
         $results = array();
         if($query !== null) {
             $items = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Lease\Item')
                     ->searchByName($query);
+            $leaseRepo = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Lease\Lease');
+            /* @var $leaseRepo \LogisticsBundle\Repository\Lease\Lease */
             foreach($items as $item) {
+                if($purpose === 'lease' && count($leaseRepo->findUnreturnedByItem($item)) > 0)
+                    continue;
+                if($purpose === 'return' && count($leaseRepo->findUnreturnedByItem($item)) <= 0)
+                    continue;
                 /* @var $item \LogisticsBundle\Entity\Lease\Item */
                 $results[] = array(
                     'id' => $item->getBarcode(),
