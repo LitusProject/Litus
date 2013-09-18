@@ -33,7 +33,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getConfigValue('common.piwik_enabled');
 
         $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV') && $piwikEnabled) {
+        if ($piwikEnabled) {
             $analytics = new Analytics(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -49,7 +49,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             $piwik = array(
                 'uniqueVisitors' => $analytics->getUniqueVisitors(),
                 'liveCounters' => $analytics->getLiveCounters(),
-                'visitsSummary' => $analytics->getVisitsSummary()
+                'visitsGraph' => $this->_getVisitsGraph($analytics)
             );
         }
 
@@ -57,9 +57,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.registration_enabled');
 
-        $registrationGraph = null;
+        $registrationsGraph = null;
         if ($registrationEnabled)
-            $registrationGraph = $this->_getRegistrationGraph();
+            $registrationsGraph = $this->_getRegistrationsGraph();
 
         $profActions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
@@ -90,7 +90,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'activeSessions' => $activeSessions,
                 'currentSession' => $currentSession,
                 'piwik' => $piwik,
-                'registrationGraph' => $registrationGraph,
+                'registrationsGraph' => $registrationsGraph,
                 'versions' => array(
                     'php' => phpversion(),
                     'zf' => \Zend\Version\Version::VERSION,
@@ -100,7 +100,48 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getRegistrationGraph()
+    private function _getVisitsGraph(Analytics $analytics)
+    {
+        if (null !== $this->getCache()) {
+            if($this->getCache()->hasItem('CommonBundle_Controller_IndexController_VisitsGraph')) {
+                $now = new DateTime();
+                if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph')['expirationTime'] > $now)
+                    return $this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph');
+            }
+
+            $this->getCache()->setItem(
+                'CommonBundle_Controller_IndexController_VisitsGraph',
+                $this->_getVisitsGraphData($analytics)
+            );
+
+            return $this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph');
+        }
+
+        return $this->_getVisitsGraphData($analytics);
+    }
+
+    private function _getVisitsGraphData(Analytics $analytics)
+    {
+        $now = new DateTime();
+
+        $visitsGraphData = array(
+            'expirationTime' => $now->add(new DateInterval('P1D')),
+
+            'labels' => array(),
+            'dataset' => array()
+        );
+
+        foreach ((array) $analytics->getUniqueVisitors('previous7') as $dateString => $count) {
+            $date = new DateTime($dateString);
+
+            $visitsGraphData['labels'][] = $date->format('d/m/Y');
+            $visitsGraphData['dataset'][] = $count;
+        }
+
+        return $visitsGraphData;
+    }
+
+    private function _getRegistrationsGraph()
     {
         if (null !== $this->getCache()) {
             if($this->getCache()->hasItem('CommonBundle_Controller_IndexController_RegistrationGraph')) {
@@ -111,16 +152,16 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
             $this->getCache()->setItem(
                 'CommonBundle_Controller_IndexController_RegistrationGraph',
-                $this->_getRegistrationGraphData()
+                $this->_getRegistrationsGraphData()
             );
 
             return $this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationGraph');
         }
 
-        return $this->_getRegistrationGraphData();
+        return $this->_getRegistrationsGraphData();
     }
 
-    private function _getRegistrationGraphData()
+    private function _getRegistrationsGraphData()
     {
         $now = new DateTime();
 
@@ -133,13 +174,22 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $registrations = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Registration')
-            ->findByAcademicYear($this->getCurrentAcademicYear());
+            ->findBy(
+                array(
+                    'academicYear' => $this->getCurrentAcademicYear()
+                ),
+                array(
+                    'timestamp' => 'ASC'
+                )
+            );
 
         $data = array();
         foreach ($registrations as $registration) {
-            isset($data[$registration->getTimestamp()->format('d/m/Y')])
-                ? $data[$registration->getTimestamp()->format('d/m/Y')]++
-                : $data[$registration->getTimestamp()->format('d/m/Y')] = 1;
+            if (!isset($data[$registration->getTimestamp()->format('d/m/Y')]) && count($data) <= 7) {
+                $data[$registration->getTimestamp()->format('d/m/Y')] = 1;
+            } else {
+                $data[$registration->getTimestamp()->format('d/m/Y')]++;
+            }
         }
 
         foreach($data as $label => $value) {
