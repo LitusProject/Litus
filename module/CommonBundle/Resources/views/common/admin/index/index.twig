@@ -10,14 +10,14 @@
 	<div id="controller_action">
         {% if piwik is not null %}
             <h1>Visits Summary</h1>
-            <div class="chart full_width">
+            <div class="chart">
                 <canvas id="visitsGraph" width="988" height="125"></canvas>
             </div>
         {% endif %}
 
         {% if registrationsGraph is not null and registrationsGraph['dataset']|length > 1 %}
             <h1>Registrations Summary</h1>
-            <div class="chart full_width">
+            <div class="chart">
                 <canvas id="registrationGraph" width="988" height="125"></canvas>
             </div>
         {% endif %}
