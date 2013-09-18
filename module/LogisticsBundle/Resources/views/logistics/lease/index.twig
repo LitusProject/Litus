@@ -69,6 +69,21 @@
 
 {% block content_script %}
 <script>
+    (function() {
+        /*
+         * Monkey-patch of typeaheadRemote to prevent sending search queries when
+         * a barcode is being entered in the field.
+         */
+        var origLookup = $.fn.typeaheadRemote.Constructor.prototype.lookup;
+        $.fn.typeaheadRemote.Constructor.prototype.lookup = function(event) {
+            if(/^[0-9]{1,12}$/.test(this.$element.val())) {
+                return this.shown? this.hide(): this;
+            } else {
+                return origLookup.call(this, event)
+            }
+        };
+    })();
+
     $('.js-item-search').typeaheadRemote({
         source: "{{ url('logistics_lease', { 'action': 'typeahead' }) }}?q="
     }).change(function() {
