@@ -33,7 +33,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getConfigValue('common.piwik_enabled');
 
         $piwik = null;
-        if ($piwikEnabled) {
+        if ('development' != getenv('APPLICATION_ENV') && $piwikEnabled) {
             $analytics = new Analytics(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
