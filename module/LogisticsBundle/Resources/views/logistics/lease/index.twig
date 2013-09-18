@@ -157,7 +157,7 @@
         var $tr =  $(this).parents('tr');
         var barcode = $tr.data('barcode');
         var pawn = $tr.data('pawn');
-        $('#return .js-item-barcode').val(barcode);
+        $('#return .js-item-barcode, #return .js-item-search').val(barcode);
         $('#returned_pawn').val(pawn);
         $('#returned_by').focus();
     });
