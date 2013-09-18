@@ -51,6 +51,32 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
+        $registrationEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled');
+
+        $registrationGraph = null;
+        if ($registrationEnabled) {
+            $registrations = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Registration')
+                ->findByAcademicYear($this->getCurrentAcademicYear());
+
+            $registrationGraph['data'] = array();
+            foreach ($registrations as $registration) {
+                isset($registrationGraph['data'][$registration->getTimestamp()->format('d/m/Y')])
+                    ? $registrationGraph['data'][$registration->getTimestamp()->format('d/m/Y')]++
+                    : $registrationGraph['data'][$registration->getTimestamp()->format('d/m/Y')] = 1;
+            }
+
+            $registrationGraph['labels'] = array();
+            $registrationGraph['dataset'] = array();
+            foreach($registrationGraph['data'] as $label => $data) {
+                $registrationGraph['labels'][] = $label;
+                $registrationGraph['dataset'][] = $data;
+            }
+            unset($registrationGraph['data']);
+        }
+
         $profActions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllUncompleted(10);
@@ -80,6 +106,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'activeSessions' => $activeSessions,
                 'currentSession' => $currentSession,
                 'piwik' => $piwik,
+                'registrationGraph' => $registrationGraph,
                 'versions' => array(
                     'php' => phpversion(),
                     'zf' => \Zend\Version\Version::VERSION,
