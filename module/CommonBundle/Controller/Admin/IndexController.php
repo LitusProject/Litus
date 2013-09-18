@@ -15,6 +15,8 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Piwik\Analytics,
+    DateInterval,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -51,6 +53,14 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
+        $registrationEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled');
+
+        $registrationGraph = null;
+        if ($registrationEnabled)
+            $registrationGraph = $this->_getRegistrationGraph();
+
         $profActions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllUncompleted(10);
@@ -80,6 +90,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'activeSessions' => $activeSessions,
                 'currentSession' => $currentSession,
                 'piwik' => $piwik,
+                'registrationGraph' => $registrationGraph,
                 'versions' => array(
                     'php' => phpversion(),
                     'zf' => \Zend\Version\Version::VERSION,
@@ -87,5 +98,55 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ),
             )
         );
+    }
+
+    private function _getRegistrationGraph()
+    {
+        if (null !== $this->getCache()) {
+            if($this->getCache()->hasItem('CommonBundle_Controller_IndexController_RegistrationGraph')) {
+                $now = new DateTime();
+                if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationGraph')['expirationTime'] > $now)
+                    return $this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationGraph');
+            }
+
+            $this->getCache()->setItem(
+                'CommonBundle_Controller_IndexController_RegistrationGraph',
+                $this->_getRegistrationGraphData()
+            );
+
+            return $this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationGraph');
+        }
+
+        return $this->_getRegistrationGraphData();
+    }
+
+    private function _getRegistrationGraphData()
+    {
+        $now = new DateTime();
+
+        $registationGraphData = array(
+            'expirationTime' => $now->add(new DateInterval('PT1H')),
+
+            'labels' => array(),
+            'dataset' => array()
+        );
+
+        $registrations = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findByAcademicYear($this->getCurrentAcademicYear());
+
+        $data = array();
+        foreach ($registrations as $registration) {
+            isset($data[$registration->getTimestamp()->format('d/m/Y')])
+                ? $data[$registration->getTimestamp()->format('d/m/Y')]++
+                : $data[$registration->getTimestamp()->format('d/m/Y')] = 1;
+        }
+
+        foreach($data as $label => $value) {
+            $registationGraphData['labels'][] = $label;
+            $registationGraphData['dataset'][] = $value;
+        }
+
+        return $registationGraphData;
     }
 }

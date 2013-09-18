@@ -10,7 +10,14 @@
 	<div id="controller_action">
         {% if piwik is not null %}
             <h1>Visits Summary</h1>
-            <img src="{{ piwik['visitsSummary'].getDataUri(1000, 200) }}" alt="Visits Summary" class="full_width" />
+            <img src="{{ piwik['visitsSummary'].getDataUri(988, 150) }}" alt="Visits Summary" class="full_width" />
+        {% endif %}
+
+        {% if registrationGraph is not null and registrationGraph['dataset']|length > 1 %}
+            <h1>Registrations</h1>
+            <div class="chart full_width">
+                <canvas id="registrationGraph" width="988" height="150"></canvas>
+            </div>
         {% endif %}
 
         {% if hasAccess('cudi_admin_prof_action', 'manage') and profActions|length > 0 %}
@@ -171,7 +178,26 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(expireSession);
+            drawRegistrationGraph();
         });
+
+        function drawRegistrationGraph() {
+            var data = {
+                labels : {% autoescape false %}{{ registrationGraph['labels']|json_encode }}{% endautoescape %},
+                datasets : [
+                    {
+                        fillColor : "rgba(98, 207, 252, 0.5)",
+                        strokeColor : "rgba(98, 207, 252, 1)",
+                        pointColor : "rgba(98, 207, 252, 1)",
+                        pointStrokeColor : "#fff",
+                        data : {% autoescape false %}{{ registrationGraph['dataset']|json_encode }}{% endautoescape %}
+                    }
+                ]
+            };
+
+            $('#registrationGraph').attr('width', $('#registrationGraph').parent().width());
+            new Chart($('#registrationGraph').get(0).getContext('2d')).Line(data);
+        }
 
         function expireSession(e) {
             var $this = $(this);
