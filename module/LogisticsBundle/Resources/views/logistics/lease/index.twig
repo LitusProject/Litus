@@ -114,28 +114,35 @@
         var $controls = $control_group.find('.controls');
         $controls.find('.help-inline').hide();
         var $form = $control_group.parents('form');
+        var $submit = $form.find('.btn');
+        function error(text) {
+            $control_group.addClass('error');
+            $submit.attr({disabled: true});
+            $controls.append('<div class="help-inline"><ul><li>'+text+'</li></ul></div>');
+        }
+        function success() {
+            $control_group.addClass('success');
+            $submit.attr({disabled: false});
+        }
         $.get("{{ url('logistics_lease', {'action':'availabilityCheck'}) }}"+$this.val(), function(data) {
             if(!data)
                 return;
             switch(data.status) {
                 case 'noSuchItem':
-                    $control_group.addClass('error');
-                    $controls.append('<div class="help-inline"><ul><li>{{ translate('No lease item with this barcode exists') }}</li></ul></div>');
+                    error('{{ translate('No lease item with this barcode exists') }}');
                     break;
                 case 'leased':
                     if($form.attr('id') === 'lease') {
-                        $control_group.addClass('error');
-                        $controls.append('<div class="help-inline"><ul><li>{{ translate('This item is already leased') }}</li></ul></div>');
+                        error('{{ translate('This item is already leased') }}');
                     } else {
-                        $control_group.addClass('success');
+                        success();
                     }
                     break;
                 case 'returned':
                     if($form.attr('id') === 'return') {
-                        $control_group.addClass('error');
-                        $controls.append('<div class="help-inline"><ul><li>{{ translate('This item is already returned') }}</li></ul></div>');
+                        error('{{ translate('This item is already returned') }}');
                     } else {
-                        $control_group.addClass('success');
+                        success();
                     }
                     break;
             }
