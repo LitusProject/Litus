@@ -17,9 +17,11 @@ namespace CommonBundle\Controller;
 use Zend\View\Model\ViewModel;
 
 /**
- * Handles system home page.
+ * IndexController
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class IndexController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {

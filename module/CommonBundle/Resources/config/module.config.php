@@ -507,6 +507,11 @@ return array(
                             'common/js/holder.js',
                         ),
                     ),
+                    'common_chart_js' => array(
+                        'assets'  => array(
+                            'common/js/chart.min.js',
+                        ),
+                    ),
 
                     'admin_css' => array(
                         'assets' => array(
