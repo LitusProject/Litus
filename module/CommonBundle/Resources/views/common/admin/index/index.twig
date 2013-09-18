@@ -150,7 +150,7 @@
                         We had <b>{{ piwik['uniqueVisitors'] }}</b> unique visitor{% if piwik['uniqueVisitors'] != 1 %}s{% endif %} in the last week.
                     </p>
                     <p>
-                        During the past half hour, <b>{{ piwik['liveCounters']['visits'] }}</b>{% if piwik['liveCounters']['visits'] != 1 %}people{% else %}person{% endif %} came by our site and <b>{{ piwik['liveCounters']['actions'] }}</b> action{% if piwik['liveCounters']['actions'] != 1 %}s{% endif %} were performed.
+                        During the past half hour, <b>{{ piwik['liveCounters']['visits'] }}</b> {% if piwik['liveCounters']['visits'] != 1 %}people{% else %}person{% endif %} came by our site and <b>{{ piwik['liveCounters']['actions'] }}</b> action{% if piwik['liveCounters']['actions'] != 1 %}s{% endif %} were performed.
                     </p>
                 </div>
             </div>
