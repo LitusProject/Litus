@@ -91,7 +91,7 @@
         $form.find('.js-additional_info').remove();
         var $barcode = $form.find('.js-item-barcode');
         if(/^[0-9]{12}$/.test($this.val())) {
-            $barcode.val($this.val());
+            $barcode.val($this.val()).change();
         } else if ($this.data('value')) {
             $barcode.val($this.data('value').id);
             if($this.data('value').additional_info) {
@@ -100,8 +100,6 @@
         } else {
             $barcode.val('');
         }
-        if($barcode[0] !== $this[0])
-            $barcode.change();
     });
 
     $('#lease .js-item-search').typeaheadRemote({
