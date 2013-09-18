@@ -13,7 +13,7 @@
             <img src="{{ piwik['visitsSummary'].getDataUri(988, 150) }}" alt="Visits Summary" class="full_width" />
         {% endif %}
 
-        {% if registrationGraph is not null %}
+        {% if registrationGraph is not null and registrationGraph['dataset']|length > 1 %}
             <h1>Registrations</h1>
             <div class="chart full_width">
                 <canvas id="registrationGraph" width="988" height="150"></canvas>
