@@ -10,13 +10,13 @@
 	<div id="controller_action">
         {% if piwik is not null %}
             <h1>Visits Summary</h1>
-            <img src="{{ piwik['visitsSummary'].getDataUri(988, 200) }}" alt="Visits Summary" class="full_width" />
+            <img src="{{ piwik['visitsSummary'].getDataUri(988, 150) }}" alt="Visits Summary" class="full_width" />
         {% endif %}
 
         {% if registrationGraph is not null %}
             <h1>Registrations</h1>
             <div class="chart full_width">
-                <canvas id="registrationGraph" width="988" height="200"></canvas>
+                <canvas id="registrationGraph" width="988" height="150"></canvas>
             </div>
         {% endif %}
 
