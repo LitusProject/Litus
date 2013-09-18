@@ -221,6 +221,7 @@ class LeaseController extends LogisticsController
         $item = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Item')
                 ->findOneByBarcode($barcode);
+        /* @var $item \LogisticsBundle\Entity\Lease\Item */
         if($item) {
             $leases = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Lease\Lease')
@@ -237,7 +238,8 @@ class LeaseController extends LogisticsController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => $status
+                    'status' => $status,
+                    'additional_info' => $item->getAdditionalInfo(),
                 )
             )
         );
