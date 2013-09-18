@@ -10,13 +10,15 @@
 	<div id="controller_action">
         {% if piwik is not null %}
             <h1>Visits Summary</h1>
-            <img src="{{ piwik['visitsSummary'].getDataUri(988, 150) }}" alt="Visits Summary" class="full_width" />
+            <div class="chart full_width">
+                <canvas id="visitsGraph" width="988" height="125"></canvas>
+            </div>
         {% endif %}
 
-        {% if registrationGraph is not null and registrationGraph['dataset']|length > 1 %}
-            <h1>Registrations</h1>
+        {% if registrationsGraph is not null and registrationsGraph['dataset']|length > 1 %}
+            <h1>Registrations Summary</h1>
             <div class="chart full_width">
-                <canvas id="registrationGraph" width="988" height="150"></canvas>
+                <canvas id="registrationGraph" width="988" height="125"></canvas>
             </div>
         {% endif %}
 
@@ -148,7 +150,7 @@
                         We had <b>{{ piwik['uniqueVisitors'] }}</b> unique visitor{% if piwik['uniqueVisitors'] != 1 %}s{% endif %} in the last week.
                     </p>
                     <p>
-                        During the past half hour, we had <b>{{ piwik['liveCounters']['visits'] }}</b> visit{% if piwik['liveCounters']['visits'] != 1 %}s{% endif %} and <b>{{ piwik['liveCounters']['actions'] }}</b> action{% if piwik['liveCounters']['actions'] != 1 %}s{% endif %} were performed.
+                        During the past half hour, <b>{{ piwik['liveCounters']['visits'] }}</b>{% if piwik['liveCounters']['visits'] != 1 %}people{% else %}person{% endif %} came by our site and <b>{{ piwik['liveCounters']['actions'] }}</b> action{% if piwik['liveCounters']['actions'] != 1 %}s{% endif %} were performed.
                     </p>
                 </div>
             </div>
@@ -178,19 +180,45 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(expireSession);
-            drawRegistrationGraph();
+
+            {% if piwik is not null %}
+                drawVisitsGraph();
+            {% endif %}
+
+            {% if registrationsGraph is not null and registrationsGraph['dataset']|length > 1 %}
+                drawRegistrationsGraph();
+            {% endif %}
         });
 
-        function drawRegistrationGraph() {
+        function drawVisitsGraph() {
             var data = {
-                labels : {% autoescape false %}{{ registrationGraph['labels']|json_encode }}{% endautoescape %},
+                labels : {% autoescape false %}{{ piwik['visitsGraph']['labels']|json_encode }}{% endautoescape %},
                 datasets : [
                     {
-                        fillColor : "rgba(98, 207, 252, 0.5)",
+                        fillColor : "rgba(98, 207, 252, 0)",
                         strokeColor : "rgba(98, 207, 252, 1)",
                         pointColor : "rgba(98, 207, 252, 1)",
                         pointStrokeColor : "#fff",
-                        data : {% autoescape false %}{{ registrationGraph['dataset']|json_encode }}{% endautoescape %}
+                        data : {% autoescape false %}{{ piwik['visitsGraph']['dataset']|json_encode }}{% endautoescape %}
+                    }
+                ]
+            };
+
+            $('#visitsGraph').attr('width', $('#visitsGraph').parent().width());
+            new Chart($('#visitsGraph').get(0).getContext('2d')).Line(data);
+        }
+
+
+        function drawRegistrationsGraph() {
+            var data = {
+                labels : {% autoescape false %}{{ registrationsGraph['labels']|json_encode }}{% endautoescape %},
+                datasets : [
+                    {
+                        fillColor : "rgba(98, 207, 252, 0)",
+                        strokeColor : "rgba(98, 207, 252, 1)",
+                        pointColor : "rgba(98, 207, 252, 1)",
+                        pointStrokeColor : "#fff",
+                        data : {% autoescape false %}{{ registrationsGraph['dataset']|json_encode }}{% endautoescape %}
                     }
                 ]
             };
