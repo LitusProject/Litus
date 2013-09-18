@@ -66,6 +66,14 @@ class Lease
     private $leasedPawn;
 
     /**
+     * Additional information about the lease
+     * @var string
+     *
+     * @ORM\Column(name="leased_comment", type="text", nullable=true)
+     */
+    private $leasedComment;
+
+    /**
      * Flag whether the item was already returned
      * @var boolean
      *
@@ -107,25 +115,36 @@ class Lease
     private $returnedPawn;
 
     /**
+     * Additional information about the return
+     * @var string
+     *
+     * @ORM\Column(name="returned_comment", type="text", nullable=true)
+     */
+    private $returnedComment;
+
+    /**
      *
      * @param \LogisticsBundle\Entity\Lease\Item $item The leased item
      * @param \DateTime $leasedDate The date of the lease
      * @param \CommonBundle\Entity\User\Person $leasedBy The person who handed out the item
      * @param string $leasedTo The person who received the item
      * @param int $leasedPawn The pawn paid for the item (in euros)
+     * @param string $leasedComment An optional comment for the lease
      */
-    public function __construct(Item $item, \DateTime $leasedDate, Person $leasedBy, $leasedTo, $leasedPawn)
+    public function __construct(Item $item, \DateTime $leasedDate, Person $leasedBy, $leasedTo, $leasedPawn, $leasedComment = null)
     {
         $this->item = $item;
         $this->leasedDate = $leasedDate;
         $this->leasedBy = $leasedBy;
         $this->leasedTo = $leasedTo;
         $this->leasedPawn = $leasedPawn * 100;
+        $this->leasedComment = $leasedComment;
         $this->returned = false;
         $this->returnedDate = null;
         $this->returnedBy = null;
         $this->returnedTo = null;
         $this->returnedPawn = null;
+        $this->returnedComment = null;
     }
 
     /**
@@ -176,6 +195,16 @@ class Lease
     public function getLeasedPawn()
     {
         return $this->leasedPawn/100;
+    }
+
+    /**
+     * Get leasedComment
+     *
+     * @return string
+     */
+    public function getLeasedComment()
+    {
+        return $this->leasedComment;
     }
 
     /**
@@ -291,6 +320,29 @@ class Lease
     public function getReturnedPawn()
     {
         return $this->returnedPawn/100;
+    }
+    
+    /**
+     * Set returnedComment
+     *
+     * @param string $returnedComment
+     * @return Lease
+     */
+    public function setReturnedComment($returnedComment)
+    {
+        $this->returnedComment = $returnedComment;
+
+        return $this;
+    }
+
+    /**
+     * Get returnedComment
+     *
+     * @return string
+     */
+    public function getReturnedComment()
+    {
+        return $this->returnedComment;
     }
 
     /**

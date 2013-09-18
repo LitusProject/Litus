@@ -16,6 +16,7 @@ namespace LogisticsBundle\Form\Lease;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Hidden,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
     LogisticsBundle\Component\Validator\LeaseValidator,
     Doctrine\ORM\EntityManager,
@@ -64,6 +65,12 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('leased_pawn');
         $field->setLabel('Pawn')
                 ->setRequired();
+        $this->add($field);
+
+        $field = new Textarea('comment');
+        $field->setLabel('Comment')
+                ->setAttribute('class', 'input-xlarge')
+                ->setAttribute('rows', 3);
         $this->add($field);
 
         $field = new Submit('lease');
@@ -122,6 +129,18 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'validators' => array(
                         new PriceValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'comment',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 )
             )

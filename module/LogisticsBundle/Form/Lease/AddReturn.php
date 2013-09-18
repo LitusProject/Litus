@@ -16,6 +16,7 @@ namespace LogisticsBundle\Form\Lease;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
     LogisticsBundle\Component\Validator\LeaseValidator,
     Doctrine\ORM\EntityManager,
@@ -64,6 +65,12 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('returned_pawn');
         $field->setLabel('Resitution pawn')
                 ->setRequired();
+        $this->add($field);
+
+        $field = new Textarea('comment');
+        $field->setLabel('Comment')
+                ->setAttribute('class', 'input-xlarge')
+                ->setAttribute('rows', 3);
         $this->add($field);
 
         $field = new Submit('return');
@@ -122,6 +129,18 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'validators' => array(
                         new PriceValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'comment',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 )
             )

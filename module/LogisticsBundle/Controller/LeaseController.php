@@ -64,7 +64,8 @@ class LeaseController extends LogisticsController
                         new DateTime,
                         $this->getAuthentication()->getPersonObject(),
                         $data['leased_to'],
-                        $data['leased_pawn']
+                        $data['leased_pawn'],
+                        $data['comment']
                     );
                     $this->getEntityManager()->persist($lease);
                     $this->getEntityManager()->flush();
@@ -121,6 +122,7 @@ class LeaseController extends LogisticsController
                     $lease->setReturnedDate(new DateTime);
                     $lease->setReturnedPawn($data['returned_pawn']);
                     $lease->setReturnedBy($data['returned_by']);
+                    $lease->setReturnedComment($data['comment']);
 
                     $this->getEntityManager()->flush();
 
