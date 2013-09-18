@@ -17,9 +17,10 @@
         tErrorAddPerson: 'The person could not be added to the queue',
         tErrorAddPersonType: {'person': 'The person was not found', 'noBookings': 'There were no bookings for this person'},
 
-        translateStatus: function (status) {return status},
+        translateStatus: function (status) {return status;},
         sendToSocket: function (text) {},
         lightVersion: false,
+        personTypeahead: '',
     };
 
     var lastPrinted = 0;
@@ -265,6 +266,23 @@
                     $this.find('.startSelling').click();
             } else {
                 $this.find('.startSelling').addClass('disabled').unbind('click');
+            }
+        });
+
+        filterText.typeaheadRemote(
+            {
+                source: settings.personTypeahead,
+            }
+        ).change(function (e) {
+            if ($(this).data('value')) {
+                filterText.val($(this).data('value').universityIdentification);
+                settings.sendToSocket(
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'addToQueue',
+                        'universityIdentification': $(this).data('value').universityIdentification,
+                    })
+                );
             }
         });
 
