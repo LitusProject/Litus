@@ -105,16 +105,16 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if (null !== $this->getCache()) {
             if($this->getCache()->hasItem('CommonBundle_Controller_IndexController_RegistrationGraph')) {
                 $now = new DateTime();
-
-                $registrationGraph = $this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationGraph');
-                if ($registrationGraph['expirationTime'] < $now)
-                    return $this->_getRegistrationGraphData();
-            } else {
-                $this->getCache()->setItem(
-                    'CommonBundle_Controller_IndexController_RegistrationGraph',
-                    $this->_getRegistrationGraphData()
-                );
+                if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationGraph')['expirationTime'] > $now)
+                    return $this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationGraph');
             }
+
+            $this->getCache()->setItem(
+                'CommonBundle_Controller_IndexController_RegistrationGraph',
+                $this->_getRegistrationGraphData()
+            );
+
+            return $this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationGraph');
         }
 
         return $this->_getRegistrationGraphData();
