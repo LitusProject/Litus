@@ -14,6 +14,8 @@
 
 namespace CommonBundle\Component\Lilo\Data;
 
+use CommonBundle\Component\Authentication\Authentication;
+
 /**
  * This class converts an exception to the right format for the
  * Lilo API.
@@ -31,16 +33,21 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      * Construct a new Exception object.
      *
      * @param \Exception $exception The exception that should be formatted
+     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication instance
      */
-    public function __construct(\Exception $exception)
+    public function __construct(\Exception $exception, Authentication $authentication)
     {
         $this->_data = array(
             'class' => get_class($exception),
             'message' => $exception->getMessage(),
             'trace' => $this->_formatBacktrace($exception),
             'environment' => array(
-                'person' => '',
-                'session' => '',
+                'person' => $authentication->isAuthenticated()
+                    ? $authentication->getPersonObject()->getFullName() . ' ('. $authentication->getPersonObject()->getUsername() . ')'
+                    : 'Guest',
+                'session' => $authentication->isAuthenticated()
+                    ? $authentication->getSessionObject()->getId()
+                    : '',
                 'url' => $this->_formatUrl(),
                 'userAgent' => $_SERVER['HTTP_USER_AGENT'],
             ),
