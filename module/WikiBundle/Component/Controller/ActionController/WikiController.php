@@ -52,8 +52,8 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
 
         $shibbolethUrl .= '?source=wiki';
 
-        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode($_SERVER['HTTP_REFERER']);
+        if (null !== $this->getParam('redirect'))
+            $shibbolethUrl .= '%26redirect=' . $this->getParam('redirect');
 
         return $shibbolethUrl;
     }
