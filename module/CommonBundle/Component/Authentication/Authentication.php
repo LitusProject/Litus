@@ -110,7 +110,7 @@ class Authentication
     /**
      * Return the person object.
      *
-     * @return mixed
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPersonObject()
     {
@@ -125,7 +125,7 @@ class Authentication
     /**
      * Return the session object.
      *
-     * @return mixed
+     * @return \CommonBundle\Entity\User\Session
      */
     public function getSessionObject()
     {
