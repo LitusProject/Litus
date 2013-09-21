@@ -13,6 +13,7 @@
                 authSession: '{{ authSession.getId() }}',
                 authKey: '{{ key }}',
                 lightVersion: {% if lightVersion %}true{% else %}false{% endif %},
+                personTypeahead: '{{ url("common_admin_academic_typeahead")}}',
                 membershipArticles: [{% for article in membershipArticles %}
                     {'id': {{ article.getId() }}, 'barcode': {{ article.getBarcode() }}, 'title': '{{ article.getMainArticle().getTitle() }}', 'price': {{ article.getSellPrice() }} },
                 {% endfor %}],

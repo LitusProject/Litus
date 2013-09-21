@@ -49,6 +49,7 @@ return array(
         ),
         'common_admin_index' => array(
             '@common_jquery',
+            '@common_chart_js',
             '@admin_css',
             '@admin_js',
         ),

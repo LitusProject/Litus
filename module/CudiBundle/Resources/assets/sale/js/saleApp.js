@@ -8,6 +8,7 @@ var currentView = 'selectPaydesk';
         authSession: 0,
         authKey: '',
         lightVersion: false,
+        personTypeahead: '',
         membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
 
         tPaydeskSelectTitle: 'Select Paydesk',
@@ -51,6 +52,7 @@ var currentView = 'selectPaydesk';
 
         queue = $.queue({
             lightVersion: settings.lightVersion,
+            personTypeahead: settings.personTypeahead,
             translateStatus: settings.translateStatus,
             sendToSocket: function (command) {
                 $.webSocket('send', {name: settings.socketName, text: command});
