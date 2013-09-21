@@ -22,7 +22,7 @@
         <span class="date left">{{ dateLocalized(event.getStartDate(), 'd MMM') }}</span>
 
         <p><i class="icon-time"></i> {{ dateLocalized(event.getStartDate(), 'HH:mm') }}{% if event.getEndDate() %} - {{ dateLocalized(event.getEndDate(), 'HH:mm') }}{% endif %}&mdash;{{ event.getTitle(language) }}</p>
-        <p><i class="icon-home"></i>{{ translate('Location') }}: {{ event.getLocation(language) }}</p>
+        <p><i class="icon-home"></i> {{ translate('Location') }}: {{ event.getLocation(language) }}</p>
         {% if event.getPoster() %}
             <div class="row">
                 <div class="span3">
