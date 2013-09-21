@@ -132,7 +132,7 @@
                                                 <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
 
                                                 {% for comment in map['comments'] %}
-                                                    <span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText() }}<br/>
+                                                    <span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText()|replace('"', '\'') }}<br/>
                                                 {% endfor %}
 
                                                 " data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('Remarks') : translate('Remark') }}</a>
