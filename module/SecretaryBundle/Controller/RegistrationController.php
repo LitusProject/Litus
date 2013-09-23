@@ -136,6 +136,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $formData['university_identification'] = $this->getParam('identification');
                 $form->setData($formData);
 
+                if (isset($formData['organization'])) {
+                    $selectedOrganization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization']);
+                } else {
+                    $selectedOrganization = null;
+                }
+
                 if ($form->isValid()) {
                     $formData = $form->getFormData($formData);
 
@@ -189,9 +197,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->_setOrganization(
                             $academic,
                             $this->getCurrentAcademicYear(),
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Organization')
-                                ->findOneById($formData['organization'])
+                            $selectedOrganization
                         );
                     }
 
@@ -269,6 +275,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'studentDomain' => $studentDomain,
                         'organizations' => $organizations,
                         'membershipArticles' => $membershipArticles,
+                        'selectedOrganization' => $selectedOrganization,
                     )
                 );
             }
