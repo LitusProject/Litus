@@ -259,7 +259,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
             return $this->_queueItems[$id]->getCollectInfo();
-        } else {
+        } elseif($enableCollectScanning == '1') {
             $item->setStatus('collected');
             $this->_entityManager->flush();
         }

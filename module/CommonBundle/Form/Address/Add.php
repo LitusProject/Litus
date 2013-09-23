@@ -141,14 +141,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                 'validators' => array(
                     array(
                         'name' => 'alnum',
-                        'validators' => array(
+                        'options' => array(
+                            'allowWhiteSpace' => true,
+                        ),
+                        array(
+                            'name' => 'StringLength',
                             array(
-                                'name' => 'StringLength',
-                                array(
-                                    'max' => 5,
-                                )
+                                'max' => 5,
                             )
-                        )
+                        ),
                     ),
                 ),
             )
