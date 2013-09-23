@@ -293,7 +293,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     }
 
                     $mailData = unserialize(
-                        $entityManager
+                        $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('shift.praesidium_removed_mail')
                     );
