@@ -236,6 +236,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->_startCollecting($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
+            case 'startCollectingBulk':
+                $this->_startCollecting($user, $command->id, true);
+                $this->sendQueueItemToAll($command->id);
+                break;
             case 'cancelCollecting':
                 $this->_cancelCollecting($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
@@ -357,9 +361,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         }
     }
 
-    private function _startCollecting(User $user, $id)
+    private function _startCollecting(User $user, $id, $bulk = false)
     {
-        $result = $this->_queue->startCollecting($user, $id);
+        $result = $this->_queue->startCollecting($user, $id, $bulk);
         if ($result)
             $this->sendText($user, $result);
 

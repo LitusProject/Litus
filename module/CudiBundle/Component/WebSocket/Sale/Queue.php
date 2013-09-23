@@ -238,7 +238,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param \CommonBundle\Component\WebSocket\User $user
      * @param integer $id
      */
-    public function startCollecting(User $user, $id)
+    public function startCollecting(User $user, $id, $bulk = false)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -255,14 +255,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.sale_light_version');
 
-        if ($enableCollectScanning == '1' && $lightVersion == '0') {
+        if ($enableCollectScanning == '1' && $lightVersion == '0' && !$bulk) {
             $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
             return $this->_queueItems[$id]->getCollectInfo();
-        } else {
-            $item->setStatus('collected');
-            $this->_entityManager->flush();
         }
+
+        $this->_entityManager->flush();
     }
 
     /**
@@ -563,7 +562,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->university_identification = $item->getPerson()->getUniversityIdentification();
             $result->status = $item->getStatus();
-            $result->locked = isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : false;
+            $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : */false;
 
             if ($item->getPayDesk()) {
                 $result->payDesk = $item->getPayDesk()->getName();
