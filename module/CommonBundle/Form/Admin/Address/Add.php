@@ -137,20 +137,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
-                'validators' => array(
-                    array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                        array(
-                            'name' => 'StringLength',
-                            array(
-                                'max' => 5,
-                            )
-                        ),
-                    ),
-                ),
             )
         );
 
