@@ -15,7 +15,7 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Returned as ReturnedLog,
+    CudiBundle\Entity\Log\Sale\Returned as ReturnedLog,
     CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Form\Sale\Sale\ReturnArticle as ReturnForm,
     Zend\View\Model\ViewModel;
