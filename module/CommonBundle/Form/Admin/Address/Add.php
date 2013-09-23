@@ -143,14 +143,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
                         'options' => array(
                             'allowWhiteSpace' => true,
                         ),
-                        'validators' => array(
+                        array(
+                            'name' => 'StringLength',
                             array(
-                                'name' => 'StringLength',
-                                array(
-                                    'max' => 5,
-                                )
+                                'max' => 5,
                             )
-                        )
+                        ),
                     ),
                 ),
             )

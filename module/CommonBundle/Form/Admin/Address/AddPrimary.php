@@ -220,6 +220,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
                     'validators' => array(
                         array(
                             'name' => 'alpha',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
                         ),
                     ),
                 )

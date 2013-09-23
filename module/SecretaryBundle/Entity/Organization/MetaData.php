@@ -214,6 +214,16 @@ class MetaData
     }
 
     /**
+     * @return string
+     */
+    public function getTshirtSizeName()
+    {
+        if (isset(self::$possibleSizes[$this->tshirtSize]))
+            return self::$possibleSizes[$this->tshirtSize];
+        return '';
+    }
+
+    /**
      * @param boolean $tshirtSize
      *
      * @return \SecretaryBundle\Entity\Organization\MetaData
