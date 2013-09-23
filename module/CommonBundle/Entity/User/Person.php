@@ -85,14 +85,14 @@ abstract class Person
     /**
      * @var string The persons first name
      *
-     * @ORM\Column(name="first_name", type="string", length=30)
+     * @ORM\Column(name="first_name", type="string", length=50)
      */
     private $firstName;
 
     /**
      * @var string The persons last name
      *
-     * @ORM\Column(name="last_name", type="string", length=30)
+     * @ORM\Column(name="last_name", type="string", length=50)
      */
     private $lastName;
 
