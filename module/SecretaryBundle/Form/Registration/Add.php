@@ -119,7 +119,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
 
         $field = new AddressForm('secondary_address', 'secondary_address');
-        $field->setLabel('Secondary Address&mdash;Home');
+        $field->setLabel('Secondary Address&mdash;Home')
+			->setRequired(false);
         $this->add($field);
 
         $internet = new Collection('internet');
@@ -299,7 +300,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
-			$input->setAllowEmpty(true);
 
         $inputs =$this->get('primary_address')
                 ->getInputs();
