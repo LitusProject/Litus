@@ -345,10 +345,14 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     public function getUnitRoles()
     {
+        $latestStartDate = null;
         $unitMaps = array();
         foreach ($this->unitMap as $map) {
-            if ($map->getAcademicYear()->getStartDate() >= AcademicYear::getStartOfAcademicYear())
+            $startDate = $map->getAcademicYear()->getStartDate();
+            if ($startDate >= $latestStartDate) {
+                $latestStartDate = $startDate;
                 $unitMaps[] = $map;
+            }
         }
 
         $roles = array();
