@@ -23,7 +23,8 @@ use CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Entity\User\Person\Sale\Acco as AccoCard,
     DateInterval,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    SecretaryBundle\Entity\Registration;
 
 /**
  * QueueItem Object
@@ -247,6 +248,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     $registration = $this->_entityManager
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+
+                    if (null === $registration) {
+                        $registration = new Registration(
+                            $booking->getPerson(),
+                            $this->_getCurrentAcademicYear()
+                        );
+                        $this->getEntityManager()->persist($registration);
+                    }
                     $registration->setPayed();
                 } catch(\Exception $e) {}
             }
