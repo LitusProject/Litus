@@ -60,15 +60,68 @@ class MetaData
     private $becomeMember;
 
     /**
+     * @var boolean Whether the academic wants to receive it's Ir.Reëel at Cudi or not
+     *
+     * @ORM\Column(name="irreeel_at_cudi", type="boolean")
+     */
+    private $irreeelAtCudi;
+
+    /**
+     * @var boolean Whether the academic wants to receive 't Baske by email or not
+     *
+     * @ORM\Column(name="bakske_by_mail", type="boolean")
+     */
+    private $bakskeByMail;
+
+    /**
+     * @var string The size of the T-shirt
+     *
+     * @ORM\Column(name="tshirt_size", type="string", length=4, nullable=true)
+     */
+    private $tshirtSize;
+
+    /**
+     * @var array The possible T-shirt sizes
+     */
+    public static $possibleSizes = array(
+        'M_S' => 'S - Male',
+        'M_M' => 'M - Male',
+        'M_L' => 'L - Male',
+        'M_XL' => 'XL - Male',
+
+        'F_S' => 'S - Female',
+        'F_M' => 'M - Female',
+        'F_L' => 'L - Female',
+        'F_XL' => 'XL - Female',
+    );
+
+    /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param boolean $becomeMember
+     * @param boolean $irreeelAtCudi
+     * @param boolean $bakskeByMail
+     * @param string $tshirtSize
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember)
+    public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember, $irreeelAtCudi, $bakskeByMail, $tshirtSize)
     {
+        if (!self::isValidTshirtSize($tshirtSize))
+            throw new \InvalidArgumentException('The T-shirt size is not valid');
+
         $this->academic = $academic;
         $this->academicYear = $academicYear;
         $this->becomeMember = $becomeMember;
+        $this->irreeelAtCudi = $irreeelAtCudi;
+        $this->bakskeByMail = $bakskeByMail;
+        $this->tshirtSize = $tshirtSize;
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function isValidTshirtSize($size)
+    {
+        return $size == null || array_key_exists($size, self::$possibleSizes);
     }
 
     /**
@@ -111,6 +164,73 @@ class MetaData
     public function setBecomeMember($becomeMember)
     {
         $this->becomeMember = $becomeMember;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function receiveIrReeelAtCudi()
+    {
+        return $this->irreeelAtCudi;
+    }
+
+    /**
+     * @param boolean $irreeelAtCudi
+     *
+     * @return \SecretaryBundle\Entity\Organization\MetaData
+     */
+    public function setReceiveIrReeelAtCudi($irreeelAtCudi)
+    {
+        $this->irreeelAtCudi = $irreeelAtCudi;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function bakskeByMail()
+    {
+        return $this->bakskeByMail;
+    }
+
+    /**
+     * @param boolean $bakskeByMail
+     *
+     * @return \SecretaryBundle\Entity\Organization\MetaData
+     */
+    public function setBakskeByMail($bakskeByMail)
+    {
+        $this->bakskeByMail = $bakskeByMail;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTshirtSize()
+    {
+        return $this->tshirtSize;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTshirtSizeName()
+    {
+        if (isset(self::$possibleSizes[$this->tshirtSize]))
+            return self::$possibleSizes[$this->tshirtSize];
+        return '';
+    }
+
+    /**
+     * @param boolean $tshirtSize
+     *
+     * @return \SecretaryBundle\Entity\Organization\MetaData
+     */
+    public function setTshirtSize($tshirtSize)
+    {
+        $this->tshirtSize = $tshirtSize;
         return $this;
     }
 }

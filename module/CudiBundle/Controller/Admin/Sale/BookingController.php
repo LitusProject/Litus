@@ -147,7 +147,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                         ->getRepository('CudiBundle\Entity\Sale\Article')
                         ->findOneById($formData['article_id']),
                     'booked',
-                    $formData['number'],
+                    $formData['amount'],
                     true
                 );
 

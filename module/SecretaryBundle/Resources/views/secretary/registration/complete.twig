@@ -53,6 +53,12 @@
                 <dd>{{ academic.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
                 <dt>{{ translate('Membership') }}</dt>
                 <dd>{% if metaData.becomeMember() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
+                <dd>{% if metaData.receiveIrReeelAtCudi() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
+                <dd>{% if metaData.bakskeByMail() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('T-shirt Size') }}</dt>
+                <dd>{{ metaData.getTshirtSizeName() }}</dd>
             </dl>
 
             <h3>{{ translate('Studies') }}</h3>

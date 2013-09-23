@@ -63,8 +63,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Text('number');
-        $field->setLabel('Number')
+        $field = new Text('amount');
+        $field->setLabel('amount')
             ->setAttribute('autocomplete', 'off')
             ->setRequired();
         $this->add($field);
@@ -141,7 +141,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'number',
+                    'name'     => 'amount',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
