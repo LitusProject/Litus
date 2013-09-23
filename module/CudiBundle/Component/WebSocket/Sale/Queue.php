@@ -255,11 +255,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.sale_light_version');
 
-        if ($enableCollectScanning == '1' && $lightVersion == '1') {
+        if ($enableCollectScanning == '1' && $lightVersion == '0') {
             $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
             return $this->_queueItems[$id]->getCollectInfo();
-        } elseif($enableCollectScanning == '1') {
+        } else {
             $item->setStatus('collected');
             $this->_entityManager->flush();
         }
