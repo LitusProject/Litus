@@ -254,7 +254,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                             $booking->getPerson(),
                             $this->_getCurrentAcademicYear()
                         );
-                        $this->getEntityManager()->persist($registration);
+                        $this->_entityManager->persist($registration);
                     }
                     $registration->setPayed();
                 } catch(\Exception $e) {}
