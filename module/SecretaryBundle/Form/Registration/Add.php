@@ -299,6 +299,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
+			$input->setAllowEmpty(true);
 
         $inputs =$this->get('primary_address')
                 ->getInputs();
