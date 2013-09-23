@@ -253,7 +253,7 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.prof_start_academic_year',
-                    'value'       => '2012-7-15 0:0:0',
+                    'value'       => '{{ year }}-7-15 0:0:0',
                     'description' => 'The start date of the academic year for a prof',
                 ),
                 array(
