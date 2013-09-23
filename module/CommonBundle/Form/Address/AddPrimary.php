@@ -249,19 +249,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             array(
                 'name'     => $this->_prefix . 'address_mailbox',
                 'required' => false,
-                'validators' => array(
-                    array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                    ),
-                    array(
-                        'name' => 'StringLength',
-                        array(
-                            'max' => 5,
-                        )
-                    ),
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
                 ),
             )
         );
