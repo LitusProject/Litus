@@ -14,8 +14,7 @@
 
 namespace CommonBundle\Component\Piwik;
 
-use CommonBundle\Component\Piwik\Api\Image,
-    Zend\Http\Client;
+use Zend\Http\Client;
 
 /**
  * This class represents part of the Piwik Analytics API.
