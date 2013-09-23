@@ -188,7 +188,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssignedByPerson($person);
 
-        if (empty($bookings)) {
+        if (empty($bookings) && !$forced) {
             return json_encode(
                 (object) array(
                     'error' => 'noBookings',
