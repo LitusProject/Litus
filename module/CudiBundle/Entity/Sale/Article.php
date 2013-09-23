@@ -284,7 +284,7 @@ class Article
      */
     public function setPurchasePrice($purchasePrice)
     {
-        $this->purchasePrice = $purchasePrice * 100;
+        $this->purchasePrice = str_replace(',', '.', $purchasePrice) * 100;
         return $this;
     }
 
@@ -303,7 +303,7 @@ class Article
      */
     public function setSellPrice($sellPrice)
     {
-        $this->sellPrice = $sellPrice * 100;
+        $this->sellPrice = str_replace(',', '.', $sellPrice) * 100;
         return $this;
     }
 

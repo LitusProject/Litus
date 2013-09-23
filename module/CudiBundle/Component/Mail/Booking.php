@@ -100,8 +100,6 @@ class Booking
             )
             ->setSubject($subject);
 
-        echo str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message));
-
         if ('development' != getenv('APPLICATION_ENV'))
             $mailTransport->send($mail);
     }
@@ -246,7 +244,7 @@ class Booking
         foreach($bookings as $booking) {
             $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . ' ' . ($booking->getExpirationDate() ? '(' . $matches[1] . ' ' . $booking->getExpirationDate()->format('d/m/Y') : '') . ")\r\n";
         }
-        
+
         $mail = new Message();
         $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)

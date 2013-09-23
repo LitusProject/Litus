@@ -100,18 +100,19 @@
 
                 {% set previousDay = '' %}
                 {% for openingHour in cudi.openingHours %}
-                    {% if previousDay != openingHour.getStart().format('d/M') %}
-                        <span class="label label-info" style="display: block; width: 70px; text-align: center; float: left; margin-right: 3px;">
-                            {{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}
-                        </span>
-                    {% else %}
-                        <span style="display: block; width: 78px; float: left; margin-right: 3px;">&nbsp;</span>
-                    {% endif %} {{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}
-                    {% set previousDay = openingHour.getStart().format('d/M') %}
-                    {% if openingHour.getComment(language)|length > 0 %}
-                        <br><small style="margin-left: 20px;">{{ openingHour.getComment(language) }}</small>
-                    {% endif %}
-                    <br>
+                    <div style="clear: both; margin: 10px 0;">
+                        {% if previousDay != openingHour.getStart().format('d/M') %}
+                            <span class="label label-info" style="display: block; width: 70px; text-align: center; float: left; margin-right: 3px;">
+                                {{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}
+                            </span>
+                        {% else %}
+                            <span style="display: block; width: 78px; float: left; margin-right: 3px;">&nbsp;</span>
+                        {% endif %} {{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}
+                        {% set previousDay = openingHour.getStart().format('d/M') %}
+                        {% if openingHour.getComment(language)|length > 0 %}
+                            <br><small style="margin-left: 20px;">{{ openingHour.getComment(language) }}</small>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>
