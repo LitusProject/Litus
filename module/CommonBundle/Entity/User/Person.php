@@ -570,9 +570,10 @@ abstract class Person
         if (null !== $this->getOrganizationStatus($academicYear)) {
             if ($this->getOrganizationStatus($academicYear) == 'non_member')
                 return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
