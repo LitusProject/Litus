@@ -312,7 +312,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
                 $item->payed = $registration->hasPayed();
                 $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
-                $item->organization = $registration->getAcademic()->getOrganization($academicYear)->getName();
+                $item->organization = $registration->getAcademic()->getOrganization($academicYear) ? $registration->getAcademic()->getOrganization($academicYear)->getName() : '';
                 $result[] = $item;
             }
         }
