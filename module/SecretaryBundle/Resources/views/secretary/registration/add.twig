@@ -98,6 +98,10 @@
                 $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#registerForm #organization').val()]));
             {% endif %}
 
+            {% if selectedOrganization %}
+                $('#organization-{{ selectedOrganization.getId() }}').click();
+            {% endif %}
+
             $('#conditions').parent().append(
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
