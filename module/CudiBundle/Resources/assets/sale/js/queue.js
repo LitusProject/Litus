@@ -197,7 +197,13 @@
             $this.find('tbody tr').each(function () {
                 if ($(this).data('info').status == 'signed_in' && $(this).data('info').id > lastPrinted) {
                     lastPrinted = $(this).data('info').id;
-                    $(this).find('.startCollecting').click();
+                    settings.sendToSocket(
+                        JSON.stringify({
+                            'command': 'action',
+                            'action': 'startCollectingBulk',
+                            'id': $(this).closest('tr').data('info').id,
+                        })
+                    );
                 }
             });
         });
