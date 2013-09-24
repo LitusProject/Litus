@@ -201,7 +201,7 @@
                         JSON.stringify({
                             'command': 'action',
                             'action': 'startCollectingBulk',
-                            'id': $(this).closest('tr').data('info').id,
+                            'id': $(this).data('info').id,
                         })
                     );
                 }
