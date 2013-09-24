@@ -95,4 +95,7 @@ return array(
 
     'Praesidium' => 'Praesidium',
     'Groupcoordinator' => 'Groupcoordinator',
+
+    'Enroll' => 'Enroll',
+    'Unsubscribe' => 'Unsubscribe',
 );

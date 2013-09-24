@@ -57,11 +57,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.subject_enroll').click(function () {
-                if ( $(this).val() === translate('Enroll') )
-                    $(this).val(translate('Write Out'));
+                console.log($(this));
+                if ( $(this).html() === '{{ translate('Enroll') }}')
+                    $(this).text('{{ translate('Unsubscribe') }}');
                 else
-                    $(this).val(translate('Enroll'));
-            };
+                    $(this).text('{{ translate('Enroll') }}');
+            });
 
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');

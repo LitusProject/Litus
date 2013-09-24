@@ -67,11 +67,12 @@
             });
 
             $('.subject_enroll').click(function () {
-                if ( $(this).val() === translate('Enroll') )
-                    $(this).val(translate('Write Out'));
+                console.log($(this));
+                if ( $(this).html() === '{{ translate('Enroll') }}')
+                    $(this).text('{{ translate('Unsubscribe') }}');
                 else
-                    $(this).val(translate('Enroll'));
-            };
+                    $(this).text('{{ translate('Enroll') }}');
+            });
 
             $('.subject_enroll').change(function () {
                 $('.page-alert .flashmessage').removeClass('in');
