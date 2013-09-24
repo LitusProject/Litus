@@ -339,7 +339,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        system("kill $(ps aux | grep -i \"php bin/CudiBundle/queue.php --run\" | grep -v grep | awk '{print $2}')");
+        $baseDirectory = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
+        system('kill $(ps aux | grep -i "php ' . $baseDirectory . '/bin/CudiBundle/queue.php --run" | grep -v grep | awk \'{print $2}\')');
 
         return new ViewModel(
             array(
