@@ -2,6 +2,7 @@
     var defaults = {
         isSell: true,
         discounts: [],
+        articleTypeahead: '',
         membershipArticles: [{'id': 0, 'barcode': 0}],
         lightVersion: false,
 
@@ -10,7 +11,7 @@
         tQueue: 'Queue',
         tConclude: 'Finish',
         tCancel: 'Cancel',
-        tBarcode: 'Barcode',
+        tArticle: 'Article',
         tTitle: 'Title',
         tStatus: 'Status',
         tNumber: 'Number',
@@ -30,7 +31,7 @@
         conclude: function (id, articles) {},
         cancel: function (id) {},
         translateStatus: function (status) {return status;},
-        addArticle: function (id, barcode) {},
+        addArticle: function (id, articleId) {},
     };
 
     var firstAction = true;
@@ -424,20 +425,16 @@
                 $('<div>', {'class': 'modal-body'}).append(
                     $('<div>', {'class': 'form-horizontal'}).append(
                         $('<div>', {'class': 'control-group'}).append(
-                            $('<label>', {'class': 'control-label', 'for': 'articleBarcode'}).html(settings.tBarcode),
+                            $('<label>', {'class': 'control-label', 'for': 'article'}).html(settings.tArticle),
                             $('<div>', {'class': 'controls'}).append(
-                                $('<input>', {'type': 'text', 'id': 'articleBarcode', 'placeholder': settings.tBarcode})
+                                articleId = $('<input>', {'type': 'hidden', 'id': 'articleAddTypeaheadId'}),
+                                article = $('<input>', {'type': 'text', 'id': 'articleAddTypeahead', 'class': 'input-xlarge', 'placeholder': settings.tArticle})
                             )
                         )
                     )
                 ),
                 $('<div>', {'class': 'modal-footer'}).append(
-                    $('<button>', {'class': 'btn btn-primary'}).html(settings.tAdd).click(function () {
-                        settings.addArticle($this.data('data').id, $(this).closest('.modal').find('input').val());
-                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    }),
+                    addButton = $('<button>', {'class': 'btn btn-primary disabled'}).html(settings.tAdd),
                     $('<button>', {'class': 'btn'}).html(settings.tClose).click(function () {
                         $(this).closest('.modal').modal('hide').on('hidden', function () {
                             $(this).remove();
@@ -446,6 +443,23 @@
                 )
             )
         );
+
+        article.typeaheadRemote(
+            {
+                source: settings.articleTypeahead,
+            }
+        ).change(function (e) {
+            if ($(this).data('value')) {
+                articleId.val($(this).data('value').id);
+
+                addButton.removeClass('disabled').click(function () {
+                    settings.addArticle($this.data('data').id, articleId.val());
+                    $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                        $(this).remove();
+                    });
+                }).click();
+            }
+        });
 
         modal.modal();
         modal.find('input').focus();
