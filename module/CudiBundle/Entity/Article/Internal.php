@@ -88,7 +88,7 @@ class Internal extends \CudiBundle\Entity\Article
      *
      * @ORM\Column(type="boolean")
      */
-    private $_hardcovered;
+    private $hardcovered;
 
     /**
      * @var string The file name of the cached front page
@@ -299,7 +299,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function isHardCovered()
     {
-        return $this->_hardcovered;
+        return $this->hardcovered;
     }
 
     /**
@@ -309,7 +309,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function setIsHardCovered($hardcovered)
     {
-        $this->_hardcovered = $hardcovered;
+        $this->hardcovered = $hardcovered;
         return $this;
     }
 
