@@ -55,7 +55,17 @@
 
 {% block content_script %}
     <script type="text/javascript">
+        
+
         $(document).ready(function () {
+            
+            $('.subject_enroll').click(function () {
+                if ( $(this).value === "Schrijf In" )
+                    $(this).value = "Schrijf Uit";
+                else
+                    $(this).value = "Schrijf In";
+            };
+
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });

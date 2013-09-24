@@ -66,6 +66,13 @@
                 $(this).closest('.flashmessage').removeClass('in');
             });
 
+            $('.subject_enroll').click(function () {
+                if ( $(this).value === "Schrijf In" )
+                    $(this).value = "Schrijf Uit";
+                else
+                    $(this).value = "Schrijf In";
+            };
+
             $('.subject_enroll').change(function () {
                 $('.page-alert .flashmessage').removeClass('in');
                 saveChanges();
