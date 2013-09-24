@@ -351,6 +351,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             1,
             0,
             null,
+            null,
             $this->getEntityManager()
         );
         $this->getEntityManager()->persist($saleItem);
