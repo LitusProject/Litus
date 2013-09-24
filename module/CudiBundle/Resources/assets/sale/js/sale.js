@@ -5,7 +5,7 @@
         tQueue: 'Queue',
         tConclude: 'Conclude',
         tCancel: 'Cancel',
-        tConfirmSelling: 'Confirm Selling',
+        tConfirmSale: 'Confirm Sale',
         tSell: 'Sell',
         tClose: 'Close',
         tConfirmText: 'Do you want to confirm the sale? Please note this cannot be undone.',
@@ -85,7 +85,7 @@
                             $(this).remove();
                         });
                     }),
-                    $('<h3>').html(settings.tConfirmSelling)
+                    $('<h3>').html(settings.tConfirmSale)
                 ),
                 $('<div>', {'class': 'modal-body'}).append(
                     $('<p>').html(settings.tConfirmText),

@@ -10,7 +10,7 @@
         tHold: 'Hold',
         tUnhold: 'Unhold',
         tHideHold: 'Hide Hold',
-        tUndoLastSelling: 'Undo Last Selling',
+        tUndoLastSale: 'Undo Last Sale',
         tPrintNext: 'Print Next',
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
         tAddToQueue: 'Add to queue',
@@ -65,7 +65,7 @@
         },
         setLastSold : function (data) {
             lastSold = data;
-            $(this).find('.undoLastSelling').toggle(lastSold > 0);
+            $(this).find('.undoLastSale').toggle(lastSold > 0);
             return this;
         },
         gotBarcode : function (barcode) {
@@ -126,9 +126,9 @@
                     hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
                     settings.tHideHold
                 ),
-                undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling', 'data-key': '117'}).append(
+                undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
                     $('<i>', {'class': 'icon-arrow-left icon-white'}),
-                    settings.tUndoLastSelling + ' - F6'
+                    settings.tUndoLastSale + ' - F6'
                 ),
                 printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
                     $('<i>', {'class': 'icon-print icon-white'}),
@@ -208,12 +208,12 @@
             });
         });
 
-        undoLastSelling.click(function () {
+        undoLastSale.click(function () {
             if (lastSold > 0) {
                 settings.sendToSocket(
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'undoSelling',
+                        'action': 'undoSale',
                         'id': lastSold,
                     })
                 );
@@ -241,11 +241,11 @@
                 )
             ),
             $('<div>', {'class': 'modal-footer'}).append(
-                undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling', 'data-key': '117'}).append(
+                undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
                     $('<i>', {'class': 'icon-arrow-left icon-white'}),
-                    settings.tUndoLastSelling + ' - F6'
+                    settings.tUndoLastSale + ' - F6'
                 ),
-                startSelling = $('<button>', {'class': 'btn btn-success disabled startSelling', 'data-key': '118'}).append(
+                startSale = $('<button>', {'class': 'btn btn-success disabled startSale', 'data-key': '118'}).append(
                     $('<i>', {'class': 'icon-print icon-white'}),
                     settings.tSell + ' - F7'
                 )
@@ -259,7 +259,7 @@
             var pattern = new RegExp(/[a-z][0-9]{7}/);
 
             if (pattern.test(filter)) {
-                $this.find('.startSelling').removeClass('disabled').unbind('click').click(function () {
+                $this.find('.startSale').removeClass('disabled').unbind('click').click(function () {
                     settings.sendToSocket(
                         JSON.stringify({
                             'command': 'action',
@@ -269,9 +269,9 @@
                     );
                 });
                 if (e.keyCode == 13)
-                    $this.find('.startSelling').click();
+                    $this.find('.startSale').click();
             } else {
-                $this.find('.startSelling').addClass('disabled').unbind('click');
+                $this.find('.startSale').addClass('disabled').unbind('click');
             }
         });
 
@@ -292,12 +292,12 @@
             }
         });
 
-        undoLastSelling.click(function () {
+        undoLastSale.click(function () {
             if (lastSold > 0) {
                 settings.sendToSocket(
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'undoSelling',
+                        'action': 'undoSale',
                         'id': lastSold,
                     })
                 );
@@ -348,11 +348,11 @@
                     _addPersonError($this);
                 } else {
                     $this.find('.filterText').val('');
-                    $this.find('.startSelling').addClass('disabled').unbind('click');
+                    $this.find('.startSale').addClass('disabled').unbind('click');
                     settings.sendToSocket(
                         JSON.stringify({
                             'command': 'action',
-                            'action': 'startSelling',
+                            'action': 'startSale',
                             'id': data.id,
                         })
                     );
@@ -382,32 +382,32 @@
             case 'signed_in':
                 if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
+                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
                     row.find('.startCollecting, .hold').show();
-                    row.find('.stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
+                    row.find('.stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 }
                 break;
             case 'collecting':
                 row.find('.stopCollecting, .cancelCollecting, .hold').show();
-                row.find('.startCollecting, .startSelling, .cancelSelling, .unhold').hide();
+                row.find('.startCollecting, .startSale, .cancelSale, .unhold').hide();
                 break;
             case 'collected':
                 if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
+                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
-                    row.find('.startSelling, .hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .cancelSelling, .unhold').hide();
+                    row.find('.startSale, .hold').show();
+                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .cancelSale, .unhold').hide();
                 }
                 break;
             case 'selling':
-                row.find('.cancelSelling, .hold').show();
-                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .unhold').hide();
+                row.find('.cancelSale, .hold').show();
+                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .unhold').hide();
                 break;
             case 'hold':
                 row.find('.unhold').show();
-                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .hold').hide();
+                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .hold').hide();
                 break;
         }
 
@@ -444,8 +444,8 @@
                 startCollecting = $('<button>', {'class': 'btn btn-success startCollecting'}).html(settings.tPrint).hide(),
                 stopCollecting = $('<button>', {'class': 'btn btn-success stopCollecting'}).html(settings.tDone).hide(),
                 cancelCollecting = $('<button>', {'class': 'btn btn-danger cancelCollecting'}).html(settings.tCancel).hide(),
-                startSelling = $('<button>', {'class': 'btn btn-success startSelling'}).html(settings.tSell).hide(),
-                cancelSelling = $('<button>', {'class': 'btn btn-danger cancelSelling'}).html(settings.tCancel).hide(),
+                startSale = $('<button>', {'class': 'btn btn-success startSale'}).html(settings.tSell).hide(),
+                cancelSale = $('<button>', {'class': 'btn btn-danger cancelSale'}).html(settings.tCancel).hide(),
                 hold = $('<button>', {'class': 'btn btn-warning hold'}).html(settings.tHold).hide(),
                 unhold = $('<button>', {'class': 'btn btn-warning unhold'}).html(settings.tUnhold).hide()
             )
@@ -489,25 +489,25 @@
             );
         });
 
-        startSelling.click(function () {
+        startSale.click(function () {
             if ($(this).is('.disabled'))
                 return;
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
-                    'action': 'startSelling',
+                    'action': 'startSale',
                     'id': $(this).closest('tr').data('info').id,
                 })
             );
         });
 
-        cancelSelling.click(function () {
+        cancelSale.click(function () {
             if ($(this).is('.disabled'))
                 return;
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
-                    'action': 'cancelSelling',
+                    'action': 'cancelSale',
                     'id': $(this).closest('tr').data('info').id,
                 })
             );
@@ -574,7 +574,7 @@
                         $(this).find('.stopCollecting').click();
                         break;
                     case 'collected':
-                        $(this).find('.startSelling').click();
+                        $(this).find('.startSale').click();
                         break;
                 }
             }

@@ -302,7 +302,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * @param integer $id
      */
-    public function startSelling(User $user, $id)
+    public function startSale(User $user, $id)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -328,7 +328,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * @param integer $id
      */
-    public function cancelSelling($id)
+    public function cancelSale($id)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -345,7 +345,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param string $payMethod
      * @return array
      */
-    public function concludeSelling($id, $articles, $discounts, $payMethod)
+    public function concludeSale($id, $articles, $discounts, $payMethod)
     {
         if (!isset($this->_queueItems[$id]))
             return;
@@ -483,7 +483,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * @param integer $id
      */
-    public function undoSelling($id)
+    public function undoSale($id)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')

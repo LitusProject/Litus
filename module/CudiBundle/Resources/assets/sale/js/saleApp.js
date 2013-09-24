@@ -135,7 +135,7 @@ var currentView = 'selectPaydesk';
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'cancelSelling',
+                        'action': 'cancelSale',
                         'id': id,
                     })
                 });
@@ -147,7 +147,7 @@ var currentView = 'selectPaydesk';
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'concludeSelling',
+                        'action': 'concludeSale',
                         'id': id,
                         'articles': articles,
                         'discounts': discounts,
