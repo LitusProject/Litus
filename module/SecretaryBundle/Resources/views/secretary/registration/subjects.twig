@@ -67,10 +67,10 @@
             });
 
             $('.subject_enroll').click(function () {
-                if ( $(this).value === "Schrijf In" )
-                    $(this).value = "Schrijf Uit";
+                if ( $(this).val() === 'Schrijf In' )
+                    $(this).val('Schrijf Uit');
                 else
-                    $(this).value = "Schrijf In";
+                    $(this).val('Schrijf In');
             };
 
             $('.subject_enroll').change(function () {
