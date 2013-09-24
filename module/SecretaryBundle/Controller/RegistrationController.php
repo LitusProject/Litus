@@ -169,6 +169,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getParam('identification')
                     );
 
+                    $this->getEntityManager()->persist($academic);
+
                     $academic->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
                         ->addUniversityStatus(
                             new UniversityStatus(
@@ -223,8 +225,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getEntityManager(),
                         $this->getMailTransport()
                     );
-
-                    $this->getEntityManager()->persist($academic);
 
                     $registration = new Registration(
                         $academic,
