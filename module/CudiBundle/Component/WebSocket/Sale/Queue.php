@@ -114,7 +114,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
         $result->university_identification = $item->getPerson()->getUniversityIdentification();
         $result->status = $item->getStatus();
-        $result->locked = isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : false;
+        $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() :*/ false;
 
         if ($item->getPayDesk()) {
             $result->payDesk = $item->getPayDesk()->getName();
@@ -403,7 +403,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param integer $id
      * @param integer $barcode
      */
-    public function addArticle($id, $barcode)
+    public function addArticle($id, $articleId)
     {
         if (!isset($this->_queueItems[$id])) {
             return json_encode(
@@ -415,7 +415,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
-        if (!is_numeric($barcode)) {
+        if (!is_numeric($articleId)) {
             return json_encode(
                 array(
                     'addArticle' => array(
@@ -431,7 +431,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneByBarcode($barcode);
+            ->findOneById($articleId);
 
         if (!isset($article)) {
             return json_encode(

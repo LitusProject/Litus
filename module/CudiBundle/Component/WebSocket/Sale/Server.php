@@ -91,37 +91,39 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     return;
                 }
 
-                if (!isset($command->authSession)) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-                    return;
-                }
+                if ('development' != getenv('APPLICATION_ENV')) {
+                    if (!isset($command->authSession)) {
+                        $this->removeUser($user);
+                        $now = new DateTime();
+                        echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                        return;
+                    }
 
-                $authSession = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\User\Session')
-                    ->findOneById($command->authSession);
+                    $authSession = $this->_entityManager
+                        ->getRepository('CommonBundle\Entity\User\Session')
+                        ->findOneById($command->authSession);
 
-                if ($authSession) {
-                    $acl = new Acl($this->_entityManager);
+                    if ($authSession) {
+                        $acl = new Acl($this->_entityManager);
 
-                    $allowed = false;
-                    foreach ($authSession->getPerson()->getRoles() as $role) {
-                        if (
-                            $role->isAllowed(
-                                $acl, 'cudi_sale_sale', 'sale'
-                            )
-                        ) {
-                            $allowed = true;
+                        $allowed = false;
+                        foreach ($authSession->getPerson()->getRoles() as $role) {
+                            if (
+                                $role->isAllowed(
+                                    $acl, 'cudi_sale_sale', 'sale'
+                                )
+                            ) {
+                                $allowed = true;
+                            }
                         }
                     }
-                }
 
-                if (null == $authSession || !$allowed) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-                    return;
+                    if (null == $authSession || !$allowed) {
+                        $this->removeUser($user);
+                        $now = new DateTime();
+                        echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                        return;
+                    }
                 }
 
                 if (isset($command->session) && is_numeric($command->session))
@@ -272,7 +274,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->_saveComment($command->id, $command->comment);
                 break;
             case 'addArticle':
-                $this->_addArticle($user, $command->id, $command->barcode);
+                $this->_addArticle($user, $command->id, $command->articleId);
                 break;
             case 'undoSelling':
                 $this->_undoSelling($command->id);
@@ -440,9 +442,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         $this->_entityManager->flush();
     }
 
-    private function _addArticle(User $user, $id, $barcode)
+    private function _addArticle(User $user, $id, $articleId)
     {
-        $result = $this->_queue->addArticle($id, $barcode);
+        $result = $this->_queue->addArticle($id, $articleId);
         if ($result)
             $this->sendText($user, $result);
     }

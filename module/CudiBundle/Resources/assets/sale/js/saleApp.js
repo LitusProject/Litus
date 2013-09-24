@@ -9,6 +9,7 @@ var currentView = 'selectPaydesk';
         authKey: '',
         lightVersion: false,
         personTypeahead: '',
+        articleTypeahead: '',
         membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
 
         tPaydeskSelectTitle: 'Select Paydesk',
@@ -61,6 +62,7 @@ var currentView = 'selectPaydesk';
 
         collect = $this.collect({
             lightVersion: settings.lightVersion,
+            articleTypeahead: settings.articleTypeahead,
             membershipArticles: settings.membershipArticles,
             saveComment: function (id, comment) {
                 $.webSocket('send', {name: settings.socketName, text:
@@ -99,13 +101,13 @@ var currentView = 'selectPaydesk';
                 queue.queue('show');
             },
             translateStatus: settings.translateStatus,
-            addArticle: function (id, barcode) {
+            addArticle: function (id, articleId) {
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
                         'action': 'addArticle',
                         'id': id,
-                        'barcode': barcode,
+                        'articleId': articleId,
                     })
                 });
             },
@@ -113,6 +115,7 @@ var currentView = 'selectPaydesk';
 
         sale = $this.sale({
             lightVersion: settings.lightVersion,
+            articleTypeahead: settings.articleTypeahead,
             membershipArticles: settings.membershipArticles,
             discounts: settings.discounts,
             saveComment: function (id, comment) {
@@ -155,13 +158,13 @@ var currentView = 'selectPaydesk';
                 queue.queue('show');
             },
             translateStatus: settings.translateStatus,
-            addArticle: function (id, barcode) {
+            addArticle: function (id, articleId) {
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
                         'action': 'addArticle',
                         'id': id,
-                        'barcode': barcode,
+                        'articleId': articleId,
                     })
                 });
             },
