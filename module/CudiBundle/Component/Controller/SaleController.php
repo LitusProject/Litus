@@ -33,7 +33,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      */
     public function onDispatch(MvcEvent $e)
     {
-        if ('' !== $_SERVER['HTTPS'])
+        if ('' != $_SERVER['HTTPS'])
             $this->redirect()->toUrl('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         $session = $this->getEntityManager()
