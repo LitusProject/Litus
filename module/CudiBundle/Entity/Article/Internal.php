@@ -82,6 +82,13 @@ class Internal extends \CudiBundle\Entity\Article
      * @ORM\Column(type="boolean")
      */
     private $colored;
+    
+    /**
+     * @var boolean Flag whether the article has a hardcover
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $_hardcovered;
 
     /**
      * @var string The file name of the cached front page
@@ -112,7 +119,7 @@ class Internal extends \CudiBundle\Entity\Article
      * @param boolean $isPerforated Whether the article pages are colored or not
      */
     public function __construct(
-        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
+        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored,$hardcovered = false
     ) {
         parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable, $sameAsPreviousYear);
 
@@ -123,7 +130,8 @@ class Internal extends \CudiBundle\Entity\Article
             ->setIsRectoVerso($rectoverso)
             ->setFrontColor($frontPageColor)
             ->setIsPerforated($isPerforated)
-            ->setIsColored($colored);
+            ->setIsColored($colored)
+			->setIsHardCovered($hardcovered);
     }
 
     /**
@@ -283,6 +291,25 @@ class Internal extends \CudiBundle\Entity\Article
     public function setIsColored($colored)
     {
         $this->colored = $colored;
+        return $this;
+    }
+	
+	/**
+     * @return boolean
+     */
+    public function isHardCovered()
+    {
+        return $this->_hardcovered;
+    }
+
+    /**
+     * @param boolean $hardcovered
+     *
+     * @return \CudiBundle\Entity\Article\Internal
+     */
+    public function setIsHardCovered($hardcovered)
+    {
+        $this->_hardcovered = $hardcovered;
         return $this;
     }
 
