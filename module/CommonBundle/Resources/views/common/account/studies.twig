@@ -71,6 +71,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $('.study_enroll').click(function () {
+                if ( $(this).val() === translate('Enroll') )
+                    $(this).val(translate('Write Out'));
+                else
+                    $(this).val(translate('Enroll'));
+            };
+
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
