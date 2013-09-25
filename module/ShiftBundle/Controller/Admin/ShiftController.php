@@ -230,13 +230,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.mail_name');
 
-        if (!($language = $volunteer->getPerson()->getLanguage())) {
-            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev('en');
-        }
+        $language = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
 
         $mailData = unserialize(
-            $entityManager
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.shift_deleted_mail')
         );
