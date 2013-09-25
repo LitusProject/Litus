@@ -186,7 +186,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $data = array();
         foreach ($registrations as $registration) {
             if (count($data) > 7)
-                continue;
+                exit;
 
             if (!isset($data[$registration->getTimestamp()->format('d/m/Y')])) {
                 $data[$registration->getTimestamp()->format('d/m/Y')] = 1;
