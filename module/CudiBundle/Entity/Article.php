@@ -137,7 +137,7 @@ abstract class Article
      * @ORM\Column(type="string")
      */
     private $type;
-    
+
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
