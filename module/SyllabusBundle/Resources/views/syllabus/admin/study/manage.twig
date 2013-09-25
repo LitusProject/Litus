@@ -74,8 +74,8 @@
                                 actions = $('<td>', {'class': 'actions'})
                             );
 
-                            {% if hasAccess('syllabus_admin_subject', 'manage') %}
-                                actions.append('<a href="{{ url('syllabus_admin_subject') }}manage/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+                            {% if hasAccess('syllabus_admin_study', 'edit') %}
+                                actions.append('<a href="{{ url('syllabus_admin_study') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
                             {% endif %}
                     });
                     $('#study_search table').change();
