@@ -184,7 +184,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
         $data = array();
-        foreach (array_reverse($registrations) as $registration) {
+        foreach ($registrations as $registration) {
             if (count($data) >= 7)
                 break;
 
@@ -195,7 +195,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
-        foreach ($data as $label => $value) {
+        foreach (array_reverse($data) as $label => $value) {
             $registationGraphData['labels'][] = $label;
             $registationGraphData['dataset'][] = $value;
         }
