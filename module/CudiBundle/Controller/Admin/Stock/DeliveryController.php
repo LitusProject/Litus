@@ -189,7 +189,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         $nbToMuchAssigned = $period->getNbAssigned($delivery->getArticle()) - $delivery->getArticle()->getStockValue();
         if ($nbToMuchAssigned > 0) {
-            $bookings = $entityManager
+            $bookings = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findLastAssignedByArticle($delivery->getArticle());
 
