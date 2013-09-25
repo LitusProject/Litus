@@ -196,8 +196,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $saleArticle->setBarcode($formData['barcode'])
                     ->setPurchasePrice($formData['purchase_price'])
                     ->setSellPrice($formData['sell_price'])
-                    ->setIsBookable($formData['bookable'])
-                    ->setIsUnbookable($formData['unbookable'])
+                    ->setIsBookable(isset($formData['bookable']) && $formData['bookable'])
+                    ->setIsUnbookable(isset($formData['unbookable']) && $formData['unbookable'])
                     ->setIsSellable($formData['sellable'])
                     ->setSupplier($supplier)
                     ->setCanExpire($formData['can_expire']);
@@ -213,9 +213,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     }
                 }
 
-                if ($formData['bookable'] && !$history->getPrecursor()->isBookable())
+                if (isset($formData['bookable']) && $formData['bookable'] && !$history->getPrecursor()->isBookable())
                     $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
-                elseif (!$formData['bookable'] && $history->getPrecursor()->isBookable())
+                elseif (!(isset($formData['bookable']) && $formData['bookable']) && $history->getPrecursor()->isBookable())
                     $this->getEntityManager()->persist(new UnbookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
 
                 $this->getEntityManager()->flush();
