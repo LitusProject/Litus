@@ -109,6 +109,9 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
+        $organizationsList = array();
+        $data = array();
+
         $form = new PeriodForm();
 
         if ($this->getRequest()->isPost()) {
@@ -157,7 +160,6 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                         ->getNumberBetween($startDate, $endDate),
                 );
 
-                $organizationsList = array();
                 foreach($organizations as $organization) {
                     $organizationsList[$organization->getId()] = array(
                         'entity' => $organization,
