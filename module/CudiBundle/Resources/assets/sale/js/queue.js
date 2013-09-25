@@ -39,7 +39,7 @@
             return this;
         },
         show : function (options) {
-            var permanent = (options == undefined || options.permanent == undefined) ? true : options.permanent;
+            var permanent = (options === undefined || options.permanent === undefined) ? true : options.permanent;
             currentView = permanent ? 'queue' : currentView;
             $(this).permanentModal({closable: !permanent});
 
@@ -95,14 +95,14 @@
 
     $.queue = function (options) {
         return $('<div>').queue(options);
-    }
+    };
 
     function _init($this) {
         var settings = $this.data('queueSettings');
 
         $this.addClass('modal fade queueModal').html('').append(
             $('<div>', {'class': 'modal-header'}).append(
-                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide')}),
+                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
                 $('<div>', {'class': 'form-search'}).append(
                     $('<div>', {'class': 'input-append pull-right'}).append(
                         filterText = $('<input>', {'type': 'text', 'class': 'input-medium search-query filterText', 'placeholder': settings.tUniversityIdentification}),
@@ -232,7 +232,7 @@
 
         $this.addClass('modal fade').html('').append(
             $('<div>', {'class': 'modal-header'}).append(
-                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide')}),
+                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
                 $('<h3>').html(settings.tQueueTitleLightVersion)
             ),
             $('<div>', {'class': 'modal-body'}).append(
@@ -324,18 +324,18 @@
             inQueue.push(this.id);
 
             var item = currentList['item-' + this.id];
-            if (undefined == item) {
+            if (undefined === item) {
                 item = _createItem($this, settings, this);
                 tbody.append(item);
             } else {
-                _updateItem($this, settings, item, this)
+                _updateItem($this, settings, item, this);
             }
 
             _toggleVisibility($this, item, this);
         });
 
         tbody.find('tr').each(function () {
-            var pos = $.inArray($(this).data('info').id, inQueue)
+            var pos = $.inArray($(this).data('info').id, inQueue);
             if (pos < 0) {
                 $(this).remove();
             } else {
@@ -374,7 +374,7 @@
                 item = _createItem($this, settings, data);
                 $this.find('tbody').append(item);
             } else {
-                _updateItem($this, settings, item, data)
+                _updateItem($this, settings, item, data);
             }
 
             _toggleVisibility($this, item, data);
@@ -545,7 +545,7 @@
     }
 
     function _toggleVisibility($this, row, data) {
-        if (data == undefined) {
+        if (data === undefined) {
             row.show();
             return;
         }
@@ -591,7 +591,7 @@
         $this.find('.modal-body').prepend(
             $('<div>', {'class': 'flashmessage alert alert-error fade in'}).append(
                 $('<div>', {'class': 'content'}).append('<p>').html(
-                    settings.tErrorAddPerson + (error == undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
+                    settings.tErrorAddPerson + (error === undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
                 )
             )
         );
