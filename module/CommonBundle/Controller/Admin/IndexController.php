@@ -179,7 +179,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                     'academicYear' => $this->getCurrentAcademicYear()
                 ),
                 array(
-                    'timestamp' => 'ASC'
+                    'timestamp' => 'DESC'
                 )
             );
 
