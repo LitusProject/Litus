@@ -97,7 +97,7 @@ class User
     {
         for ($written = 0 ; $written < strlen($data) ; $written += $fwrite) {
             $fwrite = fwrite($this->_socket, substr($data, $written));
-            if ($fwrite === false) {
+            if ($fwrite === false || $fwrite === 0) {
                 return $written;
             }
         }
