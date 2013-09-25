@@ -32,8 +32,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
      * @var string
      */
     private $_prefix;
-	
-	/**
+
+    /**
      * @var boolean
      */
     private $_required;
@@ -45,11 +45,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
     public function __construct($prefix = '', $name = null, $required = true)
     {
         parent::__construct($name);
-		
+
         $prefix = '' == $prefix ? '' : $prefix . '_';
         $this->_prefix = $prefix;
-		$this->_required = $required;
-		
+        $this->_required = $required;
+
         $field = new Text($prefix . 'address_street');
         $field->setLabel('Street')
             ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
