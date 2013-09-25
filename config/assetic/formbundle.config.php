@@ -53,7 +53,6 @@ return array(
             '@common_jquery',
             '@common_fieldcount',
             '@bootstrap_css',
-            '@flaty_css',
             '@bootstrap_responsive_css',
             '@site_css',
             '@bootstrap_js_dropdown',

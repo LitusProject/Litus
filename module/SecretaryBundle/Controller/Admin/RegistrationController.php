@@ -210,8 +210,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $metaData = new MetaData(
                         $registration->getAcademic(),
                         $registration->getAcademicYear(),
-                        false
+                        false,
+                        $formData['irreeel'],
+                        $formData['bakske'],
+                        $formData['tshirt_size']
                     );
+                } else {
+                    $metaData->setReceiveIrReeelAtCudi($formData['irreeel'])
+                        ->setBakskeByMail($formData['bakske'])
+                        ->setTshirtSize($formData['tshirt_size']);
                 }
 
                 $this->getEntityManager()->flush();

@@ -316,7 +316,6 @@ return array(
         'cudi_booking' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@flaty_css',
             '@bootstrap_responsive_css',
             '@site_css',
             '@bootstrap_js_dropdown',
@@ -332,7 +331,6 @@ return array(
         'cudi_opening_hour' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@flaty_css',
             '@bootstrap_responsive_css',
             '@site_css',
             '@bootstrap_js_dropdown',

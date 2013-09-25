@@ -176,6 +176,25 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('I have read and agree with the terms and conditions');
         $organization->add($field);
 
+        $field = new Checkbox('irreeel');
+        $field->setLabel('I want to receive my Ir.Reëel at CuDi')
+            ->setValue(true);
+        $organization->add($field);
+
+        $field = new Checkbox('bakske');
+        $field->setLabel('I want to receive \'t Bakske by e-mail')
+            ->setValue(false);
+        $organization->add($field);
+
+        $field = new Select('tshirt_size');
+        $field->setLabel('T-shirt Size')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-small')
+            ->setAttribute(
+                'options',
+                MetaData::$possibleSizes
+            );
+        $organization->add($field);
+
         $field = new Submit('register');
         $field->setValue('Register')
             ->setAttribute('class', 'btn btn-primary');
@@ -249,6 +268,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->_conditionsAlreadyChecked = true;
 
             $data['conditions'] = true;
+            $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
+            $data['bakske'] = $metaData->bakskeByMail();
+            $data['tshirt_size'] = $metaData->getTshirtSize();
+        } else if ($metaData) {
+            $data['bakske'] = $metaData->bakskeByMail();
         }
 
         $this->setData($data);
