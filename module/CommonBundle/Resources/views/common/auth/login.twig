@@ -19,6 +19,8 @@
                             {% for element in form.getElements() %}
                                 {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
                                     {{ formElement(element) }}
+                                {% elseif element.getAttribute('type') == 'hidden' %}
+                                    {{ formElement(element) }}
                                 {% elseif element.getAttribute('type') == 'checkbox' %}
                                     <div class="remember_me">
                                         <label>

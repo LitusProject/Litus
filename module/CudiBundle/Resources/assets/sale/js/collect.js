@@ -6,6 +6,7 @@
         tConclude: 'Finish',
         tCancel: 'Cancel',
 
+        articleTypeahead: '',
         membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
         lightVersion: false,
 
@@ -14,7 +15,7 @@
         finish: function (id, articles) {},
         cancel: function (id) {},
         translateStatus: function (status) {return status;},
-        addArticle: function (id, barcode) {},
+        addArticle: function (id, articleId) {},
     };
 
     var methods = {

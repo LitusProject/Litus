@@ -56,6 +56,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getConfigValue('cudi.queue_socket_key'),
                 'paydesks' => $paydesks,
                 'membershipArticles' => $membershipArticles,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
             )
         );
     }
