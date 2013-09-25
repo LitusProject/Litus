@@ -113,49 +113,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'newsItems' => $newsItems,
                 'notifications' => $notifications,
                 'piwik' => $piwik,
-                'sportInfo' => $this->_getSportResults(),
             )
         );
-    }
-
-    private function _getSportResults()
-    {
-        $showInfo = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.sport_info_on_homepage');
-
-        if ($showInfo != '1')
-            return null;
-
-        $cacheDir = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.cache_xml_path');
-
-        $fileContents = @file_get_contents($cacheDir . 'ulyssis.xml');
-
-        $resultPage = null;
-        if (false !== $fileContents)
-            $resultPage = simplexml_load_string($fileContents);
-
-        $returnArray = array();
-        if (null !== $resultPage) {
-            $teamId = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('sport.run_team_id');
-
-            $teamData = $resultPage->xpath('//team[@id=\'' . $teamId . '\']');
-
-            $returnArray = array(
-                'nbLaps' => $teamData[0]->rounds->__toString(),
-                'position' => round($teamData[0]->position->__toString() * 100),
-                'speed' => $teamData[0]->speed_kmh->__toString(),
-                'behind' => $teamData[0]->behind->__toString(),
-                'currentLap' => $this->getEntityManager()
-                    ->getRepository('SportBundle\Entity\Lap')
-                    ->findCurrent($this->getCurrentAcademicYear()),
-            );
-        }
-
-        return $returnArray;
     }
 }

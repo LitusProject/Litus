@@ -86,6 +86,7 @@ return array(
         'common_account' => array(
             '@common_jquery',
             '@bootstrap_css',
+            '@flaty_css',
             '@bootstrap_responsive_css',
             '@site_css',
             '@bootstrap_js_dropdown',
@@ -103,6 +104,7 @@ return array(
         'common_session' => array(
             '@common_jquery',
             '@bootstrap_css',
+            '@flaty_css',
             '@bootstrap_responsive_css',
             '@site_css',
             '@bootstrap_js_dropdown',
@@ -114,6 +116,7 @@ return array(
         'common_auth' => array(
             '@common_jquery',
             '@bootstrap_css',
+            '@flaty_css',
             '@bootstrap_responsive_css',
             '@site_css',
             '@bootstrap_js_dropdown',
@@ -127,6 +130,7 @@ return array(
         'common_index' => array(
             '@common_jquery',
             '@bootstrap_css',
+            '@flaty_css',
             '@bootstrap_responsive_css',
             '@site_css',
             '@bootstrap_js_dropdown',

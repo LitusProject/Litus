@@ -272,7 +272,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
     }
 
-    protected function _bookRegistrationArticles(Academic $academic, $tshirtSize, AcademicYear $academicYear)
+    protected function _bookRegistrationArticles(Academic $academic, AcademicYear $academicYear)
     {
         $organizationMap = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
@@ -318,29 +318,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             }
         }
 
-        $tshirts = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.tshirt_article')
-        );
-
-        $hasShirt = false;
-        foreach ($tshirts as $tshirt) {
-            $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($tshirt),
-                    $academic
-                );
-
-            if (null !== $booking) {
-                $hasShirt = true;
-                break;
-            }
-        }
-
         $enableAssignment = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_automatic_assignment');
@@ -348,30 +325,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
         $currentPeriod->setEntityManager($this->getEntityManager());
-
-        if (!$hasShirt) {
-            $booking = new Booking(
-                $this->getEntityManager(),
-                $academic,
-                $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($tshirts[$tshirtSize]),
-                'booked',
-                1,
-                true
-            );
-
-            $this->getEntityManager()->persist($booking);
-
-            if ($enableAssignment == '1') {
-                $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
-                if ($available > 0) {
-                    if ($available >= $booking->getNumber()) {
-                        $booking->setStatus('assigned', $this->getEntityManager());
-                    }
-                }
-            }
-        }
 
         $registrationArticles = unserialize(
             $this->getEntityManager()

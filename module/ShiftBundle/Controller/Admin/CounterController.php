@@ -65,9 +65,13 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($units as $unit)
             $unitsArray[$unit->getId()] = $unit->getName();
 
+        $now = new DateTime();
         $result = array();
         foreach ($shifts as $shift) {
             if (!array_key_exists($shift->getUnit()->getId(), $unitsArray))
+                continue;
+
+            if ($shift->getStartDate() <= $now)
                 continue;
 
             foreach ($shift->getResponsibles() as $responsible) {

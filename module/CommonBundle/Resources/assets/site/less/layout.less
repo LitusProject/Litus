@@ -8,17 +8,18 @@
 */
 
 body {
-    background: #252525;
+    background: #fff;
     word-wrap: break-word;
 }
 
 header {
-    .verticalGradient(@cHeaderDark, @cHeaderLight);
+    background: rgb(236, 240, 241);
     margin-bottom: 15px;
 
     h1 {
-        color: @white;
-        text-shadow: 0 1px 1px rgba(0,0,0,.3);
+        color: rgb(44, 62, 80);
+        font-size: 35px;
+        text-shadow: 0 1px 1px rgba(0,0,0,.2);
         padding: 10px 0 20px 20px;
     }
 
@@ -29,9 +30,8 @@ header {
     }
 
     .inner {
-        background: transparent url(/_site/img/grid-18px.png) top center;
         padding: 60px 0 10px 0;
-        .box-shadow(inset 0 10px 30px rgba(0,0,0,.3));
+        .box-shadow(inset 0 10px 30px rgba(0,0,0,.2));
     }
 
     .carousel {
@@ -54,10 +54,6 @@ header {
         &:hover {
             text-decoration: none;
         }
-    }
-
-    .btn-navbar {
-        .buttonBackground(@navbarBackgroundHighlight, @navbarBackground);
     }
 
     .pull-right {
@@ -105,54 +101,6 @@ header {
 
 .main-navbar-fixed-top {
     margin: 0px !important;
-}
-
-.main-navbar-inner {
-    min-height: @navbarHeight;
-    padding-left:  20px;
-    padding-right: 20px;
-    background-color: @navbarBackgroundHighlight;
-    background-image: none;
-    .border-radius(0px);
-    .box-shadow(~"0 1px 3px rgba(0,0,0,.25)");
-}
-
-.main-navbar .nav > li > a {
-    float: none;
-    @elementHeight: 20px;
-    padding: ((@navbarHeight - @elementHeight) / 2) + 2 10px ((@navbarHeight - @elementHeight) / 2) - 1;
-    line-height: 19px;
-    color: @navbarLinkColor;
-    text-decoration: none;
-    text-shadow: none !important;
-
-    &.highlighted {
-        @elementHeight: 28px;
-        @elementMargin: 4px;
-        padding: ((@navbarHeight - @elementHeight - @elementMargin) / 2) + 2 10px ((@navbarHeight - @elementHeight) / 2) - 1;
-        margin: @elementMargin 10px 0 0;
-        line-height: 19px;
-        color: @navbarLinkColorActive;
-        background-color: @navbarLinkBackgroundActive;
-        .border-radius(4px);
-        border: 1px solid @grayLight;
-    }
-}
-
-.main-navbar .nav > li.open > a {
-    color: @navbarLinkColorActive;
-}
-
-.main-navbar .nav > li > a:hover {
-    background-color: @navbarLinkBackgroundHover;
-    color: @navbarLinkColorHover;
-    text-decoration: none;
-}
-
-.main-navbar .nav li.dropdown .dropdown-toggle .caret,
-.main-navbar .nav li.dropdown.open .caret {
-    border-top-color: @navbarLinkColorActive;
-    border-bottom-color: @navbarLinkColorActive;
 }
 
 .carousel-control {
@@ -325,75 +273,10 @@ header {
 
 footer {
     margin-bottom: 20px;
-    color: #fff;
 
     .container {
         padding: 0 20px;
-        color: @headingsColor;
     }
-
-    h3 {
-        margin: 0;
-
-        font-family: @headingsFontFamily;
-        font-weight: @headingsFontWeight;
-        font-size: 18px;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
-
-        color: @black;
-
-        line-height: 40px;
-    }
-
-    .light {
-        margin-bottom: 20px;
-        padding: 16px 0 16px 0;
-        background: #333;
-
-        .nav-list {
-            margin: 0 0 10px 0;
-
-            li {
-                a {
-                    padding-top: 0;
-
-                    background: none;
-
-                    font-family: @headingsFontFamily;
-                    font-weight: @headingsFontWeight;
-                    font-size: 14px;
-                    text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
-
-                    color: @grayLight;
-                }
-
-                a:hover {
-                    background: none;
-                    text-decoration: none;
-                    color: @white;
-                }
-            }
-        }
-
-        .companies {
-            margin-left: 15px;
-        }
-    }
-
-    .copyright {
-        .icons {
-            margin: 0;
-            line-height: 40px;
-            text-align: right;
-        }
-    }
-}
-
-.hr {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid @grayLighter;
-    .clearfix();
 }
 
 fieldset .control-group:first-child {
