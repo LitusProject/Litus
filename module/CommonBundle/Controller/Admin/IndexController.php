@@ -179,14 +179,14 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                     'academicYear' => $this->getCurrentAcademicYear()
                 ),
                 array(
-                    'timestamp' => 'ASC'
+                    'timestamp' => 'DESC'
                 )
             );
 
         $data = array();
         foreach ($registrations as $registration) {
             if (count($data) > 7)
-                continue;
+                exit;
 
             if (!isset($data[$registration->getTimestamp()->format('d/m/Y')])) {
                 $data[$registration->getTimestamp()->format('d/m/Y')] = 1;
