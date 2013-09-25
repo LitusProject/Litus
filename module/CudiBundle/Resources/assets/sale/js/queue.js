@@ -43,7 +43,12 @@
             currentView = permanent ? 'queue' : currentView;
             $(this).permanentModal({closable: !permanent});
 
-            if (!$(this).data('queueSettings').lightVersion) {
+            if ($(this).data('queueSettings').lightVersion) {
+                $(this).find('.filterText').val('');
+                $(this).on('shown', function () {
+                    $(this).find('.filterText').focus();
+                });
+            } else {
                 var $this = $(this);
                 $(this).find('tbody tr').each(function () {
                     _showActions($this, $(this), $(this).data('info'));
@@ -255,6 +260,7 @@
         filterText.css('width', '250px');
 
         filterText.keyup(function (e) {
+            $(this).removeData('value');
             var filter = $(this).val().toLowerCase();
             var pattern = new RegExp(/[a-z][0-9]{7}/);
 
@@ -273,9 +279,7 @@
             } else {
                 $this.find('.startSale').addClass('disabled').unbind('click');
             }
-        });
-
-        filterText.typeaheadRemote(
+        }).typeaheadRemote(
             {
                 source: settings.personTypeahead,
             }

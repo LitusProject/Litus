@@ -113,8 +113,12 @@
                             $('<label>', {'class': 'control-label'}).html(settings.tPayMethod),
                             $('<div>', {'class': 'controls'}).append(
                                 method = $('<div>', {'class': 'btn-group', 'data-toggle': 'buttons-radio'}).append(
-                                    $('<button>', {'class': 'btn active', 'type': 'button', 'data-key': '114', 'data-method': 'cash'}).html(settings.tCash + ' - F3'),
-                                    $('<button>', {'class': 'btn', 'type': 'button', 'data-key': '115', 'data-method': 'bank'}).html(settings.tBank + ' - F4')
+                                    $('<button>', {'class': 'btn active', 'type': 'button', 'data-key': '114', 'data-method': 'cash'}).html(settings.tCash + ' - F3').click(function () {
+                                        payed.focus();
+                                    }),
+                                    $('<button>', {'class': 'btn', 'type': 'button', 'data-key': '115', 'data-method': 'bank'}).html(settings.tBank + ' - F4').click(function () {
+                                        payed.focus();
+                                    })
                                 )
                             )
                         )
