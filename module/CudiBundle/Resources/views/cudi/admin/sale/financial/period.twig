@@ -8,6 +8,11 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
+        <h1>Period</h1>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
         <h1>Sale</h1>
         {% if organizationsList|length > 1 %}<h2>Total</h2>{% endif %}
         <p>Total Theoretical Revenue: <b>&euro; {{ (data['totalTheoreticalRevenue']/100)|number_format(2) }}</b></p>
@@ -32,20 +37,4 @@
         <p>Total Delivered: <b>&euro; {{ (data['totalDeliveredPrice']/100)|number_format(2) }}</b></p>
         <p>Total Articles Delivered: <b>{{ data['totalNumberDelivered'] }}</b></p>
     </div>
-
-    <aside>
-        {% if hasAccess('cudi_admin_sales_financial', 'period') %}
-            <div class="sidebox">
-                <div class="title">View Period</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to view the results of a period!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('cudi_admin_sales_financial', {"action": "period"}) }}">&rarr; View Period</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
-    </aside>
 {% endblock %}

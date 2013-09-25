@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Entity\General\Bank\CashRegister,
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Sale\Session as SessionEntity,
@@ -101,7 +102,16 @@ class Session extends EntityRepository
 
     public function getTheoreticalRevenueByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
     {
+        return $this->getTheoreticalRevenueBetween($academicYear->getStartDate(), $academicYear->getEndDate(), $organization);
+    }
+
+    public function getTheoreticalRevenueBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
+    {
         if ($organization !== null) {
+            $academicYear = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByUniversityStart(AcademicYearUtil::getStartOfAcademicYear($startDate));
+
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('p.id')
                 ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
@@ -134,8 +144,8 @@ class Session extends EntityRepository
                         $query->expr()->lt('e.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getStartDate())
-                ->setParameter('end', $academicYear->getEndDate())
+                ->setParameter('start', $startDate)
+                ->setParameter('end', $endDate)
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -154,8 +164,8 @@ class Session extends EntityRepository
                         $query->expr()->lt('e.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getStartDate())
-                ->setParameter('end', $academicYear->getEndDate())
+                ->setParameter('start', $startDate)
+                ->setParameter('end', $endDate)
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -231,7 +241,16 @@ class Session extends EntityRepository
 
     public function getPurchasedAmountByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
     {
+        return $this->getPurchasedAmountBetween($academicYear->getStartDate(), $academicYear->getEndDate(), $organization);
+    }
+
+    public function getPurchasedAmountBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
+    {
         if ($organization !== null) {
+            $academicYear = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByUniversityStart(AcademicYearUtil::getStartOfAcademicYear($startDate));
+
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('p.id')
                 ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
@@ -265,8 +284,8 @@ class Session extends EntityRepository
                         $query->expr()->lt('e.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getStartDate())
-                ->setParameter('end', $academicYear->getEndDate())
+                ->setParameter('start', $startDate)
+                ->setParameter('end', $endDate)
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -286,8 +305,8 @@ class Session extends EntityRepository
                         $query->expr()->lt('e.openDate', ':end')
                     )
                 )
-                ->setParameter('start', $academicYear->getStartDate())
-                ->setParameter('end', $academicYear->getEndDate())
+                ->setParameter('start', $startDate)
+                ->setParameter('end', $endDate)
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -353,6 +372,11 @@ class Session extends EntityRepository
 
     public function findAllByAcademicYear(AcademicYear $academicYear)
     {
+        return $this->findAllBetween($academicYear->getStartDate(), $academicYear->getEndDate());
+    }
+
+    public function findAllBetween(DateTime $startDate, DateTime $endDate)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Sale\Session', 's')
@@ -362,8 +386,8 @@ class Session extends EntityRepository
                     $query->expr()->lt('s.openDate', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getStartDate())
-            ->setParameter('end', $academicYear->getEndDate())
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
             ->getQuery()
             ->getResult();
 
