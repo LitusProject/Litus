@@ -480,7 +480,7 @@ VTK Cudi
                         'delete', 'manage'
                     ),
                     'cudi_admin_sales_financial' => array(
-                        'overview'
+                        'overview', 'period'
                     ),
                     'cudi_admin_sales_financial_delivered' => array(
                         'article', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'supplierSearch', 'supplier', 'suppliers'

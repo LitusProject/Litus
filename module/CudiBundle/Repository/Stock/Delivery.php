@@ -6,6 +6,7 @@ use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period as PeriodEntity,
     CudiBundle\Entity\Supplier,
+    DateTime,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     Doctrine\ORM\Query\Expr\OrderBy;
@@ -119,6 +120,11 @@ class Delivery extends EntityRepository
 
     public function getDeliveredAmountByAcademicYear(AcademicYear $academicYear)
     {
+        return $this->getDeliveredAmountBetween($academicYear->getStartDate(), $academicYear->getEndDate());
+    }
+
+    public function getDeliveredAmountBetween(DateTime $startDate, DateTime $endDate)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('SUM(d.number * a.purchasePrice)')
             ->from('CudiBundle\Entity\Stock\Delivery', 'd')
@@ -129,8 +135,8 @@ class Delivery extends EntityRepository
                     $query->expr()->lt('d.timestamp', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getStartDate())
-            ->setParameter('end', $academicYear->getEndDate())
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -142,6 +148,11 @@ class Delivery extends EntityRepository
 
     public function getNumberByAcademicYear(AcademicYear $academicYear)
     {
+        return $this->getNumberBetween($academicYear->getStartDate(), $academicYear->getEndDate());
+    }
+
+    public function getNumberBetween(DateTime $startDate, DateTime $endDate)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('SUM(d.number)')
             ->from('CudiBundle\Entity\Stock\Delivery', 'd')
@@ -151,8 +162,8 @@ class Delivery extends EntityRepository
                     $query->expr()->lt('d.timestamp', ':end')
                 )
             )
-            ->setParameter('start', $academicYear->getStartDate())
-            ->setParameter('end', $academicYear->getEndDate())
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
             ->getQuery()
             ->getSingleScalarResult();
 
