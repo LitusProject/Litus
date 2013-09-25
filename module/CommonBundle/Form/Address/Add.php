@@ -34,26 +34,32 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
     private $_prefix;
 
     /**
+     * @var boolean
+     */
+    private $_required;
+
+    /**
      * @param string $prefix
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($prefix = '', $name = null)
+    public function __construct($prefix = '', $name = null, $required = true)
     {
         parent::__construct($name);
 
         $prefix = '' == $prefix ? '' : $prefix . '_';
         $this->_prefix = $prefix;
+        $this->_required = $required;
 
         $field = new Text($prefix . 'address_street');
         $field->setLabel('Street')
             ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
             ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_mailbox');
@@ -64,13 +70,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         $field = new Text($prefix . 'address_postal');
         $field->setLabel('Postal Code')
             ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_city');
         $field->setLabel('City')
             ->setAttribute('class', $field->getAttribute('class') . ' input-large')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Select($prefix . 'address_country');
@@ -105,7 +111,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_street',
-                'required' => true,
+                'required' => $this->_required,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
@@ -115,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_number',
-                'required' => true,
+                'required' => $this->_required,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
@@ -144,7 +150,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_postal',
-                'required' => true,
+                'required' => $this->_required,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
@@ -159,7 +165,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_city',
-                'required' => true,
+                'required' => $this->_required,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
@@ -169,7 +175,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_country',
-                'required' => true,
+                'required' => $this->_required,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),

@@ -83,39 +83,40 @@ class Update extends \CommonBundle\Component\WebSocket\Server
             return;
         }
 
-        if (!isset($command->authSession)) {
-            $this->removeUser($user);
-            $now = new DateTime();
-            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-            return;
-        }
+        if ('development' != getenv('APPLICATION_ENV')) {
+            if (!isset($command->authSession)) {
+                $this->removeUser($user);
+                $now = new DateTime();
+                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                return;
+            }
 
-        $authSession = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\User\Session')
-            ->findOneById($command->authSession);
+            $authSession = $this->_entityManager
+                ->getRepository('CommonBundle\Entity\User\Session')
+                ->findOneById($command->authSession);
 
-        if ($authSession) {
-            $acl = new Acl($this->_entityManager);
+            if ($authSession) {
+                $acl = new Acl($this->_entityManager);
 
-            $allowed = false;
-            foreach ($authSession->getPerson()->getRoles() as $role) {
-                if (
-                    $role->isAllowed(
-                        $acl, 'syllabus_admin_update', 'updateNow'
-                    )
-                ) {
-                    $allowed = true;
+                $allowed = false;
+                foreach ($authSession->getPerson()->getRoles() as $role) {
+                    if (
+                        $role->isAllowed(
+                            $acl, 'syllabus_admin_update', 'updateNow'
+                        )
+                    ) {
+                        $allowed = true;
+                    }
                 }
             }
-        }
 
-        if (null == $authSession || !$allowed) {
-            $this->removeUser($user);
-            $now = new DateTime();
-            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-            return;
+            if (null == $authSession || !$allowed) {
+                $this->removeUser($user);
+                $now = new DateTime();
+                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                return;
+            }
         }
-
 
         $this->addAuthenticated($user->getSocket());
 

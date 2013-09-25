@@ -73,7 +73,6 @@ class Booking
         }
 
         if ($openingHourText != '') {
-            $openingHourText = '';
             $message = str_replace('#no_opening_hours#', '', $message);
         } else {
             $message = preg_replace('/#no_opening_hours#.*#no_opening_hours#/', '', $message);
@@ -150,7 +149,6 @@ class Booking
         }
 
         if ($openingHourText != '') {
-            $openingHourText = '';
             $message = str_replace('#no_opening_hours#', '', $message);
         } else {
             $message = preg_replace('/#no_opening_hours#.*#no_opening_hours#/', '', $message);
@@ -231,7 +229,6 @@ class Booking
         }
 
         if ($openingHourText != '') {
-            $openingHourText = '';
             $message = str_replace('#no_opening_hours#', '', $message);
         } else {
             $message = preg_replace('/#no_opening_hours#.*#no_opening_hours#/', '', $message);

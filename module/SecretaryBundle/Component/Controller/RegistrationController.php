@@ -422,6 +422,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         } else {
             $map->setOrganization($organization);
         }
+
+        $this->getEntityManager()->flush();
     }
 
     /**

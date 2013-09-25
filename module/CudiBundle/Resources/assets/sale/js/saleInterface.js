@@ -2,6 +2,7 @@
     var defaults = {
         isSell: true,
         discounts: [],
+        articleTypeahead: '',
         membershipArticles: [{'id': 0, 'barcode': 0}],
         lightVersion: false,
 
@@ -10,7 +11,7 @@
         tQueue: 'Queue',
         tConclude: 'Finish',
         tCancel: 'Cancel',
-        tBarcode: 'Barcode',
+        tArticle: 'Article',
         tTitle: 'Title',
         tStatus: 'Status',
         tNumber: 'Number',
@@ -30,7 +31,7 @@
         conclude: function (id, articles) {},
         cancel: function (id) {},
         translateStatus: function (status) {return status;},
-        addArticle: function (id, barcode) {},
+        addArticle: function (id, articleId) {},
     };
 
     var firstAction = true;
@@ -158,18 +159,17 @@
 
             $(settings.discounts).each(function () {
                 var checked = ('member' == this.type && data.person.member) || ('acco' == this.type && data.person.acco);
-                var disabled = ('member' == this.type && !data.person.member);
 
                 options.append(
                     $('<p>').append(
                         $('<label>', {'class': 'checkbox'}).append(
-                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).prop('disabled', disabled).change(function () {
+                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).change(function () {
                                 _updatePrice($this);
                             }),
                             ' ' + this.name
                         )
                     )
-                )
+                );
             });
         }
 
@@ -191,7 +191,7 @@
 
         conclude.click(function () {
             _conclude($this);
-        })
+        });
 
         _addArticles($this, data.articles);
 
@@ -268,7 +268,7 @@
             actions = $('<td>', {class: 'actions'})
         ).data('info', data);
 
-        if ("booked" == data.status || data.sellable == false) {
+        if ("booked" == data.status || data.sellable === false) {
             row.addClass('inactive');
         } else {
             actions.append(
@@ -291,7 +291,7 @@
         if (e.which == 40) { // arrow up
             e.preventDefault();
 
-            if (activeRow.length == 0) {
+            if (activeRow.length === 0) {
                 $this.find('tr.article:not(.inactive):first').addClass('info');
             } else {
                 activeRow.removeClass('info');
@@ -300,7 +300,7 @@
         } else if (e.which == 38) { // arrow down
             e.preventDefault();
 
-            if (activeRow.length == 0) {
+            if (activeRow.length === 0) {
                 $this.find('tr.article:not(.inactive):last').addClass('info');
             } else {
                 activeRow.removeClass('info');
@@ -322,7 +322,7 @@
         $this.find('#article-' + id + ':not(.inactive)').each(function () {
             if ($(this).data('info').currentNumber < $(this).data('info').number) {
                 $(this).data('info').currentNumber++;
-                _updateRow($this, $(this))
+                _updateRow($this, $(this));
                 $(this).addClass('success').removeClass('error');
                 return false;
             } else {
@@ -331,7 +331,7 @@
         });
 
         if (_isMemberShipArticleId(id, settings.membershipArticles))
-            $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
+            $this.find('.discounts input[value="member"]').prop('checked', true);
 
         if (settings.isSell)
             _updatePrice($this);
@@ -342,7 +342,7 @@
         $this.find('#article-' + id + ':not(.inactive)').each(function () {
             if ($(this).data('info').currentNumber > 0) {
                 $(this).data('info').currentNumber--;
-                _updateRow($this, $(this))
+                _updateRow($this, $(this));
                 $(this).removeClass('error success');
             } else {
                 $(this).addClass('error').removeClass('success');
@@ -350,7 +350,7 @@
         });
 
         if (_isMemberShipArticleId(id, settings.membershipArticles))
-            $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);
+            $this.find('.discounts input[value="member"]').prop('checked', false);
 
         if (settings.isSell)
             _updatePrice($this);
@@ -369,7 +369,7 @@
 
         var articles = {};
         $this.find('tbody tr:not(.inactive)').each(function () {
-            if (articles[$(this).data('info').articleId] == undefined)
+            if (articles[$(this).data('info').articleId] === undefined)
                 articles[$(this).data('info').articleId] = 0;
             articles[$(this).data('info').articleId] += $(this).data('info').currentNumber;
         });
@@ -424,20 +424,16 @@
                 $('<div>', {'class': 'modal-body'}).append(
                     $('<div>', {'class': 'form-horizontal'}).append(
                         $('<div>', {'class': 'control-group'}).append(
-                            $('<label>', {'class': 'control-label', 'for': 'articleBarcode'}).html(settings.tBarcode),
+                            $('<label>', {'class': 'control-label', 'for': 'article'}).html(settings.tArticle),
                             $('<div>', {'class': 'controls'}).append(
-                                $('<input>', {'type': 'text', 'id': 'articleBarcode', 'placeholder': settings.tBarcode})
+                                articleId = $('<input>', {'type': 'hidden', 'id': 'articleAddTypeaheadId'}),
+                                article = $('<input>', {'type': 'text', 'id': 'articleAddTypeahead', 'class': 'input-xlarge', 'placeholder': settings.tArticle})
                             )
                         )
                     )
                 ),
                 $('<div>', {'class': 'modal-footer'}).append(
-                    $('<button>', {'class': 'btn btn-primary'}).html(settings.tAdd).click(function () {
-                        settings.addArticle($this.data('data').id, $(this).closest('.modal').find('input').val());
-                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    }),
+                    addButton = $('<button>', {'class': 'btn btn-primary disabled'}).html(settings.tAdd),
                     $('<button>', {'class': 'btn'}).html(settings.tClose).click(function () {
                         $(this).closest('.modal').modal('hide').on('hidden', function () {
                             $(this).remove();
@@ -446,6 +442,23 @@
                 )
             )
         );
+
+        article.typeaheadRemote(
+            {
+                source: settings.articleTypeahead,
+            }
+        ).change(function (e) {
+            if ($(this).data('value')) {
+                articleId.val($(this).data('value').id);
+
+                addButton.removeClass('disabled').click(function () {
+                    settings.addArticle($this.data('data').id, articleId.val());
+                    $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                        $(this).remove();
+                    });
+                }).click();
+            }
+        });
 
         modal.modal();
         modal.find('input').focus();
@@ -498,10 +511,11 @@
         $this.find('tbody tr:not(.inactive)').each(function () {
             var number = $(this).data('info').currentNumber;
             var appliedOnce = false;
+            var bestPrice = 0;
             $(this).find('.price').html('');
 
-            if (number == 0) {
-                var bestPrice = parseInt($(this).data('info').price, 10);
+            if (number === 0) {
+                bestPrice = parseInt($(this).data('info').price, 10);
                 $($(this).data('info').discounts).each(function () {
                     if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
                         bestPrice = this.value < bestPrice ? this.value : bestPrice;
@@ -512,7 +526,7 @@
             }
 
             while(number > 0) {
-                var bestPrice = parseInt($(this).data('info').price, 10);
+                bestPrice = parseInt($(this).data('info').price, 10);
                 var discount = null;
                 $($(this).data('info').discounts).each(function () {
                     if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked')) {
@@ -524,7 +538,7 @@
                     }
                 });
 
-                if (discount != undefined && discount.applyOnce) {
+                if (discount !== undefined && discount.applyOnce) {
                     $(this).find('.price').append(
                         $('<div>').html('&euro; ' + (bestPrice / 100).toFixed(2) + ' (1x)')
                     );

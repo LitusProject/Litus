@@ -131,12 +131,12 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->getConfigValue('shift.mail_name');
 
         if (!($language = $subscription->getPerson()->getLanguage())) {
-            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+            $language = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
 
         $mailData = unserialize(
-            $entityManager
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.subscription_deleted_mail')
         );
