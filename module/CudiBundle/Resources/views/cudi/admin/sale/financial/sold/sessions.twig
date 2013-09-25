@@ -32,7 +32,7 @@
                     {% set actual = item.getActualRevenue() %}
                     <td>&euro; {{ (theoretical/100)|number_format(2) }}</td>
                     <td>&euro; {{ (actual/100)|number_format(2) }}</td>
-                    <td class="wider">&euro; {{ ((theoretical-actual)/100)|number_format(2) }}</td>
+                    <td class="wider">&euro; {{ ((actual-theoretical)/100)|number_format(2) }}</td>
                     <td class="actions">
                         {% if hasAccess('cudi_admin_sales_financial_sold', 'session') %}
                             <a href="{{ url('cudi_admin_sales_financial_sold', {'action': 'session', 'id': item.getId()}) }}" class="view">View</a>
