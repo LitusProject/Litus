@@ -159,12 +159,11 @@
 
             $(settings.discounts).each(function () {
                 var checked = ('member' == this.type && data.person.member) || ('acco' == this.type && data.person.acco);
-                var disabled = ('member' == this.type && !data.person.member);
 
                 options.append(
                     $('<p>').append(
                         $('<label>', {'class': 'checkbox'}).append(
-                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).prop('disabled', disabled).change(function () {
+                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).change(function () {
                                 _updatePrice($this);
                             }),
                             ' ' + this.name
@@ -332,7 +331,7 @@
         });
 
         if (_isMemberShipArticleId(id, settings.membershipArticles))
-            $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
+            $this.find('.discounts input[value="member"]').prop('checked', true);
 
         if (settings.isSell)
             _updatePrice($this);
@@ -351,7 +350,7 @@
         });
 
         if (_isMemberShipArticleId(id, settings.membershipArticles))
-            $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);
+            $this.find('.discounts input[value="member"]').prop('checked', false);
 
         if (settings.isSell)
             _updatePrice($this);
