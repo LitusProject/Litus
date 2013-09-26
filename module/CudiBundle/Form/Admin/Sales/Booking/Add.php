@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Text('amount');
-        $field->setLabel('amount')
+        $field->setLabel('Amount')
             ->setAttribute('autocomplete', 'off')
             ->setRequired();
         $this->add($field);

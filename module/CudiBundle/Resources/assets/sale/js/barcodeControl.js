@@ -26,7 +26,7 @@
             _clear($(this));
 
             $('body').unbind('keydown.barcodeControl').bind('keydown.barcodeControl', function (e) {
-                if (e.target === undefined || $(e.target).is('input') && $(e.target).is(':visible')) {
+                if (e.target == undefined || $(e.target).is('input') && $(e.target).is(':visible')) {
                     return;
                 }
 
@@ -69,7 +69,7 @@
     };
 
     function _append ($this, value) {
-        if (undefined === $this.data('barcodeControl'))
+        if (undefined == $this.data('barcodeControl'))
             return;
 
         value = ($this.data('barcodeControl').buffer * 10 + value).toString();
@@ -97,7 +97,7 @@
     }
 
     function _complete($this) {
-        if (undefined === $this.data('barcodeControlSettings'))
+        if (undefined == $this.data('barcodeControlSettings'))
             return;
 
         if (_read($this).length == $this.data('barcodeControlSettings').barcodeLength)
@@ -119,7 +119,7 @@
     }
 
     function _isBarcode($this) {
-        if (undefined === $this.data('barcodeControl'))
+        if (undefined == $this.data('barcodeControl'))
             return false;
 
         return $this.data('barcodeControl').isBarcode;
@@ -130,7 +130,7 @@
     }
 
     function _read ($this) {
-        if (undefined === $this.data('barcodeControl'))
+        if (undefined == $this.data('barcodeControl'))
             return 0;
 
         return $this.data('barcodeControl').buffer;
