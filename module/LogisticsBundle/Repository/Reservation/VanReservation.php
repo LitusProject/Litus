@@ -13,86 +13,60 @@ use DateTime,
  */
 class VanReservation extends EntityRepository
 {
-
-    public function findOneById($id) {
+    public function findAllActive()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
             ->where(
-                $query->expr()->eq('r.id', ':id')
+                $query->expr()->gte('r.endDate', ':start')
             )
-            ->setParameter('id', $id)
+            ->setParameter('start', new DateTime())
+            ->orderBy('r.startDate')
             ->getQuery()
             ->getResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
-    public function findAllActive() {
+    public function findAllOld()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
-        ->where(
-            $query->expr()->gte('r.endDate', ':start')
-        )
-        ->setParameter('start', new DateTime())
-        ->orderBy('r.startDate')
-        ->getQuery()
-        ->getResult();
+            ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
+            ->where(
+                $query->expr()->lt('r.endDate', ':end')
+            )
+            ->setParameter('end', new DateTime())
+            ->orderBy('r.startDate')
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
 
-    public function findAllOld() {
+    public function findAllByDates(DateTime $start, DateTime $end)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
-        ->where(
-            $query->expr()->lt('r.endDate', ':end')
-        )
-        ->setParameter('end', new DateTime())
-        ->orderBy('r.startDate')
-        ->getQuery()
-        ->getResult();
-
-        return $resultSet;
-    }
-
-    public function findAllByDates($start, $end) {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
-        ->where(
-            $query->expr()->orx(
-                $query->expr()->andx(
-                    $query->expr()->gte('r.startDate', ':start'),
-                    $query->expr()->lte('r.startDate', ':end')
-                ),
-                $query->expr()->andx(
-                    $query->expr()->gte('r.endDate', ':start'),
-                    $query->expr()->lte('r.endDate', ':end')
+            ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
+            ->where(
+                $query->expr()->orx(
+                    $query->expr()->andx(
+                        $query->expr()->gte('r.startDate', ':start'),
+                        $query->expr()->lte('r.startDate', ':end')
+                    ),
+                    $query->expr()->andx(
+                        $query->expr()->gte('r.endDate', ':start'),
+                        $query->expr()->lte('r.endDate', ':end')
+                    )
                 )
             )
-        )
-        ->setParameter('start', $start)
-        ->setParameter('end', $end)
-        ->getQuery()
-        ->getResult();
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
-
-    public function findAll() {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
-        ->getQuery()
-        ->getResult();
-
-        return $resultSet;
-    }
-
 }

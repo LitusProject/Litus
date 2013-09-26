@@ -18,24 +18,22 @@ use DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
- * Checks whether no reservation exists yet for the given resource.
+ * Checks whether the duration is not to long.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
+class PianoDuration extends \Zend\Validator\AbstractValidator
 {
     /**
      * @const string The error codes
      */
-    const CONFLICT_EXISTS = 'conflictExists';
-    const INVALID_FORMAT  = 'invalidFormat';
+    const TO_LONG = 'toLong';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::CONFLICT_EXISTS => 'A conflicting reservation already exists for this resource',
-        self::INVALID_FORMAT  => 'One of the dates is not in the correct format',
+        self::TO_LONG => 'The reservation is to long',
     );
 
     /**
@@ -49,16 +47,6 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
     private $_format;
 
     /**
-     * @var LogisticsBundle\Entity\Reservation\ReservableResource
-     */
-    private $_resource;
-
-    /**
-     * @var int The id of the reservation to ignore when searching for conflicts; -1 indicates none
-     */
-    private $_reservationId;
-
-    /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
@@ -70,15 +58,13 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
      * @param string $format
      * @return void
      */
-    public function __construct($startDate, $format, $resource, $entityManager, $reservationId = -1)
+    public function __construct($startDate, $format, $entityManager)
     {
-        parent::__construct(null);
+        parent::__construct();
 
         $this->_startDate = $startDate;
         $this->_format = $format;
-        $this->_resource = $resource;
         $this->_entityManager = $entityManager;
-        $this->_reservationId = $reservationId;
     }
 
     /**
@@ -104,10 +90,6 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $repository = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource');
-        $resource = $repository->findOneByName($this->_resource);
-
         $startDate = DateTime::createFromFormat($this->_format, $startDate);
         $endDate = DateTime::createFromFormat($this->_format, $value);
 
@@ -115,13 +97,14 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $repository = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Reservation\Reservation');
+        $maxDuration = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('logistics.piano_time_slot_max_duration');
 
-        $conflicting = $repository->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->_reservationId);
+        $diff = $endDate->diff($startDate);
 
-        if (isset($conflicting[0])) {
-            $this->error(self::CONFLICT_EXISTS);
+        if ($diff->format('%i') + ($diff->format('%h') * 60) > $maxDuration) {
+            $this->error(self::TO_LONG);
             return false;
         }
 

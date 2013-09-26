@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'logistics/admin/van-reservation/partials/navigation.twig' %}
+    {% include 'logistics/admin/piano-reservation/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -14,15 +14,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#passengerSearch').typeaheadRemote(
+            $('#playerSearch').typeaheadRemote(
                 {
                     source: '{{ url("common_admin_academic_typeahead", {}) }}',
                 }
             ).change(function(e) {
                 if ($(this).data('value')) {
-                    $('#passengerId').val($(this).data('value').id);
+                    $('#playerId').val($(this).data('value').id);
                 } else {
-                    $('#passengerId').val('');
+                    $('#playerId').val('');
                 }
             });
         });
