@@ -171,8 +171,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
 
+        array_splice($studies, 20);
+
         $result = array();
-        foreach($studies as $study) {
+        foreach ($studies as $study) {
             $item = (object) array();
             $item->id = $study->getId();
             $item->value = 'Phase ' . $study->getPhase() . '&mdash;' . $study->getFullTitle();
