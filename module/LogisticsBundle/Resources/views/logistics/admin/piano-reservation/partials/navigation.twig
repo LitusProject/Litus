@@ -1,0 +1,17 @@
+<header id="controller_header">
+    <div class="title"><span class="reservation">Piano Reservations</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('logistics_admin_piano_reservation', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_piano_reservation', {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('logistics_admin_piano_reservation', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_piano_reservation', {"action": "old"}) }}">Old</a></li>
+            {% endif %}
+            {% if hasAccess('logistics_admin_piano_reservation', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_piano_reservation', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

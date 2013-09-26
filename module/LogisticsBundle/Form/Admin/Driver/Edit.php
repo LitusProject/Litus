@@ -21,8 +21,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator;
+    Zend\Form\Element\Submit;
 
 /**
  * This form allows the user to edit the driver.
@@ -32,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
 {
     /**
-     * @var \LogisticsBundle\\Entity\Driver
+     * @var \LogisticsBundle\Entity\Driver
      */
     private $_driver;
 

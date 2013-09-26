@@ -14,40 +14,26 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    LogisticsBundle\Entity\Driver,
-    LogisticsBundle\Form\Admin\VanReservation\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
-    LogisticsBundle\Entity\Reservation\ReservableResource,
-    LogisticsBundle\Entity\Reservation\VanReservation,
+    LogisticsBundle\Entity\Reservation\PianoReservation,
+    LogisticsBundle\Form\Admin\PianoReservation\Add as AddForm,
+    LogisticsBundle\Form\Admin\PianoReservation\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
-class VanReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class PianoReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                 ->findAllActive(),
             $this->getParam('page')
         );
 
-        $current = $this->getAuthentication()->getPersonObject();
-        if ($current != null) {
-            $driver = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Driver')
-                ->findOneById($current->getId());
-            $isDriverLoggedIn = ($driver !== null);
-        } else {
-            $isDriverLoggedIn = false;
-        }
-
         return new ViewModel(
             array(
-                'currentUser' => $current,
-                'isDriverLoggedIn' => $isDriverLoggedIn,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
@@ -58,25 +44,13 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                 ->findAllOld(),
             $this->getParam('page')
         );
 
-        $current = $this->getAuthentication()->getPersonObject();
-        if ($current != null) {
-            $driver = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Driver')
-                ->findOneById($current->getId());
-            $isDriverLoggedIn = ($driver !== null);
-        } else {
-            $isDriverLoggedIn = false;
-        }
-
         return new ViewModel(
             array(
-                'currentUser' => $current,
-                'isDriverLoggedIn' => $isDriverLoggedIn,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
@@ -85,7 +59,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -97,29 +71,23 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
-                $passenger = ('' == $formData['passenger_id'])
-                    ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
+                $player = ('' == $formData['player_id'])
+                    ? $repository->findOneByUsername($formData['player']) : $repository->findOneById($formData['player_id']);
 
-                $driver = $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Driver')
-                    ->findOneById($formData['driver']);
-
-                $van = $this->getEntityManager()
+                $piano = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
-                    ->findOneByName(VanReservation::VAN_RESOURCE_NAME);
+                    ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
 
-                $reservation = new VanReservation(
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
-                    $formData['reason'],
-                    $formData['load'],
-                    $van,
+                $reservation = new PianoReservation(
+                    DateTime::createFromFormat('D d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('D d#m#Y H#i', $formData['end_date']),
+                    $piano,
                     $formData['additional_info'],
-                    $this->getAuthentication()->getPersonObject()
+                    $this->getAuthentication()->getPersonObject(),
+                    $player
                 );
 
-                $reservation->setDriver($driver);
-                $reservation->setPassenger($passenger);
+                $reservation->setConfirmed(isset($formData['confirmed']) && $formData['confirmed']);
 
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
@@ -133,7 +101,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_van_reservation',
+                    'logistics_admin_piano_reservation',
                     array(
                         'action' => 'manage',
                     )
@@ -155,9 +123,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         if (!($reservation = $this->_getReservation()))
             return new ViewModel();
 
-        $form = new EditForm(
-            $this->getEntityManager(), $this->getCurrentAcademicYear(), $reservation
-        );
+        $form = new EditForm($this->getEntityManager(), $reservation);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -169,20 +135,14 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
-                $passenger = ('' == $formData['passenger_id'])
-                    ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
+                $player = ('' == $formData['player_id'])
+                    ? $repository->findOneByUsername($formData['player']) : $repository->findOneById($formData['player_id']);
 
-                $driver = $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Driver')
-                    ->findOneById($formData['driver']);
-
-                $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                    ->setReason($formData['reason'])
-                    ->setLoad($formData['load'])
+                $reservation->setStartDate(DateTime::createFromFormat('D d#m#Y H#i', $formData['start_date']))
+                    ->setEndDate(DateTime::createFromFormat('D d#m#Y H#i', $formData['end_date']))
                     ->setAdditionalInfo($formData['additional_info'])
-                    ->setDriver($driver)
-                    ->setPassenger($passenger);
+                    ->setPlayer($player)
+                    ->setConfirmed(isset($formData['confirmed']) && $formData['confirmed']);
 
                 $this->getEntityManager()->flush();
 
@@ -195,7 +155,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_van_reservation',
+                    'logistics_admin_piano_reservation',
                     array(
                         'action' => 'manage',
                     )
@@ -229,51 +189,6 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         );
     }
 
-    public function assignmeAction()
-    {
-        $this->initAjax();
-
-        if (!($reservation = $this->_getReservation()))
-            return new ViewModel();
-
-        $person = $this->getAuthentication()->getPersonObject();
-        $driver = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findOneById($person->getId());
-
-        $reservation->setDriver($driver);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array(
-                    'status' => 'success',
-                    "driver" => $person->getFullName(),
-                ),
-            )
-        );
-    }
-
-    public function unassignmeAction()
-    {
-        $this->initAjax();
-
-        if (!($reservation = $this->_getReservation()))
-            return new ViewModel();
-
-        $reservation->setDriver(null);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array(
-                    'status' => 'success',
-                    "driver" => "",
-                ),
-            )
-        );
-    }
-
     private function _getReservation()
     {
         if (null === $this->getParam('id')) {
@@ -286,7 +201,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             );
 
             $this->redirect()->toRoute(
-                'logistics_admin_van_reservation',
+                'logistics_admin_piano_reservation',
                 array(
                     'action' => 'manage',
                 )
@@ -296,7 +211,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         }
 
         $reservation = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
             ->findOneById($this->getParam('id'));
 
         if (null === $reservation) {
@@ -309,7 +224,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             );
 
             $this->redirect()->toRoute(
-                'logistics_admin_van_reservation',
+                'logistics_admin_piano_reservation',
                 array(
                     'action' => 'manage',
                 )
