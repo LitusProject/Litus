@@ -39,7 +39,7 @@
             return this;
         },
         show : function (options) {
-            var permanent = (options === undefined || options.permanent === undefined) ? true : options.permanent;
+            var permanent = (options == undefined || options.permanent == undefined) ? true : options.permanent;
             currentView = permanent ? 'queue' : currentView;
             $(this).permanentModal({closable: !permanent});
 
@@ -324,7 +324,7 @@
             inQueue.push(this.id);
 
             var item = currentList['item-' + this.id];
-            if (undefined === item) {
+            if (undefined == item) {
                 item = _createItem($this, settings, this);
                 tbody.append(item);
             } else {
@@ -545,7 +545,7 @@
     }
 
     function _toggleVisibility($this, row, data) {
-        if (data === undefined) {
+        if (data == undefined) {
             row.show();
             return;
         }
