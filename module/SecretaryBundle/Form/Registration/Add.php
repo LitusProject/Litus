@@ -118,7 +118,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Primary Address&mdash;Student Room or Home');
         $this->add($field);
 
-        $field = new AddressForm('secondary_address', 'secondary_address');
+        $field = new AddressForm('secondary_address', 'secondary_address', false);
         $field->setLabel('Secondary Address&mdash;Home');
         $this->add($field);
 
