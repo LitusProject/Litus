@@ -120,7 +120,7 @@ return array(
             'logistics_piano' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/logistics/piano[/:action][/date/:date][/:id][/]',
+                    'route' => '[/:language]/reservations/piano[/:action][/date/:date][/:id][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',

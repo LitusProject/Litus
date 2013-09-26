@@ -31,6 +31,17 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $form = new AddForm($this->getEntityManager(), $this->getLanguage());
 
+        $reservations = array();
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $reservations = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                ->findAllByDatesAndPerson(
+                    $this->getCurrentAcademicYear()->getUniversityStartDate(),
+                    $this->getCurrentAcademicYear()->getUniversityEndDate(),
+                    $this->getAuthentication()->getPersonObject()
+                );
+        }
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -148,25 +159,6 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                 }
             }
         }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
-    }
-
-    public function overviewAction()
-    {
-        $form = new AddForm($this->getEntityManager());
-
-        $reservations = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
-            ->findAllByDatesAndPerson(
-                $this->getCurrentAcademicYear()->getUniversityStartDate(),
-                $this->getCurrentAcademicYear()->getUniversityEndDate(),
-                $this->getAuthentication()->getPersonObject()
-            );
 
         return new ViewModel(
             array(

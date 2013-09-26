@@ -139,7 +139,7 @@ VTK
                         'login', 'logout', 'shibboleth',
                     ),
                     'logistics_piano' => array(
-                        'index', 'overview'
+                        'index'
                     ),
                 )
             )
