@@ -102,7 +102,7 @@ class Printer
         foreach($saleItems as $saleItem) {
             $articles[] = array(
                 'title' => $saleItem->getArticle()->getMainArticle()->getTitle(),
-                'price' => (string) number_format($saleItem->getArticle()->getSellPrice() / 100, 2),
+                'price' => (string) number_format($saleItem->getPrice() / 100, 2),
                 'barcode' => substr($saleItem->getArticle()->getBarcode(), 7),
                 'number' => $saleItem->getNumber(),
             );
