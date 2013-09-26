@@ -40,6 +40,13 @@ class Notification extends \CommonBundle\Entity\Node
     private $id;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this notification item
+     *
+     * @ORM\OneToMany(targetEntity="NotificationBundle\Entity\Node\Translation", mappedBy="notification", cascade={"persist", "remove"})
+     */
+    private $translations;
+
+    /**
      * @var DateTime The start date and time of this reservation.
      *
      * @ORM\Column(name="start_date", type="datetime")
@@ -54,7 +61,7 @@ class Notification extends \CommonBundle\Entity\Node
     private $endDate;
 
     /**
-     * @var string The title of this notification
+     * @var string The content of this notification
      *
      * @ORM\Column(type="text")
      */
@@ -147,5 +154,36 @@ class Notification extends \CommonBundle\Entity\Node
      */
     public function isActive() {
         return $this->active;
+    }
+
+    /**
+     * @param \NotificationBundle\Entity\Node\Translation $translation
+     * @return \NotificationBundle\Entity\Node\Notification
+     */
+    public function addTranslation(Translation $translation)
+    {
+        $this->translations->add($translation);
+        return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return \NotificationBundle\Entity\Node\Translation
+     */
+    public function getTranslation(Language $language = null, $allowFallback = true)
+    {
+        foreach($this->translations as $translation) {
+            if (null !== $language && $translation->getLanguage() == $language)
+                return $translation;
+
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+                $fallbackTranslation = $translation;
+        }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
     }
 }

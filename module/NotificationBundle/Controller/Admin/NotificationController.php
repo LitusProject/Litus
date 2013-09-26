@@ -17,6 +17,7 @@ namespace NotificationBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     NotificationBundle\Entity\Node\Notification,
+    NotificationBundle\Entity\Node\Translation,
     NotificationBundle\Form\Admin\Notification\Add as AddForm,
     NotificationBundle\Form\Admin\Notification\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -50,7 +51,6 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
-
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -65,7 +65,24 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $formData['active']
                 );
+                print($notification->getContent());
                 $this->getEntityManager()->persist($notification);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    if (''!= $formData['content_' . $language->getAbbrev()]) {
+                        $notification->addTranslation(
+                            new Translation(
+                                $notification,
+                                $language,
+                                str_replace('#', '', $formData['content_' . $language->getAbbrev()])
+                            )
+                        );
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -113,6 +130,33 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
                     ->setActive($formData['active']);
+                
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    $translation = $notification->getTranslation($language, false);
+
+                    if (null !== $translation) {
+                        $translation->setTitle($formData['title_' . $language->getAbbrev()])
+                            ->setContent($formData['content_' . $language->getAbbrev()]);
+                    } else {
+                        if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
+                            $notification->addTranslation(
+                                new Translation(
+                                    $notification,
+                                    $language,
+                                    $formData['title_' . $language->getAbbrev()],
+                                    str_replace('#', '', $formData['content_' . $language->getAbbrev()])
+                                )
+                            );
+                        }
+                    }
+                }
+
+                $notification->updateName();
 
                 $this->getEntityManager()->flush();
 
