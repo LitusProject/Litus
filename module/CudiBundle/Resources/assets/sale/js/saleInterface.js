@@ -268,7 +268,7 @@
             actions = $('<td>', {class: 'actions'})
         ).data('info', data);
 
-        if ("booked" == data.status || data.sellable === false) {
+        if ("booked" == data.status || data.sellable == false) {
             row.addClass('inactive');
         } else {
             actions.append(
@@ -291,7 +291,7 @@
         if (e.which == 40) { // arrow up
             e.preventDefault();
 
-            if (activeRow.length === 0) {
+            if (activeRow.length == 0) {
                 $this.find('tr.article:not(.inactive):first').addClass('info');
             } else {
                 activeRow.removeClass('info');
@@ -300,7 +300,7 @@
         } else if (e.which == 38) { // arrow down
             e.preventDefault();
 
-            if (activeRow.length === 0) {
+            if (activeRow.length == 0) {
                 $this.find('tr.article:not(.inactive):last').addClass('info');
             } else {
                 activeRow.removeClass('info');
@@ -369,7 +369,7 @@
 
         var articles = {};
         $this.find('tbody tr:not(.inactive)').each(function () {
-            if (articles[$(this).data('info').articleId] === undefined)
+            if (articles[$(this).data('info').articleId] == undefined)
                 articles[$(this).data('info').articleId] = 0;
             articles[$(this).data('info').articleId] += $(this).data('info').currentNumber;
         });
@@ -378,13 +378,24 @@
 
     function _gotBarcode($this, barcode) {
         var settings = $this.data('saleInterfaceSettings');
+
         var found = false;
         $this.find('tbody tr:not(.inactive)').each(function () {
             if ($(this).data('info').barcode == barcode) {
                 $(this).find('.addArticle').click();
                 found = true;
-                return false;
             }
+            var row = $(this);
+            $($(this).data('info').barcodes).each(function () {
+                if (this == barcode) {
+                    row.find('.addArticle').click();
+                    found = true;
+                    return false;
+                }
+            });
+
+            if (found)
+                return false;
         });
 
         if (found)
@@ -514,7 +525,7 @@
             var bestPrice = 0;
             $(this).find('.price').html('');
 
-            if (number === 0) {
+            if (number == 0) {
                 bestPrice = parseInt($(this).data('info').price, 10);
                 $($(this).data('info').discounts).each(function () {
                     if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
@@ -538,7 +549,7 @@
                     }
                 });
 
-                if (discount !== undefined && discount.applyOnce) {
+                if (discount != undefined && discount.applyOnce) {
                     $(this).find('.price').append(
                         $('<div>').html('&euro; ' + (bestPrice / 100).toFixed(2) + ' (1x)')
                     );
