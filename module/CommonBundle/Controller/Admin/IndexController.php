@@ -184,15 +184,18 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
         $data = array();
-        foreach ($registrations as $registration) {
-            if (!isset($data[$registration->getTimestamp()->format('d/m/Y')]) || count($data) < 7) {
+        foreach (array_reverse($registrations) as $registration) {
+            if (count($data) >= 7)
+                break;
+
+            if (!isset($data[$registration->getTimestamp()->format('d/m/Y')])) {
                 $data[$registration->getTimestamp()->format('d/m/Y')] = 1;
             } else {
                 $data[$registration->getTimestamp()->format('d/m/Y')]++;
             }
         }
 
-        foreach($data as $label => $value) {
+        foreach ($data as $label => $value) {
             $registationGraphData['labels'][] = $label;
             $registationGraphData['dataset'][] = $value;
         }

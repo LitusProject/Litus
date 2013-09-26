@@ -56,6 +56,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.subject_enroll').click(function () {
+                console.log($(this));
+                if ( $(this).html() === '{{ translate('Enroll') }}')
+                    $(this).text('{{ translate('Unsubscribe') }}');
+                else
+                    $(this).text('{{ translate('Enroll') }}');
+            });
+
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
