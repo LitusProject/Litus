@@ -133,8 +133,20 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             $qb->addOrderBy('e.'.$fieldName, $orientation);
         $qb->setParameters($conditions);
 
+        return $this->createFromQuery($qb, $currentPage);
+    }
+
+    /**
+     * Create a paginator for the given Doctrine ORM query
+     *
+     * @param \Doctrine\ORM\Query|\Doctrine\ORM\QueryBuilder $query The query that should be paginated
+     * @param int $currentPage The page we now are on
+     * @return \Zend\Paginator\Paginator
+     */
+    public function createFromQuery($query, $currentPage)
+    {
         $this->_paginator = new ZendPaginator(
-                new DoctrinePaginatorAdapter(new DoctrinePaginator($qb))
+                new DoctrinePaginatorAdapter(new DoctrinePaginator($query))
         );
 
         $this->_paginator->setCurrentPageNumber($currentPage);
