@@ -95,9 +95,9 @@
                             </div>
                         {% endif %}
                         <div style="margin-left: 20px;">
-                            <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}:</b>
+                            <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
                             {% if openingHour.getComment(language)|length > 0 %}
-                                <small>{{ openingHour.getComment(language) }}</small>
+                                <b>:</b><small>{{ openingHour.getComment(language) }}</small>
                             {% endif %}
                         </div>
                         {% set previousDay = openingHour.getStart().format('d/M') %}
