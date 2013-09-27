@@ -1,225 +1,216 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'logistics/admin/van-reservation/partials/navigation.twig' %}
+    {% include 'logistics/admin/van-reservation/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div class="flashmessage success_message full_width reservation_removed_success hide">
-		<div class="title">Success</div>
-		<div class="content">
-			<p>The reservation was successfully removed!</p>
-		</div>
-	</div>
-	<div class="flashmessage error_message full_width reservation_removed_error hide">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while trying to delete a reservation.</p>
-		</div>
-	</div>
-	<div class="flashmessage error_message full_width assigning_error hide">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while trying to (un)assign the current user as driver.</p>
-		</div>
-	</div>
-
-	<div id="controller_action">
-
-		<div id="normal_page">
-
-			<table class="full_width manage">
-				<tr>
-					<th>Reason</th>
-					<th>Driver</th>
-					<th>Creator</th>
-					<th width="100px">Start Date</th>
-					<th width="100px">End Date</th>
-					<th width="70px">Action</th>
-				</tr>
-
-				{% for reservation in paginator %}
-
-					<tr class="item item-{{ reservation.getId() }}">
-						<td>{{ reservation.getReason() }}</td>
-						<td class="driverdata">
-						    {% if hasAccess('logistics_admin_van_reservation', 'edit') and null == reservation.getDriver().getPerson() and isDriverLoggedIn %}
-						    	None: <i><a href="#" class="assignme" data-id="{{ reservation.getId() }}">Assign Me</a></i>
-						    {% elseif hasAccess('logistics_admin_van_reservation', 'edit') and currentUser.getUserName() != "" and currentUser.getUsername() == reservation.getDriver().getPerson().getUsername() %}
-								{{ reservation.getDriver().getPerson().getFullName() }} - <i><a href="#" class="unassignme" data-id="{{ reservation.getId() }}">Unassign Me</a></i>
-							{% else %}
-								{{ reservation.getDriver().getPerson().getFullName() }}
-							{% endif %}
-						</td>
-						<td>{{ reservation.getCreator().getFullName() }}</td>
-						<td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
-						<td>{{ reservation.getEndDate().format('d/m/Y H:i') }}</td>
-						<td class="actions">
-						    {% if hasAccess('logistics_admin_van_reservation', 'edit') %}
-		                        <a href="{{ url('logistics_admin_van_reservation', {"action": "edit", "id": reservation.getId()}) }}" class="edit">Edit</a>
-		                    {% endif %}
-						    {% if hasAccess('logistics_admin_van_reservation', 'delete') %}
-		                        <a href="#" class="delete" data-id="{{ reservation.getId() }}" data-reason="{{ reservation.getReason() }}">Delete</a>
-		                    {% endif %}
-		                    <a href="#" class="moreinfo"
-		                    	data-reason="{{ reservation.getReason() }}"
-		                    	data-start="{{ reservation.getStartDate().format('d/m/Y H:i') }}"
-		                    	data-end="{{ reservation.getEndDate().format('d/m/Y H:i') }}"
-		                    	data-additional="{{ reservation.getAdditionalInfo() }}"
-		                    	data-load="{{ reservation.getLoad() }}"
-		                    	data-passenger="{{ reservation.getPassenger().getFullName() }}"
-		                    	data-driver="{{ reservation.getDriver().getPerson().getFullName() }}"
-		                    	data-creator="{{ reservation.getCreator().getFullName() }}"
-                    		>More Information</a>
-						</td>
-					</tr>
-
-				{% endfor %}
-
-			</table>
-
-		</div>
-
-		{% include 'admin/partials/paginationControl.twig' %}
+    <div class="flashmessage success_message full_width reservation_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The reservation was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width reservation_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a reservation.</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width assigning_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to (un)assign the current user as driver.</p>
+        </div>
     </div>
 
-	<div class="modal hide fade" id="moreInformation">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Reservation
-		</div>
-		<div class="modal-body">
-			<h1><span class="reason"/> by <span class="creator"/></h1>
-			<table class="full-width">
-				<tr><td width="90px"><b>Load</b></td><td><span class="load"/></td></tr>
-				<tr><td><b>Additional Info</b></td><td><span class="additional"/></td></tr>
-				<tr><td><b>Driver</b></td><td><span class="moreinfoDriver"/></td></tr>
-				<tr><td><b>Passenger</b></td><td><span class="passenger"/></td></tr>
-				<tr><td><b>Start</b></td><td><span class="start"/></td></tr>
-				<tr><td><b>End</b></td><td><span class="end"/></td></tr>
-			</table>
-			<div class="footer">
-				<input type="button" class="cancel" data-dismiss="modal" value="Close">
-			</div>
-		</div>
-	</div>
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Reason</th>
+                <th>Driver</th>
+                <th>Creator</th>
+                <th width="100px">Start Date</th>
+                <th width="100px">End Date</th>
+                <th width="70px">Action</th>
+            </tr>
 
-	<div class="modal hide fade" id="removeReservation">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Delete Reservation
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following reservation: <b class="reservationReason"></b>!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+            {% for reservation in paginator %}
+
+                <tr class="item item-{{ reservation.getId() }}">
+                    <td>{{ reservation.getReason() }}</td>
+                    <td class="driverdata">
+                        {% if hasAccess('logistics_admin_van_reservation', 'edit') and null == reservation.getDriver().getPerson() and isDriverLoggedIn %}
+                            None: <i><a href="#" class="assignme" data-id="{{ reservation.getId() }}">Assign Me</a></i>
+                        {% elseif hasAccess('logistics_admin_van_reservation', 'edit') and currentUser.getUserName() != "" and currentUser.getUsername() == reservation.getDriver().getPerson().getUsername() %}
+                            {{ reservation.getDriver().getPerson().getFullName() }} - <i><a href="#" class="unassignme" data-id="{{ reservation.getId() }}">Unassign Me</a></i>
+                        {% else %}
+                            {{ reservation.getDriver().getPerson().getFullName() }}
+                        {% endif %}
+                    </td>
+                    <td>{{ reservation.getCreator().getFullName() }}</td>
+                    <td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ reservation.getEndDate().format('d/m/Y H:i') }}</td>
+                    <td class="actions">
+                        {% if hasAccess('logistics_admin_van_reservation', 'edit') %}
+                            <a href="{{ url('logistics_admin_van_reservation', {"action": "edit", "id": reservation.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_van_reservation', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ reservation.getId() }}" data-reason="{{ reservation.getReason() }}">Delete</a>
+                        {% endif %}
+                        <a href="#" class="moreinfo"
+                            data-reason="{{ reservation.getReason() }}"
+                            data-start="{{ reservation.getStartDate().format('d/m/Y H:i') }}"
+                            data-end="{{ reservation.getEndDate().format('d/m/Y H:i') }}"
+                            data-additional="{{ reservation.getAdditionalInfo() }}"
+                            data-load="{{ reservation.getLoad() }}"
+                            data-passenger="{{ reservation.getPassenger().getFullName() }}"
+                            data-driver="{{ reservation.getDriver().getPerson().getFullName() }}"
+                            data-creator="{{ reservation.getCreator().getFullName() }}"
+                        >More Information</a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal hide fade" id="moreInformation">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Reservation
+        </div>
+        <div class="modal-body">
+            <h1><span class="reason"/> by <span class="creator"/></h1>
+            <table class="full-width">
+                <tr><td width="90px"><b>Load</b></td><td><span class="load"/></td></tr>
+                <tr><td><b>Additional Info</b></td><td><span class="additional"/></td></tr>
+                <tr><td><b>Driver</b></td><td><span class="moreinfoDriver"/></td></tr>
+                <tr><td><b>Passenger</b></td><td><span class="passenger"/></td></tr>
+                <tr><td><b>Start</b></td><td><span class="start"/></td></tr>
+                <tr><td><b>End</b></td><td><span class="end"/></td></tr>
+            </table>
+            <div class="footer">
+                <input type="button" class="cancel" data-dismiss="modal" value="Close">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="removeReservation">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Reservation
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following reservation: <b class="reservationReason"></b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-		$(document).ready(function () {
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+            $('.item .moreinfo').click(showInfo);
+            $('.item .assignme').click(assignMe);
+            $('.item .unassignme').click(unassignMe);
+        });
 
-			$('.item .delete').click(openModal);
-			$('.item .moreinfo').click(showInfo);
-			$('.item .assignme').click(assignMe);
-			$('.item .unassignme').click(unassignMe);
+        function assignMe(e) {
+            e.preventDefault();
 
-		});
+            var id = $(this).data('id');
 
-		function assignMe(e) {
+            $.post('{{ url('logistics_admin_van_reservation', {"action": "assignme"})}}' + id, function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.item-' + id + ' .driverdata').html(data.driver + ' - <i><a href="#" class="unassignme" data-id=' + id + '>Unassign Me</a></i>');
+                    $('.item-' + id + ' .unassignme').click(unassignMe);
+                } else {
+                    errorAssigning();
+                }
+            }, 'json').error(errorAssigning);
+        }
 
-			e.preventDefault();
+        function unassignMe(e) {
+            e.preventDefault();
 
-			var id = $(this).data('id');
+            var id = $(this).data('id');
 
-			$.post('{{ url('logistics_admin_van_reservation', {"action": "assignme"})}}' + id, function (data) {
-			    if (data && 'success' == data.status) {
-					$('.flashmessage').addClass('hide');
-					$('.item-' + id + ' .driverdata').html(data.driver + ' - <i><a href="#" class="unassignme" data-id=' + id + '>Unassign Me</a></i>');
-					$('.item-' + id + ' .unassignme').click(unassignMe);
-				} else {
-				    errorAssigning();
-				}
-			}, 'json').error(errorAssigning);
-		}
+            $.post('{{ url('logistics_admin_van_reservation', {"action": "unassignme"})}}' + id, function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.item-' + id + ' .driverdata').html('None: <i><a href="#" class="assignme" data-id=' + id + '>Assign Me</a></i>');
+                    $('.item-' + id + ' .assignme').click(assignMe);
+                } else {
+                    errorAssigning();
+                }
+            }, 'json').error(errorAssigning);
+        }
 
-		function unassignMe(e) {
+        function showInfo(e) {
+            e.preventDefault();
 
-			e.preventDefault();
+            var dialog = $('#moreInformation');
+            dialog.find('.reason').html($(this).data('reason'));
+            dialog.find('.additional').html($(this).data('additional'));
+            dialog.find('.start').html($(this).data('start'));
+            dialog.find('.end').html($(this).data('end'));
+            dialog.find('.moreinfoDriver').html($(this).data('driver'));
+            dialog.find('.load').html($(this).data('load'));
+            dialog.find('.passenger').html($(this).data('passenger'));
+            dialog.find('.creator').html($(this).data('creator'));
+            dialog.modal();
+        }
 
-			var id = $(this).data('id');
+        function openModal(e) {
+            var $this = $(this);
 
-			$.post('{{ url('logistics_admin_van_reservation', {"action": "unassignme"})}}' + id, function (data) {
-			    if (data && 'success' == data.status) {
-					$('.flashmessage').addClass('hide');
-					$('.item-' + id + ' .driverdata').html('None: <i><a href="#" class="assignme" data-id=' + id + '>Assign Me</a></i>');
-					$('.item-' + id + ' .assignme').click(assignMe);
-				} else {
-				    errorAssigning();
-				}
-			}, 'json').error(errorAssigning);
-		}
+            e.preventDefault();
+            var removeReservation = $('#removeReservation');
+            removeReservation.find('.reservationReason').html($(this).data('reason'));
+            var id = $this.data('id');
+            removeReservation.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_van_reservation', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.reservation_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeReservation.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeReservation.modal();
+        }
 
-		function showInfo(e) {
-			e.preventDefault();
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.assigning_error').addClass('hide');
+            $('.reservation_removed_error').removeClass('hide');
+            $('#removeReservation').modal('hide');
+        }
 
-			var dialog = $('#moreInformation');
-			dialog.find('.reason').html($(this).data('reason'));
-			dialog.find('.additional').html($(this).data('additional'));
-			dialog.find('.start').html($(this).data('start'));
-			dialog.find('.end').html($(this).data('end'));
-			dialog.find('.moreinfoDriver').html($(this).data('driver'));
-			dialog.find('.load').html($(this).data('load'));
-			dialog.find('.passenger').html($(this).data('passenger'));
-			dialog.find('.creator').html($(this).data('creator'));
-			dialog.modal();
-		}
+        function errorAssigning() {
+            $('.flashmessage').addClass('hide');
+            $('.reservation_removed_error').addClass('hide');
+            $('.assigning_error').removeClass('hide');
+        }
 
-		function openModal(e) {
-			var $this = $(this);
-
-			e.preventDefault();
-			var removeReservation = $('#removeReservation');
-			removeReservation.find('.reservationReason').html($(this).data('reason'));
-			var id = $this.data('id');
-			removeReservation.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('logistics_admin_van_reservation', {"action": "delete"})}}' + id, function (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.reservation_removed_success').removeClass('hide');
-    					$('.item-' + id).remove();
-    					removeReservation.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
-				}, 'json').error(errorRemove);
-			});
-			removeReservation.modal();
-		}
-
-		function errorRemove() {
-    		$('.flashmessage').addClass('hide');
-			$('.assigning_error').addClass('hide');
-    		$('.reservation_removed_error').removeClass('hide');
-    		$('#removeReservation').modal('hide');
-		}
-
-		function errorAssigning() {
-    		$('.flashmessage').addClass('hide');
-    		$('.reservation_removed_error').addClass('hide');
-			$('.assigning_error').removeClass('hide');
-		}
-
-	</script>
+    </script>
 {% endblock %}

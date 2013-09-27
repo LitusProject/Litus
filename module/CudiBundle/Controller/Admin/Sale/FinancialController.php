@@ -15,6 +15,8 @@
 namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Form\Admin\Sales\Financial\Period as PeriodForm,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -53,7 +55,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 ->findNumberByAcademicYear($academicYear),
             'uniqueClients' => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                ->findUniqueClients($academicYear),
+                ->findUniqueClientsByAcademicYear($academicYear),
             'totalOrderedPrice' => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->getOrderedAmountByAcademicYear($academicYear),
@@ -95,6 +97,98 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 'data' => $data,
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
+            )
+        );
+    }
+
+    public function periodAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $organizationsList = array();
+        $data = array();
+
+        $form = new PeriodForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $startDate = DateTime::createFromFormat('d/m/Y', $formData['start_date']);
+                $endDate = DateTime::createFromFormat('d/m/Y', $formData['end_date']);
+
+                $sessions = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Session')
+                    ->findAllBetween($startDate, $endDate);
+
+                $organizations = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization')
+                    ->findAll();
+
+                $data =  array(
+                    'totalTheoreticalRevenue' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Session')
+                        ->getTheoreticalRevenueBetween($startDate, $endDate),
+                    'totalActualRevenue' => 0,
+                    'totalPurchasedAmount' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Session')
+                        ->getPurchasedAmountBetween($startDate, $endDate),
+                    'totalNumberSold' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                        ->findNumberBetween($startDate, $endDate),
+                    'uniqueClients' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                        ->findUniqueClientsBetween($startDate, $endDate),
+                    'totalOrderedPrice' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                        ->getOrderedAmountBetween($startDate, $endDate),
+                    'totalNumberOrdered' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                        ->getNumberBetween($startDate, $endDate),
+                    'totalDeliveredPrice' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\Delivery')
+                        ->getDeliveredAmountBetween($startDate, $endDate),
+                    'totalNumberDelivered' => $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\Delivery')
+                        ->getNumberBetween($startDate, $endDate),
+                );
+
+                foreach($organizations as $organization) {
+                    $organizationsList[$organization->getId()] = array(
+                        'entity' => $organization,
+                        'data' => array(
+                            'totalTheoreticalRevenue' => $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Session')
+                                ->getTheoreticalRevenueBetween($startDate, $endDate, $organization),
+                            'totalPurchasedAmount' => $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Session')
+                                ->getPurchasedAmountBetween($startDate, $endDate, $organization),
+                        ),
+                    );
+                }
+
+                foreach($sessions as $session) {
+                    $session->setEntityManager($this->getEntityManager());
+
+                    $data['totalActualRevenue'] += $session->getActualRevenue();
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+                'organizationsList' => $organizationsList,
+                'data' => $data,
             )
         );
     }

@@ -5,7 +5,6 @@
 
     {% include 'cudi/admin/sale/financial/partials/years.twig' %}
 
-
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
@@ -33,4 +32,20 @@
         <p>Total Delivered: <b>&euro; {{ (data['totalDeliveredPrice']/100)|number_format(2) }}</b></p>
         <p>Total Articles Delivered: <b>{{ data['totalNumberDelivered'] }}</b></p>
     </div>
+
+    <aside>
+        {% if hasAccess('cudi_admin_sales_financial', 'period') %}
+            <div class="sidebox">
+                <div class="title">View Period</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the results of a period!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_sales_financial', {"action": "period"}) }}">&rarr; View Period</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}

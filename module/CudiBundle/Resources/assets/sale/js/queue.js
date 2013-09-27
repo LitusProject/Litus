@@ -43,7 +43,12 @@
             currentView = permanent ? 'queue' : currentView;
             $(this).permanentModal({closable: !permanent});
 
-            if (!$(this).data('queueSettings').lightVersion) {
+            if ($(this).data('queueSettings').lightVersion) {
+                $(this).find('.filterText').val('');
+                $(this).on('shown', function () {
+                    $(this).find('.filterText').focus();
+                });
+            } else {
                 var $this = $(this);
                 $(this).find('tbody tr').each(function () {
                     _showActions($this, $(this), $(this).data('info'));
@@ -90,14 +95,14 @@
 
     $.queue = function (options) {
         return $('<div>').queue(options);
-    }
+    };
 
     function _init($this) {
         var settings = $this.data('queueSettings');
 
         $this.addClass('modal fade queueModal').html('').append(
             $('<div>', {'class': 'modal-header'}).append(
-                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide')}),
+                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
                 $('<div>', {'class': 'form-search'}).append(
                     $('<div>', {'class': 'input-append pull-right'}).append(
                         filterText = $('<input>', {'type': 'text', 'class': 'input-medium search-query filterText', 'placeholder': settings.tUniversityIdentification}),
@@ -201,7 +206,7 @@
                         JSON.stringify({
                             'command': 'action',
                             'action': 'startCollectingBulk',
-                            'id': $(this).closest('tr').data('info').id,
+                            'id': $(this).data('info').id,
                         })
                     );
                 }
@@ -227,7 +232,7 @@
 
         $this.addClass('modal fade').html('').append(
             $('<div>', {'class': 'modal-header'}).append(
-                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide')}),
+                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
                 $('<h3>').html(settings.tQueueTitleLightVersion)
             ),
             $('<div>', {'class': 'modal-body'}).append(
@@ -255,6 +260,7 @@
         filterText.css('width', '250px');
 
         filterText.keyup(function (e) {
+            $(this).removeData('value');
             var filter = $(this).val().toLowerCase();
             var pattern = new RegExp(/[a-z][0-9]{7}/);
 
@@ -273,9 +279,7 @@
             } else {
                 $this.find('.startSale').addClass('disabled').unbind('click');
             }
-        });
-
-        filterText.typeaheadRemote(
+        }).typeaheadRemote(
             {
                 source: settings.personTypeahead,
             }
@@ -324,14 +328,14 @@
                 item = _createItem($this, settings, this);
                 tbody.append(item);
             } else {
-                _updateItem($this, settings, item, this)
+                _updateItem($this, settings, item, this);
             }
 
             _toggleVisibility($this, item, this);
         });
 
         tbody.find('tr').each(function () {
-            var pos = $.inArray($(this).data('info').id, inQueue)
+            var pos = $.inArray($(this).data('info').id, inQueue);
             if (pos < 0) {
                 $(this).remove();
             } else {
@@ -370,7 +374,7 @@
                 item = _createItem($this, settings, data);
                 $this.find('tbody').append(item);
             } else {
-                _updateItem($this, settings, item, data)
+                _updateItem($this, settings, item, data);
             }
 
             _toggleVisibility($this, item, data);
@@ -587,7 +591,7 @@
         $this.find('.modal-body').prepend(
             $('<div>', {'class': 'flashmessage alert alert-error fade in'}).append(
                 $('<div>', {'class': 'content'}).append('<p>').html(
-                    settings.tErrorAddPerson + (error == undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
+                    settings.tErrorAddPerson + (error === undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
                 )
             )
         );

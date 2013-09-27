@@ -159,18 +159,17 @@
 
             $(settings.discounts).each(function () {
                 var checked = ('member' == this.type && data.person.member) || ('acco' == this.type && data.person.acco);
-                var disabled = ('member' == this.type && !data.person.member);
 
                 options.append(
                     $('<p>').append(
                         $('<label>', {'class': 'checkbox'}).append(
-                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).prop('disabled', disabled).change(function () {
+                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).change(function () {
                                 _updatePrice($this);
                             }),
                             ' ' + this.name
                         )
                     )
-                )
+                );
             });
         }
 
@@ -192,7 +191,7 @@
 
         conclude.click(function () {
             _conclude($this);
-        })
+        });
 
         _addArticles($this, data.articles);
 
@@ -323,7 +322,7 @@
         $this.find('#article-' + id + ':not(.inactive)').each(function () {
             if ($(this).data('info').currentNumber < $(this).data('info').number) {
                 $(this).data('info').currentNumber++;
-                _updateRow($this, $(this))
+                _updateRow($this, $(this));
                 $(this).addClass('success').removeClass('error');
                 return false;
             } else {
@@ -332,7 +331,7 @@
         });
 
         if (_isMemberShipArticleId(id, settings.membershipArticles))
-            $this.find('.discounts input[value="member"]').prop('disabled', false).prop('checked', true);
+            $this.find('.discounts input[value="member"]').prop('checked', true);
 
         if (settings.isSell)
             _updatePrice($this);
@@ -343,7 +342,7 @@
         $this.find('#article-' + id + ':not(.inactive)').each(function () {
             if ($(this).data('info').currentNumber > 0) {
                 $(this).data('info').currentNumber--;
-                _updateRow($this, $(this))
+                _updateRow($this, $(this));
                 $(this).removeClass('error success');
             } else {
                 $(this).addClass('error').removeClass('success');
@@ -351,7 +350,7 @@
         });
 
         if (_isMemberShipArticleId(id, settings.membershipArticles))
-            $this.find('.discounts input[value="member"]').prop('disabled', true).prop('checked', false);
+            $this.find('.discounts input[value="member"]').prop('checked', false);
 
         if (settings.isSell)
             _updatePrice($this);
@@ -379,13 +378,24 @@
 
     function _gotBarcode($this, barcode) {
         var settings = $this.data('saleInterfaceSettings');
+
         var found = false;
         $this.find('tbody tr:not(.inactive)').each(function () {
             if ($(this).data('info').barcode == barcode) {
                 $(this).find('.addArticle').click();
                 found = true;
-                return false;
             }
+            var row = $(this);
+            $($(this).data('info').barcodes).each(function () {
+                if (this == barcode) {
+                    row.find('.addArticle').click();
+                    found = true;
+                    return false;
+                }
+            });
+
+            if (found)
+                return false;
         });
 
         if (found)
@@ -512,10 +522,11 @@
         $this.find('tbody tr:not(.inactive)').each(function () {
             var number = $(this).data('info').currentNumber;
             var appliedOnce = false;
+            var bestPrice = 0;
             $(this).find('.price').html('');
 
             if (number == 0) {
-                var bestPrice = parseInt($(this).data('info').price, 10);
+                bestPrice = parseInt($(this).data('info').price, 10);
                 $($(this).data('info').discounts).each(function () {
                     if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
                         bestPrice = this.value < bestPrice ? this.value : bestPrice;
@@ -526,7 +537,7 @@
             }
 
             while(number > 0) {
-                var bestPrice = parseInt($(this).data('info').price, 10);
+                bestPrice = parseInt($(this).data('info').price, 10);
                 var discount = null;
                 $($(this).data('info').discounts).each(function () {
                     if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked')) {

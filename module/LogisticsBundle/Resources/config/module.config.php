@@ -43,7 +43,7 @@ return array(
             'logistics_admin_van_reservation' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/return/:return]][/]',
+                    'route' => '/admin/reservation/van[/:action[/:id][/page/:page][/return/:return]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -52,6 +52,22 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'logistics_admin_van_reservation',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'logistics_admin_piano_reservation' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/reservation/piano[/:action[/:id][/page/:page][/return/:return]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'return'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'logistics_admin_piano_reservation',
                         'action'     => 'manage',
                     ),
                 ),
@@ -98,6 +114,22 @@ return array(
                     'defaults' => array(
                         'controller' => 'logistics_index',
                         'action'     => 'fetch',
+                    ),
+                ),
+            ),
+            'logistics_piano' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/reservations/piano[/:action][/date/:date][/:id][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                        'date'     => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}',
+                        'id'       => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'logistics_piano',
+                        'action'     => 'index',
                     ),
                 ),
             ),
@@ -189,12 +221,14 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'logistics_install'               => 'LogisticsBundle\Controller\Admin\InstallController',
-            'logistics_admin_driver'          => 'LogisticsBundle\Controller\Admin\DriverController',
-            'logistics_admin_van_reservation' => 'LogisticsBundle\Controller\Admin\VanReservationController',
+            'logistics_install'                 => 'LogisticsBundle\Controller\Admin\InstallController',
+            'logistics_admin_driver'            => 'LogisticsBundle\Controller\Admin\DriverController',
+            'logistics_admin_van_reservation'   => 'LogisticsBundle\Controller\Admin\VanReservationController',
+            'logistics_admin_piano_reservation' => 'LogisticsBundle\Controller\Admin\PianoReservationController',
 
-            'logistics_index'                 => 'LogisticsBundle\Controller\IndexController',
-            'logistics_auth'                  => 'LogisticsBundle\Controller\AuthController',
+            'logistics_index'                   => 'LogisticsBundle\Controller\IndexController',
+            'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',
+            'logistics_piano'                   => 'LogisticsBundle\Controller\PianoController',
         ),
     ),
 );
