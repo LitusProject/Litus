@@ -11,9 +11,13 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace LogisticsBundle\Entity\Reservation;
 
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person,
+    DateTime,
+    Doctrine\ORM\Mapping as ORM,
+    LogisticsBundle\Entity\Driver;
 
 /**
  * This is the entity for a reservation.
@@ -60,7 +64,8 @@ class VanReservation extends Reservation
      * @param string $additionalInfo
      * @param \CommonBundle\Entity\User\Person $creator
      */
-    public function __construct($startDate, $endDate, $reason, $load, ReservableResource $resource, $additionalInfo, $creator) {
+    public function __construct(DateTime $startDate, DateTime $endDate, $reason, $load, ReservableResource $resource, $additionalInfo, Person $creator)
+    {
         parent::__construct($startDate, $endDate, $reason, $resource, $additionalInfo, $creator);
 
         $this->driver = null;
@@ -71,7 +76,8 @@ class VanReservation extends Reservation
     /**
      * @return \CommonBundle\Entity\User\Person
      */
-    public function getDriver() {
+    public function getDriver()
+    {
         return $this->driver;
     }
 
@@ -80,7 +86,8 @@ class VanReservation extends Reservation
      *
      * @return \LogisticsBundle\Entity\Reservation\VanReservation
      */
-    public function setDriver($driver) {
+    public function setDriver(Driver $driver)
+    {
         $this->driver = $driver;
         return $this;
     }
@@ -88,7 +95,8 @@ class VanReservation extends Reservation
     /**
      * @return \CommonBundle\Entity\User\Person
      */
-    public function getPassenger() {
+    public function getPassenger()
+    {
         return $this->passenger;
     }
 
@@ -97,7 +105,8 @@ class VanReservation extends Reservation
      *
      * @return \LogisticsBundle\Entity\Reservation\VanReservation
      */
-    public function setPassenger($passenger) {
+    public function setPassenger(Person $passenger)
+    {
         $this->passenger = $passenger;
         return $this;
     }
@@ -105,7 +114,8 @@ class VanReservation extends Reservation
     /**
      * @return string
      */
-    public function getLoad() {
+    public function getLoad()
+    {
         return $this->load;
     }
 
@@ -114,7 +124,8 @@ class VanReservation extends Reservation
      *
      * @return \LogisticsBundle\Entity\Reservation\VanReservation
      */
-    public function setLoad($load) {
+    public function setLoad($load)
+    {
         $this->load = $load;
         return $this;
     }
