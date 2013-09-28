@@ -410,6 +410,11 @@ class Internal extends \CudiBundle\Entity\Article
             else
                 $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
         }
+		
+		if ($this->hardcovered) {
+			$total += $prices['hardcover'];
+		}
+		
         return $total;
     }
 
@@ -448,6 +453,11 @@ class Internal extends \CudiBundle\Entity\Article
             else
                 $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
         }
+		
+		if ($this->hardcovered) {
+			$total += $prices['hardcover'];
+		}
+		
         return $total / 1000;
     }
 }
