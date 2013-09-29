@@ -52,12 +52,12 @@
 
     <div id="calendar"></div>
 
-    <div id="reservationForm" class="hide">
-        {% if has_access('logistics_index', 'add') %}
+    {% if has_access('logistics_index', 'add') %}
+        <div id="reservationForm" class="hide">
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}
