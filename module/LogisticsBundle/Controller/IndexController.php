@@ -130,15 +130,20 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-                $passenger = ('' == $formData['passenger_id'])
-                    ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
-
                 $driver = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Driver')
                     ->findOneById($formData['driver']);
+
+
+                if ('' == $formData['passenger_id']) {
+                    $passenger = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneByUsername($formData['passenger']);
+                } else {
+                    $passenger = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneById($formData['passenger_id']);
+                }
 
                 $van = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
@@ -159,8 +164,11 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     $this->getAuthentication()->getPersonObject()
                 );
 
-                $reservation->setDriver($driver);
-                $reservation->setPassenger($passenger);
+                if (null !== $driver)
+                    $reservation->setDriver($driver);
+
+                if (null !== $passenger)
+                    $reservation->setPassenger($passenger);
 
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
