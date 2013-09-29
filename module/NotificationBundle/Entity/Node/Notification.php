@@ -128,7 +128,6 @@ class Notification extends \CommonBundle\Entity\Node
     public function addTranslation(Translation $translation)
     {
         $this->translations->add($translation);
-        print("fail?");
         return $this;
     }
 
@@ -182,4 +181,5 @@ class Notification extends \CommonBundle\Entity\Node
 
         return '';
     }
+
 }

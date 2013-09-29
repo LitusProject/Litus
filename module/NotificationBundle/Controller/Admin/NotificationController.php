@@ -83,7 +83,6 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                         );
                     }
                 }
-                print("totalSuccese");
 
                 $this->getEntityManager()->flush();
 
@@ -127,12 +126,18 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $notification->setContent($formData['content'])
-                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                    ->setActive($formData['active']);
-                
+                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+                if ($endDate)
+                    $notification->setEndDate($endDate);
+                else
+                    $notification->setEndDate(null);
 
+                if ($startDate)
+                    $notification->setStartDate($endDate);
+                else
+                    $notification->setStartDate(null);
+                
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
@@ -141,8 +146,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                     $translation = $notification->getTranslation($language, false);
 
                     if (null !== $translation) {
-                        $translation->setTitle($formData['title_' . $language->getAbbrev()])
-                            ->setContent($formData['content_' . $language->getAbbrev()]);
+                        $translation->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
                         if ('' != $formData['content_' . $language->getAbbrev()]) {
                             $notification->addTranslation(
@@ -155,8 +159,6 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                         }
                     }
                 }
-
-                $notification->updateName();
 
                 $this->getEntityManager()->flush();
 
