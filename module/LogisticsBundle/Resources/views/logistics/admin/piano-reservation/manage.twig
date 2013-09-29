@@ -31,7 +31,7 @@
 
             {% for reservation in paginator %}
                 <tr class="item item-{{ reservation.getId() }}">
-                    <td>{% if reservation.isConfirmed() %}yes{% else %}no{% endif %}</td>
+                    <td>{% if reservation.isConfirmed() %}Yes{% else %}No{% endif %}</td>
                     <td>{{ reservation.getPlayer().getFullName() }}</td>
                     <td>{{ reservation.getCreator().getFullName() }}</td>
                     <td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
