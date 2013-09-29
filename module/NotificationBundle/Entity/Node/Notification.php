@@ -29,16 +29,6 @@ use CommonBundle\Entity\General\Language,
  */
 class Notification extends \CommonBundle\Entity\Node
 {
-
-    /**
-     * @var The reservation's unique identifier
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this notification item
      *
@@ -61,13 +51,6 @@ class Notification extends \CommonBundle\Entity\Node
     private $endDate;
 
     /**
-     * @var string The content of this notification
-     *
-     * @ORM\Column(type="text")
-     */
-    private $content;
-
-    /**
      * @var boolean The flag whether the notification is active or not.
      *
      * @ORM\Column(type="boolean")
@@ -78,31 +61,13 @@ class Notification extends \CommonBundle\Entity\Node
      * @param \CommonBundle\Entity\User\Person $person
      * @param string $category
      */
-    public function __construct(Person $person, $content, DateTime $startDate, DateTime $endDate, $active )
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active )
     {
         parent::__construct($person);
-
-        $this->content = $content;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->active = $active;
-    }
-
-    /**
-     * @param string $content
-     *
-     * @return \NotificationBundle\Entity\Node\Notification
-     */
-    public function setContent($content) {
-        $this->content = $content;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContent() {
-        return $this->content;
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -163,6 +128,7 @@ class Notification extends \CommonBundle\Entity\Node
     public function addTranslation(Translation $translation)
     {
         $this->translations->add($translation);
+        print("fail?");
         return $this;
     }
 
@@ -185,5 +151,35 @@ class Notification extends \CommonBundle\Entity\Node
             return $fallbackTranslation;
 
         return null;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getContent(Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getContent();
+
+        return '';
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getSummary($length = 200, Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getSummary($length);
+
+        return '';
     }
 }

@@ -55,17 +55,17 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
+            $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+            $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+            
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
                 $notification = new Notification(
                     $this->getAuthentication()->getPersonObject(),
-                    $formData['content'],
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $startDate ? $startDate : null,
+                    $endDate ? $endDate : null,
                     $formData['active']
                 );
-                print($notification->getContent());
                 $this->getEntityManager()->persist($notification);
 
                 $languages = $this->getEntityManager()
@@ -83,6 +83,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                         );
                     }
                 }
+                print("totalSuccese");
 
                 $this->getEntityManager()->flush();
 
@@ -143,12 +144,11 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                         $translation->setTitle($formData['title_' . $language->getAbbrev()])
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
-                        if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
+                        if ('' != $formData['content_' . $language->getAbbrev()]) {
                             $notification->addTranslation(
                                 new Translation(
                                     $notification,
                                     $language,
-                                    $formData['title_' . $language->getAbbrev()],
                                     str_replace('#', '', $formData['content_' . $language->getAbbrev()])
                                 )
                             );
