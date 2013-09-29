@@ -50,13 +50,13 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $result->currentAcademicYear = $this->getCurrentAcademicYear();
 
-        /*$result->logos = $this->getEntityManager()
+        $result->logos = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Logo')
             ->findAllByType('homepage');
 
         $result->logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');*/
+            ->getConfigValue('br.public_logo_path');
 
         $e->setResult($result);
 

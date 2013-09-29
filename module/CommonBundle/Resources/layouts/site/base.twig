@@ -261,16 +261,9 @@
                     <h3>{{ translate('Partners') }}</h3>
 
                     <p class="companies">
-                        <a id="nmbs" href="http://www.nmbs.be"></a>
-                        <a id="deloitte" href="http://www.deloitte.com/be"></a>
-                        <a id="kbc" href="http://www.kbc.be"></a>
-                        <a id="exxon" href="http://www.exxonmobil.com"></a>
-                        <a id="basf" href="http://www.basf.be/ecp2/Jobs_Career_belgium_nl/index"></a>
-                        <a id="gdfsuez" href="http://www.gdfsuez.com/"></a>
-
-                        {#% for logo in logos %}
+                        {% for logo in logos %}
                             <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
-                        {% endfor %#}
+                        {% endfor %}
                     </p>
                 </div>
             </div>
