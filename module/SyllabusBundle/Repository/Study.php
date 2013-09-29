@@ -147,7 +147,6 @@ class Study extends EntityRepository
                 $query->expr()->eq('m.academicYear', ':academicYear')
             )
             ->setParameter('academicYear', $academicYear->getId())
-            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 
@@ -155,7 +154,7 @@ class Study extends EntityRepository
 
         $title = strtolower($title);
 
-        foreach($resultSet as $mapping) {
+        foreach ($resultSet as $mapping) {
             if (strpos(strtolower($mapping->getStudy()->getFullTitle()), $title) !== false)
                 $result[] = $mapping->getStudy();
         }

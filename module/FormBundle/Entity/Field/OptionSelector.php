@@ -36,7 +36,7 @@ abstract class OptionSelector extends Field
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\OptionTranslation", mappedBy="field", cascade={"remove"})
      */
-    private $option_translations;
+    private $optionTranslations;
 
     /**
      * @param FormBundle\Entity\Node\Form $form
@@ -49,7 +49,7 @@ abstract class OptionSelector extends Field
     {
         parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
 
-        $this->option_translations = new ArrayCollection();
+        $this->optionTranslations = new ArrayCollection();
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class OptionSelector extends Field
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {
 
-        foreach($this->option_translations as $translation) {
+        foreach($this->optionTranslations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -110,6 +110,9 @@ abstract class OptionSelector extends Field
      * @return string
      */
     public function getValueString(Language $language, $value) {
-        return $this->getOptionsArray($language)[$value];
+        if (isset($this->getOptionsArray($language)[$value]))
+            return $this->getOptionsArray($language)[$value];
+
+        return '';
     }
 }

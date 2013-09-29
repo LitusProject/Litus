@@ -1,0 +1,95 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Piano') }}</h1>
+    </div>
+
+    {% autoescape false %}
+        {{ translate('<p>For the culture lovers who didn\'t know it, VTK has its own piano! You can find it in room 01.52 (next to the proclamation hall) of the castle. Students can make weekly use of it for free and on the following time slots:<p>
+
+        <ul>
+            <li>every monday and thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
+            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KUL</li>
+            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KUL</li>
+        </ul>
+
+        <p>Choose a moment you want to play music below, and reserve it! One reservation each week will be assigned to you, if you want to play more times a week, other students are given priority.</p>
+
+        <p>It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.</p>') }}
+    {% endautoescape %}
+
+    {% if authenticated %}
+        <ul id="weeks" class="nav nav-tabs">
+            {% for key, week in form.getWeeks() %}
+                <li><a href="#week-{{ key }}" data-toggle="tab">{{ dateLocalized(week['start'], 'd MMM') }} - {{ dateLocalized(week['end'], 'd MMM') }}</a></li>
+            {% endfor %}
+
+            <li class="pull-right">
+                <a href="#overview-reservations" data-toggle="tab">{{ translate('Reservations') }}</a>
+            </li>
+        </ul>
+
+        {% do form.prepare() %}
+        {% autoescape false %}
+            {{ form().openTag(form) }}
+                <div class="tab-content">
+                    {% for key, week in form.getWeeks() %}
+                        <div class="tab-pane fade" id="week-{{ key }}">
+                            {{ _self.renderSelect(form.get('start_date_' ~ key)) }}
+                            {{ _self.renderSelect(form.get('end_date_' ~ key)) }}
+                            <div class="form-actions">
+                                {{ formElement(form.get('submit_' ~ key)) }}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="tab-pane fade" id="overview-reservations">
+                        <table class="table table-striped table-bordered">
+                            <tr>
+                                <th>{{ translate('Confirmed') }}</th>
+                                <th>{{ translate('Start Date') }}</th>
+                                <th>{{ translate('End Date') }}</th>
+                            </tr>
+
+                            {% for reservation in reservations %}
+                                <tr>
+                                    <td>{% if reservation.isConfirmed() %}&times;{% endif %}</td>
+                                    <td>{{ dateLocalized(reservation.getStartDate(), 'E d MMMM Y H:mm') }}</td>
+                                    <td>{{ dateLocalized(reservation.getEndDate(), 'E d MMMM Y H:mm') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            {{ form().closeTag() }}
+        {% endautoescape %}
+    {% endif %}
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#weeks a:first').click();
+        });
+    </script>
+{% endblock %}
+
+{% macro renderSelect(element) %}
+    {% autoescape false %}
+        <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+            {{ formLabel().openTag(element) }}
+                {% if element.getLabel != '' %}{{ translate(element.getLabel()) }}{% endif %}
+            {{ formLabel().closeTag() }}
+            <div class="controls">
+                <div>{{ formElement(element) }}</div>
+                {% if element.getMessages()|length > 0 %}
+                    <div class="help-inline">
+                        {{ formElementErrors(element) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endautoescape %}
+{% endmacro %}
