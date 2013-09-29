@@ -26,7 +26,7 @@ class OptionTranslation
     /**
      * @var \FormBundle\Entity\Field The field of this translation
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field\OptionSelector", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field\OptionSelector", inversedBy="optionTranslations")
      * @ORM\JoinColumn(name="field", referencedColumnName="id")
      */
     private $field;
