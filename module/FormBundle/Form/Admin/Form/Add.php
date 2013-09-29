@@ -152,7 +152,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $field = new Textarea('mail_body');
         $field->setLabel('Body')
             ->setAttribute('rows', 20)
-            ->setValue('Exameple mail:
+            ->setValue('Example mail:
 
 Dear %first_name% %last_name%,
 
