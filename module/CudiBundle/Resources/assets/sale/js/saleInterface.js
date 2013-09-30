@@ -487,6 +487,7 @@
                 ).addClass('in')
             );
         } else {
+            $this.find('.saleScreen .flashmessage').remove();
             if ($this.find('#article-' + data.articleId).length > 0) {
                 row = $this.find('#article-' + data.articleId);
                 data = row.data('info');

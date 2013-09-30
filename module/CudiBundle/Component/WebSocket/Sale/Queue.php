@@ -443,6 +443,22 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
+        $period = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+
+        $period->setEntityManager($this->_entityManager);
+
+        if ($article->getStockValue() - $period->getNbAssigned($article) <= 0) {
+            return json_encode(
+                array(
+                    'addArticle' => array(
+                        'error' => 'occupied',
+                    ),
+                )
+            );
+        }
+
         $barcodes = array();
         foreach($article->getBarcodes() as $barcode)
             $barcodes[] = $barcode->getBarcode();
