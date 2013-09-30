@@ -40,86 +40,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         );
     }
 
-    public function moveAction()
-    {
-        if (!($reservation = $this->_getReservation()))
-            return new ViewModel();
-
-        $start = new DateTime();
-        $start->setTimeStamp($this->getRequest()->getPost('start'));
-        $end = new DateTime();
-        $end->setTimeStamp($this->getRequest()->getPost('end'));
-
-        $reservation->setStartDate($start)
-            ->setEndDate($end);
-
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => array(
-                    'status' => 'success',
-                )
-            )
-        );
-    }
-
-    public function fetchAction()
-    {
-        $this->initAjax();
-
-        $reservations = $this->_getReservations();
-
-        if (null === $reservations) {
-            return new ViewModel();
-        }
-
-        $result = array();
-        foreach ($reservations as $reservation) {
-            $driver = $reservation->getDriver();
-
-            $driverArray = array(
-                'color' => '#444444',
-                'name' => ''
-            );
-            if (null !== $driver) {
-                $driverArray['id'] = $driver->getPerson()->getId();
-                $driverArray['color'] = $driver->getColor();
-                $driverArray['name'] = $driver->getPerson()->getFullname();
-            }
-
-            $passenger = $reservation->getPassenger();
-
-            $passengerName = '';
-            $passengerId = '';
-            if (null !== $passenger) {
-                $passengerName = $passenger->getFullname();
-                $passengerId = $passenger->getId();
-            }
-
-            $result[] = array (
-                'start' => $reservation->getStartDate()->getTimeStamp(),
-                'end' => $reservation->getEndDate()->getTimeStamp(),
-                'reason' => $reservation->getReason(),
-                'driver' => $driverArray,
-                'passenger' => $passengerName,
-                'passengerId' => $passengerId,
-                'load' => $reservation->getLoad(),
-                'additionalInfo' => $reservation->getAdditionalInfo(),
-                'id' => $reservation->getId()
-            );
-        }
-
-        return new ViewModel(
-            array(
-                'result' => (object) array(
-                    'status' => 'success',
-                    'reservations' => (object) $result
-                )
-            )
-        );
-    }
-
     public function addAction()
     {
         $this->initAjax();
@@ -133,7 +53,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 $driver = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Driver')
                     ->findOneById($formData['driver']);
-
 
                 if ('' == $formData['passenger_id']) {
                     $passenger = $this->getEntityManager()
@@ -247,23 +166,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         );
     }
 
-    public function deleteAction()
-    {
-        $this->initAjax();
-
-        if (!($reservation = $this->_getReservation()))
-            return new ViewModel();
-
-        $this->getEntityManager()->remove($reservation);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => array('status' => 'success'),
-            )
-        );
-    }
-
     public function editAction()
     {
         $this->initAjax();
@@ -277,25 +179,32 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-                $passenger = ('' == $formData['passenger_id'])
-                    ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
-
                 $driver = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Driver')
                     ->findOneById($formData['driver']);
+
+                if ('' == $formData['passenger_id']) {
+                    $passenger = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneByUsername($formData['passenger']);
+                } else {
+                    $passenger = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneById($formData['passenger_id']);
+                }
 
                 $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
                     ->setReason($formData['reason'])
                     ->setLoad($formData['load'])
-                    ->setAdditionalInfo($formData['additional_info'])
-                    ->setDriver($driver)
-                    ->setPassenger($passenger);
+                    ->setAdditionalInfo($formData['additional_info']);
 
-                $this->getEntityManager()->persist($reservation);
+                if (null !== $driver)
+                    $reservation->setDriver($driver);
+
+                if (null !== $passenger)
+                    $reservation->setPassenger($passenger);
+
                 $this->getEntityManager()->flush();
 
                 $driverArray = array(
@@ -367,6 +276,103 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             array(
                 'result' => array(
                     'status' => 'error',
+                )
+            )
+        );
+    }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($reservation);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array('status' => 'success'),
+            )
+        );
+    }
+
+    public function moveAction()
+    {
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+
+        $start = new DateTime();
+        $start->setTimeStamp($this->getRequest()->getPost('start'));
+        $end = new DateTime();
+        $end->setTimeStamp($this->getRequest()->getPost('end'));
+
+        $reservation->setStartDate($start)
+            ->setEndDate($end);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                )
+            )
+        );
+    }
+
+    public function fetchAction()
+    {
+        $this->initAjax();
+
+        $reservations = $this->_getReservations();
+
+        if (null === $reservations) {
+            return new ViewModel();
+        }
+
+        $result = array();
+        foreach ($reservations as $reservation) {
+            $driver = $reservation->getDriver();
+
+            $driverArray = array(
+                'color' => '#444444',
+                'name' => ''
+            );
+            if (null !== $driver) {
+                $driverArray['id'] = $driver->getPerson()->getId();
+                $driverArray['color'] = $driver->getColor();
+                $driverArray['name'] = $driver->getPerson()->getFullname();
+            }
+
+            $passenger = $reservation->getPassenger();
+
+            $passengerName = '';
+            $passengerId = '';
+            if (null !== $passenger) {
+                $passengerName = $passenger->getFullname();
+                $passengerId = $passenger->getId();
+            }
+
+            $result[] = array (
+                'start' => $reservation->getStartDate()->getTimeStamp(),
+                'end' => $reservation->getEndDate()->getTimeStamp(),
+                'reason' => $reservation->getReason(),
+                'driver' => $driverArray,
+                'passenger' => $passengerName,
+                'passengerId' => $passengerId,
+                'load' => $reservation->getLoad(),
+                'additionalInfo' => $reservation->getAdditionalInfo(),
+                'id' => $reservation->getId()
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                    'reservations' => (object) $result
                 )
             )
         );
