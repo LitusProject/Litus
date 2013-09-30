@@ -51,7 +51,9 @@ class Edit extends Add
         $data = array(
             'start_date' => $notification->getEndDate() ? $notification->getStartDate()->format('d/m/Y H:i') : '',
             'end_date' => $notification->getEndDate() ? $notification->getEndDate()->format('d/m/Y H:i') : '',
+            'active' => $notification->isActive(),
         );
+
         foreach($this->getLanguages() as $language) {
             $data['content_' . $language->getAbbrev()] = $notification->getContent($language, false);
         }
