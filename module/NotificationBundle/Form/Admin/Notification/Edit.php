@@ -49,11 +49,12 @@ class Edit extends Add
     private function _populateFromNotification(Notification $notification)
     {
         $data = array(
-            'content'    => $notification->getContent(),
-            'start_date' => $notification->getStartDate()->format('d/m/Y H:i'),
-            'end_date'   => $notification->getEndDate()->format('d/m/Y H:i'),
-            'active'     => $notification->isActive(),
+            'start_date' => $notification->getEndDate() ? $notification->getStartDate()->format('d/m/Y H:i') : '',
+            'end_date' => $notification->getEndDate() ? $notification->getEndDate()->format('d/m/Y H:i') : '',
         );
+        foreach($this->getLanguages() as $language) {
+            $data['content_' . $language->getAbbrev()] = $notification->getContent($language, false);
+        }
 
         $this->setData($data);
     }
