@@ -16,7 +16,7 @@ namespace LogisticsBundle\Form\VanReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\AcademicYear,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator,
+    LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
