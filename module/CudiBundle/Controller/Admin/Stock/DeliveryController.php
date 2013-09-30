@@ -196,7 +196,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             foreach($bookings as $booking) {
                 if ($nbToMuchAssigned <= 0)
                     break;
-                $booking->setStatus('booked', $entityManager);
+                $booking->setStatus('booked', $this->getEntityManager());
                 $nbToMuchAssigned -= $booking->getNumber();
             }
         }
