@@ -18,7 +18,7 @@ return array(
             'gallery_admin_gallery' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/site/gallery[/:action[/:id]][/page/:page][/]',
+                    'route' => '/admin/site/gallery[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',

@@ -95,7 +95,7 @@
         </fo:root>
     </xsl:template>
 
-    <xsl:param name="items_count" select="/items/*"/>
+    <xsl:param name="items_count" select="/stock/items/*"/>
 
     <xsl:template name="date" match="date">
         <xsl:value-of select="/stock/@date"/>
