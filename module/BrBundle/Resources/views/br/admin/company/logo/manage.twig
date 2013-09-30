@@ -37,9 +37,7 @@
                         <td>{{ logo.getUrl() }}</td>
                         <td class="actions">
                             <ul>
-                                {% if hasAccess('br_admin_company_logo', 'view') %}
-                                    <li><a href="#" data-url="/{{ filePath }}/{{ logo.getPath() }}" class="view">View</a></li>
-                                {% endif %}
+                                <li><a href="#" data-url="/{{ filePath }}/{{ logo.getPath() }}" class="view">View</a></li>
                                 {% if hasAccess('br_admin_company_logo', 'delete') %}
                                     <li><a href="#" class="delete" data-id="{{ logo.getId() }}" data-type="{{ logo.getType() }}">Delete</a></li>
                                 {% endif %}
