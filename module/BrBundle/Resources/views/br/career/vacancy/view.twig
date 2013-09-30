@@ -13,7 +13,7 @@
         {% endif %}
             {% if vacancy.getCompany().getLogo() %}
 
-                    <img src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
+                    <img src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
             {% else %}
 
                 <h2><center class="company-name">{{ vacancy.getCompany().getName() }}</center></h2>
