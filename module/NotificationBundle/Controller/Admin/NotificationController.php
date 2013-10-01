@@ -134,10 +134,10 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                     $notification->setEndDate(null);
 
                 if ($startDate)
-                    $notification->setStartDate($endDate);
+                    $notification->setStartDate($startDate);
                 else
                     $notification->setStartDate(null);
-                
+
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
