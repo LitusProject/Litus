@@ -90,6 +90,22 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
                     $image->setImageColorspace(Imagick::COLORSPACE_GRAY);
 
+                    $color = 0;
+                    $iterator = $image->getPixelIterator();
+                    $nbPixels = 0;
+                    foreach ($iterator as $pixels) {
+                        foreach ($pixels as $pixel){
+                            if ($pixel->getColor()['a'] == 1)
+                                continue;
+
+                            $pixel_color = $pixel->getColor(true);
+                            $nbPixels++;
+                            $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b'])/3;
+                        }
+                    }
+                    if ($color/$nbPixels < 0.5)
+                        $original->evaluateImage(Imagick::EVALUATE_ADD, 800/($color/$nbPixels));
+
                     $all = new Imagick();
                     $all->addImage($image);
                     $all->addImage($original);
