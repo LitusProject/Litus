@@ -146,8 +146,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Checkbox('colored');
         $field->setLabel('Colored');
         $internal->add($field);
-		
-		$field = new Checkbox('hardcovered');
+
+        $field = new Checkbox('hardcovered');
         $field->setLabel('Hardcovered');
         $internal->add($field);
 
@@ -228,7 +228,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $data['front_color'] = $article->getFrontColor()->getId();
             $data['perforated'] = $article->isPerforated();
             $data['colored'] = $article->isColored();
-			$data['hardcovered'] = $article->isHardCovered();
+            $data['hardcovered'] = $article->isHardCovered();
         }
 
         $this->setData($data);

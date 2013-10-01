@@ -82,7 +82,7 @@ class Internal extends \CudiBundle\Entity\Article
      * @ORM\Column(type="boolean")
      */
     private $colored;
-    
+
     /**
      * @var boolean Flag whether the article has a hardcover
      *
@@ -131,7 +131,7 @@ class Internal extends \CudiBundle\Entity\Article
             ->setFrontColor($frontPageColor)
             ->setIsPerforated($isPerforated)
             ->setIsColored($colored)
-			->setIsHardCovered($hardcovered);
+            ->setIsHardCovered($hardcovered);
     }
 
     /**
@@ -293,8 +293,8 @@ class Internal extends \CudiBundle\Entity\Article
         $this->colored = $colored;
         return $this;
     }
-	
-	/**
+
+    /**
      * @return boolean
      */
     public function isHardCovered()
@@ -355,7 +355,7 @@ class Internal extends \CudiBundle\Entity\Article
             $this->getFrontColor(),
             $this->isPerforated(),
             $this->isColored(),
-			$this->isHardCovered()
+            $this->isHardCovered()
         );
     }
 
@@ -410,11 +410,11 @@ class Internal extends \CudiBundle\Entity\Article
             else
                 $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
         }
-		
-		if ($this->hardcovered) {
-			$total += $prices['hardcover'];
-		}
-		
+
+        if ($this->hardcovered) {
+            $total += $prices['hardcover'];
+        }
+
         return $total;
     }
 
@@ -453,11 +453,11 @@ class Internal extends \CudiBundle\Entity\Article
             else
                 $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
         }
-		
-		if ($this->hardcovered) {
-			$total += $prices['hardcover'];
-		}
-		
+
+        if ($this->hardcovered) {
+            $total += $prices['hardcover'];
+        }
+
         return $total / 1000;
     }
 }
