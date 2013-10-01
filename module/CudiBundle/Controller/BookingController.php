@@ -53,7 +53,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $total = 0;
         foreach ($bookings as $booking) {
-            $total += $booking->getArticle()->getSellPrice();
+            $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
         }
 
         return new ViewModel(
