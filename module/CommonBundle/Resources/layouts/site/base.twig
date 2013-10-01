@@ -262,7 +262,7 @@
 
                     <p class="companies">
                         {% for logo in logos %}
-                            <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
+                            <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 40px;width: {{ (logo.getWidth()*40/logo.getHeight())|number_format(0) }}px;"></a>
                         {% endfor %}
                     </p>
                 </div>
