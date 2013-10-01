@@ -57,7 +57,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
 
             $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
             $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
-            
+
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
                 $notification = new Notification(

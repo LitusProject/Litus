@@ -65,7 +65,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field->setLabel('Content')
                 ->setAttribute('rows', 20)
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
- 
+
             $pane->add($field);
 
             $tabContent->add($pane);
@@ -166,8 +166,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
-
-        
 
         return $inputFilter;
     }
