@@ -68,6 +68,8 @@
                     <dd class="isPerforated">...</dd>
                     <dt>Colored</dt>
                     <dd class="isColored">...</dd>
+                    <dt>Hard Covered</dt>
+                    <dd class="isHardCovered">...</dd>
                 </dl>
             </p>
             <div class="footer">
@@ -106,6 +108,7 @@
                 viewArticle.find('.frontColor').html($(this).data('frontcolor'));
                 viewArticle.find('.isPerforated').html($(this).data('isperforated') ? 'Yes' : 'No');
                 viewArticle.find('.isColored').html($(this).data('iscolored') ? 'Yes' : 'No');
+                viewArticle.find('.isHardCovered').html($(this).data('ishardcovered') ? 'Yes' : 'No');
             } else {
                 viewArticle.find('.internal').hide();
             }
@@ -142,6 +145,7 @@
                     data-frontcolor="{{ article.getFrontColor().getName() }}"
                     data-isperforated="{{ article.isPerforated() }}"
                     data-iscolored="{{ article.isColored() }}"
+                    data-isHardCovered="{{ article.isHardCovered() }}"
                 {% endif %}
             class="view">View</a>
         </td>

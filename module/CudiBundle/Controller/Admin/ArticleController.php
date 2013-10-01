@@ -102,7 +102,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['rectoverso'],
                         $frontColor,
                         $formData['perforated'],
-                        $formData['colored']
+                        $formData['colored'],
+                        $formData['hardcovered']
                     );
                 } else {
                     $article = new External(
@@ -218,7 +219,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->setIsRectoVerso($formData['rectoverso'])
                         ->setFrontColor($frontPageColor)
                         ->setIsPerforated($formData['perforated'])
-                        ->setIsColored($formData['colored']);
+                        ->setIsColored($formData['colored'])
+                        ->setIsHardCovered($formData['hardcovered']);
                 }
 
                 $this->getEntityManager()->flush();
@@ -374,7 +376,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['rectoverso'],
                         $frontColor,
                         $formData['perforated'],
-                        $formData['colored']
+                        $formData['colored'],
+                        $formData['hardcovered']
                     );
                 } else {
                     $new = new External(
@@ -550,6 +553,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             true,
             true,
             $frontColor,
+            false,
             false,
             false
         );

@@ -267,6 +267,7 @@ VTK Cudi
                             'recto_verso_bw'    => 2862,
                             'recto_color'       => 6360,
                             'recto_verso_color' => 10600,
+                            'hardcover'			=> 0,
                         )
                     ),
                     'description' => 'The purchase prices of an internal article (multiplied by 100 000)',
@@ -282,6 +283,7 @@ VTK Cudi
                             'recto_verso_bw'    => 2,
                             'recto_color'       => 7,
                             'recto_verso_color' => 7,
+                            'hardcover'			=> 0,
                         )
                     ),
                     'description' => 'The purchase prices of an internal article (multiplied by 100)',
