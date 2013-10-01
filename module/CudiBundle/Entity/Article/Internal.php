@@ -84,6 +84,13 @@ class Internal extends \CudiBundle\Entity\Article
     private $colored;
 
     /**
+     * @var boolean Flag whether the article has a hardcover
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $hardcovered;
+
+    /**
      * @var string The file name of the cached front page
      *
      * @ORM\Column(type="string", nullable=true)
@@ -112,7 +119,7 @@ class Internal extends \CudiBundle\Entity\Article
      * @param boolean $isPerforated Whether the article pages are colored or not
      */
     public function __construct(
-        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
+        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored,$hardcovered = false
     ) {
         parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable, $sameAsPreviousYear);
 
@@ -123,7 +130,8 @@ class Internal extends \CudiBundle\Entity\Article
             ->setIsRectoVerso($rectoverso)
             ->setFrontColor($frontPageColor)
             ->setIsPerforated($isPerforated)
-            ->setIsColored($colored);
+            ->setIsColored($colored)
+            ->setIsHardCovered($hardcovered);
     }
 
     /**
@@ -287,6 +295,25 @@ class Internal extends \CudiBundle\Entity\Article
     }
 
     /**
+     * @return boolean
+     */
+    public function isHardCovered()
+    {
+        return $this->hardcovered;
+    }
+
+    /**
+     * @param boolean $hardcovered
+     *
+     * @return \CudiBundle\Entity\Article\Internal
+     */
+    public function setIsHardCovered($hardcovered)
+    {
+        $this->hardcovered = $hardcovered;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFrontPage()
@@ -327,7 +354,8 @@ class Internal extends \CudiBundle\Entity\Article
             $this->isRectoVerso(),
             $this->getFrontColor(),
             $this->isPerforated(),
-            $this->isColored()
+            $this->isColored(),
+            $this->isHardCovered()
         );
     }
 
@@ -382,6 +410,11 @@ class Internal extends \CudiBundle\Entity\Article
             else
                 $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
         }
+
+        if ($this->hardcovered) {
+            $total += $prices['hardcover'];
+        }
+
         return $total;
     }
 
@@ -420,6 +453,11 @@ class Internal extends \CudiBundle\Entity\Article
             else
                 $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
         }
+
+        if ($this->hardcovered) {
+            $total += $prices['hardcover'];
+        }
+
         return $total / 1000;
     }
 }
