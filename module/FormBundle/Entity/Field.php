@@ -33,7 +33,8 @@ use CommonBundle\Entity\General\Language,
  *      "string"="FormBundle\Entity\Field\String",
  *      "options"="FormBundle\Entity\Field\OptionSelector",
  *      "dropdown"="FormBundle\Entity\Field\Dropdown",
- *      "checkbox"="FormBundle\Entity\Field\Checkbox"
+ *      "checkbox"="FormBundle\Entity\Field\Checkbox",
+ *      "file"="FormBundle\Entity\Field\File"
  * })
  */
 abstract class Field
@@ -98,6 +99,7 @@ abstract class Field
         'string' => 'String',
         'dropdown' => 'Dropdown',
         'checkbox' => 'Checkbox',
+        'file' => 'File',
     );
 
     /**

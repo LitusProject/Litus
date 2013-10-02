@@ -15,10 +15,11 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Entity\Field\Checkbox,
+    FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
-    FormBundle\Entity\Field\Dropdown,
-    FormBundle\Entity\Field\OptionTranslation,
+    FormBundle\Entity\Field\Dropdown as DropdownField,
+    FormBundle\Entity\Field\OptionTranslation as OptionTranslationField,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Translation,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
@@ -121,7 +122,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         );
                         break;
                     case 'dropdown':
-                        $field = new Dropdown(
+                        $field = new DropdownField(
                             $formSpecification,
                             $formData['order'],
                             $formData['required'],
@@ -131,7 +132,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                         foreach($languages as $language) {
                             if ('' != $formData['options_' . $language->getAbbrev()]) {
-                                $translation = new OptionTranslation(
+                                $translation = new OptionTranslationField(
                                     $field,
                                     $language,
                                     $formData['options_' . $language->getAbbrev()]
@@ -143,12 +144,24 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                         break;
                     case 'checkbox':
-                        $field = new Checkbox(
+                        $field = new CheckboxField(
                             $formSpecification,
                             $formData['order'],
                             $formData['required'],
                             $visibilityDecissionField,
                             isset($visibilityDecissionField) ? $formData['visible_value'] : null
+                        );
+                        break;
+                     case 'file':
+                        $field = new FileField(
+                            $formSpecification,
+                            $formData['order'],
+                            $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null,
+                            $formData['charsperline'] === '' ? 0 : $formData['charsperline'],
+                            $formData['lines'] === '' ? 0 : $formData['lines'],
+                            $formData['multiline']
                         );
                         break;
                     default:
@@ -251,7 +264,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     $field->setLineLength($formData['charsperline'] === '' ? 0 : $formData['charsperline'])
                         ->setLines($formData['lines'] === '' ? 0 : $formData['lines'])
                         ->setMultiLine($formData['multiline']);
-                } elseif ($field instanceof Dropdown) {
+                } elseif ($field instanceof DropdownField) {
                     foreach($languages as $language) {
                         if ('' != $formData['options_' . $language->getAbbrev()]) {
                             $translation = $field->getOptionTranslation($language, false);
@@ -259,7 +272,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             if (null !== $translation) {
                                 $translation->setOptions($formData['options_' . $language->getAbbrev()]);
                             } else {
-                                $translation = new OptionTranslation(
+                                $translation = new OptionTranslationField(
                                     $field,
                                     $language,
                                     $formData['options_' . $language->getAbbrev()]

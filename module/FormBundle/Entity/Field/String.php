@@ -31,7 +31,6 @@ use CommonBundle\Entity\General\Language,
  */
 class String extends Field
 {
-
     /**
      * @var int The maximum length per line of this string field.
      *

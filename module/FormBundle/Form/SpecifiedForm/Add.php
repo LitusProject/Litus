@@ -18,13 +18,15 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
-    FormBundle\Entity\Field\Dropdown,
+    FormBundle\Entity\Field\Dropdown as DropdownField,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,
@@ -99,12 +101,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ->setAttribute('data-linecount', $fieldSpecification->getLines());
                 }
 
-            } elseif ($fieldSpecification instanceof Dropdown) {
+            } elseif ($fieldSpecification instanceof DropdownField) {
                 $field = new Select('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setAttribute('options', $fieldSpecification->getOptionsArray($language));
             } elseif ($fieldSpecification instanceof CheckboxField) {
                 $field = new Checkbox('field-' . $fieldSpecification->getId());
+                $field->setLabel($fieldSpecification->getLabel($language));
+            } elseif ($fieldSpecification instanceof FileField) {
+                $field = new File('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language));
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
@@ -167,8 +172,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         )
                     )
                 );
-            } elseif ($fieldSpecification instanceof Dropdown) {
+            } elseif ($fieldSpecification instanceof DropdownField) {
             } elseif ($fieldSpecification instanceof CheckboxField) {
+            } elseif ($fieldSpecification instanceof FileField) {
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }

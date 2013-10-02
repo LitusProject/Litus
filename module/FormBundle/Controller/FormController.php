@@ -20,8 +20,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Node\GuestInfo,
     FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     FormBundle\Form\SpecifiedForm\Edit as EditForm,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -115,6 +117,23 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 foreach ($formSpecification->getFields() as $field) {
                     $value = $formData['field-' . $field->getId()];
+
+                    if ($field instanceof FileField) {
+                        $filePath = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('form.file_upload_path');
+
+                        $upload = new FileUpload();
+                        $fileName = '';
+                        do{
+                            $fileName = sha1(uniqid());
+                        } while (file_exists($filePath . '/' . $fileName));
+
+                        $upload->addFilter('Rename', $filePath . '/' . $fileName);
+                        $upload->receive();
+                        
+                        $value = $fileName;
+                    }
 
                     $fieldEntry = new FieldEntry($formEntry, $field, $value);
 

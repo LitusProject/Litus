@@ -24,7 +24,17 @@ use CommonBundle\Entity\General\Language;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
+    protected function initConfig() {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'form.file_upload_path',
+                    'value'       => 'data/form/files',
+                    'description' => 'The path to the uploaded form files',
+                ),
+            )
+        );
+    }
 
     protected function initAcl()
     {

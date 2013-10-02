@@ -16,9 +16,10 @@ namespace FormBundle\Form\Admin\Field;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Fields\Checkbox as CheckboxField,
-    FormBundle\Entity\Fields\String as StringField,
-    FormBundle\Entity\Fields\Dropdown as DropdownField,
+    FormBundle\Entity\Field\Checkbox as CheckboxField,
+    FormBundle\Entity\Field\String as StringField,
+    FormBundle\Entity\Field\Dropdown as DropdownField,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 
@@ -91,6 +92,14 @@ class Edit extends Add
                         'data-type' => 'checkbox',
                     )
                 );
+            } elseif ($field instanceof FileField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'file',
+                    )
+                );
             }
         }
         return $options;
@@ -102,6 +111,16 @@ class Edit extends Add
             'order'    => $field->getOrder(),
             'required' => $field->isRequired(),
         );
+
+        if ($field instanceof StringField) {
+            $data['type'] = 'string';
+        } elseif ($field instanceof DropdownField) {
+            $data['type'] = 'dropdown';
+        } elseif ($field instanceof CheckboxField) {
+            $data['type'] = 'checkbox';
+        } elseif ($field instanceof FileField) {
+            $data['type'] = 'file';
+        }
 
         if ($field instanceof StringField) {
             $data['charsperline'] = $field->getLineLength();

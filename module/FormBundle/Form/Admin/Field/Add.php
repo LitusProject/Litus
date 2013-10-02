@@ -26,6 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Field,
     Doctrine\ORM\EntityManager,
@@ -172,6 +173,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'value' => $field->getId(),
                     'attributes' => array(
                         'data-type' => 'checkbox',
+                    )
+                );
+            } elseif ($field instanceof FileField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'file',
                     )
                 );
             }
