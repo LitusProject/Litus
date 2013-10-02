@@ -202,9 +202,8 @@ class Session extends EntityRepository
             }
 
             $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('SUM(a.purchasePrice * s.number)')
+            $resultSet = $query->select('SUM(s.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
-                ->innerJoin('s.article', 'a')
                 ->innerJoin('s.queueItem', 'q')
                 ->where(
                     $query->expr()->andX(
@@ -222,9 +221,8 @@ class Session extends EntityRepository
             return $resultSet;
         } else {
             $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('SUM(a.purchasePrice * s.number)')
+            $resultSet = $query->select('SUM(s.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
-                ->innerJoin('s.article', 'a')
                 ->where(
                     $query->expr()->eq('s.session', ':session')
                 )
@@ -272,10 +270,9 @@ class Session extends EntityRepository
             }
 
             $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('SUM(a.purchasePrice * s.number)')
+            $resultSet = $query->select('SUM(s.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.session', 'e')
-                ->innerJoin('s.article', 'a')
                 ->innerJoin('s.queueItem', 'q')
                 ->where(
                     $query->expr()->andX(
@@ -295,10 +292,9 @@ class Session extends EntityRepository
             return $resultSet;
         } else {
             $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('SUM(a.purchasePrice * s.number)')
+            $resultSet = $query->select('SUM(s.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.session', 'e')
-                ->innerJoin('s.article', 'a')
                 ->where(
                     $query->expr()->andX(
                         $query->expr()->gt('e.openDate', ':start'),
