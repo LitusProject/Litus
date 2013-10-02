@@ -334,16 +334,26 @@ VTK Cudi
                     'description' => 'Flag whether the printers are enabled',
                 ),
                 array(
+                    'key'         => 'cudi.printer_socket_key',
+                    'value'       => '3A4P4xq18P3S7ipeKSyuzQKf66c3d1xv',
+                    'description' => 'The key used for printing',
+                ),
+                array(
+                    'key'         => 'cudi.ticket_title',
+                    'value'       => 'Litus Cursusdienst',
+                    'description' => 'The title printed on a ticket',
+                ),
+                array(
                     'key'         => 'cudi.printers',
                     'value'       => serialize(
                         array(
-                            'signin'    => 'SignIn_Printer',
-                            'collect_1' => 'Collect_Printer',
-                            'collect_2' => 'Collect_Printer',
-                            'collect_3' => 'Collect_Printer',
-                            'paydesk_1' => 'SaleOne_Printer',
-                            'paydesk_2' => 'SaleTwo_Printer',
-                            'paydesk_3' => 'SaleThree_Printer',
+                            'signin'    => 'LITUS-SignIn',
+                            'collect_1' => 'LITUS-Collect',
+                            'collect_2' => 'LITUS-Collect',
+                            'collect_3' => 'LITUS-Collect',
+                            'paydesk_1' => 'LITUS-SaleOne',
+                            'paydesk_2' => 'LITUS-SaleTwo',
+                            'paydesk_3' => 'LITUS-SaleThree',
                         )
                     ),
                     'description' => 'The names of the printers',
