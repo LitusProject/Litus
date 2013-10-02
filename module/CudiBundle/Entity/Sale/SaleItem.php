@@ -69,7 +69,7 @@ class SaleItem
     /**
      * @var integer The price of the purchase
      *
-     * @ORM\Column(name="purchase_price", type="integer", nullable=true)
+     * @ORM\Column(name="purchase_price", type="integer")
      */
     private $purchasePrice;
 
