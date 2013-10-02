@@ -172,26 +172,28 @@ class Period extends EntityRepository
             return array();
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Sale\Article', 'a')
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
+            ->innerJoin('b.article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->in('a.id', $this->_findAllArticleIds($period)),
-                    $query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode')
+                    $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
+                    $query->expr()->in('a.id', $this->_findAllArticleIds($period))
                 )
             )
-            ->setParameter('barcode', $barcode . '%')
+            ->setParameter('barcode', '%'.$barcode.'%')
             ->getQuery()
             ->getResult();
 
-        if ($notDelivered) {
-            for($i = 0 ; $i < count($resultSet) ; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
-                    unset($resultSet[$i]);
-            }
+        $articles = array();
+        foreach($resultSet as $barcode) {
+            if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) - $period->getNbDelivered($barcode->getArticle()) <= 0)
+                continue;
+            $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
         }
 
-        return $resultSet;
+        return $articles;
     }
 
     public function findAllArticlesByPeriodAndSupplier(PeriodEntity $period, $supplier, $notDelivered = false)
