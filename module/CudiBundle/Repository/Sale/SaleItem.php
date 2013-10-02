@@ -333,7 +333,7 @@ class SaleItem extends EntityRepository
             }
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(a.purchasePrice)')
+            $resultSet = $query->select('SUM(i.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.article', 'a')
@@ -353,7 +353,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(a.purchasePrice)')
+            $resultSet = $query->select('SUM(i.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.article', 'a')
                 ->innerJoin('i.session', 's')
