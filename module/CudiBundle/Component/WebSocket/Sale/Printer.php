@@ -140,13 +140,16 @@ class Printer
         if (!isset($printers[$printer]))
             return;
 
+        $data['title'] = $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.ticket_title')
+
         $data = json_encode(
             (object) array(
                 'command' => 'PRINT',
                 'id' => $printers[$printer],
                 'ticket' => $data,
                 'key' => $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.queue_socket_key'),
+                    ->getConfigValue('cudi.printer_socket_key'),
             )
         );
 
