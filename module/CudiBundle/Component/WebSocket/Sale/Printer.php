@@ -141,7 +141,7 @@ class Printer
             return;
 
         $data['title'] = $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.ticket_title')
+                ->getConfigValue('cudi.ticket_title');
 
         $data = json_encode(
             (object) array(
