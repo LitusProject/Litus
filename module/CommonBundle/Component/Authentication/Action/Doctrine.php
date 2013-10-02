@@ -54,7 +54,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      */
     public function failedAction($result)
     {
-        if (null === $result->getPersonObject())
+        if (null === $result->getPersonObject() || !$result->getPersonObject()->hasCredential())
             return;
 
         $result->getPersonObject()
@@ -75,12 +75,12 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->setCode($code);
 
             if (!($language = $result->getPersonObject()->getLanguage())) {
-                $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                $language = $this->_entityManager->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');
             }
 
             $mailData = unserialize(
-                $entityManager
+                $this->_entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue($messageConfig)
             );
