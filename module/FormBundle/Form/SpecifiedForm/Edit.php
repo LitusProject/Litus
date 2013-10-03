@@ -16,10 +16,13 @@ namespace FormBundle\Form\SpecifiedForm;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit,
+    Zend\Validator\File\Size as SizeValidator;
 
 /**
  * Specifield Form Edit
@@ -53,7 +56,37 @@ class Edit extends Add
         $data = array();
         foreach($entry->getFieldEntries() as $fieldEntry) {
             $data['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
+            if ($fieldEntry->getField() instanceof FileField) {
+                $this->get('field-' .$fieldEntry->getField()->getId())
+                    ->setAttribute('data-file', $fieldEntry->getValue());
+            }
         }
         $this->setData($data);
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
+
+        foreach ($this->_form->getFields() as $fieldSpecification) {
+            if ($fieldSpecification instanceof FileField) {
+                $inputFilter->remove('field-' . $fieldSpecification->getId());
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'field-' . $fieldSpecification->getId(),
+                            'required' => false,
+                            'validators' => array(
+                                new SizeValidator(array('max' => $fieldSpecification->getMaxSize() . 'MB'))
+                            ),
+                        )
+                    )
+                );
+            }
+        }
+
+        return $inputFilter;
     }
 }

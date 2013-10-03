@@ -52,6 +52,8 @@ return array(
     'Actions' => 'Actions',
     'Edit' => 'Edit',
 
+    '(empty)' => '(empty)',
+
     'Mail Participants' => 'Mail Participants',
     'Mail Subject' => 'Mail Subject',
     'Message' => 'Message',

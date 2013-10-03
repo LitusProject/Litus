@@ -26,6 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Field,
     Doctrine\ORM\EntityManager,
@@ -124,6 +125,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Max. number of lines (Multiline fields only)');
         $string_form->add($field);
 
+        $string_form = new Collection('file_form');
+        $string_form->setLabel('File Options')
+            ->setAttribute('class', 'file_form extra_form hide');
+        $this->add($string_form);
+
+        $field = new Text('max_size');
+        $field->setLabel('Max. size (in MB)')
+            ->setValue(4);
+        $string_form->add($field);
+
         $visibility = new Collection('visibility');
         $visibility->setLabel('Visibility');
         $this->add($visibility);
@@ -172,6 +183,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'value' => $field->getId(),
                     'attributes' => array(
                         'data-type' => 'checkbox',
+                    )
+                );
+            } elseif ($field instanceof FileField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'file',
                     )
                 );
             }
@@ -230,6 +249,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'lines',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits'
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'max_size',
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

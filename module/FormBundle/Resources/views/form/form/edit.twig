@@ -19,6 +19,16 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('input[type=file]').each(function () {
+                if ($(this).data('file')) {
+                    $(this).closest('.fileupload').append(
+                        $('<button>', {'class': 'btn btn-mini'}).html('{{ translate('Download') }}').downloadFile(
+                            '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
+                        )
+                    );
+                }
+            });
+
             var form = $('#content form');
             form.find('input, select').each(function () {
                 var $this = $(this);

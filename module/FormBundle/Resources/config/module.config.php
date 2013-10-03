@@ -77,8 +77,8 @@ return array(
                 'options' => array(
                     'route' => '[/:language]/form[/:action[/:id]][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
@@ -92,8 +92,8 @@ return array(
                 'options' => array(
                     'route' => '[/:language]/form/manage[/:action[/:id]][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
