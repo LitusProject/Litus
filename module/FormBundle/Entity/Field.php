@@ -241,4 +241,6 @@ abstract class Field
     }
 
     abstract public function getValueString(Language $language, $value);
+
+    abstract public function getType();
 }

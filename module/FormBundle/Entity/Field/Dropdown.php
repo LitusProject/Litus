@@ -42,4 +42,12 @@ class Dropdown extends OptionSelector
     {
         parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
     }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'dropdown';
+    }
 }

@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\Manage\Mail\Send as MailForm,
     FormBundle\Form\SpecifiedForm\Add as SpecifiedForm,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -150,6 +151,36 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
                 foreach ($formSpecification->getFields() as $field) {
                     $value = $formData['field-' . $field->getId()];
+
+                    if ($field instanceof FileField) {
+                        $filePath = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('form.file_upload_path');
+
+                        $upload = new FileUpload();
+                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
+                        if ($upload->isValid()) {
+                            $fileName = '';
+                            do{
+                                $fileName = sha1(uniqid());
+                            } while (file_exists($filePath . '/' . $fileName));
+
+                            $upload->addFilter('Rename', $filePath . '/' . $fileName);
+                            $upload->receive();
+
+                            $value = $fileName;
+                        } else {
+                            $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
+
+                            return new ViewModel(
+                                array(
+                                    'specification' => $formSpecification,
+                                    'form'          => $form,
+                                    'entries'       => $entries,
+                                )
+                            );
+                        }
+                    }
 
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
@@ -319,6 +350,31 @@ class FormController extends \FormBundle\Component\Controller\FormController
         return new ViewModel(
             array(
                 'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function downloadFileAction()
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('form.file_upload_path') . '/' . $this->getParam('id');
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $this->getParam('id') . '"',
+            'Content-Type' => mime_content_type($filePath),
+            'Content-Length' => filesize($filePath),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath, 'r');
+        $data = fread($handle, filesize($filePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }

@@ -152,4 +152,12 @@ class String extends Field
     public function getValueString(Language $language, $value) {
         return $value;
     }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'string';
+    }
 }

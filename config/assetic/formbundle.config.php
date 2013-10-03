@@ -73,6 +73,7 @@ return array(
             '@bootstrap_js_popover',
             '@form_manage_css',
             '@common_jquery_form',
+            '@common_download_file',
         ),
     ),
     'routes' => array(),

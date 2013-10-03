@@ -32,7 +32,8 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\Validator\File\Size as SizeValidator;
 
 /**
  * Specifield Form Add
@@ -175,6 +176,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             } elseif ($fieldSpecification instanceof DropdownField) {
             } elseif ($fieldSpecification instanceof CheckboxField) {
             } elseif ($fieldSpecification instanceof FileField) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'field-' . $fieldSpecification->getId(),
+                            'required' => $fieldSpecification->isRequired(),
+                            'validators' => array(
+                                new SizeValidator(array('max' => $fieldSpecification->getMaxSize() . 'MB'))
+                            ),
+                        )
+                    )
+                );
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }

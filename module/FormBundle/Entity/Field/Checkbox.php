@@ -51,4 +51,12 @@ class Checkbox extends Field
     public function getValueString(Language $language, $value) {
         return $value ? 'X' : '';
     }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'checkbox';
+    }
 }

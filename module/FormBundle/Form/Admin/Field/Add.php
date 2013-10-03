@@ -125,6 +125,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Max. number of lines (Multiline fields only)');
         $string_form->add($field);
 
+        $string_form = new Collection('file_form');
+        $string_form->setLabel('File Options')
+            ->setAttribute('class', 'file_form extra_form hide');
+        $this->add($string_form);
+
+        $field = new Text('max_size');
+        $field->setLabel('Max. size (in MB)')
+            ->setValue(4);
+        $string_form->add($field);
+
         $visibility = new Collection('visibility');
         $visibility->setLabel('Visibility');
         $this->add($visibility);
@@ -239,6 +249,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'lines',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits'
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'max_size',
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

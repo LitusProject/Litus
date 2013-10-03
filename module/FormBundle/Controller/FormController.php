@@ -93,7 +93,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $form = new AddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            );
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -113,7 +116,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
 
                 $this->getEntityManager()->persist($formEntry);
-                $this->getEntityManager()->flush();
 
                 foreach ($formSpecification->getFields() as $field) {
                     $value = $formData['field-' . $field->getId()];
@@ -124,15 +126,28 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             ->getConfigValue('form.file_upload_path');
 
                         $upload = new FileUpload();
-                        $fileName = '';
-                        do{
-                            $fileName = sha1(uniqid());
-                        } while (file_exists($filePath . '/' . $fileName));
+                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
+                        if ($upload->isValid()) {
+                            $fileName = '';
+                            do{
+                                $fileName = sha1(uniqid());
+                            } while (file_exists($filePath . '/' . $fileName));
 
-                        $upload->addFilter('Rename', $filePath . '/' . $fileName);
-                        $upload->receive();
-                        
-                        $value = $fileName;
+                            $upload->addFilter('Rename', $filePath . '/' . $fileName);
+                            $upload->receive();
+
+                            $value = $fileName;
+                        } else {
+                            $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
+
+                            return new ViewModel(
+                                array(
+                                    'specification' => $formSpecification,
+                                    'form'          => $form,
+                                    'entries'       => $entries,
+                                )
+                            );
+                        }
                     }
 
                     $fieldEntry = new FieldEntry($formEntry, $field, $value);

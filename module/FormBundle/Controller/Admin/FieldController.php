@@ -159,9 +159,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             $formData['required'],
                             $visibilityDecissionField,
                             isset($visibilityDecissionField) ? $formData['visible_value'] : null,
-                            $formData['charsperline'] === '' ? 0 : $formData['charsperline'],
-                            $formData['lines'] === '' ? 0 : $formData['lines'],
-                            $formData['multiline']
+                            $formData['max_size'] === '' ? 4 : $formData['max_size']
                         );
                         break;
                     default:
@@ -282,6 +280,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             }
                         }
                     }
+                } elseif ($field instanceof FileField) {
+                    $field->setMaxSize($formData['max_size'] === '' ? 4 : $formData['max_size']);
                 }
 
                 foreach($languages as $language) {

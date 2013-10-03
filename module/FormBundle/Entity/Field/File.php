@@ -32,15 +32,45 @@ use CommonBundle\Entity\General\Language,
 class File extends Field
 {
     /**
+     * @var int The maximum size of the file.
+     *
+     * @ORM\Column(name="max_size", type="integer")
+     */
+    private $maxSize;
+
+    /**
      * @param FormBundle\Entity\Node\Form $form
      * @param integer $order
      * @param bool $required
      * @param \FormBundle\Entity\Field $visibityDecisionField
      * @param string $visibilityValue
      */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
+    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, $maxSize)
     {
         parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
+        $this->setMaxSize($maxSize);
+    }
+
+    /**
+     * Returns the maximum size of the file
+     *
+     * @return integer The maximum size of the file
+     */
+    public function getMaxSize()
+    {
+        return $this->maxSize;
+    }
+
+    /**
+     * @param integer $maxSize The maximum size of the file
+     * @return \FormBundle\Entity\Fields\File
+     */
+    public function setMaxSize($maxSize)
+    {
+        if (!is_numeric($maxSize))
+            $maxSize = 4;
+        $this->maxSize = $maxSize;
+        return $this;
     }
 
     /**
@@ -50,5 +80,13 @@ class File extends Field
      */
     public function getValueString(Language $language, $value) {
         return $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'file';
     }
 }

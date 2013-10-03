@@ -127,6 +127,8 @@ class Edit extends Add
             $data['multiline'] = $field->isMultiLine();
             if ($field->isMultiLine())
                 $data['lines'] = $field->getLines();
+        } elseif ($field instanceof FileField) {
+            $data['max_size'] = $field->getMaxSize();
         }
 
         foreach($this->getLanguages() as $language) {
