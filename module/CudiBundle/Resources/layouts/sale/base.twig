@@ -59,7 +59,13 @@
     {% include 'sale/partials/flashMessenger.twig' %}
 
     <div id="content_controller">
-        {% block content %} {% endblock %}
+        {% if invalidSession %}
+            <div class="flashmessage alert alert-error fade in">
+                Invalid Sale Session
+            </div>
+        {% else %}
+            {% block content %} {% endblock %}
+        {% endif %}
     </div>
 
     <footer>
