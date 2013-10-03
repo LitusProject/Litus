@@ -78,7 +78,7 @@ return array(
                     'route' => '[/:language]/form[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'       => '[0-9]*',
+                        'id'       => '[a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(

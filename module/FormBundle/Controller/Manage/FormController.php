@@ -18,8 +18,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     FormBundle\Component\Document\Generator\Csv as CsvGenerator,
     FormBundle\Entity\Entry as FieldEntry,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
-    FormBundle\Form\SpecifiedForm\Add as SpecifiedForm,
+    FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -139,7 +140,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson());
+        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry, $formEntry->getCreationPerson());
         $form->populateFromEntry($formEntry);
 
         if ($this->getRequest()->isPost()) {
@@ -152,6 +153,10 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 foreach ($formSpecification->getFields() as $field) {
                     $value = $formData['field-' . $field->getId()];
 
+                    $fieldEntry = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Entry')
+                        ->findOneByFormEntryAndField($formEntry, $field);
+
                     if ($field instanceof FileField) {
                         $filePath = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
@@ -160,31 +165,32 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         $upload = new FileUpload();
                         $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
                         if ($upload->isValid()) {
-                            $fileName = '';
-                            do{
-                                $fileName = sha1(uniqid());
-                            } while (file_exists($filePath . '/' . $fileName));
+                            if ($fieldEntry->getValue() == '') {
+                                $fileName = '';
+                                do{
+                                    $fileName = sha1(uniqid());
+                                } while (file_exists($filePath . '/' . $fileName));
+                            } else {
+                                $fileName = $fieldEntry->getValue();
+                            }
 
                             $upload->addFilter('Rename', $filePath . '/' . $fileName);
                             $upload->receive();
 
                             $value = $fileName;
-                        } else {
+                        } elseif (!(sizeof($upload->getMessages()) == 1 && isset($upload->getMessages()['fileUploadErrorNoFile']))) {
                             $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
 
                             return new ViewModel(
                                 array(
-                                    'specification' => $formSpecification,
+                                    'specification' => $entry->getForm(),
                                     'form'          => $form,
-                                    'entries'       => $entries,
                                 )
                             );
+                        } else {
+                            $value = $fieldEntry->getValue();
                         }
                     }
-
-                    $fieldEntry = $this->getEntityManager()
-                        ->getRepository('FormBundle\Entity\Entry')
-                        ->findOneByFormEntryAndField($formEntry, $field);
 
                     if ($fieldEntry) {
                         $fieldEntry->setValue($value);
