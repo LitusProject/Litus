@@ -95,7 +95,19 @@
                     </td>
 
                     {% for field in fields %}
-                        <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
+                        {% if field.getType() == 'file' %}
+                            <td>
+                                {% if form.getValueFor(entry, field, language) %}
+                                    {% if hasAccess('form_manage', 'downloadFile') %}
+                                        <button class="btn btn-mini download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
+                                    {% endif %}
+                                {% else %}
+                                    <i>{{ translate('(empty)') }}</i>
+                                {% endif %}
+                            </td>
+                        {% else %}
+                            <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
+                        {% endif %}
                     {% endfor %}
 
                     {% if viewer.isEdit() %}
@@ -166,6 +178,10 @@
         $(document).ready(function() {
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('.download-file').each(function () {
+                $(this).downloadFile($(this).data('file'));
             });
 
             $('[data-toggle="popover"]').popover(

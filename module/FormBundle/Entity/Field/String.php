@@ -31,7 +31,6 @@ use CommonBundle\Entity\General\Language,
  */
 class String extends Field
 {
-
     /**
      * @var int The maximum length per line of this string field.
      *
@@ -152,5 +151,13 @@ class String extends Field
      */
     public function getValueString(Language $language, $value) {
         return $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'string';
     }
 }

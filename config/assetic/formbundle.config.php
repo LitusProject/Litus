@@ -61,6 +61,7 @@ return array(
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@common_download_file',
         ),
         'form_manage' => array(
             '@common_jquery',
@@ -73,6 +74,7 @@ return array(
             '@bootstrap_js_popover',
             '@form_manage_css',
             '@common_jquery_form',
+            '@common_download_file',
         ),
     ),
     'routes' => array(),

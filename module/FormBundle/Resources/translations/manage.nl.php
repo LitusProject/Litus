@@ -52,6 +52,8 @@ return array(
     'Actions' => 'Acties',
     'Edit' => 'Bewerk',
 
+    '(empty)' => '(leeg)',
+
     'Mail Participants' => 'Mail Deelnemers',
     'Mail Subject' => 'Mail Onderwerp',
     'Message' => 'Bericht',

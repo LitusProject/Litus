@@ -20,8 +20,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Node\GuestInfo,
     FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     FormBundle\Form\SpecifiedForm\Edit as EditForm,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Http\Headers,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -91,7 +94,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $form = new AddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            );
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -111,10 +117,39 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
 
                 $this->getEntityManager()->persist($formEntry);
-                $this->getEntityManager()->flush();
 
                 foreach ($formSpecification->getFields() as $field) {
                     $value = $formData['field-' . $field->getId()];
+
+                    if ($field instanceof FileField) {
+                        $filePath = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('form.file_upload_path');
+
+                        $upload = new FileUpload();
+                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
+                        if ($upload->isValid()) {
+                            $fileName = '';
+                            do{
+                                $fileName = sha1(uniqid());
+                            } while (file_exists($filePath . '/' . $fileName));
+
+                            $upload->addFilter('Rename', $filePath . '/' . $fileName);
+                            $upload->receive();
+
+                            $value = $fileName;
+                        } else {
+                            $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
+
+                            return new ViewModel(
+                                array(
+                                    'specification' => $formSpecification,
+                                    'form'          => $form,
+                                    'entries'       => $entries,
+                                )
+                            );
+                        }
+                    }
 
                     $fieldEntry = new FieldEntry($formEntry, $field, $value);
 
@@ -192,6 +227,41 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($entry, $field);
 
+                    if ($field instanceof FileField) {
+                        $filePath = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('form.file_upload_path');
+
+                        $upload = new FileUpload();
+                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
+                        if ($upload->isValid()) {
+                            if ($fieldEntry->getValue() == '') {
+                                $fileName = '';
+                                do{
+                                    $fileName = sha1(uniqid());
+                                } while (file_exists($filePath . '/' . $fileName));
+                            } else {
+                                $fileName = $fieldEntry->getValue();
+                            }
+
+                            $upload->addFilter('Rename', $filePath . '/' . $fileName);
+                            $upload->receive();
+
+                            $value = $fileName;
+                        } elseif (!(sizeof($upload->getMessages()) == 1 && isset($upload->getMessages()['fileUploadErrorNoFile']))) {
+                            $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
+
+                            return new ViewModel(
+                                array(
+                                    'specification' => $entry->getForm(),
+                                    'form'          => $form,
+                                )
+                            );
+                        } else {
+                            $value = $fieldEntry->getValue();
+                        }
+                    }
+
                     if ($fieldEntry) {
                         $fieldEntry->setValue($value);
                     } else {
@@ -243,6 +313,40 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'specification' => $entry->getForm(),
                 'form'          => $form,
+            )
+        );
+    }
+
+    public function downloadFileAction()
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('form.file_upload_path') . '/' . $this->getParam('id');
+
+        $fieldEntry = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Entry')
+            ->findOneByValue($this->getParam('id'));
+
+        if (null === $fieldEntry || $fieldEntry->getFormEntry()->getCreationPerson() != $this->getAuthentication()->getPersonObject()) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $this->getParam('id') . '"',
+            'Content-Type' => mime_content_type($filePath),
+            'Content-Length' => filesize($filePath),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath, 'r');
+        $data = fread($handle, filesize($filePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }

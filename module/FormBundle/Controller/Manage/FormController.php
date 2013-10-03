@@ -18,8 +18,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     FormBundle\Component\Document\Generator\Csv as CsvGenerator,
     FormBundle\Entity\Entry as FieldEntry,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
-    FormBundle\Form\SpecifiedForm\Add as SpecifiedForm,
+    FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -138,7 +140,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson());
+        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry, $formEntry->getCreationPerson());
         $form->populateFromEntry($formEntry);
 
         if ($this->getRequest()->isPost()) {
@@ -154,6 +156,41 @@ class FormController extends \FormBundle\Component\Controller\FormController
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($formEntry, $field);
+
+                    if ($field instanceof FileField) {
+                        $filePath = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('form.file_upload_path');
+
+                        $upload = new FileUpload();
+                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
+                        if ($upload->isValid()) {
+                            if ($fieldEntry->getValue() == '') {
+                                $fileName = '';
+                                do{
+                                    $fileName = sha1(uniqid());
+                                } while (file_exists($filePath . '/' . $fileName));
+                            } else {
+                                $fileName = $fieldEntry->getValue();
+                            }
+
+                            $upload->addFilter('Rename', $filePath . '/' . $fileName);
+                            $upload->receive();
+
+                            $value = $fileName;
+                        } elseif (!(sizeof($upload->getMessages()) == 1 && isset($upload->getMessages()['fileUploadErrorNoFile']))) {
+                            $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
+
+                            return new ViewModel(
+                                array(
+                                    'specification' => $entry->getForm(),
+                                    'form'          => $form,
+                                )
+                            );
+                        } else {
+                            $value = $fieldEntry->getValue();
+                        }
+                    }
 
                     if ($fieldEntry) {
                         $fieldEntry->setValue($value);
@@ -319,6 +356,31 @@ class FormController extends \FormBundle\Component\Controller\FormController
         return new ViewModel(
             array(
                 'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function downloadFileAction()
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('form.file_upload_path') . '/' . $this->getParam('id');
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $this->getParam('id') . '"',
+            'Content-Type' => mime_content_type($filePath),
+            'Content-Length' => filesize($filePath),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath, 'r');
+        $data = fread($handle, filesize($filePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }
