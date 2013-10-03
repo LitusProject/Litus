@@ -100,6 +100,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ('' == $formData['university_identification'] ? null : $formData['university_identification'])
                 );
 
+                $this->getEntityManager()->persist($academic);
+
                 if ('' != $formData['organization_status']) {
                     $academic->addOrganizationStatus(
                         new OrganizationStatus(
@@ -113,7 +115,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 if ('' != $formData['barcode']) {
                     $this->getEntityManager()->persist(
                         new Barcode(
-                            $registration->getAcademic(), $formData['barcode']
+                            $academic, $formData['barcode']
                         )
                     );
                 }
@@ -134,7 +136,6 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     !$formData['activation_code']
                 );
 
-                $this->getEntityManager()->persist($academic);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
