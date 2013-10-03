@@ -376,6 +376,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $result = array();
         foreach($articles as $article) {
+            if (!$article->isBookable() && $article->getMainArticle()->getType() == 'common')
+                continue;
+
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
