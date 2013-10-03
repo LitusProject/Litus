@@ -56,10 +56,10 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        if (null == $session || !$session->isOpen())
-            throw new Exception('No valid session is given');
-
         $result = parent::onDispatch($e);
+
+        if (null == $session || !$session->isOpen())
+            $result->invalidSession = true;
 
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
