@@ -22,11 +22,15 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Round')
-                ->findByQuiz($quiz),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+                'QuizBundle\Entity\Round',
+                $this->getParam('page'),
+                array(
+                    'quiz'=>$quiz
+                ),
+                array(
+                    'order'=>'ASC'
+                )
         );
 
         return new ViewModel(
