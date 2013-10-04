@@ -18,6 +18,8 @@ use Doctrine\ORM\EntityManager,
     Zend\Mvc\Exception,
     Zend\Paginator\Paginator as ZendPaginator,
     Zend\Paginator\Adapter\ArrayAdapter,
+    Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
+    \DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -121,12 +123,36 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      */
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = array())
     {
-        return $this->createFromArray(
-            (0 == count($conditions)) ?
-                $this->getLocator()->get('doctrine.entitymanager.orm_default')->getRepository($entity)->findBy(array(), $orderBy) :
-                $this->getLocator()->get('doctrine.entitymanager.orm_default')->getRepository($entity)->findBy($conditions, $orderBy),
-            $currentPage
+        $qb = $this->getLocator()->get('doctrine.entitymanager.orm_default')
+                ->getRepository($entity)
+                ->createQueryBuilder('e');
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        foreach(array_keys($conditions) as $fieldName)
+            $qb->andWhere('e.'.$fieldName.' = :'.$fieldName);
+        foreach($orderBy as $fieldName=>$orientation)
+            $qb->addOrderBy('e.'.$fieldName, $orientation);
+        $qb->setParameters($conditions);
+
+        return $this->createFromQuery($qb, $currentPage);
+    }
+
+    /**
+     * Create a paginator for the given Doctrine ORM query
+     *
+     * @param \Doctrine\ORM\Query|\Doctrine\ORM\QueryBuilder $query The query that should be paginated
+     * @param int $currentPage The page we now are on
+     * @return \Zend\Paginator\Paginator
+     */
+    public function createFromQuery($query, $currentPage)
+    {
+        $this->_paginator = new ZendPaginator(
+                new DoctrinePaginatorAdapter(new DoctrinePaginator($query))
         );
+
+        $this->_paginator->setCurrentPageNumber($currentPage);
+        $this->_paginator->setItemCountPerPage($this->_itemsPerPage);
+
+        return $this->_paginator;
     }
 
     /**
