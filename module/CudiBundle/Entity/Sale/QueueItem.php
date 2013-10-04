@@ -110,6 +110,12 @@ class QueueItem
     private $saleItems;
 
     /**
+     * @var boolean Flag whether collect ticket was already printed
+     * @ORM\Column(name="collect_printed", type="boolean")
+     */
+    private $collectPrinted;
+
+    /**
      * @var array The possible states of a queue item
      */
     private static $POSSIBLE_STATUSES = array(
@@ -140,6 +146,7 @@ class QueueItem
         $this->person = $person;
         $this->session = $session;
         $this->setStatus('signed_in');
+        $this->collectPrinted = false;
 
         $this->queueNumber = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -321,5 +328,24 @@ class QueueItem
     public function getSaleItems()
     {
         return $this->saleItems;
+    }
+
+    /**
+     * @param boolean $collectPrinted
+     *
+     * @return \CudiBundle\Entity\Sale\QueueItem
+     */
+    public function setCollectPrinted($collectPrinted = true)
+    {
+        $this->collectPrinted = $collectPrinted;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCollectPrinted()
+    {
+        return $this->collectPrinted;
     }
 }
