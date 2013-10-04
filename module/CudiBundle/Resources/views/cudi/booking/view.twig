@@ -94,7 +94,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover'});
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
             $('.item .cancel').click(openModal);
         });
 
