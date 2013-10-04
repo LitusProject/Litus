@@ -115,6 +115,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $result->university_identification = $item->getPerson()->getUniversityIdentification();
         $result->status = $item->getStatus();
         $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() :*/ false;
+        $result->collectPrinted = $item->getCollectPrinted();
 
         if ($item->getPayDesk()) {
             $result->payDesk = $item->getPayDesk()->getName();
@@ -245,6 +246,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneById($id);
 
         $item->setStatus('collecting');
+        if ($bulk)
+            $item->setCollectPrinted(true);
+
         $this->_entityManager->flush();
 
         $enableCollectScanning = $this->_entityManager
@@ -274,6 +278,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneById($id);
 
         $item->setStatus('collected');
+
         $this->_entityManager->flush();
 
         $enableCollectScanning = $this->_entityManager
@@ -295,7 +300,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
-        $item->setStatus('signed_in');
+        $item->setStatus('signed_in')
+            ->setCollectPrinted(false);
         $this->_entityManager->flush();
     }
 
@@ -579,6 +585,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->university_identification = $item->getPerson()->getUniversityIdentification();
             $result->status = $item->getStatus();
             $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : */false;
+            $result->collectPrinted = $item->getCollectPrinted();
 
             if ($item->getPayDesk()) {
                 $result->payDesk = $item->getPayDesk()->getName();
