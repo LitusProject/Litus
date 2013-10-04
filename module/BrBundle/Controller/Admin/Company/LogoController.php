@@ -35,11 +35,12 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         if (!($company = $this->_getCompany()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company\Logo')
-                ->findAllByCompany($company),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Company\Logo',
+            $this->getParam('page'),
+            array(
+                'company' => $company,
+            )
         );
 
         $filePath = $this->getEntityManager()
