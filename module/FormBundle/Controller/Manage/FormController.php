@@ -368,7 +368,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $this->getParam('id') . '"',
+            'Content-Disposition' => 'attachment; filename="' . $this->getParam('id') . '"',
             'Content-Type' => mime_content_type($filePath),
             'Content-Length' => filesize($filePath),
         ));

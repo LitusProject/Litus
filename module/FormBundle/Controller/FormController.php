@@ -122,6 +122,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $value = $formData['field-' . $field->getId()];
 
                     if ($field instanceof FileField) {
+                        $value = '';
                         $filePath = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('form.file_upload_path');
@@ -138,8 +139,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             $upload->receive();
 
                             $value = $fileName;
-                        } else {
-                            $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
+                        }
+                        $errors = $upload->getMessages();
+
+                        if (!$field->isRequired() && isset($errors['fileUploadErrorNoFile']))
+                            unset($errors['fileUploadErrorNoFile']);
+
+                        if (sizeof($errors) > 0) {
+                            $form->setMessages(array('field-' . $field->getId() => $errors));
 
                             return new ViewModel(
                                 array(
@@ -248,8 +255,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             $upload->receive();
 
                             $value = $fileName;
-                        } elseif (!(sizeof($upload->getMessages()) == 1 && isset($upload->getMessages()['fileUploadErrorNoFile']))) {
-                            $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
+                        }
+
+                        $errors = $upload->getMessages();
+
+                        if (isset($errors['fileUploadErrorNoFile']))
+                            unset($errors['fileUploadErrorNoFile']);
+
+                        if (sizeof($errors) > 0) {
+                            $form->setMessages(array('field-' . $field->getId() => $errors));
 
                             return new ViewModel(
                                 array(
@@ -257,7 +271,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                                     'form'          => $form,
                                 )
                             );
-                        } else {
+                        } elseif ($value == '') {
                             $value = $fieldEntry->getValue();
                         }
                     }
@@ -334,7 +348,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $this->getParam('id') . '"',
+            'Content-Disposition' => 'attachment; filename="' . $this->getParam('id') . '"',
             'Content-Type' => mime_content_type($filePath),
             'Content-Length' => filesize($filePath),
         ));
