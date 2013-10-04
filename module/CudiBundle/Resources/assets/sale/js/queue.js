@@ -23,7 +23,6 @@
         personTypeahead: '',
     };
 
-    var lastPrinted = 0;
     var lastSold = 0;
 
     var methods = {
@@ -200,8 +199,7 @@
 
         printNext.click(function () {
             $this.find('tbody tr').each(function () {
-                if ($(this).data('info').status == 'signed_in' && $(this).data('info').id > lastPrinted) {
-                    lastPrinted = $(this).data('info').id;
+                if ($(this).data('info').status == 'signed_in' && !$(this).data('info').collectPrinted) {
                     settings.sendToSocket(
                         JSON.stringify({
                             'command': 'action',
@@ -209,6 +207,7 @@
                             'id': $(this).data('info').id,
                         })
                     );
+                    return false;
                 }
             });
         });
