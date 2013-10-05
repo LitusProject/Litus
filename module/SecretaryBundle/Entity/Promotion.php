@@ -23,7 +23,12 @@ use CommonBundle\Entity\General\AcademicYear,
  *
  * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Promotion")
  * @ORM\Table(name="general.promotions")
- */
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "academic"="SecretaryBundle\Entity\Promotion\Academic",
+ *      "external"="SecretaryBundle\Entity\Promotion\External"
+ * }) */
 class Promotion
 {
     /**
