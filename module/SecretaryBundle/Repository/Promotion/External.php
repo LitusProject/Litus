@@ -2,7 +2,8 @@
 
 namespace SecretaryBundle\Repository\Promotion;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * External
@@ -12,4 +13,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class External extends EntityRepository
 {
+    public function findOneByEmailAndAcademicYear($email, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('SecretaryBundle\Entity\Promotion\External', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('e.email', ':email'),
+                    $query->expr()->eq('e.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('email', $email)
+            ->setParameter('academicYear', $academicYear)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

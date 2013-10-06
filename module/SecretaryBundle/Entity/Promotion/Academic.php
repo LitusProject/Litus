@@ -78,4 +78,12 @@ class Academic extends \SecretaryBundle\Entity\Promotion
     {
         return $this->academic->getLastName();
     }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->academic->getFullName();
+    }
 }

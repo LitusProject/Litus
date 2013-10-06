@@ -102,6 +102,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'secretary_admin_registration' => array(
                         'barcode', 'edit', 'manage', 'search'
                     ),
+                    'secretary_admin_promotion' => array(
+                        'academic', 'external', 'manage'
+                    ),
                 ),
             )
         );

@@ -67,6 +67,14 @@ class External extends \SecretaryBundle\Entity\Promotion
     /**
      * @return string
      */
+    public function getEmailAddress()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
     public function getFirstName()
     {
         return $this->firstName;
@@ -83,8 +91,8 @@ class External extends \SecretaryBundle\Entity\Promotion
     /**
      * @return string
      */
-    public function getEmailAddress()
+    public function getFullName()
     {
-        return $this->email;
+        return $this->firstName . ' ' . $this->lastName;
     }
 }

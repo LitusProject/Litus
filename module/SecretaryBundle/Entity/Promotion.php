@@ -29,7 +29,7 @@ use CommonBundle\Entity\General\AcademicYear,
  *      "academic"="SecretaryBundle\Entity\Promotion\Academic",
  *      "external"="SecretaryBundle\Entity\Promotion\External"
  * }) */
-class Promotion
+abstract class Promotion
 {
     /**
      * @var The entry's unique identifier
@@ -73,4 +73,23 @@ class Promotion
         return $this->academicYear;
     }
 
+    /**
+     * @return string
+     */
+    abstract public function getEmailAddress();
+
+    /**
+     * @return string
+     */
+    abstract public function getFirstName();
+
+    /**
+     * @return string
+     */
+    abstract public function getLastName();
+
+    /**
+     * @return string
+     */
+    abstract public function getFullName();
 }
