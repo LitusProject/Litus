@@ -157,6 +157,40 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function sortAction()
+    {
+        $this->initAjax();
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel;
+
+        if(!$this->getRequest()->isPost())
+            return new ViewModel;
+
+        $data = $this->getRequest()->getPost();
+
+        if(!$data['items'])
+            return new ViewModel;
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->beginTransaction();
+
+        foreach($data['items'] as $order=>$id)
+        {
+            $round = $entityManager->find('QuizBundle\Entity\Round', $id);
+            /* @var $round \QuizBundle\Entity\Round */
+            $round->setOrder($order+1);
+        }
+
+        $entityManager->flush();
+        $entityManager->commit();
+
+        return new ViewModel(array(
+            'result' => array(
+                'status' => 'success',
+            )
+        ));
+    }
+
     /**
      * @return null|\QuizBundle\Entity\Quiz
      */
