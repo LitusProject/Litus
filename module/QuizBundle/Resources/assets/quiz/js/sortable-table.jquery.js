@@ -23,7 +23,7 @@
         this.key = this.options.key;
         this.submitUrl = this.options.submitUrl;
         this._originalPositions = [];
-        this.callbacks = this.options.callbacks;
+        this.callbacks = $.extend({}, $.fn.sortableTable.defaults.callbacks, this.options.callbacks)
         this.init();
     };
 
@@ -92,6 +92,7 @@
             } else {
                 this.callbacks.saveError();
             }
+            this._originalPositions = this.$table.sortable('toArray', {attribute: this.attribute});
             this.callbacks.afterSave();
         }
     };
