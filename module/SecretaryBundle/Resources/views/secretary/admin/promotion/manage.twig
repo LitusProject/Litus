@@ -23,6 +23,7 @@
                 Search:
                 <select id="searchField">
                     <option value="name">Name</option>
+                    <option value="mail">Mail</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -146,18 +147,19 @@
                 searchPage: '{{ url('secretary_admin_promotion', {'action': 'manage'}) }}manage/',
                 url: '{{ url('secretary_admin_promotion', {'action': 'search'}) }}',
                 display: function (data) {
-                    $('#student_search table').find('tr.item').remove();
+                    $('#promotion_search table').find('tr.item').remove();
                     $(data).each(function () {
-                        $('#student_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        $('#promotion_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.universityIdentification + '</td>')
                             .append('<td>' + this.fullName + '</td>')
                             .append('<td>' + this.email + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
-                                    .append('<a href="#" class="delete">Delete</a>')
+                                    .append('<a href="#" data-id="' + this.id + '" data-email="' + this.email + '" data-name="' + this.fullName + '" class="delete">Delete</a>')
                                 );
                     });
                     $('#promotion_search table').change();
+                    $('.item .delete').unbind('click').click(openRemoveModal);
                 },
                 clear: function () {
                     $('#promotion_search table').find('tr.item').remove();

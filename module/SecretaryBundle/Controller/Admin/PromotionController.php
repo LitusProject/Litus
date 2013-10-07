@@ -15,7 +15,8 @@
 namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\General\AcademicYear,
     DateTime,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
@@ -67,7 +68,34 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function searchAction()
     {
-        return new ViewModel();
+        $this->initAjax();
+
+        $academicYear = $this->_getAcademicYear();
+
+        $promotions = $this->_search($academicYear);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($promotions, $numResults);
+
+        $result = array();
+        foreach($promotions as $promotion) {
+            $item = (object) array();
+            $item->id = $promotion->getId();
+            $item->fullName = $promotion->getFullName();
+            $item->universityIdentification = $promotion instanceof Academic ? $promotion->getAcademic()->getUniversityIdentification() : '';
+            $item->email = $promotion->getEmailAddress();
+
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
     }
 
     public function addAction()
@@ -205,12 +233,26 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         return new ViewModel();
     }
 
+    private function _search(AcademicYear $academicYear)
+    {
+        switch($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Promotion')
+                    ->findAllByName($this->getParam('string'), $academicYear);
+            case 'mail':
+                return $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Promotion')
+                    ->findAllByEMail($this->getParam('string'), $academicYear);
+        }
+    }
+
     protected function _getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
             return $this->getCurrentAcademicYear();
         } else {
-            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
+            $startAcademicYear = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
 
             $start = new DateTime(
                 str_replace(
