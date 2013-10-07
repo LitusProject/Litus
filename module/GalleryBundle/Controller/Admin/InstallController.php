@@ -15,7 +15,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'gallery.path',
-                    'value'       => 'public/_gallery/albums',
+                    'value'       => '/_gallery/albums',
                     'description' => 'The path to the gallery albums',
                 ),
                 array(
