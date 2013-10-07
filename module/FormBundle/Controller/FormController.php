@@ -129,14 +129,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                         $upload = new FileUpload();
                         $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                        if ($upload->isValid()) {
+                        if ($upload->isValid('field-' . $field->getId())) {
                             $fileName = '';
                             do{
                                 $fileName = sha1(uniqid());
                             } while (file_exists($filePath . '/' . $fileName));
 
-                            $upload->addFilter('Rename', $filePath . '/' . $fileName);
-                            $upload->receive();
+                            $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
+                            $upload->receive('field-' . $field->getId());
 
                             $value = $fileName;
                         }
@@ -241,7 +241,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                         $upload = new FileUpload();
                         $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                        if ($upload->isValid()) {
+                        if ($upload->isValid('field-' . $field->getId())) {
                             if ($fieldEntry->getValue() == '') {
                                 $fileName = '';
                                 do{
@@ -251,8 +251,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                                 $fileName = $fieldEntry->getValue();
                             }
 
-                            $upload->addFilter('Rename', $filePath . '/' . $fileName);
-                            $upload->receive();
+                            $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
+                            $upload->receive('field-' . $field->getId());
 
                             $value = $fileName;
                         }
