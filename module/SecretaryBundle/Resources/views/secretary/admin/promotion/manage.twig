@@ -107,7 +107,7 @@
                         <i>Please hit the link below to update this promotion list!</i>
                     </p>
                     <p>
-                        <a href="{{ url('secretary_admin_promotion', {'action': 'update', "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Update Promotion</a>
+                        <a href="#updatePromotion" data-toggle="modal">&rarr; Update Promotion</a>
                     </p>
                 </div>
             </div>
@@ -133,6 +133,26 @@
             </div>
         </div>
     </div>
+
+    <div class="modal hide fade" id="updatePromotion">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Update Promotion
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to update the following promotion: <b>{{ activeAcademicYear.getCode() }}</b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="update" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -144,8 +164,8 @@
                 searchDiv: $('#promotion_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('secretary_admin_promotion', {'action': 'manage'}) }}manage/',
-                url: '{{ url('secretary_admin_promotion', {'action': 'search'}) }}',
+                searchPage: '{{ url('secretary_admin_promotion', {'action': 'manage', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('secretary_admin_promotion', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#promotion_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -167,6 +187,9 @@
             });
             {% endif %}
             $('.item .delete').click(openRemoveModal);
+            $('#updatePromotion').click(function () {
+                window.location.href = '{{ url('secretary_admin_promotion', {'action': 'update', 'academicyear': activeAcademicYear.getCode()}) }}';
+            });
         });
 
         function openRemoveModal(e) {

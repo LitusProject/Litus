@@ -230,6 +230,54 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
+        $academicYear = $this->_getAcademicYear(); // the previous year?
+
+        $promotions = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Promotion')
+            ->findAll();
+
+        foreach($promotions as $promotion)
+            $this->getEntityManager()->remove($promotion);
+
+        $studyMappings = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+            ->findAllByAcademicYear($academicYear);
+
+        $academics = array();
+
+        foreach($studyMappings as $mapping) {
+            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), 'master') === false || $mapping->getStudy()->getPhase() != 2)
+                continue;
+
+            $enrollments = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                ->findAllByStudyAndAcademicYear($mapping->getStudy(), $academicYear);
+
+            foreach($enrollments as $enrollment)
+                $academics[$enrollment->getAcademic()->getId()] = $enrollment->getAcademic();
+        }
+
+        foreach($academics as $academic)
+            $this->getEntityManager()->persist(new Academic($academicYear, $academic));
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The promotion list is successfully updated!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'secretary_admin_promotion',
+            array(
+                'action' => 'manage',
+                'academicyear' => $academicYear->getCode(),
+            )
+        );
+
         return new ViewModel();
     }
 
