@@ -164,7 +164,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
                         $upload = new FileUpload();
                         $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                        if ($upload->isValid()) {
+                        if ($upload->isValid('field-' . $field->getId())) {
                             if ($fieldEntry->getValue() == '') {
                                 $fileName = '';
                                 do{
@@ -174,8 +174,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
                                 $fileName = $fieldEntry->getValue();
                             }
 
-                            $upload->addFilter('Rename', $filePath . '/' . $fileName);
-                            $upload->receive();
+                            $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
+                            $upload->receive('field-' . $field->getId());
 
                             $value = $fileName;
                         } elseif (!(sizeof($upload->getMessages()) == 1 && isset($upload->getMessages()['fileUploadErrorNoFile']))) {
