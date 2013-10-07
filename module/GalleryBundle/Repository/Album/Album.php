@@ -18,7 +18,7 @@ class Album extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('GalleryBundle\Entity\Album\Album', 'a')
-            ->orderBy('a.dateActivity', 'ASC')
+            ->orderBy('a.dateActivity', 'DESC')
         	->getQuery()
         	->getResult();
 
