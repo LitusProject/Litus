@@ -29,7 +29,11 @@ class MessageController extends \CommonBundle\Component\Controller\ActionControl
     {
         $paginator = $this->paginator()->createFromDocument(
             'MailBundle\Document\Message',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array(
+                'creationTime' => 'DESC'
+            )
         );
 
         return new ViewModel(
