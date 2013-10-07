@@ -255,7 +255,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
 
-                if ($formData['primary_address_address_city'] != 'other') {
+                if ('other' != $formData['primary_address_address_city'] && '' != $formData['primary_address_address_city']) {
                     $primaryCity = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Address\City')
                         ->findOneById($formData['primary_address_address_city']);
