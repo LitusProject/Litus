@@ -243,7 +243,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         if (!($album = $this->_getAlbum()))
             return new ViewModel();
 
-        $filePath = $this->getEntityManager()
+        $filePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery.path') . '/' . $album->getId() . '/';
 
