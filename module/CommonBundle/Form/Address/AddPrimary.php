@@ -45,12 +45,18 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
     private $_prefix;
 
     /**
+     * @var boolean
+     */
+    private $_required;
+
+    /**
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $prefix
      * @param null|string|int $name Optional name for the element
+     * @param boolean $required Whether or not the address is required
      */
-    public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null)
+    public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null, $required = true)
     {
         parent::__construct($name);
 
@@ -59,6 +65,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
 
         $prefix = '' == $prefix ? '' : $prefix . '_';
         $this->_prefix = $prefix;
+        $this->_required = $required;
 
         list($cities, $streets) = $this->_getCities();
 
@@ -66,24 +73,25 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $field->setLabel('City')
             ->setAttribute('class', $field->getAttribute('class') . ' input-large')
             ->setAttribute('options', $cities);
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal_other');
         $field->setLabel('Postal Code')
             ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_city_other');
         $field->setLabel('City')
             ->setAttribute('class', $field->getAttribute('class') . ' input-large')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_street_other');
         $field->setLabel('Street')
             ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         foreach($streets as $id => $collection) {
@@ -97,7 +105,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
             ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_mailbox');
@@ -151,7 +159,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_city',
-                'required' => true,
+                'required' => $this->_required,
                 'validators' => array(
                     array(
                         'name' => 'notempty',
@@ -167,7 +175,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             $inputs[] = $factory->createInput(
                 array(
                     'name'     => $this->_prefix . 'address_street_' . $this->get($this->_prefix . 'address_city')->getValue(),
-                    'required' => true,
+                    'required' => $this->_required,
                     'validators' => array(
                         array(
                             'name' => 'notempty',
@@ -182,7 +190,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             $inputs[] = $factory->createInput(
                 array(
                     'name'     => $this->_prefix . 'address_street_other',
-                    'required' => true,
+                    'required' => $this->_required,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -200,7 +208,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             $inputs[] = $factory->createInput(
                 array(
                     'name'     => $this->_prefix . 'address_postal_other',
-                    'required' => true,
+                    'required' => $this->_required,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -218,7 +226,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             $inputs[] = $factory->createInput(
                 array(
                     'name'     => $this->_prefix . 'address_city_other',
-                    'required' => true,
+                    'required' => $this->_required,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -229,7 +237,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_number',
-                'required' => true,
+                'required' => $this->_required,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
@@ -248,7 +256,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_mailbox',
-                'required' => false,
+                'required' => $this->_required,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),

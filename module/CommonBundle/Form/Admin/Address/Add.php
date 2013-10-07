@@ -41,6 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
     /**
      * @param string $prefix
      * @param null|string|int $name Optional name for the element
+     * @param boolean $required Whether or not the form is required
      */
     public function __construct($prefix = '', $name = null, $required = true)
     {
