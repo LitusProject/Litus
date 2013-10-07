@@ -47,7 +47,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $storedMessages = $this->getDocumentManager()
             ->getRepository('MailBundle\Document\Message')
-            ->findAll();
+            ->findAll(array(), array('creationTime' => 'DESC'));
 
         $form = new MailForm($studies, $groups, $storedMessages);
 
