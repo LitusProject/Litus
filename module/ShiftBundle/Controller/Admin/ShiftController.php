@@ -79,6 +79,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
+				
+				$editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($editRole);
+                    }
+                }
 
                 $shift = new Shift(
                     $this->getAuthentication()->getPersonObject(),
@@ -95,7 +104,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('CommonBundle\Entity\General\Location')
                         ->findOneById($formData['location']),
                     $formData['name'],
-                    $formData['description']
+                    $formData['description'],
+                    $editRoles
                 );
 
                 if ('' != $formData['event']) {
@@ -160,7 +170,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
-
+				
+				$editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($editRole);
+                    }
+                }
+				
                 $shift->setManager($manager)
                     ->setNbResponsibles($formData['nb_responsibles'])
                     ->setNbVolunteers($formData['nb_volunteers'])
@@ -175,7 +194,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneById($formData['location'])
                     )
                     ->setName($formData['name'])
-                    ->setDescription($formData['description']);
+                    ->setDescription($formData['description'])
+					->setEditRoles($editRoles);
 
                 if ('' != $formData['event']) {
                     $shift->setEvent(
