@@ -128,4 +128,19 @@ class Promotion extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('SecretaryBundle\Entity\Promotion', 'p')
+            ->where(
+                $query->expr()->eq('p.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }
