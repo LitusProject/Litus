@@ -39,6 +39,16 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The date interval the registrations for the new academic year will open before the start of it',
                 ),
                 array(
+                    'key'         => 'secretary.mail',
+                    'value'       => 'secretaris@vtk.be',
+                    'description' => 'The mail address the secretary mails will be send from',
+                ),
+                array(
+                    'key'         => 'secretary.mail_name',
+                    'value'       => 'VTK',
+                    'description' => 'The mail address name',
+                ),
+                array(
                     'key'         => 'secretary.membership_article',
                     'value'       => serialize(
                         array(
@@ -101,6 +111,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     ),
                     'secretary_admin_registration' => array(
                         'barcode', 'edit', 'manage', 'search'
+                    ),
+                    'secretary_admin_promotion' => array(
+                        'add', 'delete', 'mail', 'manage', 'search', 'update'
                     ),
                 ),
             )
