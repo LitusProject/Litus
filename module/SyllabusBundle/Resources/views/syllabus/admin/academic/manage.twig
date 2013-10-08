@@ -42,7 +42,7 @@
                     {% for academic in paginator %}
                         <tr class="item item-{{ academic.getId() }}">
                             <td>{{ academic.getFullName() }}</td>
-                            <td>{{ academic.getUniversityIdentification() }}
+                            <td>{{ academic.getUniversityIdentification() }}</td>
                             <td>{{ academic.getEmail() }}</td>
                             <td class="actions">
                                 {% if hasAccess('syllabus_admin_academic', 'edit') %}

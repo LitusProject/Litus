@@ -40,9 +40,14 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
     protected $_cache = null;
 
     /**
-     * @var string
+     * @var string The form's prefix
      */
     private $_prefix;
+
+    /**
+     * @var boolean Whether or not the form is required
+     */
+    private $_required;
 
     /**
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
@@ -106,16 +111,15 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
     private function _getCities()
     {
         if (null !== $this->_cache) {
-            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets'))) {
+            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')))
                 return $result;
-            }
         }
 
         $cities = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Address\City')
             ->findAll();
 
-        $optionsCity = array(0 => '');
+        $optionsCity = array('' => '');
         $optionsStreet = array();
         foreach($cities as $city) {
             $optionsCity[$city->getId()] = $city->getPostal() . ' ' . $city->getName();
@@ -149,14 +153,6 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_city',
                 'required' => $this->_required,
-                'validators' => array(
-                    array(
-                        'name' => 'notempty',
-                        'options' => array(
-                            'type' => 16,
-                        ),
-                    ),
-                ),
             )
         );
 
@@ -165,14 +161,6 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
                 array(
                     'name'     => $this->_prefix . 'address_street_' . $this->get($this->_prefix . 'address_city')->getValue(),
                     'required' => $this->_required,
-                    'validators' => array(
-                        array(
-                            'name' => 'notempty',
-                            'options' => array(
-                                'type' => 16,
-                            ),
-                        ),
-                    ),
                 )
             );
         } else {
