@@ -6,11 +6,22 @@
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../"
 
-# Updating the database
-if [ ! -x bin/Doctrine/doctrine-module ]; then
-    chmod +x bin/Doctrine/doctrine-module
-fi
+function checkAndMakeExecutable() {
+    if [ ! -x $1 ]; then
+        chmod +x $1
+    fi
+}
 
+# Making sure our scripts are executable
+checkAndMakeExecutable "bin/sockets.sh"
+
+checkAndMakeExecutable "bin/CommonBundle/gc.sh"
+checkAndMakeExecutable "bin/CudiBundle/catalogUpdate.sh"
+checkAndMakeExecutable "bin/CudiBundle/expireWarning.sh"
+checkAndMakeExecutable "bin/Doctrine/doctrine-module"
+checkAndMakeExecutable "bin/MailBundle/parser.sh"
+
+# Updating the database
 bin/Doctrine/doctrine-module orm:schema-tool:update --force
 bin/Doctrine/doctrine-module orm:generate-proxies data/proxies/
 
