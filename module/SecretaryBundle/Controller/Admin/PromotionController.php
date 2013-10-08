@@ -230,7 +230,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        $academicYear = $this->_getAcademicYear(); // the previous year?
+        $academicYear = $this->_getAcademicYear();
 
         $promotions = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Promotion')
