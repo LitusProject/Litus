@@ -142,7 +142,7 @@
                 $.post('{{ url('mail_admin_list', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.lista_removed_success').removeClass('hide');
+                        $('.list_removed_success').removeClass('hide');
                         $('.item-' + id).remove();
                         removeList.modal('hide');
                     } else {
