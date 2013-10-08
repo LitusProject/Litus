@@ -229,13 +229,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $total = 0;
                 foreach ($formData as $formKey => $formValue) {
                     $saleArticleId = substr($formKey, 8, strlen($formKey));
 
                     if (!$enableBookings && !in_array($saleArticleId, $bookingsClosedExceptions))
                         continue;
 
-                    if (substr($formKey, 0, 8) === 'article-' && $formValue != '' && $formValue != '0') {
+                    if ('article-' == substr($formKey, 0, 8) && '' != $formValue && '0' == $formValue) {
+                        $total += $formValue;
+
                         $saleArticle = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($saleArticleId);
@@ -297,13 +300,23 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The textbooks have been booked!'
-                    )
-                );
+                if (0 == $total) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::WARNING,
+                            'Warning',
+                            'You have not booked any textbooks!'
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'The textbooks have been booked!'
+                        )
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'cudi_booking',
