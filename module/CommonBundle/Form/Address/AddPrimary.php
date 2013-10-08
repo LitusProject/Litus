@@ -72,7 +72,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $field = new Select($prefix . 'address_city');
         $field->setLabel('City')
             ->setAttribute('class', $field->getAttribute('class') . ' input-large')
-            ->setAttribute('options', $cities);
+            ->setAttribute('options', $cities)
             ->setRequired($this->_required);
         $this->add($field);
 
