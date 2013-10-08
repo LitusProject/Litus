@@ -516,6 +516,43 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $mail = $this->_search();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($mail, $numResults);
+
+        $result = array();
+        foreach($mail as $mail) {
+            $item = (object) array();
+            $item->id = $mail->getId();
+            $item->name = $mail->getName();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('MailBundle/Entity/MailingList/Named')
+                    ->findAllByName($this->getParam('string'));
+        }
+    }
+
     private function _getList()
     {
         if (null === $this->getParam('id')) {
