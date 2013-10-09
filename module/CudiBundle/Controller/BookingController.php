@@ -236,7 +236,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     if (!$enableBookings && !in_array($saleArticleId, $bookingsClosedExceptions))
                         continue;
 
-                    if ('article-' == substr($formKey, 0, 8) && '' != $formValue && '0' == $formValue) {
+                    if ('article-' == substr($formKey, 0, 8) && '' != $formValue && '0' != $formValue) {
                         $total += $formValue;
 
                         $saleArticle = $this->getEntityManager()
