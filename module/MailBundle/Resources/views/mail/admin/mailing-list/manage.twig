@@ -114,7 +114,7 @@
                                 );
                             deleteButton.data({
                                 id: this.id,
-                                fullname: this.fullName
+                                listName: this.listName
                             });
                     });
                     $('#mail_search .delete').click(openModal);
@@ -133,7 +133,7 @@
             var $this = $(this);
             e.preventDefault();
             var removeList = $('#removeList');
-            removeList.find('.fullname').html($(this).data('fullname'));
+            removeList.find('.listName').html($(this).data('listName'));
             removeList.find('.cancel').one('click', function () {
                 removeList.modal('hide');
             });
