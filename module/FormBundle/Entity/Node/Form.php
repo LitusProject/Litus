@@ -29,8 +29,14 @@ use CommonBundle\Entity\General\Language,
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Form")
  * @ORM\Table(name="nodes.forms")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "form"="FormBundle\Entity\Node\Form\Form",
+ *      "doodle"="FormBundle\Entity\Node\Form\Doodle"
+ * })
  */
-class Form extends \CommonBundle\Entity\Node
+abstract class Form extends \CommonBundle\Entity\Node
 {
 
     /**
@@ -571,4 +577,9 @@ class Form extends \CommonBundle\Entity\Node
         }
         return '';
     }
+
+    /**
+     * @return string
+     */
+    abstract function getType();
 }
