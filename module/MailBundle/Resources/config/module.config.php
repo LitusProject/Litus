@@ -70,7 +70,7 @@ return array(
             'mail_admin_list' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/list[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/mail/list[/:action[/:id][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',

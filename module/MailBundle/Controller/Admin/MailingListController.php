@@ -548,8 +548,8 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         switch($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
-                    ->getRepository('MailBundle/Entity/MailingList/Named')
-                    ->findAllByName($this->getParam('string'));
+                    ->getRepository('MailBundle\Entity\MailingList\Named')
+                    ->findByName($this->getParam('string'));
         }
     }
 
