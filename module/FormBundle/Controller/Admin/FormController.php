@@ -16,7 +16,8 @@ namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle,
+    FormBundle\Entity\Node\Form\Form,
     FormBundle\Entity\Node\Translation,
     FormBundle\Entity\ViewerMap,
     FormBundle\Form\Admin\Form\Add as AddForm,
@@ -84,21 +85,38 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 else
                     $max = $formData['max'];
 
-                $form = new Form(
-                    $this->getAuthentication()->getPersonObject(),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
-                    $formData['active'],
-                    $max,
-                    $formData['multiple'],
-                    $formData['non_members'],
-                    $formData['editable_by_user'],
-                    $formData['mail'],
-                    $formData['mail_subject'],
-                    $formData['mail_body'],
-                    $formData['mail_from'],
-                    $formData['mail_bcc']
-                );
+                if ($formData['type'] == 'doodle') {
+                    $form = new Doodle(
+                        $this->getAuthentication()->getPersonObject(),
+                        DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                        DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                        $formData['active'],
+                        $formData['multiple'],
+                        $formData['non_members'],
+                        $formData['editable_by_user'],
+                        $formData['mail'],
+                        $formData['mail_subject'],
+                        $formData['mail_body'],
+                        $formData['mail_from'],
+                        $formData['mail_bcc']
+                    );
+                } else {
+                    $form = new Form(
+                        $this->getAuthentication()->getPersonObject(),
+                        DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                        DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                        $formData['active'],
+                        $max,
+                        $formData['multiple'],
+                        $formData['non_members'],
+                        $formData['editable_by_user'],
+                        $formData['mail'],
+                        $formData['mail_subject'],
+                        $formData['mail_body'],
+                        $formData['mail_from'],
+                        $formData['mail_bcc']
+                    );
+                }
 
                 $this->getEntityManager()->persist($form);
 

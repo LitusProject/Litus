@@ -17,6 +17,7 @@ namespace FormBundle\Form\Admin\Form;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle,
     Zend\Form\Element\Submit;
 
 /**
@@ -35,6 +36,10 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Form $form, $name = null)
     {
         parent::__construct($entityManager, $name);
+
+        $this->remove('type');
+        if ($form instanceOf Doodle)
+            $this->remove('max');
 
         $this->get('languages')
             ->setAttribute('class', $this->get('languages')->getAttribute('class') . ' half_width');

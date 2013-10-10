@@ -46,6 +46,16 @@
             $('textarea.md').gollum({'width': '400px'});
             $('#mail').click(toggleMail);
             toggleMail();
+
+            $('#type').change(function () {
+                if ($(this).val() == 'form') {
+                    $('form .doodle').closest('.row').hide();
+                    $('form .form').closest('.row').show();
+                } else {
+                    $('form .form').closest('.row').hide();
+                    $('form .doodle').closest('.row').show();
+                }
+            }).change();
         });
 
         function toggleMail() {
