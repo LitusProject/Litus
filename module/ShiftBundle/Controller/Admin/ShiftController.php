@@ -79,8 +79,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
-				
-				$editRoles = array();
+
+                $editRoles = array();
                 if (isset($formData['edit_roles'])) {
                     foreach ($formData['edit_roles'] as $editRole) {
                         $editRoles[] = $this->getEntityManager()
@@ -170,8 +170,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
-				
-				$editRoles = array();
+
+                $editRoles = array();
                 if (isset($formData['edit_roles'])) {
                     foreach ($formData['edit_roles'] as $editRole) {
                         $editRoles[] = $this->getEntityManager()
@@ -179,7 +179,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneByName($editRole);
                     }
                 }
-				
+
                 $shift->setManager($manager)
                     ->setNbResponsibles($formData['nb_responsibles'])
                     ->setNbVolunteers($formData['nb_volunteers'])
@@ -195,7 +195,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     )
                     ->setName($formData['name'])
                     ->setDescription($formData['description'])
-					->setEditRoles($editRoles);
+                    ->setEditRoles($editRoles);
 
                 if ('' != $formData['event']) {
                     $shift->setEvent(

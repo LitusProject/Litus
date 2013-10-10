@@ -67,19 +67,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Select('edit_roles');
+        $field->setLabel('Edit Roles')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_createEditRolesArray());
+        $this->add($field);
+
         $field = new Text('manager');
         $field->setLabel('Manager')
             ->setAttribute('id', 'managerSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
             ->setRequired();
-        $this->add($field);
-		
-		$field = new Select('edit_roles');
-        $field->setLabel('Edit Roles')
-            ->setRequired()
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_createEditRolesArray());
         $this->add($field);
 
         $field = new Text('nb_responsibles');
@@ -302,12 +301,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
-		
-		$inputFilter->add(
+
+        $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'edit_roles',
-                    'required' => true,
+                    'required' => false,
                 )
             )
         );

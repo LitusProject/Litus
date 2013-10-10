@@ -162,7 +162,7 @@ class Shift
      * @ORM\Column(type="text")
      */
     private $description;
-	
+
 	/**
      * @var \Doctrine\Common\Collections\ArrayCollection The roles that can edit this shift
      *
@@ -191,7 +191,7 @@ class Shift
 	 * @param array $editRoles
      */
     public function __construct(
-        Person $creationPerson, AcademicYear $academicYear, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description,array $editRoles
+        Person $creationPerson, AcademicYear $academicYear, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description, array $editRoles
     )
     {
         $this->creationPerson = $creationPerson;
@@ -568,7 +568,15 @@ class Shift
         $this->description = $description;
         return $this;
     }
-	
+
+    /**
+     * @return array
+     */
+    public function getEditRoles()
+    {
+        return $this->editRoles->toArray();
+    }
+
 	/**
      * @param array $editRoles
      * @return \PageBundle\Entity\Node\Page
@@ -577,14 +585,6 @@ class Shift
     {
         $this->editRoles = new ArrayCollection($editRoles);
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getEditRoles()
-    {
-        return $this->editRoles->toArray();
     }
 
     /**
