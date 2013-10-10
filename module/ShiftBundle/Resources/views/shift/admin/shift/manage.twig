@@ -18,6 +18,27 @@
     </div>
 
 	<div id="controller_action">
+	    <div id="shift_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                    <option value="event">Event</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th>Event</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </table>
+        </div>
+
+
 	    <table class="full_width manage">
 	        <thead>
 	            <tr>
@@ -81,6 +102,40 @@
 {% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+			{% if hasAccess('shift_admin_shift', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#shift_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('common_admin_academic', {'action': 'manage'}) }}manage/',
+                url: '{{ url('common_admin_academic', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#student_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#student_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.username + '</td>')
+                            .append('<td>' + this.universityIdentification + '</td>')
+                            .append('<td>' + this.fullName + '</td>')
+                            .append('<td>' + this.email + '</td>')
+                            .append(
+                                $('<td>', {'class': 'actions'})
+                                    .append('<a href="{{ url('common_admin_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                    .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                );
+                            deleteButton.data({
+                                id: this.id,
+                                fullname: this.fullName
+                            });
+                    });
+                    $('#student_search .delete').click(openModal);
+                    $('#student_search table').change();
+                },
+                clear: function () {
+                    $('#student_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
 			$('.item .delete').click(openModal);
 		});
 
