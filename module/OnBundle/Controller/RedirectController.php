@@ -48,6 +48,6 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
 
         return $this->getDocumentManager()
             ->getRepository('OnBundle\Document\Slug')
-            ->findOneByName($this->getParam('name'));
+            ->findOneByName(strtolower($this->getParam('name')));
     }
 }
