@@ -19,7 +19,7 @@ fieldset {
     }
 }
 
-input, select {
+input, select, button {
     height: @inputHeight;
     background: @cWhite url(@iFormsBackground) repeat-x;
     border: 1px solid @cBorder;
@@ -39,13 +39,14 @@ input[type=text], input[type=password] {
 	width:  @inputWidth;
 }
 
-input[type=submit], button {
+input[type=submit], input[type=button], button {
     height: @iconHeight;
     margin-top: 7px;
     padding: 0 4px 6px 4px;
     text-indent: @iconWidth;
     border: none;
     font-weight: bold;
+    background: transparent;
 }
 
 input[type=checkbox] {
