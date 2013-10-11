@@ -15,11 +15,13 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\OptionTranslation as OptionTranslationField,
     FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Translation,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
@@ -162,6 +164,19 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             $formData['max_size'] === '' ? 4 : $formData['max_size']
                         );
                         break;
+                    case 'timeslot':
+                        $field = new TimeSlotField(
+                            $formSpecification,
+                            0,
+                            $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null,
+                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']),
+                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date']),
+                            $formData['timeslot_location'],
+                            $formData['timeslot_extra_info']
+                        );
+                        break;
                     default:
                         throw new UnsupportedTypeException('This field type is unknown!');
                 }
@@ -282,6 +297,11 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 } elseif ($field instanceof FileField) {
                     $field->setMaxSize($formData['max_size'] === '' ? 4 : $formData['max_size']);
+                } elseif ($field instanceof TimeSlotField) {
+                    $field->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']))
+                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date']))
+                        ->setLocation($formData['timeslot_location'])
+                        ->setExtraInformation($formData['timeslot_extra_info']);
                 }
 
                 foreach($languages as $language) {

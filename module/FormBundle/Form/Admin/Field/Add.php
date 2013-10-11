@@ -21,6 +21,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     FormBundle\Component\Validator\Required as RequiredValidator,
     FormBundle\Component\Validator\StringField as StringFieldValidator,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
@@ -28,6 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle,
     FormBundle\Entity\Field,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -47,12 +49,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var \FormBundle\Entity\Node\Form
      */
     protected $_form;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Form $form
+     * @param \FormBundle\Entity\Node\Form $form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
@@ -76,6 +78,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
             $field = new Text('label_' . $language->getAbbrev());
             $field->setLabel('Label')
+                ->setAttribute('class', 'field_label')
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
@@ -95,9 +98,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('type');
         $field->setLabel('Type')
-            ->setRequired()
-            ->setAttribute('options', Field::$POSSIBLE_TYPES);
+            ->setRequired();
         $this->add($field);
+
+        if ($form instanceOf Doodle) {
+            $field->setAttribute('options', array('timeslot' => 'Time Slot'));
+        } else {
+            $field->setAttribute('options', Field::$POSSIBLE_TYPES);
+        }
 
         $field = new Text('order');
         $field->setLabel('Order')
@@ -134,6 +142,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Max. size (in MB)')
             ->setValue(4);
         $string_form->add($field);
+
+        $timeslot_form = new Collection('timeslot_form');
+        $timeslot_form->setLabel('Time Slot Options')
+            ->setAttribute('class', 'timeslot_form extra_form hide');
+        $this->add($timeslot_form);
+
+        $field = new Text('timeslot_start_date');
+        $field->setLabel('Start Date')
+            ->setRequired()
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('data-timepicker', true);
+        $timeslot_form->add($field);
+
+        $field = new Text('timeslot_end_date');
+        $field->setLabel('End Date')
+            ->setRequired()
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('data-timepicker', true);
+        $timeslot_form->add($field);
+
+        $field = new Text('timeslot_location');
+        $field->setLabel('Location');
+        $timeslot_form->add($field);
+
+        $field = new Text('timeslot_extra_info');
+        $field->setLabel('Extra Information');
+        $timeslot_form->add($field);
 
         $visibility = new Collection('visibility');
         $visibility->setLabel('Visibility');
@@ -207,6 +244,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
+        $isTimeSlot = $this->_isTimeSlot();
+
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
@@ -215,7 +254,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $factory->createInput(
                     array(
                         'name'     => 'label_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault() && !$isTimeSlot,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -283,7 +322,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'order',
-                    'required' => true,
+                    'required' => !$isTimeSlot,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -308,6 +347,52 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'timeslot_start_date',
+                    'required' => $isTimeSlot,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'timeslot_end_date',
+                    'required' => $isTimeSlot,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => $isTimeSlot ? array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                        new DateCompareValidator('timeslot_start_date', 'd/m/Y H:i'),
+                    ) : array(),
+                )
+            )
+        );
+
         return $inputFilter;
+    }
+
+    protected function _isTimeSlot()
+    {
+        return (isset($this->data['type']) && $this->data['type'] == 'timeslot');
     }
 }
