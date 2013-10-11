@@ -41,6 +41,13 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'logistics_admin_lease' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'logistics_admin_piano_reservation' => array(
             '@common_jquery',
             '@common_remote_typeahead',
@@ -65,6 +72,15 @@ return array(
             '@bootstrap_js_alert',
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
+            '@logistics_css',
+        ),
+        'logistics_lease' => array(
+            '@common_jquery',
+            '@common_jqueryui',
+            '@common_remote_typeahead',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
             '@logistics_css',
         ),
         'logistics_piano' => array(
