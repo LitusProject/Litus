@@ -38,8 +38,11 @@ class Edit extends Add
         parent::__construct($entityManager, $name);
 
         $this->remove('type');
-        if ($form instanceOf Doodle)
+        if ($form instanceOf Doodle) {
             $this->remove('max');
+        } else {
+            $this->remove('names_visible_for_others');
+        }
 
         $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
 
@@ -75,6 +78,15 @@ class Edit extends Add
             $data['introduction_' . $language->getAbbrev()] = $form->getIntroduction($language, false);
             $data['submittext_' . $language->getAbbrev()] = $form->getSubmitText($language, false);
             $data['updatetext_' . $language->getAbbrev()] = $form->getUpdateText($language, false);
+        }
+
+        if ($form instanceOf Doodle) {
+            $data['names_visible_for_others'] = $form->getNamesVisibleForOthers();
+            $data['reminder_mail'] = $form->hasReminderMail();
+            $data['reminder_mail_subject'] = $form->getReminderMailSubject();
+            $data['reminder_mail_body'] = $form->getReminderMailBody();
+            $data['reminder_mail_from'] = $form->getReminderMailFrom();
+            $data['reminder_mail_bcc'] = $form->getReminderMailBcc();
         }
 
         $this->setData($data);

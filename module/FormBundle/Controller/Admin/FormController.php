@@ -94,11 +94,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $formData['multiple'],
                         $formData['non_members'],
                         $formData['editable_by_user'],
+                        $formData['names_visible_for_others'],
                         $formData['mail'],
                         $formData['mail_subject'],
                         $formData['mail_body'],
                         $formData['mail_from'],
-                        $formData['mail_bcc']
+                        $formData['mail_bcc'],
+                        $formData['reminder_mail'],
+                        $formData['reminder_mail_subject'],
+                        $formData['reminder_mail_body'],
+                        $formData['reminder_mail_from'],
+                        $formData['reminder_mail_bcc']
                     );
                 } else {
                     $form = new Form(
@@ -221,6 +227,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->setMailBody($formData['mail_body'])
                     ->setMailFrom($formData['mail_from'])
                     ->setMailBcc($formData['mail_bcc']);
+
+                if ($formSpecification instanceOf Doodle) {
+                    $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others'])
+                        ->setReminderMail($formData['reminder_mail'])
+                        ->setReminderMailSubject($formData['reminder_mail_subject'])
+                        ->setReminderMailBody($formData['reminder_mail_body'])
+                        ->setReminderMailFrom($formData['reminder_mail_from'])
+                        ->setReminderMailBcc($formData['reminder_mail_bcc']);
+                }
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
