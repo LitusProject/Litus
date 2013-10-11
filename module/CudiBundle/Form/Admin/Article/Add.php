@@ -162,6 +162,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('subject');
         $field->setLabel('Subject')
+            ->setRequired()
             ->setAttribute('size', 70)
             ->setAttribute('id', 'subjectSearch')
             ->setAttribute('autocomplete', 'off')

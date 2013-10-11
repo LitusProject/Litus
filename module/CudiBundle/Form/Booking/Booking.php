@@ -14,7 +14,7 @@
 
 namespace CudiBundle\Form\Booking;
 
-use    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Hidden,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -62,7 +62,7 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
         foreach ($articles as $article) {
             $saleArticle = $article['article'];
 
-            $field = new Text('article-' . $saleArticle->getId());
+            $field = new Hidden('article-' . $saleArticle->getId());
             $field->setAttribute('class', 'input-very-mini')
                 ->setAttribute('placeholder', '0');
             $this->add($field);
