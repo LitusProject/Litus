@@ -44,10 +44,8 @@ class Edit extends Add
 
         $this->_slug = $slug;
 
-        $field = new Text('name');
-        $field->setLabel('Name')
+        $this->get('name')
             ->setRequired();
-        $this->add($field);
 
         $this->remove('submit');
 
@@ -67,29 +65,5 @@ class Edit extends Add
         );
 
         $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('name');
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new NameValidator($this->_documentManager, $this->_slug),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }
