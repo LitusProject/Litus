@@ -139,6 +139,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setAttribute('class', 'form doodle');
         $this->add($field);
 
+        $field = new Checkbox('names_visible_for_others');
+        $field->setLabel('Names Are Visible For Others')
+            ->setAttribute('class', 'doodle');
+        $this->add($field);
+
         $field = new Checkbox('multiple');
         $field->setLabel('Multiple Entries per Person')
             ->setAttribute('class', 'form doodle');
@@ -189,6 +194,52 @@ With best regards,
 The Form Creator')
             ->setRequired();
         $mail->add($field);
+
+        $field = new Checkbox('reminder_mail');
+        $field->setLabel('Send Reminder Mail')
+            ->setAttribute('class', 'doodle');
+        $this->add($field);
+
+        $reminder = new Collection('reminder_mail_form');
+        $reminder->setLabel('Reminder Mail')
+            ->setAttribute('id', 'reminder_mail_form')
+            ->setAttribute('class', 'doodle');
+        $this->add($reminder);
+
+        $field = new Text('reminder_mail_from');
+        $field->setLabel('Mail Sender Address')
+            ->setAttribute('class', 'doodle')
+            ->setRequired();
+        $reminder->add($field);
+
+        $field = new Checkbox('reminder_mail_bcc');
+        $field->setLabel('Send BCC to sender for every entry')
+            ->setAttribute('class', 'doodle')
+            ->setValue(true);
+        $reminder->add($field);
+
+        $field = new Text('reminder_mail_subject');
+        $field->setLabel('Subject')
+            ->setAttribute('class', 'doodle')
+            ->setRequired();
+        $reminder->add($field);
+
+        $field = new Textarea('reminder_mail_body');
+        $field->setLabel('Body')
+            ->setAttribute('class', 'doodle')
+            ->setAttribute('rows', 20)
+            ->setValue('Example mail:
+
+Dear %first_name% %last_name%,
+
+Your subscription was successful. Your unique subscription id is %id%. Below is a summary of the values you entered in this form:
+
+%entry_summary%
+
+With best regards,
+The Form Creator')
+            ->setRequired();
+        $reminder->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -279,6 +330,73 @@ The Form Creator')
                             array(
                                 'name' => 'EmailAddress',
                             ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'mail_subject',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'mail_body',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+        }
+
+        if ($this->data['reminder_mail']) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'reminder_mail_from',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'reminder_mail_subject',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'reminder_mail_body',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
                         ),
                     )
                 )

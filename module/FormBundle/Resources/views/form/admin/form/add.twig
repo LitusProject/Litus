@@ -19,6 +19,8 @@
             $('textarea.md').gollum();
             $('#mail').click(toggleMail);
             toggleMail();
+            $('#reminder_mail').click(toggleReminder);
+            toggleReminder();
 
             $('#type').change(function () {
                 if ($(this).val() == 'form') {
@@ -36,6 +38,13 @@
                 $('#mail_form').show();
             else
                 $('#mail_form').hide();
+        }
+
+        function toggleReminder() {
+            if ($('#reminder_mail').is(':checked'))
+                $('#reminder_mail_form').show();
+            else
+                $('#reminder_mail_form').hide();
         }
 
     </script>
