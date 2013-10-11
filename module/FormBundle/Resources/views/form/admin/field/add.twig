@@ -51,6 +51,12 @@
         function toggleType() {
             $('.extra_form').addClass('hide');
             $('.' + $('#type').val() + '_form').removeClass('hide');
+
+            if ($('#type').val() == 'timeslot') {
+                $('.field_label').closest('.row').hide();
+                $('form #required, form #order').closest('.row').hide();
+                $('#visibility').hide();
+            }
         }
     </script>
 {% endblock %}

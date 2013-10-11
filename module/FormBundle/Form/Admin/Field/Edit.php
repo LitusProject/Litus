@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 
@@ -120,6 +121,8 @@ class Edit extends Add
             $data['type'] = 'checkbox';
         } elseif ($field instanceof FileField) {
             $data['type'] = 'file';
+        } elseif ($field instanceof TimeSlotField) {
+            $data['type'] = 'timeslot';
         }
 
         if ($field instanceof StringField) {
@@ -129,6 +132,11 @@ class Edit extends Add
                 $data['lines'] = $field->getLines();
         } elseif ($field instanceof FileField) {
             $data['max_size'] = $field->getMaxSize();
+        } elseif ($field instanceof TimeSlotField) {
+            $data['timeslot_start_date'] = $field->getStartDate()->format('d/m/Y H:i');
+            $data['timeslot_end_date'] = $field->getEndDate()->format('d/m/Y H:i');
+            $data['timeslot_location'] = $field->getLocation();
+            $data['timeslot_extra_info'] = $field->getExtraInformation();
         }
 
         foreach($this->getLanguages() as $language) {
@@ -146,5 +154,10 @@ class Edit extends Add
         }
 
         $this->setData($data);
+    }
+
+    protected function _isTimeSlot()
+    {
+        return $this->_field->getType() == 'timeslot';
     }
 }

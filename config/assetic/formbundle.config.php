@@ -40,6 +40,10 @@ return array(
             '@bootstrap_js_tab',
             '@bootstrap_js_modal',
             '@bootstrap_js_transition',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'form_admin_form_viewer' => array(
             '@common_jquery',
