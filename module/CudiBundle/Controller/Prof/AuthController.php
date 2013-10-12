@@ -136,6 +136,14 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
             }
         }
 
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
         $this->redirect()->toRoute(
             'cudi_prof_index'
         );
