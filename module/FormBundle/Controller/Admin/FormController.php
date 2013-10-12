@@ -80,6 +80,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
                 $formData = $form->getFormData($formData);
 
                 if ($formData['max'] == '')
@@ -96,13 +100,24 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $formData['multiple'],
                         $formData['non_members'],
                         $formData['editable_by_user'],
-                        $formData['names_visible_for_others'],
-                        $formData['reminder_mail'],
-                        $formData['reminder_mail_subject'],
-                        $formData['reminder_mail_body'],
-                        $formData['reminder_mail_from'],
-                        $formData['reminder_mail_bcc']
+                        $formData['names_visible_for_others']
                     );
+
+                    if ($formData['reminder_mail']) {
+                        $mail = new Mail($formData['reminder_mail_from'], $formData['reminder_mail_bcc']);
+                        $this->getEntityManager()->persist($mail);
+
+                        foreach($languages as $language) {
+                            $translation = new MailTranslation(
+                                $mail,
+                                $language,
+                                $formData['reminder_mail_subject_' . $language->getAbbrev()],
+                                $formData['reminder_mail_body_' . $language->getAbbrev()]
+                            );
+                            $this->getEntityManager()->persist($translation);
+                        }
+                        $form->setReminderMail($mail);
+                    }
                 } else {
                     $form = new Form(
                         $this->getAuthentication()->getPersonObject(),
@@ -117,10 +132,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 $this->getEntityManager()->persist($form);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
 
                 if ($formData['mail']) {
                     $mail = new Mail($formData['mail_from'], $formData['mail_bcc']);
@@ -215,6 +226,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
                 $formData = $form->getFormData($formData);
 
                 if ($formData['max'] == '')
@@ -231,17 +246,40 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->setNonMember($formData['non_members']);
 
                 if ($formSpecification instanceOf Doodle) {
-                    $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others'])
-                        ->setReminderMail($formData['reminder_mail'])
-                        ->setReminderMailSubject($formData['reminder_mail_subject'])
-                        ->setReminderMailBody($formData['reminder_mail_body'])
-                        ->setReminderMailFrom($formData['reminder_mail_from'])
-                        ->setReminderMailBcc($formData['reminder_mail_bcc']);
-                }
+                    $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others']);
 
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
+                    if ($formData['reminder_mail']) {
+                        $mail = $formSpecification->getReminderMail();
+
+                        if (null === $mail) {
+                            $mail = new Mail($formData['reminder_mail_from'], $formData['reminder_mail_bcc']);
+                            $this->getEntityManager()->persist($mail);
+                        } else {
+                            $mail->setFrom($formData['reminder_mail_from'])
+                                ->setBcc($formData['reminder_mail_bcc']);
+                        }
+
+                        foreach($languages as $language) {
+                            $translation = $mail->getTranslation($language, false);
+
+                            if (null === $translation) {
+                                $translation = new MailTranslation(
+                                    $mail,
+                                    $language,
+                                    $formData['reminder_mail_subject_' . $language->getAbbrev()],
+                                    $formData['reminder_mail_body_' . $language->getAbbrev()]
+                                );
+                                $this->getEntityManager()->persist($translation);
+                            } else {
+                                $translation->setSubject($formData['reminder_mail_subject_' . $language->getAbbrev()])
+                                    ->setContent($formData['reminder_mail_body_' . $language->getAbbrev()]);
+                            }
+                        }
+                        $formSpecification->setReminderMail($mail);
+                    } else {
+                        $formSpecification->setReminderMail(null);
+                    }
+                }
 
                 if ($formData['mail']) {
                     $mail = $formSpecification->getMail();
@@ -318,7 +356,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_admin_form',
                     array(
-                        'action' => 'manage'
+                        'action' => 'edit',
+                        'id' => $formSpecification->getId(),
                     )
                 );
 

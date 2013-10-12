@@ -230,28 +230,40 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setValue(true);
         $reminder->add($field);
 
-        $field = new Text('reminder_mail_subject');
-        $field->setLabel('Subject')
-            ->setAttribute('class', 'doodle')
-            ->setRequired();
-        $reminder->add($field);
+        $reminderMailTabs = new Tabs('reminder_mail_languages');
+        $reminderMailTabs->setAttribute('class', 'half_width');
+        $reminder->add($reminderMailTabs);
 
-        $field = new Textarea('reminder_mail_body');
-        $field->setLabel('Body')
-            ->setAttribute('class', 'doodle')
-            ->setAttribute('rows', 20)
-            ->setValue('Example mail:
+        $reminderMailTabContent = new TabContent('reminder_mail_tab_content');
 
-Dear %first_name% %last_name%,
+        $reminderMailTemplate = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('form.mail_reminder')
+        );
 
-Your subscription was successful. Your unique subscription id is %id%. Below is a summary of the values you entered in this form:
+        foreach($this->getLanguages() as $language) {
+            $reminderMailTabs->addTab(array($language->getName() => '#reminder_mail_tab_' . $language->getAbbrev()));
 
-%entry_summary%
+            $pane = new TabPane('reminder_mail_tab_' . $language->getAbbrev());
 
-With best regards,
-The Form Creator')
-            ->setRequired();
-        $reminder->add($field);
+            $field = new Text('reminder_mail_subject_' . $language->getAbbrev());
+            $field->setLabel('Subject')
+                ->setAttribute('class', 'doodle')
+                ->setRequired();
+            $pane->add($field);
+
+            $field = new Textarea('reminder_mail_body_' . $language->getAbbrev());
+            $field->setLabel('Body')
+                ->setAttribute('class', 'doodle')
+                ->setAttribute('rows', 20)
+                ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '')
+                ->setRequired();
+            $pane->add($field);
+
+            $reminderMailTabContent->add($pane);
+        }
+
+        $reminder->add($reminderMailTabContent);
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -392,29 +404,31 @@ The Form Creator')
                 )
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'reminder_mail_subject',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'reminder_mail_subject_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'reminder_mail_body',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'reminder_mail_body_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
+            }
         }
 
         foreach($this->getLanguages() as $language) {
