@@ -117,6 +117,10 @@ return array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'cudi_admin_sales_financial_sold' => array(
             '@common_jquery',
