@@ -204,7 +204,7 @@ VTK Cudi
                                 'subject' => 'Assignment Expiration',
                                 'content' => 'Dear,
 
-The following bookings are expired:
+The following bookings have expired:
 {{ bookings }}#expires#expired on#expires#
 
 VTK Cudi
