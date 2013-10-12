@@ -20,6 +20,21 @@ use DateTime,
  */
 class Shift extends EntityRepository
 {
+    public function findByShiftName($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                $query->expr()->like('s.name', ':name')
+            )
+            ->setParameter('name', '%' . $name . '%')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllActive()
     {
         $query = $this->_em->createQueryBuilder();

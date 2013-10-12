@@ -275,6 +275,58 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $shifts = $this->_search();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($shifts, $numResults);
+
+        $result = array();
+        foreach($shifts as $shift) {
+            $item = (object) array();
+            $item->id = $shift->getId();
+            $item->name = $shift->getName();
+            $item->eventName = $shift->getEvent()->getName();
+            $item->startDate = $shift->getStartDate();
+            $item->endDate = $shift->getEndDate();
+            $result[] = $item;
+            
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'shiftname':
+                return $this->getEntityManager()
+                    ->getRepository('ShiftBundle\Entity\Shift')
+                    ->findByShiftName($this->getParam('string'));
+            case 'event':
+                $events = $this->getEntityManager()
+                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                    ->findByName($this->getParam('string'));
+                $result = array();
+                foreach($events as $event){
+                $result[] = $this->getEntityManager()
+                    ->getRepository('ShiftBundle\Entity\Shift')
+                    ->findAllActiveByEvent($event);
+                }
+                return $result;
+        }
+    }
+
     private function _getShift()
     {
         if (null === $this->getParam('id')) {
