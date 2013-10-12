@@ -110,6 +110,47 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+                
+        $alias = $this->_search();
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($alias, $numResults);
+
+        $result = array();
+        foreach($alias as $alias) {
+            $item = (object) array();
+            $item->id = $alias->getId();
+            $item->alias = $alias->getName();
+            $item->email = $alias->getEmailAddress();
+            $result[] = $item;
+        }
+        
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'alias':
+                return $this->getEntityManager()
+                    ->getRepository('MailBundle\Entity\Alias')
+                    ->findByAliasName($this->getParam('string'));
+            case 'academic':
+                return $this->getEntityManager()
+                    ->getRepository('MailBundle\Entity\Alias')
+                    ->searchByAcademic($this->getParam('string'));
+        }
+    }
+
     private function _getAlias()
     {
         if (null === $this->getParam('id')) {

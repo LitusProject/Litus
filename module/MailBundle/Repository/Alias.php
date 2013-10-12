@@ -12,4 +12,33 @@ use Doctrine\ORM\EntityRepository;
  */
 class Alias extends EntityRepository
 {
+    public function findByAliasName($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('MailBundle\Entity\Alias','p')
+            ->where(
+                $query->expr()->like('p.name', ':name')
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function searchByAcademic($academic)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('MailBundle\Entity\Alias\Academic','p')
+            ->where(
+                $query->expr()->like('p.academic', ':academic')
+            )
+            ->setParameter('academic', '%' . strtolower($academic) . '%')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

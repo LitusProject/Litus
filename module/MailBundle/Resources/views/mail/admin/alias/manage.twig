@@ -24,7 +24,7 @@
                 Search:
                 <select id="searchField">
                     <option value="alias">Alias</option>
-                    <option value="email">Email</option>
+                    <option value="academic">Academic</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -116,6 +116,7 @@
                                 aliasName: this.aliasName
                             });
                     });
+
                     $('#alias_search .delete').click(openModal);
                     $('#alias_search table').change();
                 },

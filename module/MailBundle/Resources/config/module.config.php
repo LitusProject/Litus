@@ -28,7 +28,7 @@ return array(
             'mail_admin_alias' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/alias[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/mail/alias[/:action[/:id][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
