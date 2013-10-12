@@ -77,7 +77,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $runners = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Runner')
-            ->findAllWithoutIdentificationAndAcademicYear($this->_getAcademicYear);
+            ->findAllWithoutIdentificationAndAcademicYear($this->_getAcademicYear());
 
         return new ViewModel(
             array(
