@@ -86,10 +86,15 @@ class Edit extends Add
         if ($form instanceOf Doodle) {
             $data['names_visible_for_others'] = $form->getNamesVisibleForOthers();
             $data['reminder_mail'] = $form->hasReminderMail();
-            $data['reminder_mail_subject'] = $form->getReminderMailSubject();
-            $data['reminder_mail_body'] = $form->getReminderMailBody();
-            $data['reminder_mail_from'] = $form->getReminderMailFrom();
-            $data['reminder_mail_bcc'] = $form->getReminderMailBcc();
+
+            if ($form->hasReminderMail()) {
+                $data['reminder_mail_from'] = $form->getReminderMail()->getFrom();
+                $data['reminder_mail_bcc'] = $form->getReminderMail()->getBcc();
+                foreach($this->getLanguages() as $language) {
+                    $data['reminder_mail_subject_' . $language->getAbbrev()] = $form->getReminderMail()->getSubject($language, false);
+                    $data['reminder_mail_body_' . $language->getAbbrev()] = $form->getReminderMail()->getContent($language, false);
+                }
+            }
         }
 
         $this->setData($data);

@@ -17,6 +17,7 @@ namespace FormBundle\Entity\Node\Form;
 use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Mail\Mail,
     FormBundle\Entity\Node\Form as BaseForm;
 
 /**
@@ -35,39 +36,12 @@ class Doodle extends BaseForm
     private $namesVisibleForOthers;
 
     /**
-     * @var boolean The flag whether a reminder mail will be sent upon completion.
+     * @var \FormBundle\Entity\Mail\Mail The mail sent for reminding.
      *
-     * @ORM\Column(name="reminder_mail", type="boolean")
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail\Mail")
+     * @ORM\JoinColumn(name="reminder_mail", referencedColumnName="id")
      */
     private $reminderMail;
-
-    /**
-     * @var string The subject of the mail sent upon completion.
-     *
-     * @ORM\Column(name="reminder_mail_subject", type="text")
-     */
-    private $reminderMailSubject;
-
-    /**
-     * @var string The body of the mail sent upon completion.
-     *
-     * @ORM\Column(name="reminder_mail_body", type="text")
-     */
-    private $reminderMailBody;
-
-    /**
-     * @var string The email address from which the mail is sent.
-     *
-     * @ORM\Column(name="reminder_mail_from", type="text")
-     */
-    private $reminderMailFrom;
-
-    /**
-     * @var boolean Whether to send a copy to the sender or not.
-     *
-     * @ORM\Column(name="reminder_mail_bcc", type="boolean")
-     */
-    private $reminderMailBcc;
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
@@ -78,27 +52,12 @@ class Doodle extends BaseForm
      * @param boolean $nonMember
      * @param boolean $editableByUser
      * @param boolean $namesVisibleForOthers
-     * @param boolean $mail Whether to send a mail upon completion.
-     * @param string $mailSubject The subject of the mail.
-     * @param string $mailBody The body of the mail.
-     * @param string $mailFrom
-     * @param string $mailBcc
-     * @param boolean $reminderMail Whether to send a reminder mail upon completion.
-     * @param string $reminderMailSubject The subject of the mail.
-     * @param string $reminderMailBody The body of the mail.
-     * @param string $reminderMailFrom
-     * @param string $reminderMailBcc
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $multiple, $nonMember, $editableByUser, $namesVisibleForOthers, $mail, $mailSubject, $mailBody, $mailFrom, $mailBcc, $reminderMail, $reminderMailSubject, $reminderMailBody, $reminderMailFrom, $reminderMailBcc)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $multiple, $nonMember, $editableByUser, $namesVisibleForOthers)
     {
-        parent::__construct($person, $startDate, $endDate, $active, 0, $multiple, $nonMember, $editableByUser, $mail, $mailSubject, $mailBody, $mailFrom, $mailBcc);
+        parent::__construct($person, $startDate, $endDate, $active, 0, $multiple, $nonMember, $editableByUser);
 
         $this->namesVisibleForOthers = $namesVisibleForOthers;
-        $this->reminderMail = $reminderMail;
-        $this->reminderMailSubject = $reminderMailSubject;
-        $this->reminderMailBody = $reminderMailBody;
-        $this->reminderMailFrom = $reminderMailFrom;
-        $this->reminderMailBcc = $reminderMailBcc;
     }
 
     /**
@@ -120,54 +79,27 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param boolean $reminderMail
+     * @return boolean
+     */
+    public function hasReminderMail() {
+        return null !== $this->reminderMail;
+    }
+
+    /**
+     * @param \FormBundle\Entity\Mail\Mail $reminderMail
      *
      * @return \FormBundle\Entity\Node\Form\Doodle
      */
-    public function setReminderMail($reminderMail) {
+    public function setReminderMail(Mail $reminderMail) {
         $this->reminderMail = $reminderMail;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return \FormBundle\Entity\Mail\Mail
      */
-    public function hasReminderMail() {
+    public function getReminderMail() {
         return $this->reminderMail;
-    }
-
-    /**
-     * @param boolean $reminderMailSubject
-     *
-     * @return \FormBundle\Entity\Node\Form\Doodle
-     */
-    public function setReminderMailSubject($reminderMailSubject) {
-        $this->reminderMailSubject = $reminderMailSubject;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getReminderMailSubject() {
-        return $this->reminderMailSubject;
-    }
-
-    /**
-     * @param boolean $reminderMailBody
-     *
-     * @return \FormBundle\Entity\Node\Form\Doodle
-     */
-    public function setReminderMailBody($reminderMailBody) {
-        $this->reminderMailBody = $reminderMailBody;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getReminderMailBody() {
-        return $this->reminderMailBody;
     }
 
     /**
@@ -176,7 +108,7 @@ class Doodle extends BaseForm
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    public function getCompletedReminderMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
+    /*public function getCompletedReminderMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
         $body = $this->getReminderMailBody();
         $body = str_replace('%id%', $entry->getId(), $body);
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
@@ -193,7 +125,7 @@ class Doodle extends BaseForm
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    private function _getReminderSummary(EntityManager $entityManager, Entry $entry, Language $language) {
+    /*private function _getReminderSummary(EntityManager $entityManager, Entry $entry, Language $language) {
         $fieldEntries = $entityManager->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
 
@@ -204,40 +136,6 @@ class Doodle extends BaseForm
         }
 
         return $result;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReminderMailFrom() {
-        return $this->reminderMailFrom;
-    }
-
-    /**
-     * @param string $reminderMailFrom
-     *
-     * @return \FromBundle\Entity\Nodes\Form\Doodle
-     */
-    public function setReminderMailFrom($reminderMailFrom) {
-        $this->reminderMailFrom = $reminderMailFrom;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getReminderMailBcc() {
-        return $this->reminderMailBcc;
-    }
-
-    /**
-     * @param boolean $reminderMailBcc
-     *
-     * @return \FromBundle\Entity\Nodes\Form\Doodle
-     */
-    public function setReminderMailBcc($reminderMailBcc) {
-        $this->reminderMailBcc = $reminderMailBcc;
-        return $this;
     }
 
     /**

@@ -106,47 +106,12 @@ abstract class Form extends \CommonBundle\Entity\Node
     private $active;
 
     /**
-     * @var boolean The flag whether a mail will be sent upon completion.
-     *
-     * @ORM\Column(name="has_mail", type="boolean")
-     */
-    private $hasMail;
-
-    /**
-     * @var string The email address from which the mail is sent.
-     *
-     * @ORM\Column(name="mail_from", type="text")
-     */
-    private $mailFrom;
-
-    /**
-     * @var boolean Whether to send a copy to the sender or not.
-     *
-     * @ORM\Column(name="mail_bcc", type="boolean")
-     */
-    private $mailBcc;
-
-    /**
      * @var \FormBundle\Entity\Mail\Mail The mail sent upon completion.
      *
      * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail\Mail")
      * @ORM\JoinColumn(name="mail", referencedColumnName="id")
      */
     private $mail;
-
-    /**
-     * @var string The subject of the mail sent upon completion.
-     *
-     * @ORM\Column(name="mail_subject", type="text")
-     */
-    private $mailSubject;
-
-    /**
-     * @var string The body of the mail sent upon completion.
-     *
-     * @ORM\Column(name="mail_body", type="text")
-     */
-    private $mailBody;
 
     /**
      * @var array The translations of this form
