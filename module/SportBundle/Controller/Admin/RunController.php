@@ -136,7 +136,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         $paginator = $this->paginator()->createFromEntity(
             'SportBundle\Entity\Group',
             $this->getParam('page'),
-            array(),
+            array(
+                'academicYear' => $this->_getAcademicYear()
+            ),
             array(
                 'name' => 'ASC'
             )
