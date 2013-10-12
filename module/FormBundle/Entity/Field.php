@@ -15,9 +15,6 @@
 namespace FormBundle\Entity;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
-    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Node\Form;

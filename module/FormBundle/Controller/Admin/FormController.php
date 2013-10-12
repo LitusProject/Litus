@@ -16,6 +16,8 @@ namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
+    FormBundle\Entity\Mail\Mail,
+    FormBundle\Entity\Mail\Translation as MailTranslation,
     FormBundle\Entity\Node\Form\Doodle,
     FormBundle\Entity\Node\Form\Form,
     FormBundle\Entity\Node\Translation,
@@ -95,11 +97,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $formData['non_members'],
                         $formData['editable_by_user'],
                         $formData['names_visible_for_others'],
-                        $formData['mail'],
-                        $formData['mail_subject'],
-                        $formData['mail_body'],
-                        $formData['mail_from'],
-                        $formData['mail_bcc'],
                         $formData['reminder_mail'],
                         $formData['reminder_mail_subject'],
                         $formData['reminder_mail_body'],
@@ -115,12 +112,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $max,
                         $formData['multiple'],
                         $formData['non_members'],
-                        $formData['editable_by_user'],
-                        $formData['mail'],
-                        $formData['mail_subject'],
-                        $formData['mail_body'],
-                        $formData['mail_from'],
-                        $formData['mail_bcc']
+                        $formData['editable_by_user']
                     );
                 }
 
@@ -129,6 +121,21 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
+
+                if ($formData['mail']) {
+                    $mail = new Mail($formData['mail_from'], $formData['mail_bcc']);
+                    $this->getEntityManager()->persist($mail);
+                    foreach($languages as $language) {
+                        $translation = new MailTranslation(
+                            $mail,
+                            $language,
+                            $formData['mail_subject_' . $language->getAbbrev()],
+                            $formData['mail_body_' . $language->getAbbrev()]
+                        );
+                        $this->getEntityManager()->persist($translation);
+                    }
+                    $form->setMail($mail);
+                }
 
                 foreach($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
@@ -221,12 +228,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->setMax($max)
                     ->setMultiple($formData['multiple'])
                     ->setEditableByUser($formData['editable_by_user'])
-                    ->setNonMember($formData['non_members'])
-                    ->setMail($formData['mail'])
-                    ->setMailSubject($formData['mail_subject'])
-                    ->setMailBody($formData['mail_body'])
-                    ->setMailFrom($formData['mail_from'])
-                    ->setMailBcc($formData['mail_bcc']);
+                    ->setNonMember($formData['non_members']);
 
                 if ($formSpecification instanceOf Doodle) {
                     $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others'])
@@ -241,11 +243,43 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
+                if ($formData['mail']) {
+                    $mail = $formSpecification->getMail();
+
+                    if (null === $mail) {
+                        $mail = new Mail($formData['mail_from'], $formData['mail_bcc']);
+                        $this->getEntityManager()->persist($mail);
+                    } else {
+                        $mail->setFrom($formData['mail_from'])
+                            ->setBcc($formData['mail_bcc']);
+                    }
+
+                    foreach($languages as $language) {
+                        $translation = $mail->getTranslation($language, false);
+
+                        if (null === $translation) {
+                            $translation = new MailTranslation(
+                                $mail,
+                                $language,
+                                $formData['mail_subject_' . $language->getAbbrev()],
+                                $formData['mail_body_' . $language->getAbbrev()]
+                            );
+                            $this->getEntityManager()->persist($translation);
+                        } else {
+                            $translation->setSubject($formData['mail_subject_' . $language->getAbbrev()])
+                                ->setContent($formData['mail_body_' . $language->getAbbrev()]);
+                        }
+                    }
+                    $formSpecification->setMail($mail);
+                } else {
+                    $formSpecification->setMail(null);
+                }
+
                 foreach($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
                         $translation = $formSpecification->getTranslation($language, false);
 
-                        if ($translation === null) {
+                        if (null === $translation) {
                             $translation = new Translation(
                                 $formSpecification,
                                 $language,

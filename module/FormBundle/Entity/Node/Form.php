@@ -18,6 +18,7 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     CommonBundle\Component\Util\Url,
     FormBundle\Entity\Node\Entry,
+    FormBundle\Entity\Mail\Mail,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
@@ -107,7 +108,29 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @var boolean The flag whether a mail will be sent upon completion.
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="has_mail", type="boolean")
+     */
+    private $hasMail;
+
+    /**
+     * @var string The email address from which the mail is sent.
+     *
+     * @ORM\Column(name="mail_from", type="text")
+     */
+    private $mailFrom;
+
+    /**
+     * @var boolean Whether to send a copy to the sender or not.
+     *
+     * @ORM\Column(name="mail_bcc", type="boolean")
+     */
+    private $mailBcc;
+
+    /**
+     * @var \FormBundle\Entity\Mail\Mail The mail sent upon completion.
+     *
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail\Mail")
+     * @ORM\JoinColumn(name="mail", referencedColumnName="id")
      */
     private $mail;
 
@@ -126,20 +149,6 @@ abstract class Form extends \CommonBundle\Entity\Node
     private $mailBody;
 
     /**
-     * @var string The email address from which the mail is sent.
-     *
-     * @ORM\Column(name="mail_from", type="text")
-     */
-    private $mailFrom;
-
-    /**
-     * @var boolean Whether to send a copy to the sender or not.
-     *
-     * @ORM\Column(name="mail_bcc", type="boolean")
-     */
-    private $mailBcc;
-
-    /**
      * @var array The translations of this form
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation", mappedBy="form", cascade={"remove"})
@@ -155,13 +164,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param boolean $multiple
      * @param boolean $nonMember
      * @param boolean $editableByUser
-     * @param boolean $mail Whether to send a mail upon completion.
-     * @param string $mailSubject The subject of the mail.
-     * @param string $mailBody The body of the mail.
-     * @param string $mailFrom
-     * @param string $mailBcc
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser, $mail, $mailSubject, $mailBody, $mailFrom, $mailBcc)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser)
     {
         parent::__construct($person);
 
@@ -174,11 +178,6 @@ abstract class Form extends \CommonBundle\Entity\Node
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->active = $active;
-        $this->mail = $mail;
-        $this->mailSubject = $mailSubject;
-        $this->mailBody = $mailBody;
-        $this->mailFrom = $mailFrom;
-        $this->mailBcc = $mailBcc;
     }
 
     /**
@@ -186,7 +185,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      *
      * @return \FormBundle\Entity\Node\Form
      */
-    public function setMax($max) {
+    public function setMax($max)
+    {
         $this->max = $max;
         return $this;
     }
@@ -194,7 +194,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return int
      */
-    public function getMax() {
+    public function getMax()
+    {
         return $this->max;
     }
 
@@ -203,7 +204,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      *
      * @return \FormBundle\Entity\Node\Form
      */
-    public function setMultiple($multiple) {
+    public function setMultiple($multiple)
+    {
         $this->multiple = $multiple;
         return $this;
     }
@@ -211,7 +213,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return boolean
      */
-    public function isMultiple() {
+    public function isMultiple()
+    {
         return $this->multiple;
     }
 
@@ -220,7 +223,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      *
      * @return \FormBundle\Entity\Node\Form
      */
-    public function setEditableByUser($editableByUser) {
+    public function setEditableByUser($editableByUser)
+    {
         $this->editableByUser = $editableByUser;
         return $this;
     }
@@ -228,7 +232,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return boolean
      */
-    public function isEditableByUser() {
+    public function isEditableByUser()
+    {
         return $this->editableByUser;
     }
 
@@ -237,7 +242,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      *
      * @return \FormBundle\Entity\Node\Form
      */
-    public function setNonMember($nonMember) {
+    public function setNonMember($nonMember)
+    {
         $this->nonMember = $nonMember;
         return $this;
     }
@@ -245,14 +251,16 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return boolean
      */
-    public function isNonMember() {
+    public function isNonMember()
+    {
         return $this->nonMember;
     }
 
     /**
      * @param \FormBundle\Entity\Field The field to add to this form.
      */
-    public function addField($field) {
+    public function addField($field)
+    {
         $this->fields->add($field);
         return $this;
     }
@@ -260,7 +268,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return array
      */
-    public function getFields() {
+    public function getFields()
+    {
         return $this->fields->toArray();
     }
 
@@ -269,7 +278,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      *
      * @return \FormBundle\Entity\Node\Form
      */
-    public function setStartDate($startDate) {
+    public function setStartDate($startDate)
+    {
         $this->startDate = $startDate;
         return $this;
     }
@@ -277,7 +287,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return DateTime
      */
-    public function getStartDate() {
+    public function getStartDate()
+    {
         return $this->startDate;
     }
 
@@ -286,7 +297,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      *
      * @return \FormBundle\Entity\Node\Form
      */
-    public function setEndDate($endDate) {
+    public function setEndDate($endDate)
+    {
         $this->endDate = $endDate;
         return $this;
     }
@@ -294,7 +306,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return \DateTime
      */
-    public function getEndDate() {
+    public function getEndDate()
+    {
         return $this->endDate;
     }
 
@@ -303,7 +316,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      *
      * @return \FormBundle\Entity\Node\Form
      */
-    public function setActive($active) {
+    public function setActive($active)
+    {
         $this->active = $active;
         return $this;
     }
@@ -311,59 +325,36 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return boolean
      */
-    public function isActive() {
+    public function isActive()
+    {
         return $this->active;
     }
 
     /**
-     * @param boolean $mail
+     * @return boolean
+     */
+    public function hasMail()
+    {
+        return null !== $this->mail;
+    }
+
+    /**
+     * @param \FormBundle\Entity\Mail\Mail $mail
      *
      * @return \FormBundle\Entity\Node\Form
      */
-    public function setMail($mail) {
+    public function setMail(Mail $mail = null)
+    {
         $this->mail = $mail;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return \FormBundle\Entity\Mail\Mail
      */
-    public function hasMail() {
+    public function getMail()
+    {
         return $this->mail;
-    }
-
-    /**
-     * @param boolean $mailSubject
-     *
-     * @return \FormBundle\Entity\Node\Form
-     */
-    public function setMailSubject($mailSubject) {
-        $this->mailSubject = $mailSubject;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getMailSubject() {
-        return $this->mailSubject;
-    }
-
-    /**
-     * @param boolean $mailBody
-     *
-     * @return \FormBundle\Entity\Node\Form
-     */
-    public function setMailBody($mailBody) {
-        $this->mailBody = $mailBody;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getMailBody() {
-        return $this->mailBody;
     }
 
     /**
@@ -372,7 +363,7 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    public function getCompletedMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
+    /*public function getCompletedMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
         $body = $this->getMailBody();
         $body = str_replace('%id%', $entry->getId(), $body);
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
@@ -389,7 +380,7 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    private function _getSummary(EntityManager $entityManager, Entry $entry, Language $language) {
+    /*private function _getSummary(EntityManager $entityManager, Entry $entry, Language $language) {
         $fieldEntries = $entityManager->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
 
@@ -400,40 +391,6 @@ abstract class Form extends \CommonBundle\Entity\Node
         }
 
         return $result;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMailFrom() {
-        return $this->mailFrom;
-    }
-
-    /**
-     * @param string $mailFrom
-     *
-     * @return \FromBundle\Entity\Nodes\Form
-     */
-    public function setMailFrom($mailFrom) {
-        $this->mailFrom = $mailFrom;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getMailBcc() {
-        return $this->mailBcc;
-    }
-
-    /**
-     * @param boolean $mailBcc
-     *
-     * @return \FromBundle\Entity\Nodes\Form
-     */
-    public function setMailBcc($mailBcc) {
-        $this->mailBcc = $mailBcc;
-        return $this;
     }
 
     /**

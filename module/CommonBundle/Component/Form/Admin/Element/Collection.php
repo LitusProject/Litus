@@ -72,10 +72,15 @@ class Collection extends \Zend\Form\Element\Collection
      */
     public function populateValues($data)
     {
+        foreach($this->getFieldsets() as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
         foreach($data as $key => $value) {
             if (!$this->has($key) && !is_numeric($key))
                 unset($data[$key]);
         }
+
         if ($this->shouldCreateTemplate()) {
             foreach($data as $value) {
                 foreach ($this->byName as $name => $element) {
