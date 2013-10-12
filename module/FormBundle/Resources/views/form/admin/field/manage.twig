@@ -36,13 +36,13 @@
                     <tr class="item item-{{ field.getId() }}">
                         <td>{{ field.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ field.getEndDate().format('d/m/Y H:i') }}</td>
-                        <td>{{ field.getLocation() }}</td>
+                        <td>{{ field.getLocation(language) }}</td>
                         <td class="actions">
                             {% if hasAccess('form_admin_form_field', 'edit') %}
                                 <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('form_admin_form_field', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
+                                <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getStartDate().format('d/m/Y H:i') }} - {{ field.getEndDate().format('d/m/Y H:i') }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
                             {% endif %}
                         </td>
                     </tr>

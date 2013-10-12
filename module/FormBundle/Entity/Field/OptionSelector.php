@@ -30,7 +30,7 @@ abstract class OptionSelector extends Field
     /**
      * @var array The translations of this field
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\OptionTranslation", mappedBy="field", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation\Option", mappedBy="field", cascade={"remove"})
      */
     private $optionTranslations;
 
@@ -44,8 +44,6 @@ abstract class OptionSelector extends Field
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
         parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-
-        $this->optionTranslations = new ArrayCollection();
     }
 
     /**
@@ -81,7 +79,7 @@ abstract class OptionSelector extends Field
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \FormBundle\Entity\Field\Translation
+     * @return \FormBundle\Entity\Field\Translation\Option
      */
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {

@@ -32,4 +32,23 @@ class TabContent extends \CommonBundle\Component\Form\Admin\Fieldset
 
         $this->setAttribute('class', 'tab_content');
     }
+
+    /**
+     * Recursively populate values of attached elements and fieldsets
+     *
+     * @param  array|Traversable $data
+     * @return void
+     * @throws Exception\InvalidArgumentException
+     */
+    public function populateValues($data)
+    {
+        parent::populateValues($data);
+
+        $fieldsets = $this->getFieldsets();
+        foreach($fieldsets as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
+        return $this;
+    }
 }
