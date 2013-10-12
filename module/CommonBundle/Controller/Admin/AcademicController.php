@@ -228,6 +228,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             )
                         );
                     }
+                } else {
+                    if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                        $status = $academic->getOrganizationStatus($this->getCurrentAcademicYear());
+
+                        $academic->removeOrganizationStatus($status);
+                        $this->getEntityManager()->remove($status);
+                    }
                 }
 
                 if ('' != $formData['barcode']) {
@@ -242,8 +249,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 }
 
                 if ('' != $formData['university_status']) {
-                    if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
-                        $status->setStatus($formData['university_status']);
+                    if (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
+                        $academic->getUniversityStatus($this->getCurrentAcademicYear())
+                            ->setStatus($formData['university_status']);
                     } else {
                         $academic->addUniversityStatus(
                             new UniversityStatus(
@@ -252,6 +260,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                                 $this->getCurrentAcademicYear()
                             )
                         );
+                    }
+                } else {
+                    if (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
+                        $status = $academic->getUniversityStatus($this->getCurrentAcademicYear());
+
+                        $academic->removeUniversityStatus($status);
+                        $this->getEntityManager()->remove($status);
                     }
                 }
 

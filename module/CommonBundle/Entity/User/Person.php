@@ -526,6 +526,16 @@ abstract class Person
     }
 
     /**
+     * @param \CommonBundle\Entity\User\Status\Organization $organizationStatus
+     * @return \CommonBundle\Entity\User\Person
+     */
+    public function removeOrganizationStatus(OrganizationStatus $organizationStatus)
+    {
+        $this->organizationStatuses->removeElement($organizationStatus);
+        return $this;
+    }
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return \CommonBundle\Entity\User\Status\Organization
      */

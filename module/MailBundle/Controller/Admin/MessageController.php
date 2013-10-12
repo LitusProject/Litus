@@ -56,8 +56,6 @@ class MessageController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
-                var_dump("Hello");
-
                 $formData = $form->getFormData($formData);
 
                 $message->setSubject($formData['subject'])

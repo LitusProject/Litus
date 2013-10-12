@@ -210,6 +210,16 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
+     * @param \CommonBundle\Entity\User\Status\University $universityStatus
+     * @return \CommonBundle\Entity\User\Person\Academic
+     */
+    public function removeUniversityStatus(UniversityStatus $universityStatus)
+    {
+        $this->universityStatuses->removeElement($universityStatus);
+        return $this;
+    }
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return \CommonBundle\Entity\User\Status\University
      */
