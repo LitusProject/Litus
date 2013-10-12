@@ -131,6 +131,14 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
             }
         }
 
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
         $this->redirect()->toRoute(
             'logistics_index'
         );
