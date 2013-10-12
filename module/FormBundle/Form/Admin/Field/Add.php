@@ -71,7 +71,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $tabContent = new TabContent('tab_content');
 
         foreach($this->getLanguages() as $language) {
-
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
@@ -90,6 +89,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field = new Text('options_' . $language->getAbbrev());
             $field->setLabel('Options');
             $dropdown_form->add($field);
+
+            $timeslot_form = new Collection('timeslot_form_' . $language->getAbbrev());
+            $timeslot_form->setLabel('Time Slot options')
+                ->setAttribute('class', 'timeslot_form extra_form hide');
+            $pane->add($timeslot_form);
+
+            $field = new Text('timeslot_location_' . $language->getAbbrev());
+            $field->setLabel('Location');
+            $timeslot_form->add($field);
+
+            $field = new Text('timeslot_extra_info_' . $language->getAbbrev());
+            $field->setLabel('Extra Information');
+            $timeslot_form->add($field);
 
             $tabContent->add($pane);
         }
@@ -162,14 +174,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
             ->setAttribute('data-datepicker', true)
             ->setAttribute('data-timepicker', true);
-        $timeslot_form->add($field);
-
-        $field = new Text('timeslot_location');
-        $field->setLabel('Location');
-        $timeslot_form->add($field);
-
-        $field = new Text('timeslot_extra_info');
-        $field->setLabel('Extra Information');
         $timeslot_form->add($field);
 
         $visibility = new Collection('visibility');

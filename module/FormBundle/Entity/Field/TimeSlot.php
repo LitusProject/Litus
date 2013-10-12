@@ -43,18 +43,11 @@ class TimeSlot extends Field
     private $endDate;
 
     /**
-     * @var string The location of the timeslot
+     * @var array The translations of this field
      *
-     * @ORM\Column(type="string")
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation\TimeSlot", mappedBy="timeslot", cascade={"remove"})
      */
-    private $location;
-
-    /**
-     * @var string The extra info of the timeslot
-     *
-     * @ORM\Column(name="extra_information", type="string")
-     */
-    private $extraInformation;
+    private $timeslotTranslations;
 
     /**
      * @param FormBundle\Entity\Node\Form $form
@@ -114,39 +107,57 @@ class TimeSlot extends Field
     }
 
     /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     *
      * @return string
      */
-    public function getLocation()
+    public function getLocation(Language $language = null, $allowFallback = true)
     {
-        return $this->location;
+        $translation = $this->getTimeSlotTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getLocation();
+
+        return '';
     }
 
     /**
-     * @param string $location
-     * @return \FormBundle\Entity\Fields\TimeSlot
-     */
-    public function setLocation($location)
-    {
-        $this->location = $location;
-        return $this;
-    }
-
-    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     *
      * @return string
      */
-    public function getExtraInformation()
+    public function getExtraInformation(Language $language = null, $allowFallback = true)
     {
-        return $this->extraInformation;
+        $translation = $this->getTimeSlotTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getExtraInformation();
+
+        return '';
     }
 
     /**
-     * @param string $extraInformation
-     * @return \FormBundle\Entity\Fields\TimeSlot
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     *
+     * @return \FormBundle\Entity\Translation
      */
-    public function setExtraInformation($extraInformation)
+    public function getTimeSlotTranslation(Language $language = null, $allowFallback = true)
     {
-        $this->extraInformation = $extraInformation;
-        return $this;
+        foreach($this->timeslotTranslations as $translation) {
+            if (null !== $language && $translation->getLanguage() == $language)
+                return $translation;
+
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+                $fallbackTranslation = $translation;
+        }
+
+        if ($allowFallback && isset($fallbackTranslation))
+            return $fallbackTranslation;
+
+        return null;
     }
 
     /**

@@ -135,15 +135,16 @@ class Edit extends Add
         } elseif ($field instanceof TimeSlotField) {
             $data['timeslot_start_date'] = $field->getStartDate()->format('d/m/Y H:i');
             $data['timeslot_end_date'] = $field->getEndDate()->format('d/m/Y H:i');
-            $data['timeslot_location'] = $field->getLocation();
-            $data['timeslot_extra_info'] = $field->getExtraInformation();
         }
 
         foreach($this->getLanguages() as $language) {
             $data['label_' . $language->getAbbrev()] = $field->getLabel($language, false);
 
-            if($field instanceof DropdownField) {
+            if ($field instanceof DropdownField) {
                 $data['options_' . $language->getAbbrev()] = $field->getOptions($language, false);
+            } elseif ($field instanceof TimeSlotField) {
+                $data['timeslot_location_' . $language->getAbbrev()] = $field->getLocation($language, false);
+                $data['timeslot_extra_info_' . $language->getAbbrev()] = $field->getExtraInformation($language, false);
             }
         }
 

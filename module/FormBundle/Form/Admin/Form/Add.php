@@ -360,7 +360,7 @@ The Form Creator')
             );
         }
 
-        if ($this->data['reminder_mail']) {
+        if (isset($this->data['reminder_mail']) && $this->data['reminder_mail']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
