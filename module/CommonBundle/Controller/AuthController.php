@@ -155,6 +155,14 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
         $this->redirect()->toRoute(
             'common_index'
         );
