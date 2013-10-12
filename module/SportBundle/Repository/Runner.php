@@ -42,7 +42,7 @@ class Runner extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->isNull('r.runnerIdentification'),
                     $query->expr()->isNull('r.academic'),
-                    $query->expr()->eq('academicYear', ':academicYear')
+                    $query->expr()->eq('r.academicYear', ':academicYear')
                 )
             )
             ->setParameter('academicYear', $academicYear)
