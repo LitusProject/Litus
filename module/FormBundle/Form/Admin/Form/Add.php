@@ -172,28 +172,40 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setValue(true);
         $mail->add($field);
 
-        $field = new Text('mail_subject');
-        $field->setLabel('Subject')
-            ->setAttribute('class', 'form doodle')
-            ->setRequired();
-        $mail->add($field);
+        $mailTabs = new Tabs('mail_languages');
+        $mailTabs->setAttribute('class', 'half_width');
+        $mail->add($mailTabs);
 
-        $field = new Textarea('mail_body');
-        $field->setLabel('Body')
-            ->setAttribute('class', 'form doodle')
-            ->setAttribute('rows', 20)
-            ->setValue('Example mail:
+        $mailTabContent = new TabContent('mail_tab_content');
 
-Dear %first_name% %last_name%,
+        $mailTemplate = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('form.mail_confirmation')
+        );
 
-Your subscription was successful. Your unique subscription id is %id%. Below is a summary of the values you entered in this form:
+        foreach($this->getLanguages() as $language) {
+            $mailTabs->addTab(array($language->getName() => '#mail_tab_' . $language->getAbbrev()));
 
-%entry_summary%
+            $pane = new TabPane('mail_tab_' . $language->getAbbrev());
 
-With best regards,
-The Form Creator')
-            ->setRequired();
-        $mail->add($field);
+            $field = new Text('mail_subject_' . $language->getAbbrev());
+            $field->setLabel('Subject')
+                ->setAttribute('class', 'form doodle')
+                ->setRequired();
+            $pane->add($field);
+
+            $field = new Textarea('mail_body_' . $language->getAbbrev());
+            $field->setLabel('Body')
+                ->setAttribute('class', 'form doodle')
+                ->setAttribute('rows', 20)
+                ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '')
+                ->setRequired();
+            $pane->add($field);
+
+            $mailTabContent->add($pane);
+        }
+
+        $mail->add($mailTabContent);
 
         $field = new Checkbox('reminder_mail');
         $field->setLabel('Send Reminder Mail')
@@ -335,29 +347,31 @@ The Form Creator')
                 )
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'mail_subject',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'mail_subject_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'mail_body',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'mail_body_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
+            }
         }
 
         if (isset($this->data['reminder_mail']) && $this->data['reminder_mail']) {

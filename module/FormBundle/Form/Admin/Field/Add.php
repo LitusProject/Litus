@@ -90,19 +90,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field->setLabel('Options');
             $dropdown_form->add($field);
 
-            $timeslot_form = new Collection('timeslot_form_' . $language->getAbbrev());
-            $timeslot_form->setLabel('Time Slot options')
-                ->setAttribute('class', 'timeslot_form extra_form hide');
-            $pane->add($timeslot_form);
-
-            $field = new Text('timeslot_location_' . $language->getAbbrev());
-            $field->setLabel('Location');
-            $timeslot_form->add($field);
-
-            $field = new Text('timeslot_extra_info_' . $language->getAbbrev());
-            $field->setLabel('Extra Information');
-            $timeslot_form->add($field);
-
             $tabContent->add($pane);
         }
 
@@ -175,6 +162,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('data-datepicker', true)
             ->setAttribute('data-timepicker', true);
         $timeslot_form->add($field);
+
+        $timeslotTabs = new Tabs('timeslot_languages');
+        $timeslotTabs->setAttribute('class', 'half_width');
+        $timeslot_form->add($timeslotTabs);
+
+        $timeslotTabContent = new TabContent('timeslot_tab_content');
+
+        foreach($this->getLanguages() as $language) {
+            $timeslotTabs->addTab(array($language->getName() => '#timeslot_tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('timeslot_tab_' . $language->getAbbrev());
+
+            $field = new Text('timeslot_location_' . $language->getAbbrev());
+            $field->setLabel('Location');
+            $pane->add($field);
+
+            $field = new Text('timeslot_extra_info_' . $language->getAbbrev());
+            $field->setLabel('Extra Information');
+            $pane->add($field);
+
+            $timeslotTabContent->add($pane);
+        }
+
+        $timeslot_form->add($timeslotTabContent);
 
         $visibility = new Collection('visibility');
         $visibility->setLabel('Visibility');
