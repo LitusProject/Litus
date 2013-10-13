@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
+    FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
@@ -241,8 +242,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $entries = null;
-
         $now = new DateTime();
         if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
             return new ViewModel(
@@ -253,7 +252,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        return new ViewModel();
+        $person = $this->getAuthentication()->getPersonObject();
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, null);
+
+        return new ViewModel(
+            array(
+                'specification' => $formSpecification,
+                'form'          => $form,
+            )
+        );
     }
 
     public function editAction()

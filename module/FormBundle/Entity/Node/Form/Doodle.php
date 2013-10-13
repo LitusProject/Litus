@@ -63,6 +63,20 @@ class Doodle extends BaseForm
     }
 
     /**
+     * @return array
+     */
+    public function getFields()
+    {
+        $fields = array();
+        foreach(parent::getFields() as $field)
+            $fields[$field->getStartDate()->getTimestamp()] = $field;
+
+        ksort($fields);
+
+        return $fields;
+    }
+
+    /**
      * @param boolean $namesVisibleForOthers
      * @return \FormBundle\Entity\Node\Form\Doodle
      */

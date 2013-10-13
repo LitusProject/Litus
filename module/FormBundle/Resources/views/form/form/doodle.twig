@@ -16,9 +16,25 @@
             {{ translate(message) }}
         </div>
     {% else %}
-        {% if form %}
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-        {% endif %}
+        <table class="table table-bordered">
+            <tr>
+                <th>{{ translate('Date') }}</th>
+                <th width="200px">{{ translate('Subscribe') }}</th>
+            </tr>
+            {% for field in specification.getFields() %}
+                <tr>
+                    <td>
+                        {% if field.getStartDate().format('d/M/Y') == field.getEndDate().format('d/M/Y') %}
+                            {{ dateLocalized(field.getStartDate(), 'd MMMM Y: H:mm') }} - {{ dateLocalized(field.getEndDate(), 'H:mm') }}
+                        {% else %}
+                            {{ dateLocalized(field.getStartDate(), 'd MMMM Y H:mm') }} - {{ dateLocalized(field.getEndDate(), 'd MMMM Y H:mm') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ formElement(form.get('field-' ~ field.getId())) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
     {% endif %}
 {% endblock %}

@@ -43,7 +43,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var \FormBundle\Entity\Node\Form
      */
     protected $_form;
 
