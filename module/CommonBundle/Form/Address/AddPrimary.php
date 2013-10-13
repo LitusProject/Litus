@@ -239,7 +239,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_mailbox',
-                'required' => $this->_required,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
