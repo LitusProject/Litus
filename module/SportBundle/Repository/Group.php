@@ -2,7 +2,7 @@
 
 namespace SportBundle\Repository;
 
-use CommonBundle\Component\Util\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Group

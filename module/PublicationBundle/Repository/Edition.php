@@ -2,7 +2,7 @@
 
 namespace PublicationBundle\Repository;
 
-use CommonBundle\Component\Util\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     PublicationBundle\Entity\Publication as PublicationEntity;
 
 /**

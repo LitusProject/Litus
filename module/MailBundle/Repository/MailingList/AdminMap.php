@@ -2,7 +2,7 @@
 
 namespace MailBundle\Repository\MailingList;
 
-use CommonBundle\Component\Util\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * AdminMap

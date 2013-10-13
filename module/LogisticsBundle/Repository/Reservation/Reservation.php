@@ -2,7 +2,7 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use CommonBundle\Component\Util\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Reservation

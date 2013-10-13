@@ -4,7 +4,7 @@ namespace BrBundle\Repository\Company;
 
 use BrBundle\Entity\Company as CompanyEntity,
     DateTime,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Job

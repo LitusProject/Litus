@@ -3,7 +3,7 @@
 namespace ShiftBundle\Repository\Shift;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Util\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
 	ShiftBundle\Entity\Shift;
 
 /**
