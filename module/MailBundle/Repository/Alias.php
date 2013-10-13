@@ -27,7 +27,7 @@ class Alias extends EntityRepository
         return $resultSet;
     }
 
-    public function searchByAcademic($academic)
+    public function searchByAcademic(Academic $academic)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')

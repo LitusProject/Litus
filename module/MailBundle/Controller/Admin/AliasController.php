@@ -114,15 +114,15 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
                 
-        $alias = $this->_search();
+        $aliases = $this->_search();
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($alias, $numResults);
+        array_splice($aliases, $numResults);
 
         $result = array();
-        foreach($alias as $alias) {
+        foreach($aliases as $alias) {
             $item = (object) array();
             $item->id = $alias->getId();
             $item->alias = $alias->getName();
@@ -145,9 +145,16 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('MailBundle\Entity\Alias')
                     ->findByAliasName($this->getParam('string'));
             case 'academic':
-                return $this->getEntityManager()
+                $academics = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findAllByUsername($this->getParam('string'));
+                $listResult = array();
+                foreach ($academics as $academic){
+                    $listResult[] = $this->getEntityManager()
                     ->getRepository('MailBundle\Entity\Alias')
-                    ->searchByAcademic($this->getParam('string'));
+                    ->searchByAcademic($academic);
+                }
+                return $listResult;
         }
     }
 

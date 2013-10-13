@@ -293,8 +293,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $item->id = $shift->getId();
             $item->name = $shift->getName();
             $item->eventName = $shift->getEvent()->getName();
-            $item->startDate = $shift->getStartDate();
-            $item->endDate = $shift->getEndDate();
+            $item->startDate = $shift->getStartDate()->format('d/m/Y H:i');
+            $item->endDate = $shift->getEndDate()->format('d/m/Y H:i');
             $result[] = $item;
             
         }
@@ -319,7 +319,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findByName($this->getParam('string'));
                 $result = array();
                 foreach($events as $event){
-                $result[] = $this->getEntityManager()
+                    $result[] = $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift')
                     ->findAllActiveByEvent($event);
                 }
