@@ -29,11 +29,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('TicketBundle\Entity\Ticket')
-                ->findByEvent($event),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'TicketBundle\Entity\Ticket',
+            $this->getParam('page'),
+            array(
+                'event' => $event,
+            )
         );
 
         return new ViewModel(

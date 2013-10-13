@@ -37,11 +37,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Group')
-                ->findAll(),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'SyllabusBundle\Entity\Group',
+            $this->getParam('page'),
+            array(
+                'removed' => false,
+            )
         );
 
         foreach($paginator as $group)

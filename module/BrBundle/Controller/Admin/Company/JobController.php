@@ -33,11 +33,15 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
         if (!($company = $this->_getCompany()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company\Job')
-                ->findAllByCompany($company),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Company\Job',
+            $this->getParam('page'),
+            array(
+                'company' => $company,
+            ),
+            array(
+                'type'=> 'ASC',
+            )
         );
 
         return new ViewModel(

@@ -25,11 +25,13 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('GalleryBundle\Entity\Album\Album')
-                ->findAll(),
-            $this->getParam('page')
+        $paginator = $this->paginator()->crateFromEntity(
+            'GalleryBundle\Entity\Album\Album',
+            $this->getParam('page'),
+            array(),
+            array(
+                'dateActivity' => 'ASC',
+            )
         );
 
         return new ViewModel(
