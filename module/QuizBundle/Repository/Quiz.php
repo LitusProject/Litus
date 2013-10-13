@@ -12,15 +12,14 @@ use CommonBundle\Component\Util\EntityRepository;
  */
 class Quiz extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
 
         $resultSet = $query->select('q')
             ->from('QuizBundle\Entity\Quiz', 'q')
             ->orderBy('q.timestamp', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

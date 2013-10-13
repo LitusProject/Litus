@@ -17,7 +17,7 @@ class Team extends EntityRepository
      * Gets all teams belonging to a quiz
      * @param QuizBundle\Entity\Quiz $quiz The team the rounds must belong to
      */
-    public function findByQuiz(QuizEntity $quiz)
+    public function findByQuizQuery(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
 
@@ -28,8 +28,7 @@ class Team extends EntityRepository
             )
             ->orderBy('t.number', 'ASC')
             ->setParameter('quiz', $quiz->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

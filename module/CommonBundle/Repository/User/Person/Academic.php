@@ -31,7 +31,7 @@ class Academic extends \CommonBundle\Repository\User\Person
         return null;
     }
 
-    public function findAllByUsername($username)
+    public function findAllByUsernameQuery($username)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -40,13 +40,12 @@ class Academic extends \CommonBundle\Repository\User\Person
                 $query->expr()->like('p.username', ':username')
             )
             ->setParameter('username', '%' . strtolower($username) . '%')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByName($name)
+    public function findAllByNameQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -73,13 +72,12 @@ class Academic extends \CommonBundle\Repository\User\Person
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByUniversityIdentification($universityIdentification)
+    public function findAllByUniversityIdentificationQuery($universityIdentification)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -91,13 +89,12 @@ class Academic extends \CommonBundle\Repository\User\Person
                 )
             )
             ->setParameter('universityIdentification', '%' . strtolower($universityIdentification) . '%')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByBarcode($barcode)
+    public function findAllByBarcodeQuery($barcode)
     {
         $query = $this->_em->createQueryBuilder();
         $barcodes = $query->select('b')
@@ -122,8 +119,7 @@ class Academic extends \CommonBundle\Repository\User\Person
                     $query->expr()->eq('p.canLogin', 'true')
                 )
             )
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -160,7 +156,7 @@ class Academic extends \CommonBundle\Repository\User\Person
         return null;
     }
 
-    public function findAllByNameTypeahead($name)
+    public function findAllByNameTypeaheadQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -189,8 +185,7 @@ class Academic extends \CommonBundle\Repository\User\Person
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->setMaxResults(20)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

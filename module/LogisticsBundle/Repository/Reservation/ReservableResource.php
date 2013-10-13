@@ -30,12 +30,11 @@ class ReservableResource extends EntityRepository
         return null;
     }
 
-    public function findAll() {
+    public function findAllQuery() {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\ReservableResource', 'r')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

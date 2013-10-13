@@ -13,13 +13,12 @@ use DateTime,
  */
 class Field extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Field', 'n')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -41,7 +40,7 @@ class Field extends EntityRepository
         return null;
     }
 
-    public function findAllByForm($formId) {
+    public function findAllByFormQuery($formId) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Field', 'n')
@@ -50,8 +49,7 @@ class Field extends EntityRepository
             )
             ->setParameter('id', $formId)
             ->orderBy('n.order', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

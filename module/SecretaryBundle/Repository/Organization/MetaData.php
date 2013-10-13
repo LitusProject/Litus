@@ -37,7 +37,7 @@ class MetaData extends EntityRepository
         return null;
     }
 
-    public function findAllBakskeByAcademicYear(AcademicYear $academicYear)
+    public function findAllBakskeByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -49,8 +49,7 @@ class MetaData extends EntityRepository
                 )
             )
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

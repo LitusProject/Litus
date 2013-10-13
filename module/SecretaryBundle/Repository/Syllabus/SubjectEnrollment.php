@@ -15,7 +15,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class SubjectEnrollment extends EntityRepository
 {
-    public function findAllByAcademicAndAcademicYear(Academic $academic, AcademicYear $academicYear)
+    public function findAllByAcademicAndAcademicYearQuery(Academic $academic, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -28,8 +28,7 @@ class SubjectEnrollment extends EntityRepository
             )
             ->setParameter('academic', $academic)
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -50,8 +50,8 @@ class Publication extends EntityRepository
         return null;
     }
 
-	public function findAllActive()
-	{
+    public function findAllActiveQuery()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PublicationBundle\Entity\Publication', 'p')
@@ -59,13 +59,12 @@ class Publication extends EntityRepository
             	$query->expr()->eq('p.deleted', 'false')
             )
             ->orderBy('p.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveWithEdition()
+    public function findAllActiveWithEditionQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $internal = $this->_em->createQueryBuilder();
@@ -80,8 +79,7 @@ class Publication extends EntityRepository
                 )
             )
             ->orderBy('p.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

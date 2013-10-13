@@ -20,7 +20,7 @@ use DateTime,
  */
 class Shift extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -30,13 +30,12 @@ class Shift extends EntityRepository
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllOld()
+    public function findAllOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -46,13 +45,12 @@ class Shift extends EntityRepository
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveByEvent(Event $event)
+    public function findAllActiveByEventQuery(Event $event)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -66,13 +64,12 @@ class Shift extends EntityRepository
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
             ->setParameter('event', $event)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveByUnit(UnitEntity $unit)
+    public function findAllActiveByUnitQuery(UnitEntity $unit)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -86,13 +83,12 @@ class Shift extends EntityRepository
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
             ->setParameter('unit', $unit)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveBetweenDates($startDate, $endDate)
+    public function findAllActiveBetweenDatesQuery($startDate, $endDate)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -108,8 +104,7 @@ class Shift extends EntityRepository
             ->setParameter('now', new DateTime())
             ->setParameter('start_date', $startDate)
             ->setParameter('end_date', $endDate)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -171,7 +166,7 @@ class Shift extends EntityRepository
         );
     }
 
-    public function findAllByPersonAsReponsible(Person $person, AcademicYear $academicYear = null)
+    public function findAllByPersonAsReponsibleQuery(Person $person, AcademicYear $academicYear = null)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder->select('s')
@@ -200,11 +195,10 @@ class Shift extends EntityRepository
         if (null !== $academicYear)
             $query->setParameter('academicYear', $academicYear);
 
-        return $query->getQuery()
-            ->getResult();
+        return $query->getQuery();
     }
 
-    public function findAllByPersonAsVolunteer(Person $person, AcademicYear $academicYear = null)
+    public function findAllByPersonAsVolunteerQuery(Person $person, AcademicYear $academicYear = null)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder->select('s')
@@ -234,8 +228,7 @@ class Shift extends EntityRepository
         if (null !== $academicYear)
             $query->setParameter('academicYear', $academicYear);
 
-        return $query->getQuery()
-            ->getResult();
+        return $query->getQuery();
     }
 
     public function findOneByVolunteer($id)

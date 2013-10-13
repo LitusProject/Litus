@@ -13,19 +13,18 @@ use DateTime,
  */
 class Notification extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NotificationBundle\Entity\Node\Notification', 'n')
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $now = new DateTime();
 
@@ -41,8 +40,7 @@ class Notification extends EntityRepository
             )
             ->setParameter('now', $now)
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -24,13 +24,12 @@ class PianoReservation extends EntityRepository
             )
             ->setParameter('start', new DateTime())
             ->orderBy('r.startDate', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllOld()
+    public function findAllOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -40,13 +39,12 @@ class PianoReservation extends EntityRepository
             )
             ->setParameter('end', new DateTime())
             ->orderBy('r.startDate', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByDates(DateTime $start, DateTime $end)
+    public function findAllByDatesQuery(DateTime $start, DateTime $end)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -65,13 +63,12 @@ class PianoReservation extends EntityRepository
             )
             ->setParameter('start', $start)
             ->setParameter('end', $end)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllConfirmedByDatesAndPerson(DateTime $start, DateTime $end, Person $person)
+    public function findAllConfirmedByDatesAndPersonQuery(DateTime $start, DateTime $end, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -95,13 +92,12 @@ class PianoReservation extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->setParameter('person', $person)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByDatesAndPerson(DateTime $start, DateTime $end, Person $person)
+    public function findAllByDatesAndPersonQuery(DateTime $start, DateTime $end, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -124,8 +120,7 @@ class PianoReservation extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->setParameter('person', $person)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -189,7 +184,7 @@ class PianoReservation extends EntityRepository
         ->setParameter('start_date', $startDate)
         ->setParameter('end_date', $endDate)
         ->setParameter('id', $ignoreId)
-        ->getQuery()
+        ->getQuery();
         ->getResult();
 
         return $resultSet;

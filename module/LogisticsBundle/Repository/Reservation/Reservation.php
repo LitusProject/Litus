@@ -13,17 +13,16 @@ use CommonBundle\Component\Util\EntityRepository;
 class Reservation extends EntityRepository
 {
 
-    public function findAll() {
+    public function findAllQuery() {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
         ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
-        ->getQuery()
-        ->getResult();
+        ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllConflicting($startDate, $endDate, $resource) {
+    public function findAllConflictingQuery($startDate, $endDate, $resource) {
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -38,8 +37,7 @@ class Reservation extends EntityRepository
             ->setParameter('resource', $resource)
             ->setParameter('start_date', $startDate)
             ->setParameter('end_date', $endDate)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -54,7 +52,7 @@ class Reservation extends EntityRepository
      * @param int $ignoreId
      * @return array
      */
-    public function findAllConflictingIgnoringId($startDate, $endDate, $resource, $ignoreId) {
+    public function findAllConflictingIgnoringIdQuery($startDate, $endDate, $resource, $ignoreId) {
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -71,8 +69,7 @@ class Reservation extends EntityRepository
         ->setParameter('start_date', $startDate)
         ->setParameter('end_date', $endDate)
         ->setParameter('id', $ignoreId)
-        ->getQuery()
-        ->getResult();
+        ->getQuery();
 
         return $resultSet;
     }

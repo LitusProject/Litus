@@ -15,7 +15,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class UnitMap extends EntityRepository
 {
-    public function findByUnitAndAcademicYear(Unit $unit, AcademicYear $academicYear)
+    public function findByUnitAndAcademicYearQuery(Unit $unit, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('u')
@@ -31,8 +31,7 @@ class UnitMap extends EntityRepository
             ->setParameter('academicYear', $academicYear)
             ->orderBy('a.lastName', 'ASC')
             ->addOrderBy('a.firstName', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -13,7 +13,7 @@ use BrBundle\Entity\Company as CompanyEntity,
  */
 class Logo extends EntityRepository
 {
-    public function findAllByCompany(CompanyEntity $company)
+    public function findAllByCompanyQuery(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -22,8 +22,7 @@ class Logo extends EntityRepository
                 $query->expr()->eq('l.company', ':company')
             )
             ->setParameter('company', $company)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -51,7 +50,7 @@ class Logo extends EntityRepository
         return null;
     }
 
-    public function findAllByType($type)
+    public function findAllByTypeQuery($type)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -60,8 +59,7 @@ class Logo extends EntityRepository
                 $query->expr()->eq('l.type', ':type')
             )
             ->setParameter('type', $type)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

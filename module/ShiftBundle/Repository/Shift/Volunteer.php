@@ -31,7 +31,7 @@ class Volunteer extends EntityRepository
         return null;
     }
 
-    public function findAllByCountMinimum(AcademicYear $academicYear, $minimum)
+    public function findAllByCountMinimumQuery(AcademicYear $academicYear, $minimum)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
@@ -51,8 +51,7 @@ class Volunteer extends EntityRepository
             ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
             ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
             ->setParameter('min', $minimum)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -87,7 +86,7 @@ class Volunteer extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
@@ -100,8 +99,7 @@ class Volunteer extends EntityRepository
             )
             ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
             ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

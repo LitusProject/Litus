@@ -12,7 +12,7 @@ use CommonBundle\Component\Util\EntityRepository;
  */
 class Category extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
@@ -20,8 +20,7 @@ class Category extends EntityRepository
             ->where(
                 $query->expr()->eq('c.active', 'true')
             )
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

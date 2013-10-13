@@ -12,14 +12,13 @@ use CommonBundle\Component\Util\EntityRepository;
  */
 class Config extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CommonBundle\Entity\General\Config', 'c')
             ->orderBy('c.key', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
