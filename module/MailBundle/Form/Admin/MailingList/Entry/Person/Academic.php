@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Form\Admin\MailingList\Entry;
+namespace MailBundle\Form\Admin\MailingList\Entry\Person;
 
 use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Hidden,
@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     Zend\Form\Element\Submit;
 
 /**
- * The form used to add a new mailing list entry
+ * Add Academic
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */

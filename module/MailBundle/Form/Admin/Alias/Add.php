@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     Zend\Form\Element\Submit;
 
 /**
- * The form used to add a new alias
+ * Send Mail
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */

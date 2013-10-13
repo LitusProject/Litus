@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * This is the entity for a list.
+ * This is the entity for a named list.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Named")
  * @ORM\Table(name="mail.lists_named")

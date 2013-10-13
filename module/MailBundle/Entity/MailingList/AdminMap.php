@@ -20,7 +20,7 @@ use CommonBundle\Entity\User\Person\Academic,
     MailBundle\Entity\MailingList;
 
 /**
- * This entity maps admins to mailinglists.
+ * This entity maps admins to mailing lists.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\AdminMap")
  * @ORM\Table(name="mail.lists_admins")

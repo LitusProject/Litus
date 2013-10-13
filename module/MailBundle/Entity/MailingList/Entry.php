@@ -12,21 +12,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Entity;
+namespace MailBundle\Entity\MailingList;
 
 use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection,
+    MailBundle\Entity\MailingList;
 
 /**
  * This is the entity for a list entry.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Entry")
  * @ORM\Table(name="mail.lists_entries")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "academic"="MailBundle\Entity\Entry\Academic",
- *      "external"="MailBundle\Entity\Entry\External"
+ *      "academic"="MailBundle\Entity\MailingList\Entry\Person\Academic",
+ *      "external"="MailBundle\Entity\MailingList\Entry\Person\External",
+ *      "list"="MailBundle\Entity\MailingList\Entry\MailingList"
  * })
  */
 abstract class Entry
@@ -77,14 +79,4 @@ abstract class Entry
      * @return string
      */
     abstract public function getEmailAddress();
-
-    /**
-     * @return string
-     */
-    abstract public function getFirstName();
-
-    /**
-     * @return string
-     */
-    abstract public function getLastName();
 }
