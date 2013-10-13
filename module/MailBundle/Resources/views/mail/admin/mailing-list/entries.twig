@@ -38,16 +38,43 @@
                 <th width="90px">Actions</th>
             </tr>
             {% for entry in entries %}
-                <tr class="item item-{{ entry.getId() }}">
-                    <td>{{ entry.getFirstName() }}</td>
-                    <td>{{ entry.getLastName() }}</td>
-                    <td>{{ entry.getEmailAddress() }}</td>
-                    <td>
-                        {% if hasAccess('mail_admin_list', 'deleteEntry') %}
-                            <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getFirstName() }} {{ entry.getLastName() }}" class="delete">Delete</a>
-                        {% endif %}
-                    </td>
-                </tr>
+                {% if '' != entry.getFirstName() and '' != entry.getLastName() %}
+                    <tr class="item item-{{ entry.getId() }}">
+                        <td>{{ entry.getFirstName() }}</td>
+                        <td>{{ entry.getLastName() }}</td>
+                        <td>{{ entry.getEmailAddress() }}</td>
+                        <td>
+                            {% if hasAccess('mail_admin_list', 'deleteEntry') %}
+                                <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getFirstName() }} {{ entry.getLastName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        <br />
+
+        {{ forms.renderForm(mailingListForm) }}
+
+        <br style="clear:both">
+
+        <table class="manage">
+            <tr>
+                <th>Name</th>
+                <th width="90px">Actions</th>
+            </tr>
+            {% for entry in entries %}
+                {% if '' != entry.getEntry().getName() %}
+                    <tr class="item item-{{ entry.getId() }}">
+                        <td>{{ entry.getEntry().getName() }}</td>
+                        <td>
+                            {% if hasAccess('mail_admin_list', 'deleteEntry') %}
+                                <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </table>
     </div>

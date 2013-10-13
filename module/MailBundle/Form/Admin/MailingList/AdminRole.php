@@ -22,7 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     Zend\Form\Element\Submit;
 
 /**
- * The form used to add a new mailing list entry
+ * Add Admin Role
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
