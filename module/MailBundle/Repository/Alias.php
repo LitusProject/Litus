@@ -2,7 +2,8 @@
 
 namespace MailBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person\Academic,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Alias

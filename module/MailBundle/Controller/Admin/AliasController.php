@@ -147,7 +147,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             case 'academic':
                 $academics = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findAllByUsername($this->getParam('string'));
+                    ->findAllByName($this->getParam('string'));
                 $listResult = array();
                 foreach ($academics as $academic){
                     $listResult[] = $this->getEntityManager()
