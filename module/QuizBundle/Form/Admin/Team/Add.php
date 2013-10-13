@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Text('number');
-        $field->setLabel('Team number')
+        $field->setLabel('Team Number')
             ->setRequired();
         $this->add($field);
 

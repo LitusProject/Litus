@@ -47,12 +47,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Text('max_points');
-        $field->setLabel('Maximum points')
+        $field->setLabel('Maximum Points')
             ->setRequired();
         $this->add($field);
 
         $field = new Text('order');
-        $field->setLabel('Round number')
+        $field->setLabel('Round Number')
             ->setRequired();
         $this->add($field);
 
