@@ -3,7 +3,7 @@
 namespace BannerBundle\Repository\Node;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Banner

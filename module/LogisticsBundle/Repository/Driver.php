@@ -2,7 +2,7 @@
 
 namespace LogisticsBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Util\EntityRepository,
     CommonBundle\Entity\General\AcademicYear;
 
 /**

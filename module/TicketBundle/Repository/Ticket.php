@@ -3,7 +3,7 @@
 namespace TicketBundle\Repository;
 
 use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     TicketBundle\Entity\Event as EventEntity;
 
 /**

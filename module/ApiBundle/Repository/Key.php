@@ -3,7 +3,7 @@
 namespace ApiBundle\Repository;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Key

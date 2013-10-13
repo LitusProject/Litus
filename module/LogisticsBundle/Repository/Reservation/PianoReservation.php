@@ -4,7 +4,7 @@ namespace LogisticsBundle\Repository\Reservation;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * PianoReservation

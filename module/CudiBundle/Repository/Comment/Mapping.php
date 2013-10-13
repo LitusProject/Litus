@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Comment;
 
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\Comment\Comment as CommentEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Mapping

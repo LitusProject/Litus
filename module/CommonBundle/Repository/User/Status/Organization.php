@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\User\Status;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Organization

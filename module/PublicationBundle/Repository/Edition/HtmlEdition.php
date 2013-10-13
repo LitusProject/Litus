@@ -3,7 +3,7 @@
 namespace PublicationBundle\Repository\Edition;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
 	PublicationBundle\Entity\Publication as PublicationEntity;
 
 /**

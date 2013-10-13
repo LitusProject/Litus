@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Language

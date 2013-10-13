@@ -4,7 +4,7 @@ namespace CommonBundle\Repository\User;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Session

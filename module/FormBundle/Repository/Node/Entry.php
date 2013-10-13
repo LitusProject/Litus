@@ -3,7 +3,7 @@
 namespace FormBundle\Repository\Node;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Entry

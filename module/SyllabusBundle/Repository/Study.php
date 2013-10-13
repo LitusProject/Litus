@@ -3,7 +3,7 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     SyllabusBundle\Entity\Study as StudyEntity;
 

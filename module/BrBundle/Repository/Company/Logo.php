@@ -3,7 +3,7 @@
 namespace BrBundle\Repository\Company;
 
 use BrBundle\Entity\Company as CompanyEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Logo

@@ -5,7 +5,7 @@ namespace CommonBundle\Repository\User\Person\Organization;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * UnitMap

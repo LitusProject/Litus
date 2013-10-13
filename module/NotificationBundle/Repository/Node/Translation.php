@@ -2,7 +2,7 @@
 
 namespace NotificationBundle\Entity\Node;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Translation

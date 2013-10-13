@@ -4,7 +4,7 @@ namespace SecretaryBundle\Repository\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     SyllabusBUndle\Entity\Study;
 
 /**

@@ -3,7 +3,7 @@
 namespace GalleryBundle\Repository\Album;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Album

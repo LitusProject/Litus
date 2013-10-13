@@ -2,7 +2,7 @@
 
 namespace SyllabusBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * StudentEnrollment

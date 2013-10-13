@@ -3,7 +3,7 @@
 namespace FormBundle\Repository;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Field

@@ -3,7 +3,7 @@
 namespace QuizBundle\Repository;
 
 use QuizBundle\Entity\Quiz as QuizEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Team

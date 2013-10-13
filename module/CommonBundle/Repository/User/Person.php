@@ -4,7 +4,7 @@ namespace CommonBundle\Repository\User;
 
 use CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Person

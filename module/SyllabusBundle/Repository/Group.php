@@ -3,7 +3,7 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     SyllabusBundle\Entity\Group as GroupEntity,
     SyllabusBundle\Entity\Study as StudyEntity;
 

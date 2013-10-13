@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sale\Articles\Discounts;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Template

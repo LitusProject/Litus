@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\User\Shibboleth;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Code
