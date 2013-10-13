@@ -27,7 +27,7 @@ class Comment extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s.id')
@@ -51,8 +51,7 @@ class Comment extends EntityRepository
                 $query->expr()->in('c.subject', $ids)
             )
             ->orderBy('c.date', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

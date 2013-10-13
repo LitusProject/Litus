@@ -14,7 +14,7 @@ use CommonBundle\Entity\User\Person,
  */
 class Session extends EntityRepository
 {
-    public function findAllExpired()
+    public function findAllExpiredQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -26,13 +26,12 @@ class Session extends EntityRepository
                 )
             )
             ->setParameter('expirationTime', new DateTime('now'))
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveByPerson(Person $person)
+    public function findAllActiveByPersonQuery(Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -48,8 +47,7 @@ class Session extends EntityRepository
             )
             ->setParameter('person', $person)
             ->setParameter('expirationTime', new DateTime('now'))
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

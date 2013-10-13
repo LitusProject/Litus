@@ -15,7 +15,7 @@ use CommonBundle\Component\Util\EntityRepository,
  */
 class Entry extends EntityRepository
 {
-    public function findAllByAcademicYear(AcademicYear $year) {
+    public function findAllByAcademicYearQuery(AcademicYear $year) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
@@ -25,13 +25,12 @@ class Entry extends EntityRepository
             ->setParameter('year', $year)
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllUngroupedStudies() {
+    public function findAllUngroupedStudiesQuery() {
         $query = $this->_em->createQueryBuilder();
         $subQuery = $this->_em->createQueryBuilder();
 
@@ -68,13 +67,12 @@ class Entry extends EntityRepository
                 )
             )
             ->orderBy('s.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByGroupAndAcademicYear(Group $group, AcademicYear $year) {
+    public function findAllByGroupAndAcademicYearQuery(Group $group, AcademicYear $year) {
         $query = $this->_em->createQueryBuilder();
 
         $subQuery = $this->_em->createQueryBuilder();
@@ -101,13 +99,12 @@ class Entry extends EntityRepository
             ->setParameter('year', $year)
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByStudyAndAcademicYear(Study $study, AcademicYear $year) {
+    public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $year) {
         $query = $this->_em->createQueryBuilder();
 
         $resultSet = $query->select('e')
@@ -122,8 +119,7 @@ class Entry extends EntityRepository
             ->setParameter('year', $year)
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
