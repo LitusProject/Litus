@@ -95,7 +95,7 @@
     }
 
     .tabs {
-        width: @layoutWidth - (@leftSidebarWidth + 5 * @defaultSpacing) + 200 !important;
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 200 - @fieldsetLegendPosition;
     }
 
     .modal {
@@ -199,7 +199,7 @@
     }
 
     .tabs {
-        width: @layoutWidth - (@leftSidebarWidth + 5 * @defaultSpacing) + 400 !important;
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 400 - @fieldsetLegendPosition;
     }
 
     .modal {

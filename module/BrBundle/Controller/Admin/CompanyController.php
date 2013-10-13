@@ -37,19 +37,24 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field'))
-            $companies = $this->_search();
 
-        if (!isset($companies)) {
-            $companies = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company')
-                ->findAll();
+        if (null === $this->getParam('field')) {
+            $paginator = $this->paginator()->createFromEntity(
+                'BrBundle\Entity\Company',
+                $this->getParam('page'),
+                array(
+                    'active' => true,
+                ),
+                array(
+                    'name'=> 'ASC',
+                )
+            );
+        } else {
+            $paginator = $this->paginator()->createFromArray(
+                $this->_search(),
+                $this->getParam('page')
+            );
         }
-
-        $paginator = $this->paginator()->createFromArray(
-            $companies,
-            $this->getParam('page')
-        );
 
         return new ViewModel(
             array(

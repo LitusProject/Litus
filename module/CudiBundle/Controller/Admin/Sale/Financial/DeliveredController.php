@@ -238,10 +238,8 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Supplier')
-                ->findAll(),
+        $paginator = $this->paginator()->createFromEntity(
+            'CudiBundle\Entity\Supplier',
             $this->getParam('page')
         );
 
