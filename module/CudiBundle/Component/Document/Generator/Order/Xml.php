@@ -36,9 +36,7 @@ class Xml
     private $_order;
 
     /**
-     * Create a Order XML Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Stock\Order $order The order
      */
     public function __construct(EntityManager $entityManager, Order $order)

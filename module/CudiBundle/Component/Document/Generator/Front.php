@@ -37,9 +37,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     private $_article;
 
     /**
-     * Create a new Article Front Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Sale\Article $article The article
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
      */
@@ -49,8 +47,8 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.pdf_generator_path');
 
-           parent::__construct(
-               $entityManager,
+        parent::__construct(
+            $entityManager,
             $filePath . '/article/front.xsl',
             $file->getFilename()
         );

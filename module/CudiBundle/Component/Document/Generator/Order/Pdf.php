@@ -39,9 +39,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     private $_sortOrder;
 
     /**
-     * Create a new Order PDF Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Stock\Order $order The order
      * @param string $sortOrder
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
