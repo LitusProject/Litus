@@ -29,10 +29,10 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findAll(),
+            ->findAllQuery(),
             $this->getParam('page')
         );
 
