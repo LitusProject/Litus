@@ -173,7 +173,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $mail->add($field);
 
         $mailTabs = new Tabs('mail_languages');
-        $mailTabs->setAttribute('class', 'half_width');
         $mail->add($mailTabs);
 
         $mailTabContent = new TabContent('mail_tab_content');
@@ -231,7 +230,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $reminder->add($field);
 
         $reminderMailTabs = new Tabs('reminder_mail_languages');
-        $reminderMailTabs->setAttribute('class', 'half_width');
         $reminder->add($reminderMailTabs);
 
         $reminderMailTabContent = new TabContent('reminder_mail_tab_content');

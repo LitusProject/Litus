@@ -29,6 +29,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('form_admin_form_field', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Fields</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the fields!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_form_field', {"action": "manage", "id": formSpecification.getId() }) }}">&rarr; Manage Fields</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
 

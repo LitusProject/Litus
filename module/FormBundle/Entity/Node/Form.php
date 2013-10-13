@@ -121,6 +121,11 @@ abstract class Form extends \CommonBundle\Entity\Node
     private $translations;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param \CommonBundle\Entity\User\Person $person
      * @param \DateTime $startDate
      * @param \DateTime $endDate
@@ -445,15 +450,15 @@ abstract class Form extends \CommonBundle\Entity\Node
      * Indicates whether the given person can view this form.
      *
      * @param \CommonBundle\Entity\User\Persons $person The person to check.
-     * @param \Doctrine\ORM\EntityManager $entityManager The entity manager to use.
      * @return boolean
      */
-    public function canBeViewedBy(Person $person = null, EntityManager $entityManager)
+    public function canBeViewedBy(Person $person = null)
     {
         if (null === $person)
             return false;
 
-        $result = $entityManager->getRepository('FormBundle\Entity\ViewerMap')
+        $result = $this->_entityManager
+            ->getRepository('FormBundle\Entity\ViewerMap')
             ->findOneByPersonAndForm($person, $this);
 
         return $result !== null;
@@ -498,6 +503,16 @@ abstract class Form extends \CommonBundle\Entity\Node
             }
         }
         return '';
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \FormBundle\Entity\Node\Form
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
     }
 
     /**

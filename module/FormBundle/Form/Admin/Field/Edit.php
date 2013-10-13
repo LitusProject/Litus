@@ -52,6 +52,7 @@ class Edit extends Add
         $this->get('visibility')->get('visible_if')->setAttribute('options', $this->_getVisibilityOptions());
 
         $this->remove('submit');
+        $this->remove('submit_repeat');
 
         $field = new Submit('submit');
         $field->setValue('Save')

@@ -44,9 +44,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
+        foreach($paginator as $form)
+            $form->setEntityManager($this->getEntityManager());
+
         return new ViewModel(
             array(
-                'entityManager' => $this->getEntityManager(),
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
@@ -199,6 +201,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
+
+         $formSpecification->setEntityManager($this->getEntityManager());
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(

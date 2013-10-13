@@ -44,7 +44,7 @@
                             {% if hasAccess('form_view', 'view') %}
                                 <a href="{{ url('form_view', {"action": "view", "id": form.getId()}) }}" class="view">View Form</a>
                             {% endif %}
-                            {% if form.canBeViewedBy(authenticatedPerson, entityManager) %}
+                            {% if form.canBeViewedBy(authenticatedPerson) %}
                                 {% if hasAccess('form_manage', 'view') %}
                                     <a href="{{ url('form_manage', {"action": "view", "id": form.getId()}) }}" class="view">View Results</a>
                                 {% endif %}
