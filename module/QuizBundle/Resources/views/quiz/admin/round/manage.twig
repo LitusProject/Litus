@@ -18,6 +18,27 @@
         </div>
     </div>
 
+    <div class="flashmessage info_message full_width round_sort_saving hide">
+        <div class="title">Saving</div>
+        <div class="content">
+            <p>Saving the ordering of the rounds.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage success_message full_width round_sort_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The rounds were successfully reordered.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage error_message full_width round_sort_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to reorder the rounds.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <h1>{{ quiz.getName() }}: Rounds</h1>
         <table class="manage">
@@ -49,6 +70,8 @@
             </tbody>
         </table>
     {% include 'admin/partials/paginationControl.twig' %}
+        <button class="js-sortable-save edit hide">Save</button>
+        <button class="js-sortable-cancel delete hide">Cancel</button>
     </div>
 
     <div class="modal hide fade" id="removeRound">
@@ -122,5 +145,32 @@
             $('.round_remove_error').removeClass('hide');
             $('#removeRound').modal('hide');
         }
+    </script>
+    <script>
+        $('.manage').sortableTable({
+            buttons: {
+                save: $('.js-sortable-save'),
+                cancel: $('.js-sortable-cancel')
+            },
+            submitUrl: "{{ url('quiz_admin_round', {"action": "sort", "quizid": quiz.getId()}) }}",
+            callbacks: {
+                saveSuccess: function() {
+                    $('.manage tbody tr').each(function(i) {
+                        $(this).find('td:first-child').text(i+1);
+                    });
+                    $('.flashmessage').addClass('hide');
+                    $('.round_sort_success').removeClass('hide');
+                },
+                saveError: function() {
+                    $('.flashmessage').addClass('hide');
+                    $('.round_sort_error').removeClass('hide');
+                },
+                beforeSave: function() {
+                    $('.flashmessage').addClass('hide');
+                    $('.round_sort_saving').removeClass('hide');
+                }
+            }
+
+        });
     </script>
 {% endblock %}

@@ -36,9 +36,6 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $name);
 
-        $this->get('languages')
-            ->setAttribute('class', $this->get('languages')->getAttribute('class') . ' half_width');
-
         $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
 
         $this->remove('submit');
