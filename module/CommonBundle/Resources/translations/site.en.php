@@ -47,6 +47,7 @@ return array(
     'You have been successfully logged in!' => 'You have been successfully logged in!',
     'The given username and password did not match. Please try again.' => 'The given username and password did not match. Please try again.',
     'You have been successfully logged out!' => 'You have been successfully logged out!',
+    'Something went wrong while logging you in. Please try again later.' => 'Something went wrong while logging you in. Please try again later.',
 
     'Activate' => 'Activate',
     'Password' => 'Password',
