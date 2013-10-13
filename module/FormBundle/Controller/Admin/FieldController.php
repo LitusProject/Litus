@@ -219,13 +219,23 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'form_admin_form_field',
-                    array(
-                        'action' => 'manage',
-                        'id' => $formSpecification->getId(),
-                    )
-                );
+                if (isset($formData['submit_repeat'])) {
+                    $this->redirect()->toRoute(
+                        'form_admin_form_field',
+                        array(
+                            'action' => 'add',
+                            'id' => $formSpecification->getId(),
+                        )
+                    );
+                } else {
+                    $this->redirect()->toRoute(
+                        'form_admin_form_field',
+                        array(
+                            'action' => 'manage',
+                            'id' => $formSpecification->getId(),
+                        )
+                    );
+                }
 
                 return new ViewModel();
             }

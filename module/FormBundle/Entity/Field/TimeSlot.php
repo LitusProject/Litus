@@ -57,17 +57,13 @@ class TimeSlot extends Field
      * @param string $visibilityValue
      * @param \DateTime $startDate
      * @param \DateTime $endDate
-     * @param string $location
-     * @param string $extraInformation
      */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, DateTime $startDate, DateTime $endDate, $location, $extraInformation)
+    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, DateTime $startDate, DateTime $endDate)
     {
         parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
 
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->location = $location;
-        $this->extraInformation = $extraInformation;
     }
 
     /**

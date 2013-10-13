@@ -164,7 +164,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $timeslot_form->add($field);
 
         $timeslotTabs = new Tabs('timeslot_languages');
-        $timeslotTabs->setAttribute('class', 'half_width');
         $timeslot_form->add($timeslotTabs);
 
         $timeslotTabContent = new TabContent('timeslot_tab_content');
@@ -204,6 +203,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
+            ->setAttribute('class', 'field_add');
+        $this->add($field);
+
+        $field = new Submit('submit_repeat');
+        $field->setValue('Add And Repeat')
             ->setAttribute('class', 'field_add');
         $this->add($field);
     }
