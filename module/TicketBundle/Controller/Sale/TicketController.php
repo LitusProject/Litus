@@ -30,11 +30,12 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('TicketBundle\Entity\Ticket')
-                ->findAllByEvent($event),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'TicketBundle\Entity\Ticket',
+            $this->getParam('page'),
+            array(
+                'event' => $event,
+            )
         );
 
         return new ViewModel(
