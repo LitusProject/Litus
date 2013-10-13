@@ -41,6 +41,18 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
 
+        if ($formSpecification->getType() == 'doodle') {
+            $this->redirect()->toRoute(
+                'form_view',
+                array(
+                    'action'   => 'doodle',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $entries = null;
 
         $now = new DateTime();
@@ -168,15 +180,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 if ($formSpecification->hasMail()) {
-                    $mailAddress = $formSpecification->getMailFrom();
+                    $mailAddress = $formSpecification->getMail()->getFrom();
 
                     $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($this->getEntityManager(), $formEntry, $this->getLanguage()))
+                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
                         ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMailSubject())
+                        ->setSubject($formSpecification->getMail()->getSubject())
                         ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
-                    if ($formSpecification->getMailBcc())
+                    if ($formSpecification->getMail()->getBcc())
                         $mail->addBcc($mailAddress);
 
                     if ('development' != getenv('APPLICATION_ENV'))
@@ -210,6 +222,38 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'entries'       => $entries,
             )
         );
+    }
+
+    public function doodleAction()
+    {
+        if (!($formSpecification = $this->_getForm()))
+            return new ViewModel();
+
+        if ($formSpecification->getType() == 'form') {
+            $this->redirect()->toRoute(
+                'form_view',
+                array(
+                    'action'   => 'doodle',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $entries = null;
+
+        $now = new DateTime();
+        if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
+            return new ViewModel(
+                array(
+                    'message'       => 'This form is currently closed.',
+                    'specification' => $formSpecification,
+                )
+            );
+        }
+
+        return new ViewModel();
     }
 
     public function editAction()
@@ -288,15 +332,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 if ($entry->getForm()->hasMail()) {
-                    $mailAddress = $entry->getForm()->getMailFrom();
+                    $mailAddress = $entry->getForm()->getMail()->getFrom();
 
                     $mail = new Message();
-                    $mail->setBody($entry->getForm()->getCompletedMailBody($this->getEntityManager(), $entry, $this->getLanguage()))
+                    $mail->setBody($entry->getForm()->getCompletedMailBody($entry, $this->getLanguage()))
                         ->setFrom($mailAddress)
-                        ->setSubject($entry->getForm()->getMailSubject())
+                        ->setSubject($entry->getForm()->getMail()->getSubject())
                         ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
 
-                    if ($entry->getForm()->getMailBcc())
+                    if ($entry->getForm()->getMail()->getBcc())
                         $mail->addBcc($mailAddress);
 
                     if ('development' != getenv('APPLICATION_ENV'))
@@ -380,6 +424,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->getResponse()->setStatusCode(404);
             return;
         }
+
+        $form->setEntityManager($this->getEntityManager());
 
         return $form;
     }

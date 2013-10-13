@@ -14,7 +14,9 @@
 
 namespace FormBundle\Entity\Node\Form;
 
-use Doctrine\ORM\Mapping as ORM,
+use CommonBundle\Entity\General\Language,
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Node\Entry,
     FormBundle\Entity\Node\Form as BaseForm;
 
 /**
@@ -25,12 +27,30 @@ use Doctrine\ORM\Mapping as ORM,
  */
 class Form extends BaseForm
 {
-
     /**
      * @return string
      */
     public function getType()
     {
         return 'form';
+    }
+
+    /**
+     * @param \FormBundle\Entity\Node\Entry $entry
+     * @param \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
+    protected function _getSummary(Entry $entry, Language $language) {
+        $fieldEntries = $this->_entityManager
+            ->getRepository('FormBundle\Entity\Entry')
+            ->findAllByFormEntry($entry);
+
+        $result = '';
+        foreach ($fieldEntries as $fieldEntry) {
+            $result = $result . $fieldEntry->getField()->getLabel($language) . ': ' . $fieldEntry->getValueString($language) . '
+';
+        }
+
+        return $result;
     }
 }

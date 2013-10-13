@@ -123,7 +123,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    private $_entityManager;
+    protected $_entityManager;
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
@@ -328,42 +328,6 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \FormBundle\Entity\Node\Entry $entry
-     * @param \CommonBundle\Entity\General\Language $language
-     * @return string
-     */
-    /*public function getCompletedMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
-        $body = $this->getMailBody();
-        $body = str_replace('%id%', $entry->getId(), $body);
-        $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
-        $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
-
-        $body = str_replace('%entry_summary%', $this->_getSummary($entityManager, $entry, $language), $body);
-
-        return $body;
-    }
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \FormBundle\Entity\Node\Entry $entry
-     * @param \CommonBundle\Entity\General\Language $language
-     * @return string
-     */
-    /*private function _getSummary(EntityManager $entityManager, Entry $entry, Language $language) {
-        $fieldEntries = $entityManager->getRepository('FormBundle\Entity\Entry')
-            ->findAllByFormEntry($entry);
-
-        $result = '';
-        foreach ($fieldEntries as $fieldEntry) {
-            $result = $result . $fieldEntry->getField()->getLabel($language) . ': ' . $fieldEntry->getValueString($language) . '
-';
-        }
-
-        return $result;
-    }
-
-    /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
      * @return string
@@ -519,4 +483,27 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @return string
      */
     abstract function getType();
+
+    /**
+     * @param \FormBundle\Entity\Node\Entry $entry
+     * @param \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
+    public function getCompletedMailBody(Entry $entry, Language $language) {
+        $body = $this->getMail()->getContent($language);
+        $body = str_replace('%id%', $entry->getId(), $body);
+        $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
+        $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
+
+        $body = str_replace('%entry_summary%', $this->_getSummary($entry, $language), $body);
+
+        return $body;
+    }
+
+    /**
+     * @param \FormBundle\Entity\Node\Entry $entry
+     * @param \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
+    abstract protected function _getSummary(Entry $entry, Language $language);
 }

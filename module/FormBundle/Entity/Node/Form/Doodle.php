@@ -14,10 +14,12 @@
 
 namespace FormBundle\Entity\Node\Form;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Mail\Mail,
+    FormBundle\Entity\Node\Entry,
     FormBundle\Entity\Node\Form as BaseForm;
 
 /**
@@ -103,30 +105,21 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \FormBundle\Entity\Node\Entry $entry
-     * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    /*public function getCompletedReminderMailBody(EntityManager $entityManager, Entry $entry, Language $language) {
-        $body = $this->getReminderMailBody();
-        $body = str_replace('%id%', $entry->getId(), $body);
-        $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
-        $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
-
-        $body = str_replace('%entry_summary%', $this->_getReminderSummary($entityManager, $entry, $language), $body);
-
-        return $body;
+    public function getType()
+    {
+        return 'doodle';
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \FormBundle\Entity\Node\Entry $entry
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    /*private function _getReminderSummary(EntityManager $entityManager, Entry $entry, Language $language) {
-        $fieldEntries = $entityManager->getRepository('FormBundle\Entity\Entry')
+    protected function _getSummary(Entry $entry, Language $language) {
+        $fieldEntries = $this->_entityManager
+            ->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
 
         $result = '';
@@ -136,13 +129,5 @@ class Doodle extends BaseForm
         }
 
         return $result;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return 'doodle';
     }
 }
