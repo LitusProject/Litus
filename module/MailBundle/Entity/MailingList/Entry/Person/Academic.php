@@ -14,7 +14,8 @@
 
 namespace MailBundle\Entity\MailingList\Entry\Person;
 
-use Doctrine\ORM\Mapping as ORM,
+use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
+    Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList;
 
 /**
@@ -39,7 +40,7 @@ class Academic extends \MailBundle\Entity\MailingList\Entry\Person
      * @param \MailBundle\Entity\MailingList $list The list for this entry
      * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to add
      */
-    public function __construct(MailingList $list, \CommonBundle\Entity\User\Person\Academic $academic)
+    public function __construct(MailingList $list, AcademicEntity $academic)
     {
         parent::__construct($list);
         $this->academic = $academic;
