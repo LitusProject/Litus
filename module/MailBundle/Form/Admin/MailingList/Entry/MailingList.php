@@ -91,7 +91,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
         if (!$editor) {
             $listsArray = array();
             foreach ($lists as $list) {
-                if ($list->canBeEditedBy($person))
+                if ($list->canBeEditedBy($this->_authenticatedPerson))
                     $listsArray[] = $list;
             }
         } else {
