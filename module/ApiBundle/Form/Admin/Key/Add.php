@@ -59,13 +59,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'hostname',
+                            'name' => 'Hostname',
                         ),
                     ),
                 )
             )
         );
-        
+
         return $inputFilter;
     }
 }

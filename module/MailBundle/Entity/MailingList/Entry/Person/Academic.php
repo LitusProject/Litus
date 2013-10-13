@@ -12,20 +12,18 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Entity\Entry;
+namespace MailBundle\Entity\MailingList\Entry\Person;
 
-use CommonBundle\Entity\User\Person\Academic as AcademicPerson,
-    Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection,
+use Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList;
 
 /**
- * This is the entity for a list entry.
+ * This is the entity for the list entry of an academic.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry\Academic")
- * @ORM\Table(name="mail.lists_entries_academic")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Entry\Person\Academic")
+ * @ORM\Table(name="mail.lists_entries_people_academic")
  */
-class Academic extends \MailBundle\Entity\Entry
+class Academic extends \MailBundle\Entity\MailingList\Entry\Person
 {
     /**
      * @var CommonBundle\Entity\User\Person\Academic The academic associated with this entry.
@@ -36,12 +34,12 @@ class Academic extends \MailBundle\Entity\Entry
     private $academic;
 
     /**
-     * Creates a new list entry for the given list with the given academic.
+     * Creates a new list entry for the given list with the given academic?
      *
-     * @param \MailBundle\Entity\MailingList $list The list for this entry.
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to add.
+     * @param \MailBundle\Entity\MailingList $list The list for this entry
+     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to add
      */
-    public function __construct(MailingList $list, AcademicPerson $academic)
+    public function __construct(MailingList $list, \CommonBundle\Entity\User\Person\Academic $academic)
     {
         parent::__construct($list);
         $this->academic = $academic;

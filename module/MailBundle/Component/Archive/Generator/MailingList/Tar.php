@@ -63,7 +63,7 @@ class Tar
 
         foreach($this->_lists as $list) {
             $entries = $this->_entityManager
-                ->getRepository('MailBundle\Entity\Entry')
+                ->getRepository('MailBundle\Entity\MailingList\Entry')
                 ->findByList($list);
 
             $entriesString = '';
