@@ -20,7 +20,21 @@
     {% include 'cudi/admin/sale/article/partials/years.twig' %}
 
     {% include 'cudi/admin/sale/article/partials/semester.twig' %}
-
+	<aside>
+        {% if hasAccess('cudi_admin_sales_article_template', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Article Discount Templates</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the templates for discounts of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_sales_article_template', {"action": "manage"}) }}">&rarr; Manage Article Discount Templates</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
     <div id="controller_action">
         <div id="article_search" style="display:none;">
             <div style="padding:4px;text-align:right">
