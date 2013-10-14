@@ -19,7 +19,6 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    CudiBundle\Component\Validator\Sales\Article\Discounts\Exists as DiscountValidator,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager,
@@ -50,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-		
+
         $field = new Text('name');
         $field->setAttribute('id', 'template_name')
             ->setLabel('Name')
@@ -159,6 +158,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'method',
+                    'required' => $required,
+                )
+            )
+        );
+
+		$inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'name',
+                    'required' => $required,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'rounding',
                     'required' => $required,
                 )
             )
