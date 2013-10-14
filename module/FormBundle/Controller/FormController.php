@@ -253,12 +253,109 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $person = $this->getAuthentication()->getPersonObject();
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, null);
+
+        $formEntries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($formSpecification);
+
+        $occupiedSlots = array();
+        foreach($formEntries as $formEntry) {
+            if ($formEntry->getCreationPerson() == $person)
+                continue;
+
+            foreach($formEntry->getFieldEntries() as $fieldEntry) {
+                $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
+            }
+        }
+
+        $formEntry = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findOneByFormAndPerson($formSpecification, $person);
+
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry, $occupiedSlots);
+
+        if ($this->getRequest()->isPost() && $formSpecification->isEditableByUser()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $guestInfo = null;
+                // Create non-member entry
+                if ($person === null) {
+                    $guestInfo = new GuestInfo(
+                        $formData['first_name'],
+                        $formData['last_name'],
+                        $formData['email']
+                    );
+                    $this->getEntityManager()->persist($guestInfo);
+                }
+
+                if (null === $formEntry) {
+                    $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
+                    $this->getEntityManager()->persist($formEntry);
+                } else {
+                    foreach($formEntry->getFieldEntries() as $fieldEntry) {
+                        $this->getEntityManager()->remove($fieldEntry);
+                    }
+                    $this->getEntityManager()->flush();
+                }
+
+                foreach ($formSpecification->getFields() as $field) {
+                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
+                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
+                        $formEntry->addFieldEntry($fieldEntry);
+                        $this->getEntityManager()->persist($fieldEntry);
+
+                        if (!$formSpecification->isMultiple())
+                            break;
+                    }
+                }
+
+                $this->getEntityManager()->flush();
+
+                if ($formSpecification->hasMail()) {
+                    $mailAddress = $formSpecification->getMail()->getFrom();
+
+                    $mail = new Message();
+                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
+                        ->setFrom($mailAddress)
+                        ->setSubject($formSpecification->getMail()->getSubject())
+                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
+
+                    if ($formSpecification->getMail()->getBcc())
+                        $mail->addBcc($mailAddress);
+
+                    if ('development' != getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
+                }
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'Your entry has been recorded.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'doodle',
+                        'id'       => $formSpecification->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
 
         return new ViewModel(
             array(
                 'specification' => $formSpecification,
                 'form'          => $form,
+                'occupiedSlots' => $occupiedSlots,
             )
         );
     }

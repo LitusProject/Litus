@@ -61,4 +61,24 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
+    public function findOneByFormAndPerson($form, $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
+            ->orderBy('f.creationTime', 'DESC')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('f.form', ':form'),
+                    $query->expr()->eq('f.creationPerson', ':person')
+                )
+            )
+            ->setParameter('form', $form)
+            ->setParameter('person', $person)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
 }

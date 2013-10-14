@@ -16,25 +16,63 @@
             {{ translate(message) }}
         </div>
     {% else %}
-        <table class="table table-bordered">
-            <tr>
-                <th>{{ translate('Date') }}</th>
-                <th width="200px">{{ translate('Subscribe') }}</th>
-            </tr>
-            {% for field in specification.getFields() %}
+        {% do form.prepare() %}
+        {% autoescape false %}{{ form().openTag(form) }}{% endautoescape %}
+            {{ formElement(form.get('csrf')) }}
+            <table class="table table-bordered table-striped" id="doodle">
                 <tr>
-                    <td>
-                        {% if field.getStartDate().format('d/M/Y') == field.getEndDate().format('d/M/Y') %}
-                            {{ dateLocalized(field.getStartDate(), 'd MMMM Y: H:mm') }} - {{ dateLocalized(field.getEndDate(), 'H:mm') }}
-                        {% else %}
-                            {{ dateLocalized(field.getStartDate(), 'd MMMM Y H:mm') }} - {{ dateLocalized(field.getEndDate(), 'd MMMM Y H:mm') }}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {{ formElement(form.get('field-' ~ field.getId())) }}
-                    </td>
+                    <th>{{ translate('Date') }}</th>
+                    <th width="200px">{{ translate('Subscribe') }}</th>
                 </tr>
-            {% endfor %}
-        </table>
+                {% for field in specification.getFields() %}
+                    <tr>
+                        <td>
+                            {% if field.getStartDate().format('d/M/Y') == field.getEndDate().format('d/M/Y') %}
+                                {{ dateLocalized(field.getStartDate(), 'd MMMM Y: H:mm') }} - {{ dateLocalized(field.getEndDate(), 'H:mm') }}
+                            {% else %}
+                                {{ dateLocalized(field.getStartDate(), 'd MMMM Y H:mm') }} - {{ dateLocalized(field.getEndDate(), 'd MMMM Y H:mm') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if occupiedSlots[field.getId()] %}
+                                {% if specification.getNamesVisibleForOthers() %}
+                                    <i>{{ occupiedSlots[field.getId()] }}</i>
+                                {% else %}
+                                    <i>{{ translate('Occupied') }}</i>
+                                {% endif %}
+                            {% else %}
+                                <label class="checkbox" style="margin: 2px 0">
+                                    {{ formElement(form.get('field-' ~ field.getId())) }}
+                                </label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% if specification.isEditableByUser() %}
+                <div class="form-actions">
+                    <div class="row">
+                        <span class="label"></span>
+                        <span class="field">
+                            {{ formElement(form.get('submit')) }}
+                        </span>
+                    </div>
+                </div>
+            {% endif %}
+        {% autoescape false %}{{ form().closeTag() }}{% endautoescape %}
     {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if not specification.isMultiple() %}
+                $('#doodle input[type=checkbox]').click(function () {
+                    $('#doodle input[type=checkbox]').prop('checked', false);
+                    $(this).prop('checked', true);
+                });
+            {% endif %}
+        });
+    </script>
 {% endblock %}

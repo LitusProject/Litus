@@ -15,7 +15,6 @@
 namespace FormBundle\Form\SpecifiedForm;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\Radio,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -41,14 +40,20 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_form;
 
     /**
+     * @var array
+     */
+    private $_occupiedSlots;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \CommonBundle\Entity\General\Language $language
      * @param \FormBundle\Entity\Node\Form $form
      * @param \CommonBundle\Entity\Users\Person|null $person
      * @param \FormBundle\Entity\Node\Entry|null $entry
+     * @param array $occupiedSlots
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, $name = null)
+    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, array $occupiedSlots, $name = null)
     {
         parent::__construct($name);
 
@@ -71,6 +76,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->_form = $form;
+        $this->_occupiedSlots = $occupiedSlots;
 
         // Fetch the fields through the repository to have the correct order
         $fields = $entityManager
@@ -80,6 +86,10 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         foreach ($fields as $fieldSpecification) {
             if ($fieldSpecification instanceof TimeSlotField) {
                 $field = new Checkbox('field-' . $fieldSpecification->getId());
+                $field->setAttribute('class', 'checkbox');
+
+                if (!$form->isEditableByUser())
+                    $field->setAttribute('disabled', 'disabled');
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
@@ -87,9 +97,82 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($field);
         }
 
-        $field = new Submit('submit');
-        $field->setValue($form->getSubmitText($language))
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
+        if ($form->isEditableByUser()) {
+            $field = new Submit('submit');
+            $field->setValue($form->getSubmitText($language))
+                ->setAttribute('class', 'btn btn-primary');
+            $this->add($field);
+        }
+
+        if (null !== $entry)
+            $this->_populateFromEntry($entry);
+
+        $this->_disableOccupiedSlots($occupiedSlots);
+    }
+
+    private function _populateFromEntry(Entry $entry)
+    {
+        $formData = array();
+
+        if ($entry->isGuestEntry()) {
+            $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
+            $formData['last_name'] = $entry->getGuestInfo()->getLastName();
+            $formData['email'] = $entry->getGuestInfo()->getEmail();
+        }
+
+        foreach ($entry->getFieldEntries() as $fieldEntry) {
+            $formData['field-' . $fieldEntry->getField()->getId()] = true;
+        }
+
+        $this->setData($formData);
+    }
+
+    private function _disableOccupiedSlots(array $occupiedSlots)
+    {
+        foreach($occupiedSlots as $id => $slot) {
+            $this->get('field-' . $id)->setAttribute('disabled', 'disabled');
+        }
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
+
+        foreach ($this->_form->getFields() as $fieldSpecification) {
+            if ($fieldSpecification instanceof TimeSlotField) {
+                if (isset($this->_occupiedSlots[$fieldSpecification->getId()])) {
+                    $inputFilter->add(
+                        $factory->createInput(
+                            array(
+                                'name'     => 'field-' . $fieldSpecification->getId(),
+                                'required' => false,
+                                'validators' => array(
+                                    array(
+                                        'name' => 'Identical',
+                                        'options' => array(
+                                            'token' => '0',
+                                        ),
+                                    ),
+                                )
+                            )
+                        )
+                    );
+                } else {
+                    $inputFilter->add(
+                        $factory->createInput(
+                            array(
+                                'name'     => 'field-' . $fieldSpecification->getId(),
+                                'required' => false,
+                            )
+                        )
+                    );
+                }
+            } else {
+                throw new UnsupportedTypeException('This field type is unknown!');
+            }
+        }
+
+        return $inputFilter;
     }
 }

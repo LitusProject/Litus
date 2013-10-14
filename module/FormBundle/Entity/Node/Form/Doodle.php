@@ -18,6 +18,7 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
+    IntlDateFormatter,
     FormBundle\Entity\Mail\Mail,
     FormBundle\Entity\Node\Entry,
     FormBundle\Entity\Node\Form as BaseForm;
@@ -136,10 +137,32 @@ class Doodle extends BaseForm
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
 
+        $formatterDate = new IntlDateFormatter(
+            $language->getAbbrev(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'd MMMM Y'
+        );
+
+        $formatterHour = new IntlDateFormatter(
+            $language->getAbbrev(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'H:mm'
+        );
+
         $result = '';
         foreach ($fieldEntries as $fieldEntry) {
-            $result = $result . $fieldEntry->getField()->getLabel($language) . ': ' . $fieldEntry->getValueString($language) . '
-';
+            if ($fieldEntry->getField()->getStartDate()->format('d/M/Y') == $fieldEntry->getField()->getEndDate()->format('d/M/Y')) {
+                $result .= $formatterDate->format($fieldEntry->getField()->getStartDate()) . ': ' . $formatterHour->format($fieldEntry->getField()->getStartDate()) . ' - ' . $formatterHour->format($fieldEntry->getField()->getEndDate());
+            } else {
+                $result .= $formatterDate->format($fieldEntry->getField()->getStartDate()) . ' ' . $formatterHour->format($fieldEntry->getField()->getStartDate()) . ' - ' . $formatterDate->format($fieldEntry->getField()->getEndDate()) . ' ' . $formatterHour->format($fieldEntry->getField()->getEndDate());
+            }
+            $result .= PHP_EOL;
         }
 
         return $result;

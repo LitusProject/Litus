@@ -47,8 +47,7 @@ class Form extends BaseForm
 
         $result = '';
         foreach ($fieldEntries as $fieldEntry) {
-            $result = $result . $fieldEntry->getField()->getLabel($language) . ': ' . $fieldEntry->getValueString($language) . '
-';
+            $result .= $fieldEntry->getField()->getLabel($language) . ': ' . $fieldEntry->getValueString($language) . PHP_EOL;
         }
 
         return $result;
