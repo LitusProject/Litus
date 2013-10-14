@@ -2,7 +2,7 @@
 
 namespace MailBundle\Repository\Entry;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Academic

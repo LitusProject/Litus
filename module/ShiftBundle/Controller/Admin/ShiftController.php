@@ -279,13 +279,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $shifts = $this->_search();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($shifts, $numResults);
+        $shifts = $this->_search()
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($shifts as $shift) {
@@ -306,24 +307,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    
+    /**
+    *   @return \Doctrine\ORM\Query
+    */
     private function _search()
     {
         switch($this->getParam('field')) {
             case 'shiftname':
                 return $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift')
-                    ->findByShiftName($this->getParam('string'));
-            case 'event':
-                $events = $this->getEntityManager()
-                    ->getRepository('CalendarBundle\Entity\Node\Event')
-                    ->findByName($this->getParam('string'));
-                $result = array();
-                foreach($events as $event){
-                    $result[] = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift')
-                    ->findAllActiveByEvent($event);
-                }
-                return $result;
+                    ->findByShiftNameQuerry($this->getParam('string'));
         }
     }
 

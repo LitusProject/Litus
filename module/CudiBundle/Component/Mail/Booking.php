@@ -234,8 +234,8 @@ class Booking
             $message = preg_replace('/#no_opening_hours#.*#no_opening_hours#/', '', $message);
         }
 
-        preg_match('/#expired#(.*)#expired#/', $message, $matches);
-        $message = preg_replace('/#expired#.*#expired#/', '', $message);
+        preg_match('/#expires#(.*)#expires#/', $message, $matches);
+        $message = preg_replace('/#expires#.*#expires#/', '', $message);
 
         $list = '';
         foreach($bookings as $booking) {

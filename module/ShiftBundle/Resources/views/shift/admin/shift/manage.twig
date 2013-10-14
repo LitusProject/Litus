@@ -23,7 +23,6 @@
                 Search:
                 <select id="searchField">
                     <option value="shiftname">Shiftname</option>
-                    <option value="event">Event</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -32,7 +31,6 @@
             <table class="full_width manage">
                 <tr>
                     <th>Name</th>
-                    <th>Event</th>
                     <th>Start</th>
                     <th>End</th>
                     <th width="70px">Actions</th>
@@ -44,7 +42,6 @@
     	    <table class="full_width manage">
     	        <tr>
                     <th>Name</th>
-                    <th>Event</th>
     	            <th>Start</th>
     	            <th>End</th>
                     <th width="70px">Actions</th>
@@ -114,7 +111,6 @@
                     $(data).each(function () {
                         $('#shift_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.name + '</td>')
-                            .append('<td>' + this.eventName + '</td>')
                             .append('<td>' + this.startDate + '</td>')
                             .append('<td>' + this.endDate + '</td>')
                             .append(

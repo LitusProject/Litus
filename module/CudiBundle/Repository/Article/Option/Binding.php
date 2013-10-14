@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Article\Option;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Binding

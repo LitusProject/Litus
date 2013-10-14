@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * AcademicYear
@@ -29,14 +29,13 @@ class AcademicYear extends EntityRepository
         return null;
     }
 
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('y')
             ->from('CommonBundle\Entity\General\AcademicYear', 'y')
             ->orderBy('y.universityStart')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

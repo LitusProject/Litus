@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Sale\Articles;
 
 use CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Barcode

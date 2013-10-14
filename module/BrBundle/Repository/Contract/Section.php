@@ -2,7 +2,7 @@
 
 namespace BrBundle\Repository\Contract;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Section

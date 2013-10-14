@@ -3,7 +3,7 @@
 namespace CalendarBundle\Repository\Node;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Event
@@ -13,7 +13,7 @@ use DateTime,
  */
 class Event extends EntityRepository
 {
-    public function findAllActive($nbResults = 15)
+    public function findAllActiveQuery($nbResults = 15)
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('e')
@@ -30,13 +30,12 @@ class Event extends EntityRepository
         if ($nbResults > 0)
             $query->setMaxResults($nbResults);
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllOld()
+    public function findAllOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -46,13 +45,12 @@ class Event extends EntityRepository
             )
             ->orderBy('e.startDate', 'ASC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllBetween(DateTime $first, DateTime $last)
+    public function findAllBetweenQuery(DateTime $first, DateTime $last)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -66,8 +64,7 @@ class Event extends EntityRepository
             ->orderBy('e.startDate', 'ASC')
             ->setParameter('first', $first)
             ->setParameter('last', $last)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

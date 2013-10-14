@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sale\Session\OpeningHour;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Translation

@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Log\Sale;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Cancellations

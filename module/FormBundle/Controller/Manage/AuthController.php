@@ -131,6 +131,14 @@ class AuthController extends \FormBundle\Component\Controller\FormController
             }
         }
 
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
         $this->redirect()->toRoute(
             'form_manage'
         );

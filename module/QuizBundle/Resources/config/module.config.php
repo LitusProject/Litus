@@ -126,6 +126,11 @@ return array(
             'quizbundle' => array(
                 'root_path' => __DIR__ . '/../assets',
                 'collections' => array(
+                    'quiz_table_sort_js' => array(
+                        'assets' => array(
+                            'quiz/js/sortable-table.jquery.js'
+                        ),
+                    ),
                     'quiz_css' => array(
                         'assets' => array(
                             'quiz/less/base.less',

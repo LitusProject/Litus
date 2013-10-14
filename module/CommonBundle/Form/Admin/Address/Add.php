@@ -29,18 +29,19 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
 {
     /**
-     * @var string
+     * @var string The form's prefix
      */
     private $_prefix;
 
     /**
-     * @var boolean
+     * @var boolean Whether or not the form is required
      */
     private $_required;
 
     /**
      * @param string $prefix
      * @param null|string|int $name Optional name for the element
+     * @param boolean $required Whether or not the form is required
      */
     public function __construct($prefix = '', $name = null, $required = true)
     {

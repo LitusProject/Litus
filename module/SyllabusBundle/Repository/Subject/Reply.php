@@ -3,7 +3,7 @@
 namespace SyllabusBundle\Repository\Subject;
 
 use SyllabusBundle\Entity\Subject\Comment as CommentEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Reply

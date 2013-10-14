@@ -73,7 +73,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $entry->setValue($formData['value']);
+                $entry->setValue(str_replace("\r", '', $formData['value']));
 
                 $this->getEntityManager()->flush();
 
