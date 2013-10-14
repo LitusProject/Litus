@@ -20,17 +20,16 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Component\Validator\Sales\Article\Discounts\Exists as DiscountValidator,
-    CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Add Discount
+ * Add Template
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Dario  Incalza <dario.incalza@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
