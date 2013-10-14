@@ -37,7 +37,6 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
         if (0 == count($lists))
             throw new \RuntimeException('There needs to be at least one list before an archive can be created');
 
-
         $archive = new TmpFile();
         $generator = ('zip' != $this->getParam('type'))
             ? new Tar($this->getEntityManager(), $lists)
@@ -47,18 +46,14 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="lists.' . ('zip' != $this->getParam('type') ? 'tar.gz' : 'zip') . '"',
-            'Content-Type' => mime_content_type($archive->getFileName()),
-            'Content-Length' => filesize($archive->getFileName()),
+            'Content-Type'        => mime_content_type($archive->getFileName()),
+            'Content-Length'      => filesize($archive->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($archive->getFileName(), 'r');
-        $data = fread($handle, filesize($archive->getFileName()));
-        fclose($handle);
-
         return new ViewModel(
             array(
-                'data' => $data
+                'data' => $archive->getContent()
             )
         );
     }
