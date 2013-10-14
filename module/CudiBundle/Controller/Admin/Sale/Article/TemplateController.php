@@ -26,8 +26,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class TemplateController extends \CudiBundle\Component\Controller\ActionController
 {
-    public function manageAction()
+
+    public function addAction()
     {
+
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
@@ -77,6 +79,24 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                 return new ViewModel();
             }
         }
+
+    }
+
+    public function manageAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'CudiBundle\Entity\Sale\Article\Discount\Template',
+            $this->getParam('page'),
+            array(),
+            array('name' => 'DESC')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
 
     }
 
