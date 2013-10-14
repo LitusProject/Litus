@@ -2,7 +2,9 @@
 
 namespace FormBundle\Repository\Field;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person,
+    DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * TimeSlot
@@ -12,4 +14,53 @@ use Doctrine\ORM\EntityRepository;
  */
 class TimeSlot extends EntityRepository
 {
+    public function findOneOccupationByPersonAndTime(Person $person, DateTime $start, DateTime $end)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $timeSlots = $query->select('f.id')
+            ->from('FormBundle\Entity\Field\TimeSlot', 'f')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->andX(
+                        $query->expr()->lte('f.startDate', ':start'),
+                        $query->expr()->gt('f.endDate', ':start')
+                    ),
+                    $query->expr()->andX(
+                        $query->expr()->lt('f.startDate', ':end'),
+                        $query->expr()->gte('f.endDate', ':end')
+                    ),
+                    $query->expr()->andX(
+                        $query->expr()->gte('f.startDate', ':start'),
+                        $query->expr()->lte('f.endDate', ':end')
+                    )
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($timeSlots as $timeSlot) {
+            $ids[] = $timeSlot['id'];
+        }
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('FormBundle\Entity\Entry', 'e')
+            ->innerJoin('e.field', 'f')
+            ->innerJoin('e.formEntry', 'fe')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('f.id', $ids),
+                    $query->expr()->eq('fe.creationPerson', ':person')
+                )
+            )
+            ->setParameter('person', $person)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
 }

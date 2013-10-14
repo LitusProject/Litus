@@ -70,7 +70,7 @@ class Doodle extends BaseForm
     {
         $fields = array();
         foreach(parent::getFields() as $field)
-            $fields[$field->getStartDate()->getTimestamp()] = $field;
+            $fields[$field->getStartDate()->getTimestamp() . $field->getId()] = $field;
 
         ksort($fields);
 

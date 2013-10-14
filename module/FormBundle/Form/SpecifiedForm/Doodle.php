@@ -19,6 +19,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
+    FormBundle\Component\Validator\TimeSlot as TimeSlotValidator,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Entry,
@@ -43,6 +44,16 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var array
      */
     private $_occupiedSlots;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
+     * @var \CommonBundle\Entity\User\Person
+     */
+    private $_person;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
@@ -77,6 +88,8 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->_form = $form;
         $this->_occupiedSlots = $occupiedSlots;
+        $this->_entityManager = $entityManager;
+        $this->_person = $person;
 
         // Fetch the fields through the repository to have the correct order
         $fields = $entityManager
@@ -164,6 +177,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                             array(
                                 'name'     => 'field-' . $fieldSpecification->getId(),
                                 'required' => false,
+                                'validators' => array(
+                                    new TimeSlotValidator($fieldSpecification, $this->_entityManager, $this->_person),
+                                ),
                             )
                         )
                     );

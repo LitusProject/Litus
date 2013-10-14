@@ -32,6 +32,7 @@
                             {% else %}
                                 {{ dateLocalized(field.getStartDate(), 'd MMMM Y H:mm') }} - {{ dateLocalized(field.getEndDate(), 'd MMMM Y H:mm') }}
                             {% endif %}
+                            {{ formElementErrors(form.get('field-' ~ field.getId())) }}
                         </td>
                         <td>
                             {% if occupiedSlots[field.getId()] %}

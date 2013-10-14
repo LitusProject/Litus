@@ -9,7 +9,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\Translation\Option")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Translation\Option")
  * @ORM\Table(name="forms.fields_options_translations")
  */
 class Option

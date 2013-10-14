@@ -23,7 +23,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\TimeSlot")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\TimeSlot")
  * @ORM\Table(name="forms.fields_timeslot")
  */
 class TimeSlot extends Field

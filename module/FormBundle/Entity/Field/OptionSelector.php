@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * An abstract class that stores a number of options.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\OptionSelector")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\OptionSelector")
  * @ORM\Table(name="forms.fields_options")
  */
 abstract class OptionSelector extends Field

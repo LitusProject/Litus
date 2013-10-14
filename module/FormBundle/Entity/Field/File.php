@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\File")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\File")
  * @ORM\Table(name="forms.fields_files")
  */
 class File extends Field
