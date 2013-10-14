@@ -28,8 +28,8 @@ class Shift extends EntityRepository
             ->where(
                 $query->expr()->like('s.name', ':name')
             )
-            ->setParameter('name',$name)
-            ->getQuery()
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
 
         return $resultSet;
     }
