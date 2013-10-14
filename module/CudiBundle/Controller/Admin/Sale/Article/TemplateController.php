@@ -71,7 +71,6 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                     'cudi_admin_sales_article_template',
                     array(
                         'action' => 'manage',
-                        'id' => $article->getId(),
                     )
                 );
 
@@ -105,7 +104,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the discount!'
+                    'No ID was given to identify the template!'
                 )
             );
 
