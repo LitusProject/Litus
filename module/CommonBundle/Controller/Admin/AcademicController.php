@@ -448,8 +448,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->getConfigValue('search_max_results');
 
         $academics = $this->_search()
-                ->setMaxResults($numResults)
-                ->getResult();
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($academics as $academic) {

@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
 /**
  * The form used to register a returned item.
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
 {

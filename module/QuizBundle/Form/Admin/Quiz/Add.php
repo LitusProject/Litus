@@ -12,7 +12,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 
 /**
  * Add a new quiz
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
