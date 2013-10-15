@@ -111,24 +111,24 @@ VTK'
                     'description' => 'The system mail name',
                 ),
                 array(
-                    'key'         => 'union_short_name',
+                    'key'         => 'organization_short_name',
                     'value'       => 'VTK',
-                    'description' => 'The short name of this union',
+                    'description' => 'The short name of this organization',
                 ),
                 array(
-                    'key'         => 'union_name',
-                    'value'       => 'VTK vzw',
-                    'description' => 'The full name of this union',
+                    'key'         => 'organization_name',
+                    'value'       => 'Vlaamse Technische Kring',
+                    'description' => 'The full name of this organization',
                 ),
                 array(
-                    'key'         => 'union_logo',
+                    'key'         => 'organization_logo',
                     'value'       => 'data/images/logo/logo.svg',
-                    'description' => 'The path to the logo of the union',
+                    'description' => 'The path to the logo of the organization',
                 ),
                 array(
-                    'key'         => 'union_url',
+                    'key'         => 'organization_url',
                     'value'       => 'http://vtk.be',
-                    'description' => 'The URL of the union',
+                    'description' => 'The URL of the organization',
                 ),
                 array(
                     'key'         => 'university',

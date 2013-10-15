@@ -3,7 +3,7 @@
 namespace FormBundle\Repository;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Viewermap
@@ -13,13 +13,12 @@ use DateTime,
  */
 class ViewerMap extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -64,7 +63,7 @@ class ViewerMap extends EntityRepository
         return null;
     }
 
-    public function findAllByForm($formId) {
+    public function findAllByFormQuery($formId) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
@@ -72,13 +71,12 @@ class ViewerMap extends EntityRepository
                 $query->expr()->eq('n.form', ':id')
             )
             ->setParameter('id', $formId)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByPerson($person) {
+    public function findAllByPersonQuery($person) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
@@ -88,8 +86,7 @@ class ViewerMap extends EntityRepository
             )
             ->setParameter('person', $person)
             ->orderBy('f.startDate', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * PayDesk

@@ -29,10 +29,10 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('ApiBundle\Entity\Key')
-                ->findAllActive(),
+                ->findAllActiveQuery(),
             $this->getParam('page'),
             array(),
             array(

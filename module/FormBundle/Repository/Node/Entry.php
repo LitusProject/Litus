@@ -3,7 +3,7 @@
 namespace FormBundle\Repository\Node;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Entry
@@ -13,19 +13,18 @@ use DateTime,
  */
 class Entry extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Node\Entry', 'n')
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByForm($form)
+    public function findAllByFormQuery($form)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
@@ -35,13 +34,12 @@ class Entry extends EntityRepository
                 $query->expr()->eq('f.form', ':form')
             )
             ->setParameter('form', $form)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByFormAndPerson($form, $person)
+    public function findAllByFormAndPersonQuery($form, $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
@@ -55,8 +53,7 @@ class Entry extends EntityRepository
             )
             ->setParameter('form', $form)
             ->setParameter('person', $person)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

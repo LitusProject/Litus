@@ -2,7 +2,7 @@
 
 namespace QuizBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     QuizBundle\Entity\Quiz as QuizEntity;
 
 /**

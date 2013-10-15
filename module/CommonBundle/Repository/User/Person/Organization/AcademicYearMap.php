@@ -4,7 +4,7 @@ namespace CommonBundle\Repository\User\Person\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * AcademicYearMap

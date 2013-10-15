@@ -18,7 +18,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
+            <a href="{{ organizationUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
             <ul class="nav">
                 {% if hasAccess('cudi_prof_index', 'index') %}
                     <li {% if 'index' == getParam('action') and 'cudi_prof_index' == getParam('controller') %} class="active" {% endif %}>

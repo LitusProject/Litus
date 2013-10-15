@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Stock;
 
 use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period as PeriodEntity,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
 
 /**

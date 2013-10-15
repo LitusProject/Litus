@@ -4,7 +4,7 @@ namespace SecretaryBundle\Repository\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * MetaData
@@ -37,7 +37,7 @@ class MetaData extends EntityRepository
         return null;
     }
 
-    public function findAllBakskeByAcademicYear(AcademicYear $academicYear)
+    public function findAllBakskeByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -49,8 +49,7 @@ class MetaData extends EntityRepository
                 )
             )
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

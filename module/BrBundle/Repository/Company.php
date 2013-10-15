@@ -2,7 +2,7 @@
 
 namespace BrBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Company
@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class Company extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
@@ -21,13 +21,12 @@ class Company extends EntityRepository
                 $query->expr()->eq('c.active', 'true')
             )
             ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByName($name)
+    public function findAllByNameQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
@@ -40,8 +39,7 @@ class Company extends EntityRepository
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

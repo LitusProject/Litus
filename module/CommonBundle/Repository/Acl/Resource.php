@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\Acl;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Resource

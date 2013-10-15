@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Sale;
 
 use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Session as SessionEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * QueueItem

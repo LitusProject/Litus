@@ -3,7 +3,7 @@
 namespace TicketBundle\Repository;
 
 use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     TicketBundle\Entity\Event as EventEntity;
 
 /**
@@ -37,7 +37,7 @@ class Ticket extends EntityRepository
         return null;
     }
 
-    public function findAllByEvent(EventEntity $event)
+    public function findAllByEventQuery(EventEntity $event)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
@@ -46,13 +46,12 @@ class Ticket extends EntityRepository
                 $query->expr()->eq('t.event', ':event')
             )
             ->setParameter('event', $event)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByEventAndPerson(EventEntity $event, Person $person)
+    public function findAllByEventAndPersonQuery(EventEntity $event, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
@@ -65,13 +64,12 @@ class Ticket extends EntityRepository
             )
             ->setParameter('person', $person)
             ->setParameter('event', $event)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllEmptyByEvent(EventEntity $event)
+    public function findAllEmptyByEventQuery(EventEntity $event)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
@@ -84,8 +82,7 @@ class Ticket extends EntityRepository
             )
             ->setParameter('event', $event)
             ->setParameter('empty', 'empty')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

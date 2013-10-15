@@ -3,7 +3,7 @@
 namespace SecretaryBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Promotion
@@ -129,7 +129,7 @@ class Promotion extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -138,8 +138,7 @@ class Promotion extends EntityRepository
                 $query->expr()->eq('p.academicYear', ':academicYear')
             )
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
