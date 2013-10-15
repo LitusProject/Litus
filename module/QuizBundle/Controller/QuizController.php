@@ -316,7 +316,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        if (!$team->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        if (!$team->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,

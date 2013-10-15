@@ -12,16 +12,22 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Util\File\Exception;
-
-use CommonBundle\Component\Util\File\TmpFile;
+namespace MailBundle\Entity\MailingList\Entry;
 
 /**
- * This exception is thrown when a handle to a tempory file, that is already closed,
- * is used.
+ * This is an abstract class all person entries should inherit from.
  *
- * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class TmpFileClosedException extends \Exception
+abstract class Person extends \MailBundle\Entity\MailingList\Entry
 {
+    /**
+     * @return string
+     */
+    abstract public function getFirstName();
+
+    /**
+     * @return string
+     */
+    abstract public function getLastName();
 }

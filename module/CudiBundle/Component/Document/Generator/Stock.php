@@ -49,9 +49,7 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
     private $_academicYear;
 
     /**
-     * Create a new Article Front Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $articles The kind of articles to export
      * @param string $order The ordering of the articles to export
      * @param boolean $onlyInStock Print only articles in stock

@@ -15,16 +15,18 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\Entry\Academic as AcademicEntry,
-    MailBundle\Entity\Entry\External as ExternalEntry,
+    MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
+    MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry,
+    MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry,
     MailBundle\Entity\MailingList\Named as NamedList,
     MailBundle\Entity\MailingList\AdminMap as ListAdmin,
     MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
     MailBundle\Form\Admin\MailingList\Add as AddForm,
     MailBundle\Form\Admin\MailingList\Admin as AdminForm,
     MailBundle\Form\Admin\MailingList\AdminRole as AdminRoleForm,
-    MailBundle\Form\Admin\MailingList\Entry\Academic as AcademicForm,
-    MailBundle\Form\Admin\MailingList\Entry\External as ExternalForm,
+    MailBundle\Form\Admin\MailingList\Entry\MailingList as MailingListForm,
+    MailBundle\Form\Admin\MailingList\Entry\Person\Academic as AcademicForm,
+    MailBundle\Form\Admin\MailingList\Entry\Person\External as ExternalForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -49,14 +51,13 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if (!$editor) {
             $lists =  $this->getEntityManager()
                 ->getRepository('MailBundle\Entity\MailingList\Named')
-                ->findAll(array(), array('name' => 'ASC'));
+                ->findBy(array(), array('name' => 'ASC'));
 
             $paginatorArray = array();
             foreach ($lists as $list) {
                 if ($list->canBeEditedBy($person))
                     $paginatorArray[] = $list;
             }
-
 
             $paginator = $this->paginator()->createFromArray(
                 $paginatorArray,
@@ -145,8 +146,11 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         if (!$this->_checkAccess($list, false))
             return new ViewModel();
 
-        $externalForm = new ExternalForm($this->getEntityManager());
         $academicForm = new AcademicForm($this->getEntityManager());
+        $externalForm = new ExternalForm($this->getEntityManager());
+        $mailingListForm = new MailingListForm(
+            $this->getEntityManager(), $this->getAuthentication()->getPersonObject(), $list
+        );
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -154,6 +158,9 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             if (isset($formData['first_name'], $formData['last_name'], $formData['email'])) {
                 $externalForm->setData($formData);
                 $form = $externalForm;
+            } elseif (isset($formData['entry'])) {
+                $mailingListForm->setData($formData);
+                $form = $mailingListForm;
             } else {
                 $academicForm->setData($formData);
                 $form = $academicForm;
@@ -165,7 +172,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                 $entry = null;
                 if (isset($formData['first_name'], $formData['last_name'], $formData['email'])) {
                     $repositoryCheck = $this->getEntityManager()
-                        ->getRepository('MailBundle\Entity\Entry\External')
+                        ->getRepository('MailBundle\Entity\MailingList\Entry\Person\External')
                         ->findOneBy(
                             array(
                                 'list' => $list,
@@ -189,6 +196,31 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                             $formData['email']
                         );
                     }
+                } elseif (isset($formData['entry'])) {
+                    $entry = $this->getEntityManager()
+                        ->getRepository('MailBundle\Entity\MailingList\Named')
+                        ->findOneById($formData['entry']);
+
+                    $repositoryCheck = $this->getEntityManager()
+                        ->getRepository('MailBundle\Entity\MailingList\Entry\MailingList')
+                        ->findOneBy(
+                            array(
+                                'list' => $list,
+                                'entry' => $entry
+                            )
+                        );
+
+                    if (null !== $repositoryCheck) {
+                        $this->flashMessenger()->addMessage(
+                            new FlashMessage(
+                                FlashMessage::ERROR,
+                                'Success',
+                                'This list already has been subscribed to this list!'
+                            )
+                        );
+                    } else {
+                        $entry = new MailingListEntry($list, $entry);
+                    }
                 } else {
                     if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                         $academic = $this->getEntityManager()
@@ -201,7 +233,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
                     }
 
                     $repositoryCheck = $this->getEntityManager()
-                        ->getRepository('MailBundle\Entity\Entry\Academic')
+                        ->getRepository('MailBundle\Entity\MailingList\Entry\Person\Academic')
                         ->findOneBy(
                             array(
                                 'list' => $list,
@@ -248,14 +280,15 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         $entries = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Entry')
+            ->getRepository('MailBundle\Entity\MailingList\Entry')
             ->findByList($list);
 
         return new ViewModel(
             array(
                 'list' => $list,
-                'externalForm' => $externalForm,
                 'academicForm' => $academicForm,
+                'externalForm' => $externalForm,
+                'mailingListForm' => $mailingListForm,
                 'entries' => $entries,
             )
         );
@@ -449,7 +482,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
 
         $entries = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Entry')
+            ->getRepository('MailBundle\Entity\MailingList\Entry')
             ->findByList($list);
 
         foreach ($entries as $entry)
@@ -625,7 +658,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         $entry = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Entry')
+            ->getRepository('MailBundle\Entity\MailingList\Entry')
             ->findOneById($this->getParam('id'));
 
         if (null === $entry) {

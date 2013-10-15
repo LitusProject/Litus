@@ -43,7 +43,7 @@ abstract class MailingList
     /**
      * @var array The entries of this list
      *
-     * @ORM\OneToMany(targetEntity="MailBundle\Entity\Entry", mappedBy="list", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="MailBundle\Entity\MailingList\Entry", mappedBy="list", cascade={"remove"})
      */
     private $entries;
 

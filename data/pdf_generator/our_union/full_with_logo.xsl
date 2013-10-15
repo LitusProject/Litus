@@ -16,4 +16,3 @@
         </fo:block>
     </xsl:template>
 </xsl:stylesheet>
-

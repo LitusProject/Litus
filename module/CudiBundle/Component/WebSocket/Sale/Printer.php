@@ -106,7 +106,7 @@ class Printer
                 'barcode' => substr($saleItem->getArticle()->getBarcode(), 7),
                 'number' => $saleItem->getNumber(),
             );
-            $totalPrice += $saleItem->getArticle()->getSellPrice() * $saleItem->getNumber();
+            $totalPrice += $saleItem->getPrice();
         }
 
         $data = array(

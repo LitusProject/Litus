@@ -4,8 +4,8 @@
     <header class="subhead">
         <form action="" method="GET" class="pull-right">
             <select name="order" id="order">
-                <option value="ASC"{% if order == 'ASC' %} selected{% endif %}>Best last</option>
-                <option value="DESC"{% if order == 'DESC' %} selected{% endif %}>Best first</option>
+                <option value="ASC"{% if order == 'ASC' %} selected{% endif %}>Best Last</option>
+                <option value="DESC"{% if order == 'DESC' %} selected{% endif %}>Best First</option>
             </select>
         </form>
         <h1>{{ quiz.getName() }}</h1>

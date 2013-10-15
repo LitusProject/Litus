@@ -37,9 +37,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     private $_article;
 
     /**
-     * Create a new Article Front Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Sale\Article $article The article
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
      */
@@ -49,8 +47,8 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.pdf_generator_path');
 
-           parent::__construct(
-               $entityManager,
+        parent::__construct(
+            $entityManager,
             $filePath . '/article/front.xsl',
             $file->getFilename()
         );
@@ -98,20 +96,20 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     protected function generateXml(TmpFile $tmpFile)
     {
-        $configs = $this->getConfigRepository();
+        $configuration = $this->getConfigRepository();
 
         $now = new DateTime();
-        $union_short_name = $configs->getConfigValue('union_short_name');
-        $union_name = $configs->getConfigValue('union_name');
-        $logo = $configs->getConfigValue('union_logo');
-        $union_url = $configs->getConfigValue('union_url');
-        $union_mail = $configs->getConfigValue('cudi.mail');
-        $university = $configs->getConfigValue('university');
-        $faculty = $configs->getConfigValue('faculty');
-        $address_name = $configs->getConfigValue('cudi.front_address_name');
+        $union_short_name = $configuration->getConfigValue('union_short_name');
+        $union_name = $configuration->getConfigValue('union_name');
+        $logo = $configuration->getConfigValue('union_logo');
+        $union_url = $configuration->getConfigValue('union_url');
+        $union_mail = $configuration->getConfigValue('cudi.mail');
+        $university = $configuration->getConfigValue('university');
+        $faculty = $configuration->getConfigValue('faculty');
+        $address_name = $configuration->getConfigValue('cudi.front_address_name');
         $address = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Address')
-            ->findOneById($configs->getConfigValue('cudi.billing_address'));
+            ->findOneById($configuration->getConfigValue('cudi.billing_address'));
 
         $academicYear = $this->_getCurrentAcademicYear();
 

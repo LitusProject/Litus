@@ -12,19 +12,18 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Entity\Entry;
+namespace MailBundle\Entity\MailingList\Entry\Person;
 
 use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection,
     MailBundle\Entity\MailingList;
 
 /**
- * This is the entity for a list entry.
+ * This is the entity for the list entry of an external person.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\Entry\External")
- * @ORM\Table(name="mail.lists_entries_external")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Entry\Person\External")
+ * @ORM\Table(name="mail.lists_entries_people_external")
  */
-class External extends \MailBundle\Entity\Entry
+class External extends \MailBundle\Entity\MailingList\Entry\Person
 {
     /**
      * @var string The first name of this entry
