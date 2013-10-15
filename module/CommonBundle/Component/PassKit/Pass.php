@@ -47,7 +47,12 @@ abstract class Pass
     private $_signature = null;
 
     /**
-     * @var array The passes' languages
+     * @var string The pass' serial number
+     */
+    private $_serialNumber = '';
+
+    /**
+     * @var array The pass' languages
      */
     private $_languages = array();
 
@@ -62,18 +67,6 @@ abstract class Pass
 
         $this->_manifest = new TmpFile();
         $this->_signature = new TmpFile();
-    }
-
-    /**
-     * Add a new language to the pass.
-     *
-     * @param string $name The name of the language
-     * @param array $strings The localised strings
-     */
-    public function addLanguage($name, array $strings)
-    {
-        $this->_languages[$name] = $strings;
-        return $this;
     }
 
     /**
@@ -104,11 +97,16 @@ abstract class Pass
     }
 
     /**
-     * Get the pass' JSON directory.
+     * Add a new language to the pass.
      *
-     * @return string
+     * @param string $name The name of the language
+     * @param array $strings The localised strings
      */
-    abstract protected function getJson();
+    protected function addLanguage($name, array $strings)
+    {
+        $this->_languages[$name] = $strings;
+        return $this;
+    }
 
     /**
      * Get the certicicate used to sign the pass.
@@ -116,6 +114,26 @@ abstract class Pass
      * @return array
      */
     abstract protected function getCertificate();
+
+    /**
+     * Get the pass' JSON directory.
+     *
+     * @return string
+     */
+    abstract protected function getJson();
+
+    /**
+     * Generates the pass' serial number (or generates a new one)
+     *
+     * @return string
+     */
+    protected function getSerialNumber()
+    {
+        if ('' == $this->_serialNumber)
+            $this->_serialNumber = uniqid();
+
+        return $this->_serialNumber;
+    }
 
     /**
      * Create the pass' manifest.
@@ -133,9 +151,9 @@ abstract class Pass
 
         $languages = array_keys($this->_languages);
         for ($i = 0; isset($languages[$i]); $i++)
-            $hashes[$languages[$i] . '.lproj/strings.json'] = sha1($this->_createLanguage($languages[$i]));
+            $hashes[$languages[$i] . '.lproj/pass.strings'] = sha1($this->_createLanguage($languages[$i]));
 
-        $this->_manifest->appendContent(json_encode($hashes));
+        $this->_manifest->appendContent(json_encode($hashes, JSON_UNESCAPED_SLASHES));
     }
 
     /**
