@@ -17,7 +17,7 @@ namespace CommonBundle\Component\Validator;
 /**
  * Verifies whether the given number is a positive number.
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class PositiveNumber extends \Zend\Validator\AbstractValidator
 {

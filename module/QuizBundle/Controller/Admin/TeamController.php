@@ -13,7 +13,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * Controller for /admin/quiz/:quizid/team[/:action[/:id]][/page/:page][/]
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class TeamController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
