@@ -66,7 +66,7 @@ class Edit extends Add
     {
         $options = array(0 => 'Always');
         foreach($this->_form->getFields() as $field) {
-            if ($field == $this->_field)
+            if ($field->getId() == $this->_field->getId())
                 continue;
 
             if ($field instanceof StringField) {

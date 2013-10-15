@@ -21,6 +21,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     FormBundle\Component\Validator\Required as RequiredValidator,
     FormBundle\Component\Validator\StringField as StringFieldValidator,
@@ -177,7 +178,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $field->setLabel('Location');
             $pane->add($field);
 
-            $field = new Text('timeslot_extra_info_' . $language->getAbbrev());
+            $field = new Textarea('timeslot_extra_info_' . $language->getAbbrev());
             $field->setLabel('Extra Information');
             $pane->add($field);
 

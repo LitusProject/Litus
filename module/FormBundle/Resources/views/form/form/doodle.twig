@@ -16,23 +16,35 @@
             {{ translate(message) }}
         </div>
     {% else %}
+        {% if doodleNotValid %}
+            <div class="flashmessage alert alert-error fade in">
+                <a class="close" data-dismiss="alert">&times;</a>
+                {{ translate('Your subscriptions couldn\'t be saved.') }}
+            </div>
+        {% endif %}
         {% do form.prepare() %}
         {% autoescape false %}{{ form().openTag(form) }}{% endautoescape %}
             {{ formElement(form.get('csrf')) }}
             <table class="table table-bordered table-striped" id="doodle">
                 <tr>
                     <th>{{ translate('Date') }}</th>
+                    <th width="300px">{{ translate('Location') }}</th>
                     <th width="200px">{{ translate('Subscribe') }}</th>
                 </tr>
                 {% for field in specification.getFields() %}
-                    <tr>
+                    <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
                         <td>
                             {% if field.getStartDate().format('d/M/Y') == field.getEndDate().format('d/M/Y') %}
                                 {{ dateLocalized(field.getStartDate(), 'd MMMM Y: H:mm') }} - {{ dateLocalized(field.getEndDate(), 'H:mm') }}
                             {% else %}
                                 {{ dateLocalized(field.getStartDate(), 'd MMMM Y H:mm') }} - {{ dateLocalized(field.getEndDate(), 'd MMMM Y H:mm') }}
                             {% endif %}
-                            {{ formElementErrors(form.get('field-' ~ field.getId())) }}
+                        </td>
+                        <td>
+                            {{ field.getLocation(language) }}
+                            {% if field.getExtraInformation(language) %}
+                                <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><i class="icon-info-sign"></i></a>
+                            {% endif %}
                         </td>
                         <td>
                             {% if occupiedSlots[field.getId()] %}
@@ -68,6 +80,31 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.extraInformation').popover({'trigger': 'hover'});
+
+            $('table label.checkbox').each(function () {
+                $(this).hide();
+                $(this).parent().append(
+                    $('<button>', {'class': 'btn btn-primary btn-small'}).html('{{ translate('Subscribe') }}').click(function (e) {
+                        e.preventDefault();
+                        var checkbox = $(this).parent().find('input[type=checkbox]');
+                        if (checkbox.is(':checked')) {
+                            checkbox.prop('checked', false);
+                            $(this).html('{{ translate('Subscribe') }}').removeClass('btn-danger');
+                        } else {
+                            checkbox.prop('checked', true);
+                            $(this).html('{{ translate('Unsubscribe') }}').addClass('btn-danger');
+                        }
+                    })
+                );
+
+                if ($(this).find('input[type=checkbox]').is(':checked')) {
+                    $(this).parent().find('button').html('{{ translate('Unsubscribe') }}').addClass('btn-danger');
+                } else {
+                    $(this).parent().find('button').html('{{ translate('Subscribe') }}').removeClass('btn-danger');
+                }
+            });
+
             {% if not specification.isMultiple() %}
                 $('#doodle input[type=checkbox]').click(function () {
                     $('#doodle input[type=checkbox]').prop('checked', false);

@@ -49,7 +49,7 @@ class TimeSlot
     /**
      * @var string The location of this tanslation
      *
-     * @ORM\Column(name="extra_information", type="string")
+     * @ORM\Column(name="extra_information", type="text")
      */
     private $extraInformation;
 

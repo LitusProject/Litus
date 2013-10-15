@@ -242,6 +242,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
+        $notValid = false;
+
         $now = new DateTime();
         if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
             return new ViewModel(
@@ -348,14 +350,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
+            } else {
+                $notValid = true;
             }
         }
 
         return new ViewModel(
             array(
-                'specification' => $formSpecification,
-                'form'          => $form,
-                'occupiedSlots' => $occupiedSlots,
+                'specification'  => $formSpecification,
+                'form'           => $form,
+                'occupiedSlots'  => $occupiedSlots,
+                'doodleNotValid' => $notValid,
             )
         );
     }
