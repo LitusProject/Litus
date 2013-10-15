@@ -17,6 +17,7 @@ namespace FormBundle\Entity\Field;
 use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
+    IntlDateFormatter,
     FormBundle\Entity\Field,
     FormBundle\Entity\Node\Form;
 
@@ -100,6 +101,39 @@ class TimeSlot extends Field
     {
         $this->endDate = $endDate;
         return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     *
+     * @return string
+     */
+    public function getLabel(Language $language = null, $allowFallback = true)
+    {
+        $formatterDate = new IntlDateFormatter(
+            $language->getAbbrev(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'd MMMM Y'
+        );
+
+        $formatterHour = new IntlDateFormatter(
+            $language->getAbbrev(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'H:mm'
+        );
+
+        if ($this->getStartDate()->format('d/M/Y') == $this->getEndDate()->format('d/M/Y')) {
+            return $formatterDate->format($this->getStartDate()) . ': ' . $formatterHour->format($this->getStartDate()) . ' - ' . $formatterHour->format($this->getEndDate());
+        } else {
+            return $formatterDate->format($this->getStartDate()) . ' ' . $formatterHour->format($this->getStartDate()) . ' - ' . $formatterDate->format($this->getEndDate()) . ' ' . $formatterHour->format($this->getEndDate());
+        }
     }
 
     /**

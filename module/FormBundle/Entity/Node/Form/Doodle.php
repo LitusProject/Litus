@@ -157,12 +157,7 @@ class Doodle extends BaseForm
 
         $result = '';
         foreach ($fieldEntries as $fieldEntry) {
-            if ($fieldEntry->getField()->getStartDate()->format('d/M/Y') == $fieldEntry->getField()->getEndDate()->format('d/M/Y')) {
-                $result .= $formatterDate->format($fieldEntry->getField()->getStartDate()) . ': ' . $formatterHour->format($fieldEntry->getField()->getStartDate()) . ' - ' . $formatterHour->format($fieldEntry->getField()->getEndDate());
-            } else {
-                $result .= $formatterDate->format($fieldEntry->getField()->getStartDate()) . ' ' . $formatterHour->format($fieldEntry->getField()->getStartDate()) . ' - ' . $formatterDate->format($fieldEntry->getField()->getEndDate()) . ' ' . $formatterHour->format($fieldEntry->getField()->getEndDate());
-            }
-            $result .= PHP_EOL;
+            $result .= $fieldEntry->getField()->getLabel($language) . PHP_EOL;
         }
 
         return $result;

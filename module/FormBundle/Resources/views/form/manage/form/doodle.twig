@@ -1,21 +1,10 @@
-{% extends 'site/base.twig' %}
+{% extends 'manage/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ specification.getTitle(language) }}</h1>
-    </div>
+    {% if authenticatedPerson is not null %}
+        <h2>{{ formSpecification.getTitle(language) }}</h2>
+        <p>{{ translate('Person') }}: <b>{{ formEntry.getPersonInfo().getFullName() }}</b></p>
 
-    {% autoescape false %}
-        {{ markdown(specification.getIntroduction(language)) }}
-    {% endautoescape %}
-
-    <hr/>
-
-    {% if not form %}
-        <div class="alert">
-            {{ translate(message) }}
-        </div>
-    {% else %}
         {% if doodleNotValid %}
             <div class="flashmessage alert alert-error fade in">
                 <a class="close" data-dismiss="alert">&times;</a>
@@ -24,14 +13,13 @@
         {% endif %}
         {% do form.prepare() %}
         {% autoescape false %}{{ form().openTag(form) }}{% endautoescape %}
-            {{ formElement(form.get('csrf')) }}
             <table class="table table-bordered table-striped" id="doodle">
                 <tr>
                     <th>{{ translate('Date') }}</th>
                     <th width="300px">{{ translate('Location') }}</th>
                     <th width="200px">{{ translate('Subscribe') }}</th>
                 </tr>
-                {% for field in specification.getFields() %}
+                {% for field in formSpecification.getFields() %}
                     <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
                         <td>
                             {{ field.getLabel(language) }}
@@ -44,7 +32,7 @@
                         </td>
                         <td>
                             {% if occupiedSlots[field.getId()] %}
-                                {% if specification.getNamesVisibleForOthers() %}
+                                {% if formSpecification.getNamesVisibleForOthers() %}
                                     <i>{{ occupiedSlots[field.getId()] }}</i>
                                 {% else %}
                                     <i>{{ translate('Occupied') }}</i>
@@ -59,7 +47,7 @@
                 {% endfor %}
             </table>
 
-            {% if specification.isEditableByUser() %}
+            {% if formSpecification.isEditableByUser() %}
                 <div class="form-actions">
                     <div class="row">
                         <span class="label"></span>
@@ -70,6 +58,11 @@
                 </div>
             {% endif %}
         {% autoescape false %}{{ form().closeTag() }}{% endautoescape %}
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+        </div>
     {% endif %}
 {% endblock %}
 
@@ -101,7 +94,7 @@
                 }
             });
 
-            {% if not specification.isMultiple() %}
+            {% if not formSpecification.isMultiple() %}
                 $('#doodle input[type=checkbox]').click(function () {
                     $('#doodle input[type=checkbox]').prop('checked', false);
                     $(this).prop('checked', true);
