@@ -73,8 +73,8 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $configs = $this->getConfigRepository();
 
-        $union_name = $configs->getConfigValue('union_name');
-        $logo = $configs->getConfigValue('union_logo');
+        $organization_name = $configs->getConfigValue('organization_name');
+        $organization_logo = $configs->getConfigValue('organization_logo');
 
         $shifts = array();
         foreach ($this->_shifts as $shift) {
@@ -173,12 +173,12 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                             new Object(
                                 'name',
                                 array(),
-                                $union_name
+                                $organization_name
                             ),
                             new Object(
                                 'logo',
                                 array(),
-                                $logo
+                                $organization_logo
                             )
                         )
                     ),
