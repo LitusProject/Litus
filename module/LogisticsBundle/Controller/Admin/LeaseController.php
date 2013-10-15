@@ -25,7 +25,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * Controller for /admin/logistics/lease[/:action[/:id]][/page/:page][/]
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class LeaseController extends AdminController
 {

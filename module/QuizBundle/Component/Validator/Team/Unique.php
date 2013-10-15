@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManager,
 /**
  * Validates the uniqueness of a team number in a quiz
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class Unique extends \Zend\Validator\AbstractValidator
 {

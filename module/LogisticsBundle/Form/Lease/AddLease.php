@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Text,
 /**
  * The form used to add a new Lease.
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
 {

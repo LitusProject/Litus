@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityManager;
 
 /**
  * Checks if a barcode belongs to a lease item, and it is not yet leased
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class LeaseValidator extends \Zend\Validator\AbstractValidator
 {

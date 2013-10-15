@@ -33,7 +33,7 @@ use Doctrine\ORM\Query;
  * Improved EntityRepository that handles conversion from methods returning a {@link Query}
  * to methods that return an array of results.
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 abstract class EntityRepository extends DoctrineEntityRepository
 {
@@ -56,9 +56,9 @@ abstract class EntityRepository extends DoctrineEntityRepository
      */
     public function __call($method, $arguments)
     {
-        if(method_exists($this, $method.'Query')) {
-            return $this->_fetchResults($method.'Query', $arguments);
-        }
+        if (method_exists($this, $method . 'Query'))
+            return $this->_fetchResults($method . 'Query', $arguments);
+
         return parent::__call($method, $arguments);
     }
 
@@ -72,7 +72,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
      */
     private function _fetchResults($method, $arguments)
     {
-        switch(count($arguments)) {
+        switch (count($arguments)) {
             // Some fast paths to call methods with zero, one or two arguments.
             case 0:
                 $query = $this->$method();
@@ -86,18 +86,19 @@ abstract class EntityRepository extends DoctrineEntityRepository
             default:
                 $query = call_user_func_array(array($this, $method), $arguments);
         }
-        if(!$query instanceof Query) { // WHY U NO FOLLOW CONVENTION?
+
+        if (!$query instanceof Query)
             throw new \LogicException(get_class($this).'::'.$method.' must return an instance of Doctrine\ORM\Query.');
-        }
+
         /* @var $query Query */
         return $query->getResult();
     }
 
     public function findAll()
     {
-        if(method_exists($this, 'findAllQuery')) {
+        if (method_exists($this, 'findAllQuery'))
             return $this->_fetchResults('findAllQuery', array());
-        }
+
         return parent::findAll();
     }
 }
