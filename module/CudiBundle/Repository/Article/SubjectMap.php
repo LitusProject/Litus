@@ -5,7 +5,7 @@ namespace CudiBundle\Repository\Article;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Article,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     SyllabusBundle\Entity\Subject as SubjectEntity;
 

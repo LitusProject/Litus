@@ -3,7 +3,7 @@
 namespace FormBundle\Repository\Node;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Form
@@ -13,14 +13,13 @@ use DateTime,
  */
 class Form extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Node\Form', 'n')
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -42,7 +41,7 @@ class Form extends EntityRepository
         return null;
     }
 
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
@@ -52,13 +51,12 @@ class Form extends EntityRepository
             )
             ->orderBy('f.creationTime', 'DESC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllOld()
+    public function findAllOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
@@ -68,8 +66,7 @@ class Form extends EntityRepository
             )
             ->orderBy('f.creationTime', 'DESC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -3,7 +3,7 @@
 namespace SportBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Runner
@@ -33,7 +33,7 @@ class Runner extends EntityRepository
         return null;
     }
 
-    public function findAllWithoutIdentificationAndAcademicYear(AcademicYear $academicYear)
+    public function findAllWithoutIdentificationAndAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -46,8 +46,7 @@ class Runner extends EntityRepository
                 )
             )
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

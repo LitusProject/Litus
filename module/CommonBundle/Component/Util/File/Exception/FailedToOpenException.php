@@ -22,5 +22,4 @@ namespace CommonBundle\Component\Util\File\Exception;
  */
 class FailedToOpenException extends \Exception
 {
-
 }

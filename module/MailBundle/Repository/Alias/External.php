@@ -2,7 +2,7 @@
 
 namespace MailBundle\Repository\Alias;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * External

@@ -2,7 +2,7 @@
 
 namespace PageBundle\Repository\Node;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Util\EntityRepository,
     PageBundle\Entity\Node\Page as PageEntity;
 
 /**
@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository,
  */
 class Page extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -21,8 +21,7 @@ class Page extends EntityRepository
             ->where(
                 $query->expr()->isNull('p.endTime')
             )
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

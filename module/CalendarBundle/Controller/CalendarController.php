@@ -185,7 +185,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $result .= 'VERSION:2.0' . PHP_EOL;
         $result .= 'X-WR-CALNAME:' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_short_name') . ' Calendar' . PHP_EOL;
+            ->getConfigValue('organization_short_name') . ' Calendar' . PHP_EOL;
         $result .= 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
         $result .= 'CALSCALE:GREGORIAN' . PHP_EOL;
         $result .= 'METHOD:PUBLISH' . PHP_EOL;

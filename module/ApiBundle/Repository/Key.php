@@ -3,7 +3,7 @@
 namespace ApiBundle\Repository;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Key
@@ -13,7 +13,7 @@ use DateTime,
  */
 class Key extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('k')
@@ -22,8 +22,7 @@ class Key extends EntityRepository
                 $query->expr()->gt('k.expirationTime', ':now')
             )
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

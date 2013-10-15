@@ -41,9 +41,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $result = parent::onDispatch($e);
 
         $result->shibbolethUrl = $this->_getShibbolethUrl();
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
 
         $e->setResult($result);
         return $result;

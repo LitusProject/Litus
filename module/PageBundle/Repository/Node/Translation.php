@@ -2,7 +2,7 @@
 
 namespace PageBundle\Repository\Node;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Translation

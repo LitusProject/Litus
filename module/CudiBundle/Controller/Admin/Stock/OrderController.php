@@ -400,19 +400,15 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition'        => 'attachment; filename="order.zip"',
-            'Content-Type'               => 'application/zip',
-            'Content-Length'             => filesize($archive->getFileName()),
+            'Content-Disposition' => 'attachment; filename="order.zip"',
+            'Content-Type'        => 'application/zip',
+            'Content-Length'      => filesize($archive->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($archive->getFileName(), 'r');
-        $data = fread($handle, filesize($archive->getFileName()));
-        fclose($handle);
-
         return new ViewModel(
             array(
-                'data' => $data,
+                'data' => $archive->getContent(),
             )
         );
     }

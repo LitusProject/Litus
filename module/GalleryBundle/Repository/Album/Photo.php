@@ -2,7 +2,7 @@
 
 namespace GalleryBundle\Repository\Album;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Util\EntityRepository,
     GalleryBundle\Entity\Album\Album as AlbumEntity;
 
 /**

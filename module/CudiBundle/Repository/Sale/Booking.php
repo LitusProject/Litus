@@ -12,7 +12,7 @@ use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Stock\Period,
     DateTime,
     DateInterval,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     Zend\Mail\Transport\TransportInterface;
 

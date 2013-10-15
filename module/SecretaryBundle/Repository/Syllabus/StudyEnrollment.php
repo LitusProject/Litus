@@ -4,7 +4,7 @@ namespace SecretaryBundle\Repository\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     SyllabusBUndle\Entity\Study;
 
 /**
@@ -15,7 +15,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class StudyEnrollment extends EntityRepository
 {
-    public function findAllByStudyAndAcademicYear(Study $study, AcademicYear $academicYear)
+    public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -28,13 +28,12 @@ class StudyEnrollment extends EntityRepository
             )
             ->setParameter('study', $study)
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByAcademicAndAcademicYear(Academic $academic, AcademicYear $academicYear)
+    public function findAllByAcademicAndAcademicYearQuery(Academic $academic, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -47,8 +46,7 @@ class StudyEnrollment extends EntityRepository
             )
             ->setParameter('academic', $academic)
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

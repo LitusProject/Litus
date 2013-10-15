@@ -4,7 +4,7 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**

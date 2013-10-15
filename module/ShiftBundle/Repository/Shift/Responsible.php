@@ -2,7 +2,7 @@
 
 namespace ShiftBundle\Repository\Shift;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Responsible

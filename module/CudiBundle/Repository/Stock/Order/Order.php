@@ -9,7 +9,7 @@ use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Stock\Order\Order as OrderEntity,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Supplier,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\EntityRepository,
     Doctrine\ORM\Query\Expr\OrderBy;
 
 /**

@@ -29,22 +29,22 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installConfig(
             array(
                 array(
-                    'key'         => 'newsbundle.rss_title',
-                    'value'       => 'Vlaamse Technische Kring Leuven',
+                    'key'         => 'news.rss_title',
+                    'value'       => 'Vlaamse Technische Kring',
                     'description' => 'The title of the RSS feed',
                 ),
                 array(
-                    'key'         => 'newsbundle.rss_description',
+                    'key'         => 'news.rss_description',
                     'value'       => serialize(
                         array(
-                            'nl' => 'RSS feed van Vlaamse Technische Kring Leuven',
-                            'en' => 'RSS feed of Vlaamse Technische Kring Leuven',
+                            'nl' => 'RSS Feed van de Vlaamse Technische Kring',
+                            'en' => 'RSS Feed of the Vlaamse Technische Kring',
                         )
                     ),
                     'description' => 'The description of the RSS feed',
                 ),
                 array(
-                    'key'         => 'newsbundle.rss_image_link',
+                    'key'         => 'news.rss_image_link',
                     'value'       => '/_site/img/logo.png',
                     'description' => 'The image of the RSS feed',
                 ),

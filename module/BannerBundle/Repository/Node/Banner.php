@@ -3,7 +3,7 @@
 namespace BannerBundle\Repository\Node;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Banner
@@ -13,19 +13,18 @@ use DateTime,
  */
 class Banner extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('BannerBundle\Entity\Node\Banner', 'n')
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $now = new DateTime();
 
@@ -41,8 +40,7 @@ class Banner extends EntityRepository
             )
             ->setParameter('now', $now)
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Supplier

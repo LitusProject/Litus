@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\User\Shibboleth;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Code
@@ -33,7 +33,7 @@ class Code extends EntityRepository
         return null;
     }
 
-    public function findAllExpired()
+    public function findAllExpiredQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
@@ -42,8 +42,7 @@ class Code extends EntityRepository
                 $query->expr()->lt('c.expirationTime', ':expirationTime')
             )
             ->setParameter('expirationTime', new DateTime('now'))
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
