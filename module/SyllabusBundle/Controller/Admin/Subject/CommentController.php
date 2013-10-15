@@ -36,10 +36,10 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Subject\Comment')
-                ->findAllByAcademicYear($academicYear),
+                ->findAllByAcademicYearQuery($academicYear),
             $this->getParam('page')
         );
 

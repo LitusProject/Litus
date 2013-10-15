@@ -37,7 +37,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         if (null !== $this->getParam('field')) {
             $academics = $this->_search();
 
-            $paginator = $this->paginator()->createFromArray(
+            $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
             );
@@ -443,13 +443,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $academics = $this->_search();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($academics, $numResults);
+        $academics = $this->_search()
+                ->setMaxResults($numResults)
+                ->getResult();
 
         $result = array();
         foreach($academics as $academic) {
@@ -474,21 +474,25 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     *
+     * @return \Doctrine\ORM\Query
+     */
     private function _search()
     {
         switch($this->getParam('field')) {
             case 'username':
                 return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findAllByUsername($this->getParam('string'));
+                    ->findAllByUsernameQuery($this->getParam('string'));
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findAllByName($this->getParam('string'));
+                    ->findAllByNameQuery($this->getParam('string'));
             case 'university_identification':
                 return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findAllByUniversityIdentification($this->getParam('string'));
+                    ->findAllByUniversityIdentificationQuery($this->getParam('string'));
         }
     }
 

@@ -7,7 +7,7 @@ use DateTime,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization\Unit as UnitEntity,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Shift

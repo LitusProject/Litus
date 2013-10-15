@@ -4,7 +4,7 @@ namespace LogisticsBundle\Repository\Reservation;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * PianoReservation
@@ -14,7 +14,7 @@ use CommonBundle\Entity\User\Person,
  */
 class PianoReservation extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')

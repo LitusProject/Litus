@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Comment;
 
 use CudiBundle\Entity\Article,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Comment

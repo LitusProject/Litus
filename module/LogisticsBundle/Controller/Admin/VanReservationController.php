@@ -27,10 +27,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-                ->findAllActive(),
+                ->findAllActiveQuery(),
             $this->getParam('page')
         );
 
@@ -56,10 +56,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-                ->findAllOld(),
+                ->findAllOldQuery(),
             $this->getParam('page')
         );
 

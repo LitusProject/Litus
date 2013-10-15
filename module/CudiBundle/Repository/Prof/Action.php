@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Prof;
 
 use CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Action

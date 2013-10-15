@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Article\Option;
 
-use CommonBundle\Component\Util\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Color

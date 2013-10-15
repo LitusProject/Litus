@@ -3,7 +3,7 @@
 namespace NotificationBundle\Repository\Node;
 
 use DateTime,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Notification

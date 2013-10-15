@@ -3,7 +3,7 @@
 namespace MailBundle\Repository\MailingList;
 
 use CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Named

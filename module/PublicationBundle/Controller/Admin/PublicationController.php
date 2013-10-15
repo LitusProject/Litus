@@ -29,10 +29,10 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Publication')
-                ->findAllActive(),
+                ->findAllActiveQuery(),
             $this->getParam('page'),
             array(),
             array(

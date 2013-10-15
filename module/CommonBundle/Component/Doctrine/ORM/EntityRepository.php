@@ -24,7 +24,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace CommonBundle\Component\Util;
+namespace CommonBundle\Component\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 use Doctrine\ORM\Query;

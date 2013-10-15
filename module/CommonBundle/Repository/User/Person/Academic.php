@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\User\Person;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Academic

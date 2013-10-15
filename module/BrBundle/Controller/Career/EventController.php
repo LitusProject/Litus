@@ -27,10 +27,10 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Event')
-            ->findAllFuture(new DateTime()),
+            ->findAllFutureQuery(new DateTime()),
             $this->getParam('page')
         );
 

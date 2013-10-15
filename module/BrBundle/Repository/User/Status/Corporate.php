@@ -2,7 +2,7 @@
 
 namespace BrBundle\Repository\User\Status;
 
-use CommonBundle\Component\Util\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Corporate

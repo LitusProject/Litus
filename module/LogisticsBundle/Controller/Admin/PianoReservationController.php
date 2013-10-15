@@ -25,10 +25,10 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
-                ->findAllActive(),
+                ->findAllActiveQuery(),
             $this->getParam('page')
         );
 
@@ -42,10 +42,10 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
-                ->findAllOld(),
+                ->findAllOldQuery(),
             $this->getParam('page')
         );
 

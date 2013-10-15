@@ -2,7 +2,7 @@
 
 namespace PageBundle\Repository\Node;
 
-use CommonBundle\Component\Util\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     PageBundle\Entity\Node\Page as PageEntity;
 
 /**

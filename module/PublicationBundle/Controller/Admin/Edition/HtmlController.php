@@ -37,10 +37,10 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Edition\Html')
-                ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
+                ->findAllByPublicationAndAcademicYearQuery($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 
