@@ -445,7 +445,7 @@ Disallow: /admin/*
                     ),
                     'actions' => array(
                         'common_account' => array(
-                            'edit', 'index', 'passbook', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
+                            'edit', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
                         ),
                     ),
                 ),
