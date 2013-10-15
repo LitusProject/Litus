@@ -29,10 +29,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('NewsBundle\Entity\Node\News')
-                ->findAllSite(),
+                ->findAllSiteQuery(),
             $this->getParam('page')
         );
 

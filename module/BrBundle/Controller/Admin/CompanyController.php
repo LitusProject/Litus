@@ -50,7 +50,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 )
             );
         } else {
-            $paginator = $this->paginator()->createFromArray(
+            $paginator = $this->paginator()->createFromQuery(
                 $this->_search(),
                 $this->getParam('page')
             );
@@ -366,13 +366,13 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $companies = $this->_search();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($companies, $numResults);
+        $companies = $this->_search()
+                ->setMaxResults($numResults)
+                ->getResult();
 
         $result = array();
         foreach($companies as $company) {
@@ -390,13 +390,17 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    /**
+     *
+     * @return \Doctrine\ORM\Query
+     */
     private function _search()
     {
         switch($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
-                    ->findAllByName($this->getParam('string'));
+                    ->findAllByNameQuery($this->getParam('string'));
         }
     }
 

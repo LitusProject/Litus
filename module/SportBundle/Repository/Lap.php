@@ -3,7 +3,7 @@
 namespace SportBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Lap
@@ -13,7 +13,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Lap extends EntityRepository
 {
-    public function findPrevious(AcademicYear $academicYear, $nbResults = 1)
+    public function findPreviousQuery(AcademicYear $academicYear, $nbResults = 1)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -28,13 +28,12 @@ class Lap extends EntityRepository
             ->setParameter('academicYear', $academicYear)
             ->orderBy('l.registrationTime', 'DESC')
             ->setMaxResults($nbResults)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
-        return array_reverse($resultSet);
+        return $resultSet;
     }
 
-    public function findAllPreviousLaps(AcademicYear $academicYear)
+    public function findAllPreviousLapsQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -48,10 +47,9 @@ class Lap extends EntityRepository
             )
             ->setParameter('academicYear', $academicYear)
             ->orderBy('l.startTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
-        return array_reverse($resultSet);
+        return $resultSet;
     }
 
     public function findCurrent(AcademicYear $academicYear)

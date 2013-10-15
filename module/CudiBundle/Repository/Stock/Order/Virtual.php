@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Stock\Order;
 
 use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Virtual

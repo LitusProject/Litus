@@ -9,7 +9,7 @@ use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Session as SessionEntity,
     CudiBundle\Entity\Supplier,
     DateTime,
-    CommonBundle\Component\Util\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     Doctrine\ORM\Query\Expr\OrderBy;
 

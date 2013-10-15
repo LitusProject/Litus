@@ -26,10 +26,10 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByType('internship'),
+            ->findAllActiveByTypeQuery('internship'),
             $this->getParam('page')
         );
 

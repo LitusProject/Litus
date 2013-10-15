@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Sale\Articles;
 
-use CommonBundle\Component\Util\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * History
