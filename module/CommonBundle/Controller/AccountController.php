@@ -15,6 +15,8 @@
 namespace CommonBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\PassKit\Pass\Membership,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
@@ -750,6 +752,33 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 )
             );
         }
+    }
+
+    public function passbookAction()
+    {
+        $pass = new TmpFile();
+        $membership = new Membership(
+            $this->getEntityManager(),
+            $this->getAuthentication()->getPersonObject(),
+            $this->getCurrentAcademicYear(),
+            $pass,
+            'data/images/pass_kit'
+        );
+        $membership->createPass();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="membership.pkpass"',
+            'Content-Type'        => 'application/vnd.apple.pkpass',
+            'Content-Length'      => filesize($pass->getFileName()),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $pass->getContent()
+            )
+        );
     }
 
     private function _getUser()
