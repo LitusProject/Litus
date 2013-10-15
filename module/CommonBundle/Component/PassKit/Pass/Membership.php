@@ -59,6 +59,20 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
     }
 
     /**
+     * Get the certicicate used to sign the pass.
+     *
+     * @return array
+     */
+    protected function getCertificate()
+    {
+        $certificatePasswords = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.passkit_certificates');
+
+        return unserialize($certificatePasswords)['membership'];
+    }
+
+    /**
      * Get the pass' JSON directory.
      *
      * @return string
@@ -76,6 +90,10 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
         $organizationName = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_name');
+
+        $shortOrganizationName = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('organization_short_name');
 
         $this->addLanguage('en', array(
             'lAcademicYear'     => 'ACADEMIC YEAR',
@@ -99,59 +117,47 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
             'praesidium'        => 'Praesidium'
         ));
 
-        return json_encode(array(
-            'formatVersion'      => 1,
-            'passTypeIdentifier' => unserialize($passTypeIdentifiers)['membership'],
-            'serialNumber'       => uniqid(),
-            'teamIdentifier'     => $teamIdentifier,
-            'organizationName'   => $organizationName,
-            'description'        => $organizationName . ' Membership',
-            'foregroundColor'    => 'rgb(255, 255, 255)',
-            'backgroundColor'    => 'rgb(34, 50, 90)',
-            'expirationDate'     => $this->_currentAcademicYear->getEndDate()->format('c'),
-            'barcode'            => array(
-                'format'          => 'PKBarcodeFormatPDF417',
-                'message'         => $this->_authenticatedPerson->getUsername(),
-                'messageEncoding' => 'iso-8859-1',
-            ),
-            'generic'            => array(
-                'primaryFields' => array(
-                    array(
-                        'key'   => 'member',
-                        'value' => $this->_authenticatedPerson->getFullName(),
-                    )
+        return json_encode(
+            array(
+                'formatVersion'      => 1,
+                'passTypeIdentifier' => unserialize($passTypeIdentifiers)['membership'],
+                'serialNumber'       => $this->getSerialNumber(),
+                'teamIdentifier'     => $teamIdentifier,
+                'organizationName'   => $organizationName,
+                'description'        => $shortOrganizationName . ' Membership',
+                'foregroundColor'    => 'rgb(255, 255, 255)',
+                'backgroundColor'    => 'rgb(34, 50, 90)',
+                'expirationDate'     => $this->_currentAcademicYear->getEndDate()->format('c'),
+                'barcode'            => array(
+                    'format'          => 'PKBarcodeFormatPDF417',
+                    'message'         => $this->_authenticatedPerson->getUsername(),
+                    'messageEncoding' => 'iso-8859-1',
                 ),
-                'secondaryFields' => array(
-                    array(
-                        'key'   => 'academicYear',
-                        'label' => 'lAcademicYear',
-                        'value' => $this->_currentAcademicYear->getStartDate()->format('Y')
-                            . '-'
-                            . $this->_currentAcademicYear->getEndDate()->format('Y'),
+                'generic'            => array(
+                    'primaryFields' => array(
+                        array(
+                            'key'   => 'member',
+                            'value' => $this->_authenticatedPerson->getFullName(),
+                        )
                     ),
-                    array(
-                        'key'   => 'status',
-                        'label' => 'lStatus',
-                        'value' => $this->_authenticatedPerson
-                            ->getOrganizationStatus($this->_currentAcademicYear)
-                            ->getStatus(),
+                    'secondaryFields' => array(
+                        array(
+                            'key'   => 'academicYear',
+                            'label' => 'lAcademicYear',
+                            'value' => $this->_currentAcademicYear->getStartDate()->format('Y')
+                                . '-'
+                                . $this->_currentAcademicYear->getEndDate()->format('Y'),
+                        ),
+                        array(
+                            'key'   => 'status',
+                            'label' => 'lStatus',
+                            'value' => $this->_authenticatedPerson
+                                ->getOrganizationStatus($this->_currentAcademicYear)
+                                ->getStatus(),
+                        ),
                     ),
                 ),
-            ),
-        ));
-    }
-
-    /**
-     * Get the certicicate used to sign the pass.
-     *
-     * @return array
-     */
-    protected function getCertificate()
-    {
-        $certificatePasswords = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.passkit_certificates');
-
-        return unserialize($certificatePasswords)['membership'];
+            )
+        );
     }
 }
