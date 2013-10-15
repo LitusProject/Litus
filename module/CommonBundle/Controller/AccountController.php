@@ -535,7 +535,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         );
     }
 
-    public function getPassAction()
+    public function passbookAction()
     {
         $pass = new TmpFile();
         $membership = new Membership(

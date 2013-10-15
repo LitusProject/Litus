@@ -324,7 +324,7 @@ Disallow: /admin/*
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'getPass', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'passbook', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'common_session' => array(
                         'manage', 'expire'
@@ -445,7 +445,7 @@ Disallow: /admin/*
                     ),
                     'actions' => array(
                         'common_account' => array(
-                            'edit', 'getPass', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
+                            'edit', 'index', 'passbook', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
                         ),
                     ),
                 ),
