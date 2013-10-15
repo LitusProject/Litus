@@ -113,7 +113,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
     public function searchAction()
     {
         $this->initAjax();
-                
+
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
@@ -130,7 +130,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             $item->email = $alias->getEmailAddress();
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
@@ -148,7 +148,7 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
             case 'alias':
                 return $this->getEntityManager()
                     ->getRepository('MailBundle\Entity\Alias')
-                    ->findByAliasNameQuerry($this->getParam('string'));
+                    ->findAllByNameQuery($this->getParam('string'));
         }
     }
 

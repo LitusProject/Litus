@@ -13,13 +13,13 @@ use CommonBundle\Entity\User\Person\Academic,
  */
 class Alias extends EntityRepository
 {
-    public function findByAliasNameQuerry($name)
+    public function findAllByNameQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('p')
-            ->from('MailBundle\Entity\Alias','p')
+        $resultSet = $query->select('a')
+            ->from('MailBundle\Entity\Alias','a')
             ->where(
-                $query->expr()->like('p.name', ':name')
+                $query->expr()->like('a.name', ':name')
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery();

@@ -557,15 +557,15 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $mails = $this->_search() 
-            ->setMaxResults($numResults) 
+        $lists = $this->_search()
+            ->setMaxResults($numResults)
             ->getResult();
 
         $result = array();
-        foreach($mails as $mail) {
+        foreach($lists as $list) {
             $item = (object) array();
-            $item->id = $mail->getId();
-            $item->name = $mail->getName();
+            $item->id = $list->getId();
+            $item->name = $list->getName();
             $result[] = $item;
         }
 
@@ -585,7 +585,7 @@ class MailingListController extends \CommonBundle\Component\Controller\ActionCon
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('MailBundle\Entity\MailingList')
-                    ->findByListNameQuerry($this->getParam('string'));
+                    ->findAllByNameQuery($this->getParam('string'));
         }
     }
 

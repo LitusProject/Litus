@@ -22,7 +22,7 @@
             <div style="padding: 4px; text-align: right">
                 Search:
                 <select id="searchField">
-                    <option value="shiftname">Shiftname</option>
+                    <option value="name">Name</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -69,9 +69,9 @@
                     </tr>
                 {% endfor %}
     	    </table>
-        </div>
 
-		{% include 'admin/partials/paginationControl.twig' %}
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
 	</div>
 
 	<div class="modal hide fade" id="removeShift">

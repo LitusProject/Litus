@@ -12,13 +12,13 @@ use CommonBundle\Component\Util\EntityRepository;
  */
 class MailingList extends EntityRepository
 {
-    public function findByListNameQuerry($name)
+    public function findAllByNameQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('p')
-            ->from('MailBundle\Entity\MailingList\Named','p')
+        $resultSet = $query->select('l')
+            ->from('MailBundle\Entity\MailingList\Named','l')
             ->where(
-                $query->expr()->like('p.name', ':name')
+                $query->expr()->like($query->expr()->lower('l.name'), ':name')
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery();

@@ -20,30 +20,35 @@ use DateTime,
  */
 class Shift extends EntityRepository
 {
-    public function findByShiftNameQuerry($name)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-            ->from('ShiftBundle\Entity\Shift', 's')
-            ->where(
-                $query->expr()->like('s.name', ':name')
-            )
-            ->setParameter('name', '%' . strtolower($name) . '%')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
     public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->gt('s.endDate', ':now')
+                $query->expr()->gt('s.endDate', ':now')
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByNameQuery($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name')
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery();
 
         return $resultSet;
@@ -55,7 +60,7 @@ class Shift extends EntityRepository
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->lt('s.endDate', ':now')
+                $query->expr()->lt('s.endDate', ':now')
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
@@ -70,10 +75,10 @@ class Shift extends EntityRepository
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->andX(
-                        $query->expr()->gt('s.endDate', ':now'),
-                        $query->expr()->eq('s.event', ':event')
-                    )
+                $query->expr()->andX(
+                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->eq('s.event', ':event')
+                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
@@ -89,10 +94,10 @@ class Shift extends EntityRepository
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->andX(
-                        $query->expr()->gt('s.endDate', ':now'),
-                        $query->expr()->eq('s.unit', ':unit')
-                    )
+                $query->expr()->andX(
+                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->eq('s.unit', ':unit')
+                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
@@ -108,11 +113,11 @@ class Shift extends EntityRepository
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->andX(
-                        $query->expr()->gt('s.endDate', ':now'),
-                        $query->expr()->lt('s.startDate', ':end_date'),
-                        $query->expr()->gt('s.endDate', ':start_date')
-                    )
+                $query->expr()->andX(
+                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->lt('s.startDate', ':end_date'),
+                    $query->expr()->gt('s.endDate', ':start_date')
+                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())

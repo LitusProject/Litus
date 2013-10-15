@@ -279,7 +279,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
@@ -295,8 +294,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $item->name = $shift->getName();
             $item->startDate = $shift->getStartDate()->format('d/m/Y H:i');
             $item->endDate = $shift->getEndDate()->format('d/m/Y H:i');
+
             $result[] = $item;
-            
         }
 
         return new ViewModel(
@@ -313,10 +312,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     private function _search()
     {
         switch($this->getParam('field')) {
-            case 'shiftname':
+            case 'name':
                 return $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift')
-                    ->findByShiftNameQuerry($this->getParam('string'));
+                    ->findAllActiveByNameQuery($this->getParam('string'));
         }
     }
 
