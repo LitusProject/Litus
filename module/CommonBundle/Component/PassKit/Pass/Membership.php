@@ -75,7 +75,7 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
 
         $organizationName = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_name');
+            ->getConfigValue('organization_name');
 
         $this->addLanguage('en', array(
             'lAcademicYear'     => 'ACADEMIC YEAR',
@@ -108,6 +108,12 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
             'description'        => $organizationName . ' Membership',
             'foregroundColor'    => 'rgb(255, 255, 255)',
             'backgroundColor'    => 'rgb(34, 50, 90)',
+            'expirationDate'     => $this->_currentAcademicYear->getEndDate()->format('c'),
+            'barcode'            => array(
+                'format'          => 'PKBarcodeFormatPDF417',
+                'message'         => $this->_authenticatedPerson->getUsername(),
+                'messageEncoding' => 'iso-8859-1',
+            ),
             'generic'            => array(
                 'primaryFields' => array(
                     array(
