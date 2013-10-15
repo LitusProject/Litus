@@ -3,7 +3,7 @@
 namespace BrBundle\Repository\Company;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Page

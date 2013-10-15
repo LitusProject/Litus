@@ -32,10 +32,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Event')
-                ->findAll(),
+                ->findAllQuery(),
             $this->getParam('page')
         );
 
@@ -49,10 +49,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Event')
-                ->findOld(),
+                ->findOldQuery(),
             $this->getParam('page')
         );
 

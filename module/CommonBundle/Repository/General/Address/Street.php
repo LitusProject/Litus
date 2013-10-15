@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\General\Address;
 
 use CommonBundle\Entity\General\Address\City as CityEntity,
-    CommonBundle\Component\Util\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Street

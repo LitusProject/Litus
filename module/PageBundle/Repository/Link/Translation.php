@@ -2,7 +2,7 @@
 
 namespace PageBundle\Repository\Link;
 
-use CommonBundle\Component\Util\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Translation

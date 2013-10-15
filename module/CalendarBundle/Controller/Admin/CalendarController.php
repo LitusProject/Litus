@@ -27,10 +27,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CalendarBundle\Entity\Node\Event')
-                ->findAllActive(0),
+                ->findAllActiveQuery(0),
             $this->getParam('page')
         );
 
@@ -44,10 +44,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CalendarBundle\Entity\Node\Event')
-                ->findAllOld(),
+                ->findAllOldQuery(),
             $this->getParam('page')
         );
 

@@ -41,10 +41,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($company = $this->_getCompany()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Company\Event')
-                ->findAllByCompany($company),
+                ->findAllByCompanyQuery($company),
             $this->getParam('page')
         );
 

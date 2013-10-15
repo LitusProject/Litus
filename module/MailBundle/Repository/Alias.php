@@ -2,8 +2,7 @@
 
 namespace MailBundle\Repository;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\Util\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Alias
