@@ -153,7 +153,7 @@ abstract class Pass
         for ($i = 0; isset($languages[$i]); $i++)
             $hashes[$languages[$i] . '.lproj/pass.strings'] = sha1($this->_createLanguage($languages[$i]));
 
-        $this->_manifest->appendContent(json_encode($hashes, JSON_UNESCAPED_SLASHES));
+        $this->_manifest->appendContent(json_encode($hashes, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
 
     /**
