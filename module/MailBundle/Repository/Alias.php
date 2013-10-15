@@ -2,7 +2,8 @@
 
 namespace MailBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Alias
@@ -12,4 +13,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class Alias extends EntityRepository
 {
+    public function findAllByNameQuery($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('MailBundle\Entity\Alias','a')
+            ->where(
+                $query->expr()->like('a.name', ':name')
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

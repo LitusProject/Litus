@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\File;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * File

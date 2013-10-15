@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ShiftBundle\Component\Document\Generator;
+namespace ShiftBundle\Component\Document\Generator\Event;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
@@ -28,7 +28,7 @@ use CommonBundle\Component\Util\File\TmpFile,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class EventPdf extends \CommonBundle\Component\Document\Generator\Pdf
+class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
      * @var \CudiBundle\Entity\Stock\Order
@@ -73,8 +73,8 @@ class EventPdf extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $configs = $this->getConfigRepository();
 
-        $union_name = $configs->getConfigValue('union_name');
-        $logo = $configs->getConfigValue('union_logo');
+        $organization_name = $configs->getConfigValue('organization_name');
+        $organization_logo = $configs->getConfigValue('organization_logo');
 
         $shifts = array();
         foreach ($this->_shifts as $shift) {
@@ -173,12 +173,12 @@ class EventPdf extends \CommonBundle\Component\Document\Generator\Pdf
                             new Object(
                                 'name',
                                 array(),
-                                $union_name
+                                $organization_name
                             ),
                             new Object(
                                 'logo',
                                 array(),
-                                $logo
+                                $organization_logo
                             )
                         )
                     ),

@@ -2,7 +2,7 @@
 
 namespace FormBundle\Repository\Node;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * GuestInfo

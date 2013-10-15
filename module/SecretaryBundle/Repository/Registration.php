@@ -6,7 +6,7 @@ use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Query\Expr\Join,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Registration

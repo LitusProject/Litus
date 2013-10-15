@@ -96,20 +96,20 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     protected function generateXml(TmpFile $tmpFile)
     {
-        $configs = $this->getConfigRepository();
+        $configuration = $this->getConfigRepository();
 
         $now = new DateTime();
-        $union_short_name = $configs->getConfigValue('union_short_name');
-        $union_name = $configs->getConfigValue('union_name');
-        $logo = $configs->getConfigValue('union_logo');
-        $union_url = $configs->getConfigValue('union_url');
-        $union_mail = $configs->getConfigValue('cudi.mail');
-        $university = $configs->getConfigValue('university');
-        $faculty = $configs->getConfigValue('faculty');
-        $address_name = $configs->getConfigValue('cudi.front_address_name');
+        $organization_short_name = $configuration->getConfigValue('organization_short_name');
+        $organization_name = $configuration->getConfigValue('organization_name');
+        $organization_logo = $configuration->getConfigValue('organization_logo');
+        $organization_url = $configuration->getConfigValue('organization_url');
+        $organization_mail = $configuration->getConfigValue('cudi.mail');
+        $university = $configuration->getConfigValue('university');
+        $faculty = $configuration->getConfigValue('faculty');
+        $address_name = $configuration->getConfigValue('cudi.front_address_name');
         $address = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Address')
-            ->findOneById($configs->getConfigValue('cudi.billing_address'));
+            ->findOneById($configuration->getConfigValue('cudi.billing_address'));
 
         $academicYear = $this->_getCurrentAcademicYear();
 
@@ -167,18 +167,18 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $union_short_name
+                            'short_name' => $organization_short_name
                         ),
                         array(
                             new Object(
                                 'name',
                                 null,
-                                $union_name
+                                $organization_name
                             ),
                             new Object(
                                 'logo',
                                 null,
-                                $logo
+                                $organization_logo
                             )
                         )
                     ),
@@ -219,12 +219,12 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                             new Object(
                                 'site',
                                 null,
-                                $union_url
+                                $organization_url
                             ),
                             new Object(
                                 'email',
                                 null,
-                                $union_mail
+                                $organization_mail
                             )
                         )
                     ),

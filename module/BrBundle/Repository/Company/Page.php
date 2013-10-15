@@ -3,7 +3,7 @@
 namespace BrBundle\Repository\Company;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Page
@@ -39,7 +39,7 @@ class Page extends EntityRepository
         return null;
     }
 
-    public function findAllActive(AcademicYear $academicYear)
+    public function findAllActiveQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -53,13 +53,12 @@ class Page extends EntityRepository
                 )
             )
             ->setParameter('year', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveBySearch(AcademicYear $academicYear, $string)
+    public function findAllActiveBySearchQuery(AcademicYear $academicYear, $string)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -76,8 +75,7 @@ class Page extends EntityRepository
             ->orderBy('c.name', 'ASC')
             ->setParameter('name', strtolower($string))
             ->setParameter('year', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

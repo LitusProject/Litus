@@ -49,14 +49,14 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         $result->language = $language;
         $result->event = $event;
 
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
 
         $e->setResult($result);
         return $result;
     }
-    
+
     /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.

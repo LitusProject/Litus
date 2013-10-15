@@ -38,9 +38,9 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
         $result = parent::onDispatch($e);
 
         $result->loginForm = new LoginForm($this->url()->fromRoute('logistics_auth', array('action' => 'login')));
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
         $result->shibbolethUrl = $this->_getShibbolethUrl();
 
         $e->setResult($result);

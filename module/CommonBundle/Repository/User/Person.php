@@ -4,7 +4,7 @@ namespace CommonBundle\Repository\User;
 
 use CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Person
@@ -32,7 +32,7 @@ class Person extends EntityRepository
         return null;
     }
 
-    public function findAllByName($name)
+    public function findAllByNameQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -56,13 +56,12 @@ class Person extends EntityRepository
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByRole(Role $role)
+    public function findAllByRoleQuery(Role $role)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -72,13 +71,12 @@ class Person extends EntityRepository
                 $query->expr()->eq('r.name', ':name')
             )
             ->setParameter('name', $role->getName())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByUsername($username)
+    public function findAllByUsernameQuery($username)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -87,8 +85,7 @@ class Person extends EntityRepository
                 $query->expr()->like('p.username', ':username')
             )
             ->setParameter('username', '%' . strtolower($username) . '%')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -144,8 +141,7 @@ class Person extends EntityRepository
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->setMaxResults(20)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

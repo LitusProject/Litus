@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Article;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * External

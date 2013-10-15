@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\User\Status;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * University
@@ -13,7 +13,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class University extends EntityRepository
 {
-    public function findAllByStatus($status, AcademicYear $academicYear)
+    public function findAllByStatusQuery($status, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -26,8 +26,7 @@ class University extends EntityRepository
             )
             ->setParameter('status', $status)
             ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

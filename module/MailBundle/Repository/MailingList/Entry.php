@@ -2,7 +2,7 @@
 
 namespace MailBundle\Repository\MailingList;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Entry

@@ -8,7 +8,7 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Sale\Session as SessionEntity,
     DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Session

@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General\Bank;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * MoneyUnit

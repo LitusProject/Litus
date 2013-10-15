@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\User\Person\Sale;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\EntityRepository;
 
 /**
  * Acco

@@ -69,7 +69,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $config = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
         $description = '';
-        $descriptions = unserialize($config->getConfigValue('newsbundle.rss_description'));
+        $descriptions = unserialize($config->getConfigValue('news.rss_description'));
         if (isset($descriptions[$this->getLanguage()->getAbbrev()]))
             $description = $descriptions[$this->getLanguage()->getAbbrev()];
         else
@@ -84,7 +84,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             new XmlObject(
                 'title',
                 array(),
-                $config->getConfigValue('newsbundle.rss_title')
+                $config->getConfigValue('news.rss_title')
             ),
             new XmlObject(
                 'description',
@@ -113,12 +113,12 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new XmlObject(
                         'title',
                         array(),
-                        $config->getConfigValue('newsbundle.rss_title')
+                        $config->getConfigValue('news.rss_title')
                     ),
                     new XmlObject(
                         'url',
                         array(),
-                        $serverName . $config->getConfigValue('newsbundle.rss_image_link')
+                        $serverName . $config->getConfigValue('news.rss_image_link')
                     ),
                     new XmlObject(
                         'link',
