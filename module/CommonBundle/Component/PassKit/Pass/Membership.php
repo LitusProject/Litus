@@ -157,7 +157,8 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
                         ),
                     ),
                 ),
-            )
+            ),
+            JSON_PRETTY_PRINT
         );
     }
 }
