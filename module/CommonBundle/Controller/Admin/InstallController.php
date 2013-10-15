@@ -258,6 +258,32 @@ Disallow: /admin/*
 ',
                     'description' => 'The robots.txt content',
                 ),
+                array(
+                    'key'         => 'common.passkit_certificates',
+                    'value'       => serialize(
+                        array(
+                            'membership' => array(
+                                'path'     => 'data/certificates/private/membership.p12',
+                                'password' => '3Vg2Z401YDh514Qw3t4m76SL',
+                            )
+                        )
+                    ),
+                    'description' => 'The certificates that will be used to to create PassKit signatures',
+                ),
+                array(
+                    'key'         => 'common.passkit_pass_type_identifiers',
+                    'value'       => serialize(
+                        array(
+                            'membership' => 'pass.be.vtk.membership',
+                        )
+                    ),
+                    'description' => 'The PassKit pass type identifiers',
+                ),
+                array(
+                    'key'         => 'common.passkit_team_identifier',
+                    'value'       => '83GZ464K6U',
+                    'description' => 'The team identifier of the Apple developer account that generated the certificates',
+                ),
             )
         );
     }
@@ -298,7 +324,7 @@ Disallow: /admin/*
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'passbook', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'common_session' => array(
                         'manage', 'expire'
@@ -419,7 +445,7 @@ Disallow: /admin/*
                     ),
                     'actions' => array(
                         'common_account' => array(
-                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',
+                            'edit', 'index', 'passbook', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
                         ),
                     ),
                 ),

@@ -98,6 +98,7 @@ return array(
             '@bootstrap_js_alert',
             '@bootstrap_js_modal',
             '@secretary_css',
+            '@common_download_file',
             '@common_remote_typeahead',
             '@common_holder_js',
         ),
