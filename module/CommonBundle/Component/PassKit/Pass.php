@@ -47,6 +47,11 @@ abstract class Pass
     private $_signature = null;
 
     /**
+     * @var array The passes' languages
+     */
+    private $_languages = array();
+
+    /**
      * @param \CommonBundle\Component\Util\File\TmpFile $pass The temporary file for the pass
      * @param string $imageDirectory The location of the image directory
      */
@@ -60,11 +65,23 @@ abstract class Pass
     }
 
     /**
+     * Add a new language to the pass.
+     *
+     * @param string $name The name of the language
+     * @param array $strings The localised strings
+     */
+    public function addLanguage($name, array $strings)
+    {
+        $this->_languages[$name] = $strings;
+        return $this;
+    }
+
+    /**
      * Creates the pass archive.
      *
      * @return void
      */
-    protected function createPass()
+    public function createPass()
     {
         $this->_createManifest();
 
@@ -73,8 +90,16 @@ abstract class Pass
         $pass->addFromString('signature', $this->_createSignature());
         $pass->addFromString('manifest.json', $this->_manifest->getContent());
         $pass->addFromString('pass.json', $this->getJson());
+
         foreach ($this->_getImages() as $image)
             $pass->addFile($image, basename($image));
+
+        $languages = array_keys($this->_languages);
+        for ($i = 0; isset($languages[$i]); $i++) {
+            $pass->addEmptyDir($languages[$i] . '.lproj');
+            $pass->addFromString($languages[$i] . '.lproj/pass.strings', $this->_createLanguage($languages[$i]));
+        }
+
         $pass->close();
     }
 
@@ -105,6 +130,10 @@ abstract class Pass
 
         foreach ($this->_getImages() as $image)
             $hashes[strtolower(basename($image))] = sha1(file_get_contents($image));
+
+        $languages = array_keys($this->_languages);
+        for ($i = 0; isset($languages[$i]); $i++)
+            $hashes[$languages[$i] . '.lproj/strings.json'] = sha1($this->_createLanguage($languages[$i]));
 
         $this->_manifest->appendContent(json_encode($hashes));
     }
@@ -139,6 +168,15 @@ abstract class Pass
         );
 
         return $this->_convertPemToDer($this->_signature->getContent());
+    }
+
+    private function _createLanguage($name)
+    {
+        $strings = '';
+        foreach ($this->_languages[$name] as $key => $value)
+            $strings .= '"' . $key . '" = "' . $value . '";' . PHP_EOL;
+
+        return $strings;
     }
 
     /**

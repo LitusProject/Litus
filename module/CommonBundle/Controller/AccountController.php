@@ -545,6 +545,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $pass,
             'data/images/pass_kit'
         );
+        $membership->createPass();
 
         $headers = new Headers();
         $headers->addHeaders(array(

@@ -56,8 +56,6 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
         $this->_entityManager = $entityManager;
         $this->_authenticatedPerson = $authenticatedPerson;
         $this->_currentAcademicYear = $currentAcademicYear;
-
-        $this->createPass();
     }
 
     /**
@@ -79,6 +77,28 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_name');
 
+        $this->addLanguage('en', array(
+            'lAcademicYear'     => 'ACADEMIC YEAR',
+            'lStatus'           => 'STATUS',
+
+            'member'            => 'Member',
+            'non_member'        => 'Non-Member',
+            'honorary_member'   => 'Honorary Member',
+            'supportive_member' => 'Supportive Member',
+            'praesidium'        => 'Praesidium'
+        ));
+
+        $this->addLanguage('nl', array(
+            'lAcademicYear'     => 'ACADEMIEJAAR',
+            'lStatus'           => 'STATUS',
+
+            'member'            => 'Lid',
+            'non_member'        => 'Niet-Lid',
+            'honorary_member'   => 'Erelid',
+            'supportive_member' => 'Steunend Lid',
+            'praesidium'        => 'Praesidium'
+        ));
+
         return json_encode(array(
             'formatVersion'      => 1,
             'passTypeIdentifier' => unserialize($passTypeIdentifiers)['membership'],
@@ -98,19 +118,17 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
                 'secondaryFields' => array(
                     array(
                         'key'   => 'academicYear',
-                        'label' => 'ACADEMIC YEAR',
+                        'label' => 'lAcademicYear',
                         'value' => $this->_currentAcademicYear->getStartDate()->format('Y')
                             . '-'
                             . $this->_currentAcademicYear->getEndDate()->format('Y'),
                     ),
                     array(
                         'key'   => 'status',
-                        'label' => 'STATUS',
-                        'value' => OrganizationStatus::$possibleStatuses[
-                            $this->_authenticatedPerson
-                                ->getOrganizationStatus($this->_currentAcademicYear)
-                                ->getStatus()
-                        ],
+                        'label' => 'lStatus',
+                        'value' => $this->_authenticatedPerson
+                            ->getOrganizationStatus($this->_currentAcademicYear)
+                            ->getStatus(),
                     ),
                 ),
             ),
