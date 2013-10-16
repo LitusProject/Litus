@@ -52,13 +52,10 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
             )
         );
 
-        $unionUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
-
-
         $result->loginForm = $loginForm;
-        $result->unionUrl = $unionUrl;
+        $result->organizationUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('organization_url');
 
         $e->setResult($result);
         return $result;

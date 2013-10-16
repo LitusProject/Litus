@@ -69,9 +69,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
         $result->session = $session;
 
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
 
         $result->lightVersion = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

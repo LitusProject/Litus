@@ -69,9 +69,9 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $configs = $this->getConfigRepository();
 
         $now = new DateTime();
-        $union_short_name = $configs->getConfigValue('union_short_name');
-        $union_name = $configs->getConfigValue('union_name');
-        $logo = $configs->getConfigValue('union_logo');
+        $organization_short_name = $configs->getConfigValue('organization_short_name');
+        $organization_name = $configs->getConfigValue('organization_name');
+        $organization_logo = $configs->getConfigValue('organization_logo');
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
@@ -191,18 +191,18 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $union_short_name
+                            'short_name' => $organization_short_name
                         ),
                         array(
                             new Object(
                                 'name',
                                 null,
-                                $union_name
+                                $organization_name
                             ),
                             new Object(
                                 'logo',
                                 null,
-                                $logo
+                                $organization_logo
                             )
                         )
                     ),

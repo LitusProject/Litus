@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Log\Article\Sale;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Bookable

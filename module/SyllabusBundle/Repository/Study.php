@@ -3,7 +3,7 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     SyllabusBundle\Entity\Study as StudyEntity;
 
@@ -15,13 +15,12 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Study extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -102,7 +101,7 @@ class Study extends EntityRepository
         return null;
     }
 
-    public function findAllParentsByAcademicYear(AcademicYear $academicYear)
+    public function findAllParentsByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -132,8 +131,7 @@ class Study extends EntityRepository
             )
             ->orderBy('s.title', 'ASC')
             ->addOrderBy('s.phase', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

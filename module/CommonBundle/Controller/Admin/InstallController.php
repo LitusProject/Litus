@@ -111,24 +111,24 @@ VTK'
                     'description' => 'The system mail name',
                 ),
                 array(
-                    'key'         => 'union_short_name',
+                    'key'         => 'organization_short_name',
                     'value'       => 'VTK',
-                    'description' => 'The short name of this union',
+                    'description' => 'The short name of this organization',
                 ),
                 array(
-                    'key'         => 'union_name',
-                    'value'       => 'VTK vzw',
-                    'description' => 'The full name of this union',
+                    'key'         => 'organization_name',
+                    'value'       => 'Vlaamse Technische Kring',
+                    'description' => 'The full name of this organization',
                 ),
                 array(
-                    'key'         => 'union_logo',
+                    'key'         => 'organization_logo',
                     'value'       => 'data/images/logo/logo.svg',
-                    'description' => 'The path to the logo of the union',
+                    'description' => 'The path to the logo of the organization',
                 ),
                 array(
-                    'key'         => 'union_url',
+                    'key'         => 'organization_url',
                     'value'       => 'http://vtk.be',
-                    'description' => 'The URL of the union',
+                    'description' => 'The URL of the organization',
                 ),
                 array(
                     'key'         => 'university',
@@ -258,6 +258,32 @@ Disallow: /admin/*
 ',
                     'description' => 'The robots.txt content',
                 ),
+                array(
+                    'key'         => 'common.passkit_certificates',
+                    'value'       => serialize(
+                        array(
+                            'membership' => array(
+                                'path'     => 'data/certificates/private/membership.p12',
+                                'password' => '3Vg2Z401YDh514Qw3t4m76SL',
+                            )
+                        )
+                    ),
+                    'description' => 'The certificates that will be used to to create PassKit signatures',
+                ),
+                array(
+                    'key'         => 'common.passkit_pass_type_identifiers',
+                    'value'       => serialize(
+                        array(
+                            'membership' => 'pass.be.vtk.membership',
+                        )
+                    ),
+                    'description' => 'The PassKit pass type identifiers',
+                ),
+                array(
+                    'key'         => 'common.passkit_team_identifier',
+                    'value'       => '83GZ464K6U',
+                    'description' => 'The team identifier of the Apple developer account that generated the certificates',
+                ),
             )
         );
     }
@@ -298,7 +324,7 @@ Disallow: /admin/*
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'passbook', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'common_session' => array(
                         'manage', 'expire'
@@ -419,7 +445,7 @@ Disallow: /admin/*
                     ),
                     'actions' => array(
                         'common_account' => array(
-                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',
+                            'edit', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
                         ),
                     ),
                 ),

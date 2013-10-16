@@ -3,7 +3,7 @@
 namespace TicketBundle\Repository;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Event
@@ -13,7 +13,7 @@ use DateTime,
  */
 class Event extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -26,13 +26,12 @@ class Event extends EntityRepository
                 )
             )
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findOld()
+    public function findOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -45,8 +44,7 @@ class Event extends EntityRepository
                 )
             )
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

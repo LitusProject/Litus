@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\User;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Credential

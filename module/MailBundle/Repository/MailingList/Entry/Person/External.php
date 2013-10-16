@@ -2,7 +2,7 @@
 
 namespace MailBundle\Repository\MailingList\Entry\Person;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * External

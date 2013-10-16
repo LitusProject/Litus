@@ -2,7 +2,7 @@
 
 namespace NewsBundle\Repository\Node;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * News
@@ -25,7 +25,7 @@ class News extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllSite()
+    public function findAllSiteQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
@@ -38,8 +38,7 @@ class News extends EntityRepository
             )
             ->setParameter('now', new \DateTime())
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

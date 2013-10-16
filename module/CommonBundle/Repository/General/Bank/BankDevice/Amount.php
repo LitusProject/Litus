@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General\Bank\BankDevice;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * BankDeviceAmount

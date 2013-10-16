@@ -4,7 +4,7 @@ namespace BrBundle\Repository\Company;
 
 use BrBundle\Entity\Company as CompanyEntity,
     \DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Event
@@ -14,7 +14,7 @@ use BrBundle\Entity\Company as CompanyEntity,
  */
 class Event extends EntityRepository
 {
-    public function findAllByCompany(CompanyEntity $company)
+    public function findAllByCompanyQuery(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -25,13 +25,12 @@ class Event extends EntityRepository
             )
             ->setParameter('company', $company->getId())
             ->orderBy('c.startDate', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllFutureByCompany(DateTime $date, CompanyEntity $company)
+    public function findAllFutureByCompanyQuery(DateTime $date, CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -49,13 +48,12 @@ class Event extends EntityRepository
             ->setParameter('company', $company->getId())
             ->setParameter('date', $date)
             ->orderBy('c.startDate', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllFuture(DateTime $date)
+    public function findAllFutureQuery(DateTime $date)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -73,13 +71,12 @@ class Event extends EntityRepository
             )
             ->setParameter('date', $date)
             ->orderBy('ev.startDate', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllFutureBySearch(DateTime $date, $string)
+    public function findAllFutureBySearchQuery(DateTime $date, $string)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -99,8 +96,7 @@ class Event extends EntityRepository
             ->setParameter('date', $date)
             ->setParameter('name', strtolower($string))
             ->orderBy('ev.startDate', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

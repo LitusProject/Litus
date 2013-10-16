@@ -2,7 +2,7 @@
 
 namespace QuizBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     QuizBundle\Entity\Quiz as QuizEntity;
 
 /**
@@ -17,7 +17,7 @@ class Round extends EntityRepository
      * Gets all rounds belonging to a quiz
      * @param QuizBundle\Entity\Quiz $quiz The quiz the rounds must belong to
      */
-    public function findByQuiz(QuizEntity $quiz)
+    public function findByQuizQuery(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
 
@@ -28,8 +28,7 @@ class Round extends EntityRepository
             )
             ->orderBy('r.order', 'ASC')
             ->setParameter('quiz', $quiz)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

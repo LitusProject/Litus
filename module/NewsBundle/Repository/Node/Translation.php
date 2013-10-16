@@ -2,7 +2,7 @@
 
 namespace NewsBundle\Repository\Node;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Translation

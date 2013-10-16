@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\File;
 
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\File\File as FileEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Mapping

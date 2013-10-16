@@ -13,7 +13,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a href="{{ unionUrl }}" class="brand"><img src="/_form/img/logo.png" /></a>
+            <a href="{{ organizationUrl }}" class="brand"><img src="/_form/img/logo.png" /></a>
             <ul class="nav">
                 {% if hasAccess('form_manage', 'index') %}
                     <li {% if 'index' == getParam('action') and 'form_manage' == getParam('controller') %} class="active" {% endif %}>

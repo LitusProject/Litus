@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\User;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
 
 /**

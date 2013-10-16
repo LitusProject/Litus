@@ -1,12 +1,11 @@
 /*!
  * SortableTable
- * 
- * jQuery plugin to make a table of entries sortable and saveable to an url.
- * 
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
- * @license MIT
  *
- * URL: https://github.com/vierbergenlars/snippets/blob/master/js/sortable-table.jquery.js 
+ * jQuery plugin to make a table of entries sortable and saveable to an url.
+ *
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ *
+ * URL: https://github.com/vierbergenlars/snippets/blob/master/js/sortable-table.jquery.js
  */
 (function($) {
     "use strict";

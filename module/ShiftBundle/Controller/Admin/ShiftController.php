@@ -31,10 +31,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActive(),
+                ->findAllActiveQuery(),
             $this->getParam('page')
         );
 
@@ -48,10 +48,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllOld(),
+                ->findAllOldQuery(),
             $this->getParam('page')
         );
 
@@ -273,6 +273,50 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 ),
             )
         );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $shifts = $this->_search()
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach($shifts as $shift) {
+            $item = (object) array();
+            $item->id = $shift->getId();
+            $item->name = $shift->getName();
+            $item->startDate = $shift->getStartDate()->format('d/m/Y H:i');
+            $item->endDate = $shift->getEndDate()->format('d/m/Y H:i');
+
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+
+    /**
+    *   @return \Doctrine\ORM\Query
+    */
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('ShiftBundle\Entity\Shift')
+                    ->findAllActiveByNameQuery($this->getParam('string'));
+        }
     }
 
     private function _getShift()

@@ -4,7 +4,7 @@ namespace CudiBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Article

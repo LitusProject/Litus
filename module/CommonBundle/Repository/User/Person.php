@@ -4,7 +4,7 @@ namespace CommonBundle\Repository\User;
 
 use CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Person
@@ -32,7 +32,7 @@ class Person extends EntityRepository
         return null;
     }
 
-    public function findAllByName($name)
+    public function findAllByNameQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -56,13 +56,12 @@ class Person extends EntityRepository
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByRole(Role $role)
+    public function findAllByRoleQuery(Role $role)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -72,13 +71,12 @@ class Person extends EntityRepository
                 $query->expr()->eq('r.name', ':name')
             )
             ->setParameter('name', $role->getName())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByUsername($username)
+    public function findAllByUsernameQuery($username)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -87,8 +85,7 @@ class Person extends EntityRepository
                 $query->expr()->like('p.username', ':username')
             )
             ->setParameter('username', '%' . strtolower($username) . '%')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -119,24 +116,24 @@ class Person extends EntityRepository
         return null;
     }
 
-    public function findAllByNameTypeahead($name)
+    public function findAllByNameTypeaheadQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
-            ->from('CommonBundle\Entity\User\Person', 'a')
+        $resultSet = $query->select('p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
                 $query->expr()->orX(
                     $query->expr()->like(
                         $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('a.firstName', "' '")),
-                            $query->expr()->lower('a.lastName')
+                            $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                            $query->expr()->lower('p.lastName')
                         ),
                         ':name'
                     ),
                     $query->expr()->like(
                         $query->expr()->concat(
-                            $query->expr()->lower($query->expr()->concat('a.lastName', "' '")),
-                            $query->expr()->lower('a.firstName')
+                            $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                            $query->expr()->lower('p.firstName')
                         ),
                         ':name'
                     )
@@ -144,31 +141,8 @@ class Person extends EntityRepository
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->setMaxResults(20)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
-    }
-
-    public function findAllMembers(AcademicYear $academicYear)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-            ->from('CommonBundle\Entity\User\Status\Organization', 's')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->neq('s.status', '\'non_member\''),
-                    $query->expr()->eq('s.academicYear', ':academicYear')
-                )
-            )
-            ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
-
-        $persons = array();
-        foreach($resultSet as $result)
-            $persons[] = $result->getPerson();
-
-        return $persons;
     }
 }

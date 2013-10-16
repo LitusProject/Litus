@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General\Organization;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Unit

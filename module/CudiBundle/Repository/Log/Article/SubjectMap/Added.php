@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Log\Article\SubjectMap;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Added

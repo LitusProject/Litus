@@ -14,7 +14,7 @@ use LogisticsBundle\Component\Controller\LogisticsController,
 /**
  * Controller for /logistics/lease[/:action[/:id]][/page/:page][/]
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class LeaseController extends LogisticsController
 {
@@ -22,9 +22,9 @@ class LeaseController extends LogisticsController
     {
         $leases = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-                ->findAllUnreturned();
+                ->findAllUnreturnedQuery();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
                 $leases, $this->getParam('page')
         );
 
@@ -167,9 +167,9 @@ class LeaseController extends LogisticsController
 
         $leases = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-                ->findByItem($item);
+                ->findByItemQuery($item);
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromAuery(
             $leases, $this->getParam('page')
         );
 
