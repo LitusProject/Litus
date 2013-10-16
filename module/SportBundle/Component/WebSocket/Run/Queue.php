@@ -213,12 +213,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
 
+            $department = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Department')
+                ->findOneById($data->department);
+
             $runner = new Runner(
                 $this->_getAcademicYear(),
                 $data->firstName,
                 $data->lastName,
                 null,
-                $academic
+                $academic,
+                $department
             );
 
             $runner->setRunnerIdentification($data->universityIdentification);
