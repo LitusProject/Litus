@@ -27,7 +27,7 @@ class QueueController extends \SportBundle\Component\Controller\RunController
 {
     public function indexAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
 
         return new ViewModel(
             array(
