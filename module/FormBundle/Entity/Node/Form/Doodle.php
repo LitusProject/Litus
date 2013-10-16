@@ -157,7 +157,17 @@ class Doodle extends BaseForm
 
         $result = '';
         foreach ($fieldEntries as $fieldEntry) {
-            $result .= $fieldEntry->getField()->getLabel($language) . PHP_EOL;
+            $result .= $fieldEntry->getField()->getLabel($language);
+
+            if ($fieldEntry->getField()->getLocation($language)) {
+                $result .= ': ' . $fieldEntry->getField()->getLocation($language);
+            }
+
+            if ($fieldEntry->getField()->getExtraInformation($language)) {
+                $result .= PHP_EOL . '    ' . str_replace("\n", "\n    ", str_replace("\r\n", "\n", $fieldEntry->getField()->getExtraInformation($language)));
+            }
+
+            $result .= PHP_EOL;
         }
 
         return $result;
