@@ -56,8 +56,12 @@
                 type: 'post',
                 data: {score: $(this).val()},
                 dataType: 'json',
-                success: function () {
-                    field.parent().parent().addClass('success');
+                success: function (data) {
+                    if (data.status == 'success') {
+                        field.parent().parent().addClass('success');
+                    } else {
+                        field.parent().parent().addClass('error').find('.help-inline').removeClass('hide');
+                    }
                     ajax_requests_pending--;
                 },
                 error: function () {

@@ -69,7 +69,17 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $postData = $this->getRequest()->getPost();
-        $point->setPoint($postData['score']);
+        if (isset($postData['score']) && is_numeric($postData['score'])) {
+            $point->setPoint($postData['score']);
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'status' => 'error'
+                    ),
+                )
+            );
+        }
 
         $this->getEntityManager()->flush();
 
