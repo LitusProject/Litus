@@ -60,7 +60,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Select('department');
         $field->setLabel('Department')
-            ->setRequired($required)
+            ->setRequired(true)
             ->setAttribute('options', $this->_getDepartments());
         $information->add($field);
 
