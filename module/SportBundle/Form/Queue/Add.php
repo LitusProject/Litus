@@ -16,6 +16,7 @@ namespace SportBundle\Form\Queue;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -57,9 +58,28 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('autocomplete', 'off');
         $information->add($field);
 
+        $field = new Select('department');
+        $field->setLabel('Department')
+            ->setRequired($required)
+            ->setAttribute('options', $this->_getDepartments());
+        $information->add($field);
+
         $field = new Submit('queue');
         $field->setValue('Queue');
         $this->add($field);
+    }
+
+    private function _getDepartments()
+    {
+        $departments = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Department')
+            ->findAll();
+
+        $array = array('0' => '');
+        foreach($departments as $department)
+            $array[$department->getId()] = $department->getName();
+
+        return $array;
     }
 
     public function getInputFilter()

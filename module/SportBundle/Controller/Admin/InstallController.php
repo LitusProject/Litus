@@ -14,7 +14,8 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Language,
+    SportBundle\Entity\Department;
 
 /**
  * InstallController
@@ -64,6 +65,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
             )
         );
+
+        $this->_installDepartments();
     }
 
     protected function initAcl()
@@ -107,5 +110,29 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
             )
         );
+    }
+
+    private function _installDepartments()
+    {
+        $departments = array(
+            'Bouwkunde',
+            'Chemische Ingenieurstechnieken',
+            'Computerwetenschappen',
+            'Elektrotechniek',
+            'Geotechniek en mijnbouwkunde',
+            'Materiaalkunde',
+            'Werktuigkunde',
+        );
+
+        foreach($departments as $name) {
+            $department = $this->getEntityManager()
+                ->getRepository('SportBundle\Entity\Department')
+                ->findOneByCode($name);
+            if (null == $department) {
+                $department = new Department($name);
+                $this->getEntityManager()->persist($department);
+            }
+        }
+        $this->getEntityManager()->flush();
     }
 }
