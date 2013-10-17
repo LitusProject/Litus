@@ -15,7 +15,9 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+    DateInterval,
     DateTime,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -157,6 +159,8 @@ class Lap
     }
 
     /**
+     * Returns the duration of the lap.
+     *
      * @return \DateInterval
      */
     public function getLapTime()
@@ -169,5 +173,35 @@ class Lap
         }
 
         return $lapTime;
+    }
+
+    /**
+     * Determines the number of points this lap is worth.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @return integer
+     */
+    public function getPoints(EntityManager $entityManager)
+    {
+        $pointsCriteria = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.points_criteria')
+        );
+
+        $points = 0;
+        foreach ($pointsCriteria as $i => $limit) {
+            if (isset($pointsCriteria[$i+1])) {
+                if (
+                    $this->getLapTime() < new DateInterval('PT' . $limit . 'S')
+                    && $this->getLapTime() >= new DateInterval('PT' . $pointsCriteria[$i+1] . 'S')
+                )
+                    $points = $i+1;
+            } else {
+                if ($this->getLapTime() < new DateInterval('PT' . $limit . 'S'))
+                    $points = $i+1;
+            }
+        }
+
+        return $points;
     }
 }

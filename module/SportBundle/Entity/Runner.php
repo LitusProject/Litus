@@ -226,7 +226,10 @@ class Runner
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager Instance
+     * Returns the user's laps.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return array
      */
     public function getLaps(EntityManager $entityManager, AcademicYear $academicYear) {
@@ -242,11 +245,19 @@ class Runner
             );
     }
 
+    /**
+     * Returns the current point total of the runner.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @return integer
+     */
     public function getPoints(EntityManager $entityManager, AcademicYear $academicYear)
     {
+        $points = 0;
         foreach ($this->getLaps($entityManager, $academicYear) as $lap)
-        {
-            
-        }
+            $points += $lap->getPoints($entityManager);
+
+        return $points;
     }
 }
