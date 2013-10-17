@@ -68,6 +68,11 @@ class Group
     private $happyHours;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param string $name
      * @param array $happyHours
@@ -143,29 +148,42 @@ class Group
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \SportBundle\Entity\Group
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
      * Returns the current point total of the group.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return integer
      */
-    public function getPoints(EntityManager $entityManager, AcademicYear $academicYear)
+    public function getPoints(AcademicYear $academicYear)
     {
         $points = 0;
         foreach ($this->getMembers() as $member) {
-            foreach ($member->getLaps($entityManager, $academicYear) as $lap) {
+            $member->setEntityManager($this->_entityManager);
+
+            foreach ($member->getLaps($academicYear) as $lap) {
                 if (null === $lap->getEndTime())
                     continue;
+
+                $lap->setEntityManager($this->_entityManager);
 
                 $startTime = $lap->getStartTime()->format('H');
                 $endTime = $lap->getEndTime()->format('H');
 
-                $points += $lap->getPoints($entityManager);
+                $points += $lap->getPoints();
 
                 $happyHours = $this->getHappyHours();
                 for ($i = 0; isset($happyHours[$i]); $i++) {
-                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                        $points += $lap->getPoints($entityManager);
-                    }
+                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2))
+                        $points += $lap->getPoints();
                 }
             }
         }

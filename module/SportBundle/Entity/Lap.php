@@ -75,6 +75,11 @@ class Lap
     private $endTime;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \SportBundle\Entity\Runner $runner
      */
@@ -148,6 +153,16 @@ class Lap
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \SportBundle\Entity\Lap
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
      * Ends this lap.
      *
      * @return \SportBundle\Entity\Lap
@@ -178,13 +193,13 @@ class Lap
     /**
      * Determines the number of points this lap is worth.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @return integer
      */
-    public function getPoints(EntityManager $entityManager)
+    public function getPoints()
     {
         $pointsCriteria = unserialize(
-            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.points_criteria')
         );
 
