@@ -280,6 +280,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (null === $lap)
             return null;
 
+        $lap->setEntityManager($this->_entityManager);
+
         return (object) array(
             'id' => $lap->getId(),
             'fullName' => $lap->getRunner()->getFullName(),
@@ -287,7 +289,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             'lastName' => $lap->getRunner()->getLastName(),
             'registrationTime' => $lap->getRegistrationTime()->format('d/m/Y H:i:s'),
             'lapTime' => (null !== $lap->getStartTime()) ? $lap->getLapTime()->format('%i:%S') : '',
-            'points' => $lap->getPoints($this->_entityManager),
+            'points' => $lap->getPoints(),
             'state' => $state,
         );
     }

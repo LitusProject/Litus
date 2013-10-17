@@ -144,9 +144,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             )
         );
 
-        foreach ($paginator as $group)
-            $group->setEntityManager($this->getEntityManager());
-
         return new ViewModel(
             array(
                 'paginator' => $paginator,

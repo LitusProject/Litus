@@ -90,6 +90,11 @@ class Runner
     private $department;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param string $firstName
      * @param string $lastName
@@ -218,6 +223,16 @@ class Runner
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \SportBundle\Entity\Group
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFullName()
@@ -228,12 +243,12 @@ class Runner
     /**
      * Returns the user's laps.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return array
      */
-    public function getLaps(EntityManager $entityManager, AcademicYear $academicYear) {
-        return $entityManager->getRepository('SportBundle\Entity\Lap')
+    public function getLaps(AcademicYear $academicYear) {
+        return $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
             ->findBy(
                 array(
                     'runner' => $this->id,
@@ -248,15 +263,16 @@ class Runner
     /**
      * Returns the current point total of the runner.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return integer
      */
-    public function getPoints(EntityManager $entityManager, AcademicYear $academicYear)
+    public function getPoints(AcademicYear $academicYear)
     {
         $points = 0;
-        foreach ($this->getLaps($entityManager, $academicYear) as $lap)
-            $points += $lap->getPoints($entityManager);
+        foreach ($this->getLaps($academicYear) as $lap) {
+            $lap->setEntityManager($this->_entityManager);
+            $points += $lap->getPoints();
+        }
 
         return $points;
     }
