@@ -14,7 +14,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 
 /**
  * Add a new team
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Text('number');
-        $field->setLabel('Team number')
+        $field->setLabel('Team Number')
             ->setRequired();
         $this->add($field);
 

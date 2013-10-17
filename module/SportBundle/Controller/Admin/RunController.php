@@ -58,10 +58,10 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function lapsAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Lap')
-                ->findAllPreviousLaps($this->_getAcademicYear()),
+                ->findAllPreviousLapsQuery($this->_getAcademicYear()),
             $this->getParam('page')
         );
 

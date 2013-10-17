@@ -26,10 +26,10 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByType('vacancy'),
+            ->findAllActiveByTypeQuery('vacancy'),
             $this->getParam('page')
         );
 

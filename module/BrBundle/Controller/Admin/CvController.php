@@ -33,10 +33,10 @@ class CvController extends \BrBundle\Component\Controller\CvController
     {
         $academicYear = $this->getAcademicYear();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllByAcademicYear($academicYear),
+            ->findAllByAcademicYearQuery($academicYear),
             $this->getParam('page')
         );
 

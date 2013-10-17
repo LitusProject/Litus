@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Sale\Session;
 
 use CudiBundle\Entity\Sale\Session,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Restriction

@@ -3,7 +3,7 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Group as GroupEntity,
     SyllabusBundle\Entity\Study as StudyEntity;
 
@@ -15,7 +15,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Group extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('g')
@@ -23,13 +23,12 @@ class Group extends EntityRepository
             ->where(
                 $query->expr()->eq('g.removed', 'false')
             )
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllCvBook()
+    public function findAllCvBookQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('g')
@@ -39,8 +38,7 @@ class Group extends EntityRepository
                 $query->expr()->eq('g.removed', 'false')
             )
             ->orderBy('g.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

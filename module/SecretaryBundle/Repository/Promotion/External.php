@@ -3,7 +3,7 @@
 namespace SecretaryBundle\Repository\Promotion;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * External

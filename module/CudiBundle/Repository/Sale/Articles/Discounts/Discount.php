@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Sale\Articles\Discounts;
 
 use CudiBundle\Entity\Sale\Article,
     CommonBundle\Entity\General\Organization,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
 
 /**

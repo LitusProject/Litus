@@ -1,8 +1,8 @@
 <?php
 
-namespace MailBundle\Repository;
+namespace MailBundle\Repository\MailingList;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Entry

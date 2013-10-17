@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     Zend\Form\Element\Submit;
 
 /**
- * The form used to add a new mailing list
+ * Add MailingList
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */

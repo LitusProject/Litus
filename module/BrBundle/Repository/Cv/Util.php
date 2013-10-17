@@ -2,7 +2,7 @@
 
 namespace BrBundle\Repository\Cv;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Util

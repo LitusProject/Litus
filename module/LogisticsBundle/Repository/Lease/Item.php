@@ -2,7 +2,7 @@
 
 namespace LogisticsBundle\Repository\Lease;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Item

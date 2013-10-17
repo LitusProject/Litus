@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Article;
 
 use CudiBundle\Entity\Article,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * History

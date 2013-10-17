@@ -168,10 +168,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract')
-            ->findAll(),
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Contract',
             $this->getParam('page')
         );
 

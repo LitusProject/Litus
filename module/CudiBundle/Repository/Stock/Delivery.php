@@ -7,7 +7,7 @@ use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Stock\Period as PeriodEntity,
     CudiBundle\Entity\Supplier,
     DateTime,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     Doctrine\ORM\Query\Expr\OrderBy;
 

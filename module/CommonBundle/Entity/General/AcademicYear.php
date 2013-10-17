@@ -83,10 +83,7 @@ class AcademicYear
      */
     public function getEndDate()
     {
-        $date = clone $this->universityStart;
-        return $date->add(
-            new DateInterval('P1Y')
-        );
+        return $this->getUniversityEndDate();
     }
 
     /**

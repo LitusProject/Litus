@@ -11,7 +11,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * Controller for /quiz/:quizid[/:action[/:roundid/:teamid]]
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class QuizController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -69,7 +69,17 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $postData = $this->getRequest()->getPost();
-        $point->setPoint($postData['score']);
+        if (isset($postData['score']) && is_numeric($postData['score'])) {
+            $point->setPoint($postData['score']);
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'status' => 'error'
+                    ),
+                )
+            );
+        }
 
         $this->getEntityManager()->flush();
 
@@ -316,7 +326,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        if (!$team->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        if (!$team->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,

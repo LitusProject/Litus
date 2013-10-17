@@ -37,10 +37,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Form')
-                ->findAllActive(),
+                ->findAllActiveQuery(),
             $this->getParam('page')
         );
 
@@ -57,10 +57,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Form')
-                ->findAllOld(),
+                ->findAllOldQuery(),
             $this->getParam('page')
         );
 

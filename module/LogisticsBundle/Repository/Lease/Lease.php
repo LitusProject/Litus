@@ -2,7 +2,7 @@
 
 namespace LogisticsBundle\Repository\Lease;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     LogisticsBundle\Entity\Lease\Item;
 
 /**
@@ -19,27 +19,26 @@ class Lease extends EntityRepository
      * @param \LogisticsBundle\Entity\Lease\Item $item
      * @return array
      */
-    public function findUnreturnedByItem(Item $item) {
+    public function findUnreturnedByItemQuery(Item $item) {
         return $this->createQueryBuilder('l')
                 ->select()
                 ->where('l.returned = false')
                 ->andWhere('l.item = :item')
                 ->setParameter('item', $item->getId())
-                ->getQuery()
-                ->execute();
+                ->getQuery();
+
     }
 
     /**
      * Finds all leases that have not yet been returned
-     * 
+     *
      * @return array
      */
-    public function findAllUnreturned()
+    public function findAllUnreturnedQuery()
     {
         return $this->createQueryBuilder('l')
                 ->select()
                 ->where('l.returned = false')
-                ->getQuery()
-                ->execute();
+                ->getQuery();
     }
 }

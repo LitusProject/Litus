@@ -3,7 +3,7 @@
 namespace LogisticsBundle\Repository\Reservation;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * VanReservation
@@ -13,7 +13,7 @@ use DateTime,
  */
 class VanReservation extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -23,13 +23,12 @@ class VanReservation extends EntityRepository
             )
             ->setParameter('start', new DateTime())
             ->orderBy('r.startDate')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllOld()
+    public function findAllOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -39,13 +38,12 @@ class VanReservation extends EntityRepository
             )
             ->setParameter('end', new DateTime())
             ->orderBy('r.startDate')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByDates(DateTime $start, DateTime $end)
+    public function findAllByDatesQuery(DateTime $start, DateTime $end)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -64,8 +62,7 @@ class VanReservation extends EntityRepository
             )
             ->setParameter('start', $start)
             ->setParameter('end', $end)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

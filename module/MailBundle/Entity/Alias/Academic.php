@@ -14,7 +14,7 @@
 
 namespace MailBundle\Entity\Alias;
 
-use CommonBundle\Entity\User\Person\Academic as AcademicPerson,
+use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     MailBundle\Entity\MailingList;
@@ -41,7 +41,7 @@ class Academic extends \MailBundle\Entity\Alias
      * @param string $name The name for this alias.
      * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to create the alias for.
      */
-    public function __construct($name, AcademicPerson $academic)
+    public function __construct($name, AcademicEntity $academic)
     {
         parent::__construct($name);
         $this->academic = $academic;

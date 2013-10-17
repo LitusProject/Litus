@@ -13,7 +13,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * Controller for /admin/quiz/:quizid/team[/:action[/:id]][/page/:page][/]
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class TeamController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -22,11 +22,15 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         if (!($quiz = $this->_getQuiz()))
             return new ViewModel;
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Team')
-                ->findByQuiz($quiz),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+                'QuizBundle\Entity\Team',
+                $this->getParam('page'),
+                array(
+                    'quiz'=>$quiz
+                ),
+                array(
+                    'number'=>'ASC'
+                )
         );
 
         return new ViewModel(

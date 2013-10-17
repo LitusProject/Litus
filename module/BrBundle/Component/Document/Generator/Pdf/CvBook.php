@@ -80,9 +80,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
         }
 
-        $logoPath = $this->_entityManager
+        $organization_logo = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_logo');
+            ->getConfigValue('organization_logo');
 
         $foreword = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -92,7 +92,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'cvbook',
                 array(
-                    'logo' => $logoPath,
+                    'logo' => $organization_logo,
                     'index' => $this->_translator->translate('Alphabetical Index'),
                     'toc' => $this->_translator->translate('Table of Contents'),
                 ),

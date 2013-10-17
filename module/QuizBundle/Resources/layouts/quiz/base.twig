@@ -14,16 +14,16 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<a href="{{ unionUrl }}" class="brand">Quiz</a>
+			<a href="{{ unionUrl }}" class="brand"><img src="/_logistics/img/logo.png" /></a>
 			<ul class="nav">
                 {% if hasAccess('quiz_quiz', 'manage') %}
                     <li {% if 'manage' == getParam('action') %} class="active" {% endif %}>
-                        <a href="{{ url('quiz_quiz', {'action': 'manage', 'quizid': quiz.getId()}) }}">Enter points</a>
+                        <a href="{{ url('quiz_quiz', {'action': 'manage', 'quizid': quiz.getId()}) }}">Enter Points</a>
                     </li>
                 {% endif %}
                 {% if hasAccess('quiz_quiz', 'view') %}
                     <li {% if 'view' == getParam('action') %} class="active" {% endif %}>
-                        <a href="{{ url('quiz_quiz', {'action': 'view', 'quizid': quiz.getId()}) }}">View points</a>
+                        <a href="{{ url('quiz_quiz', {'action': 'view', 'quizid': quiz.getId()}) }}">View Points</a>
                     </li>
                 {% endif %}
                 {% if hasAccess('quiz_quiz', 'results') %}

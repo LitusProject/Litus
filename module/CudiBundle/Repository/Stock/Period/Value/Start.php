@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Stock\Period\Value;
 
 use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Start

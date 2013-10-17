@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Sale\Session\OpeningHour;
 
 use DateInterval,
     DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * OpeningHour

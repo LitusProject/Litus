@@ -61,18 +61,27 @@
             </div>
 
             <h3>{{ translate('Student Association') }}</h3>
-            <dl class="dl-horizontal wide">
-                <dt>{{ translate('Student Association') }}</dt>
-                <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
-                <dt>{{ translate('Membership') }}</dt>
-                <dd>{% if metaData.becomeMember() %}Yes{% else %}No{% endif %}</dd>
-                <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
-                <dd>{% if metaData.receiveIrReeelAtCudi() %}Yes{% else %}No{% endif %}</dd>
-                <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
-                <dd>{% if metaData.bakskeByMail() %}Yes{% else %}No{% endif %}</dd>
-                <dt>{{ translate('T-shirt Size') }}</dt>
-                <dd>{{ metaData.getTshirtSizeName() }}</dd>
-            </dl>
+            <div class="row">
+                <div class="span9">
+                    <dl class="dl-horizontal wide">
+                        <dt>{{ translate('Student Association') }}</dt>
+                        <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
+                        <dt>{{ translate('Membership') }}</dt>
+                        <dd>{% if metaData.becomeMember() %}Yes{% else %}No{% endif %}</dd>
+                        <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
+                        <dd>{% if metaData.receiveIrReeelAtCudi() %}Yes{% else %}No{% endif %}</dd>
+                        <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
+                        <dd>{% if metaData.bakskeByMail() %}Yes{% else %}No{% endif %}</dd>
+                        <dt>{{ translate('T-shirt Size') }}</dt>
+                        <dd>{{ metaData.getTshirtSizeName() }}</dd>
+                    </dl>
+                </div>
+                <div class="span3" style="text-align: left;">
+                    {% if hasAccess('common_account', 'passbook') %}
+                        <a href="#" id="passbook"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
+                    {% endif %}
+                </div>
+            </div>
 
             <h3>{{ translate('Studies') }}</h3>
             {% for study in studies %}
@@ -90,4 +99,12 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#passbook').downloadFile('{{ url('common_account', {"action": "passbook"}) }}');
+        });
+    </script>
 {% endblock %}

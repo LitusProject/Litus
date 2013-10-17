@@ -3,7 +3,7 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Group as GroupEntity,
     SyllabusBundle\Entity\Study as StudyEntity;
 
@@ -15,7 +15,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class StudyGroupMap extends EntityRepository
 {
-    public function findAllByGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
+    public function findAllByGroupAndAcademicYearQuery(GroupEntity $group, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -28,8 +28,7 @@ class StudyGroupMap extends EntityRepository
             )
             ->setParameter('group', $group)
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
