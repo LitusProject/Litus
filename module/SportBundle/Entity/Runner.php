@@ -241,4 +241,12 @@ class Runner
                 )
             );
     }
+
+    public function getPoints(EntityManager $entityManager, AcademicYear $academicYear)
+    {
+        foreach ($this->getLaps($entityManager, $academicYear) as $lap)
+        {
+            
+        }
+    }
 }

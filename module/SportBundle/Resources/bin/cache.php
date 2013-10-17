@@ -13,10 +13,10 @@
  */
 
 /**
- * Cache the xml of Ulyssis.
+ * Cache the JSON of the official result page.
  *
  * Usage:
- * --run|-r      Cache XML
+ * --run|-r      Cache
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -32,7 +32,7 @@ $application = Zend\Mvc\Application::init(include 'config/application.config.php
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 $rules = array(
-    'run|r' => 'Cache XML',
+    'run|r' => 'Cache JSON',
 );
 
 try {
@@ -44,29 +44,28 @@ try {
 }
 
 if (isset($opts->r)) {
-    $cacheDir = $em->getRepository('CommonBundle\Entity\General\Config')
-        ->getConfigValue('sport.cache_xml_path');
-
-    if (!file_exists($cacheDir))
-        mkdir($cacheDir);
-
     while (true) {
         $now = new \DateTime();
-        $url = $em
+        $resultPage = $em
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('sport.run_result_page');
-        $opts = array('http' =>
-            array(
+
+        $options = array(
+            'http' => array(
                 'timeout' => 0.5,
             )
         );
-        $fileContents = @file_get_contents($url, false, stream_context_create($opts));
+
+        $fileContents = @file_get_contents($resultPage, false, stream_context_create($options));
         if (false !== $fileContents) {
-            echo '[' . $now->format('d/m/Y H:i:s') . '] XML cached' . PHP_EOL;
-            file_put_contents($cacheDir . 'ulyssis.xml', $fileContents);
+            echo '[' . $now->format('d/m/Y H:i:s') . '] Succesfully cached the result page' . PHP_EOL;
+            file_put_contents('data/cache/run_result_page', $fileContents);
+
+            $resultPage = (array) json_decode($fileContents);
+            sleep(substr($resultPage['update'], 0, strlen($resultPage['update'])-1));
         } else {
-            echo '[' . $now->format('d/m/Y H:i:s') . '] XML failed' . PHP_EOL;
+            echo '[' . $now->format('d/m/Y H:i:s') . '] Failed to cache the result page' . PHP_EOL;
+            sleep(10);
         }
-        sleep(10);
     }
 }
