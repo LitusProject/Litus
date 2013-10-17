@@ -107,10 +107,10 @@ VTK',
                         'add', 'delete', 'manage'
                     ),
                     'form_view' => array(
-                        'downloadFile', 'edit', 'view',
+                        'doodle', 'downloadFile', 'edit', 'view',
                     ),
                     'form_manage' => array(
-                        'download', 'downloadFile', 'index', 'view', 'edit', 'delete',
+                        'delete', 'doodle', 'download', 'downloadFile', 'edit', 'index', 'view',
                     ),
                     'form_manage_mail' => array(
                         'send'
