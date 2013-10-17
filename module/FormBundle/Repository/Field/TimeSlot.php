@@ -63,4 +63,38 @@ class TimeSlot extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllForReminderMail(DateTime $start, DateTime $end)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $reminderDoodles = $query->select('d')
+            ->from('FormBundle\Entity\Node\Form\Doodle', 'd')
+            ->where(
+                $query->expr()->isNotNull('d.reminderMail')
+            )
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($reminderDoodles as $doodle)
+            $ids[] = $doodle->getId();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('FormBundle\Entity\Field\TimeSlot', 't')
+            ->innerJoin('t.form', 'f')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gte('t.startDate', ':start'),
+                    $query->expr()->lt('t.startDate', ':end'),
+                    $query->expr()->in('f.id', $ids)
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

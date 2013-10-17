@@ -39,7 +39,6 @@ use CommonBundle\Entity\General\Language,
  */
 abstract class Form extends \CommonBundle\Entity\Node
 {
-
     /**
      * @var int The ID of this tanslation
      *
@@ -334,7 +333,6 @@ abstract class Form extends \CommonBundle\Entity\Node
      */
     public function getTitle(Language $language = null, $allowFallback = true)
     {
-
         $translation = $this->getTranslation($language, $allowFallback);
 
         if (null !== $translation)
@@ -395,7 +393,6 @@ abstract class Form extends \CommonBundle\Entity\Node
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-
         foreach($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;

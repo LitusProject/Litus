@@ -132,6 +132,22 @@ class Doodle extends BaseForm
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
+    public function getCompletedReminderMailBody(Entry $entry, Language $language) {
+        $body = $this->getMail()->getContent($language);
+        $body = str_replace('%id%', $entry->getId(), $body);
+        $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
+        $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
+
+        $body = str_replace('%entry_summary%', $this->_getSummary($entry, $language), $body);
+
+        return $body;
+    }
+
+    /**
+     * @param \FormBundle\Entity\Node\Entry $entry
+     * @param \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
     protected function _getSummary(Entry $entry, Language $language) {
         $fieldEntries = $this->_entityManager
             ->getRepository('FormBundle\Entity\Entry')
