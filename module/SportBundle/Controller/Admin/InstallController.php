@@ -30,8 +30,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'sport.run_result_page',
-                    'value'       => 'http://media.24u.ulyssis.org/live/tussenstand.xml',
-                    'description' => 'The URL of the page where the XML of the official results is published',
+                    'value'       => 'http://live.24urenloop.be/tussenstand.json',
+                    'description' => 'The URL where the official result page can be found',
                 ),
                 array(
                     'key'         => 'sport.run_team_id',
@@ -57,11 +57,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'key'         => 'sport.queue_socket_key',
                     'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
                     'description' => 'The key used for the websocket of the queue',
-                ),
-                array(
-                    'key'         => 'sport.cache_xml_path',
-                    'value'       => 'data/cache/sport/',
-                    'description' => 'The path to cache the xml',
                 ),
             )
         );

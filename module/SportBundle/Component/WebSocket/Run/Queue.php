@@ -356,15 +356,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $cacheDir = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.cache_xml_path');
-
-        $fileContents = @file_get_contents($cacheDir . 'ulyssis.xml');
+        $fileContents = @file_get_contents('data/cache/run_result_page');
 
         $resultPage = null;
         if (false !== $fileContents)
-            $resultPage = simplexml_load_string($fileContents);
+            $resultPage = (array) json_decode($fileContents);
 
         $nbOfficialLaps = null;
         if (null !== $resultPage) {
@@ -372,15 +368,35 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
 
-            $teamData = $resultPage->xpath('//team[@id=\'' . $teamId . '\']');
+            $currentPlace = null;
+            $teamData = null;
+            foreach ($resultPage['teams'] as $place => $team) {
+                if ($team[0] == $teamId) {
+                    $currentPlace = $place;
+                    $teamData = $team;
+                }
+            }
 
-            return array(
-                'nbLaps' => $teamData[0]->rounds->__toString(),
-                'position' => round($teamData[0]->position->__toString() * 100),
-                'speed' => $teamData[0]->speed_kmh->__toString(),
-                'lapsPerSecond' => $teamData[0]->speed->__toString(),
-                'behind' => $teamData[0]->behind->__toString()
-            );
+            if (null !== $teamData) {
+                $behind = 0;
+                if (null !== $currentPlace && $currentPlace > 0) {
+                    $firstData = $resultPage['teams'][0];
+                    $behind = round(($firstData[2] + $firstData[3]) - ($teamData[2] + $teamData[3]), 2);
+                }
+
+                $lapsPerSecond = 1/($resultPage['lap']/($teamData[4]/3.6));
+
+                return array(
+                    'lapLength' => $resultPage['lap'],
+
+                    'nbLaps' => $teamData[2],
+                    'position' => round($teamData[3] * 100),
+                    'speed' => round($teamData[4], 2),
+                    'lapsPerSecond' => round($lapsPerSecond, 4),
+
+                    'behind' => $behind,
+                );
+            }
         }
 
         return;
