@@ -25,7 +25,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->crateFromEntity(
+        $paginator = $this->paginator()->createFromEntity(
             'GalleryBundle\Entity\Album\Album',
             $this->getParam('page'),
             array(),
