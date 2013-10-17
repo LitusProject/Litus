@@ -58,6 +58,15 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
                     'description' => 'The key used for the websocket of the queue',
                 ),
+                array(
+                    'key'         => 'sport.points_criteria',
+                    'value'       => serialize(
+                        array(
+                            90, 87, 84, 81, 79
+                        )
+                    ),
+                    'description' => 'The criteria for the lap times that determine the number of points a lap is worth',
+                ),
             )
         );
 
@@ -114,7 +123,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             'Chemische Ingenieurstechnieken',
             'Computerwetenschappen',
             'Elektrotechniek',
-            'Geotechniek en mijnbouwkunde',
             'Materiaalkunde',
             'Werktuigkunde',
         );
@@ -122,7 +130,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         foreach($departments as $name) {
             $department = $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Department')
-                ->findOneByCode($name);
+                ->findOneByName($name);
+
             if (null == $department) {
                 $department = new Department($name);
                 $this->getEntityManager()->persist($department);

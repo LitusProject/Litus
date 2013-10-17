@@ -286,7 +286,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             'firstName' => $lap->getRunner()->getFirstName(),
             'lastName' => $lap->getRunner()->getLastName(),
             'registrationTime' => $lap->getRegistrationTime()->format('d/m/Y H:i:s'),
-            'lapTime' => $lap->getStartTime() ? $lap->getLapTime()->format('%i:%S') : '',
+            'lapTime' => (null !== $lap->getStartTime()) ? $lap->getLapTime()->format('%i:%S') : '',
+            'points' => $lap->getPoints($this->_entityManager),
             'state' => $state,
         );
     }

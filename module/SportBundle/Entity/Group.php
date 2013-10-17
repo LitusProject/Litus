@@ -68,11 +68,6 @@ class Group
     private $happyHours;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $_entityManager;
-
-    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param string $name
      * @param array $happyHours
@@ -148,37 +143,28 @@ class Group
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * Returns the current point total of the group.
      *
-     * @return \CudiBundle\Entity\Article
-     */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->_entityManager = $entityManager;
-        return $this;
-    }
-
-    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @return integer
      */
-    public function getPoints(AcademicYear $academicYear)
+    public function getPoints(EntityManager $entityManager, AcademicYear $academicYear)
     {
         $points = 0;
         foreach ($this->getMembers() as $member) {
-            foreach ($member->getLaps($this->_entityManager, $academicYear) as $lap) {
+            foreach ($member->getLaps($entityManager, $academicYear) as $lap) {
                 if (null === $lap->getEndTime())
                     continue;
 
                 $startTime = $lap->getStartTime()->format('H');
                 $endTime = $lap->getEndTime()->format('H');
 
-                $points += 1;
+                $points += $lap->getPoints($entityManager);
 
                 $happyHours = $this->getHappyHours();
                 for ($i = 0; isset($happyHours[$i]); $i++) {
                     if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                        if ($lap->getLapTime() <= new DateInterval('PT90S'))
-                            $points += 1;
+                        $points += $lap->getPoints($entityManager);
                     }
                 }
             }
