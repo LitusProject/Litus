@@ -30,6 +30,6 @@ class Csv extends \CommonBundle\Component\Util\File\TmpFile
     public function appendContent($content)
     {
         $this->checkOpen();
-        fputcsv($this->fileHandler, $content);
+        fputcsv($this->fileHandle, $content);
     }
 }
