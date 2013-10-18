@@ -62,10 +62,29 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'key'         => 'sport.points_criteria',
                     'value'       => serialize(
                         array(
-                            90, 87, 84, 81, 79
+                            array(
+                                'limit'  => '90',
+                                'points' => '1',
+                            ),
+                            array(
+                                'limit'  => '87',
+                                'points' => '3',
+                            ),
+                            array(
+                                'limit'  => '84',
+                                'points' => '4',
+                            ),
+                            array(
+                                'limit'  => '81',
+                                'points' => '5',
+                            ),
+                            array(
+                                'limit'  => '79',
+                                'points' => '6',
+                            ),
                         )
                     ),
-                    'description' => 'The criteria for the lap times that determine the number of points a lap is worth',
+                    'description' => 'The criteria for the lap times that determine the number of points it is worth (times should decrease)',
                 ),
             )
         );

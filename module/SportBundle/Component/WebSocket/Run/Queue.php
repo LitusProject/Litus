@@ -246,9 +246,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->countRunners($this->_getAcademicYear());
 
         $laps = array();
-        $previousLaps = $this->_entityManager
-            ->getRepository('SportBundle\Entity\Lap')
-            ->findPrevious($this->_getAcademicYear(), 5);
+        $previousLaps = array_reverse(
+            $this->_entityManager
+                ->getRepository('SportBundle\Entity\Lap')
+                ->findPrevious($this->_getAcademicYear(), 5)
+        );
         foreach($previousLaps as $lap)
             $laps[] = $this->_jsonLap($lap, 'previous');
 

@@ -65,10 +65,14 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $this->getParam('page')
         );
 
+        foreach ($paginator as $lap)
+            $lap->setEntityManager($this->getEntityManager());
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'academicYear' => $this->_getAcademicYear(),
             )
         );
     }
@@ -143,6 +147,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 'name' => 'ASC'
             )
         );
+
+        foreach ($paginator as $group)
+            $group->setEntityManager($this->getEntityManager());
 
         return new ViewModel(
             array(
