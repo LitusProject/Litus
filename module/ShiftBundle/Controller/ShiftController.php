@@ -331,7 +331,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
+                    'ratio' => $shift->getNbVolunteers() ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers()
                 )
             )
         );
@@ -372,7 +372,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
+                    'ratio' => $shift->getNbVolunteers() ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers()
                 )
             )
         );
