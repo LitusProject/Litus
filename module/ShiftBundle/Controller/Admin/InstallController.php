@@ -162,7 +162,7 @@ U bent verwijderd van de volgende shift door een administrator:
             array(
                 'shiftbundle' => array(
                     'shift_admin_shift' => array(
-                        'add', 'delete', 'edit', 'manage', 'old'
+                        'add', 'delete', 'edit', 'manage', 'old', 'search'
                     ),
                     'shift_admin_shift_counter' => array(
                         'delete', 'index', 'payed', 'search', 'units', 'view'
