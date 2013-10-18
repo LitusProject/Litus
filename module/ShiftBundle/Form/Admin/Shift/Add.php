@@ -67,6 +67,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Select('edit_roles');
+        $field->setLabel('Edit Roles')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_createEditRolesArray());
+        $this->add($field);
+
         $field = new Text('manager');
         $field->setLabel('Manager')
             ->setAttribute('id', 'managerSearch')
@@ -296,6 +302,33 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'edit_roles',
+                    'required' => false,
+                )
+            )
+        );
+
         return $inputFilter;
+    }
+
+	private function _createEditRolesArray()
+    {
+        $roles = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findBy(array(), array('name' => 'ASC'));
+
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if (!$role->getSystem())
+                $rolesArray[$role->getName()] = $role->getName();
+        }
+
+        if (empty($rolesArray))
+            throw new \RuntimeException('There needs to be at least one role before you can add a page');
+
+        return $rolesArray;
     }
 }
