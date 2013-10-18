@@ -361,7 +361,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $fileContents = @file_get_contents('data/cache/run_result_page');
+        $fileContents = @file_get_contents('data/cache/' . md5('run_result_page'));
 
         $resultPage = null;
         if (false !== $fileContents)
