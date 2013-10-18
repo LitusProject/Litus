@@ -361,6 +361,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'form'           => $form,
                 'occupiedSlots'  => $occupiedSlots,
                 'doodleNotValid' => $notValid,
+                'formEntry'      => $formEntry,
             )
         );
     }

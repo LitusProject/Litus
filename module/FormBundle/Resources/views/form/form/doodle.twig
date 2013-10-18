@@ -59,7 +59,7 @@
                 {% endfor %}
             </table>
 
-            {% if specification.isEditableByUser() %}
+            {% if specification.isEditableByUser() or fromEntry is null %}
                 <div class="form-actions">
                     <div class="row">
                         <span class="label"></span>

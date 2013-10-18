@@ -110,7 +110,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($field);
         }
 
-        if ($form->isEditableByUser()) {
+        if ($form->isEditableByUser() || null === $entry) {
             $field = new Submit('submit');
             $field->setValue($form->getSubmitText($language))
                 ->setAttribute('class', 'btn btn-primary');

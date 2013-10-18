@@ -103,11 +103,11 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param \FormBundle\Entity\Mail\Mail $reminderMail
+     * @param \FormBundle\Entity\Mail\Mail|null $reminderMail
      *
      * @return \FormBundle\Entity\Node\Form\Doodle
      */
-    public function setReminderMail(Mail $reminderMail) {
+    public function setReminderMail(Mail $reminderMail = null) {
         $this->reminderMail = $reminderMail;
         return $this;
     }

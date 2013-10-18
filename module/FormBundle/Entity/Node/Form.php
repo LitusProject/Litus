@@ -308,7 +308,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \FormBundle\Entity\Mail\Mail $mail
+     * @param \FormBundle\Entity\Mail\Mail|null $mail
      *
      * @return \FormBundle\Entity\Node\Form
      */
