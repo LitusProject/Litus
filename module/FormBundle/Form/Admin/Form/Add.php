@@ -190,7 +190,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $field = new Text('mail_subject_' . $language->getAbbrev());
             $field->setLabel('Subject')
                 ->setAttribute('class', 'form doodle')
-                ->setRequired();
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
             $field = new Textarea('mail_body_' . $language->getAbbrev());
@@ -198,7 +198,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->setAttribute('class', 'form doodle')
                 ->setAttribute('rows', 20)
                 ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '')
-                ->setRequired();
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
             $mailTabContent->add($pane);
@@ -247,7 +247,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $field = new Text('reminder_mail_subject_' . $language->getAbbrev());
             $field->setLabel('Subject')
                 ->setAttribute('class', 'doodle')
-                ->setRequired();
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
             $field = new Textarea('reminder_mail_body_' . $language->getAbbrev());
@@ -255,7 +255,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->setAttribute('class', 'doodle')
                 ->setAttribute('rows', 20)
                 ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '')
-                ->setRequired();
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
             $reminderMailTabContent->add($pane);
@@ -362,7 +362,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     $factory->createInput(
                         array(
                             'name'     => 'mail_subject_' . $language->getAbbrev(),
-                            'required' => true,
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
@@ -374,7 +374,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     $factory->createInput(
                         array(
                             'name'     => 'mail_body_' . $language->getAbbrev(),
-                            'required' => true,
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
@@ -407,7 +407,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     $factory->createInput(
                         array(
                             'name'     => 'reminder_mail_subject_' . $language->getAbbrev(),
-                            'required' => true,
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
@@ -419,7 +419,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     $factory->createInput(
                         array(
                             'name'     => 'reminder_mail_body_' . $language->getAbbrev(),
-                            'required' => true,
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),

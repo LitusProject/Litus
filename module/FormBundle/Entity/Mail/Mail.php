@@ -142,7 +142,7 @@ class Mail
             return null;
 
         foreach($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language && strlen($translation->getSubject()) > 0)
                 return $translation;
 
             if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
