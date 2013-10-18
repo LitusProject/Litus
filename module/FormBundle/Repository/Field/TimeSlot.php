@@ -4,7 +4,8 @@ namespace FormBundle\Repository\Field;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
-    Doctrine\ORM\EntityRepository;
+    Doctrine\ORM\EntityRepository,
+    FormBundle\Entity\Node\Form;
 
 /**
  * TimeSlot
@@ -60,6 +61,38 @@ class TimeSlot extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+    public function findAllConflictingByFormAndTime(Form $form, DateTime $start, DateTime $end)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('FormBundle\Entity\Field\TimeSlot', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->andX(
+                            $query->expr()->lte('t.startDate', ':start'),
+                            $query->expr()->gt('t.endDate', ':start')
+                        ),
+                        $query->expr()->andX(
+                            $query->expr()->lt('t.startDate', ':end'),
+                            $query->expr()->gte('t.endDate', ':end')
+                        ),
+                        $query->expr()->andX(
+                            $query->expr()->gte('t.startDate', ':start'),
+                            $query->expr()->lte('t.endDate', ':end')
+                        )
+                    ),
+                    $query->expr()->eq('t.form', ':form')
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->setParameter('form', $form)
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }

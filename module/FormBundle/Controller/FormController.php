@@ -306,7 +306,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 foreach ($formSpecification->getFields() as $field) {
                     if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
-                        echo 'save';
                         $fieldEntry = new FieldEntry($formEntry, $field, '1');
                         $formEntry->addFieldEntry($fieldEntry);
                         $this->getEntityManager()->persist($fieldEntry);
@@ -352,6 +351,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 return new ViewModel();
             } else {
+                print_r($form->getMessages());
                 $notValid = true;
             }
         }

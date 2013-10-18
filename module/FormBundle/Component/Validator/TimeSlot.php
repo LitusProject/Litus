@@ -28,13 +28,15 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
     /**
      * @var string The error codes
      */
-    const NOT_VALID = 'notValid';
+    const OCCUPIED = 'occupied';
+    const ALREADY_SELECTED = 'alreadySelected';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'You have already a subscription at this time',
+        self::OCCUPIED         => 'There is already a subscription at this time',
+        self::ALREADY_SELECTED => 'You have already a subscription at this time',
     );
 
     /**
@@ -80,17 +82,35 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
+        $valid = true;
+
         if (isset($value) && $value && null !== $this->_person) {
             $occupation = $this->_entityManager
                 ->getRepository('FormBundle\Entity\Field\TimeSlot')
                 ->findOneOccupationByPersonAndTime($this->_person, $this->_timeSlot->getStartDate(), $this->_timeSlot->getEndDate());
 
-            if (null !== $occupation && $occupation->getField()->getId() != $this->_timeSlot->getId()) {
-                $this->error(self::NOT_VALID);
-                return false;
+            // No overlap with selections of other people
+            if (null !== $occupation && $occupation->getFormEntry()->getCreationPerson()->getId() != $this->_person->getId()) {
+                $this->error(self::OCCUPIED);
+                $valid = false;
+            }
+
+            $conflictingSlots = $this->_entityManager
+                ->getRepository('FormBundle\Entity\Field\TimeSlot')
+                ->findAllConflictingByFormAndTime($this->_timeSlot->getForm(), $this->_timeSlot->getStartDate(), $this->_timeSlot->getEndDate());
+
+            // No overlap with other selections in this form
+            foreach($conflictingSlots as $conflictingSlot) {
+                if ($conflictingSlot->getId() == $this->_timeSlot->getId())
+                    continue;
+                
+                if (isset($context['field-' . $conflictingSlot->getId()]) && $context['field-' . $conflictingSlot->getId()]) {
+                    $this->error(self::ALREADY_SELECTED);
+                    $valid = false;
+                }
             }
         }
 
-        return true;
+        return $valid;
     }
 }
