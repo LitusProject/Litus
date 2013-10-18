@@ -82,15 +82,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
-            $dropdown_form = new Collection('dropdown_form_' . $language->getAbbrev());
-            $dropdown_form->setLabel('Options')
-                ->setAttribute('class', 'dropdown_form extra_form hide');
-            $pane->add($dropdown_form);
-
-            $field = new Text('options_' . $language->getAbbrev());
-            $field->setLabel('Options');
-            $dropdown_form->add($field);
-
             $tabContent->add($pane);
         }
 
@@ -132,6 +123,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('lines');
         $field->setLabel('Max. number of lines (Multiline fields only)');
         $string_form->add($field);
+
+        $dropdown_form = new Collection('dropdown_form');
+        $dropdown_form->setLabel('Options')
+            ->setAttribute('class', 'dropdown_form extra_form hide');
+        $this->add($dropdown_form);
+
+        $dropdownTabs = new Tabs('dropdown_languages');
+        $dropdown_form->add($dropdownTabs);
+
+        $dropdownTabContent = new TabContent('dropdown_tab_content');
+
+        foreach($this->getLanguages() as $language) {
+            $dropdownTabs->addTab(array($language->getName() => '#dropdown_tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('dropdown_tab_' . $language->getAbbrev());
+
+            $field = new Text('options_' . $language->getAbbrev());
+            $field->setLabel('Options');
+            $pane->add($field);
+
+            $dropdownTabContent->add($pane);
+        }
+
+        $dropdown_form->add($dropdownTabContent);
 
         $string_form = new Collection('file_form');
         $string_form->setLabel('File Options')
