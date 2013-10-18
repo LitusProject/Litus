@@ -203,20 +203,30 @@ class Lap
                 ->getConfigValue('sport.points_criteria')
         );
 
+        $seconds = $this->_convertDateIntervalToSeconds($this->getLapTime());
+
         $points = 0;
-        foreach ($pointsCriteria as $i => $limit) {
+        foreach ($pointsCriteria as $i => $pointsCriterium) {
             if (isset($pointsCriteria[$i+1])) {
-                if (
-                    $this->getLapTime() < new DateInterval('PT' . $limit . 'S')
-                    && $this->getLapTime() >= new DateInterval('PT' . $pointsCriteria[$i+1] . 'S')
-                )
-                    $points = $i+1;
+                if ($seconds > $pointsCriteria[$i+1]['limit'] && $seconds <= $pointsCriterium['limit'])
+                    return $pointsCriterium['points'];
             } else {
-                if ($this->getLapTime() < new DateInterval('PT' . $limit . 'S'))
-                    $points = $i+1;
+                if ($seconds <= $pointsCriterium['limit'])
+                    return $pointsCriterium['points'];
             }
         }
 
-        return $points;
+        return 0;
+    }
+
+    /**
+     * Converts a DateInterval to seconds.
+     *
+     * @param \DateInterval $interval The interval that should be converted
+     * @return integer
+     */
+    private function _convertDateIntervalToSeconds(DateInterval $interval)
+    {
+        return $interval->h*3600 + $interval->i*60 + $interval->s;
     }
 }
