@@ -64,6 +64,25 @@ class Doodle extends BaseForm
     }
 
     /**
+     * @param \CommonBundle\Entity\User\Person|null $person
+     * @return boolean
+     */
+    public function canBeSavedBy(Person $person = null)
+    {
+        if ($this->isEditableByUser() || null === $person)
+            return true;
+
+        $formEntry = $this->_entityManager
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findOneByFormAndPerson($this, $person);
+
+        if (null === $formEntry)
+            return true;
+
+        return sizeof($formEntry->getFieldEntries()) == 0;
+    }
+
+    /**
      * @return array
      */
     public function getFields()

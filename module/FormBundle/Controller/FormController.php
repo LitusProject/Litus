@@ -276,7 +276,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry, $occupiedSlots);
 
-        if ($this->getRequest()->isPost() && $formSpecification->isEditableByUser()) {
+        if ($this->getRequest()->isPost() && $formSpecification->canBeSavedBy($person)) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -306,6 +306,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 foreach ($formSpecification->getFields() as $field) {
                     if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
+                        echo 'save';
                         $fieldEntry = new FieldEntry($formEntry, $field, '1');
                         $formEntry->addFieldEntry($fieldEntry);
                         $this->getEntityManager()->persist($fieldEntry);

@@ -59,7 +59,7 @@
                 {% endfor %}
             </table>
 
-            {% if specification.isEditableByUser() or fromEntry is null %}
+            {% if specification.canBeSavedBy(authenticatedPerson) %}
                 <div class="form-actions">
                     <div class="row">
                         <span class="label"></span>
@@ -81,32 +81,40 @@
             $('table label.checkbox').each(function () {
                 $(this).hide();
                 $(this).parent().append(
-                    $('<button>', {'class': 'btn btn-primary btn-small'}).html('{{ translate('Subscribe') }}').click(function (e) {
+                    $('<button>', {'class': 'btn btn-primary btn-small doodleButton'}).html('{{ translate('Subscribe') }}').click(function (e) {
                         e.preventDefault();
+
+                        if ($(this).is(':disabled'))
+                            return false;
+
                         var checkbox = $(this).parent().find('input[type=checkbox]');
-                        if (checkbox.is(':checked')) {
-                            checkbox.prop('checked', false);
-                            $(this).html('{{ translate('Subscribe') }}').removeClass('btn-danger');
-                        } else {
-                            checkbox.prop('checked', true);
-                            $(this).html('{{ translate('Unsubscribe') }}').addClass('btn-danger');
-                        }
+
+                        {% if not specification.isMultiple() %}
+                            if (!checkbox.prop('checked')) {
+                                $('#doodle .doodleButton').each(function () {
+                                    toggleButton($(this), $(this).parent().find('input[type=checkbox]'), false);
+                                });
+                            }
+                        {% endif %}
+
+                        toggleButton($(this), checkbox, !checkbox.is(':checked'));
                     })
                 );
 
-                if ($(this).find('input[type=checkbox]').is(':checked')) {
-                    $(this).parent().find('button').html('{{ translate('Unsubscribe') }}').addClass('btn-danger');
-                } else {
-                    $(this).parent().find('button').html('{{ translate('Subscribe') }}').removeClass('btn-danger');
-                }
-            });
+                toggleButton($(this).parent().find('button'), $(this).find('input[type=checkbox]'), $(this).find('input[type=checkbox]').is(':checked'));
 
-            {% if not specification.isMultiple() %}
-                $('#doodle input[type=checkbox]').click(function () {
-                    $('#doodle input[type=checkbox]').prop('checked', false);
-                    $(this).prop('checked', true);
-                });
-            {% endif %}
+                $(this).parent().find('button').prop('disabled', $(this).find('input[type=checkbox]').is(':disabled'));
+            });
         });
+
+        function toggleButton(button, checkbox, value) {
+            if (!value) {
+                checkbox.prop('checked', false);
+                button.html('{{ translate('Subscribe') }}').removeClass('btn-danger');
+            } else {
+                checkbox.prop('checked', true);
+                button.html('{{ translate('Unsubscribe') }}').addClass('btn-danger');
+            }
+        }
     </script>
 {% endblock %}

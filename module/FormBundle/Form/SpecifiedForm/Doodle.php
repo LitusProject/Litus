@@ -62,9 +62,10 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
      * @param \CommonBundle\Entity\Users\Person|null $person
      * @param \FormBundle\Entity\Node\Entry|null $entry
      * @param array $occupiedSlots
+     * @param boolean $forceEdit
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, array $occupiedSlots, $name = null)
+    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, array $occupiedSlots, $forceEdit = false, $name = null)
     {
         parent::__construct($name);
 
@@ -91,6 +92,8 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->_entityManager = $entityManager;
         $this->_person = $person;
 
+        $editable = $form->canBeSavedBy($person) || $forceEdit;
+
         // Fetch the fields through the repository to have the correct order
         $fields = $entityManager
             ->getRepository('FormBundle\Entity\Field')
@@ -101,7 +104,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 $field = new Checkbox('field-' . $fieldSpecification->getId());
                 $field->setAttribute('class', 'checkbox');
 
-                if (!$form->isEditableByUser())
+                if (!$editable)
                     $field->setAttribute('disabled', 'disabled');
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
@@ -110,7 +113,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($field);
         }
 
-        if ($form->isEditableByUser() || null === $entry) {
+        if ($editable) {
             $field = new Submit('submit');
             $field->setValue($form->getSubmitText($language))
                 ->setAttribute('class', 'btn btn-primary');

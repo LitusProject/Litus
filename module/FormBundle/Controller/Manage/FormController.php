@@ -254,6 +254,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         $formSpecification = $formEntry->getForm();
+        $formSpecification->setEntityManager($this->getEntityManager());
 
         if ($formSpecification->getType() != 'doodle') {
             $this->redirect()->toRoute(
@@ -306,9 +307,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         $notValid = false;
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, $occupiedSlots);
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, $occupiedSlots, true);
 
-        if ($this->getRequest()->isPost() && $formSpecification->isEditableByUser()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -563,6 +564,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
             return;
         }
+
+        $formSpecification->setEntityManager($this->getEntityManager());
 
         return $formSpecification;
     }
