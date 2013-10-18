@@ -240,6 +240,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             array(
                 'form' => $form,
                 'formSpecification' => $formSpecification,
+                'entry' => $formEntry,
             )
         );
     }

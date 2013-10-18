@@ -3,7 +3,34 @@
 {% block content %}
     {% if authenticatedPerson is not null %}
         <h2>{{ formSpecification.getTitle(language) }}</h2>
-        <p>{{ translate('Person') }}: <b>{{ formEntry.getPersonInfo().getFullName() }}</b></p>
+
+        <dl class='dl-horizontal'>
+            <dt>{{ translate('ID') }}</dt>
+            <dd>{{ formEntry.getId() }}</dd>
+            <dt>{{ translate('Name') }}</dt>
+            <dd>{{ formEntry.getPersonInfo().getFullName() }}</dd>
+            <dt>{{ translate('Guest') }}</dt>
+            <dd>{% if formEntry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+            {% if not formEntry.isGuestEntry() %}
+                <dt>{{ translate('Phone Number') }}</dt>
+                <dd>{{ formEntry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
+                {% if formEntry.getPersonInfo().getAddress() %}
+                <dt>{{ translate('Address') }}</dt>
+                    <dd>
+                        <address>
+                          {{ formEntry.getPersonInfo().getAddress().getStreet() }} {{ formEntry.getPersonInfo().getAddress().getNumber() }}<br>
+                          {{ formEntry.getPersonInfo().getAddress().getCountry() }}-{{ formEntry.getPersonInfo().getAddress().getPostal() }} {{ formEntry.getPersonInfo().getAddress().getCity() }}<br>
+                        </address>
+                    </dd>
+                {% endif %}
+            {% endif %}
+            <dt>{{ translate('Submitted') }}</dt>
+            <dd>{{ dateLocalized(formEntry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
+            {% if viewer.isMail() %}
+                <dt>{{ translate('Email') }}</dt>
+                <dd>{{ formEntry.getPersonInfo().getEmail() }}</dd>
+            {% endif %}
+        </dl>
 
         {% if doodleNotValid %}
             <div class="flashmessage alert alert-error fade in">
