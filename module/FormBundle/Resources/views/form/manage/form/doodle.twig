@@ -107,7 +107,7 @@
 
                         var checkbox = $(this).parent().find('input[type=checkbox]');
 
-                        {% if not specification.isMultiple() %}
+                        {% if not formSpecification.isMultiple() %}
                             if (!checkbox.prop('checked')) {
                                 $('#doodle .doodleButton').each(function () {
                                     toggleButton($(this), $(this).parent().find('input[type=checkbox]'), false);

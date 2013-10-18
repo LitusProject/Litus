@@ -103,7 +103,7 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
             foreach($conflictingSlots as $conflictingSlot) {
                 if ($conflictingSlot->getId() == $this->_timeSlot->getId())
                     continue;
-                
+
                 if (isset($context['field-' . $conflictingSlot->getId()]) && $context['field-' . $conflictingSlot->getId()]) {
                     $this->error(self::ALREADY_SELECTED);
                     $valid = false;
