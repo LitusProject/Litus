@@ -84,7 +84,7 @@ Jorn Hendrickx',
             array(
                 'mailbundle' => array(
                     'mail_admin_alias' => array(
-                        'manage', 'add', 'delete'
+                        'manage', 'add', 'delete', 'search'
                     ),
                     'mail_admin_bakske' => array(
                         'send'
@@ -93,7 +93,7 @@ Jorn Hendrickx',
                         'groups', 'send'
                     ),
                     'mail_admin_list' => array(
-                        'manage', 'add', 'entries', 'admins', 'delete', 'deleteAdmin', 'deleteAdminRole', 'deleteAllEntries', 'deleteEntry'
+                        'manage', 'add', 'entries', 'admins', 'delete', 'deleteAdmin', 'deleteAdminRole', 'deleteAllEntries', 'deleteEntry', 'search'
                     ),
                     'mail_admin_message' => array(
                         'manage', 'edit', 'delete'
