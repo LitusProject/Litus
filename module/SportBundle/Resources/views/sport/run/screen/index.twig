@@ -19,14 +19,13 @@
             <span style="font-size: 18px;">There is nobody running!</span>
         </div>
 
-        <div id="ticket"></div>
-        <div id="content_controller" class="ticket-content">
+        <div id="content_controller">
             <div class="row">
                 <div class="span4 columns">
                     <h2>Laps</h2>
 
                     <p style="margin-right: 20px">
-                        We have run <span id="nbOfficialLaps" class="label label-important" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-important" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firtOne" class="label label-success" style="font-size: 16px;display: none">first</span>!
+                        We have run <span id="nbOfficialLaps" class="label label-important" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-important" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firstOne" class="label label-success" style="font-size: 16px;display: none">first</span>!
                     </p>
 
                     <h2>Runners</h2>
@@ -60,7 +59,8 @@
                             <h4 id="currentLapRunnerName" style="margin-top: 0;">Nobody</h4>
 
                             <div id="currentLapInfo" style="display: none">
-                                <span id="currentLapTime"></span>,
+                                <span id="currentLapTime">N/A</span>,
+                                <span id="currentLapDistance">N/A</span>,
                                 <span id="officialSpeed">N/A</span> km/h
 
                                 <div class="progress progress-striped active" style="margin-bottom: 0;">
@@ -143,10 +143,10 @@
                 if (data.officialResults.behind > 0) {
                     $('#nbLapsBehind').html(data.officialResults.behind);
                     $('#behindFirstOne').show();
-                    $('#firtOne').hide();
+                    $('#firstOne').hide();
                 } else {
                     $('#behindFirstOne').hide();
-                    $('#firtOne').show();
+                    $('#firstOne').show();
                 }
             }
 
@@ -162,6 +162,9 @@
 
                 if (lap.state == 'current') {
                     var lapTime = parseInt(lap.lapTime.substring(0, lap.lapTime.indexOf(':')), 10) * 60 + parseInt(lap.lapTime.substring(lap.lapTime.indexOf(':') + 1), 10);
+                    var lapDistance = Math.round(data.officialResults.lapsPerSecond * data.officialResults.lapLength * lapTime);
+                    if (lapDistance > data.officialResults.lapLength)
+                        lapDistance = data.officialResults.lapLength;
 
                     $('#noCurrentLap').removeClass('in');
                     $('#currentLapRunnerName').html(lap.fullName);
@@ -171,8 +174,10 @@
                         'position': data.officialResults ? data.officialResults.position : 'N/A',
                         'speed': data.officialResults ? data.officialResults.speed : 'N/A',
                         'lapsPerSecond': data.officialResults ? data.officialResults.lapsPerSecond : 'N/A',
+                        'lapLength': data.officialResults ? data.officialResults.lapLength : 'N/A',
                     });
-                    $('#currentLapTime').html(lap.lapTime);
+                    $('#currentLapTime').html(lapTime);
+                    $('#currentLapDistance').html(data.officialResults ? lapDistance + ' m' : 'N/A');
                     $('#officialSpeed').html(data.officialResults ? data.officialResults.speed : 'N/A');
 
                     if (data.officialResults)
@@ -231,9 +236,14 @@
                 return;
 
             var lapTime = $('#currentLapInfo').data('lapTime');
+            var lapDistance = Math.round($('#currentLapInfo').data('lapsPerSecond') * $('#currentLapInfo').data('lapLength') * lapTime);
+            if (lapDistance > $('#currentLapInfo').data('lapLength'))
+                lapDistance = $('#currentLapInfo').data('lapLength');
+
             lapTime++;
             $('#currentLapInfo').data('lapTime', lapTime);
             $('#currentLapTime').html(Math.floor(lapTime / 60) + ':' + (lapTime % 60 < 10 ? "0" + lapTime % 60 : lapTime % 60));
+            $('#currentLapDistance').html(lapDistance + ' m');
 
             if ($('#currentLapInfo').data('lapsPerSecond') !== 'N/A')
                 $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('lapsPerSecond') * lapTime * 100) + '%');

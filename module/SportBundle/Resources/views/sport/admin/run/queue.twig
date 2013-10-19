@@ -30,12 +30,12 @@
                     <th>Runner</th>
                     <th width="150px">Registration Time</th>
                     <th width="150px">Duration</th>
+                    <th width="75px">Points</th>
                     <th width="70px">Action</th>
                 </tr>
             </thead>
 
-            <tbody id="queue">
-            </tbody>
+            <tbody id="queue"></tbody>
         </table>
     </div>
 
@@ -63,7 +63,7 @@
                 </p>
 
                 <p>
-                    The official count currently is <b id="nbOfficialLaps">N/A</b>.
+                    The official count is <b id="nbOfficialLaps">N/A</b>.
                 </p>
             </div>
         </div>
@@ -192,11 +192,13 @@
                     runnerName = $('<td>').html(lap.fullName),
                     $('<td>').html(lap.registrationTime),
                     lapTime = $('<td>'),
+                    points = $('<td>'),
                     actions = $('<td>')
                 );
 
                 if (lap.state == 'previous') {
                     lapTime.html(lap.lapTime);
+                    points.html(lap.points);
                 } else if (lap.state == 'current') {
                     lapTime.html($('<i>').html('Running'));
                     runnerName.html('&rarr; ' + runnerName.html());

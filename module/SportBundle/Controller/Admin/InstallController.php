@@ -14,7 +14,8 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Language,
+    SportBundle\Entity\Department;
 
 /**
  * InstallController
@@ -29,8 +30,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'sport.run_result_page',
-                    'value'       => 'http://media.24u.ulyssis.org/live/tussenstand.xml',
-                    'description' => 'The URL of the page where the XML of the official results is published',
+                    'value'       => 'http://live.24urenloop.be/tussenstand.json',
+                    'description' => 'The URL where the official result page can be found',
                 ),
                 array(
                     'key'         => 'sport.run_team_id',
@@ -58,12 +59,37 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
-                    'key'         => 'sport.cache_xml_path',
-                    'value'       => 'data/cache/sport/',
-                    'description' => 'The path to cache the xml',
+                    'key'         => 'sport.points_criteria',
+                    'value'       => serialize(
+                        array(
+                            array(
+                                'limit'  => '90',
+                                'points' => '1',
+                            ),
+                            array(
+                                'limit'  => '87',
+                                'points' => '3',
+                            ),
+                            array(
+                                'limit'  => '84',
+                                'points' => '4',
+                            ),
+                            array(
+                                'limit'  => '81',
+                                'points' => '5',
+                            ),
+                            array(
+                                'limit'  => '79',
+                                'points' => '6',
+                            ),
+                        )
+                    ),
+                    'description' => 'The criteria for the lap times that determine the number of points it is worth (times should decrease)',
                 ),
             )
         );
+
+        $this->_installDepartments();
     }
 
     protected function initAcl()
@@ -107,5 +133,29 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
             )
         );
+    }
+
+    private function _installDepartments()
+    {
+        $departments = array(
+            'Bouwkunde',
+            'Chemische Ingenieurstechnieken',
+            'Computerwetenschappen',
+            'Elektrotechniek',
+            'Materiaalkunde',
+            'Werktuigkunde',
+        );
+
+        foreach($departments as $name) {
+            $department = $this->getEntityManager()
+                ->getRepository('SportBundle\Entity\Department')
+                ->findOneByName($name);
+
+            if (null == $department) {
+                $department = new Department($name);
+                $this->getEntityManager()->persist($department);
+            }
+        }
+        $this->getEntityManager()->flush();
     }
 }
