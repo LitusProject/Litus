@@ -180,6 +180,9 @@ class Lap
      */
     public function getLapTime()
     {
+        if (null === $this->startTime)
+            return new DateInterval('PT0S');
+
         if (null !== $this->endTime) {
             $lapTime = $this->endTime->diff($this->startTime);
         } else {
