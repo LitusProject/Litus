@@ -79,7 +79,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
         if (!isset($command->key) || $command->key != $key) {
             $this->removeUser($user);
             $now = new DateTime();
-            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
+            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key' . PHP_EOL;
             return;
         }
 
@@ -87,7 +87,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
             if (!isset($command->authSession)) {
                 $this->removeUser($user);
                 $now = new DateTime();
-                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session' . PHP_EOL;
                 return;
             }
 
@@ -113,7 +113,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
             if (null == $authSession || !$allowed) {
                 $this->removeUser($user);
                 $now = new DateTime();
-                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session' . PHP_EOL;
                 return;
             }
         }
