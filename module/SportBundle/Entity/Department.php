@@ -14,7 +14,9 @@
 
 namespace SportBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a group of friends.
@@ -41,11 +43,33 @@ class Department
     private $name;
 
     /**
-     * @param string $name
+     * @var \Doctrine\Common\Collections\ArrayCollection The members of this department
+     *
+     * @ORM\OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="department")
+     * @ORM\OrderBy({"lastName" = "ASC"})
      */
-    public function __construct($name)
+    private $members;
+
+    /**
+     * @var array The happy hours of this department
+     *
+     * @ORM\Column(name="happy_hours", type="string")
+     */
+    private $happyHours;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
+     * @param string $name
+     * @param array $happyHours
+     */
+    public function __construct($name, array $happyHours)
     {
         $this->name = $name;
+        $this->happyHours = serialize($happyHours);
     }
 
     /**
@@ -62,5 +86,76 @@ class Department
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMembers()
+    {
+        return $this->members->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function getHappyHours()
+    {
+        return unserialize($this->happyHours);
+    }
+
+    /**
+     * @param array $happyHours
+     * @return \SportBundle\Entity\Group
+     */
+    public function setHappyHours(array $happyHours)
+    {
+        $this->happyHours = serialize($happyHours);
+        return $this;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \SportBundle\Entity\Group
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
+     * Returns the current point total of the department.
+     *
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @return integer
+     */
+    public function getPoints(AcademicYear $academicYear)
+    {
+        $points = 0;
+
+        foreach ($this->getMembers() as $member) {
+            $member->setEntityManager($this->_entityManager);
+
+            foreach ($member->getLaps($academicYear) as $lap) {
+                if (null === $lap->getEndTime())
+                    continue;
+
+                $lap->setEntityManager($this->_entityManager);
+
+                $startTime = $lap->getStartTime()->format('H');
+                $endTime = $lap->getEndTime()->format('H');
+
+                $points += $lap->getPoints();
+
+                $happyHours = $this->getHappyHours();
+                for ($i = 0; isset($happyHours[$i]); $i++) {
+                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2))
+                        $points += $lap->getPoints();
+                }
+            }
+        }
+
+        return $points;
     }
 }

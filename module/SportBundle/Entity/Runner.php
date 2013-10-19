@@ -37,14 +37,6 @@ class Runner
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
-     */
-    private $academicYear;
-
-    /**
      * @var \CommonBundle\Entity\User\Person\Academic The academic linked to this runner
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
@@ -84,7 +76,7 @@ class Runner
     /**
      * @var \SportBundle\Entity\Department The runner's department
      *
-     * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Department")
+     * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Department", inversedBy="members")
      * @ORM\JoinColumn(name="department", referencedColumnName="id")
      */
     private $department;
@@ -95,21 +87,17 @@ class Runner
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param string $firstName
      * @param string $lastName
      * @param \SportBundle\Entity\Group $group
      * @param \SportBundle\Entity\Department $department
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      */
-    public function __construct(AcademicYear $academicYear, $firstName, $lastName, Group $group = null, Department $department = null, Academic $academic = null)
+    public function __construct($firstName, $lastName, Academic $academic = null, Group $group = null, Department $department = null)
     {
-        $this->academicYear = $academicYear;
-        $this->academic = $academic;
-
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-
+        $this->academic = $academic;
         $this->group = $group;
         $this->department = $department;
     }
