@@ -16,8 +16,7 @@
  * Send mail for catalog updates
  *
  * Usage:
- * --article|-a     Article
- * --flush|-f       Flush
+ * --run|-r         Run
  * --mail|-m        Send Mail
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -33,6 +32,13 @@ include 'init_autoloader.php';
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 $mt = $application->getServiceManager()->get('mail_transport');
+
+$fallbackLanguage = $em->getRepository('CommonBundle\Entity\General\Language')
+    ->findOneByAbbrev(
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('fallback_language')
+    );
+\Locale::setDefault($fallbackLanguage->getAbbrev());
 
 $rules = array(
     'run|r-s' => 'Run',

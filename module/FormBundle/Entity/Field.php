@@ -15,9 +15,6 @@
 namespace FormBundle\Entity;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
-    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Node\Form;
@@ -34,7 +31,8 @@ use CommonBundle\Entity\General\Language,
  *      "options"="FormBundle\Entity\Field\OptionSelector",
  *      "dropdown"="FormBundle\Entity\Field\Dropdown",
  *      "checkbox"="FormBundle\Entity\Field\Checkbox",
- *      "file"="FormBundle\Entity\Field\File"
+ *      "file"="FormBundle\Entity\Field\File",
+ *      "timeslot"="FormBundle\Entity\Field\TimeSlot"
  * })
  */
 abstract class Field

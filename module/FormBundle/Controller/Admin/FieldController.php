@@ -15,11 +15,14 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
-    FormBundle\Entity\Field\OptionTranslation as OptionTranslationField,
     FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
+    FormBundle\Entity\Field\Translation\Option as OptionTranslationField,
+    FormBundle\Entity\Field\Translation\TimeSlot as TimeSlotTranslationField,
     FormBundle\Entity\Translation,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
@@ -162,6 +165,30 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             $formData['max_size'] === '' ? 4 : $formData['max_size']
                         );
                         break;
+                    case 'timeslot':
+                        $field = new TimeSlotField(
+                            $formSpecification,
+                            0,
+                            $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null,
+                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']),
+                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date'])
+                        );
+
+                        foreach($languages as $language) {
+                            if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()])
+                                continue;
+                            $translation = new TimeSlotTranslationField(
+                                $field,
+                                $language,
+                                $formData['timeslot_location_' . $language->getAbbrev()],
+                                $formData['timeslot_extra_info_' . $language->getAbbrev()]
+                            );
+
+                            $this->getEntityManager()->persist($translation);
+                        }
+                        break;
                     default:
                         throw new UnsupportedTypeException('This field type is unknown!');
                 }
@@ -192,13 +219,23 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'form_admin_form_field',
-                    array(
-                        'action' => 'manage',
-                        'id' => $formSpecification->getId(),
-                    )
-                );
+                if (isset($formData['submit_repeat'])) {
+                    $this->redirect()->toRoute(
+                        'form_admin_form_field',
+                        array(
+                            'action' => 'add',
+                            'id' => $formSpecification->getId(),
+                        )
+                    );
+                } else {
+                    $this->redirect()->toRoute(
+                        'form_admin_form_field',
+                        array(
+                            'action' => 'manage',
+                            'id' => $formSpecification->getId(),
+                        )
+                    );
+                }
 
                 return new ViewModel();
             }
@@ -282,6 +319,33 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 } elseif ($field instanceof FileField) {
                     $field->setMaxSize($formData['max_size'] === '' ? 4 : $formData['max_size']);
+                } elseif ($field instanceof TimeSlotField) {
+                    $field->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']))
+                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date']));
+
+                    foreach($languages as $language) {
+                        $translation = $field->getTimeSlotTranslation($language, false);
+
+                        if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()]) {
+                            if (null !== $translation)
+                                $this->getEntityManager()->remove($translation);
+                            continue;
+                        }
+
+                        if (null !== $translation) {
+                            $translation->setLocation($formData['timeslot_location_' . $language->getAbbrev()])
+                                ->setExtraInformation($formData['timeslot_extra_info_' . $language->getAbbrev()]);
+                        } else {
+                            $translation = new TimeSlotTranslationField(
+                                $field,
+                                $language,
+                                $formData['timeslot_location_' . $language->getAbbrev()],
+                                $formData['timeslot_extra_info_' . $language->getAbbrev()]
+                            );
+
+                            $this->getEntityManager()->persist($translation);
+                        }
+                    }
                 }
 
                 foreach($languages as $language) {

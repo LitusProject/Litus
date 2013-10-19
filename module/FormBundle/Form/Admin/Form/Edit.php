@@ -17,6 +17,7 @@ namespace FormBundle\Form\Admin\Form;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle,
     Zend\Form\Element\Submit;
 
 /**
@@ -35,6 +36,13 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Form $form, $name = null)
     {
         parent::__construct($entityManager, $name);
+
+        $this->remove('type');
+        if ($form instanceOf Doodle) {
+            $this->remove('max');
+        } else {
+            $this->remove('names_visible_for_others');
+        }
 
         $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
 
@@ -59,10 +67,8 @@ class Edit extends Add
             'editable_by_user' => $form->isEditableByUser(),
             'non_members'      => $form->isNonMember(),
             'mail'             => $form->hasMail(),
-            'mail_subject'     => $form->getMailSubject(),
-            'mail_body'        => $form->getMailBody(),
-            'mail_from'        => $form->getMailFrom(),
-            'mail_bcc'         => $form->getMailBcc(),
+            'mail_from'        => $form->hasMail() ? $form->getMail()->getFrom() : '',
+            'mail_bcc'         => $form->hasMail() ? $form->getMail()->getBcc() : '',
         );
 
         foreach($this->getLanguages() as $language) {
@@ -70,6 +76,22 @@ class Edit extends Add
             $data['introduction_' . $language->getAbbrev()] = $form->getIntroduction($language, false);
             $data['submittext_' . $language->getAbbrev()] = $form->getSubmitText($language, false);
             $data['updatetext_' . $language->getAbbrev()] = $form->getUpdateText($language, false);
+            $data['mail_subject_' . $language->getAbbrev()] = $form->hasMail() ? $form->getMail()->getSubject($language, false) : '';
+            $data['mail_body_' . $language->getAbbrev()] = $form->hasMail() ? $form->getMail()->getContent($language, false) : '';
+        }
+
+        if ($form instanceOf Doodle) {
+            $data['names_visible_for_others'] = $form->getNamesVisibleForOthers();
+            $data['reminder_mail'] = $form->hasReminderMail();
+
+            if ($form->hasReminderMail()) {
+                $data['reminder_mail_from'] = $form->getReminderMail()->getFrom();
+                $data['reminder_mail_bcc'] = $form->getReminderMail()->getBcc();
+                foreach($this->getLanguages() as $language) {
+                    $data['reminder_mail_subject_' . $language->getAbbrev()] = $form->getReminderMail()->getSubject($language, false);
+                    $data['reminder_mail_body_' . $language->getAbbrev()] = $form->getReminderMail()->getContent($language, false);
+                }
+            }
         }
 
         $this->setData($data);

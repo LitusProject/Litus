@@ -16,9 +16,23 @@
 
         $(document).ready(function () {
             $('#languages a:first').click();
+            $('#mail_languages a:first').click();
+            $('#reminder_mail_languages a:first').click();
             $('textarea.md').gollum();
             $('#mail').click(toggleMail);
             toggleMail();
+            $('#reminder_mail').click(toggleReminder);
+            toggleReminder();
+
+            $('#type').change(function () {
+                if ($(this).val() == 'form') {
+                    $('form .doodle').closest('.row').hide();
+                    $('form .form').closest('.row').show();
+                } else {
+                    $('form .form').closest('.row').hide();
+                    $('form .doodle').closest('.row').show();
+                }
+            }).change();
         });
 
         function toggleMail() {
@@ -26,6 +40,13 @@
                 $('#mail_form').show();
             else
                 $('#mail_form').hide();
+        }
+
+        function toggleReminder() {
+            if ($('#reminder_mail').is(':checked'))
+                $('#reminder_mail_form').show();
+            else
+                $('#reminder_mail_form').hide();
         }
 
     </script>

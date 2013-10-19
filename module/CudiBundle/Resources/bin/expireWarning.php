@@ -30,8 +30,15 @@ chdir(dirname(dirname(dirname(dirname(__DIR__)))));
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
-$entityManager = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
+$em = $application->getServiceManager()->get('doctrine.em.orm_default');
 $mailTransport = $application->getServiceManager()->get('mail_transport');
+
+$fallbackLanguage = $em->getRepository('CommonBundle\Entity\General\Language')
+    ->findOneByAbbrev(
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('fallback_language')
+    );
+\Locale::setDefault($fallbackLanguage->getAbbrev());
 
 $rules = array(
     'run|r'   => 'Run the script',
@@ -48,8 +55,7 @@ try {
 
 if (isset($opts->r)) {
     $interval = new \DateInterval(
-        $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
+        $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.expiration_warning_interval')
     );
 
@@ -61,8 +67,7 @@ if (isset($opts->r)) {
 
     echo 'Sending mails to bookings expiring between ' . $start->format('d M Y') . ' and ' . $end->format('d M Y') . '...' . PHP_EOL;
 
-    $bookings = $entityManager
-        ->getRepository('CudiBundle\Entity\Sale\Booking')
+    $bookings = $em->getRepository('CudiBundle\Entity\Sale\Booking')
         ->findAllExpiringBetween($start, $end);
 
     $persons = array();
@@ -76,7 +81,7 @@ if (isset($opts->r)) {
     $counter = 0;
     if (isset($opts->m)) {
         foreach($persons as $person) {
-            \CudiBundle\Component\Mail\Booking::sendExpireWarningMail($entityManager, $mailTransport, $person['bookings'], $person['person']);
+            \CudiBundle\Component\Mail\Booking::sendExpireWarningMail($em, $mailTransport, $person['bookings'], $person['person']);
             $counter++;
         }
     }
