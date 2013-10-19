@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
+    FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
@@ -34,22 +35,22 @@ class FormController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-    	if (!($person = $this->getAuthentication()->getPersonObject()))
-			return new ViewModel();
+        if (!($person = $this->getAuthentication()->getPersonObject()))
+            return new ViewModel();
 
-    	$viewerMaps = $this->getEntityManager()
-    		->getRepository('FormBundle\Entity\ViewerMap')
-    		->findAllByPerson($person);
+        $viewerMaps = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findAllByPerson($person);
 
-		$forms = array();
-		foreach ($viewerMaps as $viewerMap)
-			$forms[] = $viewerMap->getForm();
+        $forms = array();
+        foreach ($viewerMaps as $viewerMap)
+            $forms[] = $viewerMap->getForm();
 
         return new ViewModel(
-        	array(
-    			'forms' => $forms,
-    		)
-    	);
+            array(
+                'forms' => $forms,
+            )
+        );
     }
 
     public function viewAction()
@@ -115,6 +116,18 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         $formSpecification = $formEntry->getForm();
+
+        if ($formSpecification->getType() == 'doodle') {
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action'   => 'doodle',
+                    'id'       => $formEntry->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
 
         $viewerMap = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
@@ -227,6 +240,129 @@ class FormController extends \FormBundle\Component\Controller\FormController
             array(
                 'form' => $form,
                 'formSpecification' => $formSpecification,
+                'entry' => $formEntry,
+            )
+        );
+    }
+
+    public function doodleAction()
+    {
+        if (!($person = $this->getAuthentication()->getPersonObject()))
+            return new ViewModel();
+
+        if (!($formEntry = $this->_getEntry()))
+            return new ViewModel();
+
+        $formSpecification = $formEntry->getForm();
+        $formSpecification->setEntityManager($this->getEntityManager());
+
+        if ($formSpecification->getType() != 'doodle') {
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action'   => 'edit',
+                    'id'       => $formEntry->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $viewerMap = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $formEntry->getForm());
+
+        if (!$viewerMap || !$viewerMap->isEdit()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to edit the given form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'view',
+                    'id'     => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $formEntries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($formSpecification);
+
+        $occupiedSlots = array();
+        foreach($formEntries as $entry) {
+            if ($entry->getCreationPerson() == $formEntry->getCreationPerson())
+                continue;
+
+            foreach($entry->getFieldEntries() as $fieldEntry) {
+                $occupiedSlots[$fieldEntry->getField()->getId()] = $entry->getPersonInfo()->getFullName();
+            }
+        }
+
+        $notValid = false;
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, $occupiedSlots, true);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                foreach($formEntry->getFieldEntries() as $fieldEntry) {
+                    $this->getEntityManager()->remove($fieldEntry);
+                }
+                $this->getEntityManager()->flush();
+
+                foreach ($formSpecification->getFields() as $field) {
+                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
+                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
+                        $formEntry->addFieldEntry($fieldEntry);
+                        $this->getEntityManager()->persist($fieldEntry);
+
+                        if (!$formSpecification->isMultiple())
+                            break;
+                    }
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The entry was successfully edited!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_manage',
+                    array(
+                        'action'   => 'doodle',
+                        'id'       => $formEntry->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            } else {
+                $notValid = true;
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'formEntry'         => $formEntry,
+                'formSpecification' => $formSpecification,
+                'form'              => $form,
+                'occupiedSlots'     => $occupiedSlots,
+                'doodleNotValid'    => $notValid,
             )
         );
     }
@@ -428,6 +564,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
             return;
         }
+
+        $formSpecification->setEntityManager($this->getEntityManager());
 
         return $formSpecification;
     }

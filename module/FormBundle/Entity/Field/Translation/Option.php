@@ -1,18 +1,18 @@
 <?php
 
-namespace FormBundle\Entity\Field;
+namespace FormBundle\Entity\Field\Translation;
 
-use CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
+    FormBundle\Entity\Field\OptionSelector,
     Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\OptionTranslation")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Translation\Option")
  * @ORM\Table(name="forms.fields_options_translations")
  */
-class OptionTranslation
+class Option
 {
     /**
      * @var int The ID of this tanslation
@@ -77,7 +77,7 @@ class OptionTranslation
     /**
      * @param string $options
      *
-     * @return \FormBundle\Entity\Field\OptionSelector
+     * @return \FormBundle\Entity\Field\Translation\Option
      */
     public function setOptions($options) {
         $this->options = $options;

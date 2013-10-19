@@ -15,10 +15,6 @@
 namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Node\Form;
@@ -26,7 +22,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\String")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\String")
  * @ORM\Table(name="forms.fields_strings")
  */
 class String extends Field

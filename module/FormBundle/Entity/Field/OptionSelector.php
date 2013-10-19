@@ -15,10 +15,6 @@
 namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Node\Form;
@@ -26,7 +22,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * An abstract class that stores a number of options.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\OptionSelector")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\OptionSelector")
  * @ORM\Table(name="forms.fields_options")
  */
 abstract class OptionSelector extends Field
@@ -34,7 +30,7 @@ abstract class OptionSelector extends Field
     /**
      * @var array The translations of this field
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\OptionTranslation", mappedBy="field", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation\Option", mappedBy="field", cascade={"remove"})
      */
     private $optionTranslations;
 
@@ -48,8 +44,6 @@ abstract class OptionSelector extends Field
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
         parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-
-        $this->optionTranslations = new ArrayCollection();
     }
 
     /**
@@ -85,7 +79,7 @@ abstract class OptionSelector extends Field
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \FormBundle\Entity\Field\Translation
+     * @return \FormBundle\Entity\Field\Translation\Option
      */
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {
