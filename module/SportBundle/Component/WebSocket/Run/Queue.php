@@ -222,8 +222,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $data->firstName,
                 $data->lastName,
                 null,
-                $academic,
-                $department
+                $department,
+                $academic
             );
 
             $runner->setRunnerIdentification($data->universityIdentification);
