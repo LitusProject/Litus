@@ -49,12 +49,16 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 if ($replyForm->isValid()) {
                     $formData = $replyForm->getFormData($formData);
 
+                    $comment = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+                        ->findOneById($formData['comment']);
+
+                    $comment->setReadBy(null);
+
                     $reply = new Reply(
                         $this->getEntityManager(),
                         $this->getAuthentication()->getPersonObject(),
-                        $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
-                            ->findOneById($formData['comment']),
+                        $comment,
                         $formData['reply']
                     );
 
