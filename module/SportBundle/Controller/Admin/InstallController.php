@@ -98,7 +98,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'sportbundle' => array(
                     'sport_admin_run' => array(
-                        'edit', 'groups', 'identification', 'queue', 'update', 'laps', 'killSocket'
+                        'edit', 'departments', 'groups', 'identification', 'killSocket', 'laps', 'pasta', 'queue', 'update'
                     ),
                     'sport_run_group' => array(
                         'add', 'getName'
@@ -138,22 +138,72 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     private function _installDepartments()
     {
         $departments = array(
-            'Bouwkunde',
-            'Chemische Ingenieurstechnieken',
-            'Computerwetenschappen',
-            'Elektrotechniek',
-            'Materiaalkunde',
-            'Werktuigkunde',
+            array(
+                'name'       => 'Architectuur',
+                'happyHours' => array(
+                    '0809'
+                ),
+            ),
+            array(
+                'name'       => 'Bouwkunde',
+                'happyHours' => array(
+                    '1819'
+                ),
+            ),
+            array(
+                'name'       => 'Chemische Ingenieurstechnieken',
+                'happyHours' => array(
+                    '1415'
+                ),
+            ),
+            array(
+                'name'       => 'Computerwetenschappen',
+                'happyHours' => array(
+                    '1112'
+                ),
+            ),
+            array(
+                'name'       => 'Eerstejaars Burgies',
+                'happyHours' => array(
+                    '1718'
+                ),
+            ),
+            array(
+                'name'       => 'Elektrotechniek',
+                'happyHours' => array(
+                    '2300'
+                ),
+            ),
+            array(
+                'name'       => 'Materiaalkunde',
+                'happyHours' => array(
+                    '1213'
+                ),
+            ),
+            array(
+                'name'       => 'Tweedejaars Burgies',
+                'happyHours' => array(
+                    '2223'
+                ),
+            ),
+            array(
+                'name'       => 'Werktuigkunde',
+                'happyHours' => array(
+                    '1314'
+                ),
+            ),
         );
 
-        foreach($departments as $name) {
-            $department = $this->getEntityManager()
+        foreach($departments as $department) {
+            $repositoryCheck = $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Department')
-                ->findOneByName($name);
+                ->findOneByName($department['name']);
 
-            if (null == $department) {
-                $department = new Department($name);
-                $this->getEntityManager()->persist($department);
+            if (null === $repositoryCheck) {
+                $newDepartment = new Department($department['name'], $department['happyHours']);
+                $this->getEntityManager()->persist($newDepartment);
+            } else {
+                $repositoryCheck->setHappyHours($department['happyHours']);
             }
         }
         $this->getEntityManager()->flush();

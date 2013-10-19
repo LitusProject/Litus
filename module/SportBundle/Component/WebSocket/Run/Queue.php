@@ -208,25 +208,27 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->findOneByRunnerIdentification($data->universityIdentification);
         }
 
+        $department = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Department')
+            ->findOneById($data->department);
+
         if (null === $runner) {
             $academic = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
 
-            $department = $this->_entityManager
-                ->getRepository('SportBundle\Entity\Department')
-                ->findOneById($data->department);
-
             $runner = new Runner(
-                $this->_getAcademicYear(),
                 $data->firstName,
                 $data->lastName,
+                $academic,
                 null,
-                $department,
-                $academic
+                $department
             );
 
             $runner->setRunnerIdentification($data->universityIdentification);
+        } else {
+            if (null === $runner->getDepartment())
+                $runner->setDepartment($department);
         }
 
         $lap = new Lap($this->_getAcademicYear(), $runner);

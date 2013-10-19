@@ -17,7 +17,6 @@ namespace SportBundle\Entity;
 use CommonBundle\Entity\General\AcademicYear,
     DateInterval,
     Doctrine\ORM\EntityManager,
-    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -61,7 +60,7 @@ class Group
     private $members;
 
     /**
-     * @var array
+     * @var array The happy hours of this group
      *
      * @ORM\Column(name="happy_hours", type="string")
      */
@@ -117,16 +116,6 @@ class Group
     public function getMembers()
     {
         return $this->members->toArray();
-    }
-
-    /**
-     * @param array $members
-     * @return \SportBundle\Entity\Group
-     */
-    public function setMembers(array $members)
-    {
-        $this->members = new ArrayCollection($members);
-        return $this;
     }
 
     /**
