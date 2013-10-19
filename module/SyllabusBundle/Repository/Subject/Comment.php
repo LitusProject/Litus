@@ -19,6 +19,9 @@ class Comment extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
+            ->where(
+                $query->expr()->isNull('c.readBy')
+            )
             ->orderBy('c.date', 'DESC')
             ->setMaxResults($nb)
             ->getQuery()
