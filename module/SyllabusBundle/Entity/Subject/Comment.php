@@ -76,7 +76,7 @@ class Comment
      * @var boolean Flag whether this comment was read
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
-     * @ORM\JoinColumn(name="ready_by", referencedColumnName="id")
+     * @ORM\JoinColumn(name="read_by", referencedColumnName="id")
      */
     private $readBy;
 
