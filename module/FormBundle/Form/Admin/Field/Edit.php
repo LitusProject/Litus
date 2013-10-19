@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 
@@ -51,6 +52,7 @@ class Edit extends Add
         $this->get('visibility')->get('visible_if')->setAttribute('options', $this->_getVisibilityOptions());
 
         $this->remove('submit');
+        $this->remove('submit_repeat');
 
         $field = new Submit('submit');
         $field->setValue('Save')
@@ -64,7 +66,7 @@ class Edit extends Add
     {
         $options = array(0 => 'Always');
         foreach($this->_form->getFields() as $field) {
-            if ($field == $this->_field)
+            if ($field->getId() == $this->_field->getId())
                 continue;
 
             if ($field instanceof StringField) {
@@ -120,6 +122,8 @@ class Edit extends Add
             $data['type'] = 'checkbox';
         } elseif ($field instanceof FileField) {
             $data['type'] = 'file';
+        } elseif ($field instanceof TimeSlotField) {
+            $data['type'] = 'timeslot';
         }
 
         if ($field instanceof StringField) {
@@ -129,13 +133,19 @@ class Edit extends Add
                 $data['lines'] = $field->getLines();
         } elseif ($field instanceof FileField) {
             $data['max_size'] = $field->getMaxSize();
+        } elseif ($field instanceof TimeSlotField) {
+            $data['timeslot_start_date'] = $field->getStartDate()->format('d/m/Y H:i');
+            $data['timeslot_end_date'] = $field->getEndDate()->format('d/m/Y H:i');
         }
 
         foreach($this->getLanguages() as $language) {
             $data['label_' . $language->getAbbrev()] = $field->getLabel($language, false);
 
-            if($field instanceof DropdownField) {
+            if ($field instanceof DropdownField) {
                 $data['options_' . $language->getAbbrev()] = $field->getOptions($language, false);
+            } elseif ($field instanceof TimeSlotField) {
+                $data['timeslot_location_' . $language->getAbbrev()] = $field->getLocation($language, false);
+                $data['timeslot_extra_info_' . $language->getAbbrev()] = $field->getExtraInformation($language, false);
             }
         }
 
@@ -146,5 +156,10 @@ class Edit extends Add
         }
 
         $this->setData($data);
+    }
+
+    protected function _isTimeSlot()
+    {
+        return $this->_field->getType() == 'timeslot';
     }
 }

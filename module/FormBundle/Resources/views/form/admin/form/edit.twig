@@ -9,6 +9,7 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
+
     <aside>
         {% if hasAccess('form_admin_form_field', 'manage') %}
             <div class="sidebox">
@@ -36,6 +37,32 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('form_view', 'view') %}
+            <div class="sidebox">
+                <div class="title">View Form</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view this form!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_view', {"action": "view", "id": formSpecification.getId()}) }}">&rarr; View Form</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('form_manage', 'view') and formSpecification.canBeViewedBy(authenticatedPerson) %}
+            <div class="sidebox">
+                <div class="title">View Results</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view this form!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_manage', {"action": "view", "id": formSpecification.getId()}) }}">&rarr; View Results</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
 
@@ -43,9 +70,13 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
+            $('#mail_languages a:first').click();
+            $('#reminder_mail_languages a:first').click();
             $('textarea.md').gollum({'width': '400px'});
             $('#mail').click(toggleMail);
             toggleMail();
+            $('#reminder_mail').click(toggleReminder);
+            toggleReminder();
         });
 
         function toggleMail() {
@@ -53,6 +84,13 @@
                 $('#mail_form').show();
             else
                 $('#mail_form').hide();
+        }
+
+        function toggleReminder() {
+            if ($('#reminder_mail').is(':checked'))
+                $('#reminder_mail_form').show();
+            else
+                $('#reminder_mail_form').hide();
         }
     </script>
 {% endblock %}

@@ -104,7 +104,7 @@ abstract class Person
     private $email;
 
     /**
-     * @var \CommonBundle\Entity\General\Address The address of the supplier
+     * @var \CommonBundle\Entity\General\Address The address of the user
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
      * @ORM\JoinColumn(name="address", referencedColumnName="id")

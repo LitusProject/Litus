@@ -4,6 +4,34 @@
     {% if authenticatedPerson is not null %}
 	    <h2>{{ formSpecification.getTitle(language) }}</h2>
 
+        <dl class='dl-horizontal'>
+            <dt>{{ translate('ID') }}</dt>
+            <dd>{{ entry.getId() }}</dd>
+            <dt>{{ translate('Name') }}</dt>
+            <dd>{{ entry.getPersonInfo().getFullName() }}</dd>
+            <dt>{{ translate('Guest') }}</dt>
+            <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+            {% if not entry.isGuestEntry() %}
+                <dt>{{ translate('Phone Number') }}</dt>
+                <dd>{{ entry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
+                {% if entry.getPersonInfo().getAddress() %}
+                <dt>{{ translate('Address') }}</dt>
+                    <dd>
+                        <address>
+                          {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
+                          {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}<br>
+                        </address>
+                    </dd>
+                {% endif %}
+            {% endif %}
+            <dt>{{ translate('Submitted') }}</dt>
+            <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
+            {% if viewer.isMail() %}
+                <dt>{{ translate('Email') }}</dt>
+                <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
+            {% endif %}
+        </dl>
+
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
 
