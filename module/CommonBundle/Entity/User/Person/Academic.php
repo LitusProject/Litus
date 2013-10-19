@@ -278,6 +278,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function setPrimaryAddress(Address $primaryAddress)
     {
         $this->primaryAddress = $primaryAddress;
+        $this->setAddress($primaryAddress);
         return $this;
     }
 
