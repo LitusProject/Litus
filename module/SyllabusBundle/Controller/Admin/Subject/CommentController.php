@@ -21,6 +21,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SyllabusBundle\Entity\Subject\Comment,
     SyllabusBundle\Entity\Subject\Reply,
     SyllabusBundle\Form\Admin\Subject\Comment\Add as AddCommentForm,
+    SyllabusBundle\Form\Admin\Subject\Comment\MarkAsRead as MarkAsReadForm,
     SyllabusBundle\Form\Admin\Subject\Reply\Add as AddReplyForm,
     Zend\View\Model\ViewModel;
 
@@ -125,41 +126,75 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             ->findAllByComment($comment);
 
         $form = new AddReplyForm();
+        $markAsReadForm = new MarkAsReadForm($comment);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            if (isset($formData['mark_as_read'])) {
+                $markAsReadForm->setData($formData);
 
-            if($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                if($markAsReadForm->isValid()) {
+                    $formData = $markAsReadForm->getFormData($formData);
 
-                $reply = new Reply(
-                    $this->getEntityManager(),
-                    $this->getAuthentication()->getPersonObject(),
-                    $comment,
-                    $formData['text']
-                );
+                    if ($comment->isRead())
+                        $comment->setReadBy(null);
+                    else
+                        $comment->setReadBy($this->getAuthentication()->getPersonObject());
 
-                $this->getEntityManager()->persist($reply);
-                $this->getEntityManager()->flush();
+                    $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The reply was successfully created!'
-                    )
-                );
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The comment status was successfully updated!'
+                        )
+                    );
 
-                $this->redirect()->toRoute(
-                    'syllabus_admin_subject_comment',
-                    array(
-                        'action' => 'reply',
-                        'id' => $comment->getId(),
-                    )
-                );
+                    $this->redirect()->toRoute(
+                        'syllabus_admin_subject_comment',
+                        array(
+                            'action' => 'reply',
+                            'id' => $comment->getId(),
+                        )
+                    );
 
-                return new ViewModel();
+                    return new ViewModel();
+                }
+            } else {
+                $form->setData($formData);
+
+                if($form->isValid()) {
+                    $formData = $form->getFormData($formData);
+
+                    $reply = new Reply(
+                        $this->getEntityManager(),
+                        $this->getAuthentication()->getPersonObject(),
+                        $comment,
+                        $formData['text']
+                    );
+
+                    $this->getEntityManager()->persist($reply);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The reply was successfully created!'
+                        )
+                    );
+
+                    $this->redirect()->toRoute(
+                        'syllabus_admin_subject_comment',
+                        array(
+                            'action' => 'reply',
+                            'id' => $comment->getId(),
+                        )
+                    );
+
+                    return new ViewModel();
+                }
             }
         }
 
@@ -168,6 +203,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 'comment' => $comment,
                 'replies' => $replies,
                 'form' => $form,
+                'markAsReadForm' => $markAsReadForm,
             )
         );
     }

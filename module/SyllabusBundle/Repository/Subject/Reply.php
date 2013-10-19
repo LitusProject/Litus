@@ -18,6 +18,10 @@ class Reply extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SyllabusBundle\Entity\Subject\Reply', 'r')
+            ->innerJoin('r.comment', 'c')
+            ->where(
+                $query->expr()->isNull('c.readBy')
+            )
             ->orderBy('r.date', 'DESC')
             ->setMaxResults($nb)
             ->getQuery()

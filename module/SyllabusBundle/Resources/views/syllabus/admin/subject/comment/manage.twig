@@ -11,6 +11,7 @@
         <table class="full_width manage">
             <tr>
                 <th width="100px">Date</th>
+                <th width="40px">Read</th>
                 <th width="130px">Person</th>
                 <th width="220px">Subject</th>
                 <th>Summary</th>
@@ -21,12 +22,15 @@
             {% for comment in paginator %}
                 <tr class="item item-{{ comment.getId() }}">
                     <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
+                    <td style="text-align: center;">{% if comment.isRead() %}&times;{% endif %}</td>
                     <td>{{ comment.getPerson().getFullName() }}</td>
                     <td>{{ comment.getSubject().getName() }}</td>
                     <td>{{ comment.getText() }}</td>
                     <td>{{ comment.getType()|capitalize }}</td>
                     <td class="actions">
-                        <a href="#" class="view viewOne" data-text="{{ comment.getText() }}">View</a>
+                        {% if hasAccess('syllabus_admin_subject_comment', 'reply') %}
+                            <a href="{{ url('syllabus_admin_subject_comment', {'action': 'reply', 'id': comment.getId()}) }}" class="view">View</a>
+                        {% endif %}
                         {% if hasAccess('syllabus_admin_subject_comment', 'subject') %}
                             <a href="{{ url('syllabus_admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
                         {% endif %}
@@ -37,35 +41,4 @@
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
-
-    <div class="modal hide fade" id="viewComment">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Subject Comment
-        </div>
-        <div class="modal-body">
-            <pre class="text"></pre>
-            <br style="clear:both" />
-            <div class="footer">
-                <input type="button" data-dismiss="modal" value="Close">
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.item .viewOne').click(openViewModal);
-        });
-
-        function openViewModal(e) {
-            var $this = $(this);
-
-            e.preventDefault();
-            var viewComment = $('#viewComment');
-            viewComment.find('.text').html($this.data('text'));
-            viewComment.modal();
-        }
-    </script>
 {% endblock %}
