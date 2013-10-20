@@ -312,6 +312,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $item = (object) array();
             $item->id = $shift->getId();
             $item->name = $shift->getName();
+            $item->event = $shift->getEvent()->getTitle($this->getLanguage());
             $item->startDate = $shift->getStartDate()->format('d/m/Y H:i');
             $item->endDate = $shift->getEndDate()->format('d/m/Y H:i');
 
