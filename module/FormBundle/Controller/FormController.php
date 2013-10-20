@@ -66,6 +66,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if (null !== $person) {
+            $entries = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findAllByFormAndPerson($formSpecification, $person);
+        }
+
         $entriesCount = count($this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification));
@@ -75,11 +83,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 array(
                     'message'       => 'This form has reached the maximum number of submissions.',
                     'specification' => $formSpecification,
+                    'entries'       => $entries,
                 )
             );
         }
-
-        $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null && !$formSpecification->isNonMember()) {
             return new ViewModel(
@@ -88,11 +95,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'specification' => $formSpecification,
                 )
             );
-        } else if ($person !== null) {
-            $entries = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findAllByFormAndPerson($formSpecification, $person);
-
+        } elseif (null !== $person) {
             if (!$formSpecification->isMultiple() && count($entries) > 0) {
                 return new ViewModel(
                     array(
