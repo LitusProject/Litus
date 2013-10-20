@@ -30,18 +30,17 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $academicYear = $this->getAcademicYear();
         if (null !== $this->getParam('field'))
-            list($records, $totalNumber) = $this->_individualSearch($this->getParam('page'), $this->paginator()->getItemsPerPage(), $academicYear);
+            $records = $this->_individualSearch($academicYear);
 
         if (!isset($records)) {
-            list($records, $totalNumber) = $this->getEntityManager()
+            $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                ->findAllPaginator($this->getParam('page'), $this->paginator()->getItemsPerPage(), $academicYear);
+                ->findAllByAcademicYearQuery($academicYear);
         }
 
-        $paginator = $this->paginator()->createFromPaginatorRepository(
+        $paginator = $this->paginator()->createFromQuery(
             $records,
-            $this->getParam('page'),
-            $totalNumber
+            $this->getParam('page')
         );
 
         $academicYears = $this->getEntityManager()
@@ -68,10 +67,12 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        list($records, $totalNumber) = $this->_individualSearch(0, $numResults, $academicYear);
+        $deliveries = $this->_individualSearch($academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
-        foreach($records as $delivery) {
+        foreach($deliveries as $delivery) {
             $item = (object) array();
             $item->id = $delivery->getId();
             $item->timestamp = $delivery->getTimestamp()->format('d/m/Y H:i');
@@ -90,17 +91,17 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _individualSearch($page, $numberRecords, AcademicYear $academicYear)
+    private function _individualSearch(AcademicYear $academicYear)
     {
         switch($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                    ->findAllByArticlePaginator($this->getParam('string'), $page, $numberRecords, $academicYear);
+                    ->findAllByArticleAndAcademicYearQuery($this->getParam('string'), $academicYear);
             case 'supplier':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                    ->findAllBySupplierPaginator($this->getParam('string'), $page, $numberRecords, $academicYear);
+                    ->findAllBySupplierAndAcademicYearQuery($this->getParam('string'), $academicYear);
         }
     }
 
@@ -113,10 +114,10 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         if (!isset($records)) {
             $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
-                ->findAllByAcademicYear($academicYear);
+                ->findAllByAcademicYearQuery($academicYear);
         }
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $records,
             $this->getParam('page')
         );
@@ -145,13 +146,13 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
         $academicYear = $this->getAcademicYear();
 
-        $articles = $this->_articlesSearch($academicYear);
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($articles, $numResults);
+        $articles = $this->_articlesSearch($academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {
@@ -182,19 +183,19 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
+                    ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $academicYear);
             case 'author':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByAuthorAndAcademicYear($this->getParam('string'), $academicYear);
+                    ->findAllByAuthorAndAcademicYearQuery($this->getParam('string'), $academicYear);
             case 'publisher':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByPublisherAndAcademicYear($this->getParam('string'), $academicYear);
+                    ->findAllByPublisherAndAcademicYearQuery($this->getParam('string'), $academicYear);
             case 'barcode':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear);
+                    ->findAllByBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear);
         }
     }
 
@@ -209,14 +210,11 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        list($records, $totalNumber) = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Delivery')
-            ->findAllByArticleEntityPaginator($article, $this->getParam('page'), $this->paginator()->getItemsPerPage(), $this->getAcademicYear());
-
-        $paginator = $this->paginator()->createFromPaginatorRepository(
-            $records,
-            $this->getParam('page'),
-            $totalNumber
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Delivery')
+                ->findAllByArticleEntityQuery($article, $this->getAcademicYear()),
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -269,18 +267,17 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->findAll();
 
         if (null !== $this->getParam('field'))
-            list($records, $totalNumber) = $this->_supplierSearch($this->getParam('page'), $this->paginator()->getItemsPerPage(), $supplier, $this->getAcademicYear());
+            $records = $this->_supplierSearch($this->getParam('page'), $this->getAcademicYear());
 
         if (!isset($records)) {
-            list($records, $totalNumber) = $this->getEntityManager()
+            $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                ->findAllBySupplierEntityPaginator($supplier, $this->getParam('page'), $this->paginator()->getItemsPerPage(), $this->getAcademicYear());
+                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYear());
         }
 
-        $paginator = $this->paginator()->createFromPaginatorRepository(
+        $paginator = $this->paginator()->createFromQuery(
             $records,
-            $this->getParam('page'),
-            $totalNumber
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -307,10 +304,12 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        list($records, $totalNumber) = $this->_supplierSearch(0, $numResults, $supplier, $academicYear);
+        $deliveries = $this->_supplierSearch($supplier, $academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
-        foreach($records as $delivery) {
+        foreach($deliveries as $delivery) {
             $item = (object) array();
             $item->id = $delivery->getId();
             $item->timestamp = $delivery->getTimestamp()->format('d/m/Y H:i');
@@ -328,13 +327,13 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _supplierSearch($page, $numberRecords, Supplier $supplier, AcademicYear $academicYear)
+    private function _supplierSearch(Supplier $supplier, AcademicYear $academicYear)
     {
         switch($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                    ->findAllByArticleTitleAndSupplierAndAcademicYear($this->getParam('string'), $page, $numberRecords, $supplier, $academicYear);
+                    ->findAllByArticleTitleAndSupplierAndAcademicYearQuery($this->getParam('string'), $supplier, $academicYear);
         }
     }
 

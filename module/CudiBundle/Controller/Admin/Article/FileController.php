@@ -40,9 +40,12 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($article);
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\File\Mapping')
-            ->findAllByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\File\Mapping')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         $form = new AddForm();
         $form->setAttribute(
@@ -61,7 +64,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 'form' => $form,
                 'article' => $article,
                 'saleArticle' => $saleArticle,
-                'mappings' => $mappings,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
