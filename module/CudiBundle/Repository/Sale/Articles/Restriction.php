@@ -13,7 +13,7 @@ use CudiBundle\Entity\Sale\Article,
  */
 class Restriction extends EntityRepository
 {
-    public function findAllByArticle(Article $article)
+    public function findAllByArticleQuery(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -29,8 +29,7 @@ class Restriction extends EntityRepository
                 )
             )
             ->setParameter('article', $article)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -102,4 +102,25 @@ class Discount extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllByArticleQuery(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('d')
+            ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
+            ->innerJoin('d.article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('d.article', ':article'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
+                )
+            )
+            ->setParameter('article', $article)
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

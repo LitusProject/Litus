@@ -91,14 +91,18 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             }
         }
 
-        $discounts = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
-            ->findByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
                 'article' => $article,
-                'discounts' => $discounts,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
                 'form' => $form,
             )
         );

@@ -38,7 +38,7 @@
                 <th width="70px">Action</th>
             </tr>
 
-            {% for mapping in mappings %}
+            {% for mapping in paginator %}
                 <tr class="item item-{{ mapping.getId() }}">
                     <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
                     <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
@@ -53,6 +53,8 @@
                 </tr>
             {% endfor %}
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <aside>

@@ -41,7 +41,7 @@ class SubjectMap extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
+    public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -59,13 +59,12 @@ class SubjectMap extends EntityRepository
             )
             ->setParameter('subject', $subject->getId())
             ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByArticleAndAcademicYear(Article $article, AcademicYear $academicYear, $isProf = false)
+    public function findAllByArticleAndAcademicYearQuery(Article $article, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -80,13 +79,12 @@ class SubjectMap extends EntityRepository
             )
             ->setParameter('article', $article->getId())
             ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByArticle(Article $article, $isProf = false)
+    public function findAllByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -99,8 +97,7 @@ class SubjectMap extends EntityRepository
                 )
             )
             ->setParameter('article', $article->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
