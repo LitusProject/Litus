@@ -170,22 +170,22 @@ class PianoReservation extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
-        ->where(
-            $query->expr()->andx(
-                $query->expr()->eq('r.resource', ':resource'),
-                $query->expr()->lt('r.startDate', ':end_date'),
-                $query->expr()->gt('r.endDate', ':start_date'),
-                $query->expr()->neq('r.id', ':id'),
-                $query->expr()->eq('r.confirmed', 'true')
+            ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.resource', ':resource'),
+                    $query->expr()->lt('r.startDate', ':end_date'),
+                    $query->expr()->gt('r.endDate', ':start_date'),
+                    $query->expr()->neq('r.id', ':id'),
+                    $query->expr()->eq('r.confirmed', 'true')
+                )
             )
-        )
-        ->setParameter('resource', $resource)
-        ->setParameter('start_date', $startDate)
-        ->setParameter('end_date', $endDate)
-        ->setParameter('id', $ignoreId)
-        ->getQuery();
-        ->getResult();
+            ->setParameter('resource', $resource)
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->setParameter('id', $ignoreId)
+            ->getQuery();
+            ->getResult();
 
         return $resultSet;
     }

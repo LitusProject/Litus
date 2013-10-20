@@ -44,7 +44,7 @@ class Page extends EntityRepository
             return $this->findOneByName($name, null);
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('p')
+        $resultSet = $query->select('p')
             ->from('PageBundle\Entity\Node\Page', 'p')
             ->innerJoin('p.parent', 'par')
             ->where(
@@ -55,16 +55,12 @@ class Page extends EntityRepository
                 )
             )
             ->setParameter('name', $name)
-            ->setParameter('parentName', $parentName);
-
-        $resultSet = $query->setMaxResults(1)
+            ->setParameter('parentName', $parentName)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOneByName($name, PageEntity $parent = null)
@@ -88,11 +84,8 @@ class Page extends EntityRepository
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }
