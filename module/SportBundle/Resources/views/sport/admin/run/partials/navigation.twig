@@ -3,14 +3,20 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('sport_admin_run', 'laps') %}
-                <li><a {% if 'laps' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "laps"}) }}">Laps</a></li>
-            {% endif %}
             {% if hasAccess('sport_admin_run', 'identification') %}
                 <li><a {% if 'identification' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "identification"}) }}">Without Identification</a></li>
             {% endif %}
+            {% if hasAccess('sport_admin_run', 'pasta') %}
+                <li><a {% if 'pasta' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "pasta"}) }}">Pasta</a></li>
+            {% endif %}
+            {% if hasAccess('sport_admin_run', 'departments') %}
+                <li><a {% if 'departments' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "departments"}) }}">Departments</a></li>
+            {% endif %}
             {% if hasAccess('sport_admin_run', 'groups') %}
                 <li><a {% if 'groups' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "groups"}) }}">Groups of Friends</a></li>
+            {% endif %}
+            {% if hasAccess('sport_admin_run', 'laps') %}
+                <li><a {% if 'laps' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "laps"}) }}">Laps</a></li>
             {% endif %}
             {% if hasAccess('sport_admin_run', 'queue') %}
                 <li><a {% if 'queue' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "queue"}) }}">Queue</a></li>

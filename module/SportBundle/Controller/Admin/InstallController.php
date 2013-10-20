@@ -14,7 +14,8 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Language,
+    SportBundle\Entity\Department;
 
 /**
  * InstallController
@@ -29,8 +30,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'sport.run_result_page',
-                    'value'       => 'http://media.24u.ulyssis.org/live/tussenstand.xml',
-                    'description' => 'The URL of the page where the XML of the official results is published',
+                    'value'       => 'http://live.24urenloop.be/tussenstand.json',
+                    'description' => 'The URL where the official result page can be found',
                 ),
                 array(
                     'key'         => 'sport.run_team_id',
@@ -58,12 +59,37 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
-                    'key'         => 'sport.cache_xml_path',
-                    'value'       => 'data/cache/sport/',
-                    'description' => 'The path to cache the xml',
+                    'key'         => 'sport.points_criteria',
+                    'value'       => serialize(
+                        array(
+                            array(
+                                'limit'  => '90',
+                                'points' => '1',
+                            ),
+                            array(
+                                'limit'  => '87',
+                                'points' => '3',
+                            ),
+                            array(
+                                'limit'  => '84',
+                                'points' => '4',
+                            ),
+                            array(
+                                'limit'  => '81',
+                                'points' => '5',
+                            ),
+                            array(
+                                'limit'  => '79',
+                                'points' => '6',
+                            ),
+                        )
+                    ),
+                    'description' => 'The criteria for the lap times that determine the number of points it is worth (times should decrease)',
                 ),
             )
         );
+
+        $this->_installDepartments();
     }
 
     protected function initAcl()
@@ -72,7 +98,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'sportbundle' => array(
                     'sport_admin_run' => array(
-                        'edit', 'groups', 'identification', 'queue', 'update', 'laps', 'killSocket'
+                        'edit', 'departments', 'groups', 'identification', 'killSocket', 'laps', 'pasta', 'queue', 'update'
                     ),
                     'sport_run_group' => array(
                         'add', 'getName'
@@ -107,5 +133,79 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
             )
         );
+    }
+
+    private function _installDepartments()
+    {
+        $departments = array(
+            array(
+                'name'       => 'Architectuur',
+                'happyHours' => array(
+                    '0809'
+                ),
+            ),
+            array(
+                'name'       => 'Bouwkunde',
+                'happyHours' => array(
+                    '1819'
+                ),
+            ),
+            array(
+                'name'       => 'Chemische Ingenieurstechnieken',
+                'happyHours' => array(
+                    '1415'
+                ),
+            ),
+            array(
+                'name'       => 'Computerwetenschappen',
+                'happyHours' => array(
+                    '1112'
+                ),
+            ),
+            array(
+                'name'       => 'Eerstejaars Burgies',
+                'happyHours' => array(
+                    '1718'
+                ),
+            ),
+            array(
+                'name'       => 'Elektrotechniek',
+                'happyHours' => array(
+                    '2300'
+                ),
+            ),
+            array(
+                'name'       => 'Materiaalkunde',
+                'happyHours' => array(
+                    '1213'
+                ),
+            ),
+            array(
+                'name'       => 'Tweedejaars Burgies',
+                'happyHours' => array(
+                    '2223'
+                ),
+            ),
+            array(
+                'name'       => 'Werktuigkunde',
+                'happyHours' => array(
+                    '1314'
+                ),
+            ),
+        );
+
+        foreach($departments as $department) {
+            $repositoryCheck = $this->getEntityManager()
+                ->getRepository('SportBundle\Entity\Department')
+                ->findOneByName($department['name']);
+
+            if (null === $repositoryCheck) {
+                $newDepartment = new Department($department['name'], $department['happyHours']);
+                $this->getEntityManager()->persist($newDepartment);
+            } else {
+                $repositoryCheck->setHappyHours($department['happyHours']);
+            }
+        }
+        $this->getEntityManager()->flush();
     }
 }

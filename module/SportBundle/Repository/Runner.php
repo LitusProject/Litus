@@ -30,7 +30,7 @@ class Runner extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllWithoutIdentificationAndAcademicYearQuery(AcademicYear $academicYear)
+    public function findAllWithoutIdentificationQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -38,11 +38,9 @@ class Runner extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->isNull('r.runnerIdentification'),
-                    $query->expr()->isNull('r.academic'),
-                    $query->expr()->eq('r.academicYear', ':academicYear')
+                    $query->expr()->isNull('r.academic')
                 )
             )
-            ->setParameter('academicYear', $academicYear)
             ->getQuery();
 
         return $resultSet;

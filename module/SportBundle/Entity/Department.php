@@ -15,20 +15,19 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a group of friends.
  *
- * @ORM\Entity(repositoryClass="SportBundle\Repository\Group")
- * @ORM\Table(name="sport.groups")
+ * @ORM\Entity(repositoryClass="SportBundle\Repository\Department")
+ * @ORM\Table(name="sport.departments")
  */
-class Group
+class Department
 {
     /**
-     * @var int The ID of this group
+     * @var int The ID of this department
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,30 +36,22 @@ class Group
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
-     */
-    private $academicYear;
-
-    /**
-     * @var string The name of this group
+     * @var string The name of this department
      *
      * @ORM\Column(type="string", length=50)
      */
     private $name;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The members of this group
+     * @var \Doctrine\Common\Collections\ArrayCollection The members of this department
      *
-     * @ORM\OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="group")
+     * @ORM\OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="department")
      * @ORM\OrderBy({"lastName" = "ASC"})
      */
     private $members;
 
     /**
-     * @var array The happy hours of this group
+     * @var array The happy hours of this department
      *
      * @ORM\Column(name="happy_hours", type="string")
      */
@@ -72,14 +63,11 @@ class Group
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param string $name
      * @param array $happyHours
      */
-    public function __construct(AcademicYear $academicYear, $name, array $happyHours)
+    public function __construct($name, array $happyHours)
     {
-        $this->academicYear = $academicYear;
-
         $this->name = $name;
         $this->happyHours = serialize($happyHours);
     }
@@ -93,21 +81,11 @@ class Group
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return \SportBundle\Entity\Group
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
     }
 
     /**
@@ -147,7 +125,7 @@ class Group
     }
 
     /**
-     * Returns the current point total of the group.
+     * Returns the current point total of the department.
      *
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return integer
@@ -155,6 +133,7 @@ class Group
     public function getPoints(AcademicYear $academicYear)
     {
         $points = 0;
+
         foreach ($this->getMembers() as $member) {
             $member->setEntityManager($this->_entityManager);
 

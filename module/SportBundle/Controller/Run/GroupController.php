@@ -95,12 +95,16 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                                 ->findOneByUniversityIdentification($formData['university_identification_' . $memberNb]);
 
+                            $department = $this->getEntityManager()
+                                ->getRepository('SportBundle\Entity\Department')
+                                ->findOneById($formData['department_' . $memberNb]);
+
                             $newRunner = new Runner(
-                                $this->_getAcademicYear(),
                                 $formData['first_name_' . $memberNb],
                                 $formData['last_name_' . $memberNb],
+                                $academic,
                                 $newGroup,
-                                $academic
+                                $department
                             );
 
                             $this->getEntityManager()->persist($newRunner);
