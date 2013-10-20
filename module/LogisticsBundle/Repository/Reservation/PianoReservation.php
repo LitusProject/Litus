@@ -184,7 +184,7 @@ class PianoReservation extends EntityRepository
             ->setParameter('start_date', $startDate)
             ->setParameter('end_date', $endDate)
             ->setParameter('id', $ignoreId)
-            ->getQuery();
+            ->getQuery()
             ->getResult();
 
         return $resultSet;
