@@ -26,17 +26,20 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
         {% endif %}
+
         <br style="clear:both">
 
-	    <table class="manage full_width">
+        <table class="manage full_width">
             <tr>
                 <th>Name</th>
+                <th width="100px">Responsible</th>
                 <th width="70px">Actions</th>
             </tr>
 
             {% for responsible in responsibles %}
                 <tr class="item item-{{ responsible.getId() }}">
                     <td>{{ responsible.getPerson().getFullName() }}</td>
+                    <td>&times;</td>
                     <td class="actions">
                     	{% if shift.canBeEditedBy(authenticatedPerson) %}
 	                        {% if hasAccess('shift_admin_shift_subscription', 'delete') %}
@@ -50,6 +53,7 @@
             {% for volunteer in volunteers %}
                 <tr class="item item-{{ volunteer.getId() }}">
                     <td>{{ volunteer.getPerson().getFullName() }}</td>
+                    <td></td>
                     <td class="actions">
                         {% if shift.canBeEditedBy(authenticatedPerson) %}
                             {% if hasAccess('shift_admin_shift_subscription', 'delete') %}
