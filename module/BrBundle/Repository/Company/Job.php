@@ -32,13 +32,11 @@ class Job extends EntityRepository
             ->setParameter('id', $id)
             ->setParameter('type', $type)
             ->setParameter('now', new DateTime())
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllByCompanyQuery(CompanyEntity $company)

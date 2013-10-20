@@ -25,25 +25,6 @@ class Study extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneById($id)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-            ->from('SyllabusBundle\Entity\Study', 's')
-            ->where(
-                $query->expr()->eq('s.id', ':id')
-            )
-            ->setParameter('id', $id)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
-    }
-
     public function findOneByTitlePhaseAndLanguage($title, $phase, $language)
     {
         if (! is_numeric($phase))
@@ -64,12 +45,9 @@ class Study extends EntityRepository
             ->setParameter('language', $language)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOneByTitlePhaseLanguageAndParent($title, $phase, $language, StudyEntity $parent)
@@ -93,12 +71,9 @@ class Study extends EntityRepository
             ->setParameter('language', $language)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllParentsByAcademicYearQuery(AcademicYear $academicYear)
@@ -174,11 +149,8 @@ class Study extends EntityRepository
             ->setParameter('kulId', $kulId)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }

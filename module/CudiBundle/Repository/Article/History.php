@@ -13,7 +13,7 @@ use CudiBundle\Entity\Article,
  */
 class History extends EntityRepository
 {
-    public function findAllByArticle(Article $article)
+    public function findAllByArticleQuery(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('h')
@@ -24,8 +24,7 @@ class History extends EntityRepository
             )
             ->setParameter('article', $article)
             ->orderBy('a.timestamp')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

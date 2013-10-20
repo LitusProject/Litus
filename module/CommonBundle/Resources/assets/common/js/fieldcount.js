@@ -3,6 +3,9 @@
         $('.count').each(function() {
             if (getRemaining($(this)) < 0) {
                 enabled = false;
+                $(this).closest('.control-group').addClass('error');
+            } else {
+                $(this).closest('.control-group').removeClass('error');
             }
         });
         if (enabled) {
@@ -14,7 +17,7 @@
 
     function addLabel(element) {
         var label = $('.control-label[for=' + element.attr('id') + ']');
-        label.append('<br/>(<span class="count-label"></span>)');
+        label.append('(<span class="count-label"></span>)');
         updateLabel(element);
         element.bind("propertychange keyup input paste", function() {
             updateLabel($(this));

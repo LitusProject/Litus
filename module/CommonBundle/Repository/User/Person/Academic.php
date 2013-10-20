@@ -22,13 +22,11 @@ class Academic extends \CommonBundle\Repository\User\Person
                 $query->expr()->eq('p.id', ':id')
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllByUsernameQuery($username)
@@ -141,10 +139,10 @@ class Academic extends \CommonBundle\Repository\User\Person
             ->setParameter('username', $username)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
+        if ($resultSet)
+            return $resultSet;
 
         $barcode = $this->_em
             ->getRepository('CommonBundle\Entity\User\Barcode')

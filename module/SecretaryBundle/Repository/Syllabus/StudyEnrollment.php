@@ -68,11 +68,8 @@ class StudyEnrollment extends EntityRepository
             ->setParameter('study', $study)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }
