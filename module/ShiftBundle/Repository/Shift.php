@@ -260,12 +260,11 @@ class Shift extends EntityRepository
                 $query->expr()->eq('v.id', ':id')
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
     public function findOneByResponsible($id)
@@ -278,12 +277,11 @@ class Shift extends EntityRepository
                 $query->expr()->eq('r.id', ':id')
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
     public function findOneActiveByVolunteer($id)
@@ -300,12 +298,11 @@ class Shift extends EntityRepository
             )
             ->setParameter('now', new DateTime())
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
     public function findOneActiveByResponsible($id)
@@ -322,11 +319,10 @@ class Shift extends EntityRepository
             )
             ->setParameter('now', new DateTime())
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 }

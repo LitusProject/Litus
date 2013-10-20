@@ -405,6 +405,15 @@ fieldset .control-group:first-child {
 }
 
 .form-horizontal {
+    .control-group {
+        &.required {
+            .control-label:after {
+                content: "*";
+                color: #f00;
+            }
+        }
+    }
+
     .control-label {
         width: 200px !important;
     }

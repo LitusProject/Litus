@@ -29,12 +29,9 @@ class Start extends EntityRepository
             ->setParameter('period', $period->getId())
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-       if (isset($resultSet[0]))
-           return $resultSet[0];
-
-       return null;
+        return $resultSet;
     }
 
     public function findValueByArticleAndPeriod(Article $article, Period $period)

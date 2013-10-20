@@ -12,7 +12,6 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Publication extends EntityRepository
 {
-
     public function findOneActiveById($id)
     {
         $query = $this->_em->createQueryBuilder();
@@ -25,12 +24,11 @@ class Publication extends EntityRepository
             	)
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
 	public function findOneByTitle($title)
@@ -42,12 +40,11 @@ class Publication extends EntityRepository
                 	$query->expr()->eq('p.title', ':title')
             )
             ->setParameter('title', $title)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
     public function findAllActiveQuery()

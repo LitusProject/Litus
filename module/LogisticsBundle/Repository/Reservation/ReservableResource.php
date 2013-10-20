@@ -12,7 +12,6 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class ReservableResource extends EntityRepository
 {
-
     public function findOneByName($name) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -21,13 +20,11 @@ class ReservableResource extends EntityRepository
                 $query->expr()->eq('r.name', ':name')
             )
             ->setParameter('name', $name)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllQuery() {

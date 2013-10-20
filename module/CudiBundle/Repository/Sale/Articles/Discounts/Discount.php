@@ -30,10 +30,10 @@ class Discount extends EntityRepository
             ->setParameter('type', $type)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
+        if ($resultSet)
+            return $resultSet;
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
@@ -48,12 +48,9 @@ class Discount extends EntityRepository
             ->setParameter('type', $type)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOneByArticleAndTypeAndOrganization(Article $article, $type, Organization $organization = null)
@@ -76,10 +73,10 @@ class Discount extends EntityRepository
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
+        if ($resultSet)
+            return $resultSet;
 
         $query = $this->_em->createQueryBuilder();
         $query->select('d')
@@ -101,11 +98,8 @@ class Discount extends EntityRepository
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }

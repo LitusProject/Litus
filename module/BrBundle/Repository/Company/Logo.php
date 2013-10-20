@@ -42,12 +42,9 @@ class Logo extends EntityRepository
             ->setParameter('type', $type)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllByTypeQuery($type)

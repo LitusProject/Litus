@@ -12,12 +12,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Reservation extends EntityRepository
 {
-
     public function findAllQuery() {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
-        ->getQuery();
+            ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
+            ->getQuery();
 
         return $resultSet;
     }
@@ -56,20 +55,20 @@ class Reservation extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
-        ->where(
-            $query->expr()->andx(
-                $query->expr()->eq('r.resource', ':resource'),
-                $query->expr()->lt('r.startDate', ':end_date'),
-                $query->expr()->gt('r.endDate', ':start_date'),
-                $query->expr()->neq('r.id', ':id')
+            ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.resource', ':resource'),
+                    $query->expr()->lt('r.startDate', ':end_date'),
+                    $query->expr()->gt('r.endDate', ':start_date'),
+                    $query->expr()->neq('r.id', ':id')
+                )
             )
-        )
-        ->setParameter('resource', $resource)
-        ->setParameter('start_date', $startDate)
-        ->setParameter('end_date', $endDate)
-        ->setParameter('id', $ignoreId)
-        ->getQuery();
+            ->setParameter('resource', $resource)
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->setParameter('id', $ignoreId)
+            ->getQuery();
 
         return $resultSet;
     }

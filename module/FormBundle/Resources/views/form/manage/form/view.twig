@@ -58,6 +58,8 @@
                         {% for field in fields %}
                             <th>{{ field.getLabel(language) }}</th>
                         {% endfor %}
+                    {% else %}
+                        <th>{{ translate('Subscriptions') }}</th>
                     {% endif %}
 
                     {% if viewer.isEdit() %}
@@ -118,6 +120,12 @@
                                 <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
                             {% endif %}
                         {% endfor %}
+                    {% else %}
+                        <td>
+                            {% for slot in entry.getFieldEntries() %}
+                                {{ slot.getField().getLabel(language) }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        </td>
                     {% endif %}
 
                     {% if viewer.isEdit() %}

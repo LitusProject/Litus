@@ -29,6 +29,7 @@ return array(
     'Submitter' => 'Submitter',
     'Submitted' => 'Submitted',
     'subscriptions' => 'subscriptions',
+    'Subscriptions' => 'Subscriptions',
 
     'The entry was succesfully removed.' => 'The entry was succesfully removed.',
     'An error occurred while removing the entry.' => 'An error occurred while removing the entry.',
