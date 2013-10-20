@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManager,
     Zend\Paginator\Paginator as ZendPaginator,
     Zend\Paginator\Adapter\ArrayAdapter,
     Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
-    \DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
+    DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface;
 

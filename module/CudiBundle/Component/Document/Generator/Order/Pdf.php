@@ -98,7 +98,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         } else {
             $items = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                ->findAllByOrderAlpha($this->_order);
+                ->findAllByOrderOnAlpha($this->_order);
         }
 
         foreach($items as $item) {
