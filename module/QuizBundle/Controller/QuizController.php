@@ -22,15 +22,15 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         $rounds = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Round')
-            ->findByQuiz($quiz);
+            ->findAllByQuiz($quiz);
 
         $teams = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Team')
-            ->findByQuiz($quiz);
+            ->findAllByQuiz($quiz);
 
         $allPoints = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Point')
-            ->findByQuiz($quiz);
+            ->findAllByQuiz($quiz);
 
         $points = array();
         foreach ($allPoints as $point) {
@@ -99,15 +99,15 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         $rounds = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Round')
-            ->findByQuiz($quiz);
+            ->findAllByQuiz($quiz);
 
         $teams = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Team')
-            ->findByQuiz($quiz);
+            ->findAllByQuiz($quiz);
 
         $allPoints = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Point')
-            ->findByQuiz($quiz);
+            ->findAllByQuiz($quiz);
 
         $points = array();
         $totals = array();
