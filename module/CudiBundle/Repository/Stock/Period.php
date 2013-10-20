@@ -37,12 +37,9 @@ class Period extends EntityRepository
             )
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-       if (isset($resultSet[0]))
-           return $resultSet[0];
-
-       return null;
+        return $resultSet;
     }
 
     private function _findAllArticleIds(PeriodEntity $period)
