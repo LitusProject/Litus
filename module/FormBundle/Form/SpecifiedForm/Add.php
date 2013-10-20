@@ -98,6 +98,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                 if ($fieldSpecification->hasLengthSpecification()) {
                     $field->setAttribute('class', $field->getAttribute('class') . ' count')
+                        ->setAttribute('maxlength', $fieldSpecification->getLineLength())
                         ->setAttribute('data-linelen', $fieldSpecification->getLineLength())
                         ->setAttribute('data-linecount', $fieldSpecification->getLines());
                 }
