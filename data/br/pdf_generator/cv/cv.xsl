@@ -72,6 +72,9 @@
         <fo:block>
             <xsl:value-of select="@phone"/>
         </fo:block>
+        <fo:block>
+            <xsl:value-of select="@birthday"/>
+        </fo:block>
     </xsl:template>
 
     <!-- The address column -->
