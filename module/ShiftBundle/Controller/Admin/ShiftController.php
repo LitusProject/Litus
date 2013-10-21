@@ -88,12 +88,21 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneByName($editRole);
                     }
                 }
+                $startDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+                $endDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+        
+                $interval = $startDateObject->diff($endDateObject);
+                print_r($interval);        
+                $duplicate = $formData['duplicate'];
 
-                $shift = new Shift(
+                for ($i=1; $i <= $duplicate ; $i++) { 
+                    $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']->add(($i-1)*$interval));
+                    $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']->add(($i)*$interval));
+                    $shift = new Shift(
                     $this->getAuthentication()->getPersonObject(),
                     $this->getCurrentAcademicYear(),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    startDate,
+                    $endDate,
                     $manager,
                     $formData['nb_responsibles'],
                     $formData['nb_volunteers'],
@@ -106,19 +115,20 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData['name'],
                     $formData['description'],
                     $editRoles
-                );
-
-                if ('' != $formData['event']) {
-                    $shift->setEvent(
-                        $this->getEntityManager()
-                            ->getRepository('CalendarBundle\Entity\Node\Event')
-                            ->findOneById($formData['event'])
                     );
+
+                    if ('' != $formData['event']) {
+                        $shift->setEvent(
+                            $this->getEntityManager()
+                                ->getRepository('CalendarBundle\Entity\Node\Event')
+                                ->findOneById($formData['event'])
+                        );
+                    }
+
+                    $this->getEntityManager()->persist($shift);
+
+                    $this->getEntityManager()->flush();
                 }
-
-                $this->getEntityManager()->persist($shift);
-
-                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
