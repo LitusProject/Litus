@@ -67,6 +67,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Text('duplicate');
+        $field->setLabel('Duplicate')
+            ->setValue(1)
+            ->setRequired();
+        $this->add($field);
+
         $field = new Select('edit_roles');
         $field->setLabel('Edit Roles')
             ->setAttribute('multiple', true)
