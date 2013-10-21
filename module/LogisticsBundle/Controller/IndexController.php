@@ -384,8 +384,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $headers = new Headers();
         $headers->addHeaders(array(
-            //'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            //'Content-Type' => 'text/calendar',
+            'Content-Disposition' => 'inline; filename="icalendar.ics"',
+            'Content-Type' => 'text/calendar',
         ));
         $this->getResponse()->setHeaders($headers);
 
