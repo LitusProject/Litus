@@ -118,6 +118,19 @@ return array(
                     ),
                 ),
             ),
+            'logistics_export' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/logistics/export/ical.ics',
+                    'constraints' => array(
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'logistics_index',
+                        'action'     => 'export',
+                    ),
+                ),
+            ),
             'logistics_reservation_fetch' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
