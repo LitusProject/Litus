@@ -68,7 +68,6 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $configs = $this->getConfigRepository();
 
-        $now = new DateTime();
         $organization_short_name = $configs->getConfigValue('organization_short_name');
         $organization_name = $configs->getConfigValue('organization_name');
         $organization_logo = $configs->getConfigValue('organization_logo');
@@ -180,7 +179,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'order',
                 array(
-                    'date' => $now->format('d F Y'),
+                    'date' => $this->_order->getDateOrdered()->format('d F Y'),
                 ),
                 array(
                     new Object(

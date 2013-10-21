@@ -140,8 +140,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'cudi_admin_stock_delivery',
                     array(
-                        'action' => 'supplier',
-                        'id'     => $article->getSupplier()->getId(),
+                        'action' => 'add',
                     )
                 );
 
