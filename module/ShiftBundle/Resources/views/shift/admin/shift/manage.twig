@@ -120,6 +120,7 @@
                                 $('<td>', {'class': 'actions'})
                                     .append('<a href="{{ url('shift_admin_shift', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                    .append('<a href="{{ url('shift_admin_shift_subscription', {"action": "manage"}) }}' + this.id + '" class="view">View</a>')
                                 );
                             deleteButton.data({
                                 id: this.id,
@@ -134,6 +135,7 @@
                 }
             });
             {% endif %}
+
 			$('.item .delete').click(openModal);
 		});
 
