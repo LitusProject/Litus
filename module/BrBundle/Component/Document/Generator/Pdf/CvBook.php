@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Document\Pdf;
+namespace BrBundle\Component\Document\Generator\Pdf;
 
 use BrBundle\Entity\Cv\Util,
     BrBundle\Entity\Cv\Entry,
@@ -143,6 +143,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 'id'        => $cv->getId(),
                 'firstname' => $cv->getFirstName(),
                 'lastname'  => $cv->getLastName(),
+                'birthday'  => $cv->getBirthDay()->format('d/m/Y'),
                 'email'     => $cv->getEmail(),
                 'phone'     => $cv->getPhoneNumber(),
                 'img'       => $picturePath . '/' . $cv->getAcademic()->getPhotoPath(),

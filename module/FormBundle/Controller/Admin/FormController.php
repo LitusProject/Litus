@@ -64,6 +64,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
+        foreach($paginator as $form)
+            $form->setEntityManager($this->getEntityManager());
+
         return new ViewModel(
             array(
                 'entityManager' => $this->getEntityManager(),
