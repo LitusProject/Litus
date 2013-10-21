@@ -14,11 +14,11 @@
 
 namespace BrBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     FormBundle\Component\Document\Generator\Csv as CsvGenerator,
-    BrBundle\Component\Document\Pdf\CvBook as CvBookGenerator,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 

@@ -27,7 +27,7 @@
     <xsl:variable name="subsection-top"             select="1"/>
 
     <!-- The width of the profile picture -->
-    <xsl:variable name="picture-width"              select="25"/>
+    <xsl:variable name="picture-width"              select="31"/>
     <xsl:variable name="picture-ratio"              select="0.75"/>
 
     <!-- The font size -->
