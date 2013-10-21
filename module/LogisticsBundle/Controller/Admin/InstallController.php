@@ -112,6 +112,11 @@ VTK
                     ),
                     'description' => 'The mail sent when a new piano reservation is created and confirmed'
                 ),
+                array(
+                    'key'         => 'logistics.icalendar_uid_suffix',
+                    'value'       => 'logistics.vtk.be',
+                    'description' => 'The suffix of an iCalendar event uid',
+                ),
             )
         );
 
@@ -136,7 +141,7 @@ VTK
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'logistics_index' => array(
-                        'add', 'delete', 'edit', 'fetch', 'index', 'move'
+                        'add', 'delete', 'edit', 'export', 'fetch', 'index', 'move'
                     ),
                     'logistics_lease' => array(
                         'availabilityCheck', 'history', 'index', 'show', 'typeahead'
