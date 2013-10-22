@@ -104,7 +104,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                             $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b'])/3;
                         }
                     }
-                    if ($color/$nbPixels < 0.5)
+                    if ($nbPixels != 0 && $color/$nbPixels < 0.5)
                         $original->evaluateImage(Imagick::EVALUATE_ADD, 800/($color/$nbPixels));
 
                     $all = new Imagick();
