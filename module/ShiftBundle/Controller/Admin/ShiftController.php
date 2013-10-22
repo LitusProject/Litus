@@ -90,31 +90,31 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 }
                 $startDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
                 $endDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
-        
+
                 $interval = $startDateObject->diff($endDateObject);
 
                 $duplicate = $formData['duplicate'];
 
-                for ($i=1; $i <= $duplicate ; $i++) { 
-                    $startDate = $this->addInterval(clone $startDateObject,$interval,$i-1);
-                    $endDate = $this->addInterval(clone $startDateObject,$interval,$i);
+                for ($i = 1 ; $i <= $duplicate ; $i++) {
+                    $startDate = $this->addInterval(clone $startDateObject, $interval, $i-1);
+                    $endDate = $this->addInterval(clone $startDateObject, $interval, $i);
                     $shift = new Shift(
-                    $this->getAuthentication()->getPersonObject(),
-                    $this->getCurrentAcademicYear(),
-                    $startDate,
-                    $endDate,
-                    $manager,
-                    $formData['nb_responsibles'],
-                    $formData['nb_volunteers'],
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                        ->findOneById($formData['unit']),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Location')
-                        ->findOneById($formData['location']),
-                    $formData['name'],
-                    $formData['description'],
-                    $editRoles
+                        $this->getAuthentication()->getPersonObject(),
+                        $this->getCurrentAcademicYear(),
+                        $startDate,
+                        $endDate,
+                        $manager,
+                        $formData['nb_responsibles'],
+                        $formData['nb_volunteers'],
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                            ->findOneById($formData['unit']),
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Location')
+                            ->findOneById($formData['location']),
+                        $formData['name'],
+                        $formData['description'],
+                        $editRoles
                     );
 
                     if ('' != $formData['event']) {
