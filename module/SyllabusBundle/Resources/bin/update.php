@@ -30,7 +30,7 @@ include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
-$mt = $application->getServiceManager()->get('mt');
+$mt = $application->getServiceManager()->get('mail_transport');
 
 $fallbackLanguage = $em->getRepository('CommonBundle\Entity\General\Language')
     ->findOneByAbbrev(
