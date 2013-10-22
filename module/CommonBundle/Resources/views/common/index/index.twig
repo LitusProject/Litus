@@ -3,7 +3,7 @@
 {% block content %}
     {% if sportInfo is not null %}
         <div class="alert alert-info">
-            <h4>{{ translate('24h-Run') }}</h4>
+            <h4>{{ translate('24h Run') }}</h4>
             {% if sportInfo.behind == 0 %}
                 {{ translate('We have run already %laps% laps and we are the first team.')|replace({'%laps%': sportInfo.nbLaps}) }}
             {% else %}

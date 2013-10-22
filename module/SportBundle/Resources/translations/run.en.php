@@ -13,7 +13,7 @@
  */
 
 return array(
-    '24h-Run' => '24h-Run',
+    '24h Run' => '24h Run',
 
     'Home' => 'Home',
     'Group of Friends' => 'Group of Friends',
