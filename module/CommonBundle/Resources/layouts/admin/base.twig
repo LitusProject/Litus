@@ -91,7 +91,7 @@
                             <li>
                                 <div class="subtitle">
                                         <b>Apps</b><br />
-                                        24h-Run, Quiz &amp; Tickets
+                                        24h Run, Quiz &amp; Tickets
                                 </div>
 
                                 <ul
@@ -100,7 +100,7 @@
                                     {% endif %}
                                 >
                                     {% if hasAccess('sport_admin_run', 'queue') %}
-                                        <li><a href="{{ url('sport_admin_run') }}">24h-Run</a></li>
+                                        <li><a href="{{ url('sport_admin_run') }}">24h Run</a></li>
                                     {% endif %}
                                     {% if hasAccess('quiz_admin_quiz', 'manage') %}
                                         <li><a href="{{ url('quiz_admin_quiz') }}">Quiz</a></li>

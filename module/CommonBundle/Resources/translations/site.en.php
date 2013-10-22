@@ -66,7 +66,7 @@ return array(
 
     'Other' => 'Other',
 
-    '24h-Run' => '24h-Run',
+    '24h Run' => '24h Run',
     'We have run already %laps% laps and we are the first team.' => 'We have run already %laps% laps and we are the first team.',
     'We have run already %laps% laps and we are %behind% laps behind the first team.' => 'We have run already %laps% laps and we are %behind% laps behind the first team.',
     'Current Runner:' => 'Current Runner:',
