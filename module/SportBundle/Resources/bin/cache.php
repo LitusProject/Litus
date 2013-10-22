@@ -57,11 +57,13 @@ if (isset($opts->r)) {
         );
 
         $fileContents = @file_get_contents($resultPage, false, stream_context_create($options));
-        if (false !== $fileContents && null !== ($resultPage = (array) json_decode($fileContents))) {
+        $resultPage = json_decode($fileContents);
+
+        if (false !== $fileContents && null !== $resultPage) {
             file_put_contents('data/cache/' . md5('run_result_page'), $fileContents);
             echo '[' . $now->format('d/m/Y H:i:s') . '] Succesfully cached the result page' . PHP_EOL;
 
-            sleep(substr($resultPage['update'], 0, strlen($resultPage['update'])-1));
+            sleep(substr($resultPage->update, 0, strlen($resultPage->update)-1));
         } else {
             echo '[' . $now->format('d/m/Y H:i:s') . '] Failed to cache the result page' . PHP_EOL;
             sleep(10);
