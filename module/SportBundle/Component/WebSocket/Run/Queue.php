@@ -272,6 +272,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ),
                 'laps' => $laps,
                 'officialResults' => $this->_getOfficialResults(),
+                'averageLapTime' => $this->_getAverageLapTime(),
                 'groupsOfFriends' => $this->_getGroupsOfFriends(),
             ),
         );
@@ -434,5 +435,24 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $returnArray = array_splice($returnArray, 0, $number);
 
         return $returnArray;
+    }
+
+    private function _getAverageLapTime()
+    {
+        $laps = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findAll();
+
+        $total = 0;
+        foreach ($laps as $lap)
+            $total += $this->_convertDateIntervalToSeconds($lap->getLapTime());
+        $average = $total / count($laps);
+
+        return floor($average / 60) . ':' . ($average % 60 < 10 ? '0' . $average % 60 : $average % 60);
+    }
+
+    private function _convertDateIntervalToSeconds(DateInterval $interval)
+    {
+        return $interval->h*3600 + $interval->i*60 + $interval->s;
     }
 }
