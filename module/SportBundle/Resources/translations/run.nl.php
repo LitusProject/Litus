@@ -13,7 +13,7 @@
  */
 
 return array(
-    '24h-Run' => '24-Urenloop',
+    '24h Run' => '24 Urenloop',
 
     'Home' => 'Start',
     'Group of Friends' => 'Groepje Vrienden',
