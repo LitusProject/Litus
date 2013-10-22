@@ -25,7 +25,7 @@
                     <h2>Laps</h2>
 
                     <p style="margin-right: 20px">
-                        We have run <span id="nbOfficialLaps" class="label label-important" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-important" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firstOne" class="label label-success" style="font-size: 16px;display: none">first</span>!
+                        We have run <span id="nbOfficialLaps" class="label label-important" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-important" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firstOne" class="label label-success" style="font-size: 16px;display: none">first</span>! We are averaging <span id="averageLapTime" class="label label-info" style="font-size: 16px;">N/A</span> for each lap.
                     </p>
 
                     <h2>Runners</h2>
@@ -148,6 +148,8 @@
                     $('#behindFirstOne').hide();
                     $('#firstOne').show();
                 }
+
+                $('#averageLapTime').html(data.averageLapTime);
             }
 
             var foundCurrent = false;
