@@ -20,10 +20,7 @@ class Event extends EntityRepository
             ->from('TicketBundle\Entity\Event', 'e')
             ->innerJoin('e.activity', 'a')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('e.active', 'true'),
-                    $query->expr()->gt('a.startDate', ':now')
-                )
+                $query->expr()->gt('a.startDate', ':now')
             )
             ->setParameter('now', new DateTime())
             ->getQuery();
@@ -38,10 +35,7 @@ class Event extends EntityRepository
             ->from('TicketBundle\Entity\Event', 'e')
             ->innerJoin('e.activity', 'a')
             ->where(
-                $query->expr()->orX(
-                    $query->expr()->eq('e.active', 'false'),
-                    $query->expr()->lt('a.startDate', ':now')
-                )
+                $query->expr()->lt('a.startDate', ':now')
             )
             ->setParameter('now', new DateTime())
             ->getQuery();
