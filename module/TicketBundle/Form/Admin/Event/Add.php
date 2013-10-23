@@ -22,6 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
+    TicketBundle\Component\Validator\Activity as ActivityValidator,
     Ticketbundle\Entity\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -38,7 +39,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    protected $_entityManager = null;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -107,11 +108,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
         $this->add($collection);
 
         $field = new Text('price_members');
-        $field->setLabel('Price Members');
+        $field->setLabel('Price Members')
+            ->setRequired();
         $collection->add($field);
 
         $field = new Text('price_non_members');
         $field->setLabel('Price Non Members')
+            ->setRequired()
             ->setAttribute('class', $field->getAttribute('class') . ' price_non_members');
         $collection->add($field);
 
@@ -191,6 +194,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             array(
                 'name'     => 'event',
                 'required' => true,
+                'validators' => array(
+                    new ActivityValidator($this->_entityManager),
+                ),
             ),
             array(
                 'name'     => 'bookings_close_date',
@@ -256,7 +262,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             'required' => false,
         );
 
-        if ((!isset($this->data['enable_options']) || !$this->data['enable_options']) && $this->data['enable_options_hidden'] != '1') {
+        if ((!isset($this->data['enable_options']) || !$this->data['enable_options']) &&
+            (!isset($this->data['enable_options_hidden']) || $this->data['enable_options_hidden'] != '1')) {
             $inputs[] = array(
                 'name'     => 'price_members',
                 'required' => true,
