@@ -61,7 +61,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                     }
                 }
 
-                if ($numberTickets > $event->getNumberFree() || $event->getNumberOfTickets() == 0) {
+                if ($numberTickets < $event->getNumberFree() || $event->getNumberOfTickets() == 0) {
                     if ($event->areTicketsGenerated()) {
                         $tickets = $this->getEntityManager()
                             ->getRepository('TicketBundle\Entity\Ticket')
