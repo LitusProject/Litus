@@ -35,6 +35,9 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             $this->getParam('page'),
             array(
                 'event' => $event,
+            ),
+            array(
+                'bookDate' => 'ASC',
             )
         );
 

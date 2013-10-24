@@ -54,6 +54,8 @@
             <dd>{% if event.getBookingsCloseDate() %}{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}{% else %}<i>No End Date</i>{% endif %}</dd>
             <dt>Number Sold</dt>
             <dd>{{ event.getNumberSold() }}</dd>
+            <dt>Number Booked</dt>
+            <dd>{{ event.getNumberBooked() }}</dd>
             {% if event.getNumberOfTickets() > 0 %}
                 <dt>Number Free</dt>
                 <dd>{{ event.getNumberFree() }}</dd>

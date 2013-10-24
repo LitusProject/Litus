@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
         $this->add($field);
 
         $field = new Checkbox('generate_tickets');
-        $field->setLabel('Generate Tickets');
+        $field->setLabel('Generate Tickets (needed to print out ticket)');
         $this->add($field);
 
         $field = new Text('number_of_tickets');
