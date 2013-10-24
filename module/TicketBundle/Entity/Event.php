@@ -400,9 +400,22 @@ class Event
         return $sold;
     }
 
+    /**
+     * @return integer
+     */
+    public function getNumberBooked()
+    {
+        $sold = 0;
+        foreach($this->tickets as $ticket) {
+            if ($ticket->getStatusCode() == 'booked')
+                $sold++;
+        }
+        return $sold;
+    }
+
     public function getNumberFree()
     {
-        return $this->getNumberOfTickets() - $this->getNumberSold();
+        return $this->getNumberOfTickets() - $this->getNumberSold() - $this->getNumberBooked();
     }
 
     /**
