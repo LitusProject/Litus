@@ -62,7 +62,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                 $person = $this->getAuthentication()->getPersonObject();
 
-                if ($numberTickets > $event->getNumberFree() || $event->getNumberOfTickets() == 0) {
+                if ($numberTickets < $event->getNumberFree() || $event->getNumberOfTickets() == 0) {
                     if ($event->areTicketsGenerated()) {
                         $tickets = $this->getEntityManager()
                             ->getRepository('TicketBundle\Entity\Ticket')
