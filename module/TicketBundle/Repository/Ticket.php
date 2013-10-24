@@ -83,4 +83,26 @@ class Ticket extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllActiveByEventQuery(EventEntity $event)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('t.status', ':booked'),
+                        $query->expr()->eq('t.status', ':sold')
+                    )
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('booked', 'booked')
+            ->setParameter('sold', 'sold')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }
