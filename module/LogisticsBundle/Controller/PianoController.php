@@ -93,7 +93,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                         $mailData = unserialize(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('logistics.piano_new_reservation')
+                                ->getConfigValue('logistics.piano_new_reservation_confirmed')
                         );
                         $reservation->setConfirmed();
                     } else {
@@ -125,7 +125,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('system_mail_address')
                         )
-                        ->setReplyTo($this->getAuthentication()->getPersonObject()->getEmail(), $this->getAuthentication()->getPersonObject()->getFullName())
+                        ->addTo($this->getAuthentication()->getPersonObject()->getEmail(), $this->getAuthentication()->getPersonObject()->getFullName())
                         ->addTo(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
