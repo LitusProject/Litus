@@ -22,4 +22,7 @@ return array(
 
     'The tickets were succesfully booked' => 'The tickets were succesfully booked',
     'There were not enough tickets available' => 'There were not enough tickets available',
+
+    'The number of tickets is not valid' => 'The number of tickets is not valid',
+    'The number of tickets exceeds the maximum' => 'The number of tickets exceeds the maximum',
 );
