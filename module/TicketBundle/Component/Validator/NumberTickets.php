@@ -26,6 +26,8 @@ use CommonBundle\Entity\User\Person,
 class NumberTickets extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
+    const EXCEEDS_MAX_PERSON = 'exceedsMaxPerson';
+    const EXCEEDS_MAX = 'exceedsMax';
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -48,7 +50,9 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The number of tickets exceeds the maximum'
+        self::NOT_VALID => 'The number of tickets is not valid',
+        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum',
+        self::EXCEEDS_MAX => 'The number of tickets exceeds the maximum',
     );
 
     /**
@@ -112,7 +116,12 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
             ->findAllByEventAndPerson($this->_event, $person);
 
         if ($number + sizeof($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
-            $this->error(self::NOT_VALID);
+            $this->error(self::EXCEEDS_MAX_PERSON);
+            return false;
+        }
+
+        if ($number > $this->_event->getNumberFree() && $this->_event->getNumberOfTickets() != 0) {
+            $this->error(self::EXCEEDS_MAX);
             return false;
         }
 
