@@ -22,4 +22,7 @@ return array(
 
     'The tickets were succesfully booked' => 'De tickets zijn succesvol gereserveerd',
     'There were not enough tickets available' => 'Er waren onvoldoende tickets beschikbaar',
+
+    'The number of tickets is not valid' => 'Het aantal tickets is niet geldig',
+    'The number of tickets exceeds the maximum' => 'Het aantal tickets overschrijdt het maximum',
 );
