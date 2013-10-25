@@ -67,6 +67,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Text('duplicate');
+        $field->setLabel('Duplicate')
+            ->setValue(1)
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Select('duplicate');
+        $field->setLabel('Duplicate')
+            ->setRequired()
+            ->setAttribute('options', $this->_createDuplicatesArray());
+        $this->add($field);
+
         $field = new Select('edit_roles');
         $field->setLabel('Edit Roles')
             ->setAttribute('multiple', true)
@@ -123,6 +135,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'shift_add');
         $this->add($field);
+    }
+
+    private function _createDuplicatesArray()
+    {
+        $duplications = array();
+        for ($i=1; $i <= 20; $i++) { 
+            $duplications[] = $i;
+        }
+        return $duplications;
     }
 
     private function _createUnitsArray()
@@ -231,6 +252,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                         ),
                         new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'duplicate',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
                     ),
                 )
             )
