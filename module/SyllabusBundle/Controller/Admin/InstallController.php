@@ -47,7 +47,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'syllabus.queue_socket_key',
-                    'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
+                    'value'       => md5(uniqid(rand(), true)),
                     'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
