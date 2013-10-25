@@ -248,7 +248,7 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.queue_socket_key',
-                    'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
+                    'value'       => md5(uniqid(rand(), true)),
                     'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
@@ -335,7 +335,7 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.printer_socket_key',
-                    'value'       => '3A4P4xq18P3S7ipeKSyuzQKf66c3d1xv',
+                    'value'       => md5(uniqid(rand(), true)),
                     'description' => 'The key used for printing',
                 ),
                 array(

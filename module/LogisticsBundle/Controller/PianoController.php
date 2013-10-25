@@ -104,8 +104,13 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                         );
                     }
 
-                    $message = $mailData['en']['content'];
-                    $subject = $mailData['en']['subject'];
+                    if (!($language = $this->getAuthentication()->getPersonObject()->getLanguage())) {
+                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                            ->findOneByAbbrev('en');
+                    }
+
+                    $message = $mailData[$language->getAbbrev()]['content'];
+                    $subject = $mailData[$language->getAbbrev()]['subject'];
 
                     $mail = new Message();
                     $mail->setBody(
