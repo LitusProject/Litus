@@ -88,37 +88,47 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneByName($editRole);
                     }
                 }
+                $startDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+                $endDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
 
-                $shift = new Shift(
-                    $this->getAuthentication()->getPersonObject(),
-                    $this->getCurrentAcademicYear(),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
-                    $manager,
-                    $formData['nb_responsibles'],
-                    $formData['nb_volunteers'],
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                        ->findOneById($formData['unit']),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Location')
-                        ->findOneById($formData['location']),
-                    $formData['name'],
-                    $formData['description'],
-                    $editRoles
-                );
+                $interval = $startDateObject->diff($endDateObject);
 
-                if ('' != $formData['event']) {
-                    $shift->setEvent(
+                $duplicate = $formData['duplicate'];
+
+                for ($i = 1 ; $i <= $duplicate ; $i++) {
+                    $startDate = $this->addInterval(clone $startDateObject, $interval, $i-1);
+                    $endDate = $this->addInterval(clone $startDateObject, $interval, $i);
+                    $shift = new Shift(
+                        $this->getAuthentication()->getPersonObject(),
+                        $this->getCurrentAcademicYear(),
+                        $startDate,
+                        $endDate,
+                        $manager,
+                        $formData['nb_responsibles'],
+                        $formData['nb_volunteers'],
                         $this->getEntityManager()
-                            ->getRepository('CalendarBundle\Entity\Node\Event')
-                            ->findOneById($formData['event'])
+                            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                            ->findOneById($formData['unit']),
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Location')
+                            ->findOneById($formData['location']),
+                        $formData['name'],
+                        $formData['description'],
+                        $editRoles
                     );
+
+                    if ('' != $formData['event']) {
+                        $shift->setEvent(
+                            $this->getEntityManager()
+                                ->getRepository('CalendarBundle\Entity\Node\Event')
+                                ->findOneById($formData['event'])
+                        );
+                    }
+
+                    $this->getEntityManager()->persist($shift);
+
+                    $this->getEntityManager()->flush();
                 }
-
-                $this->getEntityManager()->persist($shift);
-
-                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -144,6 +154,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'form' => $form,
             )
         );
+    }
+
+    private function addInterval(DateTime $time, $interval, $duplicate){
+        for ($i=0; $i < $duplicate ; $i++) { 
+            $time = $time->add($interval);
+        }
+        return $time;
     }
 
     public function editAction()
