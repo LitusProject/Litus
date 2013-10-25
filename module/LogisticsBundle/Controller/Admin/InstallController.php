@@ -85,9 +85,24 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 A new piano reservation was made:
 {{ name }} from {{ start }} until {{ end }}.
 
+It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.
+
 VTK
 
 -- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Nieuwe Piano Reservatie',
+                                'content' => 'Beste,
+
+Een nieuwe piano reservatie is aangemaakt:
+{{ name }} van {{ start }} tot {{ end }}.
+
+Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat spelen. Deze kan je gaan afhalen op blok 6 (Studentenwijk Arenberg) bij de vice. De brief moet je steeds kunnen voorleggen wanneer security er om vraagt.
+
+VTK
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
                             ),
                         )
                     ),
