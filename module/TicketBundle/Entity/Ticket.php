@@ -123,7 +123,7 @@ class Ticket
      * @param \DateTime $soldDate
      * @param integer $number
      */
-    public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
+    public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
         if (!self::isValidTicketStatus($status))
             throw new \InvalidArgumentException('The TicketStatus is not valid.');
