@@ -166,75 +166,75 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        if (isset($this->data['is_guest']) && $this->data['is_guest']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'guest_first_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
+        $isGuest = isset($this->data['is_guest']) && $this->data['is_guest'];
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'guest_last_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'guest_first_name',
+                    'required' => $isGuest,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'guest_email',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'EmailAddress'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'guest_last_name',
+                    'required' => $isGuest,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
-        } else {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'person_id',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'int',
-                            ),
-                        ),
-                    )
-                )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'person',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'guest_email',
+                    'required' => $isGuest,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'EmailAddress'),
+                    ),
                 )
-            );
-        }
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'person_id',
+                    'required' => !$isGuest,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'person',
+                    'required' => !$isGuest,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
 
         if (count($this->_event->getOptions()) == 0) {
             $inputFilter->add(

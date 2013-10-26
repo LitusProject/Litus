@@ -62,7 +62,7 @@
                 $('#sale_confirm').addClass('disabled').prop('disabled');
 
                 var data = {
-                    is_guest: $('#is_guest').val(),
+                    is_guest: $('#is_guest').is(':checked') ? 1 : 0,
                     person_id: $('#personId').val(),
                     person: $('#personSearch').val(),
                     guest_first_name: $('#guest_first_name').val(),
