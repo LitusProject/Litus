@@ -17,6 +17,7 @@ namespace TicketBundle\Controller\Sale;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Person,
     TicketBundle\Entity\Event,
+    TicketBundle\Entity\GuestInfo,
     TicketBundle\Entity\Option,
     TicketBundle\Entity\Ticket,
     TicketBundle\Form\Sale\Ticket\Add as AddForm,
@@ -44,9 +45,16 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $person = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findOneById($formData['person_id']);
+                if ($formData['is_guest']) {
+                    $person = null;
+                    $guestInfo = new GuestInfo($formData['guest_first_name'], $formData['guest_last_name'], $formData['guest_email']);
+                    $this->getEntityManager()->persist($guestInfo);
+                } else {
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneById($formData['person_id']);
+                    $guestInfo = null;
+                }
 
                 if ($event->areTicketsGenerated()) {
                     $tickets = $this->getEntityManager()
@@ -61,6 +69,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                             $number--;
                             $tickets[$i]->setPerson($person)
+                                ->setGuestInfo($guestInfo)
                                 ->setMember(true)
                                 ->setStatus($formData['payed'] ? 'sold' : 'booked');
                         }
@@ -73,6 +82,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                                 $number--;
                                 $tickets[$i]->setPerson($person)
+                                    ->setGuestInfo($guestInfo)
                                     ->setMember(false)
                                     ->setStatus($formData['payed'] ? 'sold' : 'booked');
                             }
@@ -86,6 +96,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                                 $number--;
                                 $tickets[$i]->setPerson($person)
+                                    ->setGuestInfo($guestInfo)
                                     ->setMember(true)
                                     ->setOption($option)
                                     ->setStatus($formData['payed'] ? 'sold' : 'booked');
@@ -99,6 +110,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                                     $number--;
                                     $tickets[$i]->setPerson($person)
+                                        ->setGuestInfo($guestInfo)
                                         ->setMember(false)
                                         ->setOption($option)
                                         ->setStatus($formData['payed'] ? 'sold' : 'booked');
@@ -110,14 +122,14 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                     if (count($event->getOptions()) == 0) {
                         for($i = 0 ; $i < $formData['number_member'] ; $i++) {
                             $this->getEntityManager()->persist(
-                                $this->_createTicket($event, $person, true, $formData['payed'])
+                                $this->_createTicket($event, $person, $guestInfo, true, $formData['payed'])
                             );
                         }
 
                         if (!$event->isOnlyMembers()) {
                             for($i = 0 ; $i < $formData['number_non_member'] ; $i++) {
                                 $this->getEntityManager()->persist(
-                                    $this->_createTicket($event, $person, false, $formData['payed'])
+                                    $this->_createTicket($event, $person, $guestInfo, false, $formData['payed'])
                                 );
                             }
                         }
@@ -125,14 +137,14 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                         foreach($event->getOptions() as $option) {
                             for($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_member'] ; $i++) {
                                 $this->getEntityManager()->persist(
-                                    $this->_createTicket($event, $person, true, $formData['payed'], $option)
+                                    $this->_createTicket($event, $person, $guestInfo, true, $formData['payed'], $option)
                                 );
                             }
 
                             if (!$event->isOnlyMembers()) {
                                 for($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_non_member'] ; $i++) {
                                     $this->getEntityManager()->persist(
-                                        $this->_createTicket($event, $person, false, $formData['payed'], $option)
+                                        $this->_createTicket($event, $person, $guestInfo, false, $formData['payed'], $option)
                                     );
                                 }
                             }
@@ -192,7 +204,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                 $errors = $form->getMessages();
                 $formErrors = array();
 
-                foreach ($form->getElements() as $key => $element) {
+                foreach ($form->getElements() as $element) {
                     if (!isset($errors[$element->getName()]))
                         continue;
 
@@ -200,6 +212,19 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                     foreach ($errors[$element->getName()] as $error) {
                         $formErrors[$element->getAttribute('id')][] = $error;
+                    }
+                }
+
+                foreach($form->getFieldSets() as $fieldset) {
+                    foreach ($fieldset->getElements() as $subElement) {
+                        if (!isset($errors[$fieldset->getName()][$subElement->getName()]))
+                            continue;
+
+                        $formErrors[$subElement->getAttribute('id')] = array();
+
+                        foreach ($errors[$fieldset->getName()][$subElement->getName()] as $error) {
+                            $formErrors[$subElement->getAttribute('id')][] = $error;
+                        }
                     }
                 }
 
@@ -217,12 +242,13 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
         return new ViewModel();
     }
 
-    private function _createTicket(Event $event, Person $person, $member, $payed, Option $option = null)
+    private function _createTicket(Event $event, Person $person, GuestInfo $guestInfo, $member, $payed, Option $option = null)
     {
         $ticket = new Ticket(
             $event,
             'empty',
             $person,
+            $guestInfo,
             null,
             null,
             $event->generateTicketNumber($this->getEntityManager())

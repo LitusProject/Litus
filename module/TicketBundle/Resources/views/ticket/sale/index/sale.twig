@@ -33,6 +33,16 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#is_guest').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#person_form').hide();
+                    $('#guest_form').show();
+                } else {
+                    $('#guest_form').hide();
+                    $('#person_form').show();
+                }
+            }).change();
+
             $('#personSearch').typeaheadRemote(
                 {
                     source: '{{ url("ticket_sale_person_typeahead")}}',
@@ -52,8 +62,12 @@
                 $('#sale_confirm').addClass('disabled').prop('disabled');
 
                 var data = {
+                    is_guest: $('#is_guest').val(),
                     person_id: $('#personId').val(),
                     person: $('#personSearch').val(),
+                    guest_first_name: $('#guest_first_name').val(),
+                    guest_last_name: $('#guest_last_name').val(),
+                    guest_email: $('#guest_email').val(),
                     payed: $('#payed').val()
                 }
                 $('.ticket_option').each(function () {

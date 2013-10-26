@@ -102,7 +102,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 if ($formData['generate_tickets']) {
                     for($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
-                        $ticket = new Ticket($event, 'empty', null, null, null, $event->generateTicketNumber($this->getEntityManager()));
+                        $ticket = new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()));
                         $this->getEntityManager()->persist($ticket);
                         $this->getEntityManager()->flush();
                     }
@@ -162,7 +162,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                                         ->findOneByEventAndNumber($event, $number);
                                 } while($ticket !== null);
 
-                                $ticket = new Ticket($event, 'empty', null, null, null, $number);
+                                $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
                                 $this->getEntityManager()->persist($ticket);
                                 $this->getEntityManager()->flush();
                             }
@@ -189,7 +189,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                                     ->findOneByEventAndNumber($event, $number);
                             } while($ticket !== null);
 
-                            $ticket = new Ticket($event, 'empty', null, null, null, $number);
+                            $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
                             $this->getEntityManager()->persist($ticket);
                             $this->getEntityManager()->flush();
                         }

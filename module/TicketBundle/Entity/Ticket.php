@@ -63,12 +63,20 @@ class Ticket
     private $status;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person how bought/reserved the ticket
+     * @var \CommonBundle\Entity\User\Person The person who bought/reserved the ticket
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
+
+    /**
+     * @var \TicketBundle\Entity\GuestInfo The guest info of who bought/reserved the ticket
+     *
+     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\GuestInfo")
+     * @ORM\JoinColumn(name="guest_info", referencedColumnName="id")
+     */
+    private $guestInfo;
 
     /**
      * @var \DateTime The date the ticket was booked
@@ -110,11 +118,12 @@ class Ticket
      * @param \TicketBundle\Entity\Event $event
      * @param string $status
      * @param \CommonBundle\Entity\User\Person $person
+     * @param \TicketBundle\Entity\GuestInfo $guestInfo
      * @param \DateTime $bookDate
      * @param \DateTime $soldDate
      * @param integer $number
      */
-    public function __construct(Event $event, $status, Person $person = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
+    public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
         if (!self::isValidTicketStatus($status))
             throw new \InvalidArgumentException('The TicketStatus is not valid.');
@@ -122,6 +131,7 @@ class Ticket
         $this->event = $event;
         $this->status = $status;
         $this->person = $person;
+        $this->guestInfo = $guestInfo;
         $this->bookDate = $bookDate;
         $this->soldDate = $soldDate;
         $this->number = $number;
@@ -178,6 +188,7 @@ class Ticket
 
         if ($status == 'empty') {
             $this->person = null;
+            $this->guestInfo = null;
             $this->bookDate = null;
             $this->soldDate = null;
         } elseif ($status == 'sold') {
@@ -209,6 +220,38 @@ class Ticket
     {
         $this->person = $person;
         return $this;
+    }
+
+    /**
+     * @return \TicketBundle\Entity\GuestInfo
+     */
+    public function getGuestInfo()
+    {
+        return $this->guestInfo;
+    }
+
+    /**
+     * @param \TicketBundle\Entity\GuestInfo $guestInfo
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setGuestInfo(GuestInfo $guestInfo = null)
+    {
+        $this->guestInfo = $guestInfo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        if (null !== $this->person)
+            return $this->person->getFullName();
+
+        if (null !== $this->guestInfo)
+            return $this->guestInfo->getfullName();
+
+        return '';
     }
 
     /**
