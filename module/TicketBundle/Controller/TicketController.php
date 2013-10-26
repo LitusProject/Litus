@@ -200,6 +200,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $person,
             null,
             null,
+            null,
             $event->generateTicketNumber($this->getEntityManager())
         );
         $ticket->setMember($member)

@@ -98,7 +98,7 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
             }
         }
 
-        if ($this->_person == null) {
+        if ($this->_person == null && isset($context['person_id']) && is_numeric($context['person_id'])) {
             $person = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\User\Person')
                 ->findOneById($context['person_id']);
@@ -106,18 +106,20 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
             $person = $this->_person;
         }
 
-        if (null == $person ) {
+        if (null == $person && !isset($context['is_guest'])) {
             $this->error(self::NOT_VALID);
             return false;
         }
 
-        $tickets = $this->_entityManager
-            ->getRepository('TicketBundle\Entity\Ticket')
-            ->findAllByEventAndPerson($this->_event, $person);
+        if (null !== $person) {
+            $tickets = $this->_entityManager
+                ->getRepository('TicketBundle\Entity\Ticket')
+                ->findAllByEventAndPerson($this->_event, $person);
 
-        if ($number + sizeof($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
-            $this->error(self::EXCEEDS_MAX_PERSON);
-            return false;
+            if ($number + sizeof($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
+                $this->error(self::EXCEEDS_MAX_PERSON);
+                return false;
+            }
         }
 
         if ($number > $this->_event->getNumberFree() && $this->_event->getNumberOfTickets() != 0) {
