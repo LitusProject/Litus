@@ -96,13 +96,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $duplicate = $formData['duplicate'];
 
                 for ($i = 1 ; $i <= $duplicate ; $i++) {
-                    $startDate = $this->addInterval(clone $startDateObject, $interval, $i-1);
-                    $endDate = $this->addInterval(clone $startDateObject, $interval, $i);
                     $shift = new Shift(
                         $this->getAuthentication()->getPersonObject(),
                         $this->getCurrentAcademicYear(),
-                        $startDate,
-                        $endDate,
+                        $this->addInterval(clone $startDateObject, $interval, $i-1),
+                        $this->addInterval(clone $startDateObject, $interval, $i),
                         $manager,
                         $formData['nb_responsibles'],
                         $formData['nb_volunteers'],
@@ -157,10 +155,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     private function addInterval(DateTime $time, $interval, $duplicate){
-        for ($i=0; $i < $duplicate ; $i++) { 
+        for ($i = 0 ; $i < $duplicate ; $i++) {
             $time = $time->add($interval);
         }
-        return $time;
+        return clone $time;
     }
 
     public function editAction()
