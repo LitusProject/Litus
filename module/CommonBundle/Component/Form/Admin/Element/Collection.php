@@ -72,10 +72,15 @@ class Collection extends \Zend\Form\Element\Collection
      */
     public function populateValues($data)
     {
+        foreach($this->getFieldsets() as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
         foreach($data as $key => $value) {
             if (!$this->has($key) && !is_numeric($key))
                 unset($data[$key]);
         }
+
         if ($this->shouldCreateTemplate()) {
             foreach($data as $value) {
                 foreach ($this->byName as $name => $element) {
@@ -90,5 +95,24 @@ class Collection extends \Zend\Form\Element\Collection
             }
         }
         parent::populateValues($data);
+    }
+
+    /**
+     * Set a hash of element names/messages to use when validation fails
+     *
+     * @param  array|Traversable $messages
+     * @return Element|ElementInterface|FieldsetInterface
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setMessages($messages)
+    {
+        parent::setMessages($messages);
+
+        $fieldsets = $this->getFieldsets();
+        foreach($fieldsets as $fieldset) {
+            $fieldset->setMessages($messages);
+        }
+
+        return $this;
     }
 }

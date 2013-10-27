@@ -88,21 +88,21 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData['allow_remove'],
                     $formData['only_members'],
                     $formData['enable_options'] ? 0 : $formData['price_members'],
-                    $formData['enable_options'] && !$formData['only_members'] ? 0 : $formData['price_non_members']
+                    $formData['enable_options'] ? 0 : ($formData['only_members'] ? 0 : $formData['price_non_members'])
                 );
 
                 if ($formData['enable_options']) {
                     foreach($formData['options'] as $option) {
                         if (strlen($option['option']) == 0)
                             continue;
-                        $option = new Option($event, $option['option'], $option['price_members'], !$formData['only_members'] ? 0 : $option['price_non_members']);
+                        $option = new Option($event, $option['option'], $option['price_members'], $formData['only_members'] ? 0 : $option['price_non_members']);
                         $this->getEntityManager()->persist($option);
                     }
                 }
 
                 if ($formData['generate_tickets']) {
                     for($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
-                        $ticket = new Ticket($event, 'empty', null, null, null, $event->generateTicketNumber($this->getEntityManager()));
+                        $ticket = new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()));
                         $this->getEntityManager()->persist($ticket);
                         $this->getEntityManager()->flush();
                     }
@@ -162,7 +162,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                                         ->findOneByEventAndNumber($event, $number);
                                 } while($ticket !== null);
 
-                                $ticket = new Ticket($event, 'empty', null, null, null, $number);
+                                $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
                                 $this->getEntityManager()->persist($ticket);
                                 $this->getEntityManager()->flush();
                             }
@@ -189,7 +189,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                                     ->findOneByEventAndNumber($event, $number);
                             } while($ticket !== null);
 
-                            $ticket = new Ticket($event, 'empty', null, null, null, $number);
+                            $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
                             $this->getEntityManager()->persist($ticket);
                             $this->getEntityManager()->flush();
                         }
@@ -203,6 +203,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 }
 
+                $enableOptions = isset($formData['enable_options']) && $formData['enable_options'] || sizeof($event->getOptions()) > 0;
+
                 $event->setActivity($this->getEntityManager()
                         ->getRepository('CalendarBundle\Entity\Node\Event')
                         ->findOneById($formData['event']))
@@ -214,10 +216,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setLimitPerPerson($formData['limit_per_person'])
                     ->setAllowRemove($formData['allow_remove'])
                     ->setOnlyMembers($formData['only_members'])
-                    ->setPriceMembers(sizeof($event->getOptions()) ? 0 : $formData['price_members'])
-                    ->setPriceNonMembers(sizeof($event->getOptions()) && !$formData['only_members'] ? 0 : $formData['price_non_members']);
+                    ->setPriceMembers($enableOptions ? 0 : $formData['price_members'])
+                    ->setPriceNonMembers($enableOptions ? 0 : ($formData['only_members'] ? 0 : $formData['price_non_members']));
 
-                if (sizeof($event->getOptions())) {
+                if ($enableOptions) {
                     foreach($formData['options'] as $optionData) {
                         if (strlen($optionData['option']) == 0)
                             continue;
@@ -228,11 +230,15 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                                 ->findOneById($optionData['option_id']);
                             $option->setName($optionData['option'])
                                 ->setPriceMembers($optionData['price_members'])
-                                ->setPriceNonMembers(!$formData['only_members'] ? 0 : $optionData['price_non_members']);
+                                ->setPriceNonMembers($formData['only_members'] ? 0 : $optionData['price_non_members']);
                         } else {
-                            $option = new Option($event, $optionData['option'], $optionData['price_members'], !$formData['only_members'] ? 0 : $optionData['price_non_members']);
+                            $option = new Option($event, $optionData['option'], $optionData['price_members'], $formData['only_members'] ? 0 : $optionData['price_non_members']);
                             $this->getEntityManager()->persist($option);
                         }
+                    }
+                } else {
+                    foreach($event->getOptions() as $option) {
+                        $this->getEntityManager()->remove($option);
                     }
                 }
 
@@ -249,7 +255,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'ticket_admin_event',
                     array(
-                        'action' => 'manage'
+                        'action' => 'edit',
+                        'id' => $event->getId(),
                     )
                 );
 

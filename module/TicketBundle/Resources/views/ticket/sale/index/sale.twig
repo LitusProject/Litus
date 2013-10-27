@@ -33,6 +33,16 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#is_guest').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#person_form').hide();
+                    $('#guest_form').show();
+                } else {
+                    $('#guest_form').hide();
+                    $('#person_form').show();
+                }
+            }).change();
+
             $('#personSearch').typeaheadRemote(
                 {
                     source: '{{ url("ticket_sale_person_typeahead")}}',
@@ -52,8 +62,12 @@
                 $('#sale_confirm').addClass('disabled').prop('disabled');
 
                 var data = {
+                    is_guest: $('#is_guest').is(':checked') ? 1 : 0,
                     person_id: $('#personId').val(),
                     person: $('#personSearch').val(),
+                    guest_first_name: $('#guest_first_name').val(),
+                    guest_last_name: $('#guest_last_name').val(),
+                    guest_email: $('#guest_email').val(),
                     payed: $('#payed').val()
                 }
                 $('.ticket_option').each(function () {
@@ -69,9 +83,11 @@
                         if (data.status == 'success') {
                             $('#sale_invalid').removeClass('in');
                             $('#sale_confirm').removeClass('disabled').prop('disabled', false);
+                            $('.control-group').removeClass('error');
+                            $('div.help-inline').remove();
                         } else {
                             $('#sale_invalid').addClass('in');
-                            $('ul.errors').remove();
+                            $('div.help-inline').remove();
                             $('.control-group').removeClass('error');
                             for(element in data.errors) {
                                 var list = $('<ul>', {'class': 'errors'});

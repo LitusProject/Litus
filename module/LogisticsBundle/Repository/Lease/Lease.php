@@ -21,11 +21,11 @@ class Lease extends EntityRepository
      */
     public function findUnreturnedByItemQuery(Item $item) {
         return $this->createQueryBuilder('l')
-                ->select()
-                ->where('l.returned = false')
-                ->andWhere('l.item = :item')
-                ->setParameter('item', $item->getId())
-                ->getQuery();
+            ->select()
+            ->where('l.returned = false')
+            ->andWhere('l.item = :item')
+            ->setParameter('item', $item->getId())
+            ->getQuery();
 
     }
 
@@ -37,8 +37,8 @@ class Lease extends EntityRepository
     public function findAllUnreturnedQuery()
     {
         return $this->createQueryBuilder('l')
-                ->select()
-                ->where('l.returned = false')
-                ->getQuery();
+            ->select()
+            ->where('l.returned = false')
+            ->getQuery();
     }
 }

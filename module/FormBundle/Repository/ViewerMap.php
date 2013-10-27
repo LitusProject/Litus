@@ -31,13 +31,11 @@ class ViewerMap extends EntityRepository
                 $query->expr()->eq('n.id', ':id')
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOneByPersonAndForm($person, $form) {
@@ -54,13 +52,11 @@ class ViewerMap extends EntityRepository
             ->setParameter('person', $person)
             ->setParameter('form', $form)
             ->orderBy('f.startDate', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllByFormQuery($formId) {

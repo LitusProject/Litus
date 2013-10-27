@@ -43,7 +43,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var \FormBundle\Entity\Node\Form
      */
     protected $_form;
 
@@ -98,6 +98,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                 if ($fieldSpecification->hasLengthSpecification()) {
                     $field->setAttribute('class', $field->getAttribute('class') . ' count')
+                        ->setAttribute('maxlength', $fieldSpecification->getLineLength())
                         ->setAttribute('data-linelen', $fieldSpecification->getLineLength())
                         ->setAttribute('data-linecount', $fieldSpecification->getLines());
                 }
@@ -129,7 +130,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
     }
 
-    public function populateFromEntry(Entry $entry) {
+    public function populateFromEntry(Entry $entry)
+    {
         $formData = array();
 
         if ($entry->isGuestEntry()) {

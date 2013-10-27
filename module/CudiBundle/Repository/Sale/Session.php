@@ -31,12 +31,9 @@ class Session extends EntityRepository
             ->setParameter('register', $cashRegister->getId())
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function getTheoreticalRevenue(SessionEntity $session, Organization $organization = null)
@@ -318,15 +315,12 @@ class Session extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Sale\Session', 's')
-            ->setMaxResults(1)
             ->orderBy('s.openDate', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOnebyDate(DateTime $date)
@@ -340,15 +334,12 @@ class Session extends EntityRepository
                     $query->expr()->gte('s.closeDate', ':now')
                 )
             )
-            ->setMaxResults(1)
             ->setParameter('now', $date)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOpen()

@@ -31,14 +31,20 @@
     </div>
 
     {% if authenticatedPerson is not null %}
-        {% if hasAccess('form_manage_mail', 'send') and viewer.isMail() %}
-            <div class="pull-right">
+        <div class="pull-right">
+            {% if hasAccess('form_manage', 'download') %}
+                <a href="#" data-file="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="download-file btn">
+                    <span class="icon-arrow-down"></span>
+                    {{ translate("Download") }}
+                </a>
+            {% endif %}
+            {% if hasAccess('form_manage_mail', 'send') and viewer.isMail() %}
                 <a class="btn" id="sendMail">
                     <span class="icon-envelope"></span>
                     {{ translate('Mail Participants') }}
                 </a>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
 
         <h2>{{ form.getTitle(language) }} ({{ entries|length }} {{ translate("subscriptions") }})</h2>
 
@@ -48,9 +54,13 @@
                 <tr>
                     <th width="130px">{{ translate("Submitter") }}</th>
 
-                    {% for field in fields %}
-                        <th>{{ field.getLabel(language) }}</th>
-                    {% endfor %}
+                    {% if form.getType != 'doodle' %}
+                        {% for field in fields %}
+                            <th>{{ field.getLabel(language) }}</th>
+                        {% endfor %}
+                    {% else %}
+                        <th>{{ translate('Subscriptions') }}</th>
+                    {% endif %}
 
                     {% if viewer.isEdit() %}
                         <th width="175px">{{ translate("Actions") }}</th>
@@ -94,25 +104,33 @@
                         </a>
                     </td>
 
-                    {% for field in fields %}
-                        {% if field.getType() == 'file' %}
-                            <td>
-                                {% if form.getValueFor(entry, field, language) %}
-                                    {% if hasAccess('form_manage', 'downloadFile') %}
-                                        <button class="btn btn-mini download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
+                    {% if form.getType != 'doodle' %}
+                        {% for field in fields %}
+                            {% if field.getType() == 'file' %}
+                                <td>
+                                    {% if form.getValueFor(entry, field, language) %}
+                                        {% if hasAccess('form_manage', 'downloadFile') %}
+                                            <button class="btn btn-mini download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
+                                        {% endif %}
+                                    {% else %}
+                                        <i>{{ translate('(empty)') }}</i>
                                     {% endif %}
-                                {% else %}
-                                    <i>{{ translate('(empty)') }}</i>
-                                {% endif %}
-                            </td>
-                        {% else %}
-                            <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
-                        {% endif %}
-                    {% endfor %}
+                                </td>
+                            {% else %}
+                                <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <td>
+                            {% for slot in entry.getFieldEntries() %}
+                                {{ slot.getField().getLabel(language) }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endif %}
 
                     {% if viewer.isEdit() %}
                         <td>
-                            <a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">{{ translate("Edit") }}</a>
+                            <a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
                             <a href="#" class="btn btn-mini btn-danger delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
                         </td>
                     {% endif %}
@@ -149,7 +167,7 @@
         </div>
     </div>
 
-    <div class="modal hide fade" id="sendMail">
+    <div class="modal hide fade" id="sendMailModal">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
             <h3>{{ translate('Send Mail') }}</h3>
@@ -229,7 +247,7 @@
             var $this = $(this);
 
             e.preventDefault();
-            var sendMail = $('#sendMail');
+            var sendMail = $('#sendMailModal');
             sendMail.find('.confirm').click(function () {
                 sendMail.find('form').ajaxSubmit({
                     dataType: 'json',

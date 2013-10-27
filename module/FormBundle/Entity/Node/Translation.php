@@ -2,8 +2,7 @@
 
 namespace FormBundle\Entity\Node;
 
-use CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM;
 
 /**

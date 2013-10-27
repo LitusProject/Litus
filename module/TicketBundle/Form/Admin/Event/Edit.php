@@ -15,6 +15,7 @@
 namespace TicketBundle\Form\Admin\Event;
 
 use Doctrine\ORM\EntityManager,
+    TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Entity\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -27,6 +28,10 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
+    /**
+     * @var \TicketBundle\Entity\Event
+     */
+    private $_event;
 
     /**
      * @param \TicketBundle\Entity\Event $event
@@ -35,6 +40,8 @@ class Edit extends Add
      */
     public function __construct(Event $event, EntityManager $entityManager, $name = null)
     {
+        $this->_event = $event;
+
         parent::__construct($entityManager, $name);
 
         $this->populateFromEvent($event);
@@ -43,5 +50,21 @@ class Edit extends Add
         $field->setValue('Save')
             ->setAttribute('class', 'edit');
         $this->add($field);
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $inputs = parent::getInputFilterSpecification();
+
+        foreach ($inputs as $key => $input) {
+            if ($input['name'] == 'event') {
+                $inputs[$key]['validators'] = array(
+                    new ActivityValidator($this->_entityManager, $this->_event),
+                );
+                break;
+            }
+        }
+
+        return $inputs;
     }
 }

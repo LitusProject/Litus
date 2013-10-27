@@ -248,11 +248,11 @@ class Article extends EntityRepository
             ->setParameter('id', $id)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]) &&
-                (!$resultSet[0]->getArticle()->isInternal() || $resultSet[0]->getArticle()->isOfficial()))
-            return $resultSet[0]->getArticle();
+        if ($resultSet &&
+                (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial()))
+            return $resultSet->getArticle();
 
         $actions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')

@@ -29,12 +29,9 @@ class Ticket extends EntityRepository
             ->setParameter('number', $number)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllByEventQuery(EventEntity $event)
@@ -82,6 +79,28 @@ class Ticket extends EntityRepository
             )
             ->setParameter('event', $event)
             ->setParameter('empty', 'empty')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByEventQuery(EventEntity $event)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('t.status', ':booked'),
+                        $query->expr()->eq('t.status', ':sold')
+                    )
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('booked', 'booked')
+            ->setParameter('sold', 'sold')
             ->getQuery();
 
         return $resultSet;

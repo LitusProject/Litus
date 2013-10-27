@@ -19,19 +19,21 @@
             <thead>
                 <tr>
                     <th>Person</th>
-                    <th width="150px">Status</th>
-                    <th width="200px">Number</th>
-                    <th width="130px">Book Date</th>
-                    <th width="130px">Sold Date</th>
-                    <th width="100px">Member</th>
+                    <th width="100px">Status</th>
+                    <th width="150px">Option</th>
+                    <th width="170px">Number</th>
+                    <th width="110px">Book Date</th>
+                    <th width="110px">Sold Date</th>
+                    <th width="70px">Member</th>
                 </tr>
             </thead>
 
             <tbody>
                 {% for ticket in paginator %}
                     <tr class="item item-{{ ticket.getId() }}">
-                        <td>{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
+                        <td>{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
                         <td>{{ ticket.getStatus() }}</td>
+                        <td>{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
                         <td>{{ ticket.getNumber() }}</td>
                         <td>{{ ticket.getBookDate().format('d/m/Y H:i') }}</td>
                         <td>{{ ticket.getSoldDate().format('d/m/Y H:i') }}</td>

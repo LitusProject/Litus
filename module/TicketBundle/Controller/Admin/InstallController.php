@@ -55,7 +55,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'typeahead'
                     ),
                     'ticket' => array(
-                        'event'
+                        'delete', 'event'
                     ),
                 )
             )

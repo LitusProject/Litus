@@ -159,6 +159,25 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setRequired($required)
             ->setAttribute('class', $field->getAttribute('class') . 'xlarge');
         $user->add($field);
+
+        $field = new Select('department_' . $memberNb);
+        $field->setLabel('Department')
+            ->setRequired($required)
+            ->setAttribute('options', $this->_getDepartments());
+        $user->add($field);
+    }
+
+    private function _getDepartments()
+    {
+        $departments = $this->_entityManager
+            ->getRepository('SportBundle\Entity\Department')
+            ->findAll();
+
+        $array = array('0' => '');
+        foreach($departments as $department)
+            $array[$department->getId()] = $department->getName();
+
+        return $array;
     }
 
     public function getInputFilter()

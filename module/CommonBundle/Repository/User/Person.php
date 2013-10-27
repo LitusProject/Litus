@@ -24,12 +24,9 @@ class Person extends EntityRepository
             )
             ->setParameter('id', $id)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllByNameQuery($name)
@@ -101,10 +98,10 @@ class Person extends EntityRepository
             ->setParameter('username', $username)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
+        if ($resultSet)
+            return $resultSet;
 
         $barcode = $this->_em
             ->getRepository('CommonBundle\Entity\User\Barcode')

@@ -21,6 +21,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     FormBundle\Component\Validator\Required as RequiredValidator,
     FormBundle\Component\Validator\StringField as StringFieldValidator,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
@@ -28,6 +30,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle,
     FormBundle\Entity\Field,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -47,12 +50,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var \FormBundle\Entity\Node\Form
      */
     protected $_form;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Form $form
+     * @param \FormBundle\Entity\Node\Form $form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
@@ -69,24 +72,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $tabContent = new TabContent('tab_content');
 
         foreach($this->getLanguages() as $language) {
-
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
 
             $field = new Text('label_' . $language->getAbbrev());
             $field->setLabel('Label')
+                ->setAttribute('class', 'field_label')
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
-
-            $dropdown_form = new Collection('dropdown_form_' . $language->getAbbrev());
-            $dropdown_form->setLabel('Options')
-                ->setAttribute('class', 'dropdown_form extra_form hide');
-            $pane->add($dropdown_form);
-
-            $field = new Text('options_' . $language->getAbbrev());
-            $field->setLabel('Options');
-            $dropdown_form->add($field);
 
             $tabContent->add($pane);
         }
@@ -95,9 +89,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('type');
         $field->setLabel('Type')
-            ->setRequired()
-            ->setAttribute('options', Field::$POSSIBLE_TYPES);
+            ->setRequired();
         $this->add($field);
+
+        if ($form instanceOf Doodle) {
+            $field->setAttribute('options', array('timeslot' => 'Time Slot'));
+        } else {
+            $field->setAttribute('options', Field::$POSSIBLE_TYPES);
+        }
 
         $field = new Text('order');
         $field->setLabel('Order')
@@ -125,6 +124,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Max. number of lines (Multiline fields only)');
         $string_form->add($field);
 
+        $dropdown_form = new Collection('dropdown_form');
+        $dropdown_form->setLabel('Options')
+            ->setAttribute('class', 'dropdown_form extra_form hide');
+        $this->add($dropdown_form);
+
+        $dropdownTabs = new Tabs('dropdown_languages');
+        $dropdown_form->add($dropdownTabs);
+
+        $dropdownTabContent = new TabContent('dropdown_tab_content');
+
+        foreach($this->getLanguages() as $language) {
+            $dropdownTabs->addTab(array($language->getName() => '#dropdown_tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('dropdown_tab_' . $language->getAbbrev());
+
+            $field = new Text('options_' . $language->getAbbrev());
+            $field->setLabel('Options');
+            $pane->add($field);
+
+            $dropdownTabContent->add($pane);
+        }
+
+        $dropdown_form->add($dropdownTabContent);
+
         $string_form = new Collection('file_form');
         $string_form->setLabel('File Options')
             ->setAttribute('class', 'file_form extra_form hide');
@@ -134,6 +157,50 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Max. size (in MB)')
             ->setValue(4);
         $string_form->add($field);
+
+        $timeslot_form = new Collection('timeslot_form');
+        $timeslot_form->setLabel('Time Slot Options')
+            ->setAttribute('class', 'timeslot_form extra_form hide');
+        $this->add($timeslot_form);
+
+        $field = new Text('timeslot_start_date');
+        $field->setLabel('Start Date')
+            ->setRequired()
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('data-timepicker', true);
+        $timeslot_form->add($field);
+
+        $field = new Text('timeslot_end_date');
+        $field->setLabel('End Date')
+            ->setRequired()
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('data-timepicker', true);
+        $timeslot_form->add($field);
+
+        $timeslotTabs = new Tabs('timeslot_languages');
+        $timeslot_form->add($timeslotTabs);
+
+        $timeslotTabContent = new TabContent('timeslot_tab_content');
+
+        foreach($this->getLanguages() as $language) {
+            $timeslotTabs->addTab(array($language->getName() => '#timeslot_tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('timeslot_tab_' . $language->getAbbrev());
+
+            $field = new Text('timeslot_location_' . $language->getAbbrev());
+            $field->setLabel('Location');
+            $pane->add($field);
+
+            $field = new Textarea('timeslot_extra_info_' . $language->getAbbrev());
+            $field->setLabel('Extra Information');
+            $pane->add($field);
+
+            $timeslotTabContent->add($pane);
+        }
+
+        $timeslot_form->add($timeslotTabContent);
 
         $visibility = new Collection('visibility');
         $visibility->setLabel('Visibility');
@@ -152,6 +219,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
+            ->setAttribute('class', 'field_add');
+        $this->add($field);
+
+        $field = new Submit('submit_repeat');
+        $field->setValue('Add And Repeat')
             ->setAttribute('class', 'field_add');
         $this->add($field);
     }
@@ -207,6 +279,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
+        $isTimeSlot = $this->_isTimeSlot();
+
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
@@ -215,7 +289,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $factory->createInput(
                     array(
                         'name'     => 'label_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
+                        'required' => $language->getAbbrev() == \Locale::getDefault() && !$isTimeSlot,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -283,7 +357,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'order',
-                    'required' => true,
+                    'required' => !$isTimeSlot,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -308,6 +382,52 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'timeslot_start_date',
+                    'required' => $isTimeSlot,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'timeslot_end_date',
+                    'required' => $isTimeSlot,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => $isTimeSlot ? array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                        new DateCompareValidator('timeslot_start_date', 'd/m/Y H:i'),
+                    ) : array(),
+                )
+            )
+        );
+
         return $inputFilter;
+    }
+
+    protected function _isTimeSlot()
+    {
+        return (isset($this->data['type']) && $this->data['type'] == 'timeslot');
     }
 }

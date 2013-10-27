@@ -17,15 +17,15 @@ class Item extends EntityRepository
         $query = $this->createQueryBuilder('i');
 
         return $query->select()
-                ->where(
-                    $query->expr()->like(
-                        $query->expr()->lower('i.name'),
-                        ':name'
-                    )
+            ->where(
+                $query->expr()->like(
+                    $query->expr()->lower('i.name'),
+                    ':name'
                 )
-                ->setParameter('name', '%'.strtolower($name).'%')
-                ->setMaxResults(20)
-                ->getQuery()
-                ->execute();
+            )
+            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->execute();
     }
 }

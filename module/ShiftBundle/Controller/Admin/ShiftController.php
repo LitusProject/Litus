@@ -88,35 +88,43 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneByName($editRole);
                     }
                 }
+                $startDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+                $endDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
 
-                $shift = new Shift(
-                    $this->getAuthentication()->getPersonObject(),
-                    $this->getCurrentAcademicYear(),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
-                    $manager,
-                    $formData['nb_responsibles'],
-                    $formData['nb_volunteers'],
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                        ->findOneById($formData['unit']),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Location')
-                        ->findOneById($formData['location']),
-                    $formData['name'],
-                    $formData['description'],
-                    $editRoles
-                );
+                $interval = $startDateObject->diff($endDateObject);
 
-                if ('' != $formData['event']) {
-                    $shift->setEvent(
+                $duplicate = $formData['duplicate'];
+
+                for ($i = 1 ; $i <= $duplicate ; $i++) {
+                    $shift = new Shift(
+                        $this->getAuthentication()->getPersonObject(),
+                        $this->getCurrentAcademicYear(),
+                        $this->addInterval(clone $startDateObject, $interval, $i-1),
+                        $this->addInterval(clone $startDateObject, $interval, $i),
+                        $manager,
+                        $formData['nb_responsibles'],
+                        $formData['nb_volunteers'],
                         $this->getEntityManager()
-                            ->getRepository('CalendarBundle\Entity\Node\Event')
-                            ->findOneById($formData['event'])
+                            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                            ->findOneById($formData['unit']),
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Location')
+                            ->findOneById($formData['location']),
+                        $formData['name'],
+                        $formData['description'],
+                        $editRoles
                     );
-                }
 
-                $this->getEntityManager()->persist($shift);
+                    if ('' != $formData['event']) {
+                        $shift->setEvent(
+                            $this->getEntityManager()
+                                ->getRepository('CalendarBundle\Entity\Node\Event')
+                                ->findOneById($formData['event'])
+                        );
+                    }
+
+                    $this->getEntityManager()->persist($shift);
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -144,6 +152,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'form' => $form,
             )
         );
+    }
+
+    private function addInterval(DateTime $time, $interval, $duplicate){
+        for ($i = 0 ; $i < $duplicate ; $i++) {
+            $time = $time->add($interval);
+        }
+        return clone $time;
     }
 
     public function editAction()
@@ -312,6 +327,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $item = (object) array();
             $item->id = $shift->getId();
             $item->name = $shift->getName();
+            $item->event = $shift->getEvent()->getTitle($this->getLanguage());
             $item->startDate = $shift->getStartDate()->format('d/m/Y H:i');
             $item->endDate = $shift->getEndDate()->format('d/m/Y H:i');
 

@@ -587,13 +587,11 @@ class Booking extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOneSoldByArticleAndPerson(ArticleEntity $article, Person $person)
@@ -621,13 +619,11 @@ class Booking extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOneSoldOrAssignedOrBookedByArticleAndPerson(ArticleEntity $article, Person $person)
@@ -659,13 +655,11 @@ class Booking extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllSoldOrAssignedOrBookedByArticleAndPerson(ArticleEntity $article, Person $person)
@@ -756,25 +750,6 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneById($id)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('b')
-        ->from('CudiBundle\Entity\Sale\Booking', 'b')
-        ->where(
-            $query->expr()->eq('b.id', ':id')
-        )
-        ->setParameter('id', $id)
-        ->setMaxResults(1)
-        ->getQuery()
-        ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
-    }
-
     public function findOneSoldByPersonAndArticle(Person $person, ArticleEntity $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -791,12 +766,9 @@ class Booking extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOneSoldByArticleAndNumber(ArticleEntity $article, $number)
@@ -816,10 +788,9 @@ class Booking extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
+        return $resultSet;
     }
 
     public function cancelAll(Person $person)

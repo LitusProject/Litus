@@ -179,6 +179,16 @@ return array(
                 'filename' => __DIR__ . '/../translations/manage.nl.php',
                 'locale'   => 'nl'
             ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/view.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/view.nl.php',
+                'locale'   => 'nl'
+            ),
         ),
     ),
     'assetic_configuration' => array(

@@ -17,7 +17,7 @@ class Point extends EntityRepository
      * Gets all points belonging to a quiz
      * @param QuizBundle\Entity\Quiz $quiz The quiz the points must belong to
      */
-    public function findByQuiz(QuizEntity $quiz)
+    public function findAllByQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
