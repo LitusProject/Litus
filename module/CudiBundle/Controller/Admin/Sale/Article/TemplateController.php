@@ -54,7 +54,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                     $formData['type'],
                     $formData['rounding'],
                     $formData['apply_once'],
-                    $organization
+                    $formData['organization']
                 );
 
                 $this->getEntityManager()->persist($template);
@@ -80,21 +80,28 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             }
         }
 
+		$templates = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'templates' => $templates,
+            )
+        );
     }
 
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Sale\Article\Discount\Template',
-            $this->getParam('page'),
-            array(),
-            array('name' => 'DESC')
-        );
+        $templates = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
+            ->findAll();
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'templates' => $templates,
+                'form' => $form,
             )
         );
 
