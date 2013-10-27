@@ -67,12 +67,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Text('duplicate');
-        $field->setLabel('Duplicate')
-            ->setValue(1)
-            ->setRequired();
-        $this->add($field);
-
         $field = new Select('duplicate');
         $field->setLabel('Duplicate')
             ->setRequired()
@@ -140,8 +134,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _createDuplicatesArray()
     {
         $duplications = array();
-        for ($i=1; $i <= 20; $i++) { 
-            $duplications[] = $i;
+        for ($i = 1 ; $i <= 20 ; $i++) {
+            $duplications[$i] = $i;
         }
         return $duplications;
     }

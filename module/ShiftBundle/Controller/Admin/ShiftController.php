@@ -126,9 +126,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     }
 
                     $this->getEntityManager()->persist($shift);
-
-                    $this->getEntityManager()->flush();
                 }
+
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
