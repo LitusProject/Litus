@@ -30,7 +30,7 @@ return array(
             'shift_admin_shift' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/shift[/:action[/:id][/:field/:string][/page/:page]][/]',
+                    'route' => '/admin/shift[/:action[/:id][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
