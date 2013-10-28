@@ -64,6 +64,8 @@
                 </div>
             {{ form().closeTag() }}
         {% endautoescape %}
+    {% else %}
+        <div class="alert alert-warning">{{ translate('Please login to reservate a slot.') }}</div>
     {% endif %}
 
 {% endblock %}

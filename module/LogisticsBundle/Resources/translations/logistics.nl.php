@@ -96,6 +96,7 @@ return array(
         <p>Kies hieronder dus een moment waarop je wilt spelen, en reserveer het! 1 reservatie per week krijg je gegarandeerd toegewezen, als je meerdere keren per week wilt spelen krijgen anderen voorrang.</p>
 
         <p>Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat spelen. Deze kan je gaan afhalen op blok 6 (Studentenwijk Arenberg) bij de vice. De brief moet je steeds kunnen voorleggen wanneer security er om vraagt.</p>',
+    'Please login to reservate a slot.' => 'Gelieve aan te melden om een slot te reserveren.',
 
     'Lease' => 'Uitlenen',
     'Return' => 'Terugbrengen',
