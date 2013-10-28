@@ -16,6 +16,7 @@ namespace LogisticsBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
+    IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     LogisticsBundle\Form\Admin\PianoReservation\Add as AddForm,
     LogisticsBundle\Form\Admin\PianoReservation\Edit as EditForm,
@@ -105,11 +106,20 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     $message = $mailData[$language->getAbbrev()]['content'];
                     $subject = $mailData[$language->getAbbrev()]['subject'];
 
+                    $formatterDate = new IntlDateFormatter(
+                        $language->getAbbrev(),
+                        IntlDateFormatter::NONE,
+                        IntlDateFormatter::NONE,
+                        date_default_timezone_get(),
+                        IntlDateFormatter::GREGORIAN,
+                        'EEE d/MM/Y HH:mm'
+                    );
+
                     $mail = new Message();
                     $mail->setBody(
                             str_replace('{{ name }}', $player->getFullName(),
-                                str_replace('{{ start }}', $reservation->getStartDate()->format('D d/m/Y H:i'),
-                                    str_replace('{{ end }}', $reservation->getEndDate()->format('D d/m/Y H:i'), $message)
+                                str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
+                                    str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
                                 )
                             )
                         )
