@@ -30,6 +30,9 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
+        if (!$this->getAuthentication()->isAuthenticated())
+            return new ViewModel();
+
         $form = new AddForm($this->getEntityManager(), $this->getLanguage());
 
         $reservations = array();
