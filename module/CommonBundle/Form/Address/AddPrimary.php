@@ -177,14 +177,6 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                    'validators' => array(
-                        array(
-                            'name' => 'alpha',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
-                        ),
-                    ),
                 )
             );
 
