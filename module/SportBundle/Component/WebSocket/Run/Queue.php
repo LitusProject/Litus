@@ -407,7 +407,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             }
         }
 
-        return;
+        return null;
     }
 
     private function _getGroupsOfFriends($number = 5)
