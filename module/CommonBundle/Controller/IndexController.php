@@ -127,33 +127,46 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if ($showInfo != '1')
             return null;
 
-        $cacheDir = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.cache_xml_path');
-
-        $fileContents = @file_get_contents($cacheDir . 'ulyssis.xml');
+        $fileContents = @file_get_contents('data/cache/' . md5('run_result_page'));
 
         $resultPage = null;
         if (false !== $fileContents)
-            $resultPage = simplexml_load_string($fileContents);
+            $resultPage = (array) json_decode($fileContents);
 
-        $returnArray = array();
+        $nbOfficialLaps = null;
         if (null !== $resultPage) {
             $teamId = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
 
-            $teamData = $resultPage->xpath('//team[@id=\'' . $teamId . '\']');
+            $currentPlace = null;
+            $teamData = null;
+            foreach ($resultPage['teams'] as $place => $team) {
+                if ($team[0] == $teamId) {
+                    $currentPlace = $place;
+                    $teamData = $team;
+                }
+            }
 
-            $returnArray = array(
-                'nbLaps' => $teamData[0]->rounds->__toString(),
-                'position' => round($teamData[0]->position->__toString() * 100),
-                'speed' => $teamData[0]->speed_kmh->__toString(),
-                'behind' => $teamData[0]->behind->__toString(),
-                'currentLap' => $this->getEntityManager()
-                    ->getRepository('SportBundle\Entity\Lap')
-                    ->findCurrent($this->getCurrentAcademicYear()),
-            );
+            if (null !== $teamData) {
+                $behind = 0;
+                if (null !== $currentPlace && $currentPlace > 0) {
+                    $firstData = $resultPage['teams'][0];
+                    $behind = round(($firstData[2] + $firstData[3]) - ($teamData[2] + $teamData[3]), 2);
+                }
+
+                $lapsPerSecond = 1/($resultPage['lap']/($teamData[4]/3.6));
+
+                $returnArray = array(
+                    'nbLaps' => $teamData[2],
+                    'position' => round($teamData[3] * 100),
+                    'speed' => round($teamData[4], 2),
+                    'behind' => $behind,
+                    'currentLap' => $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Lap')
+                        ->findCurrent($this->getCurrentAcademicYear()),
+                );
+            }
         }
 
         return $returnArray;
