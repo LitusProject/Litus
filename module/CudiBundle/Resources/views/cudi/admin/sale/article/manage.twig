@@ -79,21 +79,6 @@
 
             {% include 'admin/partials/paginationControl.twig' %}
         </div>
-        <aside>
-        {% if hasAccess('cudi_admin_sales_article_template', 'manage') %}
-            <div class="sidebox">
-                <div class="title">Manage Article Discount Templates</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to add a template for discounts !</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('cudi_admin_sales_article_template', {"action": "add"}) }}">&rarr; Add Article Discount Templates</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
-    </aside>
     </div>
 
     <div class="modal hide fade" id="removeArticle">
