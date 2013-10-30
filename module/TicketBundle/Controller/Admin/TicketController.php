@@ -15,6 +15,8 @@
 namespace TicketBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -29,12 +31,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromEntity(
-            'TicketBundle\Entity\Ticket',
-            $this->getParam('page'),
-            array(
-                'event' => $event,
-            )
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Ticket')
+                ->findAllActiveByEvent($event),
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -42,6 +43,50 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'event' => $event,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function exportAction()
+    {
+        if (!($event = $this->_getEvent()))
+            return new ViewModel();
+
+        $file = new CsvFile();
+
+        $language = $this->getLanguage();
+        $file->appendContent(array('ID', 'Name', 'Status', 'Option', 'Number', 'Book Date', 'Sold Date', 'Member'));
+
+        $tickets = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllActiveByEvent($event);
+
+        $results = array();
+        foreach ($tickets as $ticket) {
+            $file->appendContent(
+                array(
+                    $ticket->getId(),
+                    $ticket->getFullName(),
+                    $ticket->getStatus(),
+                    $ticket->getOption()->getName() . ' (' . ($ticket->isMember() ? 'Member' : 'Non Member') . ')',
+                    $ticket->getNumber(),
+                    $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '',
+                    $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '',
+                    $ticket->isMember() ? '1' : '0'
+                )
+            );
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="tickets.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
