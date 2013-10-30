@@ -43,7 +43,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage', 'old'
                     ),
                     'ticket_admin_ticket' => array(
-                        'manage'
+                        'export', 'manage'
                     ),
                     'ticket_sale_index' => array(
                         'sale', 'validate'
