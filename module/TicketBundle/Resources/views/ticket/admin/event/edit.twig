@@ -24,6 +24,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('ticket_admin_ticket', 'export') %}
+            <div class="sidebox">
+                <div class="title">Export Tickets</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export the tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_ticket', {'action': 'export', 'id': event.getId()}) }}">&rarr; Export Tickets</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
         {% if hasAccess('ticket_sale_index', 'sale') %}
             <div class="sidebox">
                 <div class="title">Sale Tickets</div>

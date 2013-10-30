@@ -84,7 +84,7 @@ class Ticket extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllActiveByEventQuery(EventEntity $event)
+    public function findAllActiveByEvent(EventEntity $event)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
@@ -101,8 +101,16 @@ class Ticket extends EntityRepository
             ->setParameter('event', $event)
             ->setParameter('booked', 'booked')
             ->setParameter('sold', 'sold')
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
 
-        return $resultSet;
+        $tickets = array();
+        foreach($resultSet as $ticket) {
+            $tickets[$ticket->getFullName()] = $ticket;
+        }
+
+        ksort($tickets);
+
+        return $tickets;
     }
 }
