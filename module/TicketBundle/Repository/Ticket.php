@@ -106,7 +106,7 @@ class Ticket extends EntityRepository
 
         $tickets = array();
         foreach($resultSet as $ticket) {
-            $tickets[$ticket->getFullName()] = $ticket;
+            $tickets[$ticket->getFullName() . '-' . $ticket->getId()] = $ticket;
         }
 
         ksort($tickets);
