@@ -91,7 +91,7 @@ class Template
      * @param boolean $applyOnce Apply the discount only once
      * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
      */
-    public function __construct($name, $value, $method, $type, $rounding, $applyOnce, $organization = null)
+    public function __construct($name, $value, $method, $type, $rounding, $applyOnce = false, $organization = null)
     {
         $this->name = $name;
         $this->value = $value * 100;

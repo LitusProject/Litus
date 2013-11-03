@@ -12,16 +12,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Sale\Article;
+namespace CudiBundle\Controller\Admin\Sale\Article\Discount;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sale\Article\Discount\Template,
-    CudiBundle\Form\Admin\Sales\Article\Templates\Add as AddForm,
+    CudiBundle\Form\Admin\Sales\Article\Discounts\Template\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
  * TemplateController
- 
  * @author Dario Incalza <dario.incalza@litus.cc>
  */
 class TemplateController extends \CudiBundle\Component\Controller\ActionController
@@ -29,7 +28,6 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
@@ -46,16 +44,15 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                 } else {
                     $organization = null;
                 }
-
-                $template = new Template(
-                	$formData['name'],
-                    $formData['value'],
-                    $formData['method'],
-                    $formData['type'],
-                    $formData['rounding'],
-                    $formData['apply_once'],
-                    $formData['organization']
-                );
+				$template = new Template(
+					$formData['name'],
+					$formData['value'],
+					$formData['method'],
+					$formData['type'],
+					$formData['rounding'],
+					$formData['apply_once'],
+					$organization
+				);
 
                 $this->getEntityManager()->persist($template);
 
@@ -70,7 +67,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                    'cudi_admin_sales_article_template',
+                    'cudi_admin_sales_article_discount_template',
                     array(
                         'action' => 'manage',
                     )
@@ -80,20 +77,6 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             }
         }
 
-		$templates = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
-            ->findAll();
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-                'templates' => $templates,
-            )
-        );
-    }
-
-    public function manageAction()
-    {
         $templates = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
             ->findAll();
@@ -104,7 +87,26 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                 'form' => $form,
             )
         );
+    }
 
+	public function manageAction()
+    {
+        $templates = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
+            ->findAll();
+
+        $paginator = $this->paginator()->createFromArray(
+            $templates,
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'templates' => $templates,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     public function deleteAction()
@@ -136,7 +138,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
+                'cudi_admin_sales_article_discount_template',
                 array(
                     'action' => 'manage'
                 )
@@ -159,7 +161,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
+                'cudi_admin_sales_article_discount_template',
                 array(
                     'action' => 'manage'
                 )

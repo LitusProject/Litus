@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Sales\Article\Templates;
+namespace CudiBundle\Form\Admin\Sales\Article\Discounts\Template;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
@@ -51,47 +51,47 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $field = new Text('name');
-        $field->setAttribute('id', 'template_name')
+        $field->setAttribute('id', 'name')
             ->setLabel('Name')
             ->setRequired();
         $this->add($field);
 
 		$field = new Text('value');
-        $field->setAttribute('id', 'template_value')
+        $field->setAttribute('id', 'value')
             ->setLabel('Value')
             ->setRequired();
         $this->add($field);
 
         $field = new Select('method');
-        $field->setAttribute('id', 'template_method')
+        $field->setAttribute('id', 'method')
             ->setLabel('Method')
             ->setAttribute('options', Discount::$POSSIBLE_METHODS)
             ->setRequired();
         $this->add($field);
 
         $field = new Select('type');
-        $field->setAttribute('id', 'template_type')
+        $field->setAttribute('id', 'type')
             ->setLabel('Type')
             ->setRequired()
             ->setAttribute('options', Discount::$POSSIBLE_TYPES);
         $this->add($field);
 
         $field = new Select('organization');
-        $field->setAttribute('id', 'template_organization')
+        $field->setAttribute('id', 'organization')
             ->setAttribute('options', $this->_getOrganizations())
             ->setLabel('Organization')
             ->setRequired();
         $this->add($field);
 
 		$field = new Select('rounding');
-        $field->setAttribute('id', 'template_rounding')
+        $field->setAttribute('id', 'rounding')
             ->setLabel('Rounding')
             ->setRequired()
             ->setAttribute('options', $this->_getRoundings());
         $this->add($field);
 
         $field = new Checkbox('apply_once');
-        $field->setAttribute('id', 'template_apply_once')
+        $field->setAttribute('id', 'apply_once')
             ->setLabel('Apply Once');
         $this->add($field);
 
