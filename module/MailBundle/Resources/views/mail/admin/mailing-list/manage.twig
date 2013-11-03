@@ -108,7 +108,8 @@
                         row.append('<td>' + this.name + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
-                                    .append('<a href="{{ url('mail_admin_list', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                    .append('<a href="{{ url('mail_admin_list', {"action": "entries"}) }}' + this.id + '" class="mailing_list_entry_edit">Entries</a>')
+                                    .append('<a href="{{ url('mail_admin_list', {"action": "admins"}) }}' + this.id + '" class="mailing_list_entry_edit">Admins</a>')
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
                                 );
                             deleteButton.data({
