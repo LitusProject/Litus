@@ -213,6 +213,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             )
         );
 
+        $categories = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Category')
+            ->findAll();
+
+        foreach($categories as $category) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'parent_' . $category->getId(),
+                        'required' => false,
+                    )
+                )
+            );
+        }
+
         $inputFilter->add(
             $factory->createInput(
                 array(
