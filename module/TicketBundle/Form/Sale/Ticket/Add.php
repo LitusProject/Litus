@@ -166,6 +166,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'is_guest',
+                    'required' => false,
+                )
+            )
+        );
+
         $isGuest = isset($this->data['is_guest']) && $this->data['is_guest'];
 
         $inputFilter->add(
