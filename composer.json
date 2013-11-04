@@ -7,7 +7,7 @@
         }
     ],
     "require": {
-        "zendframework/zendframework" : "@stable",
+        "zendframework/zendframework" : "2.2.4",
 
         "doctrine/doctrine-orm-module": "@dev",
         "doctrine/doctrine-mongo-odm-module": "@dev",
