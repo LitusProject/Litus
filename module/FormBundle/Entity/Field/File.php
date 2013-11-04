@@ -75,7 +75,7 @@ class File extends Field
      * @return string
      */
     public function getValueString(Language $language, $value) {
-        return strlen($value) ? 'X' : '';
+        return $value;
     }
 
     /**
