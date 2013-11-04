@@ -84,7 +84,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($formData['article_id']);
 
-                $queueItem = new QueueItem($entityManager, $person, $session);
+                $queueItem = new QueueItem($this->getEntityManager(), $person, $session);
                 $queueItem->setStatus('sold');
                 $this->getEntityManager()->persist($queueItem);
 
@@ -98,7 +98,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     $price = $article->getSellPrice();
                 }
 
-                $this->getEntityManager()->persist(new ReturnItem($article, $price, $queueItem));
+                $this->getEntityManager()->persist(new ReturnItem($article, $price/100, $queueItem));
 
                 $article->setStockValue($article->getStockValue() + 1);
 

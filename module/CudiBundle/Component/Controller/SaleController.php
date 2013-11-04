@@ -82,23 +82,6 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * Initializes the localization
-     *
-     * @return void
-     */
-    protected function initLocalization()
-    {
-        $language = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
-        $this->getTranslator()->setCache($this->getCache());
-        $this->getTranslator()->setLocale($language->getAbbrev());
-
-        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
-    }
-
-    /**
      * Returns the WebSocket URL.
      *
      * @return string
