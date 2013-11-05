@@ -1033,6 +1033,7 @@ class Booking extends EntityRepository
             ->setParameter('status', 'assigned')
             ->setParameter('article', $article->getId())
             ->orderBy('b.assignmentDate', 'DESC')
+            ->addOrderBy('b.bookDate', 'ASC')
             ->getQuery()
             ->getResult();
 
