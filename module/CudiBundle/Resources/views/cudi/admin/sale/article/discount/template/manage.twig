@@ -4,13 +4,13 @@
     {% include 'cudi/admin/sale/article/partials/navigation_templates.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
-    <div class="flashmessage success_message full_width article_removed_success hide">
+    <div class="flashmessage success_message full_width template_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
             <p>The discount template was successfully removed!</p>
         </div>
     </div>
-    <div class="flashmessage error_message full_width article_removed_error hide">
+    <div class="flashmessage error_message full_width template_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
             <p>An error occurred while trying to delete the discount template.</p>
@@ -20,10 +20,10 @@
         <div id="default_page">
             <table class="full_width manage">
                 <tr>
-                    <th>Title</th>
                     <th width="70px">Name</th>
                     <th width="70px" class="wider">Value</th>
                     <th width="90px">Type</th>
+                    <th width="70px">Action</th>
                 </tr>
 
                 {% for template in paginator %}
@@ -79,14 +79,13 @@
             var $this = $(this);
             e.preventDefault();
             var removeTemplate = $('#removeTemplate');
-            removeTemplate.find('.articleTitle').html($(this).data('title'));
-            removeTemplate.find('.articleAuthors').html($(this).data('authors'));
+            removeTemplate.find('.templateTitle').html($(this).data('title'));
             var id = $this.data('id');
             removeTemplate.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('cudi_admin_sales_article_discount_template', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.article_removed_success').removeClass('hide');
+                        $('.template_removed_success').removeClass('hide');
                         $('.item-' + id).remove();
                         removeTemplate.modal('hide');
                     } else {
@@ -99,7 +98,7 @@
 
         function errorRemove() {
             $('.flashmessage').addClass('hide');
-            $('.article_removed_error').removeClass('hide');
+            $('.template_removed_error').removeClass('hide');
             $('#removeTemplate').modal('hide');
         }
     </script>
