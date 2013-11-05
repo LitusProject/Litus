@@ -49,7 +49,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
+                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
                 ->findAllOld(),
             $this->getParam('page')
         );

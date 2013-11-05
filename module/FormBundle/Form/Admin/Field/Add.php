@@ -423,6 +423,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'visible_if',
+                    'required' => false,
+                )
+            )
+        );
+
         return $inputFilter;
     }
 
