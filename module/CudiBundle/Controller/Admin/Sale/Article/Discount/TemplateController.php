@@ -17,6 +17,7 @@ namespace CudiBundle\Controller\Admin\Sale\Article\Discount;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sale\Article\Discount\Template,
     CudiBundle\Form\Admin\Sales\Article\Discounts\Template\Add as AddForm,
+    CudiBundle\Form\Admin\Sales\Article\Discounts\Template\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -44,6 +45,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                 } else {
                     $organization = null;
                 }
+
 				$template = new Template(
 					$formData['name'],
 					$formData['value'],
@@ -122,6 +124,65 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+	public function editAction()
+    {
+
+        if (!($template = $this->_getTemplate()))
+            return new ViewModel();
+
+        $form = new EditForm($this->getEntityManager(), $template);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if ($formData['organization'] != '0') {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization']);
+                } else {
+                    $organization = null;
+                }
+
+                $template->setName($formData['name'])
+                    ->setValue($formData['value'])
+                    ->setMethod($formData['method'])
+                    ->setType($formData['type'])
+                    ->setRounding($formData['rounding'])
+                    ->setApplyOnce($formData['apply_once'])
+                    ->setOrganization($organization);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The discount template was successfully edited!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'cudi_admin_sales_article_discount_template',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
             )
         );
     }
