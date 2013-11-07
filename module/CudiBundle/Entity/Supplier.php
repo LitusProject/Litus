@@ -86,7 +86,7 @@ class Supplier
     /**
      * @var boolean Is this supplier the contactperson
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $contact;
 
