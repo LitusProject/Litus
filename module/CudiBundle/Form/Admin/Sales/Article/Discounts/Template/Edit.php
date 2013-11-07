@@ -14,10 +14,7 @@
 
 namespace Cudibundle\Form\Admin\Sales\Article\Discounts\Template;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     Cudibundle\Entity\Sale\Article\Discount\Template,
     Zend\Form\Element\Text,
     Zend\Form\Element\Submit;
@@ -31,6 +28,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 class Edit extends Add
 {
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \CudiBundle\Entity\Sale\Article\Discount\Template $template The template we're going to modify
      * @param null|string|int $name Optional name for the element
      */

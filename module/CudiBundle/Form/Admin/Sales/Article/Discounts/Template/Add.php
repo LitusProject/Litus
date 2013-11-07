@@ -15,11 +15,9 @@
 namespace CudiBundle\Form\Admin\Sales\Article\Discounts\Template;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -40,7 +38,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
@@ -56,7 +53,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-		$field = new Text('value');
+        $field = new Text('value');
         $field->setAttribute('id', 'value')
             ->setLabel('Value')
             ->setRequired();
@@ -83,7 +80,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-		$field = new Select('rounding');
+        $field = new Select('rounding');
         $field->setAttribute('id', 'rounding')
             ->setLabel('Rounding')
             ->setRequired()
@@ -110,7 +107,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $roundings;
     }
 
-	private function _getOrganizations()
+    private function _getOrganizations()
     {
         $organizations = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Organization')
@@ -128,13 +125,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        $required = (isset($this->data['template']) && $this->data['template'] == 0);
-
         $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'value',
-                    'required' => $required,
+                    'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -149,16 +144,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'method',
-                    'required' => $required,
+                    'required' => true,
                 )
             )
         );
 
-		$inputFilter->add(
+        $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'name',
-                    'required' => $required,
+                    'required' => true,
                 )
             )
         );
@@ -167,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'rounding',
-                    'required' => $required,
+                    'required' => true,
                 )
             )
         );
@@ -176,16 +171,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'type',
-                    'required' => $required,
+                    'required' => true,
                 )
             )
         );
 
-		$inputFilter->add(
+        $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'organization',
-                    'required' => $required,
+                    'required' => true,
                 )
             )
         );
