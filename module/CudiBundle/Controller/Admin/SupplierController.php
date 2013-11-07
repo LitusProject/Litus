@@ -70,7 +70,8 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                         $formData['address_address_country']
                     ),
                     $formData['vat_number'],
-                    $formData['template']
+                    $formData['template'],
+                    $formData['contact']
                 );
                 $this->getEntityManager()->persist($supplier);
                 $this->getEntityManager()->flush();
@@ -125,7 +126,8 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                         ->setMailbox($formData['address_address_mailbox'])
                         ->setPostal($formData['address_address_postal'])
                         ->setCity($formData['address_address_city'])
-                        ->setCountry($formData['address_address_country']);
+                        ->setCountry($formData['address_address_country'])
+                        ->setContact($formData['contact']);
 
                 $this->getEntityManager()->flush();
 
