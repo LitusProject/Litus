@@ -27,6 +27,25 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class TemplateController extends \CudiBundle\Component\Controller\ActionController
 {
 
+    public function manageAction()
+    {
+        $paginator = $this->paginator()->(
+            'CudiBundle\Entity\Sale\Article\Discount\Template',
+            $this->getParam('page'),
+            array(),
+            array(
+                'name' => 'DESC',
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
@@ -46,15 +65,15 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                     $organization = null;
                 }
 
-				$template = new Template(
-					$formData['name'],
-					$formData['value'],
-					$formData['method'],
-					$formData['type'],
-					$formData['rounding'],
-					$formData['apply_once'],
-					$organization
-				);
+                $template = new Template(
+                    $formData['name'],
+                    $formData['value'],
+                    $formData['method'],
+                    $formData['type'],
+                    $formData['rounding'],
+                    $formData['apply_once'],
+                    $organization
+                );
 
                 $this->getEntityManager()->persist($template);
 
@@ -91,26 +110,6 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-	public function manageAction()
-    {
-        $templates = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
-            ->findAll();
-
-        $paginator = $this->paginator()->createFromArray(
-            $templates,
-            $this->getParam('page')
-        );
-
-        return new ViewModel(
-            array(
-                'templates' => $templates,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-            )
-        );
-    }
-
     public function deleteAction()
     {
         $this->initAjax();
@@ -128,9 +127,8 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-	public function editAction()
+    public function editAction()
     {
-
         if (!($template = $this->_getTemplate()))
             return new ViewModel();
 

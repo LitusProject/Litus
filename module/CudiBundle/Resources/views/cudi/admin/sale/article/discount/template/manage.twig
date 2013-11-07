@@ -42,7 +42,7 @@
                                 <a href="{{ url('cudi_admin_sales_article_discount_template', {"action": "edit", "id": template.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('cudi_admin_sales_article_discount_template', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ template.getId() }}" data-title="{{ template.getName() }}" }}">Delete</a>
+                                <a href="#" class="delete" data-id="{{ template.getId() }}" data-title="{{ template.getName() }}">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
