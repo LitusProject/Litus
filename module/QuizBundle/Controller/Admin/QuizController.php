@@ -20,8 +20,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         $quizes = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Quiz')
-                ->findAll();
+            ->getRepository('QuizBundle\Entity\Quiz')
+            ->findAll();
 
         foreach ($quizes as $key => $quiz) {
             if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject()))
@@ -29,7 +29,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $paginator = $this->paginator()->createFromArray(
-                $quizes, $this->getParam('page')
+            $quizes, $this->getParam('page')
         );
 
         return new ViewModel(
