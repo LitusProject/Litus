@@ -120,14 +120,14 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                     ->setPhoneNumber($formData['phone_number'])
                     ->setVatNumber($formData['vat_number'])
                     ->setTemplate($formData['template'])
+                    ->setContact($formData['contact'])
                     ->getAddress()
                         ->setStreet($formData['address_address_street'])
                         ->setNumber($formData['address_address_number'])
                         ->setMailbox($formData['address_address_mailbox'])
                         ->setPostal($formData['address_address_postal'])
                         ->setCity($formData['address_address_city'])
-                        ->setCountry($formData['address_address_country'])
-                        ->setContact($formData['contact']);
+                        ->setCountry($formData['address_address_country']);
 
                 $this->getEntityManager()->flush();
 
