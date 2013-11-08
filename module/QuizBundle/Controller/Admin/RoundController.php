@@ -23,14 +23,14 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel;
 
         $paginator = $this->paginator()->createFromEntity(
-                'QuizBundle\Entity\Round',
-                $this->getParam('page'),
-                array(
-                    'quiz'=>$quiz
-                ),
-                array(
-                    'order'=>'ASC'
-                )
+            'QuizBundle\Entity\Round',
+            $this->getParam('page'),
+            array(
+                'quiz' => $quiz
+            ),
+            array(
+                'order' => 'ASC'
+            )
         );
 
         return new ViewModel(
@@ -181,7 +181,6 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         foreach($data['items'] as $order=>$id)
         {
             $round = $entityManager->find('QuizBundle\Entity\Round', $id);
-            /* @var $round \QuizBundle\Entity\Round */
             $round->setOrder($order+1);
         }
 
