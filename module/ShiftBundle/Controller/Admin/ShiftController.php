@@ -93,37 +93,41 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $interval = $startDateObject->diff($endDateObject);
 
-                $duplicate = $formData['duplicate'];
+                $duplicate_hours = $formData['duplicate_hours'];
+                $duplicate_days = $formData['duplicate_days'];
 
-                for ($i = 1 ; $i <= $duplicate ; $i++) {
-                    $shift = new Shift(
-                        $this->getAuthentication()->getPersonObject(),
-                        $this->getCurrentAcademicYear(),
-                        $this->addInterval(clone $startDateObject, $interval, $i-1),
-                        $this->addInterval(clone $startDateObject, $interval, $i),
-                        $manager,
-                        $formData['nb_responsibles'],
-                        $formData['nb_volunteers'],
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                            ->findOneById($formData['unit']),
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Location')
-                            ->findOneById($formData['location']),
-                        $formData['name'],
-                        $formData['description'],
-                        $editRoles
-                    );
-
-                    if ('' != $formData['event']) {
-                        $shift->setEvent(
+                for ($days=0 ; $days < $duplicate_days ; $days++) { 
+                    $shiftStartDay = $startDateObject->modify('+1 day');
+                    for ($i = 1 ; $i <= $duplicate_hours; $i++) {
+                        $shift = new Shift(
+                            $this->getAuthentication()->getPersonObject(),
+                            $this->getCurrentAcademicYear(),
+                            $this->addInterval(clone $shiftStartDay, $interval, $i-1),
+                            $this->addInterval(clone $shiftStartDay, $interval, $i),
+                            $manager,
+                            $formData['nb_responsibles'],
+                            $formData['nb_volunteers'],
                             $this->getEntityManager()
-                                ->getRepository('CalendarBundle\Entity\Node\Event')
-                                ->findOneById($formData['event'])
+                                ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                                ->findOneById($formData['unit']),
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Location')
+                                ->findOneById($formData['location']),
+                            $formData['name'],
+                            $formData['description'],
+                            $editRoles
                         );
-                    }
 
-                    $this->getEntityManager()->persist($shift);
+                        if ('' != $formData['event']) {
+                            $shift->setEvent(
+                                $this->getEntityManager()
+                                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                                    ->findOneById($formData['event'])
+                            );
+                        }
+
+                        $this->getEntityManager()->persist($shift);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
