@@ -67,6 +67,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
 
+        $token = null;
+        /*
         $token = $this->getDocumentManager()
             ->getRepository('ShiftBundle\Document\Token')
             ->findOneByPerson($this->getAuthentication()->getPersonObject());
@@ -78,6 +80,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getDocumentManager()->persist($token);
             $this->getDocumentManager()->flush();
         }
+        */
 
         $searchResults = null;
         if ($this->getRequest()->isPost()) {
@@ -420,10 +423,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $result .= 'END:VTIMEZONE' . PHP_EOL;
 
         if (null !== $this->getParam('token')) {
+            $token = null;
+
+            /*
             $token = $this->getDocumentManager()
                 ->getRepository('ShiftBundle\Document\Token')
                 ->findOneByHash($this->getParam('token'));
-
+            */
             $shifts = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllActiveByPerson($token->getPerson($this->getEntityManager()));

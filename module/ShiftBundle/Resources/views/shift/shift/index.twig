@@ -77,7 +77,9 @@
             <h2>
                 {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
                     <div class="pull-right visible-desktop">
+                        {#
                         <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
+                        #}
                     </div>
                 {% endif %}
 
@@ -225,8 +227,23 @@
 {% endblock %}
 
 {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
+    {% set previousShift = null %}
+    
     <div class="accordion" id="shifts-{{ accordionName }}">
+
+        
+        
         {% for shift in shifts %}
+
+        {% set currentShiftDate = shift.getStartDate()|date("m/d/Y") %}
+        {% set previousShiftDate = previousShift.getStartDate()|date("m/d/Y") %}
+        
+
+        {% if previousShiftDate < currentShiftDate %}
+                <p> {{ "\n"|nl2br }}</p>
+        {% endif %}
+
+        {% set previousShift = shift %}
             <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
@@ -320,6 +337,8 @@
                     {{ translate('You have not yet signed up for any shifts. You can use the search functions on the left to look for some!') }}
                 {% endif %}
             </div>
+
+        {% set previousShift = shift %}
         {% endfor %}
     </div>
 {% endmacro %}
