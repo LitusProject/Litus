@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="article">Discount Templates</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('cudi_admin_sales_article_discount_template', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_article_discount_template', {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_article_discount_template', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_article_discount_template', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

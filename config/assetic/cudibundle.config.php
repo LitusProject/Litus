@@ -68,6 +68,13 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'cudi_admin_sales_article_discount_template' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'cudi_admin_sales_article_barcode' => array(
             '@common_jquery',
             '@admin_css',
