@@ -26,10 +26,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class TemplateController extends \CudiBundle\Component\Controller\ActionController
 {
-
     public function manageAction()
     {
-        $paginator = $this->paginator()->(
+        $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Sale\Article\Discount\Template',
             $this->getParam('page'),
             array(),
