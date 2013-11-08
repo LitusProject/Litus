@@ -23,14 +23,14 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel;
 
         $paginator = $this->paginator()->createFromEntity(
-                'QuizBundle\Entity\Team',
-                $this->getParam('page'),
-                array(
-                    'quiz'=>$quiz
-                ),
-                array(
-                    'number'=>'ASC'
-                )
+            'QuizBundle\Entity\Team',
+            $this->getParam('page'),
+            array(
+                'quiz' => $quiz
+            ),
+            array(
+                'number' => 'ASC'
+            )
         );
 
         return new ViewModel(
@@ -82,8 +82,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $next_team_number = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Team')
-                ->getNextTeamNumberForQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Team')
+            ->getNextTeamNumberForQuiz($quiz);
 
         $form->get('number')
             ->setValue($next_team_number);

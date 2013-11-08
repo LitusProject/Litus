@@ -95,7 +95,7 @@ class Volunteer
     /**
      * @return boolean
      */
-    public function getPayed()
+    public function isPayed()
     {
         return $this->payed;
     }
