@@ -76,7 +76,7 @@
         <span class="span8">
             <h2>
                 {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
-                    <div class="pull-right visible-desktop">
+                    <div class="pull-right visible-desktop"> 
                         <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
                     </div>
                 {% endif %}
@@ -235,7 +235,7 @@
         {% if previousShiftDate < currentShiftDate %}
             {{"\n"|nl2br }}
             <div class="well well-small">
-                <h4>{{translate('Shifts on')}}  {{currentShiftDate}}</h4>
+                <h4>{{translate('Shifts on')}}  {{currentShiftDate|date("d/m/Y")}}</h4>
             </div>
         {% endif %}
 
