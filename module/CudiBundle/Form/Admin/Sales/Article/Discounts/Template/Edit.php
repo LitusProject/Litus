@@ -38,7 +38,7 @@ class Edit extends Add
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'template_edit');
+            ->setAttribute('class', 'edit');
         $this->add($field);
 
         $this->_populateFromTemplate($template);
