@@ -491,6 +491,9 @@ VTK Cudi
                     'cudi_admin_sales_article_discount' => array(
                         'delete', 'manage'
                     ),
+                    'cudi_admin_sales_article_discount_template' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
                     'cudi_admin_sales_financial' => array(
                         'overview', 'period'
                     ),
