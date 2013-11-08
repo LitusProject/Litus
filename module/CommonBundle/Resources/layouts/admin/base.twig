@@ -151,6 +151,9 @@
                                     {% if hasAccess('cudi_admin_sales_article', 'manage') %}
                                         <li><a href="{{ url('cudi_admin_sales_article') }}">Sale Articles</a></li>
                                     {% endif %}
+                                    {% if hasAccess('cudi_admin_sales_article_discount_template', 'manage') %}
+                                        <li><a href="{{ url('cudi_admin_sales_article_discount_template') }}">Discount Templates</a></li>
+                                    {% endif %}
                                     {% if hasAccess('cudi_admin_sales_booking', 'manage') %}
                                         <li><a href="{{ url('cudi_admin_sales_booking') }}">Bookings</a></li>
                                     {% endif %}

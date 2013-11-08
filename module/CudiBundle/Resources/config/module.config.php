@@ -132,6 +132,20 @@ return array(
                     ),
                 ),
             ),
+            'cudi_admin_sales_article_discount_template' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/article/discount/template[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_article_discount_template',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'cudi_admin_sales_article_barcode' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -810,6 +824,7 @@ return array(
             'cudi_admin_sales_article'             => 'CudiBundle\Controller\Admin\Sale\ArticleController',
             'cudi_admin_sales_article_barcode'     => 'CudiBundle\Controller\Admin\Sale\Article\BarcodeController',
             'cudi_admin_sales_article_discount'    => 'CudiBundle\Controller\Admin\Sale\Article\DiscountController',
+            'cudi_admin_sales_article_discount_template'    => 'CudiBundle\Controller\Admin\Sale\Article\Discount\TemplateController',
             'cudi_admin_sales_article_restriction' => 'CudiBundle\Controller\Admin\Sale\Article\RestrictionController',
             'cudi_admin_sales_booking'             => 'CudiBundle\Controller\Admin\Sale\BookingController',
             'cudi_admin_sales_session'             => 'CudiBundle\Controller\Admin\Sale\SessionController',
