@@ -230,17 +230,17 @@
     {% set previousShift = null %}
     
     <div class="accordion" id="shifts-{{ accordionName }}">
-
-        
-        
-        {% for shift in shifts %}
+    {% for shift in shifts %}
 
         {% set currentShiftDate = shift.getStartDate()|date("m/d/Y") %}
         {% set previousShiftDate = previousShift.getStartDate()|date("m/d/Y") %}
         
 
         {% if previousShiftDate < currentShiftDate %}
-                <p> {{ "\n"|nl2br }}</p>
+            {{"\n"|nl2br }}
+            <div class="well well-small">
+                <h4>{{translate('Shifts on')}}  {{currentShiftDate}}</h4>
+            </div>
         {% endif %}
 
         {% set previousShift = shift %}
