@@ -16,7 +16,6 @@ namespace FormBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
     FormBundle\Entity\Node\Entry,
     FormBundle\Entity\Mail\Mail,
     DateTime,
@@ -26,7 +25,7 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Field;
 
 /**
- * This entity stores the node item.
+ * This entity stores the form
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Form")
  * @ORM\Table(name="nodes.forms")
@@ -40,7 +39,7 @@ use CommonBundle\Entity\General\Language,
 abstract class Form extends \CommonBundle\Entity\Node
 {
     /**
-     * @var int The ID of this tanslation
+     * @var int The ID of this form
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -115,7 +114,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @var array The translations of this form
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation", mappedBy="form", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation\Form", mappedBy="form", cascade={"remove"})
      */
     private $translations;
 
@@ -389,7 +388,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \FormBundle\Entity\Node\Translation
+     * @return \FormBundle\Entity\Node\Translation\Form
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

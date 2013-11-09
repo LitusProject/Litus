@@ -20,7 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Mail\Translation as MailTranslation,
     FormBundle\Entity\Node\Form\Doodle,
     FormBundle\Entity\Node\Form\Form,
-    FormBundle\Entity\Node\Translation,
+    FormBundle\Entity\Node\Translation\Form as FormTranslation,
     FormBundle\Entity\ViewerMap,
     FormBundle\Form\Admin\Form\Add as AddForm,
     FormBundle\Form\Admin\Form\Edit as EditForm,
@@ -155,7 +155,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 foreach($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
-                        $translation = new Translation(
+                        $translation = new FormTranslation(
                             $form,
                             $language,
                             $formData['title_' . $language->getAbbrev()],
@@ -325,7 +325,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $translation = $formSpecification->getTranslation($language, false);
 
                         if (null === $translation) {
-                            $translation = new Translation(
+                            $translation = new FormTranslation(
                                 $formSpecification,
                                 $language,
                                 $formData['title_' . $language->getAbbrev()],
