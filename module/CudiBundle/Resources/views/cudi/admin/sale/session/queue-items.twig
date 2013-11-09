@@ -28,7 +28,7 @@
                            <a href="#" class="view comments" data-text="{{ item.getComment() }}">Comment</a>
                         {% endif %}
                         {% if item.getStatus() == 'sold' %}
-                            <a href="#" class="view saleItems" data-name="{{ item.getPerson().getFullName() }}" data-items='[{% for saleItem in item.getSaleItems() %}{"article": "{{ saleItem.getArticle().getMainArticle().getTitle()}}", "number": "{{ saleItem.getNumber() }}", "soldPrice": "{{ (saleItem.getPrice()/100)|number_format(2) }}", "sellPrice": "{{ (saleItem.getArticle().getSellPrice()/100)|number_format(2)}}", "discountType": "{{ saleItem.getDiscountType() }}" },{% endfor %}{}]'>Items</a>
+                            <a href="#" class="view saleItems" data-name="{{ item.getPerson().getFullName() }}" data-saleitems='[{% for saleItem in item.getSaleItems() %}{"article": "{{ saleItem.getArticle().getMainArticle().getTitle()}}", "number": "{{ saleItem.getNumber() }}", "soldPrice": "{{ (saleItem.getPrice()/100)|number_format(2) }}", "sellPrice": "{{ (saleItem.getArticle().getSellPrice()/100)|number_format(2)}}", "discountType": "{{ saleItem.getDiscountType() }}" },{% endfor %}{}]' data-returnitems='[{% for returnItem in item.getReturnItems() %}{"article": "{{ returnItem.getArticle().getMainArticle().getTitle()}}", "number": "{{ returnItem.getNumber() }}", "soldPrice": "{{ (returnItem.getPrice()/100)|number_format(2) }}", "sellPrice": "{{ (returnItem.getArticle().getSellPrice()/100)|number_format(2)}}" },{% endfor %}{}]'>Items</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -56,19 +56,35 @@
             /Queue Item Sale
         </div>
         <div class="modal-body">
-            <p><b class="name"></b> purchased the following items:<p>
-            <table style="width: 100%">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th width="60px">Number</th>
-                        <th width="80px">Sold Price</th>
-                        <th width="80px">Sell Price</th>
-                        <th width="80px">Discount</th>
-                    </tr>
-                </thead>
-                <tbody class="items"></tbody>
-            </table>
+            <div class="salecontainer">
+                <p><b class="name"></b> purchased the following items:<p>
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th width="60px">Number</th>
+                            <th width="80px">Sold Price</th>
+                            <th width="80px">Sell Price</th>
+                            <th width="80px">Discount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="saleitems"></tbody>
+                </table>
+            </div>
+            <div class="returncontainer">
+                <p><b class="name"></b> returned the following items:<p>
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th width="60px">Number</th>
+                            <th width="80px">Sold Price</th>
+                            <th width="80px">Sell Price</th>
+                        </tr>
+                    </thead>
+                    <tbody class="returnitems"></tbody>
+                </table>
+            </div>
             <br style="clear:both" />
             <div class="footer">
                 <input type="button" data-dismiss="modal" value="Close">
@@ -99,11 +115,12 @@
             e.preventDefault();
             var viewItems = $('#viewItems');
             viewItems.find('.name').html($this.data('name'));
-            viewItems.find('.items').html('');
-            $($this.data('items')).each(function () {
+            viewItems.find('.saleitems').html('');
+            viewItems.find('.returnitems').html('');
+            $($this.data('saleitems')).each(function () {
                 if (this.article == undefined)
                     return;
-                viewItems.find('.items').append(
+                viewItems.find('.saleitems').append(
                     $('<tr>').append(
                         $('<td>').html(this.article),
                         $('<td>').html(this.number),
@@ -113,6 +130,22 @@
                     )
                 );
             });
+            $($this.data('returnitems')).each(function () {
+                if (this.article == undefined)
+                    return;
+                viewItems.find('.returnitems').append(
+                    $('<tr>').append(
+                        $('<td>').html(this.article),
+                        $('<td>').html(1),
+                        $('<td>').html('&euro; ' + this.soldPrice),
+                        $('<td>').html('&euro; ' + this.sellPrice)
+                    )
+                );
+            });
+
+            viewItems.find('.salecontainer').toggle(!($($this.data('saleitems')).length == 1));
+            viewItems.find('.returncontainer').toggle(!($($this.data('returnitems')).length == 1));
+
             viewItems.modal();
         }
     </script>
