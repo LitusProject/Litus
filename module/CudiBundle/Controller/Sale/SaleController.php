@@ -15,8 +15,8 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Log\Sale\Returned as ReturnedLog,
     CudiBundle\Entity\Sale\QueueItem,
+    CudiBundle\Entity\Sale\ReturnItem,
     CudiBundle\Form\Sale\Sale\ReturnArticle as ReturnForm,
     Zend\View\Model\ViewModel;
 
@@ -84,51 +84,33 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($formData['article_id']);
 
-                $booking = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findOneSoldByPersonAndArticle($person, $article);
+                $queueItem = new QueueItem($this->getEntityManager(), $person, $session);
+                $queueItem->setStatus('sold');
+                $this->getEntityManager()->persist($queueItem);
 
-                if ($booking) {
-                    $saleItem = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                        ->findOneByPersonAndArticle($person, $article);
+                $saleItem = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findOneByPersonAndArticle($person, $article);
 
-                    if ($saleItem) {
-                        if ($saleItem->getNumber() == 1) {
-                            $this->getEntityManager()->remove($saleItem);
-                        } else {
-                            $saleItem->setNumber($saleItem->getNumber() - 1);
-                        }
-                    }
-
-                    if ($booking->getNumber() == 1) {
-                        $this->getEntityManager()->remove($booking);
-                    } else {
-                        $booking->setNumber($booking->getNumber() - 1);
-                    }
-
-                    $article->setStockValue($article->getStockValue() + 1);
-
-                    $this->getEntityManager()->persist(new ReturnedLog($this->getAuthentication()->getPersonObject(), $article));
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The sale was successfully returned!'
-                        )
-                    );
+                if ($saleItem) {
+                    $price = $saleItem->getPrice() / $saleItem->getNumber();
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The sale could not be returned!'
-                        )
-                    );
+                    $price = $article->getSellPrice();
                 }
+
+                $this->getEntityManager()->persist(new ReturnItem($article, $price/100, $queueItem));
+
+                $article->setStockValue($article->getStockValue() + 1);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The sale was successfully returned!'
+                    )
+                );
 
                 $this->redirect()->toRoute(
                     'cudi_sale_sale',
