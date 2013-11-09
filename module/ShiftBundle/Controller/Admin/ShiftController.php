@@ -97,7 +97,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $duplicate_days = $formData['duplicate_days'];
 
                 for ($days=0 ; $days < $duplicate_days ; $days++) { 
-                    $shiftStartDay = $startDateObject->modify('+1 day');
+                    
                     for ($i = 1 ; $i <= $duplicate_hours; $i++) {
                         $shift = new Shift(
                             $this->getAuthentication()->getPersonObject(),
@@ -128,6 +128,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                         $this->getEntityManager()->persist($shift);
                     }
+                    $shiftStartDay = $startDateObject->modify('+1 day');
                 }
 
                 $this->getEntityManager()->flush();
