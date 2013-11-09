@@ -110,6 +110,13 @@ class QueueItem
     private $saleItems;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The return items
+     *
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\ReturnItem", mappedBy="queueItem")
+     */
+    private $returnItems;
+
+    /**
      * @var boolean Flag whether collect ticket was already printed
      * @ORM\Column(name="collect_printed", type="boolean")
      */
@@ -328,6 +335,14 @@ class QueueItem
     public function getSaleItems()
     {
         return $this->saleItems;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getReturnItems()
+    {
+        return $this->returnItems;
     }
 
     /**
