@@ -57,13 +57,13 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
 
         $field = new Text('returned_by');
-        $field->setLabel('Returned by')
+        $field->setLabel('Returned By')
                 ->setAttribute('autocomplete', false)
                 ->setRequired();
         $this->add($field);
 
         $field = new Text('returned_pawn');
-        $field->setLabel('Resitution pawn')
+        $field->setLabel('Returned Pawn')
                 ->setRequired();
         $this->add($field);
 
