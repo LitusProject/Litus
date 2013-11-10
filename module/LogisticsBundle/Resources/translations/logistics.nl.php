@@ -103,6 +103,7 @@ return array(
     'Leases' => 'Openstaand',
     'Item Name' => 'Naam Item',
     'Barcode' => 'Barcode',
+    'Amount' => 'Aantal',
     'Leased To' => 'Geleend Aan',
     'Leased On' => 'Geleend Op',
     'Pawn' => 'Waarborg',
