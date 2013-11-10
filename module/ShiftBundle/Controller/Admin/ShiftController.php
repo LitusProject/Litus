@@ -88,42 +88,44 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneByName($editRole);
                     }
                 }
-                $startDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
-                $endDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
 
-                $interval = $startDateObject->diff($endDateObject);
+                $interval = $startDate->diff($endDate);
 
-                $duplicate = $formData['duplicate'];
-
-                for ($i = 1 ; $i <= $duplicate ; $i++) {
-                    $shift = new Shift(
-                        $this->getAuthentication()->getPersonObject(),
-                        $this->getCurrentAcademicYear(),
-                        $this->addInterval(clone $startDateObject, $interval, $i-1),
-                        $this->addInterval(clone $startDateObject, $interval, $i),
-                        $manager,
-                        $formData['nb_responsibles'],
-                        $formData['nb_volunteers'],
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                            ->findOneById($formData['unit']),
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Location')
-                            ->findOneById($formData['location']),
-                        $formData['name'],
-                        $formData['description'],
-                        $editRoles
-                    );
-
-                    if ('' != $formData['event']) {
-                        $shift->setEvent(
+                for ($i = 0; $i < $formData['duplicate_days']; $i++) {
+                    for ($j = 0; $j < $formData['duplicate_hours']; $j++) {
+                        $shift = new Shift(
+                            $this->getAuthentication()->getPersonObject(),
+                            $this->getCurrentAcademicYear(),
+                            $this->addInterval(clone $startDate, $interval, $j),
+                            $this->addInterval(clone $startDate, $interval, $j+1),
+                            $manager,
+                            $formData['nb_responsibles'],
+                            $formData['nb_volunteers'],
                             $this->getEntityManager()
-                                ->getRepository('CalendarBundle\Entity\Node\Event')
-                                ->findOneById($formData['event'])
+                                ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                                ->findOneById($formData['unit']),
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Location')
+                                ->findOneById($formData['location']),
+                            $formData['name'],
+                            $formData['description'],
+                            $editRoles
                         );
+
+                        if ('' != $formData['event']) {
+                            $shift->setEvent(
+                                $this->getEntityManager()
+                                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                                    ->findOneById($formData['event'])
+                            );
+                        }
+
+                        $this->getEntityManager()->persist($shift);
                     }
 
-                    $this->getEntityManager()->persist($shift);
+                    $startDate = $startDate->modify('+1 day');
                 }
 
                 $this->getEntityManager()->flush();
@@ -155,9 +157,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     private function addInterval(DateTime $time, $interval, $duplicate){
-        for ($i = 0 ; $i < $duplicate ; $i++) {
+        for ($i = 0; $i < $duplicate; $i++)
             $time = $time->add($interval);
-        }
         return clone $time;
     }
 
