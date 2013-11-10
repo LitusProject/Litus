@@ -36,7 +36,7 @@ class Edit extends Add {
 
         $field = new Submit('submit');
         $field->setValue('Edit')
-            ->setAttribute('class', 'edit');
+            ->setAttribute('class', 'lease_edit');
         $this->add($field);
 
         $this->populateFromLease($lease);

@@ -179,19 +179,22 @@
                             </li>
                         {% endif %}
 
-                        {% if hasAccess('logistics_admin_driver', 'manage') or hasAccess('logistics_admin_piano_reservation', 'manage') or hasAccess('logistics_admin_van_reservation', 'manage') %}
+                        {% if hasAccess('logistics_admin_driver', 'manage') or hasAccess('logistics_admin_lease', 'manage') or hasAccess('logistics_admin_piano_reservation', 'manage') or hasAccess('logistics_admin_van_reservation', 'manage') %}
                             <li>
                                 <div class="subtitle">
                                     <b>Logistics</b><br />
                                     Drivers, Piano &amp; Van Reservations
                                 </div>
                                 <ul
-                                    {% if 'logistics_admin_driver' == getParam('controller') or 'logistics_admin_piano_reservation' == getParam('controller') or 'logistics_admin_van_reservation' == getParam('controller') %}
+                                    {% if 'logistics_admin_driver' == getParam('controller') or 'logistics_admin_lease' == getParam('controller') or 'logistics_admin_piano_reservation' == getParam('controller') or 'logistics_admin_van_reservation' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
                                     {% if hasAccess('logistics_admin_driver', 'manage') %}
                                         <li><a href="{{ url('logistics_admin_driver') }}">Drivers</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('logistics_admin_lease', 'manage') %}
+                                        <li><a href="{{ url('logistics_admin_lease') }}">Lease</a></li>
                                     {% endif %}
                                     {% if hasAccess('logistics_admin_piano_reservation', 'manage') %}
                                         <li><a href="{{ url('logistics_admin_piano_reservation') }}">Piano Reservations</a></li>
