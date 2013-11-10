@@ -42,6 +42,21 @@ return array(
                     ),
                 ),
             ),
+            'form_admin_group' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/form/group[/:action[/:id][/page/:page]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'form_admin_group',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'form_admin_form_field' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -158,6 +173,7 @@ return array(
         'invokables' => array(
             'form_install'           => 'FormBundle\Controller\Admin\InstallController',
             'form_admin_form'        => 'FormBundle\Controller\Admin\FormController',
+            'form_admin_group'       => 'FormBundle\Controller\Admin\GroupController',
             'form_admin_form_field'  => 'FormBundle\Controller\Admin\FieldController',
             'form_admin_form_viewer' => 'FormBundle\Controller\Admin\ViewerController',
 

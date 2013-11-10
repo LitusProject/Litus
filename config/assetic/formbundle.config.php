@@ -33,6 +33,14 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'form_admin_group' => array(
+            '@common_jquery',
+            '@admin_js',
+            '@bootstrap_js_tab',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@admin_css',
+        ),
         'form_admin_form_field' => array(
             '@common_jquery',
             '@admin_css',
