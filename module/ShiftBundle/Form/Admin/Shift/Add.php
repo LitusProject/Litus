@@ -67,8 +67,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Select('duplicate');
-        $field->setLabel('Duplicate')
+        $field = new Select('duplicate_hours');
+        $field->setLabel('Duplicate By Hours')
+            ->setRequired()
+            ->setAttribute('options', $this->_createDuplicatesArray());
+        $this->add($field);
+
+        $field = new Select('duplicate_days');
+        $field->setLabel('Duplicate By Days')
             ->setRequired()
             ->setAttribute('options', $this->_createDuplicatesArray());
         $this->add($field);
@@ -254,7 +260,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'duplicate',
+                    'name'     => 'duplicate_hours',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'duplicate_days',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
