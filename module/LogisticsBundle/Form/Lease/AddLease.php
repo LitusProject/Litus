@@ -57,13 +57,13 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
 
         $field = new Text('leased_to');
-        $field->setLabel('Leased to')
+        $field->setLabel('Leased To')
                 ->setAttribute('autocomplete', false)
                 ->setRequired();
         $this->add($field);
 
         $field = new Text('leased_pawn');
-        $field->setLabel('Pawn')
+        $field->setLabel('Received Pawn')
                 ->setRequired();
         $this->add($field);
 

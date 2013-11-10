@@ -19,15 +19,15 @@
 <div class="row">
     <div class="span12">
         <div class="page-header">
-            <h1>{{ translate('Leases') }} <small>{{ translate('Items currently leased') }}</small></h1>
+            <h1>{{ translate('Leases') }}</h1>
         </div>
         <table class="table">
             <thead>
                 <tr>
-                    <th>{{ translate('Item name') }}</th>
+                    <th>{{ translate('Item Name') }}</th>
                     <th>{{ translate('Barcode') }}</th>
-                    <th>{{ translate('Leased to') }}</th>
-                    <th>{{ translate('Leased on') }}</th>
+                    <th>{{ translate('Leased To') }}</th>
+                    <th>{{ translate('Leased On') }}</th>
                     <th>{{ translate('Pawn') }}</th>
                     <th>{{ translate('Actions') }}</th>
                 </tr>
@@ -54,7 +54,7 @@
 <div class="row">
     <div class="span12">
         <div class="page-header">
-            <h1>{{ translate('Item search') }}</h1>
+            <h1>{{ translate('Item Search') }}</h1>
         </div>
         <form action="{{ url('logistics_lease', {'action': 'history' }) }}" id="search">
             <div class="input-append">
