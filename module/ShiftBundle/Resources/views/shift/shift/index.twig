@@ -76,7 +76,7 @@
         <span class="span8">
             <h2>
                 {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
-                    <div class="pull-right visible-desktop"> 
+                    <div class="pull-right visible-desktop">
                         <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
                     </div>
                 {% endif %}
@@ -227,19 +227,13 @@
 {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
     {% set previousShift = null %}
     <div class="accordion" id="shifts-{{ accordionName }}">
-    {% for shift in shifts %}
+        {% for shift in shifts %}
+            {% if shift.getStartDate().format('Ymd') < previousShift.getStartDate().format('Ymd') %}
+                <h3>{{translate('Shifts on')}} {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
+            {% endif %}
 
-        {% set currentShiftDate = shift.getStartDate()|date("m/d/Y") %}
-        {% set previousShiftDate = previousShift.getStartDate()|date("m/d/Y") %}
+            {% set previousShift = shift %}
 
-        {% if previousShiftDate < currentShiftDate %}
-            {{"\n"|nl2br }}
-            <div class="well well-small">
-                <h4>{{translate('Shifts on')}}  {{currentShiftDate|date("d/m/Y")}}</h4>
-            </div>
-        {% endif %}
-
-        {% set previousShift = shift %}
             <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
@@ -333,8 +327,6 @@
                     {{ translate('You have not yet signed up for any shifts. You can use the search functions on the left to look for some!') }}
                 {% endif %}
             </div>
-
-        {% set previousShift = shift %}
         {% endfor %}
     </div>
 {% endmacro %}

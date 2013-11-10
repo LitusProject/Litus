@@ -78,7 +78,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getDocumentManager()->persist($token);
             $this->getDocumentManager()->flush();
         }
-        
 
         $searchResults = null;
         if ($this->getRequest()->isPost()) {
