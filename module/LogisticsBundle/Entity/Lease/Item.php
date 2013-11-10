@@ -1,4 +1,16 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace LogisticsBundle\Entity\Lease;
 
@@ -13,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Item
 {
     /**
-     * @var int
+     * @var int The item's ID
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -22,31 +34,27 @@ class Item
     private $id;
 
     /**
-     * The name of the item
-     * @var string
+     * @var string The name of the item
      *
      * @ORM\Column(type="text")
      */
     private $name;
 
     /**
-     * Additional information about the item
-     * @var string
+     * @var string Additional information about the item
      *
      * @ORM\Column(name="additional_info", type="text")
      */
     private $additionalInfo;
 
     /**
-     * The barcode of the item
-     * @var int
+     * @var int The barcode of the item
      *
      * @ORM\Column(type="bigint", unique=true)
      */
     private $barcode;
 
     /**
-     * Create a new Item entity
      * @param string $name The name of the item (preferrably unique)
      * @param int $barcode The barcode of the item
      * @param type $additionalInfo Extra information to show when leasing the item
@@ -57,10 +65,8 @@ class Item
         $this->barcode = $barcode;
         $this->additionalInfo = $additionalInfo;
     }
-    
+
     /**
-     * Get id
-     *
      * @return integer
      */
     public function getId()
@@ -69,10 +75,16 @@ class Item
     }
 
     /**
-     * Set name
-     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * @param string $name
-     * @return Item
+     * @return \LogisticsBundle\Entity\Lease\Item
      */
     public function setName($name)
     {
@@ -82,20 +94,16 @@ class Item
     }
 
     /**
-     * Get name
-     *
      * @return string
      */
-    public function getName()
+    public function getAdditionalInfo()
     {
-        return $this->name;
+        return $this->additionalInfo;
     }
 
     /**
-     * Set additionalInfo
-     *
      * @param string $additionalInfo
-     * @return Item
+     * @return \LogisticsBundle\Entity\Lease\Item
      */
     public function setAdditionalInfo($additionalInfo)
     {
@@ -105,35 +113,21 @@ class Item
     }
 
     /**
-     * Get additionalInfo
-     *
-     * @return string
+     * @return integer
      */
-    public function getAdditionalInfo()
+    public function getBarcode()
     {
-        return $this->additionalInfo;
+        return $this->barcode;
     }
 
     /**
-     * Set barcode
-     *
      * @param integer $barcode
-     * @return Item
+     * @return \LogisticsBundle\Entity\Lease\Item
      */
     public function setBarcode($barcode)
     {
         $this->barcode = $barcode;
 
         return $this;
-    }
-
-    /**
-     * Get barcode
-     *
-     * @return integer
-     */
-    public function getBarcode()
-    {
-        return $this->barcode;
     }
 }

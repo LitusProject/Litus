@@ -28,7 +28,7 @@ use CommonBundle\Entity\User\Person,
 class Driver
 {
     /**
-     * @var \CommonBundle\Entity\User\Person The person this driver represents
+     * @var \Doctrine\Common\Collections\ArrayCollection The person this driver represents
      *
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
@@ -37,6 +37,8 @@ class Driver
     private $person;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The years during which the person was a driver
+     *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
      * @ORM\JoinTable(name="logistics.drivers_years",
      *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="person")},
@@ -46,7 +48,7 @@ class Driver
     private $years;
 
     /**
-     * @var string The color for used for this driver.
+     * @var string The color for used for this driver
      *
      * @ORM\Column(type="string", nullable=true)
      */
@@ -60,21 +62,20 @@ class Driver
     private $removed;
 
     /**
-     * Creates a new driver for the given person
-     *
-     * @param \CommonBundle\Entity\User\Person $person The person to mark as a driver.
-     * @param $color The color for this driver.
+     * @param \CommonBundle\Entity\User\Person $person The person to mark as a driver
+     * @param $color The color for this driver
      */
     public function __construct(Person $person, $color)
     {
         $this->person = $person;
         $this->color = $color;
-        $this->years = new ArrayCollection();
         $this->removed = false;
+
+        $this->years = new ArrayCollection();
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person The person associated with this driver.
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {
@@ -82,9 +83,7 @@ class Driver
     }
 
     /**
-     * Retrieves the years in which this person was a driver.
-     *
-     * @return array The years in which this person was a driver.
+     * @return array
      */
     public function getYears()
     {
@@ -92,7 +91,7 @@ class Driver
     }
 
     /**
-     * @param array $years Sets the years in which this person was a driver.
+     * @param array $years
      * @return \LogisticsBundle\Entity\Driver
      */
     public function setYears(array $years)
@@ -102,9 +101,7 @@ class Driver
     }
 
     /**
-     * Retrieves the color used to display the reservations assigned to this driver in the calendar.
-     *
-     * @return string The color code for this driver.
+     * @return string
      */
     public function getColor()
     {
@@ -115,7 +112,7 @@ class Driver
     }
 
     /**
-     * @param string $color Sets the color used for this driver.
+     * @param string $color
      * @return \LogisticsBundle\Entity\Driver
      */
     public function setColor($color)
