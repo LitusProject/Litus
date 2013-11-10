@@ -26,6 +26,7 @@
                 <tr>
                     <th>{{ translate('Item Name') }}</th>
                     <th>{{ translate('Barcode') }}</th>
+                    <th>{{ translate('Amount') }}</th>
                     <th>{{ translate('Leased To') }}</th>
                     <th>{{ translate('Leased On') }}</th>
                     <th>{{ translate('Pawn') }}</th>
@@ -34,9 +35,10 @@
             </thead>
             <tbody>
                 {% for lease in leases %}
-                    <tr data-barcode="{{ lease.getItem().getBarcode() }}" data-pawn="{{ lease.getLeasedPawn() }}">
+                    <tr data-barcode="{{ lease.getItem().getBarcode() }}" data-amount="{{ lease.getLeasedAmount() }}" data-pawn="{{ lease.getLeasedPawn() }}">
                         <td>{{ lease.getItem().getName() }}</td>
                         <td>{{ lease.getItem().getBarcode() }}</td>
+                        <td>{{ lease.getLeasedAmount() }}</td>
                         <td>{{ lease.getLeasedTo() }}</td>
                         <td>{{ lease.getLeasedDate()|date }}</td>
                         <td>{{ lease.getLeasedPawn()|number_format(2) }}</td>
@@ -201,10 +203,10 @@
      */
     $('.js-item-return').click(function() {
         var $tr =  $(this).parents('tr');
-        var barcode = $tr.data('barcode');
-        var pawn = $tr.data('pawn');
-        $('#return .js-item-barcode, #return .js-item-search').val(barcode);
-        $('#returned_pawn').val(pawn);
+
+        $('#return .js-item-barcode, #return .js-item-search').val($tr.data('barcode'));
+        $('#returned_amount').val($tr.data('amount'));
+        $('#returned_pawn').val($tr.data('pawn'));
         $('#returned_by').focus();
     });
 

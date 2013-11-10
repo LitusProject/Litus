@@ -103,6 +103,7 @@ return array(
     'Leases' => 'Leases',
     'Item Name' => 'Item Name',
     'Barcode' => 'Barcode',
+    'Amount' => 'Amount',
     'Leased To' => 'Leased To',
     'Leased On' => 'Leased On',
     'Pawn' => 'Pawn',

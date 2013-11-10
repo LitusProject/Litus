@@ -56,6 +56,11 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setAttribute('class', 'js-item-barcode');
         $this->add($field);
 
+        $field = new Text('returned_amount');
+        $field->setLabel('Amount')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Text('returned_by');
         $field->setLabel('Returned By')
                 ->setAttribute('autocomplete', false)
@@ -102,6 +107,21 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                         new LeaseValidator($this->_entityManager, true),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'returned_amount',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'Digits'),
                     ),
                 )
             )
