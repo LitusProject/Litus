@@ -68,13 +68,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Select('duplicate_hours');
-        $field->setLabel('Duplicate By Hours')
+        $field->setLabel('Duplicate by Hours')
             ->setRequired()
             ->setAttribute('options', $this->_createDuplicatesArray());
         $this->add($field);
 
         $field = new Select('duplicate_days');
-        $field->setLabel('Duplicate By Days')
+        $field->setLabel('Duplicate by Days')
             ->setRequired()
             ->setAttribute('options', $this->_createDuplicatesArray());
         $this->add($field);
