@@ -88,23 +88,18 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneByName($editRole);
                     }
                 }
-                $startDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
-                $endDateObject = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
 
-                $interval = $startDateObject->diff($endDateObject);
+                $interval = $startDate->diff($endDate);
 
-                $duplicate_hours = $formData['duplicate_hours'];
-                $duplicate_days = $formData['duplicate_days'];
-
-                $shiftStartDay = $startDateObject;
-
-                for ($days=0 ; $days < $duplicate_days ; $days++) { 
-                    for ($i = 1 ; $i <= $duplicate_hours; $i++) {
+                for ($i = 0; $i < $formData['duplicate_days']; $i++) {
+                    for ($j = 0; $j < $formData['duplicate_hours']; $j++) {
                         $shift = new Shift(
                             $this->getAuthentication()->getPersonObject(),
                             $this->getCurrentAcademicYear(),
-                            $this->addInterval(clone $shiftStartDay, $interval, $i-1),
-                            $this->addInterval(clone $shiftStartDay, $interval, $i),
+                            $this->addInterval(clone $startDate, $interval, $j),
+                            $this->addInterval(clone $startDate, $interval, $j+1),
                             $manager,
                             $formData['nb_responsibles'],
                             $formData['nb_volunteers'],
@@ -129,7 +124,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                         $this->getEntityManager()->persist($shift);
                     }
-                    $shiftStartDay = $startDateObject->modify('+1 day');
+
+                    $startDate = $startDate->modify('+1 day');
                 }
 
                 $this->getEntityManager()->flush();
@@ -161,9 +157,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     private function addInterval(DateTime $time, $interval, $duplicate){
-        for ($i = 0 ; $i < $duplicate ; $i++) {
+        for ($i = 0; $i < $duplicate; $i++)
             $time = $time->add($interval);
-        }
         return clone $time;
     }
 
