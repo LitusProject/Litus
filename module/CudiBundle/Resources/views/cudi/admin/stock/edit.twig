@@ -28,7 +28,7 @@
                 <td>Not delivered</td>
                 <td style="width:30%">
                     {% if ordered - delivered < 0 %}0{% else %}{{ ordered - delivered }}{% endif %}
-                    {% if ordered + virtualOrdered - delivered > 0 and virtualOrdered != 0 %}({{ ordered + virtualOrdered - delivered }}){% endif %}
+                    {% if ordered + virtualOrdered - delivered > 0 and virtualOrdered != 0 %}<i class="virtualNotDelivered" data-content="There were <b>{{ ordered }}</b> items ordered. But a few times, more items were delivered (<b>{{ virtualOrdered }}</b>). Taking this into account, we are still waiting for <b>{{ ordered + virtualOrdered - delivered }}</b> items.">({{ ordered + virtualOrdered - delivered }})</i>{% endif %}
                 </td>
             </tr>
             <tr>
@@ -134,6 +134,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.virtualNotDelivered').tooltip({placement: 'bottom'});
             $('#add_delivery').click(function (e) {
                 if ($('#delivery_number').val() > {{ maxDelivery }}) {
                     e.preventDefault();
