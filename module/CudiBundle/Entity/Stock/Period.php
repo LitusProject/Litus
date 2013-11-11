@@ -163,6 +163,18 @@ class Period
      *
      * @return integer
      */
+    public function getNbVirtualOrdered(Article $article)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->getNbVirtualOrdered($this, $article);
+    }
+
+    /**
+     * @param \CudiBundle\Entity\Sale\Article $article
+     *
+     * @return integer
+     */
     public function getNbSold(Article $article)
     {
         return $this->_entityManager
