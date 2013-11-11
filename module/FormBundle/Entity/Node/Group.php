@@ -15,6 +15,7 @@
 namespace FormBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,7 +24,7 @@ use CommonBundle\Entity\General\Language,
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Group")
  * @ORM\Table(name="nodes.form_groups")
  */
-class Group
+class Group extends \CommonBundle\Entity\Node
 {
     /**
      * @var int The ID of this tanslation
@@ -49,8 +50,36 @@ class Group
      */
     private $forms;
 
-    public function __construct()
+    /**
+     * @param \CommonBundle\Entity\User\Person $person
+     */
+    public function __construct(Person $person)
     {
+        parent::__construct($person);
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getStartDate()
+    {
+        return $this->forms[0]->getStartDate();
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndDate()
+    {
+        return $this->forms[0]->getEndDate();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->forms[0]->isActive();
     }
 
     /**

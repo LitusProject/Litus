@@ -10,7 +10,7 @@
                 <li><a {% if 'add' == getParam('action') and 'form_admin_form' == getParam('controller') %} class="active" {% endif %} href="{{ url("form_admin_form", {"action": "add"}) }}">Add</a></li>
             {% endif %}
             {% if hasAccess('form_admin_form', 'old') %}
-                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url("form_admin_form", {"action": "old"}) }}">Old</a></li>
+                <li><a {% if 'old' == getParam('action') and 'form_admin_form' == getParam('controller') %} class="active" {% endif %} href="{{ url("form_admin_form", {"action": "old"}) }}">Old</a></li>
             {% endif %}
             {% if hasAccess('form_admin_form', 'manage') %}
                 <li><a {% if ('manage' == getParam('action') or 'edit' == getParam('action')) and 'form_admin_form' == getParam('controller') %} class="active" {% endif %} href="{{ url("form_admin_form", {"action": "manage"}) }}">Manage</a></li>

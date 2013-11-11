@@ -26,6 +26,40 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Group')
+                ->findAllActive(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Group')
+                ->findAllOld(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function addAction()
+    {
         return new ViewModel();
     }
 }

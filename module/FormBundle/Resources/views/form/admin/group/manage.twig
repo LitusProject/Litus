@@ -2,5 +2,66 @@
 
 {% block content %}
     {% include 'form/admin/form/partials/navigation.twig' %}
-    
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="manage">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="150px">Start Date</th>
+                    <th width="150px" class="wider">End Date</th>
+                    <th width="70px">Active</th>
+                    <th width="160px">Author</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for group in paginator %}
+                    <tr class="item item-{{ group.getId() }}">
+                        <td>{{ group.getTitle(language) }}</td>
+                        <td>{{ dateLocalized(group.getStartDate(), 'dd/MM/y HH:mm') }}</td>
+                        <td class="wider">{{ dateLocalized(group.getEndDate(), 'dd/MM/y HH:mm') }}</td>
+                        <td>{% if group.isActive() %}&times;{% endif %}</td>
+                        <td>{{ group.getCreationPerson().getFullName() }}</td>
+                        <td class="actions">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <aside>
+        {% if hasAccess('form_admin_group', 'old') %}
+            <div class="sidebox">
+                <div class="title">Manage Old Groups</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the old groups!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_group', {"action": "old"}) }}">&rarr; Old Groups</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('form_admin_group', 'add') %}
+            <div class="sidebox">
+                <div class="title">Add Group</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_group', {"action": "add"}) }}">&rarr; Add Group</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}
