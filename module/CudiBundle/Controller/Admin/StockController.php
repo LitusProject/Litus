@@ -122,8 +122,16 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->nbAssigned = $period->getNbAssigned($article);
             $item->nbNotAssigned = $period->getNbBooked($article);
             $item->nbInStock = $article->getStockValue();
-            $item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
-            $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+
+            $ordered = $period->getNbOrdered($article);
+            $virtualOrdered = $period->getNbVirtualOrdered($article);
+            $delivered = $period->getNbDelivered($article);
+
+            $item->nbNotDelivered = max(0, $ordered - $delivered);
+            $item->nbOrdered = $ordered;
+            $item->nbVirtualOrdered = $virtualOrdered;
+            $item->nbNotDeliveredVirtual = max(0, $ordered + $virtualOrdered - $delivered);
+
             $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
             $result[] = $item;
         }
@@ -157,8 +165,16 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->nbAssigned = $period->getNbAssigned($article);
             $item->nbNotAssigned = $period->getNbBooked($article);
             $item->nbInStock = $article->getStockValue();
-            $item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
-            $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+
+            $ordered = $period->getNbOrdered($article);
+            $virtualOrdered = $period->getNbVirtualOrdered($article);
+            $delivered = $period->getNbDelivered($article);
+
+            $item->nbNotDelivered = max(0, $ordered - $delivered);
+            $item->nbOrdered = $ordered;
+            $item->nbVirtualOrdered = $virtualOrdered;
+            $item->nbNotDeliveredVirtual = max(0, $ordered + $virtualOrdered - $delivered);
+            
             $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
             $result[] = $item;
         }
