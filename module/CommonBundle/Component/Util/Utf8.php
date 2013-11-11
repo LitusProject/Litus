@@ -19,7 +19,7 @@ namespace CommonBundle\Component\Util;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class UTF8
+class Utf8
 {
     /**
      * Convert a UTF-8 string to HTML.
@@ -30,7 +30,7 @@ class UTF8
      * @return string
      * @throws \CommonBundle\Component\Util\Exception\InvalidArgumentException The given first parameter was not a string
      */
-    public static function utf8toHtml($utf8, $encodeTags = false)
+    public static function utf8ToHtml($utf8, $encodeTags = false)
     {
         if ($utf8 === null)
             return null;

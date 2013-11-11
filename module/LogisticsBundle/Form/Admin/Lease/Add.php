@@ -53,12 +53,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Textarea('additional_info');
-        $field->setLabel('Additional information');
+        $field->setLabel('Additional Info');
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'add');
+            ->setAttribute('class', 'lease_add');
         $this->add($field);
     }
 

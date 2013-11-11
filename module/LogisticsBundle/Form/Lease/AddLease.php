@@ -56,14 +56,19 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setAttribute('class', 'js-item-barcode');
         $this->add($field);
 
+        $field = new Text('leased_amount');
+        $field->setLabel('Amount')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Text('leased_to');
-        $field->setLabel('Leased to')
+        $field->setLabel('Leased To')
                 ->setAttribute('autocomplete', false)
                 ->setRequired();
         $this->add($field);
 
         $field = new Text('leased_pawn');
-        $field->setLabel('Pawn')
+        $field->setLabel('Received Pawn')
                 ->setRequired();
         $this->add($field);
 
@@ -102,6 +107,21 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                         new LeaseValidator($this->_entityManager),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'leased_amount',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'Digits'),
                     ),
                 )
             )

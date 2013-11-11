@@ -1,4 +1,16 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace LogisticsBundle\Entity\Lease;
 
@@ -14,8 +26,7 @@ use Doctrine\ORM\Mapping as ORM,
 class Lease
 {
     /**
-     *
-     * @var int
+     * @var integer The lease's ID
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,8 +35,7 @@ class Lease
     private $id;
 
     /**
-     * The leased item
-     * @var \LogisticsBundle\Entity\Lease\Item
+     * @var \LogisticsBundle\Entity\Lease\Item The leased item
      *
      * @ORM\ManyToOne(targetEntity="Item")
      * @ORM\JoinColumn(name="item", referencedColumnName="id", nullable=false)
@@ -33,16 +43,21 @@ class Lease
     private $item;
 
     /**
-     * The date the item was leased
-     * @var \DateTime
+     * @var integer The number of items that was leased
+     *
+     * @ORM\Column(name="leased_amount", type="integer")
+     */
+    private $leasedAmount;
+
+    /**
+     * @var \DateTime The date the item was leased
      *
      * @ORM\Column(name="leased_date", type="datetime")
      */
     private $leasedDate;
 
     /**
-     * The person who handed the item out
-     * @var \CommonBundle\Entity\User\Person
+     * @var \CommonBundle\Entity\User\Person The person who handed the item out
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="leased_by", referencedColumnName="id", nullable=false)
@@ -50,56 +65,56 @@ class Lease
     private $leasedBy;
 
     /**
-     * The person who received the handed-out item
-     * @var string
+     * @var string The person who received the handed-out item
      *
      * @ORM\Column(name="leased_to", type="text")
      */
     private $leasedTo;
 
     /**
-     * The pawn the person paid for the leased item in eurocents
-     * @var int
+     * @var int The pawn the person paid for the leased item in cents
      *
      * @ORM\Column(name="leased_pawn", type="bigint")
      */
     private $leasedPawn;
 
     /**
-     * Additional information about the lease
-     * @var string
+     * @var string Additional information about the lease
      *
      * @ORM\Column(name="leased_comment", type="text", nullable=true)
      */
     private $leasedComment;
 
     /**
-     * Flag whether the item was already returned
-     * @var boolean
+     * @var boolean Flag whether the item was already returned
      *
      * @ORM\Column(name="returned", type="boolean")
      */
     private $returned;
 
     /**
-     * The date when the item was returned
-     * @var \DateTime
+     * @var integer The number of items that was leased
+     *
+     * @ORM\Column(name="returned_amount", type="integer")
+     */
+    private $returnedAmount;
+
+    /**
+     * @var \DateTime The date when the item was returned
      *
      * @ORM\Column(name="returned_date", type="datetime", nullable=true)
      */
     private $returnedDate;
 
     /**
-     * The person who returned the item
-     * @var string
+     * @var string The person who returned the item
      *
      * @ORM\Column(name="returned_by", type="string", nullable=true)
      */
     private $returnedBy;
 
     /**
-     * The person the item was returned to
-     * @var \CommonBundle\Entity\User\Person
+     * @var \CommonBundle\Entity\User\Person The person the item was returned to
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="returned_to", referencedColumnName="id", nullable=true)
@@ -107,39 +122,41 @@ class Lease
     private $returnedTo;
 
     /**
-     * The pawn the person got back for returning the item in eurocents
-     * @var int
+     * @var int The pawn the person got back for returning the item in cents
      *
      * @ORM\Column(name="returned_pawn", type="bigint", nullable=true)
      */
     private $returnedPawn;
 
     /**
-     * Additional information about the return
-     * @var string
+     * @var string Additional information about the return
      *
      * @ORM\Column(name="returned_comment", type="text", nullable=true)
      */
     private $returnedComment;
 
     /**
-     *
      * @param \LogisticsBundle\Entity\Lease\Item $item The leased item
+     * @param int $leasedAmount The number of items that was leased
      * @param \DateTime $leasedDate The date of the lease
      * @param \CommonBundle\Entity\User\Person $leasedBy The person who handed out the item
      * @param string $leasedTo The person who received the item
-     * @param int $leasedPawn The pawn paid for the item (in euros)
+     * @param int $leasedPawn The pawn paid for the item
      * @param string $leasedComment An optional comment for the lease
      */
-    public function __construct(Item $item, \DateTime $leasedDate, Person $leasedBy, $leasedTo, $leasedPawn, $leasedComment = null)
+    public function __construct(Item $item, $leasedAmount, \DateTime $leasedDate, Person $leasedBy, $leasedTo, $leasedPawn, $leasedComment = null)
     {
         $this->item = $item;
+
+        $this->leasedAmount = $leasedAmount;
         $this->leasedDate = $leasedDate;
         $this->leasedBy = $leasedBy;
         $this->leasedTo = $leasedTo;
         $this->leasedPawn = $leasedPawn * 100;
         $this->leasedComment = $leasedComment;
+
         $this->returned = false;
+        $this->returnedAmount = 0;
         $this->returnedDate = null;
         $this->returnedBy = null;
         $this->returnedTo = null;
@@ -148,8 +165,6 @@ class Lease
     }
 
     /**
-     * Get id
-     *
      * @return integer
      */
     public function getId()
@@ -158,8 +173,32 @@ class Lease
     }
 
     /**
-     * Get leasedDate
-     *
+     * @return \LogisticsBundle\Entity\Lease\Item
+     */
+    public function getItem()
+    {
+        return $this->item;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getLeasedAmount()
+    {
+        return $this->leasedAmount;
+    }
+
+    /**
+     * @param integer $leasedAmount
+     * @return \LogisticsBundle\Entity\Lease\Lease
+     */
+    public function setLeasedAmount($leasedAmount)
+    {
+        $this->leasedAmount = $leasedAmount;
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getLeasedDate()
@@ -168,8 +207,6 @@ class Lease
     }
 
     /**
-     * Get leasedBy
-     *
      * @return \CommonBundle\Entity\User\Person
      */
     public function getLeasedBy()
@@ -178,8 +215,6 @@ class Lease
     }
 
     /**
-     * Get leasedTo
-     *
      * @return string
      */
     public function getLeasedTo()
@@ -188,8 +223,6 @@ class Lease
     }
 
     /**
-     * Get leasedPawn
-     *
      * @return float
      */
     public function getLeasedPawn()
@@ -198,8 +231,6 @@ class Lease
     }
 
     /**
-     * Get leasedComment
-     *
      * @return string
      */
     public function getLeasedComment()
@@ -208,21 +239,6 @@ class Lease
     }
 
     /**
-     * Set returned
-     *
-     * @param boolean $returned
-     * @return Lease
-     */
-    public function setReturned($returned)
-    {
-        $this->returned = $returned;
-
-        return $this;
-    }
-
-    /**
-     * Get returned
-     *
      * @return boolean
      */
     public function isReturned()
@@ -231,22 +247,45 @@ class Lease
     }
 
     /**
-     * Set returnedDate
-     *
-     * @param \DateTime $returnedDate
-     * @return Lease
+     * @param boolean $returned
+     * @return \LogisticsBundle\Entity\Lease\Lease
      */
-    public function setReturnedDate(\DateTime $returnedDate)
+    public function setReturned($returned)
     {
-        $this->returnedDate = $returnedDate;
-
+        $this->returned = $returned;
         return $this;
     }
 
     /**
-     * Get returnedDate
-     *
-     * @return \DateTime|null
+     * @return integer
+     */
+    public function getReturnedAmount()
+    {
+        return $this->returnedAmount;
+    }
+
+    /**
+     * @param integer $returnedAmount
+     * @return \LogisticsBundle\Entity\Lease\Lease
+     */
+    public function setReturnedAmount($returnedAmount)
+    {
+        $this->returnedAmount = $returnedAmount;
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $returnedDate
+     * @return \LogisticsBundle\Entity\Lease\Lease
+     */
+    public function setReturnedDate(\DateTime $returnedDate)
+    {
+        $this->returnedDate = $returnedDate;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
      */
     public function getReturnedDate()
     {
@@ -254,10 +293,8 @@ class Lease
     }
 
     /**
-     * Set returnedBy
-     *
      * @param string $returnedBy
-     * @return Lease
+     * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedBy($returnedBy)
     {
@@ -267,9 +304,7 @@ class Lease
     }
 
     /**
-     * Get returnedBy
-     *
-     * @return string|null
+     * @return string
      */
     public function getReturnedBy()
     {
@@ -277,21 +312,16 @@ class Lease
     }
 
     /**
-     * Set returnedTo
-     *
      * @param \CommonBundle\Entity\User\Person $returnedTo
-     * @return Lease
+     * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedTo(Person $returnedTo)
     {
         $this->returnedTo = $returnedTo;
-
         return $this;
     }
 
     /**
-     * Get returnedTo
-     *
      * @return \CommonBundle\Entity\User\Person|null
      */
     public function getReturnedTo()
@@ -300,10 +330,8 @@ class Lease
     }
 
     /**
-     * Set returnedPawn
-     *
      * @param float $returnedPawn
-     * @return Lease
+     * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedPawn($returnedPawn)
     {
@@ -313,45 +341,28 @@ class Lease
     }
 
     /**
-     * Get returnedPawn
-     *
      * @return float
      */
     public function getReturnedPawn()
     {
         return $this->returnedPawn/100;
     }
-    
+
     /**
-     * Set returnedComment
-     *
      * @param string $returnedComment
-     * @return Lease
+     * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedComment($returnedComment)
     {
         $this->returnedComment = $returnedComment;
-
         return $this;
     }
 
     /**
-     * Get returnedComment
-     *
      * @return string
      */
     public function getReturnedComment()
     {
         return $this->returnedComment;
-    }
-
-    /**
-     * Get item
-     *
-     * @return \LogisticsBundle\Entity\Lease\Item
-     */
-    public function getItem()
-    {
-        return $this->item;
     }
 }

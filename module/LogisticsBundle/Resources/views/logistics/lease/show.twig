@@ -2,11 +2,11 @@
 
 {% block content %}
 <dl>
-    <dt>{{ translate('Item name') }}</dt>
+    <dt>{{ translate('Item Name') }}</dt>
     <dd>{{ lease.getItem().getName() }}</dd>
     <dt>{{ translate('Barcode') }}</dt>
     <dd>{{ lease.getItem().getBarcode() }}</dd>
-    <dt>{{ translate('Additional info') }}</dt>
+    <dt>{{ translate('Additional Info') }}</dt>
     <dd>{{ lease.getItem().getAdditionalInfo() }}</dd>
     <dt>{{ translate('Leased') }}</dt>
     <dd>
@@ -15,6 +15,8 @@
             <dd>{{ lease.getLeasedBy().getFullName() }}</dd>
             <dt>{{ translate('To') }}</dt>
             <dd>{{ lease.getLeasedTo() }}</dd>
+            <dt>{{ translate('Amount') }}</dt>
+            <dd>{{ lease.getLeasedAmount() }}</dd>
             <dt>{{ translate('Date') }}</dt>
             <dd>{{ lease.getLeasedDate()|date }}</td>
             <dt>{{ translate('Pawn') }}</dt>
@@ -33,6 +35,8 @@
                 <dd>{{ lease.getReturnedBy() }}</dd>
                 <dt>{{ translate('To') }}</dt>
                 <dd>{{ lease.getReturnedTo().getFullName() }}</dd>
+                <dt>{{ translate('Amount') }}</dt>
+                <dd>{{ lease.getReturnedAmount() }}</dd>
                 <dt>{{ translate('Date') }}</dt>
                 <dd>{{ lease.getReturnedDate()|date }}</td>
                 <dt>{{ translate('Pawn') }}</dt>
@@ -43,7 +47,7 @@
                 {% endif %}
             </dl>
         {% else %}
-            {{ translate('Not yet returned') }}
+            {{ translate('Not Yet Returned') }}
         {% endif %}
     </dd>
 

@@ -225,8 +225,15 @@
 {% endblock %}
 
 {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
+    {% set previousShift = null %}
     <div class="accordion" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
+            {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
+                <h3>{{translate('Shifts on')}} {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
+            {% endif %}
+
+            {% set previousShift = shift %}
+
             <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
