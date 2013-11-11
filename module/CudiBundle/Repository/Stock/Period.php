@@ -128,7 +128,7 @@ class Period extends EntityRepository
         if ($notDelivered) {
             $results = array();
             for($i = 0 ; $i < count($resultSet) ; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $results[] = $resultSet[$i];
             }
             return $results;
@@ -155,7 +155,7 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             for($i = 0 ; $i < count($resultSet) ; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
         }
@@ -185,7 +185,7 @@ class Period extends EntityRepository
 
         $articles = array();
         foreach($resultSet as $barcode) {
-            if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) - $period->getNbDelivered($barcode->getArticle()) <= 0)
+            if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($barcode->getArticle()) <= 0)
                 continue;
             $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
         }
@@ -211,7 +211,7 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             for($i = 0 ; $i < count($resultSet) ; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
         }
@@ -259,6 +259,32 @@ class Period extends EntityRepository
             )
             ->where(
                    $query->expr()->eq('i.article', ':article')
+            )
+            ->setParameter('startDate', $period->getStartDate())
+            ->setParameter('article', $article->getId());
+
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->getQuery()
+            ->getSingleScalarResult();
+
+        if (null !== $resultSet)
+            return $resultSet;
+        return 0;
+    }
+
+    public function getNbVirtualOrdered(PeriodEntity $period, Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $query->select('SUM(i.number)')
+            ->from('CudiBundle\Entity\Stock\Order\Virtual', 'i')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('i.article', ':article'),
+                    $query->expr()->gt('i.dateCreated', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateCreated', ':endDate')
+                )
             )
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
