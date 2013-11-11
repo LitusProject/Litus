@@ -46,13 +46,19 @@
                 </tr>
 
                 {% for article in paginator %}
+                    {% set ordered = period.getNbOrdered(article) %}
+                    {% set virtualOrdered = period.getNbVirtualOrdered(article) %}
+                    {% set delivered = period.getNbDelivered(article) %}
                     <tr>
                         <td>{{ article.getMainArticle().getTitle() }}</td>
                         <td>{{ article.getSupplier().getName() }}</td>
                         <td class="widest">{{ period.getNbAssigned(article) }}</td>
                         <td class="widest">{{ period.getNbBooked(article) }}</td>
                         <td>{{ article.getStockValue() }}</td>
-                        <td>{% if period.getNbOrdered(article) - period.getNbDelivered(article) < 0 %}0{% else %}{{ period.getNbOrdered(article) - period.getNbDelivered(article) }}{% endif %}</td>
+                        <td>
+                            {% if ordered - delivered < 0 %}0{% else %}{{ ordered - delivered }}{% endif %}
+                            {% if ordered + virtualOrdered - delivered > 0 and virtualOrdered != 0 %}<i>({{ ordered + virtualOrdered - delivered }})</i>{% endif %}
+                        </td>
                         <td>{{ period.getNbBooked(article) + period.getNbAssigned(article) }}</td>
                         <td class="actions">
                             {% if hasAccess('cudi_admin_stock', 'edit') %}
