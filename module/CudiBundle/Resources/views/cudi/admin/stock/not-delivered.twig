@@ -57,7 +57,7 @@
                         <td>{{ article.getStockValue() }}</td>
                         <td>
                             {% if ordered - delivered < 0 %}0{% else %}{{ ordered - delivered }}{% endif %}
-                            {% if ordered + virtualOrdered - delivered > 0 and virtualOrdered != 0 %}<i>({{ ordered + virtualOrdered - delivered }})</i>{% endif %}
+                            {% if ordered + virtualOrdered - delivered > 0 and virtualOrdered != 0 %}<i class="virtualNotDelivered" data-content="There were <b>{{ ordered }}</b> items ordered. But a few times, more items were delivered (<b>{{ virtualOrdered }}</b>). Taking this into account, we are still waiting for <b>{{ ordered + virtualOrdered - delivered }}</b> items.">({{ ordered + virtualOrdered - delivered }})</i>{% endif %}
                         </td>
                         <td>{{ period.getNbBooked(article) + period.getNbAssigned(article) }}</td>
                         <td class="actions">
@@ -77,6 +77,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.virtualNotDelivered').tooltip({placement: 'bottom'});
             {% if hasAccess('cudi_admin_stock', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
@@ -94,11 +95,12 @@
                             .append('<td class="widest">' + this.nbAssigned + '</td>')
                             .append('<td class="widest">' + this.nbNotAssigned + '</td>')
                             .append('<td>' + this.nbInStock + '</td>')
-                            .append('<td>' + this.nbNotDelivered + '</td>')
+                            .append('<td>' + this.nbNotDelivered + (this.nbNotDeliveredVirtual > 0 ? ' <i class="virtualNotDelivered" data-content="There were <b>' + this.nbOrdered + '</b> items ordered. But a few times, more items were delivered (<b>' + this.nbVirtualOrdered + '</b>). Taking this into account, we are still waiting for <b>' + this.nbNotDeliveredVirtual + '</b> items.">(' + this.nbNotDeliveredVirtual + ')</i>' : '') + '</td>')
                             .append('<td>' + this.nbReserved + '</td>')
                             .append('<td class="actions"><a href="{{ url('cudi_admin_stock', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a></td>');
                     });
                     $('#stock_search table').change();
+                    $('#stock_search .virtualNotDelivered').tooltip({placement: 'bottom'});
                 }
                 ,
                 clear: function () {
