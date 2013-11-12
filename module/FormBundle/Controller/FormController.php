@@ -409,6 +409,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                                 $fileName = $fieldEntry->getValue();
                             }
 
+                            if (file_exists($filePath . '/' . $fileName))
+                                unlink($filePath . '/' . $fileName);
                             $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
                             $upload->receive('field-' . $field->getId());
 
