@@ -38,15 +38,15 @@ class Group extends \CommonBundle\Entity\Node
     /**
      * @var array The translations of this form
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation\Group", mappedBy="form", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation\Group", mappedBy="group", cascade={"remove"})
      */
     private $translations;
 
     /**
      * @var array The translations of this form
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Group\Mapping", mappedBy="form_group", cascade={"remove"})
-     * @ORM\OrderBy({"group_order" = "ASC"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Group\Mapping", mappedBy="group", cascade={"remove"})
+     * @ORM\OrderBy({"order" = "ASC"})
      */
     private $forms;
 
@@ -63,7 +63,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getStartDate()
     {
-        return $this->forms[0]->getStartDate();
+        return $this->forms[0]->getForm()->getStartDate();
     }
 
     /**
@@ -71,7 +71,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getEndDate()
     {
-        return $this->forms[0]->getEndDate();
+        return $this->forms[0]->getForm()->getEndDate();
     }
 
     /**
@@ -79,7 +79,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function isActive()
     {
-        return $this->forms[0]->isActive();
+        return $this->forms[0]->getForm()->isActive();
     }
 
     /**

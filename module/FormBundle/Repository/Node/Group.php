@@ -52,7 +52,7 @@ class Group extends EntityRepository
 
         $groups = array();
         foreach($resultSet as $group) {
-            $groups[$group->getGroup()->getForms()[0]->getStartDate()->getTimestamp()] = $group->getGroup();
+            $groups[$group->getGroup()->getForms()[0]->getForm()->getStartDate()->getTimestamp()] = $group->getGroup();
         }
 
         return array_values($groups);
@@ -86,7 +86,7 @@ class Group extends EntityRepository
 
         $groups = array();
         foreach($resultSet as $group) {
-            $groups[$group->getGroup()->getForms()[0]->getStartDate()->getTimestamp()] = $group->getGroup();
+            $groups[$group->getGroup()->getForms()[0]->getForm()->getStartDate()->getTimestamp()] = $group->getGroup();
         }
 
         return array_values($groups);
