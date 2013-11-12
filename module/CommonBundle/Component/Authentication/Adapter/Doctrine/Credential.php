@@ -88,7 +88,6 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
             );
         } else {
             $credential = $this->getPersonObject()->getCredential();
-            // throw new \Exception('shouldUpdate is ' . $credential->shouldUpdate());
             if ($credential->shouldUpdate()) {
                 $credential->update($this->getCredential());
                 $this->getEntityManager()->flush();
