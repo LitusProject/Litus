@@ -24,6 +24,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Credential
 {
+    const DEFAULT_ALGORITHM = 'sha512';
+
+    const DEFAULT_NB_ITERATIONS = 1000;
+
     /**
      * @var int The ID of this credential
      *
@@ -69,7 +73,7 @@ class Credential
      * @param int $integer The number of hash iterations
      * @throws \InvalidArgumentException
      */
-    public function __construct($credential, $algorithm = 'sha512', $iterations = 1000)
+    public function __construct($credential, $algorithm = self::DEFAULT_ALGORITHM, $iterations = self::DEFAULT_NB_ITERATIONS)
     {
         if (!in_array($algorithm, hash_algos()))
             throw new \InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
@@ -78,9 +82,22 @@ class Credential
         $this->salt = bin2hex(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
         $this->iterations = $iterations;
 
-        $this->hash = hash_hmac($algorithm, $credential, $this->salt);
+        $this->hash = $this->_hash($credential);
+    }
+    
+    /**
+     * Hashes a credential.
+     *
+     * @param string $credential The credential to hash
+     * @return string the hashed credential
+     */
+    private function _hash($credential)
+    {
+        $hash = hash_hmac($this->algorithm, $credential, $this->salt);
         for ($i = 0; $i < $this->iterations; $i++)
-            $this->hash = hash_hmac($algorithm, $this->hash, $this->salt);
+            $hash = hash_hmac($this->algorithm, $hash, $this->salt);
+        
+        return $hash;
     }
 
     /**
@@ -91,10 +108,32 @@ class Credential
      */
     public function validateCredential($credential)
     {
-        $hash = hash_hmac($this->algorithm, $credential, $this->salt);
-        for ($i = 0; $i < $this->iterations; $i++)
-            $hash = hash_hmac($this->algorithm, $hash, $this->salt);
-
-        return $hash == $this->hash;
+        return $this->_hash($credential) == $this->hash;
+    }
+    
+    /**
+     * Checks whether the credential should be updated.
+     *
+     * @return bool
+     */
+    public function shouldUpdate()
+    {
+        return ($this->algorithm !== self::DEFAULT_ALGORITHM) || ($this->iterations !== self::DEFAULT_NB_ITERATIONS);
+    }
+    
+    /**
+     * Updates the credential if needed.
+     * If the given credential does not match, nothing happens.
+     *
+     * @param string $credential the unhashed credential to update
+     */
+    public function update($credential)
+    {
+        if (!$this->shouldUpdate() || !$this->validateCredential($credential))
+            return;
+        
+        $this->algorithm = self::DEFAULT_ALGORITHM;
+        $this->iterations = self::DEFAULT_NB_ITERATIONS;
+        $this->hash = $this->_hash($credential);
     }
 }
