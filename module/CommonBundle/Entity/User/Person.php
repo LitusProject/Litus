@@ -241,11 +241,11 @@ abstract class Person
     }
 
     /**
-     * @return string
+     * @return \CommonBundle\Entity\User\Credential
      */
     public function getCredential()
     {
-        return $this->credential->getCredential();
+        return $this->credential;
     }
 
     /**
