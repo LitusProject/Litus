@@ -233,15 +233,29 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $mail->addTo($formData['from']);
                     }
 
+                    $academics = array();
+                    foreach($enrollments as $enrollment)
+                        $academics[] = $enrollment->getAcademic()->getEmail();
+
+                    $addresses = array_merge(
+                        $academics, $extraMembers, $bccs
+                    );
+
+                    $i = 0;
                     if (!$formData['test']) {
-                        foreach($enrollments as $enrollment)
-                            $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+                        foreach ($addresses as $address) {
+                            $i++;
+                            $mail->addBcc($address);
+                        }
 
-                        foreach($extraMembers as $extraMember)
-                            $mail->addBcc($extraMember);
+                        if (500 == $i) {
+                            $i = 0;
 
-                        foreach($bccs as $bcc)
-                            $mail->addBcc($bcc);
+                            if ('development' != getenv('APPLICATION_ENV'))
+                                $this->getMailTransport()->send($mail);
+
+                            $mail->setBcc(array());
+                        }
                     }
 
                     if ('development' != getenv('APPLICATION_ENV'))
