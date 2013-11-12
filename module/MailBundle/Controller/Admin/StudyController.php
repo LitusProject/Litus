@@ -246,15 +246,15 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         foreach ($addresses as $address) {
                             $i++;
                             $mail->addBcc($address);
-                        }
 
-                        if (500 == $i) {
-                            $i = 0;
+                            if (500 == $i) {
+                                $i = 0;
 
-                            if ('development' != getenv('APPLICATION_ENV'))
-                                $this->getMailTransport()->send($mail);
+                                if ('development' != getenv('APPLICATION_ENV'))
+                                    $this->getMailTransport()->send($mail);
 
-                            $mail->setBcc(array());
+                                $mail->setBcc(array());
+                            }
                         }
                     }
 
