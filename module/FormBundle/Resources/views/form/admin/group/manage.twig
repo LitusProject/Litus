@@ -27,6 +27,9 @@
                         <td>{% if group.isActive() %}&times;{% endif %}</td>
                         <td>{{ group.getCreationPerson().getFullName() }}</td>
                         <td class="actions">
+                            {% if hasAccess('form_admin_group', 'edit') %}
+                                <a href="{{ url('form_admin_group', {"action": "edit", "id": group.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

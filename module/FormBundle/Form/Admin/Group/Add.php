@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     Zend\Form\Element\Submit;
 
 /**
- * Add Form
+ * Add Group
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
