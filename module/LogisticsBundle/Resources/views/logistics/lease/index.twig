@@ -87,94 +87,94 @@
 
     })();
 
-(function() {
-    /*
-     * Item search and barcode validation
-     */
+    (function() {
+        /*
+         * Item search and barcode validation
+         */
 
-    /* Utility functions */
-    function error($control_group, $submit, text) {
-        // Error happened.
-        //  Color .control-group, disable submit, add error description to the field.
-        $control_group.addClass('error');
-        $submit.attr({disabled: true});
-        $control_group.find('.controls').append('<div class="help-inline"><ul><li>'+text+'</li></ul></div>');
-    }
-    function success($control_group, $submit, text) {
-        // Validation success.
-        //  Color .control-group, enable submit, add additional info to the field.
-        $control_group.addClass('success');
-        $submit.attr({disabled: false});
-        $control_group.find('.controls').append('<span class="help-block js-additional_info">'+text+'</span>');
-    }
-    function reset($control_group) {
-        // Reset error/success state and remove errors/additional info.
-        $control_group.removeClass('success')
-                .removeClass('error')
-                .find('.help-inline, .help-block').detach();
-    }
-
-    /* Item search or barcode input. Triggers change() on .js-item-barcode only if barcode is manually entered. */
-    $('.js-item-search').change(function() {
-        var $this = $(this);
-        var $form = $this.parents('form');
-        $form.find('.js-additional_info').remove();
-        var $barcode = $form.find('.js-item-barcode');
-        if(/^[0-9]{12}$/.test($this.val())) {
-            // Full barcode entered
-            $barcode.val($this.val()).change();
-        } else if ($this.data('value')) {
-            // Typeahead item clicked
-            $barcode.val($this.data('value').id);
-            success($this.parents('.control-group'), $form.find('.btn'), $this.data('value').additional_info);
-        } else {
-            // Something else, blank barcode
-            $barcode.val('');
+        /* Utility functions */
+        function error($control_group, $submit, text) {
+            // Error happened.
+            //  Color .control-group, disable submit, add error description to the field.
+            $control_group.addClass('error');
+            $submit.attr({disabled: true});
+            $control_group.find('.controls').append('<div class="help-inline"><ul><li>'+text+'</li></ul></div>');
         }
-    }).focus(function() {
-        reset($(this).parents('.control-group'));
-    });
+        function success($control_group, $submit, text) {
+            // Validation success.
+            //  Color .control-group, enable submit, add additional info to the field.
+            $control_group.addClass('success');
+            $submit.attr({disabled: false});
+            $control_group.find('.controls').append('<span class="help-block js-additional_info">'+text+'</span>');
+        }
+        function reset($control_group) {
+            // Reset error/success state and remove errors/additional info.
+            $control_group.removeClass('success')
+                    .removeClass('error')
+                    .find('.help-inline, .help-block').detach();
+        }
 
-    /* Manually entered barcode validation */
-    $('.js-item-barcode').change(function() {
-        var $this = $(this);
-        var $control_group = $this.prev();
-        $control_group.removeClass('error').removeClass('success');
-        $control_group.find('.controls').find('.help-inline, .help-block').detach();
-        var $form = $control_group.parents('form');
-        var $submit = $form.find('.btn');
-        $.get("{{ url('logistics_lease', {'action':'availabilityCheck'}) }}"+$this.val(), function(data) {
-            if(!data)
-                return;
-            switch(data.status) {
-                case 'noSuchItem':
-                    // Barcode not linked to any item at all
-                    error($control_group, $submit, '{{ translate('No lease item with this barcode exists') }}');
-                    break;
-                case 'leased':
-                    // Barcode linked to an item that is currently leased
-                    if($form.attr('id') === 'lease') {
-                        // This is an error when someone is trying to lease an item
-                        error($control_group, $submit, '{{ translate('This item is already leased') }}');
-                    } else {
-                        // But a success if it is being returned, or searched
-                        success($control_group, $submit, data.additional_info);
-                    }
-                    break;
-                case 'returned':
-                    // Barcode linked to an item that is currently not leased
-                    if($form.attr('id') === 'return') {
-                        // This is an error when someone is trying to return this item
-                        error($control_group, $submit, '{{ translate('This item is already returned') }}');
-                    } else {
-                        // But a success if it is being leased, or searched
-                        success($control_group, $submit, data.additional_info);
-                    }
-                    break;
+        /* Item search or barcode input. Triggers change() on .js-item-barcode only if barcode is manually entered. */
+        $('.js-item-search').change(function() {
+            var $this = $(this);
+            var $form = $this.parents('form');
+            $form.find('.js-additional_info').remove();
+            var $barcode = $form.find('.js-item-barcode');
+            if(/^[0-9]{12}$/.test($this.val())) {
+                // Full barcode entered
+                $barcode.val($this.val()).change();
+            } else if ($this.data('value')) {
+                // Typeahead item clicked
+                $barcode.val($this.data('value').id);
+                success($this.parents('.control-group'), $form.find('.btn'), $this.data('value').additional_info);
+            } else {
+                // Something else, blank barcode
+                $barcode.val('');
             }
-        }, 'json');
-    });
-})();
+        }).focus(function() {
+            reset($(this).parents('.control-group'));
+        });
+
+        /* Manually entered barcode validation */
+        $('.js-item-barcode').change(function() {
+            var $this = $(this);
+            var $control_group = $this.prev();
+            $control_group.removeClass('error').removeClass('success');
+            $control_group.find('.controls').find('.help-inline, .help-block').detach();
+            var $form = $control_group.parents('form');
+            var $submit = $form.find('.btn');
+            $.get("{{ url('logistics_lease', {'action':'availabilityCheck'}) }}"+$this.val(), function(data) {
+                if(!data)
+                    return;
+                switch(data.status) {
+                    case 'noSuchItem':
+                        // Barcode not linked to any item at all
+                        error($control_group, $submit, '{{ translate('No lease item with this barcode exists') }}');
+                        break;
+                    case 'leased':
+                        // Barcode linked to an item that is currently leased
+                        if($form.attr('id') === 'lease') {
+                            // This is an error when someone is trying to lease an item
+                            error($control_group, $submit, '{{ translate('This item is already leased') }}');
+                        } else {
+                            // But a success if it is being returned, or searched
+                            success($control_group, $submit, data.additional_info);
+                        }
+                        break;
+                    case 'returned':
+                        // Barcode linked to an item that is currently not leased
+                        if($form.attr('id') === 'return') {
+                            // This is an error when someone is trying to return this item
+                            error($control_group, $submit, '{{ translate('This item is already returned') }}');
+                        } else {
+                            // But a success if it is being leased, or searched
+                            success($control_group, $submit, data.additional_info);
+                        }
+                        break;
+                }
+            }, 'json');
+        });
+    })();
 
     /*
      * Item search typeaheads
