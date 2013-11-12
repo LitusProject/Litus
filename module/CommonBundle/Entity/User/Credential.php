@@ -69,7 +69,7 @@ class Credential
      * @param int $integer The number of hash iterations
      * @throws \InvalidArgumentException
      */
-    public function __construct($algorithm, $credential, $iterations = 1000)
+    public function __construct($credential, $algorithm = 'sha512', $iterations = 1000)
     {
         if (!in_array($algorithm, hash_algos()))
             throw new \InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
