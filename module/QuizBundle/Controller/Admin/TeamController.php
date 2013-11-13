@@ -110,8 +110,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $team->setName($formData['name']);
-                $team->setNumber($formData['number']);
+                $team->setName($formData['name'])
+                    ->setNumber($formData['number']);
 
                 $this->getEntityManager()->flush();
 
