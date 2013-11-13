@@ -24,6 +24,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('form_admin_group', 'edit') and group is not null %}
+            <div class="sidebox">
+                <div class="title">Edit Group</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the group of this form!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_group', {"action": "edit", "id": group.getGroup().getId()}) }}">&rarr; Edit Group</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
         {% if hasAccess('form_admin_form_viewer', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage View Access</div>

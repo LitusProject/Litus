@@ -15,23 +15,17 @@
 namespace FormBundle\Form\Admin\Group;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Node\Form,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Add Group
+ * Add Mapping
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
+class Mapping extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -48,35 +42,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->_entityManager = $entityManager;
 
-        $tabs = new Tabs('languages');
-        $this->add($tabs);
-
-        $tabContent = new TabContent('tab_content');
-
-        foreach($this->getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('tab_' . $language->getAbbrev());
-
-            $field = new Text('title_' . $language->getAbbrev());
-            $field->setLabel('Title')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-            $pane->add($field);
-
-            $field = new Textarea('introduction_' . $language->getAbbrev());
-            $field->setLabel('Introduction')
-                ->setAttribute('class', 'md')
-                ->setAttribute('rows', 20)
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-            $pane->add($field);
-
-            $tabContent->add($pane);
-        }
-
-        $this->add($tabContent);
-
-        $field = new Select('start_form');
-        $field->setLabel('Start Form')
+        $field = new Select('form');
+        $field->setLabel('Form')
             ->setAttribute('options', $this->getActiveForms());
         $this->add($field);
 
@@ -121,36 +88,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        foreach($this->getLanguages() as $language) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'introduction_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
-
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'start_form',
+                    'name'     => 'form',
                     'required' => true,
                 )
             )

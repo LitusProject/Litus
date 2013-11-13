@@ -1,0 +1,57 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>{{ group.getTitle(language) }}</h1>
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br />
+        <br />
+
+        <table class="manage">
+            <thead>
+                <tr>
+                    <th width="50px">Type</th>
+                    <th>Name</th>
+                    <th width="160px">Author</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for form in group.getForms() %}
+                    <tr class="item item-{{ form.getId() }}">
+                        <td>{{ form.getForm().getType()|capitalize }}</td>
+                        <td>{{ form.getForm().getTitle(language) }}</td>
+                        <td>{{ form.getForm().getCreationPerson().getFullName() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('form_admin_form', 'edit') %}
+                                <a href="{{ url('form_admin_form', {"action": "edit", "id": form.getForm().getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <aside>
+        {% if hasAccess('form_admin_group', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Group</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_group', {"action": "edit", "id": group.getId()}) }}">&rarr; Edit Group</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}

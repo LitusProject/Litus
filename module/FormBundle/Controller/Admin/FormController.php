@@ -205,7 +205,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
 
-         $formSpecification->setEntityManager($this->getEntityManager());
+        $formSpecification->setEntityManager($this->getEntityManager());
+
+        $group = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneByForm($formSpecification);
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(
@@ -374,6 +378,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'group' => $group,
                 'form' => $form,
                 'formSpecification' => $formSpecification,
             )

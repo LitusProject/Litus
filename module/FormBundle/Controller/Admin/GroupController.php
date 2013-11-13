@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Node\Translation\Group as GroupTranslation,
     FormBundle\Form\Admin\Group\Add as AddForm,
     FormBundle\Form\Admin\Group\Edit as EditForm,
+    FormBundle\Form\Admin\Group\Mapping as MappingForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -198,6 +199,63 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form' => $form,
+                'group' => $group,
+            )
+        );
+    }
+
+    public function formsAction()
+    {
+        if (!($group = $this->_getGroup()))
+            return new ViewModel();
+
+        $form = new MappingForm($this->getEntityManager());
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $form = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Form')
+                    ->findOneById($formData['form']);
+
+                if (sizeof($group->getForms()) > 0) {
+                    $order = $group->getForms()[sizeof($group->getForms())-1]->getOrder() + 1;
+                } else {
+                    $order = 1;
+                }
+
+                $this->getEntityManager()->persist(new Mapping($form, $group, $order));
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The form was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_admin_group',
+                    array(
+                        'action' => 'forms',
+                        'id' => $group->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'group' => $group,
             )
         );
     }

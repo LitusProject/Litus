@@ -108,4 +108,12 @@ class Mapping
         $this->group = $group;
         return $this;
     }
+
+    /**
+     * @return integer
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
 }

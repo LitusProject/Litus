@@ -9,6 +9,22 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
+
+    <aside>
+        {% if hasAccess('form_admin_group', 'forms') %}
+            <div class="sidebox">
+                <div class="title">Manage Group Forms</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the forms of this group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_group', {"action": "forms", "id": group.getId()}) }}">&rarr; Manage Forms</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}
 
 {% block content_script %}
