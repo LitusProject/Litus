@@ -54,6 +54,8 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
+            '@common_jqueryui',
+            '@common_jquery_table_sort',
         ),
         'form_admin_form_viewer' => array(
             '@common_jquery',

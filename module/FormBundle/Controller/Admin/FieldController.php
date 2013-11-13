@@ -423,7 +423,6 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        // Delete all entered values
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($field);
@@ -437,6 +436,40 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function sortAction()
+    {
+        $this->initAjax();
+
+        if(!($formSpecification = $this->_getForm()))
+            return new ViewModel();
+
+        if(!$this->getRequest()->isPost())
+            return new ViewModel();
+
+        $data = $this->getRequest()->getPost();
+
+        if(!$data['items'])
+            return new ViewModel();
+
+        foreach($data['items'] as $order => $id)
+        {
+            $field = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Field')
+                ->findOneById($id);
+            $field->setOrder($order+1);
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                )
             )
         );
     }
