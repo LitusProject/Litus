@@ -98,9 +98,6 @@
             e.preventDefault();
             var removeForm = $('#removeForm');
             removeForm.find('.name').html($(this).data('name'));
-            removeForm.find('.cancel').one('click', function () {
-                removeForm.modal('hide');
-            });
             var id = $this.data('id');
             removeForm.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('form_admin_form', {"action": "delete"})}}' + id, function (data) {

@@ -412,7 +412,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        // Delete all fields
         $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
             ->findAllByForm($form);
@@ -420,7 +419,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         foreach ($fields as $field)
             $this->_deleteField($field);
 
-        // Delete all entries
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($form);
@@ -428,7 +426,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         foreach ($entries as $entry)
             $this->getEntityManager()->remove($entry);
 
-        // Delete all viewers
         $viewers = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findAllByForm($form);
@@ -451,7 +448,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     private function _deleteField($field)
     {
-        // Delete all entered values
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($field);

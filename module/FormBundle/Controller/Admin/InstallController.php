@@ -100,8 +100,11 @@ VTK',
                     'form_admin_form' => array(
                         'add', 'delete', 'edit', 'manage', 'old'
                     ),
+                    'form_admin_group' => array(
+                        'add', 'delete', 'deleteForm', 'edit', 'forms', 'manage', 'old', 'sort'
+                    ),
                     'form_admin_form_field' => array(
-                        'add', 'delete', 'edit', 'manage'
+                        'add', 'delete', 'edit', 'manage', 'sort'
                     ),
                     'form_admin_form_viewer' => array(
                         'add', 'delete', 'manage'

@@ -204,6 +204,26 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($group = $this->_getGroup()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($group);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     public function formsAction()
     {
         if (!($group = $this->_getGroup()))
@@ -294,6 +314,26 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function deleteFormAction()
+    {
+        $this->initAjax();
+
+        if (!($mapping = $this->_getMapping()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($mapping);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     private function _getGroup()
     {
         if (null === $this->getParam('id')) {
@@ -339,5 +379,52 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $group;
+    }
+
+    private function _getMapping()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the mapping!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_group',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $mapping = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $mapping) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No mapping with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_group',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $mapping;
     }
 }
