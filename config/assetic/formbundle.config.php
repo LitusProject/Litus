@@ -40,6 +40,8 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@admin_css',
+            '@common_jqueryui',
+            '@common_jquery_table_sort',
         ),
         'form_admin_form_field' => array(
             '@common_jquery',

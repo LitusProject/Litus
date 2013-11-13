@@ -5,6 +5,27 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    <div class="flashmessage info_message full_width form_sort_saving hide">
+        <div class="title">Saving</div>
+        <div class="content">
+            <p>Saving the ordering of the forms.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage success_message full_width form_sort_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The forms were successfully reordered.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage error_message full_width form_sort_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to reorder the forms.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <h1>{{ group.getTitle(language) }}</h1>
         {% import 'admin/partials/form.twig' as forms %}
@@ -24,7 +45,7 @@
 
             <tbody>
                 {% for form in group.getForms() %}
-                    <tr class="item item-{{ form.getId() }}">
+                    <tr class="item item-{{ form.getId() }}" data-id="{{ form.getId() }}">
                         <td>{{ form.getForm().getType()|capitalize }}</td>
                         <td>{{ form.getForm().getTitle(language) }}</td>
                         <td>{{ form.getForm().getCreationPerson().getFullName() }}</td>
@@ -37,6 +58,9 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <button class="js-sortable-save edit hide">Save</button>
+        <button class="js-sortable-cancel delete hide">Cancel</button>
     </div>
 
     <aside>
@@ -54,4 +78,32 @@
             </div>
         {% endif %}
     </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.manage').sortableTable({
+                buttons: {
+                    save: $('.js-sortable-save'),
+                    cancel: $('.js-sortable-cancel')
+                },
+                submitUrl: "{{ url('form_admin_group', {"action": "sort", "id": group.getId()}) }}",
+                callbacks: {
+                    saveSuccess: function() {
+                        $('.flashmessage').addClass('hide');
+                        $('.form_sort_success').removeClass('hide');
+                    },
+                    saveError: function() {
+                        $('.flashmessage').addClass('hide');
+                        $('.form_sort_error').removeClass('hide');
+                    },
+                    beforeSave: function() {
+                        $('.flashmessage').addClass('hide');
+                        $('.form_sort_saving').removeClass('hide');
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}

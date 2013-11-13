@@ -462,6 +462,11 @@ return array(
                             'common/css/jquery-ui-timepicker-addon.css',
                         ),
                     ),
+                    'common_jquery_table_sort' => array(
+                        'assets' => array(
+                            'common/js/jquery.sortable-table.js'
+                        ),
+                    ),
                     'common_jquery_form' => array(
                         'assets'  => array(
                             'common/js/jquery.form.js',

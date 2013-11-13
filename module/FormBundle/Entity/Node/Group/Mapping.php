@@ -116,4 +116,13 @@ class Mapping
     {
         return $this->order;
     }
+
+    /**
+     * @param integer $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+        return $this;
+    }
 }

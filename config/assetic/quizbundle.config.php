@@ -36,7 +36,7 @@ return array(
         'quiz_admin_round' => array(
             '@common_jquery',
             '@common_jqueryui',
-            '@quiz_table_sort_js',
+            '@common_jquery_table_sort',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',

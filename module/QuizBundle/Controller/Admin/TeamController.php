@@ -20,7 +20,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $paginator = $this->paginator()->createFromEntity(
             'QuizBundle\Entity\Team',
@@ -45,7 +45,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     public function addAction()
     {
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $form = new AddForm($this->getEntityManager(), $quiz);
 
@@ -99,7 +99,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($team = $this->_getTeam()))
-            return new ViewModel;
+            return new ViewModel();
 
         $form  = new EditForm($this->getEntityManager(), $team);
 
@@ -145,7 +145,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
 
         if (!($team = $this->_getTeam()))
-            return new ViewModel;
+            return new ViewModel();
 
         $this->getEntityManager()->remove($team);
 

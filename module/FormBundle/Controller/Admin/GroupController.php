@@ -260,6 +260,40 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function sortAction()
+    {
+        $this->initAjax();
+
+        if(!($group = $this->_getGroup()))
+            return new ViewModel();
+
+        if(!$this->getRequest()->isPost())
+            return new ViewModel();
+
+        $data = $this->getRequest()->getPost();
+
+        if(!$data['items'])
+            return new ViewModel();
+
+        foreach($data['items'] as $order => $id)
+        {
+            $mapping = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+                ->findOneById($id);
+            $mapping->setOrder($order+1);
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                )
+            )
+        );
+    }
+
     private function _getGroup()
     {
         if (null === $this->getParam('id')) {

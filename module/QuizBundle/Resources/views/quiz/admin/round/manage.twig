@@ -69,7 +69,9 @@
                 {% endfor %}
             </tbody>
         </table>
-    {% include 'admin/partials/paginationControl.twig' %}
+
+        {% include 'admin/partials/paginationControl.twig' %}
+
         <button class="js-sortable-save edit hide">Save</button>
         <button class="js-sortable-cancel delete hide">Cancel</button>
     </div>
@@ -116,6 +118,31 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(openRemoveModal);
+
+            $('.manage').sortableTable({
+                buttons: {
+                    save: $('.js-sortable-save'),
+                    cancel: $('.js-sortable-cancel')
+                },
+                submitUrl: "{{ url('quiz_admin_round', {"action": "sort", "quizid": quiz.getId()}) }}",
+                callbacks: {
+                    saveSuccess: function() {
+                        $('.manage tbody tr').each(function(i) {
+                            $(this).find('td:first-child').text(i+1);
+                        });
+                        $('.flashmessage').addClass('hide');
+                        $('.round_sort_success').removeClass('hide');
+                    },
+                    saveError: function() {
+                        $('.flashmessage').addClass('hide');
+                        $('.round_sort_error').removeClass('hide');
+                    },
+                    beforeSave: function() {
+                        $('.flashmessage').addClass('hide');
+                        $('.round_sort_saving').removeClass('hide');
+                    }
+                }
+            });
         });
 
         function openRemoveModal(e) {
@@ -145,32 +172,5 @@
             $('.round_remove_error').removeClass('hide');
             $('#removeRound').modal('hide');
         }
-    </script>
-    <script>
-        $('.manage').sortableTable({
-            buttons: {
-                save: $('.js-sortable-save'),
-                cancel: $('.js-sortable-cancel')
-            },
-            submitUrl: "{{ url('quiz_admin_round', {"action": "sort", "quizid": quiz.getId()}) }}",
-            callbacks: {
-                saveSuccess: function() {
-                    $('.manage tbody tr').each(function(i) {
-                        $(this).find('td:first-child').text(i+1);
-                    });
-                    $('.flashmessage').addClass('hide');
-                    $('.round_sort_success').removeClass('hide');
-                },
-                saveError: function() {
-                    $('.flashmessage').addClass('hide');
-                    $('.round_sort_error').removeClass('hide');
-                },
-                beforeSave: function() {
-                    $('.flashmessage').addClass('hide');
-                    $('.round_sort_saving').removeClass('hide');
-                }
-            }
-
-        });
     </script>
 {% endblock %}
