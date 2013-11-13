@@ -99,8 +99,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                         $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
                     }
 
-                    if ($i == 500) {
+                    if (500 == $i) {
                         $i = 0;
+
                         if ('development' != getenv('APPLICATION_ENV'))
                             $this->getMailTransport()->send($mail);
 
