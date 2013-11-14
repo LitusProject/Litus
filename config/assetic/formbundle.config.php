@@ -42,6 +42,9 @@ return array(
             '@admin_css',
             '@common_jqueryui',
             '@common_jquery_table_sort',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'form_admin_form_field' => array(
             '@common_jquery',

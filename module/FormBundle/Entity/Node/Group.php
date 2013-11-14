@@ -59,11 +59,44 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
+     * @param DateTime $startDate
+     *
+     * @return \FormBundle\Entity\Node\Group
+     */
+    public function setStartDate($startDate)
+    {
+        if (sizeof($this->forms) > 0) {
+            foreach($this->forms as $form) {
+                $form->getForm()->setStartDate($startDate);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return DateTime
      */
     public function getStartDate()
     {
-        return $this->forms[0]->getForm()->getStartDate();
+        if (sizeof($this->forms) > 0)
+            return $this->forms[0]->getForm()->getStartDate();
+    }
+
+    /**
+     * @param DateTime $endDate
+     *
+     * @return \FormBundle\Entity\Node\Group
+     */
+    public function setEndDate($endDate)
+    {
+        if (sizeof($this->forms) > 0) {
+            foreach($this->forms as $form) {
+                $form->getForm()->setEndDate($endDate);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -71,7 +104,24 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getEndDate()
     {
-        return $this->forms[0]->getForm()->getEndDate();
+        if (sizeof($this->forms) > 0)
+            return $this->forms[0]->getForm()->getEndDate();
+    }
+
+    /**
+     * @param boolean $active
+     *
+     * @return \FormBundle\Entity\Node\Group
+     */
+    public function setActive($active)
+    {
+        if (sizeof($this->forms) > 0) {
+            foreach($this->forms as $form) {
+                $form->getForm()->setActive($active);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -79,7 +129,83 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function isActive()
     {
-        return $this->forms[0]->getForm()->isActive();
+        if (sizeof($this->forms) > 0)
+            return $this->forms[0]->getForm()->isActive();
+    }
+
+    /**
+     * @param int $max
+     *
+     * @return \FormBundle\Entity\Node\Group
+     */
+    public function setMax($max)
+    {
+        if (sizeof($this->forms) > 0) {
+            foreach($this->forms as $form) {
+                $form->getForm()->setMax($max);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getMax()
+    {
+        if (sizeof($this->forms) > 0)
+            return $this->forms[0]->getForm()->getMax();
+    }
+
+    /**
+     * @param boolean $editableByUser
+     *
+     * @return \FormBundle\Entity\Node\Group
+     */
+    public function setEditableByUser($editableByUser)
+    {
+        if (sizeof($this->forms) > 0) {
+            foreach($this->forms as $form) {
+                $form->getForm()->setEditableByUser($editableByUser);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEditableByUser()
+    {
+        if (sizeof($this->forms) > 0)
+            return $this->forms[0]->getForm()->isEditableByUser();
+    }
+
+    /**
+     * @param boolean $nonMember
+     *
+     * @return \FormBundle\Entity\Node\Group
+     */
+    public function setNonMember($nonMember)
+    {
+        if (sizeof($this->forms) > 0) {
+            foreach($this->forms as $form) {
+                $form->getForm()->setNonMember($nonMember);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNonMember()
+    {
+        if (sizeof($this->forms) > 0)
+            return $this->forms[0]->getForm()->isNonMember();
     }
 
     /**

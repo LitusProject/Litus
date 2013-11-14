@@ -243,18 +243,25 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $formData = $form->getFormData($formData);
 
-                if ($formData['max'] == '')
-                    $max = 0;
-                else
-                    $max = $formData['max'];
+                $group = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+                    ->findOneByForm($formSpecification);
 
-                $formSpecification->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                    ->setActive($formData['active'])
-                    ->setMax($max)
-                    ->setMultiple($formData['multiple'])
-                    ->setEditableByUser($formData['editable_by_user'])
-                    ->setNonMember($formData['non_members']);
+                if (null === $group) {
+                    if ($formData['max'] == '')
+                        $max = 0;
+                    else
+                        $max = $formData['max'];
+
+                    $formSpecification->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                        ->setActive($formData['active'])
+                        ->setMax($max)
+                        ->setEditableByUser($formData['editable_by_user'])
+                        ->setNonMember($formData['non_members']);
+                }
+
+                $formSpecification->setMultiple($formData['multiple']);
 
                 if ($formSpecification instanceOf Doodle) {
                     $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others']);

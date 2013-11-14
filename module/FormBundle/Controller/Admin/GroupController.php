@@ -15,6 +15,7 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\Group\Mapping,
     FormBundle\Entity\Node\Translation\Group as GroupTranslation,
@@ -148,6 +149,18 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $formData = $form->getFormData($formData);
 
+                if ($formData['max'] == '')
+                    $max = 0;
+                else
+                    $max = $formData['max'];
+
+                $group->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                        ->setActive($formData['active'])
+                        ->setMax($max)
+                        ->setEditableByUser($formData['editable_by_user'])
+                        ->setNonMember($formData['non_members']);
+
                 foreach($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()]) {
                         $translation = $group->getTranslation($language, false);
@@ -241,6 +254,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $form = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Form')
                     ->findOneById($formData['form']);
+
+                $form->setStartDate($group->getStartDate())
+                    ->setEndDate($group->getEndDate())
+                    ->setActive($group->isActive())
+                    ->setMax($group->getMax())
+                    ->setEditableByUser($group->isEditableByUser())
+                    ->setNonMember($group->isNonMember());
 
                 if (sizeof($group->getForms()) > 0) {
                     $order = $group->getForms()[sizeof($group->getForms())-1]->getOrder() + 1;

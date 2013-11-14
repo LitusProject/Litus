@@ -28,6 +28,11 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
+     * @var \FormBundle\Entity\Node\Group\Mapping
+     */
+    private $_group;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \FormBundle\Entity\Node\Form $form The notification we're going to modify
      * @param null|string|int $name Optional name for the element
@@ -35,6 +40,18 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Form $form, $name = null)
     {
         parent::__construct($entityManager, $name);
+
+        $this->_group = $entityManager->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneByForm($form);
+
+        if (null !== $this->_group) {
+            $this->get('start_date')->setAttribute('disabled', 'disabled');
+            $this->get('end_date')->setAttribute('disabled', 'disabled');
+            $this->get('active')->setAttribute('disabled', 'disabled');
+            $this->get('max')->setAttribute('disabled', 'disabled');
+            $this->get('non_members')->setAttribute('disabled', 'disabled');
+            $this->get('editable_by_user')->setAttribute('disabled', 'disabled');
+        }
 
         $this->remove('type');
         if ($form instanceOf Doodle) {
@@ -94,5 +111,21 @@ class Edit extends Add
         }
 
         $this->setData($data);
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = parent::getInputFilter();
+
+        if (null !== $this->_group) {
+            $inputFilter->remove('start_date');
+            $inputFilter->remove('end_date');
+            $inputFilter->remove('active');
+            $inputFilter->remove('max');
+            $inputFilter->remove('non_members');
+            $inputFilter->remove('editable_by_user');
+        }
+
+        return $inputFilter;
     }
 }
