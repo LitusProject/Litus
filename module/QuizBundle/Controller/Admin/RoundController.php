@@ -110,9 +110,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $round->setName($formData['name']);
-                $round->setMaxPoints($formData['max_points']);
-                $round->setOrder($formData['order']);
+                $round->setName($formData['name'])
+                    ->setMaxPoints($formData['max_points'])
+                    ->setOrder($formData['order']);
 
                 $this->getEntityManager()->flush();
 
@@ -175,17 +175,13 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         if(!$data['items'])
             return new ViewModel;
 
-        $entityManager = $this->getEntityManager();
-        $entityManager->beginTransaction();
-
         foreach($data['items'] as $order=>$id)
         {
-            $round = $entityManager->find('QuizBundle\Entity\Round', $id);
+            $round = $this->getEntityManager()->find('QuizBundle\Entity\Round', $id);
             $round->setOrder($order+1);
         }
 
-        $entityManager->flush();
-        $entityManager->commit();
+        $this->getEntityManager()->flush();
 
         return new ViewModel(array(
             'result' => array(

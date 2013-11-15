@@ -609,7 +609,7 @@ abstract class Person
      *
      * @return \CommonBundle\Entity\User\Person
      */
-    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $time = 86400)
+    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $time = 604800)
     {
         if ($onlyShibboleth) {
             $this->canlogin = true;

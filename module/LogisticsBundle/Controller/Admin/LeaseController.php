@@ -23,8 +23,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 /**
  * LeaseController
  *
- * Controller for /admin/logistics/lease[/:action[/:id]][/page/:page][/]
- *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class LeaseController extends AdminController
@@ -32,7 +30,7 @@ class LeaseController extends AdminController
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-                'LogisticsBundle\Entity\Lease\Item', $this->getParam('page')
+            'LogisticsBundle\Entity\Lease\Item', $this->getParam('page')
         );
 
         return new ViewModel(
@@ -88,7 +86,7 @@ class LeaseController extends AdminController
     public function editAction()
     {
         if (!($item = $this->_getItem()))
-            return new ViewModel;
+            return new ViewModel();
 
         $form  = new EditItemForm($this->getEntityManager(), $item);
 
@@ -99,9 +97,9 @@ class LeaseController extends AdminController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $item->setName($formData['name']);
-                $item->setBarcode($formData['barcode']);
-                $item->setAdditionalInfo($formData['additional_info']);
+                $item->setName($formData['name'])
+                    ->setBarcode($formData['barcode'])
+                    ->setAdditionalInfo($formData['additional_info']);
 
                 $this->getEntityManager()->flush();
 
@@ -134,14 +132,12 @@ class LeaseController extends AdminController
         $this->initAjax();
 
         if (!($item = $this->_getItem()))
-            return new ViewModel;
-
+            return new ViewModel();
 
         $leaseRepo = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Lease\Lease');
-        /* @var $leaseRepo \LogisticsBundle\Repository\Lease\Lease */
-        if(count($leaseRepo->findUnreturnedByItem($item)) > 0) {
+            ->getRepository('LogisticsBundle\Entity\Lease\Lease');
 
+        if(count($leaseRepo->findUnreturnedByItem($item)) > 0) {
             return new ViewModel(
                 array(
                     'result' => array(

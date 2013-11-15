@@ -25,8 +25,7 @@ checkAndMakeExecutable "bin/MailBundle/parser.sh"
 bin/Doctrine/doctrine-module orm:schema-tool:update --force
 bin/Doctrine/doctrine-module orm:generate-proxies data/proxies/
 
-bin/Doctrine/doctrine-module odm:generate:proxies data/proxies/
-bin/Doctrine/doctrine-module odm:generate:hydrators data/hydrators/
+bin/Doctrine/doctrine-module orm:generate:proxies data/proxies/
 
 # Making sure our LESS stylesheets are recompiled
 touch module/CommonBundle/Resources/assets/admin/less/admin.less
