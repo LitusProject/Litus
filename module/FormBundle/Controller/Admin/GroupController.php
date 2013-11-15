@@ -136,6 +136,25 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($group = $this->_getGroup()))
             return new ViewModel();
 
+        if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this group!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_group',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $form = new EditForm($this->getEntityManager(), $group);
 
         if ($this->getRequest()->isPost()) {
@@ -224,6 +243,25 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($group = $this->_getGroup()))
             return new ViewModel();
 
+        if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to delete this group!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_group',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $this->getEntityManager()->remove($group);
 
         $this->getEntityManager()->flush();
@@ -245,6 +283,25 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $form = new MappingForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
+            if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'You are not authorized to edit this group!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_admin_group',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -307,6 +364,25 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if(!($group = $this->_getGroup()))
             return new ViewModel();
 
+        if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this group!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_group',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
+
         if(!$this->getRequest()->isPost())
             return new ViewModel();
 
@@ -340,6 +416,25 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!($mapping = $this->_getMapping()))
             return new ViewModel();
+
+        if (!$mapping->getGroup()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this group!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_group',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($mapping);
 

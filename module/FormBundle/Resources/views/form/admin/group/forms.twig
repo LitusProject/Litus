@@ -59,11 +59,13 @@
                         <td>{{ form.getForm().getTitle(language) }}</td>
                         <td>{{ form.getForm().getCreationPerson().getFullName() }}</td>
                         <td class="actions">
-                            {% if hasAccess('form_admin_form', 'edit') %}
-                                <a href="{{ url('form_admin_form', {"action": "edit", "id": form.getForm().getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
-                            {% if hasAccess('form_admin_group', 'deleteForm') %}
-                                <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getForm().getTitle(language) }}" class="delete">Delete</a>
+                            {% if group.canBeEditedBy(authenticatedPerson) %}
+                                {% if hasAccess('form_admin_form', 'edit') %}
+                                    <a href="{{ url('form_admin_form', {"action": "edit", "id": form.getForm().getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('form_admin_group', 'deleteForm') %}
+                                    <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getForm().getTitle(language) }}" class="delete">Delete</a>
+                                {% endif %}
                             {% endif %}
                         </td>
                     </tr>
@@ -71,9 +73,11 @@
             </tbody>
         </table>
 
-        <div style="text-align: right; font-size: 7pt">(Drag and drop to change the order)</div>
-        <button class="js-sortable-save edit hide">Save</button>
-        <button class="js-sortable-cancel delete hide">Cancel</button>
+        {% if group.canBeEditedBy(authenticatedPerson) %}
+            <div style="text-align: right; font-size: 7pt">(Drag and drop to change the order)</div>
+            <button class="js-sortable-save edit hide">Save</button>
+            <button class="js-sortable-cancel delete hide">Cancel</button>
+        {% endif %}
     </div>
 
     <aside>
@@ -118,27 +122,29 @@
         $(document).ready(function () {
             $('.item .delete').click(openRemoveModal);
 
-            $('.manage').sortableTable({
-                buttons: {
-                    save: $('.js-sortable-save'),
-                    cancel: $('.js-sortable-cancel')
-                },
-                submitUrl: "{{ url('form_admin_group', {"action": "sort", "id": group.getId()}) }}",
-                callbacks: {
-                    saveSuccess: function() {
-                        $('.flashmessage').addClass('hide');
-                        $('.form_sort_success').removeClass('hide');
+            {% if group.canBeEditedBy(authenticatedPerson) %}
+                $('.manage').sortableTable({
+                    buttons: {
+                        save: $('.js-sortable-save'),
+                        cancel: $('.js-sortable-cancel')
                     },
-                    saveError: function() {
-                        $('.flashmessage').addClass('hide');
-                        $('.form_sort_error').removeClass('hide');
-                    },
-                    beforeSave: function() {
-                        $('.flashmessage').addClass('hide');
-                        $('.form_sort_saving').removeClass('hide');
+                    submitUrl: "{{ url('form_admin_group', {"action": "sort", "id": group.getId()}) }}",
+                    callbacks: {
+                        saveSuccess: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.form_sort_success').removeClass('hide');
+                        },
+                        saveError: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.form_sort_error').removeClass('hide');
+                        },
+                        beforeSave: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.form_sort_saving').removeClass('hide');
+                        }
                     }
-                }
-            });
+                });
+            {% endif %}
         });
 
         function openRemoveModal(e) {

@@ -400,12 +400,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         if (!$form->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'You are not authorized to edit this form!'
+                    'You are not authorized to delete this form!'
                 )
             );
 

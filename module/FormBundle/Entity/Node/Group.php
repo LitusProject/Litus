@@ -266,4 +266,26 @@ class Group extends \CommonBundle\Entity\Node
     {
         return $this->forms;
     }
+
+    /**
+     * Indicates whether the given person can edit this form.
+     *
+     * @param \CommonBundle\Entity\User\Person $person The person to check.
+     * @return boolean
+     */
+    public function canBeEditedBy(Person $person = null)
+    {
+        if (null === $person)
+            return false;
+
+        if ($this->getCreationPerson()->getId() === $person->getId())
+            return true;
+
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($role->getName() == 'editor')
+                return true;
+        }
+
+        return false;
+    }
 }
