@@ -73,7 +73,7 @@ return array(
             'br_admin_company_user' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/company/user[/:action[/:id]][/page/:page][/]',
+                    'route' => '/admin/company/user[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
@@ -193,7 +193,7 @@ return array(
             'br_career_event' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/event[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/event[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
@@ -209,7 +209,7 @@ return array(
             'br_career_vacancy' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/vacancy[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/vacancy[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
@@ -225,7 +225,7 @@ return array(
             'br_career_internship' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/internship[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/internship[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
