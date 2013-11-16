@@ -256,7 +256,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             $value,
             $expire,
             '/',
-            str_replace('www.', '', $_SERVER['SERVER_NAME']);
+            str_replace('www.', '', $_SERVER['SERVER_NAME'])
         );
     }
 }
