@@ -112,6 +112,9 @@ VTK',
                     'form_view' => array(
                         'doodle', 'downloadFile', 'edit', 'view',
                     ),
+                    'form_group' => array(
+                        'view',
+                    ),
                     'form_manage' => array(
                         'delete', 'doodle', 'download', 'downloadFile', 'edit', 'index', 'view',
                     ),

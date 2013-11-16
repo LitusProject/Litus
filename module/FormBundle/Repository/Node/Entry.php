@@ -53,6 +53,7 @@ class Entry extends EntityRepository
             )
             ->setParameter('form', $form)
             ->setParameter('person', $person)
+            ->orderBy('f.creationTime', 'DESC')
             ->getQuery();
 
         return $resultSet;

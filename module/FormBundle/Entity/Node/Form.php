@@ -485,7 +485,8 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    public function getCompletedMailBody(Entry $entry, Language $language) {
+    public function getCompletedMailBody(Entry $entry, Language $language)
+    {
         $body = $this->getMail()->getContent($language);
         $body = str_replace('%id%', $entry->getId(), $body);
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
