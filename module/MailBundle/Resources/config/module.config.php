@@ -30,9 +30,11 @@ return array(
                 'options' => array(
                     'route' => '/admin/mail/alias[/:action[/:id][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'mail_admin_alias',
@@ -45,7 +47,7 @@ return array(
                 'options' => array(
                     'route' => '/admin/mail/bakske[/:action][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'mail_admin_bakske',
@@ -72,9 +74,11 @@ return array(
                 'options' => array(
                     'route' => '/admin/mail/list[/:action[/:id][/:field/:string][/page/:page]][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'mail_admin_list',
@@ -128,7 +132,7 @@ return array(
                 'options' => array(
                     'route' => '/admin/mail/volunteer[/:action][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'mail_admin_volunteer',
