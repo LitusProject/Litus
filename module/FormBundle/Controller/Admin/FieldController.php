@@ -41,7 +41,6 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
