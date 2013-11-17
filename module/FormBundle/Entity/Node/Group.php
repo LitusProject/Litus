@@ -268,6 +268,24 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
+     * @param \FormBundle\Entity\Node\Form $form
+     * @return integer
+     */
+    public function getFormNumber(Form $form)
+    {
+        $i = 1;
+        if (sizeof($this->forms) == 0)
+            return 0;
+
+        foreach($this->forms as $search) {
+            if ($search->getForm()->getId() == $form->getId())
+                return $i;
+            $i++;
+        }
+        return 0;
+    }
+
+    /**
      * Indicates whether the given person can edit this form.
      *
      * @param \CommonBundle\Entity\User\Person $person The person to check.

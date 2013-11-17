@@ -74,6 +74,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->findAllByFormAndPerson($formSpecification, $person);
         }
 
+        $group = $this->_getGroup($formSpecification);
+
         $entriesCount = count($this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification));
@@ -120,7 +122,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $guestInfo = null;
-                // Create non-member entry
+
                 if ($person === null) {
                     $guestInfo = new GuestInfo(
                         $formData['first_name'],
@@ -224,6 +226,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'specification' => $formSpecification,
                 'form'          => $form,
                 'entries'       => $entries,
+                'group'         => $group,
             )
         );
     }
@@ -374,6 +377,16 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($entry = $this->_getEntry()))
             return new ViewModel();
+
+        $now = new DateTime();
+        if ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive()) {
+            return new ViewModel(
+                array(
+                    'message'       => 'This form is currently closed.',
+                    'specification' => $entry->getForm(),
+                )
+            );
+        }
 
         $person = $this->getAuthentication()->getPersonObject();
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
@@ -577,5 +590,16 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $entry;
+    }
+
+    private function _getGroup(Form $form)
+    {
+        $mapping = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneByForm($form);
+
+        if (null !== $mapping) {
+            return $mapping->getGroup();
+        }
     }
 }

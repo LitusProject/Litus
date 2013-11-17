@@ -2,8 +2,12 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>{{ specification.getTitle(language) }}</h1>
+        <h1>{% if group %}{{ group.getTitle(language) }}: {% endif %}{{ specification.getTitle(language) }}</h1>
     </div>
+
+    {% if group %}
+        {% include 'form/form/partials/group-progress.twig' %}
+    {% endif %}
 
     {% autoescape false %}
         {{ markdown(specification.getIntroduction(language)) }}
