@@ -1,3 +1,33 @@
 <div class="progress">
-    <div class="bar" style="width: {{ group.getFormNumber(specification)/group.getForms()|length*100 }}%;">{{ group.getFormNumber(specification) }}/{{ group.getForms()|length }}</div>
+    {% if progressBarInfo.completed_before_current > 0 %}
+        {% for completed in 0..progressBarInfo.completed_before_current-1 %}
+            <div class="bar bar-success" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">{{ group.getForms()[completed].getForm().getTitle(language) }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="bar {% if progressBarInfo.current_completed and getParam('action') == 'edit' %}bar-warning{% elseif progressBarInfo.current_completed %}bar-success{% endif %}" style="width: {{ 1/progressBarInfo.total_forms*100 }}%;">{{ specification.getTitle(language) }}</div>
+
+    {% if progressBarInfo.completed_after_current > 0 %}
+        {% for completed_after in 0..progressBarInfo.completed_after_current-1 %}
+            <div class="bar bar-success" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">{{ group.getForms()[progressBarInfo.completed_before_current + completed_after].getForm().getTitle(language) }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% for uncompleted in 0..(progressBarInfo.total_forms-(progressBarInfo.completed_before_current+progressBarInfo.completed_after_current + 1)-1) %}
+        <div class="bar bar-danger" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">{{ group.getForms()[progressBarInfo.completed_before_current+progressBarInfo.completed_after_current + 1 + uncompleted].getForm().getTitle(language) }}</div>
+    {% endfor %}
+</div>
+
+<div style="text-align: center">
+    <ul class="nav nav-pills" style="display: inline-block">
+        <li {% if progressBarInfo.previous_form == 0 %}class="disabled"{% endif %}>
+            <a href="{% if progressBarInfo.previous_form != 0 %}{{ url('form_view', {'id': progressBarInfo.previous_form}) }}{% endif %}">{{ translate('Previous') }}</a>
+        </li>
+        <li>
+            <a href="{{ url('form_group', {'id': group.getId()}) }}">{{ translate('Overview') }}</a>
+        </li>
+        <li {% if progressBarInfo.next_form == 0 or not progressBarInfo.current_completed %}class="disabled"{% endif %}>
+            <a href="{% if progressBarInfo.next_form != 0 and progressBarInfo.current_completed %}{{ url('form_view', {'id': progressBarInfo.next_form}) }}{% endif %}">{{ translate('Next') }}</a>
+        </li>
+    </ul>
 </div>

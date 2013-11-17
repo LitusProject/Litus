@@ -16,4 +16,11 @@ return array(
     'Your subscriptions couldn\'t be saved.' => 'Your subscriptions couldn\'t be saved.',
     'Subscribe' => 'Subscribe',
     'Unsubscribe' => 'Unsubscribe',
+
+    'Please submit these forms in order.' => 'Please submit these forms in order.',
+    'This form group is currently closed.' => 'This form group is currently closed.',
+    'Completed' => 'Completed',
+    'Not Completed' => 'Not Completed',
+    'Start' => 'Start',
+    'Continue' => 'Continue',
 );

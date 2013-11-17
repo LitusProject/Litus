@@ -16,4 +16,11 @@ return array(
     'Your subscriptions couldn\'t be saved.' => 'Je inschrijvingen konden niet worden opgeslagen.',
     'Subscribe' => 'Inschrijven',
     'Unsubscribe' => 'Uitschrijven',
+
+    'Please submit these forms in order.' => 'Gelieve deze formulieren in volgorde in te vullen.',
+    'This form group is currently closed.' => 'Deze formulier groep is momenteel gesloten.',
+    'Completed' => 'Voltooid',
+    'Not Completed' => 'Niet Voltooid',
+    'Start' => 'Start',
+    'Continue' => 'Ga Verder',
 );

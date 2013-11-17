@@ -17,6 +17,7 @@ namespace FormBundle\Controller;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\GuestInfo,
     FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Entry as FieldEntry,
@@ -75,6 +76,29 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $group = $this->_getGroup($formSpecification);
+        $progressBarInfo = null;
+
+        if ($group) {
+            $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
+
+            if ($progressBarInfo['uncompleted_before_current'] > 0) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'Warning',
+                        'Please submit these forms in order.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                    )
+                );
+            }
+        }
 
         $entriesCount = count($this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
@@ -104,6 +128,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'message'       => 'You can\'t fill this form more than once.',
                         'specification' => $formSpecification,
                         'entries'       => $entries,
+                        'group'           => $group,
+                        'progressBarInfo' => $progressBarInfo,
                     )
                 );
             }
@@ -209,13 +235,33 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'form_view',
-                    array(
-                        'action'   => 'view',
-                        'id'       => $formSpecification->getId(),
-                    )
-                );
+                if ($group) {
+                    if ($progressBarInfo['next_form'] == 0) {
+                        $this->redirect()->toRoute(
+                            'form_group',
+                            array(
+                                'action'   => 'view',
+                                'id'       => $group->getId(),
+                            )
+                        );
+                    } else {
+                        $this->redirect()->toRoute(
+                            'form_view',
+                            array(
+                                'action'   => 'view',
+                                'id'       => $progressBarInfo['next_form'],
+                            )
+                        );
+                    }
+                } else {
+                    $this->redirect()->toRoute(
+                        'form_view',
+                        array(
+                            'action'   => 'view',
+                            'id'       => $formSpecification->getId(),
+                        )
+                    );
+                }
 
                 return new ViewModel();
             }
@@ -223,10 +269,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'specification' => $formSpecification,
-                'form'          => $form,
-                'entries'       => $entries,
-                'group'         => $group,
+                'specification'   => $formSpecification,
+                'form'            => $form,
+                'entries'         => $entries,
+                'group'           => $group,
+                'progressBarInfo' => $progressBarInfo,
             )
         );
     }
@@ -261,6 +308,29 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $group = $this->_getGroup($formSpecification);
+        $progressBarInfo = null;
+
+        if ($group) {
+            $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
+
+            if ($progressBarInfo['uncompleted_before_current'] > 0) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'Warning',
+                        'Please submit these forms in order.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                    )
+                );
+            }
+        }
 
         $person = $this->getAuthentication()->getPersonObject();
 
@@ -292,7 +362,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $guestInfo = null;
-                // Create non-member entry
+
                 if ($person === null) {
                     $guestInfo = new GuestInfo(
                         $formData['first_name'],
@@ -349,13 +419,33 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'form_view',
-                    array(
-                        'action'   => 'doodle',
-                        'id'       => $formSpecification->getId(),
-                    )
-                );
+                if ($group) {
+                    if ($progressBarInfo['next_form'] == 0) {
+                        $this->redirect()->toRoute(
+                            'form_group',
+                            array(
+                                'action'   => 'view',
+                                'id'       => $group->getId(),
+                            )
+                        );
+                    } else {
+                        $this->redirect()->toRoute(
+                            'form_view',
+                            array(
+                                'action'   => 'view',
+                                'id'       => $progressBarInfo['next_form'],
+                            )
+                        );
+                    }
+                } else {
+                    $this->redirect()->toRoute(
+                        'form_view',
+                        array(
+                            'action'   => 'view',
+                            'id'       => $formSpecification->getId(),
+                        )
+                    );
+                }
 
                 return new ViewModel();
             } else {
@@ -366,12 +456,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'specification'  => $formSpecification,
-                'form'           => $form,
-                'occupiedSlots'  => $occupiedSlots,
-                'doodleNotValid' => $notValid,
-                'formEntry'      => $formEntry,
-                'group'          => $group,
+                'specification'   => $formSpecification,
+                'form'            => $form,
+                'occupiedSlots'   => $occupiedSlots,
+                'doodleNotValid'  => $notValid,
+                'formEntry'       => $formEntry,
+                'group'           => $group,
+                'progressBarInfo' => $progressBarInfo,
             )
         );
     }
@@ -391,7 +482,30 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $group = $this->_getGroup($formSpecification);
+        $group = $this->_getGroup($entry->getForm());
+        $progressBarInfo = null;
+
+        if ($group) {
+            $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
+
+            if ($progressBarInfo['uncompleted_before_current'] > 0) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'Warning',
+                        'Please submit these forms in order.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                    )
+                );
+            }
+        }
 
         $person = $this->getAuthentication()->getPersonObject();
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
@@ -487,13 +601,33 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'form_view',
-                    array(
-                        'action'   => 'view',
-                        'id'       => $entry->getForm()->getId(),
-                    )
-                );
+                if ($group) {
+                    if ($progressBarInfo['next_form'] == 0) {
+                        $this->redirect()->toRoute(
+                            'form_group',
+                            array(
+                                'action'   => 'view',
+                                'id'       => $group->getId(),
+                            )
+                        );
+                    } else {
+                        $this->redirect()->toRoute(
+                            'form_view',
+                            array(
+                                'action'   => 'view',
+                                'id'       => $progressBarInfo['next_form'],
+                            )
+                        );
+                    }
+                } else {
+                    $this->redirect()->toRoute(
+                        'form_view',
+                        array(
+                            'action'   => 'view',
+                            'id'       => $entry->getForm()->getId(),
+                        )
+                    );
+                }
 
                 return new ViewModel();
             }
@@ -501,9 +635,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'specification' => $entry->getForm(),
-                'form'          => $form,
-                'group'         => $group,
+                'specification'   => $entry->getForm(),
+                'form'            => $form,
+                'group'           => $group,
+                'progressBarInfo' => $progressBarInfo,
             )
         );
     }
@@ -607,5 +742,50 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         if (null !== $mapping) {
             return $mapping->getGroup();
         }
+    }
+
+    private function _progressBarInfo(Group $group, Form $form)
+    {
+        $data = array(
+            'uncompleted_before_current' => 0,
+            'first_uncompleted_id' => 0,
+            'completed_before_current' => 0,
+            'previous_form' => 0,
+            'current_form' => $group->getFormNumber($form),
+            'current_completed' => false,
+            'next_form' => 0,
+            'completed_after_current' => 0,
+            'total_forms' => sizeof($group->getForms()),
+        );
+
+        if ($this->getAuthentication()->isAuthenticated()) {
+            foreach($group->getForms() as $groupForm) {
+                $formEntry = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findAllByFormAndPerson($groupForm->getForm(), $this->getAuthentication()->getPersonObject());
+
+                if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
+                    $data['current_completed'] = (sizeof($formEntry) > 0);
+                } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
+                    $data['previous_form'] = $groupForm->getForm()->getId();
+                    if (sizeof($formEntry) > 0) {
+                        $data['completed_before_current']++;
+                    } else {
+                        $data['uncompleted_before_current']++;
+                        if ($data['first_uncompleted_id'] == 0)
+                            $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
+                    }
+                } else {
+                    if (sizeof($formEntry) > 0)
+                        $data['completed_after_current']++;
+                    if ($data['next_form'] == 0)
+                        $data['next_form'] = $groupForm->getForm()->getId();
+                }
+            }
+        } else {
+            // TODO: some session variable for guests in formEntry
+        }
+
+        return $data;
     }
 }
