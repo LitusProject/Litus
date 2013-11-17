@@ -260,6 +260,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
+        $group = $this->_getGroup($formSpecification);
+
         $person = $this->getAuthentication()->getPersonObject();
 
         $formEntries = $this->getEntityManager()
@@ -369,6 +371,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'occupiedSlots'  => $occupiedSlots,
                 'doodleNotValid' => $notValid,
                 'formEntry'      => $formEntry,
+                'group'          => $group,
             )
         );
     }
@@ -387,6 +390,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
         }
+
+        $group = $this->_getGroup($formSpecification);
 
         $person = $this->getAuthentication()->getPersonObject();
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
@@ -498,6 +503,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'specification' => $entry->getForm(),
                 'form'          => $form,
+                'group'         => $group,
             )
         );
     }
