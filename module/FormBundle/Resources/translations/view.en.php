@@ -19,6 +19,8 @@ return array(
 
     'Please submit these forms in order.' => 'Please submit these forms in order.',
     'This form group is currently closed.' => 'This form group is currently closed.',
+    'Please login to view this form.' => 'Please login to view this form.',
+    'Please login to view this group.' => 'Please login to view this group.',
     'Completed' => 'Completed',
     'Not Completed' => 'Not Completed',
     'Start' => 'Start',

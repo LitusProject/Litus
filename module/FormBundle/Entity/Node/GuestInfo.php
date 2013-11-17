@@ -15,6 +15,7 @@
 namespace FormBundle\Entity\Node;
 
 use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +34,13 @@ class GuestInfo
      * @ORM\Column(type="bigint")
      */
     private $id;
+
+    /**
+     * @var string The session id of this guest info item
+     *
+     * @ORM\Column(type="string", length=32, unique=true, nullable=true)
+     */
+    private $sessionId;
 
     /**
      * @var string The first name of this guest
@@ -60,11 +68,28 @@ class GuestInfo
      * @param string $lastName
      * @param string $email
      */
-    public function __construct($firstName, $lastName, $email)
+    public function __construct(EntityManager $entityManager, $firstName, $lastName, $email)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+
+        do {
+            $sessionId = md5(uniqid(rand(), true));
+
+            $guestInfo = $entityManager->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($sessionId);
+        } while($guestInfo !== null);
+
+        $this->sessionId = $sessionId;
+
+        setcookie(
+            'LITUS_form',
+            $sessionId,
+            time()+3600,
+            '/',
+            str_replace('www.', '', $_SERVER['SERVER_NAME'])
+        );
     }
 
     /**

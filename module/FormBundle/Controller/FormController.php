@@ -73,6 +73,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $entries = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findAllByFormAndPerson($formSpecification, $person);
+        } elseif(isset($_COOKIE['LITUS_form'])) {
+            $guestInfo = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+            $entries = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findAllByFormAndGuestInfo($formSpecification, $guestInfo);
         }
 
         $group = $this->_getGroup($formSpecification);
@@ -136,6 +144,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = new AddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
+        if (isset($guestInfo))
+            $form->populateFromGuestInfo($guestInfo);
 
         if ($this->getRequest()->isPost()) {
             $formData = array_merge(
@@ -147,10 +157,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $guestInfo = null;
 
-                if ($person === null) {
+                if ($person === null && $guestInfo == null) {
                     $guestInfo = new GuestInfo(
+                        $this->getEntityManager(),
                         $formData['first_name'],
                         $formData['last_name'],
                         $formData['email']
@@ -307,6 +317,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null && !$formSpecification->isNonMember()) {
+            return new ViewModel(
+                array(
+                    'message'       => 'Please login to view this form.',
+                    'specification' => $formSpecification,
+                )
+            );
+        }
+
         $group = $this->_getGroup($formSpecification);
         $progressBarInfo = null;
 
@@ -332,8 +353,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $person = $this->getAuthentication()->getPersonObject();
-
         $formEntries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification);
@@ -348,11 +367,23 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $formEntry = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findOneByFormAndPerson($formSpecification, $person);
+        if (null !== $person) {
+            $formEntry = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findOneByFormAndPerson($formSpecification, $person);
+        } elseif(isset($_COOKIE['LITUS_form'])) {
+            $guestInfo = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+            $formEntry = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+        }
 
         $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry, $occupiedSlots);
+        if (isset($guestInfo))
+            $form->populateFromGuestInfo($guestInfo);
 
         if ($this->getRequest()->isPost() && $formSpecification->canBeSavedBy($person)) {
             $formData = $this->getRequest()->getPost();
@@ -361,10 +392,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $guestInfo = null;
-
-                if ($person === null) {
+                if ($person === null && $guestInfo == null) {
                     $guestInfo = new GuestInfo(
+                        $this->getEntityManager(),
                         $formData['first_name'],
                         $formData['last_name'],
                         $formData['email']
@@ -721,11 +751,20 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $person = $this->getAuthentication()->getPersonObject();
+        $guestInfo = null;
+        if(isset($_COOKIE['LITUS_form'])) {
+            $guestInfo = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($_COOKIE['LITUS_form']);
+        }
 
-        if ($person === null && !$entry->getForm()->isNonMember()) {
+        if ($person !== null && $entry->getCreationPerson() != $person) {
             $this->getResponse()->setStatusCode(404);
             return;
-        } else if ($person !== null && $entry->getCreationPerson() != $person) {
+        } elseif ($guestInfo !== null && $entry->getGuestInfo() !== $guestInfo) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        } elseif ($guestInfo === null && $person === null) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
@@ -783,7 +822,38 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
         } else {
-            // TODO: some session variable for guests in formEntry
+            $guestInfo = null;
+            if(isset($_COOKIE['LITUS_form'])) {
+                $guestInfo = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                    ->findOneBySessionId($_COOKIE['LITUS_form']);
+            }
+
+            if (null !== $guestInfo) {
+                foreach($group->getForms() as $groupForm) {
+                    $formEntry = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Node\Entry')
+                        ->findAllByFormAndGuestInfo($groupForm->getForm(), $guestInfo);
+
+                    if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
+                        $data['current_completed'] = (sizeof($formEntry) > 0);
+                    } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
+                        $data['previous_form'] = $groupForm->getForm()->getId();
+                        if (sizeof($formEntry) > 0) {
+                            $data['completed_before_current']++;
+                        } else {
+                            $data['uncompleted_before_current']++;
+                            if ($data['first_uncompleted_id'] == 0)
+                                $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
+                        }
+                    } else {
+                        if (sizeof($formEntry) > 0)
+                            $data['completed_after_current']++;
+                        if ($data['next_form'] == 0)
+                            $data['next_form'] = $groupForm->getForm()->getId();
+                    }
+                }
+            }
         }
 
         return $data;

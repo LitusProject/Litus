@@ -40,6 +40,15 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
+        if (!$this->getAuthentication()->isAuthenticated() && !$group->isNonMember()) {
+            return new ViewModel(
+                array(
+                    'message'   => 'Please login to view this group.',
+                    'group'     => $group,
+                )
+            );
+        }
+
         $entries = array();
         $firstForm = $group->getForms()[0]->getForm();
         $startForm = $group->getForms()[0]->getForm();
@@ -52,6 +61,20 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Node\Entry')
                         ->findAllByFormAndPerson($form->getForm(), $person)
+                );
+
+                if ($entries[$form->getForm()->getId()]) {
+                    $startForm = $form->getForm();
+                }
+            } elseif(isset($_COOKIE['LITUS_form'])) {
+                $guestInfo = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                    ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+                $entries[$form->getForm()->getId()] = current(
+                    $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Node\Entry')
+                        ->findAllByFormAndGuestInfo($form->getForm(), $guestInfo)
                 );
 
                 if ($entries[$form->getForm()->getId()]) {
