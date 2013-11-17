@@ -28,6 +28,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('span[data-toggle=popover]').popover({'trigger': 'hover'});
             $('input[type=file]').each(function () {
                 if ($(this).data('file')) {
                     $(this).closest('.fileupload').append(

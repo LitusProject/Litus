@@ -49,6 +49,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
             var form = $('#content form');
             form.find('input, select').each(function () {
                 var $this = $(this);

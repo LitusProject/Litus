@@ -22,6 +22,8 @@ return array(
     'Please login to view this form.' => 'Please login to view this form.',
     'Please login to view this group.' => 'Please login to view this group.',
     'Completed' => 'Completed',
+    'Editing' => 'Editing',
+    'First Submittion' => 'First Submittion',
     'Not Completed' => 'Not Completed',
     'Start' => 'Start',
     'Continue' => 'Continue',

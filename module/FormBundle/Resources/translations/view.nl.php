@@ -23,6 +23,8 @@ return array(
     'Please login to view this group.' => 'Gelieve aan te melden om deze formulieren groep te bekijken.',
     'Completed' => 'Voltooid',
     'Not Completed' => 'Niet Voltooid',
+    'Editing' => 'Bewerken',
+    'First Submittion' => 'Eerste Registratie',
     'Start' => 'Start',
     'Continue' => 'Ga Verder',
 );
