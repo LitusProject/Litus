@@ -117,7 +117,7 @@ class TimeSlot extends Field
             IntlDateFormatter::NONE,
             date_default_timezone_get(),
             IntlDateFormatter::GREGORIAN,
-            'd MMMM Y'
+            'd MMM Y'
         );
 
         $formatterHour = new IntlDateFormatter(

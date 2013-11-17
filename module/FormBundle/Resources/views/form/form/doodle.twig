@@ -28,8 +28,9 @@
             <table class="table table-bordered table-striped" id="doodle">
                 <tr>
                     <th>{{ translate('Date') }}</th>
-                    <th width="300px">{{ translate('Location') }}</th>
-                    <th width="200px">{{ translate('Subscribe') }}</th>
+                    <th width="240px">{{ translate('Location') }}</th>
+                    <th width="250px">{{ translate('Info') }}</th>
+                    <th width="130px">{{ translate('Subscribe') }}</th>
                 </tr>
                 {% for field in specification.getFields() %}
                     <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
@@ -38,6 +39,9 @@
                         </td>
                         <td>
                             {{ field.getLocation(language) }}
+                        </td>
+                        <td>
+                            {{ field.getExtraInformation(language)|slice(1, 30) }}
                             {% if field.getExtraInformation(language) %}
                                 <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><i class="icon-info-sign"></i></a>
                             {% endif %}
