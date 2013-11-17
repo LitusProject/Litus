@@ -256,7 +256,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             $value,
             $expire,
             '/',
-            preg_replace('/^(.*)\.(.*)\.(.*)$/', '$2.$3', $_SERVER['SERVER_NAME'])
+            str_replace('www.', '', $_SERVER['SERVER_NAME'])
         );
     }
 }
