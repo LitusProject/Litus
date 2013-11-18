@@ -18,9 +18,9 @@
     </div>
 
 	<div id="controller_action">
-	    <h1>Form</h1>
+	    <h1>Group</h1>
 
-	    <p>Title: <b>{{ formSpecification.getTitle(language) }}</b></p>
+	    <p>Title: <b>{{ group.getTitle(language) }}</b></p>
 	    <br/>
 
 	    <table class="manage">
@@ -37,8 +37,8 @@
                     <td>{% if viewer.isEdit() %}&times;{% endif %}</td>
                     <td>{% if viewer.isMail() %}&times;{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('form_admin_form_viewer', 'delete') and not hasGroup %}
-                            <a href="#" class="delete" data-id="{{ viewer.getId() }}" data-name="{{ viewer.getPerson().getFullName() }}" data-form="{{ viewer.getForm().getTitle(language) }}">Delete</a>
+                        {% if hasAccess('form_admin_group_viewer', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ viewer.getId() }}" data-name="{{ viewer.getPerson().getFullName() }}" data-group="{{ group.getTitle(language) }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -49,7 +49,7 @@
 	</div>
 
 	<aside>
-	    {% if hasAccess('form_admin_form_viewer', 'add') and not hasGroup %}
+	    {% if hasAccess('form_admin_group_viewer', 'add') %}
     		<div class="sidebox">
     	        <div class="title">Add Viewer</div>
     	       	<div class="content">
@@ -57,7 +57,7 @@
     		        	<i>Please hit the link below to add a viewer!</i>
     		        </p>
     		        <p>
-    		           	<a href="{{ url('form_admin_form_viewer', {"action": "add", "id": formSpecification.getId() }) }}">&rarr; Add Viewer</a>
+    		           	<a href="{{ url('form_admin_group_viewer', {"action": "add", "id": group.getId() }) }}">&rarr; Add Viewer</a>
     		        </p>
     		    </div>
     		</div>
@@ -71,7 +71,7 @@
 		</div>
 		<div class="modal-body">
 			<p>
-				You are about to delete the following viewer: <b class="fullName"></b> of <b class="formSpecification"></b>!
+				You are about to delete the following viewer: <b class="fullName"></b> of <b class="group"></b>!
 				Please note that this operation cannot be undone!
 			</p>
 			<p>
@@ -97,10 +97,10 @@
 			e.preventDefault();
 			var removeViewer = $('#removeViewer');
 			removeViewer.find('.fullName').html($(this).data('name'));
-			removeViewer.find('.formSpecification').html($(this).data('form'));
+			removeViewer.find('.group').html($(this).data('group'));
 			var id = $this.data('id');
 			removeViewer.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('form_admin_form_viewer', {"action": "delete"})}}' + id, function (data) {
+				$.post('{{ url('form_admin_group_viewer', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
     					$('.viewer_removed_success').show();

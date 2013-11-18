@@ -20,28 +20,28 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
- * ViewerController
+ * GroupViewerController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class ViewerController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class GroupViewerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($group = $this->_getGroup()))
             return new ViewModel();
 
-        if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'You are not authorized to edit this form!'
+                    'You are not authorized to edit this group!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'form_admin_form',
+                'form_admin_group',
                 array(
                     'action' => 'manage',
                 )
@@ -52,63 +52,34 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
         $viewers = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
-            ->findByForm($formSpecification);
-
-        $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
-            ->findOneByForm($formSpecification);
+            ->findByForm($group->getForms()[0]->getForm());
 
         return new ViewModel(
             array(
-                'formSpecification' => $formSpecification,
+                'group' => $group,
                 'viewers' => $viewers,
-                'hasGroup' => $group !== null,
             )
         );
     }
 
     public function addAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($group = $this->_getGroup()))
             return new ViewModel();
 
-        if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'You are not authorized to edit this form!'
+                    'You are not authorized to edit this group!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'form_admin_form',
+                'form_admin_group',
                 array(
                     'action' => 'manage',
-                )
-            );
-
-            return new ViewModel();
-        }
-
-        $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
-            ->findOneByForm($formSpecification);
-
-        if (null !== $group) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'This form is in a group, you cannot edit the viewer here!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_form_viewer',
-                array(
-                    'action' => 'manage',
-                    'id' => $formSpecification->getId(),
                 )
             );
 
@@ -127,7 +98,6 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person');
                 if ($formData['person_id'] == '') {
-                    // No autocompletion used, we assume the username was entered
                     $person = $repository->findOneByUsername($formData['person_name']);
                 } else {
                     $person = $repository->findOneById($formData['person_id']);
@@ -137,7 +107,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                     ->getRepository('FormBundle\Entity\ViewerMap')
                     ->findOneBy(
                         array(
-                            'form' => $formSpecification,
+                            'form' => $group->getForms()[0]->getForm(),
                             'person' => $person
                         )
                     );
@@ -151,15 +121,15 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                         )
                     );
                 } else {
-
-                    $viewer = new ViewerMap(
-                        $formSpecification,
-                        $person,
-                        $formData['edit'],
-                        $formData['mail']
-                    );
-
-                    $this->getEntityManager()->persist($viewer);
+                    foreach($group->getForms() as $form) {
+                        $viewer = new ViewerMap(
+                            $form->getForm(),
+                            $person,
+                            $formData['edit'],
+                            $formData['mail']
+                        );
+                        $this->getEntityManager()->persist($viewer);
+                    }
 
                     $this->getEntityManager()->flush();
 
@@ -173,10 +143,10 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                 }
 
                 $this->redirect()->toRoute(
-                    'form_admin_form_viewer',
+                    'form_admin_group_viewer',
                     array(
                         'action' => 'manage',
-                        'id' => $formSpecification->getId(),
+                        'id' => $group->getId(),
                     )
                 );
 
@@ -186,7 +156,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'formSpecification' => $formSpecification,
+                'group' => $group,
                 'form' => $form,
             )
         );
@@ -204,12 +174,12 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'You are not authorized to edit this form!'
+                    'You are not authorized to edit this group!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'form_admin_form',
+                'form_admin_group',
                 array(
                     'action' => 'manage',
                 )
@@ -222,27 +192,22 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($viewer->getForm());
 
-        if (null !== $group) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'This form is in a group, you cannot edit the viewer here!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_form_viewer',
+        if (null == $group) {
+            return new ViewModel(
                 array(
-                    'action' => 'manage',
-                    'id' => $viewer->getForm()->getId(),
+                    'result' => (object) array('status' => 'error'),
                 )
             );
-
-            return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($viewer);
+        $viewers = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findAllByGroupAndPerson($group->getGroup(), $viewer->getPerson());
+
+        foreach($viewers as $viewer) {
+            $this->getEntityManager()->remove($viewer);
+        }
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -252,19 +217,19 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _getForm()
+    private function _getGroup()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the form!'
+                    'No ID was given to identify the group!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'form_admin_form',
+                'form_admin_group',
                 array(
                     'action' => 'manage'
                 )
@@ -273,21 +238,21 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return;
         }
 
-        $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Form')
+        $group = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group')
             ->findOneById($this->getParam('id'));
 
-        if (null === $formSpecification) {
+        if (null === $group) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No form with the given ID was found!'
+                    'No group with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'form_admin_form',
+                'form_admin_group',
                 array(
                     'action' => 'manage'
                 )
@@ -296,7 +261,26 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return;
         }
 
-        return $formSpecification;
+        if (sizeof($group->getForms()) == 0) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'This group has no forms!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_group',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $group;
     }
 
     private function _getViewer()

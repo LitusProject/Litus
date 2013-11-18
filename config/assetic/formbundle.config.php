@@ -68,6 +68,14 @@ return array(
             '@bootstrap_js_transition',
             '@common_remote_typeahead',
         ),
+        'form_admin_group_viewer' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_modal',
+            '@bootstrap_js_transition',
+            '@common_remote_typeahead',
+        ),
         'form_view' => array(
             '@common_jquery',
             '@common_fieldcount',

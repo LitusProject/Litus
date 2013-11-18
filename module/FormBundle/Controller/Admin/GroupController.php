@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\Group\Mapping,
     FormBundle\Entity\Node\Translation\Group as GroupTranslation,
+    FormBundle\Entity\ViewerMap,
     FormBundle\Form\Admin\Group\Add as AddForm,
     FormBundle\Form\Admin\Group\Edit as EditForm,
     FormBundle\Form\Admin\Group\Mapping as MappingForm,
@@ -312,12 +313,35 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('FormBundle\Entity\Node\Form')
                     ->findOneById($formData['form']);
 
-                $form->setStartDate($group->getStartDate())
-                    ->setEndDate($group->getEndDate())
-                    ->setActive($group->isActive())
-                    ->setMax($group->getMax())
-                    ->setEditableByUser($group->isEditableByUser())
-                    ->setNonMember($group->isNonMember());
+                if (sizeof($group->getForms()) > 0) {
+                    $form->setStartDate($group->getStartDate())
+                        ->setEndDate($group->getEndDate())
+                        ->setActive($group->isActive())
+                        ->setMax($group->getMax())
+                        ->setEditableByUser($group->isEditableByUser())
+                        ->setNonMember($group->isNonMember());
+
+                    $formViewers = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\ViewerMap')
+                        ->findByForm($form);
+
+                    foreach($formViewers as $viewer)
+                        $this->getEntityManager()->remove($viewer);
+
+                    $groupViewers = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\ViewerMap')
+                        ->findByForm($group->getForms()[0]->getForm());
+
+                    foreach($groupViewers as $viewer) {
+                        $newViewer = new ViewerMap(
+                            $form,
+                            $viewer->getPerson(),
+                            $viewer->isEdit(),
+                            $viewer->isMail()
+                        );
+                        $this->getEntityManager()->persist($newViewer);
+                    }
+                }
 
                 if (sizeof($group->getForms()) > 0) {
                     $order = $group->getForms()[sizeof($group->getForms())-1]->getOrder() + 1;
