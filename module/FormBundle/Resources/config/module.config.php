@@ -147,6 +147,21 @@ return array(
                     ),
                 ),
             ),
+            'form_manage_group' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/form/manage/group[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'form_manage_group',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'form_manage_mail' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -211,6 +226,7 @@ return array(
             'form_view'               => 'FormBundle\Controller\FormController',
             'form_group'              => 'FormBundle\Controller\GroupController',
             'form_manage'             => 'FormBundle\Controller\Manage\FormController',
+            'form_manage_group'       => 'FormBundle\Controller\Manage\GroupController',
             'form_manage_mail'        => 'FormBundle\Controller\Manage\MailController',
             'form_manage_auth'        => 'FormBundle\Controller\Manage\AuthController',
         ),

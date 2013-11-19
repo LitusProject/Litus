@@ -45,6 +45,11 @@
                             {% if hasAccess('form_admin_group', 'forms') %}
                                 <a href="{{ url('form_admin_group', {"action": "forms", "id": group.getId()}) }}" class="view">Forms</a>
                             {% endif %}
+                            {% if group.canBeViewedBy(authenticatedPerson) %}
+                                {% if hasAccess('form_manage', 'view') %}
+                                    <a href="{{ url('form_manage_group', {"action": "view", "id": group.getId()}) }}" class="view">View Results</a>
+                                {% endif %}
+                            {% endif %}
                             {% if group.canBeEditedBy(authenticatedPerson) %}
                                 {% if hasAccess('form_admin_group', 'edit') %}
                                     <a href="{{ url('form_admin_group', {"action": "edit", "id": group.getId()}) }}" class="edit">Edit</a>

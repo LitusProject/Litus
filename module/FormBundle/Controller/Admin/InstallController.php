@@ -118,6 +118,9 @@ VTK',
                     'form_manage' => array(
                         'delete', 'doodle', 'download', 'downloadFile', 'edit', 'index', 'view',
                     ),
+                    'form_manage_group' => array(
+                        'index', 'view',
+                    ),
                     'form_manage_mail' => array(
                         'send'
                     ),

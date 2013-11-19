@@ -37,6 +37,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('form_manage_group', 'view') and group.canBeViewedBy(authenticatedPerson) %}
+            <div class="sidebox">
+                <div class="title">View Results</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the results of this group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_manage_group', {"action": "view", "id": group.getId()}) }}">&rarr; View Results</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
 

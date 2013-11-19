@@ -41,6 +41,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
+        foreach($paginator as $group)
+            $group->setEntityManager($this->getEntityManager());
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -57,6 +60,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findAllOld(),
             $this->getParam('page')
         );
+
+        foreach($paginator as $group)
+            $group->setEntityManager($this->getEntityManager());
 
         return new ViewModel(
             array(
@@ -136,6 +142,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!($group = $this->_getGroup()))
             return new ViewModel();
+
+        $group->setEntityManager($this->getEntityManager());
 
         if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(

@@ -14,6 +14,7 @@
 
 return array(
     'Forms' => 'Formulieren',
+    'Groups' => 'Groepen',
 
     'Your Forms' => 'Jouw Formulieren',
     'Start Date' => 'Begindatum',
@@ -30,6 +31,7 @@ return array(
     'Submitted' => 'Verzonden',
     'subscriptions' => 'inschrijvingen',
     'Subscriptions' => 'Inschrijvingen',
+    'Started' => 'Gestart',
 
     'The entry was succesfully removed.' => 'De inschrijving werd met succes verwijderd.',
     'An error occurred while removing the entry.' => 'Er trad een fout op bij het verwijderen van de inschrijving.',

@@ -14,6 +14,7 @@
 
 return array(
     'Forms' => 'Forms',
+    'Groups' => 'Groups',
 
     'Your Forms' => 'Your Forms',
     'Start Date' => 'Start Date',
@@ -30,6 +31,7 @@ return array(
     'Submitted' => 'Submitted',
     'subscriptions' => 'subscriptions',
     'Subscriptions' => 'Subscriptions',
+    'Started' => 'Started',
 
     'The entry was succesfully removed.' => 'The entry was succesfully removed.',
     'An error occurred while removing the entry.' => 'An error occurred while removing the entry.',

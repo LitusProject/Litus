@@ -6,6 +6,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\User\Person,
     DateTime,
     FormBundle\Entity\Node\Form as FormEntity,
+    FormBundle\Entity\Node\Group as GroupEntity,
     FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
@@ -122,5 +123,49 @@ class Entry extends EntityRepository
             ->getOneOrNullResult();
 
         return $resultSet;
+    }
+
+    public function findCompletedByGroup(GroupEntity $group)
+    {
+        if (sizeof($group->getForms()) == 0)
+            return array();
+
+        $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
+
+        $tmpEntries = array();
+        foreach($startEntries as $entry) {
+            $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
+        }
+
+        $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
+        $entries = array();
+        foreach($endEntries as $entry) {
+            if (isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]))
+                $entries[] = $entry;
+        }
+
+        return $entries;
+    }
+
+    public function findNotCompletedByGroup(GroupEntity $group)
+    {
+        if (sizeof($group->getForms()) == 0)
+            return array();
+
+        $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
+        $tmpEntries = array();
+        foreach($endEntries as $entry) {
+            $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
+        }
+
+        $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
+
+        $entries = array();
+        foreach($startEntries as $entry) {
+            if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]))
+                $entries[] = $entry;
+        }
+
+        return $entries;
     }
 }

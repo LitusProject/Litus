@@ -16,6 +16,7 @@ namespace FormBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,6 +50,11 @@ class Group extends \CommonBundle\Entity\Node
      * @ORM\OrderBy({"order" = "ASC"})
      */
     private $forms;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $_entityManager;
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
@@ -286,6 +292,16 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \FormBundle\Entity\Node\Form
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
      * Indicates whether the given person can edit this form.
      *
      * @param \CommonBundle\Entity\User\Person $person The person to check.
@@ -305,5 +321,20 @@ class Group extends \CommonBundle\Entity\Node
         }
 
         return false;
+    }
+
+    /**
+     * Indicates whether the given person can view this group.
+     *
+     * @param \CommonBundle\Entity\User\Persons $person The person to check.
+     * @return boolean
+     */
+    public function canBeViewedBy(Person $person = null)
+    {
+        if (sizeof($this->forms) == 0)
+            return false;
+
+        $this->forms[0]->getForm()->setEntityManager($this->_entityManager);
+        return $this->forms[0]->getForm()->canBeViewedBy($person);
     }
 }
