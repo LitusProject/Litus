@@ -259,6 +259,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $person = $this->getAuthentication()->getPersonObject();
 
+        if ($person === null && !$formSpecification->isNonMember()) {
+            return new ViewModel(
+                array(
+                    'message'       => 'Please login to view this form.',
+                    'specification' => $formSpecification,
+                )
+            );
+        }
+
         $formEntries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification);
