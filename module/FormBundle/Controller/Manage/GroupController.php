@@ -57,7 +57,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'You don\'t have access to the given form!'
+                    'You don\'t have access to the given form group!'
                 )
             );
 
@@ -114,7 +114,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No form with the given ID was found!'
+                    'No group with the given ID was found!'
                 )
             );
 
