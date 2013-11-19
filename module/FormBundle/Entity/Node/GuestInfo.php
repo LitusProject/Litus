@@ -131,4 +131,19 @@ class GuestInfo
     {
         return $this->email;
     }
+
+    /**
+     * @return \FormBundle\Entity\Node\GuestInfo
+     */
+    public function renew()
+    {
+        setcookie(
+            'LITUS_form',
+            $this->sessionId,
+            time()+3600,
+            '/',
+            str_replace('www.', '', $_SERVER['SERVER_NAME'])
+        );
+        return $this;
+    }
 }

@@ -71,6 +71,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
                     ->findOneBySessionId($_COOKIE['LITUS_form']);
 
+                $guestInfo->renew();
+
                 $entries[$form->getForm()->getId()] = current(
                     $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Node\Entry')

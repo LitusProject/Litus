@@ -827,6 +827,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
                     ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+                $guestInfo->renew();
             }
 
             if (null !== $guestInfo) {
