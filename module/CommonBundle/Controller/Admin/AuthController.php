@@ -14,7 +14,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Authentication\Authentication,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Form\Admin\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;

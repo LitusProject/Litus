@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CommonBundle\Component\Authentication\Authentication,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
