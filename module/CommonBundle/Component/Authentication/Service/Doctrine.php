@@ -218,7 +218,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      */
     public function hasIdentity()
     {
-        if ($this->getStorage()->isEmpty()) {
+        if ($this->getStorage()->isEmpty() || $this->getStorage()->read() == '') {
             if (isset($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix]))
                 $this->getStorage()->write($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix]);
         }

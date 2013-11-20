@@ -391,10 +391,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 ->findOneById($formData['primary_address_address_city']);
             $primaryCityName = $primaryCity->getName();
             $primaryPostal = $primaryCity->getPostal();
-            $primaryStreet = $this->getEntityManager()
+            $street = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Address\Street')
-                ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
-                ->getName();
+                ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']]);
+            $primaryStreet = $street ? $street->getName() : '';
         } else {
             $primaryCityName = $formData['primary_address_address_city_other'];
             $primaryStreet = $formData['primary_address_address_street_other'];
