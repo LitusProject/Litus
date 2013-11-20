@@ -105,12 +105,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        $myShifts = [];
+        $myShifts = null;
         if ($this->getAuthentication()->getPersonObject()) {
-
             $myShifts = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
 
         }
 
