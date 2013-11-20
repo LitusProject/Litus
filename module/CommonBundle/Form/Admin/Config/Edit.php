@@ -45,11 +45,13 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         if (strlen($entry->getValue()) > 40) {
             $field = new Textarea('value');
             $field->setLabel('Value')
+                ->setAttribute('id', 'config_value')
                 ->setRequired();
             $this->add($field);
         } else {
             $field = new Text('value');
             $field->setLabel('Value')
+                ->setAttribute('id', 'config_value')
                 ->setRequired();
             $this->add($field);
         }
