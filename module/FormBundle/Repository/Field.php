@@ -52,7 +52,7 @@ class Field extends EntityRepository
         return $resultSet;
     }
 
-    public function findLatestFieldIdQuery($formId){
+    public function findLatestFieldId($formId){
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('MAX(n.id)')
             ->from('FormBundle\Entity\Field', 'n')
@@ -60,7 +60,8 @@ class Field extends EntityRepository
                 $query->expr()->eq('n.form', ':id')
             )
             ->setParameter('id', $formId)
-            ->getQuery();
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $resultSet;
     }
