@@ -1,17 +1,18 @@
 <?php
 
-namespace FormBundle\Entity\Node;
+namespace FormBundle\Entity\Node\Translation;
 
 use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Node\Form as FormEntity;
 
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Translation")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Translation\Form")
  * @ORM\Table(name="nodes.forms_translations")
  */
-class Translation
+class Form
 {
     /**
      * @var int The ID of this tanslation
@@ -74,7 +75,7 @@ class Translation
      * @param string $submitText
      * @param string $updateText
      */
-    public function __construct(Form $form, Language $language, $title, $introduction, $submitText, $updateText)
+    public function __construct(FormEntity $form, Language $language, $title, $introduction, $submitText, $updateText)
     {
         $this->form = $form;
         $this->language = $language;
@@ -111,7 +112,7 @@ class Translation
     /**
      * @param string $title
      *
-     * @return \FormBundle\Entity\Node\Form
+     * @return \FormBundle\Entity\Node\Translation\Form
      */
     public function setTitle($title)
     {
@@ -130,7 +131,7 @@ class Translation
     /**
      * @param string $introduction
      *
-     * @return \FormBundle\Entity\Node\Form
+     * @return \FormBundle\Entity\Node\Translation\Form
      */
     public function setIntroduction($introduction)
     {
@@ -149,7 +150,7 @@ class Translation
     /**
      * @param string $submitText
      *
-     * @return \FormBundle\Entity\Node\Form
+     * @return \FormBundle\Entity\Node\Translation\Form
      */
     public function setSubmitText($submitText)
     {
@@ -168,7 +169,7 @@ class Translation
     /**
      * @param string $updateText
      *
-     * @return \FormBundle\Entity\Node\Form
+     * @return \FormBundle\Entity\Node\Translation\Form
      */
     public function setUpdateText($updateText)
     {

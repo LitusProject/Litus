@@ -1,9 +1,9 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'form/admin/form/partials/navigation.twig' %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
@@ -12,8 +12,7 @@
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-
+    <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
             $('#mail_languages a:first').click();
@@ -48,6 +47,5 @@
             else
                 $('#reminder_mail_form').hide();
         }
-
     </script>
 {% endblock %}

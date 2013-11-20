@@ -18,22 +18,8 @@ class Form extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Node\Form', 'n')
-            ->orderBy('n.creationTime', 'DESC')
+            ->orderBy('n.startDate', 'DESC')
             ->getQuery();
-
-        return $resultSet;
-    }
-
-    public function findOneById($id) {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\Node\Form', 'n')
-            ->where(
-                $query->expr()->eq('n.id', ':id')
-            )
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
 
         return $resultSet;
     }
@@ -46,7 +32,7 @@ class Form extends EntityRepository
             ->where(
                 $query->expr()->gt('f.endDate', ':now')
             )
-            ->orderBy('f.creationTime', 'DESC')
+            ->orderBy('f.startDate', 'DESC')
             ->setParameter('now', new DateTime())
             ->getQuery();
 
@@ -61,7 +47,7 @@ class Form extends EntityRepository
             ->where(
                 $query->expr()->lt('f.endDate', ':now')
             )
-            ->orderBy('f.creationTime', 'DESC')
+            ->orderBy('f.startDate', 'DESC')
             ->setParameter('now', new DateTime())
             ->getQuery();
 

@@ -18,7 +18,6 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     FormBundle\Component\Validator\Person as PersonValidator,
-    FormBundle\Entity\Node\Form,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -37,21 +36,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article
-     */
-    protected $_form;
-
-    /**
-     * @param \CudiBundle\Entity\Sale\Form $form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Form $form, EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-        $this->_form = $form;
 
         $field = new Text('person_name');
         $field->setLabel('Name')
