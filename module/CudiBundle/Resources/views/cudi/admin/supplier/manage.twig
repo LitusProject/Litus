@@ -12,8 +12,9 @@
                     <tr>
                         <th>Name</th>
                         <th width="150px">Phone Number</th>
-                        <th width="200px">City</th>
-                        <th width="100px">Actions</th>
+                        <th width="110px">Contactperson</th>
+                        <th width="150px">City</th>
+                        <th width="60px">Actions</th>
                     </tr>
                 </thead>
 
@@ -22,6 +23,7 @@
                         <tr>
                             <td>{{ supplier.getName() }}</td>
                             <td>{{ supplier.getPhoneNumber() }}</td>
+                            <td>{% if supplier.isContact() %}&times;{% endif %}</td>
                             <td>{{ supplier.getAddress().getCity() }}</td>
                             <td class="actions">
                                 {% if hasAccess('cudi_admin_supplier', 'edit') %}
