@@ -105,6 +105,15 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
+        $myShifts = [];
+        if ($this->getAuthentication()->getPersonObject()) {
+
+            $myShifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+
+        }
+
         return new ViewModel(
             array(
                 'bookings' => $bookings,
@@ -114,6 +123,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'notifications' => $notifications,
                 'piwik' => $piwik,
                 'sportInfo' => $this->_getSportResults(),
+                'myShifts' => $myShifts,
             )
         );
     }
