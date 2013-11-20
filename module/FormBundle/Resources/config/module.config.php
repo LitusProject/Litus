@@ -45,7 +45,7 @@ return array(
             'form_admin_form_field' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/form/field[/:action[/:id][/:repeat][/page/:page]][/]',
+                    'route' => '/admin/form/field[/:action[/:id][/page/:page][/repeat/:repeat]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'repeat'  => '[1]',
