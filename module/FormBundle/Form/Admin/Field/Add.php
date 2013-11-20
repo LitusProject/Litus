@@ -59,7 +59,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Form $form, EntityManager $entityManager, $name = null)
+    public function __construct(Form $form, EntityManager $entityManager, Field $lastField = null ,$name = null)
     {
         parent::__construct($name);
 
@@ -226,6 +226,61 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add And Repeat')
             ->setAttribute('class', 'field_add');
         $this->add($field);
+
+        if($lastField != null){
+            $this->populateFromField($lastField);
+        }
+    }
+
+    public function populateFromField(Field $field)
+    {
+        $data = array(
+            'order'    => $field->getOrder(),
+            'required' => $field->isRequired(),
+        );
+
+        if ($field instanceof StringField) {
+            $data['type'] = 'string';
+        } elseif ($field instanceof DropdownField) {
+            $data['type'] = 'dropdown';
+        } elseif ($field instanceof CheckboxField) {
+            $data['type'] = 'checkbox';
+        } elseif ($field instanceof FileField) {
+            $data['type'] = 'file';
+        } elseif ($field instanceof TimeSlotField) {
+            $data['type'] = 'timeslot';
+        }
+
+        if ($field instanceof StringField) {
+            $data['charsperline'] = $field->getLineLength();
+            $data['multiline'] = $field->isMultiLine();
+            if ($field->isMultiLine())
+                $data['lines'] = $field->getLines();
+        } elseif ($field instanceof FileField) {
+            $data['max_size'] = $field->getMaxSize();
+        } elseif ($field instanceof TimeSlotField) {
+            $data['timeslot_start_date'] = $field->getStartDate()->format('d/m/Y H:i');
+            $data['timeslot_end_date'] = $field->getEndDate()->format('d/m/Y H:i');
+        }
+
+        foreach($this->getLanguages() as $language) {
+            $data['label_' . $language->getAbbrev()] = $field->getLabel($language, false);
+
+            if ($field instanceof DropdownField) {
+                $data['options_' . $language->getAbbrev()] = $field->getOptions($language, false);
+            } elseif ($field instanceof TimeSlotField) {
+                $data['timeslot_location_' . $language->getAbbrev()] = $field->getLocation($language, false);
+                $data['timeslot_extra_info_' . $language->getAbbrev()] = $field->getExtraInformation($language, false);
+            }
+        }
+
+        if (null !== $field->getVisibilityDecissionField()) {
+            $data['visible_if'] = $field->getVisibilityDecissionField()->getId();
+            $data['visible_value'] = $field->getVisibilityValue();
+            $this->get('visibility')->get('visible_value')->setAttribute('data-current_value', $field->getVisibilityValue());
+        }
+
+        $this->setData($data);
     }
 
     private function _getVisibilityOptions()

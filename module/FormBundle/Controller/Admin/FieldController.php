@@ -93,8 +93,25 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new AddForm($formSpecification, $this->getEntityManager());
+        //TODO query werkt niet. (zou normaal laatste "field" moeten returnen van deze form)
+        $latestField = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Field')
+                    ->findLatestField($formSpecification->getId());
+        print_r(get_class($latestField));
+        /*
+        //Test om te zien of de invulling deftig werkt
+        $latestField = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Field')
+            ->findOneById(3);
+        */
 
+        //TODO manier werkt wel maar dit is vuil
+        if(explode("/",$_SERVER['REQUEST_URI'])[6] == "1"){
+            $form = new AddForm($formSpecification, $this->getEntityManager(),$latestField);
+        }
+        else{
+            $form = new AddForm($formSpecification, $this->getEntityManager());
+        }
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -224,6 +241,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         array(
                             'action' => 'add',
                             'id' => $formSpecification->getId(),
+                            'repeat' => 1,
                         )
                     );
                 } else {

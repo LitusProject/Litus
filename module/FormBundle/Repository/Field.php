@@ -51,4 +51,21 @@ class Field extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findLatestField($formId){
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('FormBundle\Entity\Field', 'n')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('n.form', ':id'),
+                    $query->expr()->max('n.id')
+                )
+            )
+            ->setParameter('id', $formId)
+            ->getQuery();
+
+        return $resultSet;
+    }
+
 }
