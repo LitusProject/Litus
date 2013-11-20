@@ -41,6 +41,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_serialize_js',
         ),
         'common_admin_cache' => array(
             '@common_jquery',

@@ -512,6 +512,12 @@ return array(
                             'common/js/chart.min.js',
                         ),
                     ),
+                    'common_serialize_js' => array(
+                        'assets'  => array(
+                            'common/js/serialize.js',
+                            'common/js/unserialize.js',
+                        ),
+                    ),
 
                     'admin_css' => array(
                         'assets' => array(

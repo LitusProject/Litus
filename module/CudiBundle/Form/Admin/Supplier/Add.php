@@ -16,6 +16,7 @@ namespace CudiBundle\Form\Admin\Supplier;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     CudiBundle\Entity\Supplier,
@@ -47,6 +48,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('placeholder', '+CCAAANNNNNN');
         $this->add($field);
 
+        $field = new Checkbox('contact');
+        $field->setLabel('Contact');
+        $this->add($field);
+
         $field = new AddressForm('address', 'address');
         $field->setLabel('Address');
         $this->add($field);
@@ -73,6 +78,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name' => $supplier->getName(),
             'phone_number' => $supplier->getPhoneNumber(),
             'vat_number' => $supplier->getVatNumber(),
+            'contact' => $supplier->isContact(),
             'template' => $supplier->getTemplate(),
             'address_address_street' => $supplier->getAddress()->getStreet(),
             'address_address_number' => $supplier->getAddress()->getNumber(),

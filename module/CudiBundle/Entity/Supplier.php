@@ -72,6 +72,13 @@ class Supplier
     private $template;
 
     /**
+     * @var boolean Is this supplier the contactperson
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $contact;
+
+    /**
      * @var array The possible templates
      */
     public static $POSSIBLE_TEMPLATES = array(
@@ -90,7 +97,7 @@ class Supplier
      * @param string $vatNumber
      * @param strign $template
      */
-    public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template)
+    public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template, $contact = false)
     {
         if (!self::isValidTemplate($template))
             throw new \InvalidArgumentException('The template is not valid.');
@@ -99,7 +106,8 @@ class Supplier
             ->setPhoneNumber($phoneNumber)
             ->setAddress($address)
             ->setVatNumber($vatNumber)
-            ->setTemplate($template);
+            ->setTemplate($template)
+            ->setContact($contact);
     }
 
     /**
@@ -283,5 +291,24 @@ class Supplier
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findTotalPurchaseBySupplier($this, $academicYear, $organization);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @param boolean
+     *
+     * @return \CudiBundle\Entity\Supplier
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+        return $this;
     }
 }
