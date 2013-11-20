@@ -20,7 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Mail\Translation as MailTranslation,
     FormBundle\Entity\Node\Form\Doodle,
     FormBundle\Entity\Node\Form\Form,
-    FormBundle\Entity\Node\Translation,
+    FormBundle\Entity\Node\Translation\Form as FormTranslation,
     FormBundle\Entity\ViewerMap,
     FormBundle\Form\Admin\Form\Add as AddForm,
     FormBundle\Form\Admin\Form\Edit as EditForm,
@@ -155,7 +155,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 foreach($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
-                        $translation = new Translation(
+                        $translation = new FormTranslation(
                             $form,
                             $language,
                             $formData['title_' . $language->getAbbrev()],
@@ -205,7 +205,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
 
-         $formSpecification->setEntityManager($this->getEntityManager());
+        $formSpecification->setEntityManager($this->getEntityManager());
+
+        $group = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneByForm($formSpecification);
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(
@@ -239,18 +243,25 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $formData = $form->getFormData($formData);
 
-                if ($formData['max'] == '')
-                    $max = 0;
-                else
-                    $max = $formData['max'];
+                $group = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+                    ->findOneByForm($formSpecification);
 
-                $formSpecification->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                    ->setActive($formData['active'])
-                    ->setMax($max)
-                    ->setMultiple($formData['multiple'])
-                    ->setEditableByUser($formData['editable_by_user'])
-                    ->setNonMember($formData['non_members']);
+                if (null === $group) {
+                    if ($formData['max'] == '')
+                        $max = 0;
+                    else
+                        $max = $formData['max'];
+
+                    $formSpecification->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                        ->setActive($formData['active'])
+                        ->setMax($max)
+                        ->setEditableByUser($formData['editable_by_user'])
+                        ->setNonMember($formData['non_members']);
+                }
+
+                $formSpecification->setMultiple($formData['multiple']);
 
                 if ($formSpecification instanceOf Doodle) {
                     $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others']);
@@ -325,7 +336,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $translation = $formSpecification->getTranslation($language, false);
 
                         if (null === $translation) {
-                            $translation = new Translation(
+                            $translation = new FormTranslation(
                                 $formSpecification,
                                 $language,
                                 $formData['title_' . $language->getAbbrev()],
@@ -374,6 +385,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'group' => $group,
                 'form' => $form,
                 'formSpecification' => $formSpecification,
             )
@@ -388,12 +400,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         if (!$form->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'You are not authorized to edit this form!'
+                    'You are not authorized to delete this form!'
                 )
             );
 
@@ -407,7 +418,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        // Delete all fields
         $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
             ->findAllByForm($form);
@@ -415,7 +425,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         foreach ($fields as $field)
             $this->_deleteField($field);
 
-        // Delete all entries
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($form);
@@ -423,7 +432,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         foreach ($entries as $entry)
             $this->getEntityManager()->remove($entry);
 
-        // Delete all viewers
         $viewers = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findAllByForm($form);
@@ -446,7 +454,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     private function _deleteField($field)
     {
-        // Delete all entered values
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($field);

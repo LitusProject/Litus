@@ -28,6 +28,7 @@ use CommonBundle\Entity\User\Person,
  * @ORM\DiscriminatorMap({
  *      "banner"="BannerBundle\Entity\Node\Banner",
  *      "form"="FormBundle\Entity\Node\Form",
+ *      "form_group"="FormBundle\Entity\Node\Group",
  *      "page"="PageBundle\Entity\Node\Page",
  *      "news"="NewsBundle\Entity\Node\News",
  *      "notification"="NotificationBundle\Entity\Node\Notification",

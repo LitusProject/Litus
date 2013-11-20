@@ -20,7 +20,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $paginator = $this->paginator()->createFromEntity(
             'QuizBundle\Entity\Round',
@@ -45,7 +45,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $form = new AddForm($this->getEntityManager(), $quiz);
 
@@ -99,7 +99,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     public function editAction()
     {
         if (!($round = $this->_getRound()))
-            return new ViewModel;
+            return new ViewModel();
 
         $form  = new EditForm($this->getEntityManager(), $round);
 
@@ -146,7 +146,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         $this->initAjax();
 
         if (!($round = $this->_getRound()))
-            return new ViewModel;
+            return new ViewModel();
 
         $this->getEntityManager()->remove($round);
 
@@ -165,15 +165,15 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
         if(!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         if(!$this->getRequest()->isPost())
-            return new ViewModel;
+            return new ViewModel();
 
         $data = $this->getRequest()->getPost();
 
         if(!$data['items'])
-            return new ViewModel;
+            return new ViewModel();
 
         foreach($data['items'] as $order=>$id)
         {

@@ -18,7 +18,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $rounds = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Round')
@@ -52,7 +52,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
 
         if (!($team = $this->_getTeam()) || !($round = $this->_getRound()))
-            return new ViewModel;
+            return new ViewModel();
 
         $point = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Point')
@@ -95,7 +95,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     public function viewAction()
     {
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $rounds = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Round')

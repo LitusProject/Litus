@@ -37,7 +37,7 @@
                     <td>{% if viewer.isEdit() %}&times;{% endif %}</td>
                     <td>{% if viewer.isMail() %}&times;{% endif %}</td>
                     <td class="actions">
-                        {% if hasAccess('form_admin_form_viewer', 'delete') %}
+                        {% if hasAccess('form_admin_form_viewer', 'delete') and not hasGroup %}
                             <a href="#" class="delete" data-id="{{ viewer.getId() }}" data-name="{{ viewer.getPerson().getFullName() }}" data-form="{{ viewer.getForm().getTitle(language) }}">Delete</a>
                         {% endif %}
                     </td>
@@ -49,7 +49,7 @@
 	</div>
 
 	<aside>
-	    {% if hasAccess('form_admin_form_viewer', 'add') %}
+	    {% if hasAccess('form_admin_form_viewer', 'add') and not hasGroup %}
     		<div class="sidebox">
     	        <div class="title">Add Viewer</div>
     	       	<div class="content">

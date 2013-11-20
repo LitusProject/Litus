@@ -17,6 +17,27 @@
         </div>
     </div>
 
+    <div class="flashmessage info_message full_width field_sort_saving hide">
+        <div class="title">Saving</div>
+        <div class="content">
+            <p>Saving the ordering of the fields.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage success_message full_width field_sort_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The fields were successfully reordered.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage error_message full_width field_sort_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to reorder the fields.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <h1>Form</h1>
 
@@ -25,54 +46,66 @@
 
         {% if formSpecification.getType() == 'doodle' %}
             <table class="manage">
-                <tr>
-                    <th width="120px">Start</th>
-                    <th width="120px">End</th>
-                    <th>Location</th>
-                    <th width="70px">Action</th>
-                </tr>
-
-                {% for field in fields %}
-                    <tr class="item item-{{ field.getId() }}">
-                        <td>{{ field.getStartDate().format('d/m/Y H:i') }}</td>
-                        <td>{{ field.getEndDate().format('d/m/Y H:i') }}</td>
-                        <td>{{ field.getLocation(language) }}</td>
-                        <td class="actions">
-                            {% if hasAccess('form_admin_form_field', 'edit') %}
-                                <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
-                            {% if hasAccess('form_admin_form_field', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getStartDate().format('d/m/Y H:i') }} - {{ field.getEndDate().format('d/m/Y H:i') }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
-                            {% endif %}
-                        </td>
+                <thead>
+                    <tr>
+                        <th width="120px">Start</th>
+                        <th width="120px">End</th>
+                        <th>Location</th>
+                        <th width="70px">Action</th>
                     </tr>
-                {% endfor %}
+                </thead>
+
+                <tbody>
+                    {% for field in fields %}
+                        <tr class="item item-{{ field.getId() }}">
+                            <td>{{ field.getStartDate().format('d/m/Y H:i') }}</td>
+                            <td>{{ field.getEndDate().format('d/m/Y H:i') }}</td>
+                            <td>{{ field.getLocation(language) }}</td>
+                            <td class="actions">
+                                {% if hasAccess('form_admin_form_field', 'edit') %}
+                                    <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('form_admin_form_field', 'delete') %}
+                                    <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getStartDate().format('d/m/Y H:i') }} - {{ field.getEndDate().format('d/m/Y H:i') }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         {% else %}
             <table class="manage">
-                <tr>
-                    <th>Label</th>
-                    <th width="70px">Order</th>
-                    <th width="70px">Required</th>
-                    <th width="70px">Action</th>
-                </tr>
-
-                {% for field in fields %}
-                    <tr class="item item-{{ field.getId() }}">
-                        <td>{{ field.getLabel(language) }}</td>
-                        <td>{{ field.getOrder() }}</td>
-                        <td>{% if field.isRequired() %}&times;{% endif %}</td>
-                        <td class="actions">
-                            {% if hasAccess('form_admin_form_field', 'edit') %}
-                                <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
-                            {% if hasAccess('form_admin_form_field', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
-                            {% endif %}
-                        </td>
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th width="70px">Order</th>
+                        <th width="70px">Required</th>
+                        <th width="70px">Action</th>
                     </tr>
-                {% endfor %}
+                </thead>
+
+                <tbody>
+                    {% for field in fields %}
+                        <tr class="item item-{{ field.getId() }}" data-id="{{ field.getId() }}">
+                            <td>{{ field.getLabel(language) }}</td>
+                            <td>{{ field.getOrder() }}</td>
+                            <td>{% if field.isRequired() %}&times;{% endif %}</td>
+                            <td class="actions">
+                                {% if hasAccess('form_admin_form_field', 'edit') %}
+                                    <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('form_admin_form_field', 'delete') %}
+                                    <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
+
+            <div style="text-align: right; font-size: 7pt">(Drag and drop to change the order)</div>
+            <button class="js-sortable-save edit hide">Save</button>
+            <button class="js-sortable-cancel delete hide">Cancel</button>
         {% endif %}
 
         {% include 'admin/partials/paginationControl.twig' %}
@@ -132,6 +165,30 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(openModal);
+
+            {% if formSpecification.getType() != 'doodle' %}
+                $('.manage').sortableTable({
+                    buttons: {
+                        save: $('.js-sortable-save'),
+                        cancel: $('.js-sortable-cancel')
+                    },
+                    submitUrl: "{{ url('form_admin_form_field', {"action": "sort", "id": formSpecification.getId()}) }}",
+                    callbacks: {
+                        saveSuccess: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.field_sort_success').removeClass('hide');
+                        },
+                        saveError: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.field_sort_error').removeClass('hide');
+                        },
+                        beforeSave: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.field_sort_saving').removeClass('hide');
+                        }
+                    }
+                });
+            {% endif %}
         });
 
         function openModal(e) {

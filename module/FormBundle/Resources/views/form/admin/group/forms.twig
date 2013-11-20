@@ -1,0 +1,178 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width form_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The form was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width form_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the form.</p>
+        </div>
+    </div>
+    <div class="flashmessage info_message full_width form_sort_saving hide">
+        <div class="title">Saving</div>
+        <div class="content">
+            <p>Saving the ordering of the forms.</p>
+        </div>
+    </div>
+    <div class="flashmessage success_message full_width form_sort_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The forms were successfully reordered.</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width form_sort_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to reorder the forms.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <h1>{{ group.getTitle(language) }}</h1>
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br />
+        <br />
+
+        <table class="manage">
+            <thead>
+                <tr>
+                    <th width="50px">Type</th>
+                    <th>Name</th>
+                    <th width="160px">Author</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for form in group.getForms() %}
+                    <tr class="item item-{{ form.getId() }}" data-id="{{ form.getId() }}">
+                        <td>{{ form.getForm().getType()|capitalize }}</td>
+                        <td>{{ form.getForm().getTitle(language) }}</td>
+                        <td>{{ form.getForm().getCreationPerson().getFullName() }}</td>
+                        <td class="actions">
+                            {% if group.canBeEditedBy(authenticatedPerson) %}
+                                {% if hasAccess('form_admin_form', 'edit') %}
+                                    <a href="{{ url('form_admin_form', {"action": "edit", "id": form.getForm().getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('form_admin_group', 'deleteForm') %}
+                                    <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getForm().getTitle(language) }}" class="delete">Delete</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if group.canBeEditedBy(authenticatedPerson) %}
+            <div style="text-align: right; font-size: 7pt">(Drag and drop to change the order)</div>
+            <button class="js-sortable-save edit hide">Save</button>
+            <button class="js-sortable-cancel delete hide">Cancel</button>
+        {% endif %}
+    </div>
+
+    <aside>
+        {% if hasAccess('form_admin_group', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Group</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_group', {"action": "edit", "id": group.getId()}) }}">&rarr; Edit Group</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
+    <div class="modal hide fade" id="removeForm">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Group
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following form: <b class="name"></b>.
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+
+            {% if group.canBeEditedBy(authenticatedPerson) %}
+                $('.manage').sortableTable({
+                    buttons: {
+                        save: $('.js-sortable-save'),
+                        cancel: $('.js-sortable-cancel')
+                    },
+                    submitUrl: "{{ url('form_admin_group', {"action": "sort", "id": group.getId()}) }}",
+                    callbacks: {
+                        saveSuccess: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.form_sort_success').removeClass('hide');
+                        },
+                        saveError: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.form_sort_error').removeClass('hide');
+                        },
+                        beforeSave: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.form_sort_saving').removeClass('hide');
+                        }
+                    }
+                });
+            {% endif %}
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+
+            var removeForm = $('#removeForm');
+            removeForm.find('.name').html($(this).data('name'));
+            var id = $this.data('id');
+            removeForm.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('form_admin_group', {"action": "deleteForm"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.form_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeForm.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeForm.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.form_removed_error').removeClass('hide');
+            $('#removeForm').modal('hide');
+        }
+    </script>
+{% endblock %}

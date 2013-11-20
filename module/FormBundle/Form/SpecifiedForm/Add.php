@@ -29,6 +29,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Entry,
+    FormBundle\Entity\Node\GuestInfo,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -145,6 +146,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->setData($formData);
+    }
+
+    public function populateFromGuestInfo(GuestInfo $guestInfo)
+    {
+        $data = array(
+            'first_name' => $guestInfo->getFirstName(),
+            'last_name' => $guestInfo->getLastName(),
+            'email' => $guestInfo->getEmail(),
+        );
+
+        $this->setData($data);
     }
 
     public function getInputFilter()

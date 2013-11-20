@@ -54,6 +54,13 @@ class Edit extends Add
     private function _populateFromEntry(Entry $entry)
     {
         $data = array();
+
+        if ($entry->getGuestInfo()) {
+            $data['first_name'] = $entry->getGuestInfo()->getFirstName();
+            $data['last_name'] = $entry->getGuestInfo()->getLastName();
+            $data['email'] = $entry->getGuestInfo()->getEmail();
+        }
+
         foreach($entry->getFieldEntries() as $fieldEntry) {
             $data['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
             if ($fieldEntry->getField() instanceof FileField) {
