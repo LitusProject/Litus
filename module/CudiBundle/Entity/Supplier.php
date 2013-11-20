@@ -72,6 +72,13 @@ class Supplier
     private $template;
 
     /**
+     * @var boolean Is this supplier the contactperson
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $contact;
+
+    /**
      * @var array The possible templates
      */
     public static $POSSIBLE_TEMPLATES = array(
@@ -82,13 +89,6 @@ class Supplier
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager;
-
-    /**
-     * @var boolean Is this supplier the contactperson
-     *
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $contact;
 
     /**
      * @param string $name
