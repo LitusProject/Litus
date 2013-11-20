@@ -109,6 +109,9 @@ VTK',
                     'form_admin_form_viewer' => array(
                         'add', 'delete', 'manage'
                     ),
+                    'form_admin_group_viewer' => array(
+                        'add', 'delete', 'manage'
+                    ),
                     'form_view' => array(
                         'doodle', 'downloadFile', 'edit', 'view', 'saveDoodle'
                     ),
