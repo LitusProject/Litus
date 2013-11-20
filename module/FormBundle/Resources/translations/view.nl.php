@@ -22,6 +22,7 @@ return array(
     'You can\'t fill this form more than once.' => 'Je kan dit formulier slechts één keer invullen.',
     'Please login to view this form.' => 'Gelieve aan te melden om dit formulier te bekijken.',
     'Your entry has been recorded.' => 'Je registratie is opgeslagen.',
+    'Your entry couldn\'t be recorded.' => 'Je registratie kon niet opgeslagen worden.',
     'Your entry has been updated.' => 'Je registratie is succesvol aangepast.',
     'Submissions' => 'Registraties',
     'Submission Date' => 'Registratie Datum',

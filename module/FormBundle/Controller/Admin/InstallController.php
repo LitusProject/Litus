@@ -110,7 +110,7 @@ VTK',
                         'add', 'delete', 'manage'
                     ),
                     'form_view' => array(
-                        'doodle', 'downloadFile', 'edit', 'view',
+                        'doodle', 'downloadFile', 'edit', 'view', 'saveDoodle'
                     ),
                     'form_group' => array(
                         'view',

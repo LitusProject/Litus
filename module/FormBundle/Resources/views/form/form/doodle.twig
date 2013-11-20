@@ -1,6 +1,21 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
+    <div class="page-alert">
+        <div class="flashmessage alert alert-success fade" id="entry_saved_success">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('Your entry has been recorded.') }}
+            </div>
+        </div>
+        <div class="flashmessage alert alert-error fade" id="entry_saved_error">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('Your entry couldn\'t be recorded.') }}
+            </div>
+        </div>
+    </div>
+
     <div class="page-header">
         <h1>{% if group %}{{ group.getTitle(language) }}: {% endif %}{{ specification.getTitle(language) }}</h1>
     </div>
@@ -80,10 +95,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
             $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
             $('.extraInformation').popover({'trigger': 'hover'});
 
-            $('table label.checkbox').each(function () {
+            $('#doodle label.checkbox').each(function () {
                 $(this).hide();
                 $(this).parent().append(
                     $('<button>', {'class': 'btn btn-primary btn-small doodleButton'}).html('{{ translate('Subscribe') }}').click(function (e) {
@@ -94,15 +113,17 @@
 
                         var checkbox = $(this).parent().find('input[type=checkbox]');
 
-                        {% if not specification.isMultiple() %}
+                        {#% if not specification.isMultiple() %}
                             if (!checkbox.prop('checked')) {
                                 $('#doodle .doodleButton').each(function () {
                                     toggleButton($(this), $(this).parent().find('input[type=checkbox]'), false);
                                 });
                             }
-                        {% endif %}
+                        {% endif %#}
 
                         toggleButton($(this), checkbox, !checkbox.is(':checked'));
+
+                        saveRegistration();
                     })
                 );
 
@@ -120,6 +141,36 @@
                 checkbox.prop('checked', true);
                 button.html('{{ translate('Unsubscribe') }}').addClass('btn-danger');
             }
+        }
+
+        function saveRegistration() {
+            var data = {};
+            $('#doodle input[type=checkbox]').each(function () {
+                if ($(this).is(':checked')) {
+                    data[$(this).attr('name')] = true;
+                }
+            });
+
+            $.post('{{ url('form_view', {'action': 'saveDoodle', 'id': specification.getId()}) }}', data, function (data) {
+                if (data !== undefined && data.status == 'success') {
+                    $('#entry_saved_error').removeClass('in');
+                    $('#entry_saved_success').addClass('in');
+                } else {
+                    $('#entry_saved_success').removeClass('in');
+                    $('#entry_saved_error').addClass('in');
+
+                    $('#doodle tr.error').removeClass('error');
+                    if (data !== undefined && data.errors) {
+                        $.each(data.errors, function (key, value) {
+                            console.log(key);
+                            $('#' + key).closest('tr').addClass('error');
+                        });
+                    }
+                }
+            }, 'json').error(function (data) {
+                $('#entry_saved_success').removeClass('in');
+                $('#entry_saved_error').addClass('in');
+            });
         }
     </script>
 {% endblock %}

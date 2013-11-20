@@ -68,6 +68,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $person = $this->getAuthentication()->getPersonObject();
+        $guestInfo = null;
 
         if (null !== $person) {
             $entries = $this->getEntityManager()
@@ -156,7 +157,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
 
                 if ($person === null && $guestInfo == null) {
                     $guestInfo = new GuestInfo(
@@ -318,6 +318,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $person = $this->getAuthentication()->getPersonObject();
+        $guestInfo = null;
 
         if ($person === null && !$formSpecification->isNonMember()) {
             return new ViewModel(
@@ -479,7 +480,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 return new ViewModel();
             } else {
-                print_r($form->getMessages());
                 $notValid = true;
             }
         }
@@ -493,6 +493,188 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'formEntry'       => $formEntry,
                 'group'           => $group,
                 'progressBarInfo' => $progressBarInfo,
+            )
+        );
+    }
+
+    public function saveDoodleAction()
+    {
+        if (!($formSpecification = $this->_getForm()))
+            return new ViewModel();
+
+        if ($formSpecification->getType() == 'form') {
+            $this->redirect()->toRoute(
+                'form_view',
+                array(
+                    'action'   => 'doodle',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $notValid = false;
+
+        $now = new DateTime();
+        if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+        $guestInfo = null;
+
+        if ($person === null && !$formSpecification->isNonMember()) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        $group = $this->_getGroup($formSpecification);
+        $progressBarInfo = null;
+
+        if ($group) {
+            $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
+
+            if ($progressBarInfo['uncompleted_before_current'] > 0) {
+                return new ViewModel(
+                    array(
+                        'result' => (object) array('status' => 'error'),
+                    )
+                );
+            }
+        }
+
+        $formEntries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($formSpecification);
+
+        $occupiedSlots = array();
+        foreach($formEntries as $formEntry) {
+            if ($formEntry->getCreationPerson() == $person)
+                continue;
+
+            foreach($formEntry->getFieldEntries() as $fieldEntry) {
+                $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
+            }
+        }
+
+        if (null !== $person) {
+            $formEntry = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findOneByFormAndPerson($formSpecification, $person);
+        } elseif(isset($_COOKIE['LITUS_form'])) {
+            $guestInfo = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+            $formEntry = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+        }
+
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry, $occupiedSlots);
+        if (isset($guestInfo))
+            $form->populateFromGuestInfo($guestInfo);
+
+        if ($this->getRequest()->isPost() && $formSpecification->canBeSavedBy($person)) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if ($person === null && $guestInfo == null) {
+                    $guestInfo = new GuestInfo(
+                        $this->getEntityManager(),
+                        $formData['first_name'],
+                        $formData['last_name'],
+                        $formData['email']
+                    );
+                    $this->getEntityManager()->persist($guestInfo);
+                }
+
+                if (null === $formEntry) {
+                    $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
+                    $this->getEntityManager()->persist($formEntry);
+                } else {
+                    foreach($formEntry->getFieldEntries() as $fieldEntry) {
+                        $this->getEntityManager()->remove($fieldEntry);
+                    }
+                    $this->getEntityManager()->flush();
+                }
+
+                foreach ($formSpecification->getFields() as $field) {
+                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
+                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
+                        $formEntry->addFieldEntry($fieldEntry);
+                        $this->getEntityManager()->persist($fieldEntry);
+
+                        if (!$formSpecification->isMultiple())
+                            break;
+                    }
+                }
+
+                $this->getEntityManager()->flush();
+
+                if ($formSpecification->hasMail()) {
+                    $mailAddress = $formSpecification->getMail()->getFrom();
+
+                    $mail = new Message();
+                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
+                        ->setFrom($mailAddress)
+                        ->setSubject($formSpecification->getMail()->getSubject())
+                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
+
+                    if ($formSpecification->getMail()->getBcc())
+                        $mail->addBcc($mailAddress);
+
+                    if ('development' != getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
+                }
+
+                return new ViewModel(
+                    array(
+                        'result' => (object) array('status' => 'success'),
+                    )
+                );
+
+                return new ViewModel();
+            } else {
+                $errors = $form->getMessages();
+                $formErrors = array();
+
+                foreach ($form->getElements() as $key => $element) {
+                    if (!isset($errors[$element->getName()]))
+                        continue;
+
+                    $formErrors[$element->getAttribute('id')] = array();
+
+                    foreach ($errors[$element->getName()] as $error) {
+                        $formErrors[$element->getAttribute('id')][] = $error;
+                    }
+                }
+
+                return new ViewModel(
+                    array(
+                        'result' => (object) array(
+                            'status' => 'error',
+                            'errors' => $formErrors,
+                        )
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'error'),
             )
         );
     }
