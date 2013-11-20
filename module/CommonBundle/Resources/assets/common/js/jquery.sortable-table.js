@@ -68,7 +68,7 @@
                 expression: /(.*)/
             });
             var that = this;
-            $.post(this.submitUrl, data, function(resp) { that._onSaveComplete(resp) }, 'json');
+            $.post(this.submitUrl, data, function(resp) { that._onSaveComplete(resp) }, 'json').error(this.callbacks.saveError);
         },
         _onSortCancel: function() {
             if(false === this.callbacks.beforeCancel()) return;

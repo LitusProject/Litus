@@ -32,7 +32,6 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -55,10 +54,15 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findByForm($formSpecification);
 
+        $group = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneByForm($formSpecification);
+
         return new ViewModel(
             array(
                 'formSpecification' => $formSpecification,
                 'viewers' => $viewers,
+                'hasGroup' => $group !== null,
             )
         );
     }
@@ -69,7 +73,6 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -88,7 +91,31 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        $form = new AddForm($formSpecification, $this->getEntityManager());
+        $group = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneByForm($formSpecification);
+
+        if (null !== $group) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'This form is in a group, you cannot edit the viewer here!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_form_viewer',
+                array(
+                    'action' => 'manage',
+                    'id' => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -173,7 +200,6 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         if (!$viewer->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -186,6 +212,30 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                 'form_admin_form',
                 array(
                     'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $group = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneByForm($viewer->getForm());
+
+        if (null !== $group) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'This form is in a group, you cannot edit the viewer here!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_form_viewer',
+                array(
+                    'action' => 'manage',
+                    'id' => $viewer->getForm()->getId(),
                 )
             );
 

@@ -80,35 +80,43 @@ class ViewerMap
         $this->mail = $mail;
     }
 
-    public function getId() {
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return \FormBundle\Entity\Node\Form
      */
-    public function getForm() {
+    public function getForm()
+    {
         return $this->form;
     }
 
     /**
      * @return \CommonBundle\Entity\User\Person
      */
-    public function getPerson() {
+    public function getPerson()
+    {
         return $this->person;
     }
 
     /**
      * @return boolean
      */
-    public function isEdit() {
+    public function isEdit()
+    {
         return $this->edit;
     }
 
     /**
      * @return boolean
      */
-    public function isMail() {
+    public function isMail()
+    {
         return $this->mail;
     }
 }

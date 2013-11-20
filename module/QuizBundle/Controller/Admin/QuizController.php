@@ -95,7 +95,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $form  = new EditForm($this->getEntityManager(), $quiz);
 
@@ -139,7 +139,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
 
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $this->getEntityManager()->remove($quiz);
 

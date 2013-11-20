@@ -1,0 +1,57 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="150px">Start Date</th>
+                    <th width="150px">End Date</th>
+                    <th width="70px">Active</th>
+                    <th width="160px">Author</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for group in paginator %}
+                    <tr class="item item-{{ group.getId() }}">
+                        <td>{{ group.getTitle(language) }}</td>
+                        <td>{{ dateLocalized(group.getStartDate(), 'dd/MM/y HH:mm') }}</td>
+                        <td>{{ dateLocalized(group.getEndDate(), 'dd/MM/y HH:mm') }}</td>
+                        <td>{% if group.isActive() %}&times;{% endif %}</td>
+                        <td>{{ group.getCreationPerson().getFullName() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('form_group', 'view') %}
+                                <a href="{{ url('form_group', {"action": "view", "id": group.getId()}) }}" class="view">View Group</a>
+                            {% endif %}
+                            {% if hasAccess('form_admin_group', 'forms') %}
+                                <a href="{{ url('form_admin_group', {"action": "forms", "id": group.getId()}) }}" class="view">Forms</a>
+                            {% endif %}
+                            {% if group.canBeViewedBy(authenticatedPerson) %}
+                                {% if hasAccess('form_manage', 'view') %}
+                                    <a href="{{ url('form_manage_group', {"action": "view", "id": group.getId()}) }}" class="view">View Results</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if group.canBeEditedBy(authenticatedPerson) %}
+                                {% if hasAccess('form_admin_group', 'edit') %}
+                                    <a href="{{ url('form_admin_group', {"action": "edit", "id": group.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('form_admin_group', 'delete') %}
+                                    <a href="#" data-id="{{ group.getId() }}" data-name="{{ group.getTitle(language) }}" class="delete">Delete</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}
