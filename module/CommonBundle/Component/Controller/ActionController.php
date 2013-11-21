@@ -67,6 +67,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
         $this->initLocalization();
 
+        if (false !== getenv('SERVED_BY')) {
+            $this->getResponse()
+                ->getHeaders()
+                ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
+        }
+
         $authenticatedPerson = null;
         if ($this->getAuthentication()->isAuthenticated())
             $authenticatedPerson = $this->getAuthentication()->getPersonObject();
