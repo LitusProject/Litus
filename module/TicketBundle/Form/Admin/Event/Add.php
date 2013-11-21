@@ -78,12 +78,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
         $this->add($field);
 
         $field = new Text('number_of_tickets');
-        $field->setLabel('Number Of Tickets (0 is infinity)')
+        $field->setLabel('Number Of Tickets (0: No Limit)')
             ->setValue(0);
         $this->add($field);
 
         $field = new Text('limit_per_person');
-        $field->setLabel('Maximum Number Of Tickets Per Person  (0 is infinity)')
+        $field->setLabel('Maximum Number Of Tickets Per Person (0: No Limit)')
             ->setValue(0);
         $this->add($field);
 
