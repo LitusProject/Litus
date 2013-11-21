@@ -259,8 +259,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         } elseif ($field instanceof FileField) {
             $data['max_size'] = $field->getMaxSize();
         } elseif ($field instanceof TimeSlotField) {
-            $data['timeslot_start_date'] = $field->getStartDate()->format('d/m/Y H:i');
-            $data['timeslot_end_date'] = $field->getEndDate()->format('d/m/Y H:i');
+            $interval = $field->getEndDate()->diff($field->getStartDate());
+            $data['timeslot_start_date'] = $field->getEndDate()->format('d/m/Y H:i');
+            $data['timeslot_end_date'] = $field->getEndDate()->add($interval)->format('d/m/Y H:i');
         }
 
         foreach($this->getLanguages() as $language) {
