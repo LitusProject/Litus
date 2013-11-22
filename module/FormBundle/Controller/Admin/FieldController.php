@@ -97,7 +97,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('FormBundle\Entity\Field')
                     ->findLatestField($formSpecification->getId());
 
-        if($this->getParam('repeat')){
+       if($this->getParam('repeat')){
             $form = new AddForm($formSpecification, $this->getEntityManager(),$latestField);
         }
         else{

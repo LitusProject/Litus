@@ -51,25 +51,21 @@ class Field extends EntityRepository
 
         return $resultSet;
     }
-/*
-SELECT ..
-FROM ...
-WHERE id=(SELECT max(id) FROM table)
-    AND formID = givenID
-*/
 
-    public function findLatestFieldQuery($formId){
+
+    public function findLatestField($formId){
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Field', 'n')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('n.form', ':id'),
-                    $query->expr()->eq('n.id', 'MAX(n.id)')
-                )
+                $query->expr()->eq('n.form', ':id')
+
             )
             ->setParameter('id', $formId)
-            ->getQuery();
+            ->orderBy('n.id','DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $resultSet;
     }
