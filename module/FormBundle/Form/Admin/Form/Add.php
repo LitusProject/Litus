@@ -145,7 +145,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add($field);
 
         $field = new Checkbox('multiple');
-        $field->setLabel('Multiple Entries per Person')
+        $field->setLabel('Multiple Entries Per Person')
             ->setAttribute('class', 'form doodle');
         $this->add($field);
 
