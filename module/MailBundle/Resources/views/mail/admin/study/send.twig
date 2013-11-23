@@ -1,21 +1,40 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'mail/admin/study/partials/navigation.twig' %}
+    {% include 'mail/admin/study/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-	    <div class="flashmessage warning_message full_width">
-	    	<div class="title">Warning</div>
-	    	<div class="content">
-	    	    This mail will be sent to all the students of the selected studies.
-	    	</div>
-	    </div>
+    <div id="controller_action">
+        <div class="flashmessage warning_message full_width">
+            <div class="title">Warning</div>
+            <div class="content">
+                This mail will be sent to all the students of the selected studies.
+            </div>
+        </div>
 
-	    {% if hasAccess('mail_admin_study', 'send') %}
-	        {% import 'admin/partials/form.twig' as forms %}
-	        {{ forms.renderForm(form) }}
-	    {% endif %}
-	</div>
+        {% if hasAccess('mail_admin_study', 'send') %}
+            {% import 'admin/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#send_mail').click(function () {
+                if ($(this).prop('disabled'))
+                    return false;
+
+                $(this).prop('disabled', true);
+                $(this).css('color', '#ccc');
+
+                $this = $(this);
+                setTimeout(function () {
+                    $this.closest('form').submit();
+                }, 10);
+            });
+        });
+    </script>
 {% endblock %}
