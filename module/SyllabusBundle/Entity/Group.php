@@ -62,15 +62,24 @@ class Group
     private $extraMembers;
 
     /**
+     * @var string Comma separated string of excluded members
+     *
+     * @ORM\Column(type="text", name="excluded_members")
+     */
+    private $excludedMembers;
+
+    /**
      * @param string $name
      * @param boolean $cvBook
      * @param string $extraMembers
+     * @param string $excludedMembers
      */
-    public function __construct($name, $cvBook, $extraMembers)
+    public function __construct($name, $cvBook, $extraMembers, $excludedMembers)
     {
         $this->name = $name;
         $this->cvBook = $cvBook;
         $this->extraMembers = $extraMembers;
+        $this->excludedMembers = $excludedMembers;
 
         $this->removed = false;
     }
@@ -143,6 +152,24 @@ class Group
     public function setExtraMembers($extraMembers)
     {
         $this->extraMembers = $extraMembers;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExcludedMembers()
+    {
+        return $this->excludedMembers;
+    }
+
+    /**
+     * @param string $excludedMembers
+     * @return \SyllabusBundle\Entity\Group
+     */
+    public function setExcludedMembers($excludedMembers)
+    {
+        $this->excludedMembers = $excludedMembers;
         return $this;
     }
 

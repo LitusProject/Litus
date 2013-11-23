@@ -77,8 +77,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $extraMembers = preg_split("/[,;\s]+/", $formData['extra_members']);
+                $excludedMembers = preg_split("/[,;\s]+/", $formData['excluded_members']);
 
-                $this->getEntityManager()->persist(new Group($formData['name'], $formData['cvbook'], serialize($extraMembers)));
+                $this->getEntityManager()->persist(new Group($formData['name'], $formData['cvbook'], serialize($extraMembers), serialize($excludedMembers)));
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -132,10 +133,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $extraMembers = preg_split("/[,;\s]+/", $formData['extra_members']);
+                $excludedMembers = preg_split("/[,;\s]+/", $formData['excluded_members']);
 
                 $group->setName($formData['name'])
                     ->setCvBook($formData['cvbook'])
-                    ->setExtraMembers(serialize($extraMembers));
+                    ->setExtraMembers(serialize($extraMembers))
+                    ->setExcludedMembers(serialize($excludedMembers));
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
