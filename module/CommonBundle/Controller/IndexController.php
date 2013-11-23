@@ -110,7 +110,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             $myShifts = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
-
         }
 
         return new ViewModel(
