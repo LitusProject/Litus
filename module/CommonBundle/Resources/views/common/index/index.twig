@@ -117,7 +117,7 @@
                 {% endfor %}
             {% endif %}
 
-            {% if myShifts|length > 0 %}
+            {% if myShifts is not null %}
                 <h2>{{ translate('Shifts') }}</h2>
                 {% for shift in myShifts %}
                     <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
