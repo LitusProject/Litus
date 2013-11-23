@@ -218,12 +218,20 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                 $this->_uploadProfileImage($academic);
                 if (isset($formData['organization'])) {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization']);
+
                     $this->_setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
+                        $organization
+                    );
+                } else {
+                    $organization = current(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findOneById($formData['organization'])
+                            ->findAll()
                     );
                 }
 
@@ -272,7 +280,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
 
                     if ($metaData->becomeMember()) {
-                        $this->_bookRegistrationArticles($academic, $this->getCurrentAcademicYear());
+                        $this->_bookRegistrationArticles($academic, $organization, $this->getCurrentAcademicYear());
                     } else {
                         foreach($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()

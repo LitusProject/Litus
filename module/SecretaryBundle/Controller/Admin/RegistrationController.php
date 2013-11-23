@@ -18,9 +18,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
     CommonBundle\Entity\User\Barcode,
-    CudiBundle\Entity\Sale\Booking,
     DateInterval,
     DateTime,
+    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
     SecretaryBundle\Form\Admin\Registration\Add as AddForm,
@@ -206,38 +206,16 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $this->getEntityManager()->persist(new AcademicYearMap($academic, $academicYear, $organization));
                 }
 
-                $ids = unserialize(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('secretary.membership_article')
+                RegistrationArticles::book(
+                    $this->getEntityManager(),
+                    $academic,
+                    $organization,
+                    $academicYear,
+                    array(
+                        'payed' => $formData['payed'],
+                        'tshirtSize' => $formData['tshirt_size'],
+                    )
                 );
-
-                $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($ids[$organization->getId()]);
-
-                $booking = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                        $membershipArticle,
-                        $academic
-                    );
-
-                if (null === $booking) {
-                    $booking = new Booking(
-                        $this->getEntityManager(),
-                        $academic,
-                        $membershipArticle,
-                        'assigned',
-                        1,
-                        true
-                    );
-
-                    $this->getEntityManager()->persist($booking);
-                }
-
-                if ($formData['payed'])
-                    $booking->setStatus('sold', $this->getEntityManager());
 
                 $registration = new Registration(
                     $academic,
@@ -318,38 +296,16 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $this->getEntityManager()->persist(new AcademicYearMap($registration->getAcademic(), $registration->getAcademicYear(), $organization));
                 }
 
-                $ids = unserialize(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('secretary.membership_article')
+                RegistrationArticles::book(
+                    $this->getEntityManager(),
+                    $registration->getAcademic(),
+                    $organization,
+                    $registration->getAcademicYear(),
+                    array(
+                        'payed' => $formData['payed'],
+                        'tshirtSize' => $formData['tshirt_size'],
+                    )
                 );
-
-                $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($ids[$organization->getId()]);
-
-                $booking = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                        $membershipArticle,
-                        $registration->getAcademic()
-                    );
-
-                if (null === $booking) {
-                    $booking = new Booking(
-                        $this->getEntityManager(),
-                        $registration->getAcademic(),
-                        $membershipArticle,
-                        'assigned',
-                        1,
-                        true
-                    );
-
-                    $this->getEntityManager()->persist($booking);
-                }
-
-                if ($registration->hasPayed())
-                    $booking->setStatus('sold', $this->getEntityManager());
 
                 if (null === $metaData) {
                     $metaData = new MetaData(

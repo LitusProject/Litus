@@ -141,7 +141,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         ->getRepository('CommonBundle\Entity\General\Organization')
                         ->findOneById($formData['organization']);
                 } else {
-                    $selectedOrganization = null;
+                    $selectedOrganization = current(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Organization')
+                            ->findAll()
+                    );
                 }
 
                 if ($form->isValid()) {
@@ -210,7 +214,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['become_member']
                         );
 
-                        $this->_bookRegistrationArticles($academic, $this->getCurrentAcademicYear());
+                        $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         $metaData = new MetaData(
                             $academic,
@@ -423,12 +427,20 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
 
                 if (isset($formData['organization'])) {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization']);
+
                     $this->_setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
+                        $organization
+                    );
+                } else {
+                    $organization = current(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findOneById($formData['organization'])
+                            ->findAll()
                     );
                 }
 
@@ -477,7 +489,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($metaData->becomeMember()) {
-                        $this->_bookRegistrationArticles($academic, $this->getCurrentAcademicYear());
+                        $this->_bookRegistrationArticles($academic, $organization, $this->getCurrentAcademicYear());
                     } else {
                         foreach($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
