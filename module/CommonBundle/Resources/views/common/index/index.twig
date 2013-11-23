@@ -40,7 +40,6 @@
     <div class="row-fluid">
         <div class="span4">
             <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-calendar.png" /></a>
-
             <h2>{{ translate('Calendar') }}</h2>
 
             {% for day in calendarItems %}
@@ -64,7 +63,6 @@
 
         <div class="span3">
             <a href="{{ url('cudi_booking') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
-
             <h2>{{ translate('Bookstore') }}</h2>
 
             {% if hasAccess('cudi_booking', 'view') %}
@@ -118,7 +116,9 @@
             {% endif %}
 
             {% if myShifts is not null %}
+                <a href="{{ url('shift') }}"><img class="heading-icon no-margin" src="/_site/img/glyphicons-tasks.png" /></a>
                 <h2>{{ translate('Shifts') }}</h2>
+
                 {% for shift in myShifts %}
                     <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
                         <div class="accordion-heading">
@@ -142,11 +142,8 @@
                                     <dl>
                                         <dt>{{ translate('Description') }}</dt>
                                         <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
-
                                         <dt>{{ translate('Location') }}</dt>
-                                        <dd>
-                                            {{ shift.getLocation().getName() }}
-                                        </dd>
+                                        <dd>{{ shift.getLocation().getName() }}</dd>
                                     </dl>
                                 </div>
                             </div>
