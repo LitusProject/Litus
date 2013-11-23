@@ -23,6 +23,7 @@ return array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@common_remote_typeahead',
         ),
         'secretary_admin_promotion' => array(
             '@common_jquery',

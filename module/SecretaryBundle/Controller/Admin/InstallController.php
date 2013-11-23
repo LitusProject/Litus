@@ -110,7 +110,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'secretary_admin_registration' => array(
-                        'barcode', 'edit', 'manage', 'search'
+                        'add', 'barcode', 'edit', 'manage', 'search'
                     ),
                     'secretary_admin_promotion' => array(
                         'add', 'delete', 'mail', 'manage', 'search', 'update'
