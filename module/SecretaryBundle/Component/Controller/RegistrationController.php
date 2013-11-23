@@ -273,7 +273,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
     }
 
-    protected function _bookRegistrationArticles(Academic $academic, Organization $organization, $tshirtSize, AcademicYear $academicYear)
+    protected function _bookRegistrationArticles(Academic $academic, $tshirtSize, Organization $organization, AcademicYear $academicYear)
     {
         RegistrationArticles::book(
             $this->getEntityManager(),
