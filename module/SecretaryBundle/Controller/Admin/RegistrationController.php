@@ -213,7 +213,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $academicYear,
                     array(
                         'payed' => $formData['payed'],
-                        'tshirtSize' => $formData['tshirt_size'],
                     )
                 );
 
@@ -303,7 +302,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $registration->getAcademicYear(),
                     array(
                         'payed' => $formData['payed'],
-                        'tshirtSize' => $formData['tshirt_size'],
                     )
                 );
 
