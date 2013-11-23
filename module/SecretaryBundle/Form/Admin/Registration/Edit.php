@@ -29,13 +29,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends Add
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
     /**
      * @var \SecretaryBundle\Entity\Registration The registration data
      */
@@ -54,67 +49,31 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
      */
     public function __construct(EntityManager $entityManager, Registration $registration, MetaData $metaData = null, $name = null)
     {
-        parent::__construct($name);
+        parent::__construct($entityManager, $name);
 
-        $this->_entityManager = $entityManager;
         $this->_registration = $registration;
         $this->_metaData = $metaData;
 
-        $field = new Checkbox('payed');
-        $field->setLabel('Has Payed')
-            ->setValue($registration->hasPayed());
-        $this->add($field);
+        $this->remove('person_id');
+        $this->remove('person');
 
-        $field = new Checkbox('irreeel');
-        $field->setLabel('Ir.Reëel at CuDi')
-            ->setValue($metaData->receiveIrReeelAtCudi());
-        $this->add($field);
-
-        $field = new Checkbox('bakske');
-        $field->setLabel('Bakske by E-mail')
-            ->setValue($metaData->bakskeByMail());
-        $this->add($field);
-
-        $field = new Select('tshirt_size');
-        $field->setLabel('T-shirt Size')
-            ->setAttribute(
-                'options',
-                MetaData::$possibleSizes
-            )
-            ->setValue($metaData->getTshirtSize());
-        $this->add($field);
+        $this->get('payed')->setValue($registration->hasPayed());
+        if ($metaData) {
+            $this->get('irreeel')->setValue($metaData->receiveIrReeelAtCudi());
+            $this->get('bakske')->setValue($metaData->bakskeByMail());
+            $this->get('tshirt_size')->setValue($metaData->getTshirtSize());
+        }
 
         $organization = $registration->getAcademic()->getOrganization($registration->getAcademicYear());
-        $field = new Select('organization');
-        $field->setLabel('Organization')
-            ->setAttribute('options', $this->_getOrganizations())
-            ->setValue($organization ? $organization->getId() : 0);
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'secretary_edit');
-        $this->add($field);
-    }
-
-    private function _getOrganizations()
-    {
-        $organizations = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
-
-        $organizationOptions = array();
-        foreach($organizations as $organization)
-            $organizationOptions[$organization->getId()] = $organization->getName();
-
-        return $organizationOptions;
+        $this->get('organization')->setValue($organization ? $organization->getId() : 0);
     }
 
     public function getInputFilter()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $inputFilter = parent::getInputFilter();
 
+        $inputFilter->remove('person_id');
+        $inputFilter->remove('person');
 
         return $inputFilter;
     }
