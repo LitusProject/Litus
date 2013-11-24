@@ -155,24 +155,11 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * Create the full Shibboleth URL.
+     * Build a pages submenu.
      *
-     * @return string
+     * @param \PageBundle\Entity\Node\Page $page The page
+     * @return array
      */
-    protected function _getShibbolethUrl()
-    {
-        $shibbolethUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_url');
-
-        $shibbolethUrl .= '%3Fsource=site';
-
-        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-
-        return $shibbolethUrl;
-    }
-
     protected function _buildSubmenu(Page $page)
     {
         $pages = $this->getEntityManager()
@@ -253,5 +240,26 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         array_multisort($sort, $submenu);
 
         return $submenu;
+    }
+
+    /**
+     * Create the full Shibboleth URL.
+     *
+     * @return string
+     */
+    protected function _getShibbolethUrl()
+    {
+        $shibbolethUrl = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_url')
+        )[getenv('SERVED_BY')];
+
+        $shibbolethUrl .= '%3Fsource=site';
+
+        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+        return $shibbolethUrl;
     }
 }

@@ -747,9 +747,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     private function _getRegisterhibbolethUrl()
     {
-        $shibbolethUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_url');
+        $shibbolethUrl = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_url')
+        )[getenv('SERVED_BY')];
 
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';

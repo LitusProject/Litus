@@ -46,9 +46,11 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
      */
     protected function _getShibbolethUrl()
     {
-        $shibbolethUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_url');
+        $shibbolethUrl = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_url')
+        )[getenv('SERVED_BY')];
 
         $shibbolethUrl .= '?source=wiki';
 

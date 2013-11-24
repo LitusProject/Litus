@@ -155,9 +155,11 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
     private function _getShibbolethUrl()
     {
-        $shibbolethUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_url');
+        $shibbolethUrl = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_url')
+        )[getenv('SERVED_BY')];
 
         $shibbolethUrl .= '?source=admin';
 
