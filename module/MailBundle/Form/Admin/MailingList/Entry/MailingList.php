@@ -107,15 +107,16 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
                         'entry' => $value
                     )
                 );
-
             if ($value === $this->_currentList || count($lists) > 0)
                 unset($listsArray[$key]);
         }
 
-        foreach ($listsArray as $list)
-            $lists[$list->getId()] = $list->getName();
+        $resultArray = array();
+        foreach ($listsArray as $list){
+            $resultArray[$list->getId()] = $list->getName();
+        }
 
-        return $lists;
+        return $resultArray;
     }
 
     public function getInputFilter()
