@@ -51,6 +51,35 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllActiveByArticleAndPeriod(ArticleEntity $article, Period $period)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.article', ':article'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('b.status', '\'booked\''),
+                        $query->expr()->eq('b.status', '\'assigned\'')
+                    ),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('article', $article)
+            ->setParameter('startDate', $period->getStartDate());
+
+            if (!$period->isOpen())
+                $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllActiveByPeriodPaginator(Period $period, $currentPage, $itemsPerPage)
     {
         $currentPage = $currentPage == 0 ? $currentPage = 1 : $currentPage;
