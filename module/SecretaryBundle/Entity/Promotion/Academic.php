@@ -44,7 +44,7 @@ class Academic extends \SecretaryBundle\Entity\Promotion
     public function __construct(AcademicYear $academicYear, AcademicPerson $academic)
     {
         parent::__construct($academicYear);
-        
+
         $this->academic = $academic;
     }
 
