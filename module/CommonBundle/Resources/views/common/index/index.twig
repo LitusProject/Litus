@@ -103,7 +103,7 @@
                 {% endfor %}
             {% endif %}
 
-            {% if myShifts is not null %}
+            {% if myShifts is not null and myShifts|length > 0 %}
                 <a href="{{ url('shift') }}"><img class="heading-icon no-margin" src="/_site/img/glyphicons-tasks.png" /></a>
                 <h2>{{ translate('Shifts') }}</h2>
 
