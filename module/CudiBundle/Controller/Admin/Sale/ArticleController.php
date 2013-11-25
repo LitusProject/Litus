@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
+    CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
     CudiBundle\Entity\Log\Sale\ProfVersion as ProfVersionLog,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Article\History,
@@ -470,6 +471,38 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'form' => $form,
             )
         );
+    }
+
+    public function cancelBookingsAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
+
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriod());
+
+        $idsCancelled = array();
+        foreach($bookings as $booking) {
+            $booking->setStatus('canceled', $this->getEntityManager());
+            $idsCancelled[] = $booking->getId();
+        }
+
+        $this->getEntityManager()->persist(new LogCancellations($this->getAuthentication()->getPersonObject(), $idsCancelled));
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The bookings were successfully cancelled'
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
     }
 
     private function _search(AcademicYear $academicYear, $semester)
