@@ -52,7 +52,7 @@ class Code
      * @param string $code
      * @param int $expirationTime
      */
-    public function __construct($code, $expirationTime = 1800)
+    public function __construct($code, $expirationTime = 604800)
     {
         $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
