@@ -50,13 +50,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('start');
         $field->setLabel('Start')
             ->setRequired()
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm');
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('data-timepicker', true);
         $this->add($field);
 
         $field = new Text('end');
         $field->setLabel('End')
             ->setRequired()
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm');
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('data-timepicker', true);
         $this->add($field);
 
         $tabs = new Tabs('languages');
