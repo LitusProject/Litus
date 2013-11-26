@@ -88,8 +88,8 @@
                 {% for openingHour in cudi.openingHours %}
                     <div>
                         {% if previousDay != openingHour.getStart().format('d/M') %}
-                            <div class="label label-info" style="display: block; width: 70px; text-align: center;">
-                                {{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}
+                            <div class="label label-info" style="display: block; width: 110px; text-align: center;">
+                                {{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}
                             </div>
                         {% endif %}
                         <div style="margin-left: 20px;">

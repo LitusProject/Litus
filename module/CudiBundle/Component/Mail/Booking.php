@@ -60,7 +60,7 @@ class Booking
 
         $openingHours = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findWeekFromNow();
+            ->findPeriodFromNow('P7D');
 
         $openingHourText = '';
         foreach($openingHours as $openingHour) {
@@ -136,7 +136,7 @@ class Booking
 
         $openingHours = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findWeekFromNow();
+            ->findPeriodFromNow('P7D');
 
         $openingHourText = '';
         foreach($openingHours as $openingHour) {
@@ -212,7 +212,7 @@ class Booking
 
         $openingHours = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findWeekFromNow();
+            ->findPeriodFromNow('P7D');
 
         $language = $entityManager
             ->getRepository('CommonBundle\Entity\General\Language')

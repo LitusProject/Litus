@@ -84,7 +84,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $cudi['openingHours'] = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findWeekFromNow();
+            ->findPeriodFromNow('P14D');
 
         $piwikEnabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

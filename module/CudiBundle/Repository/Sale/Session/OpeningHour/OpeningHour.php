@@ -76,13 +76,13 @@ class OpeningHour extends EntityRepository
        return $resultSet;
     }
 
-    public function findWeekFromNow()
+    public function findPeriodFromNow($interval = 'P14D')
     {
         $start = new DateTime();
-        $start->setTime(0, 0);
 
         $end = clone $start;
-        $end->add(new DateInterval('P7D'));
+        $end->setTime(0, 0);
+        $end->add(new DateInterval($interval));
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
