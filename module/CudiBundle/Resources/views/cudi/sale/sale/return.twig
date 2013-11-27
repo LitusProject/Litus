@@ -1,6 +1,10 @@
 {% extends 'sale/base.twig' %}
 
 {% block content %}
+    <div class="flashmessage alert alert-info fade" id="returnMessage">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {% autoescape false %}{{ translate('You have to return this customer <b class="price"></b>.') }}{% endautoescape %}
+    </div>
     {% import 'site/partials/form.twig' as forms %}
     {{ forms.renderForm(form) }}
 {% endblock %}
@@ -18,6 +22,7 @@
                 } else {
                     $('#personId').val('');
                 }
+                searchPrice();
             });
 
             $('#articleSearch').typeaheadRemote(
@@ -30,7 +35,23 @@
                 } else {
                     $('#articleId').val('');
                 }
+                searchPrice();
             });
         });
+
+        function searchPrice() {
+            {% if hasAccess('cudi_sale_sale', 'returnPrice') %}
+            if ($('#articleId').val() != '' && $('#personId').val() != '') {
+                $.post('{{ url('cudi_sale_sale', {'action': 'returnPrice'}) }}', {'person': $('#personId').val(), 'article': $('#articleId').val()}, function (data) {
+                    if (data !== undefined && data.price) {
+                        $('#returnMessage .price').html('&euro; ' + (data.price/100).toFixed(2));
+                        $('#returnMessage').addClass('in');
+                    } else {
+                        $('#returnMessage').removeClass('in');
+                    }
+                }, 'json');
+            }
+            {% endif %}
+        }
     </script>
 {% endblock %}
