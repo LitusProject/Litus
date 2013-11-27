@@ -634,7 +634,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
 
             $return->paginator = $paginator;
-            $return->paginationControl = $this->paginator()->createControl();
+            $return->paginationControl = $this->paginator()->createControl(true);
             $return->article = $article;
         }
 
