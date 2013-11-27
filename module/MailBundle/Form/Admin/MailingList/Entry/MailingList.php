@@ -111,12 +111,11 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
                 unset($listsArray[$key]);
         }
 
-        $resultArray = array();
-        foreach ($listsArray as $list){
-            $resultArray[$list->getId()] = $list->getName();
-        }
+        $lists = array();
+        foreach ($listsArray as $list)
+            $lists[$list->getId()] = $list->getName();
 
-        return $resultArray;
+        return $lists;
     }
 
     public function getInputFilter()
