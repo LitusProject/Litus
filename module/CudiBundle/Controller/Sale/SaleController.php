@@ -131,4 +131,44 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             )
         );
     }
+
+    public function returnPriceAction()
+    {
+        $this->initAjax();
+
+        if($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+
+            if (!isset($data['person']) || !isset($data['article']))
+                return new ViewModel();
+
+            $person = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person')
+                ->findOneById($data['person']);
+
+            $article = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($data['article']);
+
+            $saleItem = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findOneByPersonAndArticle($person, $article);
+
+            if ($saleItem) {
+                $price = $saleItem->getPrice() / $saleItem->getNumber();
+            } else {
+                $price = $article->getSellPrice();
+            }
+
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'price' => $price,
+                    ),
+                )
+            );
+        }
+
+        return new ViewModel();
+    }
 }

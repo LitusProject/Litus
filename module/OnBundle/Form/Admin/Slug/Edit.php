@@ -22,7 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     Zend\Form\Element\Submit;
 
 /**
- * Edit Key
+ * Edit Slug
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
