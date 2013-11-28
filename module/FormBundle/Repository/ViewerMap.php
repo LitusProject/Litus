@@ -38,15 +38,15 @@ class ViewerMap extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByFormQuery($formId)
+    public function findAllByFormQuery(Form $form)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
             ->where(
-                $query->expr()->eq('n.form', ':id')
+                $query->expr()->eq('n.form', ':form')
             )
-            ->setParameter('id', $formId)
+            ->setParameter('form', $form)
             ->getQuery();
 
         return $resultSet;
