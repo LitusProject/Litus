@@ -29,6 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Form\Doodle,
     FormBundle\Entity\Field,
@@ -228,10 +229,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         if(null !== $lastField)
-            $this->populateFromField($lastField);
+            $this->populateFromField($lastField, true);
     }
 
-    public function populateFromField(Field $field)
+    public function populateFromField(Field $field, $repeat = false)
     {
         $data = array(
             'order'    => $field->getOrder(),
@@ -258,9 +259,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         } elseif ($field instanceof FileField) {
             $data['max_size'] = $field->getMaxSize();
         } elseif ($field instanceof TimeSlotField) {
-            $interval = $field->getEndDate()->diff($field->getStartDate());
-            $data['timeslot_start_date'] = $field->getEndDate()->format('d/m/Y H:i');
-            $data['timeslot_end_date'] = $field->getEndDate()->add($interval)->format('d/m/Y H:i');
+            if ($repeat) {
+                $interval = $field->getStartDate()->diff($field->getEndDate());
+                $startDate = clone $field->getStartDate();
+                $endDate = clone $field->getEndDate();
+                $startDate->add($interval);
+                $endDate->add($interval);
+            } else {
+                $startDate = $field->getStartDate();
+                $endDate = $field->getEndDate();
+            }
+            $data['timeslot_start_date'] = $startDate->format('d/m/Y H:i');
+            $data['timeslot_end_date'] = $endDate->format('d/m/Y H:i');
         }
 
         foreach($this->getLanguages() as $language) {
