@@ -13,16 +13,6 @@ use DateTime,
  */
 class Entry extends EntityRepository
 {
-    public function findAllQuery()
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\Entry', 'n')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
     public function findAllByFieldQuery($field)
     {
         $query = $this->_em->createQueryBuilder();

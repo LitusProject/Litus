@@ -93,7 +93,11 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new AddForm($formSpecification, $this->getEntityManager());
+        $latestField = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Field')
+            ->findLatestField($formSpecification);
+
+        $form = new AddForm($formSpecification, $this->getEntityManager(), $this->getParam('repeat') ? $latestField : null);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -224,6 +228,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         array(
                             'action' => 'add',
                             'id' => $formSpecification->getId(),
+                            'repeat' => 1,
                         )
                     );
                 } else {
