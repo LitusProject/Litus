@@ -20,12 +20,13 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            var textfield = $('#config_value').hide();
+            var textfield = $('#config_value');
             var object = unserialize(textfield.val());
 
             var div = $('<div>')
             textfield.after(div);
             if($.isPlainObject(object)) {
+                textfield.hide();
                 displayObject(object, div);
             }
 
