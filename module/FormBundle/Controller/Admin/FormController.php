@@ -388,7 +388,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         if (!$form->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,

@@ -227,9 +227,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('class', 'field_add');
         $this->add($field);
 
-        if($lastField != null){
+        if(null !== $lastField)
             $this->populateFromField($lastField);
-        }
     }
 
     public function populateFromField(Field $field)

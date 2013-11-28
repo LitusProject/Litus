@@ -94,15 +94,10 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $latestField = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Field')
-                    ->findLatestField($formSpecification->getId());
+            ->getRepository('FormBundle\Entity\Field')
+            ->findLatestField($formSpecification);
 
-       if($this->getParam('repeat')){
-            $form = new AddForm($formSpecification, $this->getEntityManager(),$latestField);
-        }
-        else{
-            $form = new AddForm($formSpecification, $this->getEntityManager());
-        }
+        $form = new AddForm($formSpecification, $this->getEntityManager(), $this->getParam('repeat') ? $latestField : null);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
