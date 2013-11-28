@@ -452,31 +452,57 @@ class FormController extends \FormBundle\Component\Controller\FormController
         if ($viewerMap->isMail()) {
             $heading[] = 'Email';
         }
-        $fields = $form->getFields();
-        foreach ($fields as $field) {
-            $heading[] = $field->getLabel($language);
-        }
 
-        $entries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($form);
+        if ($form->getType() == 'doodle') {
+            $entries = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findAllByForm($form);
 
-        $results = array();
-        foreach ($entries as $entry) {
-            $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
-            if ($viewerMap->isMail()) {
-                $result[] = $entry->getPersonInfo()->getEmail();
+            $maxSlots = 0;
+            foreach ($entries as $entry) {
+                $result = array($entry->getId(), $entry->getPersonInfo()->getFullName(), $entry->getCreationTime()->format('d/m/Y H:i'));
+                if ($viewerMap->isMail())
+                    $result[] = $entry->getPersonInfo()->getEmail();
+
+                $maxSlots = max(sizeof($entry->getFieldEntries()), $maxSlots);
+                foreach($entry->getFieldEntries() as $fieldEntry) {
+                    $result[] = $fieldEntry->getField()->getStartDate()->format('d/m/Y H:i');
+                    $result[] = $fieldEntry->getField()->getEndDate()->format('d/m/Y H:i');
+                }
+                $results[] = $result;
             }
-            foreach($fields as $field) {
-                $fieldEntry = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Entry')
-                    ->findOneByFormEntryAndField($entry, $field);
-                if ($fieldEntry)
-                    $result[] = $fieldEntry->getValueString($language);
-                else
-                    $result[] = '';
+
+            for ($i = 0 ; $i < $maxSlots ; $i++) {
+                $heading[] = 'Slot ' . ($i+1) . ' Start';
+                $heading[] = 'Slot ' . ($i+1) . ' End';
             }
-            $results[] = $result;
+        } else {
+            $fields = $form->getFields();
+            foreach ($fields as $field) {
+                $heading[] = $field->getLabel($language);
+            }
+
+            $entries = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findAllByForm($form);
+
+            $results = array();
+            foreach ($entries as $entry) {
+                $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
+                if ($viewerMap->isMail())
+                    $result[] = $entry->getPersonInfo()->getEmail();
+
+                foreach($fields as $field) {
+                    $fieldEntry = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Entry')
+                        ->findOneByFormEntryAndField($entry, $field);
+                    if ($fieldEntry)
+                        $result[] = $fieldEntry->getValueString($language);
+                    else
+                        $result[] = '';
+                }
+                $results[] = $result;
+            }
         }
 
         $document = new CsvGenerator($this->getEntityManager(), $heading, $results);
