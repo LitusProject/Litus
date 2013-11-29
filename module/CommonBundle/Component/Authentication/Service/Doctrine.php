@@ -147,24 +147,26 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $_SERVER['REMOTE_ADDR']
                 );
 
-                if (true !== $sessionValidation) {
+                if (false !== $sessionValidation && true !== $sessionValidation) {
                     $this->getStorage()->write($sessionValidation);
-                    if ($rememberMe) {
+                    if (isset($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix])) {
                         $this->_setCookie($sessionValidation, time() + $this->_expire);
                     } else {
                         $this->_setCookie('', -1);
                     }
                 }
 
-                $result = new Result(
-                    Result::SUCCESS,
-                    $session->getPerson()->getUsername(),
-                    array(
-                         'Authentication successful'
-                    ),
-                    $session->getPerson(),
-                    $session
-                );
+                if (false !== $sessionValidation) {
+                    $result = new Result(
+                        Result::SUCCESS,
+                        $session->getPerson()->getUsername(),
+                        array(
+                             'Authentication successful'
+                        ),
+                        $session->getPerson(),
+                        $session
+                    );
+                }
             } else {
                 $this->clearIdentity();
             }
