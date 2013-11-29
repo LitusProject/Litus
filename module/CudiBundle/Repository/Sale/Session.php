@@ -99,7 +99,7 @@ class Session extends EntityRepository
 
     public function getTheoreticalRevenueByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
     {
-        return $this->getTheoreticalRevenueBetween($academicYear->getStartDate(), $academicYear->getEndDate(), $organization);
+        return $this->getTheoreticalRevenueBetween($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate(), $organization);
     }
 
     public function getTheoreticalRevenueBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
@@ -236,7 +236,7 @@ class Session extends EntityRepository
 
     public function getPurchasedAmountByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
     {
-        return $this->getPurchasedAmountBetween($academicYear->getStartDate(), $academicYear->getEndDate(), $organization);
+        return $this->getPurchasedAmountBetween($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate(), $organization);
     }
 
     public function getPurchasedAmountBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
