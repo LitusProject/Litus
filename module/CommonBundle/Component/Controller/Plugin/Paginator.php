@@ -146,7 +146,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     public function createFromQuery($query, $currentPage)
     {
         $this->_paginator = new ZendPaginator(
-                new DoctrinePaginatorAdapter(new DoctrinePaginator($query))
+            new DoctrinePaginatorAdapter(new DoctrinePaginator($query))
         );
 
         $this->_paginator->setCurrentPageNumber($currentPage);

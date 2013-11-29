@@ -105,7 +105,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                     ->findAllBySupplierQuery($this->getParam('string'), $academicYear);
         }
-    }
+    } // continue here
 
     public function ordersAction()
     {
