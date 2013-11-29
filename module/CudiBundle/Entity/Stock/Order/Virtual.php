@@ -89,4 +89,14 @@ class Virtual
     {
         return $this->number;
     }
+
+    /**
+     * @param integer $number
+     * @return \CudiBundle\Entity\Stock\Order\Virtual
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+        return $this;
+    }
 }

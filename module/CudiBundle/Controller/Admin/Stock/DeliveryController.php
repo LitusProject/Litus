@@ -182,6 +182,29 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         if (!($delivery = $this->_getDelivery()))
             return new ViewModel();
 
+        $ordered = $period->getNbOrdered($delivery->getArticle()) + $period->getNbVirtualOrdered($delivery->getArticle());
+        $delivered = $period->getNbDelivered($delivery->getArticle()) - $delivery->getNumber();
+
+        if ($ordered > $delivered) {
+            $virtualOrders = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Order\Virtual')
+                ->findAllByPeriodAndArticle($period, $delivery->getArticle());
+
+            $diff = $ordered - $delivered;
+            foreach($virtualOrders as $virtual) {
+                if ($diff <= 0)
+                    break;
+
+                if ($virtual->getNumber() > $diff) {
+                    $virtual->setNumber($virtual->getNumber() - $diff);
+                    break;
+                } else {
+                    $this->getEntityManager()->remove($virtual);
+                    $diff -= $virtual->getNumber();
+                }
+            }
+        }
+
         $delivery->getArticle()->addStockValue(-$delivery->getNumber());
         $this->getEntityManager()->remove($delivery);
         $this->getEntityManager()->flush();
