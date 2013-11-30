@@ -19,7 +19,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\Submit;
 
 /**
- * Add a user to the database.
+ * Add User
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

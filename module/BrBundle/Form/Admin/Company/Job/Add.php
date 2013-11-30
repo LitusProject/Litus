@@ -25,7 +25,7 @@ use BrBundle\Entity\Company,
     Zend\Form\Element\Submit;
 
 /**
- * Add a job.
+ * Add Job
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
