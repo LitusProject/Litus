@@ -10,11 +10,6 @@
             <tr>
                 <th>Name</th>
             </tr>
-            {% for item in cache.getIterator() %}
-                <tr>
-                    <td>{{ item }}</td>
-                </tr>
-            {% endfor %}
             {% for key in paginator %}
                 <tr>
                     <td>{{ key }}</td>
