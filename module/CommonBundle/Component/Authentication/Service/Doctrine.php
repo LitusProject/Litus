@@ -147,8 +147,9 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $_SERVER['REMOTE_ADDR']
                 );
 
-                if (false !== $sessionValidation && true !== $sessionValidation) {
+                if (true !== $sessionValidation) {
                     $this->getStorage()->write($sessionValidation);
+
                     if (isset($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix])) {
                         $this->_setCookie($sessionValidation, time() + $this->_expire);
                     } else {
