@@ -22,7 +22,7 @@ use BrBundle\Entity\Contract\Section,
     Zend\Form\Element\Submit;
 
 /**
- * Edit a section.
+ * Edit Section
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */

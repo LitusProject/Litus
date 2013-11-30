@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     Zend\Form\Element\Submit;
 
 /**
- * Add a section.
+ * Add Section
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
