@@ -33,7 +33,7 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
- * The form used to add a new cv
+ * Add Cv
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
@@ -97,8 +97,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $studies->add($field);
 
         $field = new Text('grade');
-        $field->setLabel('(Provisional) Grade for the Current Degree (e.g. 65.48)')
-            ->setRequired(true);
+        $field->setLabel('(Provisional) Grade for the Current Degree (e.g. 65.48)');
         $studies->add($field);
 
         $field = new Select('bachelor_start');
@@ -406,9 +405,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $inputFilter->add(
                     $factory->createInput(
                         array(
-                            'name' => 'lang_name' . $i,
+                            'name'     => 'lang_name' . $i,
                             'required' => true,
-                            'filters' => array(
+                            'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
                         )
@@ -420,7 +419,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name' => 'lang_realcount',
+                    'name'       => 'lang_realcount',
+                    'required'   => true,
                     'validators' => array(
                         array(
                             'name' => 'between',
@@ -437,8 +437,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name' => 'prior_grade',
-                    'filters' => array(
+                    'name'     => 'prior_grade',
+                    'required' => true,
+                    'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -451,8 +452,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name' => 'grade',
-                    'filters' => array(
+                    'name'     => 'grade',
+                    'required' => false,
+                    'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(

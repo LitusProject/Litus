@@ -26,7 +26,7 @@ use BrBundle\Component\Validator\Logo\Type as TypeValidator,
     Zend\Form\Element\Submit;
 
 /**
- * Add a logo.
+ * Add Logo
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

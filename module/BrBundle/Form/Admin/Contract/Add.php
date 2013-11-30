@@ -24,7 +24,7 @@ use BrBundle\Entity\Contract\Section,
     Zend\Validator\Float as FloatValidator;
 
 /**
- * The form used to add a new contract
+ * Add Contract
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
