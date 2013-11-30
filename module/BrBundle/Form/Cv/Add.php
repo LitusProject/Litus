@@ -39,7 +39,6 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
     /**
      * The entity manager.
      */
@@ -162,7 +161,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Textarea('lang_extra');
         $field->setLabel('Extra Information (Year Abroad, Born Outside Belgium, ...)')
             ->setAttribute('rows', 2)
-            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' count')
             ->setAttribute('data-count', 130)
             ->setAttribute('style', 'resize: none;');
@@ -415,6 +413,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 );
             }
         }
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'lang_extra',
+                    'required' => false,
+                )
+            )
+        );
 
         $inputFilter->add(
             $factory->createInput(
