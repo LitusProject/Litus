@@ -5,7 +5,8 @@
                 enabled = false;
                 $(this).closest('.control-group').addClass('error');
             } else {
-                $(this).closest('.control-group').removeClass('error');
+                if ($(this).closest('.control-group').find('.help-inline ul li').length == 0)
+                    $(this).closest('.control-group').removeClass('error');
             }
         });
         if (enabled) {
