@@ -342,7 +342,7 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
-    public function findOpen()
+    public function findOpenQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -351,18 +351,17 @@ class Session extends EntityRepository
                 $query->expr()->isNull('s.closeDate')
             )
             ->orderBy('s.openDate', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        return $this->findAllBetween($academicYear->getStartDate(), $academicYear->getEndDate());
+        return $this->findAllBetweenQuery($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate());
     }
 
-    public function findAllBetween(DateTime $startDate, DateTime $endDate)
+    public function findAllBetweenQuery(DateTime $startDate, DateTime $endDate)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -375,8 +374,7 @@ class Session extends EntityRepository
             )
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

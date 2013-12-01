@@ -589,76 +589,142 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-     //////////
-
-    public function findAllPaginator($currentPage, $itemsPerPage, AcademicYear $academicYear)
+    public function findAllBySessionQuery(SessionEntity $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
-            ->innerJoin('i.session', 's')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->where(
+                $query->expr()->eq('i.session', ':session')
+            )
+            ->setParameter('session', $session)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllByArticleAndSessionQuery($article, SessionEntity $session)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.openDate', ':start'),
-                    $query->expr()->lt('s.openDate', ':end')
+                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
-            ->setParameter('start', $academicYear->getStartDate())
-            ->setParameter('end', $academicYear->getEndDate());
+            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('session', $session)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
+        return $resultSet;
     }
 
-    private function _findAllPaginator($currentPage, $itemsPerPage, $basicQuery, $order)
-    {
-        $currentPage = $currentPage == 0 ? $currentPage = 1 : $currentPage;
-
-        $query = clone $basicQuery;
-        $resultSet = $query->select('i')
-            ->setMaxResults($itemsPerPage)
-            ->setFirstResult(($currentPage - 1) * $itemsPerPage)
-            ->orderBy($order)
-            ->getQuery()
-            ->getResult();
-
-        $query = clone $basicQuery;
-        $totalNumber = $query->select('COUNT(i.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return array($resultSet, $totalNumber);
-    }
-
-    public function findAllBySupplierEntityPaginator(Supplier $supplier, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    public function findAllByPersonAndSessionQuery($name, SessionEntity $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
-            ->innerJoin('i.article', 'a')
-            ->innerJoin('i.session', 's')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.queueItem', 'q')
+            ->innerJoin('q.person', 'p')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('a.supplier', ':supplier'),
-                    $query->expr()->andX(
-                        $query->expr()->gt('s.openDate', ':start'),
-                        $query->expr()->lt('s.openDate', ':end')
+                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
+                            ),
+                            ':name'
+                        )
                     )
                 )
             )
-            ->setParameter('supplier', $supplier)
-            ->setParameter('start', $academicYear->getStartDate())
-            ->setParameter('end', $academicYear->getEndDate());
+            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('session', $session)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator(
-            $currentPage,
-            $itemsPerPage,
-            $query,
-            new OrderBy('i.timestamp', 'DESC')
-        );
+        return $resultSet;
     }
 
-    public function findAllByArticleEntityPaginator(ArticleEntity $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    public function findAllByOrganizationAndSessionQuery($organization, SessionEntity $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+        $resultSet = $query->select('p.id')
+            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+            ->innerJoin('m.academic', 'p')
+            ->innerJoin('m.organization', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.academicYear', ':academicYear'),
+                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
+                )
+            )
+            ->setParameter('academicYear', $session->getAcademicYear())
+            ->setParameter('organization', '%'.strtolower($organization).'%')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($resultSet as $item) {
+            $ids[] = $item['id'];
+        }
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.queueItem', 'q')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->in('q.person', $ids)
+                )
+            )
+            ->setParameter('session', $session)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllByDiscountAndSessionQuery($discount, SessionEntity $session)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->like($query->expr()->lower('i.discountType'), ':discount')
+                )
+            )
+            ->setParameter('discount', '%'.strtolower($discount).'%')
+            ->setParameter('session', $session)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllByArticleEntityQuery(ArticleEntity $article, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.session', 's')
             ->where(
                 $query->expr()->andX(
@@ -671,20 +737,18 @@ class SaleItem extends EntityRepository
             )
             ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getStartDate())
-            ->setParameter('end', $academicYear->getEndDate());
+            ->setParameter('end', $academicYear->getEndDate())
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator(
-            $currentPage,
-            $itemsPerPage,
-            $query,
-            new OrderBy('i.timestamp', 'DESC')
-        );
+        return $resultSet;
     }
 
-    public function findAllByPersonAndArticlePaginator($name, ArticleEntity $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    public function findAllByPersonAndArticleQuery($name, ArticleEntity $article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
             ->innerJoin('q.person', 'p')
             ->innerJoin('i.session', 's')
@@ -716,17 +780,14 @@ class SaleItem extends EntityRepository
             ->setParameter('name', '%'.strtolower($name).'%')
             ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getStartDate())
-            ->setParameter('end', $academicYear->getEndDate());
+            ->setParameter('end', $academicYear->getEndDate())
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator(
-            $currentPage,
-            $itemsPerPage,
-            $query,
-            new OrderBy('i.timestamp', 'DESC')
-        );
+        return $resultSet;
     }
 
-    public function findAllByOrganizationAndArticlePaginator($organization, ArticleEntity $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    public function findAllByOrganizationAndArticleQuery($organization, ArticleEntity $article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id')
@@ -750,7 +811,8 @@ class SaleItem extends EntityRepository
         }
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
             ->where(
                 $query->expr()->andX(
@@ -758,20 +820,18 @@ class SaleItem extends EntityRepository
                     $query->expr()->eq('i.article', ':article')
                 )
             )
-            ->setParameter('article', $article);
+            ->setParameter('article', $article)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator(
-            $currentPage,
-            $itemsPerPage,
-            $query,
-            new OrderBy('i.timestamp', 'DESC')
-        );
+        return $resultSet;
     }
 
-    public function findAllByDiscountAndArticlePaginator($discount, ArticleEntity $article, $currentPage, $itemsPerPage, AcademicYear $academicYear)
+    public function findAllByDiscountAndArticleQuery($discount, ArticleEntity $article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.session', 's')
             ->where(
                 $query->expr()->andX(
@@ -786,73 +846,70 @@ class SaleItem extends EntityRepository
             ->setParameter('discount', '%'.strtolower($discount).'%')
             ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getStartDate())
-            ->setParameter('end', $academicYear->getEndDate());
+            ->setParameter('end', $academicYear->getEndDate())
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator(
-            $currentPage,
-            $itemsPerPage,
-            $query,
-            new OrderBy('i.timestamp', 'DESC')
-        );
+        return $resultSet;
     }
 
-    public function findAllBySessionPaginator(SessionEntity $session, $currentPage, $itemsPerPage)
+    public function findAllBySupplierEntityQuery(Supplier $supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.article', 'a')
+            ->innerJoin('i.session', 's')
             ->where(
-                $query->expr()->eq('i.session', ':session')
+                $query->expr()->andX(
+                    $query->expr()->eq('a.supplier', ':supplier'),
+                    $query->expr()->andX(
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end')
+                    )
+                )
             )
-            ->setParameter('session', $session);
+            ->setParameter('supplier', $supplier)
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
+        return $resultSet;
     }
 
-    public function findAllByArticleAndSessionPaginator($article, SessionEntity $session, $currentPage, $itemsPerPage)
+    public function findAllByArticleAndSupplierQuery($article, Supplier $supplier)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->eq('a.supplier', ':supplier'),
                     $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
             ->setParameter('article', '%'.strtolower($article).'%')
-            ->setParameter('session', $session);
+            ->setParameter('supplier', $supplier)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
+        return $resultSet;
     }
 
-    public function findAllByArticleAndSupplierPaginator($article, Supplier $supplier, $currentPage, $itemsPerPage)
+    public function findAllByPersonAndSupplierQuery($name, Supplier $supplier)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.article', 'a')
-            ->innerJoin('a.mainArticle', 'm')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('i.supplier', ':supplier'),
-                    $query->expr()->like($query->expr()->lower('m.title'), ':article')
-                )
-            )
-            ->setParameter('article', '%'.strtolower($article).'%')
-            ->setParameter('supplier', $supplier);
-
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
-    }
-
-    public function findAllByPersonAndSessionPaginator($name, SessionEntity $session, $currentPage, $itemsPerPage)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
             ->innerJoin('q.person', 'p')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->eq('a.supplier', ':supplier'),
                     $query->expr()->orX(
                         $query->expr()->like(
                             $query->expr()->concat(
@@ -872,45 +929,14 @@ class SaleItem extends EntityRepository
                 )
             )
             ->setParameter('name', '%'.strtolower($name).'%')
-            ->setParameter('session', $session);
+            ->setParameter('supplier', $supplier)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
+        return $resultSet;
     }
 
-    public function findAllByPersonAndSupplierPaginator($name, Supplier $supplier, $currentPage, $itemsPerPage)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
-            ->innerJoin('i.queueItem', 'q')
-            ->innerJoin('q.person', 'p')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('i.supplier', ':supplier'),
-                    $query->expr()->orX(
-                        $query->expr()->like(
-                            $query->expr()->concat(
-                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
-                                $query->expr()->lower('p.lastName')
-                            ),
-                            ':name'
-                        ),
-                        $query->expr()->like(
-                            $query->expr()->concat(
-                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
-                                $query->expr()->lower('p.firstName')
-                            ),
-                            ':name'
-                        )
-                    )
-                )
-            )
-            ->setParameter('name', '%'.strtolower($name).'%')
-            ->setParameter('supplier', $supplier);
-
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
-    }
-
-    public function findAllByOrganizationAndSessionPaginator($organization, SessionEntity $session, $currentPage, $itemsPerPage)
+    public function findAllByOrganizationAndSupplierQuery($organization, Supplier $supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id')
@@ -923,7 +949,7 @@ class SaleItem extends EntityRepository
                     $query->expr()->like($query->expr()->lower('o.name'), ':organization')
                 )
             )
-            ->setParameter('academicYear', $session->getAcademicYear())
+            ->setParameter('academicYear', $academicYear)
             ->setParameter('organization', '%'.strtolower($organization).'%')
             ->getQuery()
             ->getResult();
@@ -934,86 +960,41 @@ class SaleItem extends EntityRepository
         }
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.article', 'a')
             ->innerJoin('i.queueItem', 'q')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->eq('a.supplier', ':supplier'),
                     $query->expr()->in('q.person', $ids)
                 )
             )
-            ->setParameter('session', $session);
+            ->setParameter('supplier', $supplier)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
+        return $resultSet;
     }
 
-    public function findAllByOrganizationAndSupplierPaginator($organization, Supplier $supplier, $currentPage, $itemsPerPage)
+    public function findAllByDiscountAndSupplierQuery($discount, Supplier $supplier)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-            ->innerJoin('m.academic', 'p')
-            ->innerJoin('m.organization', 'o')
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+            ->innerJoin('i.article', 'a')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
-                )
-            )
-            ->setParameter('academicYear', $session->getAcademicYear())
-            ->setParameter('organization', '%'.strtolower($organization).'%')
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
-
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
-            ->innerJoin('i.queueItem', 'q')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('i.supplier', ':supplier'),
-                    $query->expr()->in('q.person', $ids)
-                )
-            )
-            ->setParameter('supplier', $supplier);
-
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
-    }
-
-    public function findAllByDiscountAndSessionPaginator($discount, SessionEntity $session, $currentPage, $itemsPerPage)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->eq('a.supplier', ':supplier'),
                     $query->expr()->like($query->expr()->lower('i.discountType'), ':discount')
                 )
             )
             ->setParameter('discount', '%'.strtolower($discount).'%')
-            ->setParameter('session', $session);
+            ->setParameter('supplier', $supplier)
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
 
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
-    }
-
-    public function findAllByDiscountAndSupplierPaginator($discount, Supplier $supplier, $currentPage, $itemsPerPage)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $query->from('CudiBundle\Entity\Sale\SaleItem', 'i')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('i.supplier', ':supplier'),
-                    $query->expr()->like($query->expr()->lower('i.discountType'), ':discount')
-                )
-            )
-            ->setParameter('discount', '%'.strtolower($discount).'%')
-            ->setParameter('supplier', $supplier);
-
-        return $this->_findAllPaginator($currentPage, $itemsPerPage, $query, new OrderBy('i.timestamp', 'DESC'));
+        return $resultSet;
     }
 
     public function findOneByPersonAndArticle(Person $person, ArticleEntity $article)
@@ -1055,11 +1036,8 @@ class SaleItem extends EntityRepository
             ->setParameter('discountType', $discountType)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }
