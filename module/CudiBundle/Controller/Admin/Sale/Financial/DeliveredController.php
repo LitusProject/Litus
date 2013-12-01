@@ -267,7 +267,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->findAll();
 
         if (null !== $this->getParam('field'))
-            $records = $this->_supplierSearch($this->getParam('page'), $this->getAcademicYear());
+            $records = $this->_supplierSearch($supplier, $this->getAcademicYear());
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
