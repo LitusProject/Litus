@@ -27,4 +27,20 @@
             </div>
         </aside>
     {% endif %}
+
+    {% if hasAccess('syllabus_admin_group', 'export') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Export academics</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export the academics in this group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('syllabus_admin_group', {'action': 'export', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Export</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
 {% endblock %}
