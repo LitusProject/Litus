@@ -18,7 +18,7 @@ use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    FormBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -114,7 +114,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
             );
         }
 
-        $document = new CsvGenerator($this->getEntityManager(), $heading, $results);
+        $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
 
         $headers = new Headers();

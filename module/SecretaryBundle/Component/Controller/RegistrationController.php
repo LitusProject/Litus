@@ -24,13 +24,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sale\Booking,
     DateInterval,
     DateTime,
-    Imagick,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
     Zend\Mvc\MvcEvent,
     Zend\View\Model\ViewModel;
 
@@ -241,36 +237,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getConfigValue('student_email_domain');
 
         return preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $email)) . $studentDomain;
-    }
-
-    protected function _uploadProfileImage(Academic $academic)
-    {
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.profile_path');
-
-        $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '3MB')));
-        $upload->addValidator(new ImageValidator());
-
-        if ($upload->isValid()) {
-            $upload->receive();
-
-            $image = new Imagick($upload->getFileName());
-            unlink($upload->getFileName());
-            $image->cropThumbnailImage(320, 240);
-
-            if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
-                $fileName = $academic->getPhotoPath();
-            } else {
-                $fileName = '';
-                do{
-                    $fileName = sha1(uniqid());
-                } while (file_exists($filePath . '/' . $fileName));
-            }
-            $image->writeImage($filePath . '/' . $fileName);
-            $academic->setPhotoPath($fileName);
-        }
     }
 
     protected function _bookRegistrationArticles(Academic $academic, $tshirtSize, Organization $organization, AcademicYear $academicYear)
