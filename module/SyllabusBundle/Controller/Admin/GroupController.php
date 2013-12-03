@@ -300,17 +300,16 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $mappings = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
-                ->findAllByGroupAndAcademicYear($group, $academicYear);
+            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            ->findAllByGroupAndAcademicYear($group, $academicYear);
 
         $academics = array();
-
 
         foreach($mappings as $mapping) {
             $study = $mapping->getStudy();
             $enrollments = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                    ->findAllByStudyAndAcademicYear($study, $academicYear);
+                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                ->findAllByStudyAndAcademicYear($study, $academicYear);
 
             foreach($enrollments as $enrollment) {
                 $ac = $enrollment->getAcademic();
