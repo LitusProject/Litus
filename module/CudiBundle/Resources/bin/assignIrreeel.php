@@ -64,7 +64,7 @@ if (isset($opts->a)) {
     echo 'Article to be assigned: ' . $article->getMainArticle()->getTitle() . PHP_EOL;
 
     $people = $em->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-        ->findBy(array('irreeelAtCudi' => 'true'));
+        ->findBy(array('irreeelAtCudi' => 'true', 'academicYear' => $academicYear->getId()));
 
     $number = 0;
     foreach($people as $person) {
