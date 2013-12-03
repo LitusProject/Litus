@@ -290,37 +290,44 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByTitleAndAcademicYearTypeAhead($title, AcademicYear $academicYear)
+    public function findAllByTitleAndAcademicYearTypeAheadQuery($title, AcademicYear $academicYear)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('b')
+        $barcodes = $query->select('a.id')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')
+            ->where(
+                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+            )
+            ->setParameter('barcode', '%'.$title.'%')
+            ->getQuery()
+            ->getResult();
+
+        $barcodeIds = array(0);
+        foreach($barcodes as $barcode)
+            $barcodeIds[] = $barcode['id'];
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->orX(
                         $query->expr()->like($query->expr()->lower('m.title'), ':title'),
-                        $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+                        $query->expr()->in('a.id', $barcodeIds)
                     ),
                     $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('title', '%'.strtolower($title).'%')
-            ->setParameter('barcode', strtolower($title).'%')
             ->orderBy('m.title', 'ASC')
-            ->setMaxResults(20)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
-        $articles = array();
-        foreach($resultSet as $barcode)
-            $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
-
-        return $articles;
+        return $resultSet;
     }
 
     private function _getArticleIdsBySemester(AcademicYear $academicYear, $semester = 0)
