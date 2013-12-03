@@ -347,7 +347,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             'City',
         );
         $exportFile = new CsvFile();
-        $csvGenerator = new CsvGenerator($this->getEntityManager(), $header, $academics);
+        $csvGenerator = new CsvGenerator($header, $academics);
         $csvGenerator->generateDocument($exportFile);
 
         $this->getResponse()->getHeaders()

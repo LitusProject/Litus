@@ -505,7 +505,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             }
         }
 
-        $document = new CsvGenerator($this->getEntityManager(), $heading, $results);
+        $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
 
         $headers = new Headers();

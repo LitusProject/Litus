@@ -114,7 +114,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
             );
         }
 
-        $document = new CsvGenerator($this->getEntityManager(), $heading, $results);
+        $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
 
         $headers = new Headers();
