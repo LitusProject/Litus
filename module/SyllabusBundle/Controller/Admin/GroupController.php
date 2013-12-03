@@ -295,11 +295,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if(!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
-        /* @var $academicYear \CommonBundle\Entity\General\AcademicYear */
 
         if(!($group = $this->_getGroup()))
             return new ViewModel();
-        /* @var $group \SyllabusBundle\Entity\Group */
 
         $mappings = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
@@ -309,14 +307,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
 
         foreach($mappings as $mapping) {
-            /* @var $mapping \SyllabusBundle\Entity\StudyGroupMap */
             $study = $mapping->getStudy();
             $enrollments = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                     ->findAllByStudyAndAcademicYear($study, $academicYear);
 
             foreach($enrollments as $enrollment) {
-                /* @var $enrollment \SecretaryBundle\Entity\Syllabus\StudyEnrollment */
                 $ac = $enrollment->getAcademic();
                 $academics[$ac->getId()] = array(
                     'academicFirstName'             => $ac->getFirstName(),
