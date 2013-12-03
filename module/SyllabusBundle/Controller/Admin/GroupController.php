@@ -16,6 +16,8 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     DateInterval,
     DateTime,
     SyllabusBundle\Entity\Group,
@@ -285,6 +287,73 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    public function exportAction()
+    {
+        if(!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        if(!($group = $this->_getGroup()))
+            return new ViewModel();
+
+        $mappings = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            ->findAllByGroupAndAcademicYear($group, $academicYear);
+
+        $academics = array();
+
+        foreach($mappings as $mapping) {
+            $study = $mapping->getStudy();
+            $enrollments = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                ->findAllByStudyAndAcademicYear($study, $academicYear);
+
+            foreach($enrollments as $enrollment) {
+                $ac = $enrollment->getAcademic();
+                $academics[$ac->getId()] = array(
+                    'academicFirstName'             => $ac->getFirstName(),
+                    'academicLastName'              => $ac->getLastName(),
+                    'academicEmail'                 => $ac->getEmail(),
+                    'academicPrimaryAddressStreet'  => $ac->getPrimaryAddress()->getStreet(),
+                    'academicPrimaryAddressNumber'  => $ac->getPrimaryAddress()->getNumber(),
+                    'academicPrimaryAddressMailbox' => $ac->getPrimaryAddress()->getMailbox(),
+                    'academicPrimaryAddressPostal'  => $ac->getPrimaryAddress()->getPostal(),
+                    'academicPrimaryAddressCity'    => $ac->getPrimaryAddress()->getCity(),
+                    'academicPrimaryAddressCountry' => $ac->getPrimaryAddress()->getCountry(),
+                    'study'                         => $study->getFullTitle(),
+                );
+            }
+
+        }
+
+        $header = array(
+            'First name',
+            'Last name',
+            'Email',
+            'Street',
+            'Number',
+            'Mailbox',
+            'Postal',
+            'City',
+            'Country',
+            'City',
+        );
+        $exportFile = new CsvFile();
+        $csvGenerator = new CsvGenerator($header, $academics);
+        $csvGenerator->generateDocument($exportFile);
+
+        $this->getResponse()->getHeaders()
+            ->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="'.$group->getName().'_'.$academicYear->getCode().'.csv"',
+            'Content-Type' => 'text/csv',
+        ));
+
+        return new ViewModel(
+            array(
+                'result' => $exportFile->getContent(),
             )
         );
     }

@@ -12,19 +12,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Component\Document\Generator;
+namespace CommonBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    DateTime,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 
 class Csv
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
     /**
      * @var array The array containing the headers
      */
@@ -36,13 +29,11 @@ class Csv
     private $_results;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
      * @param array $headers The array containing the headers
      * @param arrays $results The array containing the form results
      */
-    public function __construct(EntityManager $entityManager, array $headers, array $results)
+    public function __construct(array $headers, array $results)
     {
-        $this->_entityManager = $entityManager;
         $this->_headers = $headers;
         $this->_results = $results;
     }

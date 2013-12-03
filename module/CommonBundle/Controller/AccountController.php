@@ -19,16 +19,21 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Credential,
+    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
     CommonBundle\Form\Account\Edit as EditForm,
     CudiBundle\Entity\Sale\Booking,
     DateTime,
+    Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
     Zend\Http\Headers,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Validator\File\Size as SizeValidator,
+    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -158,7 +163,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $upload = new FileUpload(array('ignoreNoFile' => true));
+            $upload->addValidator(new SizeValidator(array('max' => '3MB')));
+            $upload->addValidator(new ImageValidator());
+
+            if ($form->isValid() && $upload->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $universityEmail = $this->_parseUniversityEmail($formData['university_email']);
@@ -216,7 +225,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $academic->addUniversityStatus($status);
                 }
 
-                $this->_uploadProfileImage($academic);
+                $this->_uploadProfileImage($upload, $academic);
                 if (isset($formData['organization'])) {
                     $organization = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Organization')
@@ -326,6 +335,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->_doRedirect();
 
                 return new ViewModel();
+            } else {
+                $form->get('personal')->get('profile')->setMessages($upload->getMessages());
             }
         }
 
@@ -590,6 +601,32 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->redirect()->toRoute(
                 $this->getParam('return')
             );
+        }
+    }
+
+    private function _uploadProfileImage(FileUpload $upload, Academic $academic)
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.profile_path');
+
+        if ($upload->isValid()) {
+            $upload->receive();
+
+            $image = new Imagick($upload->getFileName());
+            unlink($upload->getFileName());
+            $image->cropThumbnailImage(320, 240);
+
+            if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
+                $fileName = $academic->getPhotoPath();
+            } else {
+                $fileName = '';
+                do{
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . '/' . $fileName));
+            }
+            $image->writeImage($filePath . '/' . $fileName);
+            $academic->setPhotoPath($fileName);
         }
     }
 }
