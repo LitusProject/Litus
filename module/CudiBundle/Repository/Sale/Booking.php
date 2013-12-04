@@ -13,7 +13,6 @@ use CommonBundle\Entity\User\Person,
     DateTime,
     DateInterval,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join,
     Zend\Mail\Transport\TransportInterface;
 
 /**

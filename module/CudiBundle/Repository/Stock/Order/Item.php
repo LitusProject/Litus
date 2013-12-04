@@ -8,8 +8,7 @@ use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Stock\Order\Order as OrderEntity,
     CudiBundle\Entity\Supplier,
     DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\OrderBy;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Item
@@ -124,7 +123,7 @@ class Item extends EntityRepository
     public function findAllByPeriodQuery(Period $period)
     {
         $query = $this->_em->createQueryBuilder();
-        $query->select('i')
+        $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->where(
@@ -147,7 +146,7 @@ class Item extends EntityRepository
     public function findAllByTitleAndPeriodQuery($title, Period $period)
     {
         $query = $this->_em->createQueryBuilder();
-        $query->select('i')
+        $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->innerJoin('i.article', 'a')
@@ -174,7 +173,7 @@ class Item extends EntityRepository
     public function findAllBySupplierStringAndPeriodQuery($supplier, Period $period)
     {
         $query = $this->_em->createQueryBuilder();
-        $query->select('i')
+        $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->innerJoin('o.supplier', 's')
@@ -200,7 +199,7 @@ class Item extends EntityRepository
     public function findAllByOrderOnAlphaQuery(OrderEntity $order)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, m')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -217,7 +216,7 @@ class Item extends EntityRepository
     public function findAllByOrderOnBarcodeQuery(OrderEntity $order)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, b')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.barcodes', 'b')
@@ -238,7 +237,7 @@ class Item extends EntityRepository
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->where(
@@ -259,7 +258,7 @@ class Item extends EntityRepository
     public function findAllByArticleQuery($article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -284,7 +283,7 @@ class Item extends EntityRepository
     public function findAllBySupplierQuery($supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.supplier', 's')
@@ -309,7 +308,7 @@ class Item extends EntityRepository
     public function findAllByOrderQuery(OrderEntity $order, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->where(
@@ -332,7 +331,7 @@ class Item extends EntityRepository
     public function findAllByArticleAndOrderQuery($article, OrderEntity $order, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -359,7 +358,7 @@ class Item extends EntityRepository
     public function findAllBySupplierEntityQuery(Supplier $supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->where(
@@ -382,7 +381,7 @@ class Item extends EntityRepository
     public function findAllByArticleTitleAndSupplierAndAcademicYearQuery($article, Supplier $supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('i')
+        $resultSet = $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.mainArticle', 'm')

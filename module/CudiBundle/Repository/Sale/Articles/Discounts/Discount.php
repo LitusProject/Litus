@@ -4,8 +4,7 @@ namespace CudiBundle\Repository\Sale\Articles\Discounts;
 
 use CudiBundle\Entity\Sale\Article,
     CommonBundle\Entity\General\Organization,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Discount
@@ -38,11 +37,12 @@ class Discount extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
-            ->innerJoin('d.template', 't', Join::WITH,
-                   $query->expr()->eq('t.type', ':type')
-            )
+            ->innerJoin('d.template', 't')
             ->where(
-                   $query->expr()->eq('d.article', ':article')
+                $query->expr()->andX(
+                   $query->expr()->eq('d.article', ':article'),
+                   $query->expr()->eq('t.type', ':type')
+                )
             )
             ->setParameter('article', $article->getId())
             ->setParameter('type', $type)
@@ -81,14 +81,13 @@ class Discount extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
-            ->innerJoin('d.template', 't', Join::WITH,
+            ->innerJoin('d.template', 't')
+            ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('t.type', ':type'),
-                    $organization == null ? $query->expr()->isNull('d.organization') : $query->expr()->eq('d.organization', ':organization')
+                    $organization == null ? $query->expr()->isNull('d.organization') : $query->expr()->eq('d.organization', ':organization'),
+                    $query->expr()->eq('d.article', ':article')
                 )
-            )
-            ->where(
-                   $query->expr()->eq('d.article', ':article')
             )
             ->setParameter('article', $article->getId())
             ->setParameter('type', $type);

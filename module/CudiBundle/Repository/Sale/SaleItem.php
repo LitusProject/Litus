@@ -9,9 +9,7 @@ use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Session as SessionEntity,
     CudiBundle\Entity\Supplier,
     DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join,
-    Doctrine\ORM\Query\Expr\OrderBy;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * SaleItem
