@@ -640,25 +640,23 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.profile_path');
 
-        if ($upload->isValid()) {
+        if ($upload->isUploaded()) {
             $upload->receive();
 
-            if ($upload->isReceived()) {
-                $image = new Imagick($upload->getFileName());
-                unlink($upload->getFileName());
-                $image->cropThumbnailImage(320, 240);
+            $image = new Imagick($upload->getFileName());
+            unlink($upload->getFileName());
+            $image->cropThumbnailImage(320, 240);
 
-                if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
-                    $fileName = $academic->getPhotoPath();
-                } else {
-                    $fileName = '';
-                    do{
-                        $fileName = sha1(uniqid());
-                    } while (file_exists($filePath . '/' . $fileName));
-                }
-                $image->writeImage($filePath . '/' . $fileName);
-                $academic->setPhotoPath($fileName);
+            if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
+                $fileName = $academic->getPhotoPath();
+            } else {
+                $fileName = '';
+                do{
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . '/' . $fileName));
             }
+            $image->writeImage($filePath . '/' . $fileName);
+            $academic->setPhotoPath($fileName);
         }
     }
 }
