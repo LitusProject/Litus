@@ -387,7 +387,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findAllByTitleAndAcademicYearTypeAheadQuery($this->getParam('string'), $academicYear)
+            ->findAllByTitleOrBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 

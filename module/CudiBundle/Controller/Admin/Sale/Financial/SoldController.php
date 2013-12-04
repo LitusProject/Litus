@@ -467,8 +467,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Supplier',
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Supplier')
+                ->findAllQuery(),
             $this->getParam('page')
         );
 

@@ -23,7 +23,7 @@ class Article extends EntityRepository
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -243,7 +243,7 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear, $semester = 0)
+    public function findAllBySupplierStringAndAcademicYearQuery($supplier, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
@@ -262,8 +262,7 @@ class Article extends EntityRepository
             )
             ->setParameter('supplier', '%' . strtolower($supplier) . '%')
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -290,7 +289,7 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByTitleAndAcademicYearTypeAheadQuery($title, AcademicYear $academicYear)
+    public function findAllByTitleOrBarcodeAndAcademicYearQuery($title, AcademicYear $academicYear)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear);
 

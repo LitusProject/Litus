@@ -15,14 +15,13 @@ use CudiBundle\Entity\Sale\Article,
  */
 class Period extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CudiBundle\Entity\Stock\Period', 'p')
             ->orderBy('p.startDate', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
        return $resultSet;
     }

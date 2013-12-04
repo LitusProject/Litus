@@ -29,13 +29,11 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Supplier',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC'
-            )
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Supplier')
+                ->findAllQuery(),
+            $this->getParam('page')
         );
 
         $suppliers = $this->getEntityManager()
@@ -59,10 +57,10 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                ->findAllBySupplierAndPeriod($supplier, $period),
+                ->findAllBySupplierAndPeriodQuery($supplier, $period),
             $this->getParam('page')
         );
 
@@ -154,9 +152,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         $deliveries = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Delivery')
-            ->findAllByPeriod($period);
-
-        array_splice($deliveries, 25);
+            ->findAllByPeriodQuery($period)
+            ->setMaxResults(25)
+            ->getResult();
 
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
@@ -216,10 +214,16 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         $academicYear = $this->getAcademicYear();
+        
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
 
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+            ->findAllByTitleOrBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {

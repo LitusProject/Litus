@@ -30,13 +30,11 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Supplier',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC'
-            )
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Supplier')
+                ->findAllQuery(),
+            $this->getParam('page')
         );
 
         return new ViewModel(

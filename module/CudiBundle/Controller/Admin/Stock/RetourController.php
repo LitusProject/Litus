@@ -29,13 +29,11 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Supplier',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC'
-            )
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Supplier')
+                ->findAllQuery(),
+            $this->getParam('page')
         );
 
         $suppliers = $this->getEntityManager()
@@ -59,10 +57,10 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Retour')
-                ->findAllBySupplierAndPeriod($supplier, $period),
+                ->findAllBySupplierAndPeriodQuery($supplier, $period),
             $this->getParam('page')
         );
 
@@ -134,9 +132,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
         $retours = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Retour')
-            ->findAllByPeriod($period);
-
-        array_splice($retours, 25);
+            ->findAllByPeriodQuery($period)
+            ->setMaxResults(25)
+            ->getResult();
 
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')

@@ -19,7 +19,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Delivery extends EntityRepository
 {
-    public function findAllBySupplierAndPeriod(Supplier $supplier, PeriodEntity $period)
+    public function findAllBySupplierAndPeriodQuery(Supplier $supplier, PeriodEntity $period)
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('o')
@@ -40,13 +40,12 @@ class Delivery extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByPeriod(PeriodEntity $period)
+    public function findAllByPeriodQuery(PeriodEntity $period)
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('o')
@@ -63,8 +62,7 @@ class Delivery extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->getQuery();
 
         return $resultSet;
     }
