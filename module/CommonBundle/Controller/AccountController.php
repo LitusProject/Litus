@@ -643,20 +643,22 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         if ($upload->isValid()) {
             $upload->receive();
 
-            $image = new Imagick($upload->getFileName());
-            unlink($upload->getFileName());
-            $image->cropThumbnailImage(320, 240);
+            if ($upload->isReceived()) {
+                $image = new Imagick($upload->getFileName());
+                unlink($upload->getFileName());
+                $image->cropThumbnailImage(320, 240);
 
-            if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
-                $fileName = $academic->getPhotoPath();
-            } else {
-                $fileName = '';
-                do{
-                    $fileName = sha1(uniqid());
-                } while (file_exists($filePath . '/' . $fileName));
+                if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
+                    $fileName = $academic->getPhotoPath();
+                } else {
+                    $fileName = '';
+                    do{
+                        $fileName = sha1(uniqid());
+                    } while (file_exists($filePath . '/' . $fileName));
+                }
+                $image->writeImage($filePath . '/' . $fileName);
+                $academic->setPhotoPath($fileName);
             }
-            $image->writeImage($filePath . '/' . $fileName);
-            $academic->setPhotoPath($fileName);
         }
     }
 }
