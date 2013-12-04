@@ -250,15 +250,13 @@ class Period extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(i.number)')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
-            ->innerJoin('i.order', 'o'
+            ->innerJoin('i.order', 'o')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('i.article', ':article'),
                     $query->expr()->gt('o.dateOrdered', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
                 )
-            )
-            ->where(
-                   $query->expr()->eq('i.article', ':article')
             )
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
