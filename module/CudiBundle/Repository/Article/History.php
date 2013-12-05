@@ -16,7 +16,7 @@ class History extends EntityRepository
     public function findAllByArticleQuery(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('h')
+        $resultSet = $query->select('h, a')
             ->from('CudiBundle\Entity\Article\History', 'h')
             ->innerJoin('h.precursor', 'a')
             ->where(

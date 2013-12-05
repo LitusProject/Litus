@@ -45,7 +45,7 @@
                 </tr>
 
                 {% for item in paginator %}
-                    <tr class="item">
+                    <tr class="item {{ item.getId() }}">
                         <td>{{ item.getOrder().getDateOrdered().format('d/m/Y H:i') }}</td>
                         <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
                         <td>{{ item.getArticle().getBarcode() }}</td>

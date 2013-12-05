@@ -60,10 +60,11 @@ return array(
             'cudi_admin_article_comment' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/article/comment[/:action[/:id[/:article]]][/]',
+                    'route' => '/admin/article/comment[/:action[/:id[/:article]][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_article_comment',
@@ -74,10 +75,11 @@ return array(
             'cudi_admin_article_file' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/article/file[/:action[/:id]][/]',
+                    'route' => '/admin/article/file[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_article_file',

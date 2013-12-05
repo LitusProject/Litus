@@ -33,9 +33,12 @@ class Virtual extends EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
 
         $resultSet = $query->getQuery()
-            ->getScalarResult();
+            ->getSingleScalarResult();
 
-        return $resultSet[0][1];
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
     }
 
     public function findAllByPeriodAndArticleQuery(Period $period, Article $article)
