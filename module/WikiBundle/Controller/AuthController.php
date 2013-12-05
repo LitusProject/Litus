@@ -17,7 +17,7 @@ namespace WikiBundle\Controller;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Form\Auth\Login as LoginForm,
+    WikiBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -51,7 +51,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(
-                    $formData['username'], $formData['password'], $formData['remember_me']
+                    $formData['username'], $formData['password'], true
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
