@@ -48,10 +48,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
-                ->findAllByAcademicYear($academicYear, $semester);
+                ->findAllByAcademicYearQuery($academicYear, $semester);
         }
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $articles,
             $this->getParam('page')
         );
@@ -296,14 +296,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $semester = $this->_getSemester();
-        $articles = $this->_search($this->getAcademicYear(), $semester);
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($articles, $numResults);
+        $semester = $this->_getSemester();
+        $articles = $this->_search($this->getAcademicYear(), $semester)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {
@@ -382,9 +382,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $academicYear = $this->getAcademicYear();
 
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+            ->findAllByTitleOrBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {
@@ -511,19 +517,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'author':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByAuthorAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByAuthorAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'publisher':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByPublisherAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByPublisherAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'barcode':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
         }
     }
 

@@ -28,15 +28,11 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
     {
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->paginator()->setItemsPerPage(5);
-            $paginator = $this->paginator()->createFromEntity(
-                'CudiBundle\Entity\Prof\Action',
-                $this->getParam('page'),
-                array(
-                    'person' => $this->getAuthentication()->getPersonObject(),
-                ),
-                array(
-                    'timestamp' => 'DESC',
-                )
+            $paginator = $this->paginator()->createFromQuery(
+                $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Prof\Action')
+                    ->findAllByPersonQuery($this->getAuthentication()->getPersonObject()),
+                $this->getParam('page')
             );
 
             foreach($paginator as $action)

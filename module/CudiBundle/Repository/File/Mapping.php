@@ -34,7 +34,7 @@ class Mapping extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllPrintableByArticle(Article $article, $isProf = false)
+    public function findAllPrintableByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -48,13 +48,12 @@ class Mapping extends EntityRepository
                 )
             )
             ->setParameter('article', $article->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByArticle(Article $article, $isProf = false)
+    public function findAllByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -67,8 +66,7 @@ class Mapping extends EntityRepository
                 )
             )
             ->setParameter('article', $article->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

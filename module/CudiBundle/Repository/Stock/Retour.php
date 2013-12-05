@@ -15,7 +15,7 @@ use CudiBundle\Entity\Sale\Article,
  */
 class Retour extends EntityRepository
 {
-    public function findAllBySupplierAndPeriod(Supplier $supplier, PeriodEntity $period)
+    public function findAllBySupplierAndPeriodQuery(Supplier $supplier, PeriodEntity $period)
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('r')
@@ -35,8 +35,7 @@ class Retour extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->getQuery();
 
         return $resultSet;
     }
@@ -65,7 +64,7 @@ class Retour extends EntityRepository
         return $resultSet ? $resultSet : 0;
     }
 
-    public function findAllByPeriod(PeriodEntity $period)
+    public function findAllByPeriodQuery(PeriodEntity $period)
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('r')
@@ -82,8 +81,7 @@ class Retour extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->getQuery();
 
         return $resultSet;
     }
