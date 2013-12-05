@@ -34,13 +34,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Supplier',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC'
-            )
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Supplier')
+                ->findAllQuery(),
+            $this->getParam('page')
         );
 
         $suppliers = $this->getEntityManager()
@@ -67,10 +65,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!isset($orders)) {
             $orders = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                ->findAllByPeriod($period);
+                ->findAllByPeriodQuery($period);
         }
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $orders,
             $this->getParam('page')
         );
@@ -94,13 +92,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
 
-        $orders = $this->_search($period);
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($orders, $numResults);
+        $orders = $this->_search($period)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($orders as $order) {
@@ -134,10 +132,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Order')
-                ->findAllBySupplierAndPeriod($supplier, $period),
+                ->findAllBySupplierAndPeriodQuery($supplier, $period),
             $this->getParam('page')
         );
 
@@ -441,11 +439,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                    ->findAllByTitleAndPeriod($this->getParam('string'), $period);
+                    ->findAllByTitleAndPeriodQuery($this->getParam('string'), $period);
             case 'supplier':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                    ->findAllBySupplierStringAndPeriod($this->getParam('string'), $period);
+                    ->findAllBySupplierStringAndPeriodQuery($this->getParam('string'), $period);
         }
     }
 

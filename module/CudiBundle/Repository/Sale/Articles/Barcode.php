@@ -36,7 +36,7 @@ class Barcode extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByArticle(Article $article)
+    public function findAllByArticleQuery(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
@@ -52,8 +52,7 @@ class Barcode extends EntityRepository
                 )
             )
             ->setParameter('article', $article)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

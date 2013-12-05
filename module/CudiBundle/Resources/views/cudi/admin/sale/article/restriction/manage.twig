@@ -29,6 +29,7 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
         <br style="clear:both"/>
+        <br style="clear:both"/>
 
         <table class="full_width manage" id="articleRestrictions">
             <tr>
@@ -37,7 +38,7 @@
                 <th width="100px">Actions</th>
             </tr>
 
-            {% for restriction in restrictions %}
+            {% for restriction in paginator %}
                 <tr class="item item-{{ restriction.getId() }}">
                     <td>{{ restriction.getType() }}</td>
                     <td>{{ restriction.getValue() }}</td>
@@ -49,6 +50,8 @@
                 </tr>
             {% endfor %}
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <div class="modal hide fade" id="removeRestriction">

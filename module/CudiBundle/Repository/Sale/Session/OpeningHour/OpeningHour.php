@@ -14,7 +14,7 @@ use DateInterval,
  */
 class OpeningHour extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
@@ -24,13 +24,12 @@ class OpeningHour extends EntityRepository
             )
             ->setParameter('now', new DateTime())
             ->orderBy('o.startDate', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
        return $resultSet;
     }
 
-    public function findAllOld()
+    public function findAllOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
@@ -40,13 +39,12 @@ class OpeningHour extends EntityRepository
             )
             ->setParameter('now', new DateTime())
             ->orderBy('o.startDate', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
        return $resultSet;
     }
 
-    public function findCurrentWeek()
+    public function findCurrentWeekQuery()
     {
         $start = new DateTime();
         $start->setTime(0, 0);
@@ -70,13 +68,12 @@ class OpeningHour extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->orderBy('o.startDate')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
        return $resultSet;
     }
 
-    public function findPeriodFromNow($interval = 'P14D')
+    public function findPeriodFromNowQuery($interval = 'P14D')
     {
         $start = new DateTime();
 
@@ -96,8 +93,7 @@ class OpeningHour extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->orderBy('o.startDate')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
        return $resultSet;
     }

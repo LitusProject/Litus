@@ -30,12 +30,13 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllUncompleted(),
+                ->findAllUncompletedQuery(),
             $this->getParam('page')
         );
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -46,10 +47,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function completedAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllCompleted(),
+                ->findAllCompletedQuery(),
             $this->getParam('page')
         );
         return new ViewModel(
@@ -62,10 +63,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function refusedAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllRefused(),
+                ->findAllRefusedQuery(),
             $this->getParam('page')
         );
         return new ViewModel(

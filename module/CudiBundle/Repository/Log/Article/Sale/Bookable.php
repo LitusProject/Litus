@@ -13,7 +13,7 @@ use DateTime,
  */
 class Bookable extends EntityRepository
 {
-    public function findAllAfter(DateTime $date)
+    public function findAllAfterQuery(DateTime $date)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -22,8 +22,7 @@ class Bookable extends EntityRepository
                 $query->expr()->gt('l.timestamp', ':date')
             )
             ->setParameter('date', $date)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

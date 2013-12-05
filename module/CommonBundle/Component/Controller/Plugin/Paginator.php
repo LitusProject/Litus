@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManager,
     Zend\Paginator\Paginator as ZendPaginator,
     Zend\Paginator\Adapter\ArrayAdapter,
     Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
-    \DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
+    DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -146,7 +146,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     public function createFromQuery($query, $currentPage)
     {
         $this->_paginator = new ZendPaginator(
-                new DoctrinePaginatorAdapter(new DoctrinePaginator($query))
+            new DoctrinePaginatorAdapter(new DoctrinePaginator($query))
         );
 
         $this->_paginator->setCurrentPageNumber($currentPage);

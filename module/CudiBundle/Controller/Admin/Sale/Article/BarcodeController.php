@@ -64,15 +64,18 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             }
         }
 
-        $barcodes = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
-            ->findAllByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
                 'article' => $article,
-                'barcodes' => $barcodes,
-                'form' => $form,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }

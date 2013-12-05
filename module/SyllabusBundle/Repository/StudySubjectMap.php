@@ -4,7 +4,6 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
@@ -47,11 +46,10 @@ class StudySubjectMap extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->innerJoin('m.subject', 's', Join::WITH,
-                $query->expr()->like($query->expr()->lower('s.name'), ':name')
-            )
+            ->innerJoin('m.subject', 's')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name'),
                     $query->expr()->in('m.study', $parentIds),
                     $query->expr()->eq('m.academicYear', ':academicYear')
                 )
@@ -73,11 +71,10 @@ class StudySubjectMap extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->innerJoin('m.subject', 's', Join::WITH,
-                $query->expr()->like($query->expr()->lower('s.code'), ':code')
-            )
+            ->innerJoin('m.subject', 's')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.code'), ':code')
                     $query->expr()->in('m.study', $parentIds),
                     $query->expr()->eq('m.academicYear', ':academicYear')
                 )
