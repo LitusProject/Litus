@@ -45,7 +45,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                 'unit' => $unit,
                 'members' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                    ->findByUnitAndAcademicYear($unit, $academicYear),
+                    ->findAllByUnitAndAcademicYear($unit, $academicYear),
             );
         }
 
@@ -57,7 +57,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
         foreach($extraUnits as $unit) {
             $members = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                ->findByUnitAndAcademicYear($unit, $academicYear);
+                ->findAllByUnitAndAcademicYear($unit, $academicYear);
 
             foreach($members as $member) {
                 if (!isset($extra[$member->getAcademic()->getId()]))

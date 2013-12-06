@@ -18,7 +18,7 @@ use CudiBundle\Entity\Sale\Article as Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Articles\Barcode")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Barcode")
  * @ORM\Table(name="cudi.sales_articles_barcodes")
  */
 class Barcode

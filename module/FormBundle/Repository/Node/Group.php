@@ -27,68 +27,40 @@ class Group extends EntityRepository
     public function findAllActive()
     {
         $query = $this->_em->createQueryBuilder();
-        $forms = $query->select('f.id')
-            ->from('FormBundle\Entity\Node\Form', 'f')
+        $resultSet = $query->select('g')
+            ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
+            ->from('FormBundle\Entity\Node\Group', 'g')
+            ->innerJoin('m.form', 'f')
             ->where(
-                $query->expr()->gt('f.endDate', ':now')
+                $query->expr()->andX(
+                    $query->expr()->gt('f.endDate', ':now'),
+                    $query->expr()->eq('m.group', 'g')
+                )
             )
             ->setParameter('now', new DateTime())
             ->getQuery()
             ->getResult();
 
-        $ids = array(0);
-        foreach($forms as $form) {
-            $ids[] = $form['id'];
-        }
-
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
-            ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
-            ->where(
-                $query->expr()->in('m.form', $ids)
-            )
-            ->getQuery()
-            ->getResult();
-
-        $groups = array();
-        foreach($resultSet as $group) {
-            $groups[$group->getGroup()->getForms()[0]->getForm()->getStartDate()->getTimestamp()] = $group->getGroup();
-        }
-
-        return array_values($groups);
+        return $resultSet;
     }
 
     public function findAllOld()
     {
         $query = $this->_em->createQueryBuilder();
-        $forms = $query->select('f.id')
-            ->from('FormBundle\Entity\Node\Form', 'f')
+        $resultSet = $query->select('g')
+            ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
+            ->from('FormBundle\Entity\Node\Group', 'g')
+            ->innerJoin('m.form', 'f')
             ->where(
-                $query->expr()->lt('f.endDate', ':now')
+                $query->expr()->andX(
+                    $query->expr()->lt('f.endDate', ':now'),
+                    $query->expr()->eq('m.group', 'g')
+                )
             )
             ->setParameter('now', new DateTime())
             ->getQuery()
             ->getResult();
 
-        $ids = array(0);
-        foreach($forms as $form) {
-            $ids[] = $form['id'];
-        }
-
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
-            ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
-            ->where(
-                $query->expr()->in('m.form', $ids)
-            )
-            ->getQuery()
-            ->getResult();
-
-        $groups = array();
-        foreach($resultSet as $group) {
-            $groups[$group->getGroup()->getForms()[0]->getForm()->getStartDate()->getTimestamp()] = $group->getGroup();
-        }
-
-        return array_values($groups);
+        return $resultSet;
     }
 }

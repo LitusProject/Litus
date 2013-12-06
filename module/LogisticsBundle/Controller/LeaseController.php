@@ -20,12 +20,11 @@ class LeaseController extends LogisticsController
 {
     public function indexAction()
     {
-        $leases = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-            ->findAllUnreturnedQuery();
-
         $paginator = $this->paginator()->createFromQuery(
-            $leases, $this->getParam('page')
+            $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                ->findAllUnreturnedQuery(),
+            $this->getParam('page')
         );
 
         $leaseForm = $this->_handleLeaseForm();
@@ -58,12 +57,11 @@ class LeaseController extends LogisticsController
         if(!($item = $this->_getItem($this->getRequest()->getQuery('barcode'))))
             return new ViewModel();
 
-        $leases = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-            ->findByItemQuery($item);
-
         $paginator = $this->paginator()->createFromAuery(
-            $leases, $this->getParam('page')
+            $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                ->findByItemQuery($item),
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -83,7 +81,7 @@ class LeaseController extends LogisticsController
         if($query !== null) {
             $items = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                ->searchByName($query);
+                ->findAllByName($query);
             $leaseRepo = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease');
 

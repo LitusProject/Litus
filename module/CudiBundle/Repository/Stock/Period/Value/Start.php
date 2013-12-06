@@ -40,6 +40,7 @@ class Start extends EntityRepository
 
         if (null == $value)
             return 0;
+
         return $value->getValue();
     }
 }

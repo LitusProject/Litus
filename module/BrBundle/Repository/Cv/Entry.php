@@ -15,7 +15,8 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Entry extends EntityRepository
 {
-    public function findAllByAcademicYearQuery(AcademicYear $year) {
+    public function findAllByAcademicYearQuery(AcademicYear $year)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
@@ -30,10 +31,9 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllUngroupedStudiesQuery() {
-        $query = $this->_em->createQueryBuilder();
+    public function findAllUngroupedStudiesQuery()
+    {
         $subQuery = $this->_em->createQueryBuilder();
-
         $subQuery->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->where(
@@ -41,7 +41,6 @@ class Entry extends EntityRepository
             );
 
         $groupQuery = $this->_em->createQueryBuilder();
-
         $groupQuery->select('g')
             ->from('SyllabusBundle\Entity\StudyGroupMap', 'g')
             ->innerJoin('g.group', 'd')
@@ -52,6 +51,7 @@ class Entry extends EntityRepository
                 )
             );
 
+        $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->where(
@@ -72,11 +72,9 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByGroupAndAcademicYearQuery(Group $group, AcademicYear $year) {
-        $query = $this->_em->createQueryBuilder();
-
+    public function findAllByGroupAndAcademicYearQuery(Group $group, AcademicYear $year)
+    {
         $subQuery = $this->_em->createQueryBuilder();
-
         $subQuery->select('g')
             ->from('SyllabusBundle\Entity\StudyGroupMap', 'g')
             ->where(
@@ -86,6 +84,7 @@ class Entry extends EntityRepository
                 )
             );
 
+        $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->innerJoin('e.study', 's')
@@ -104,9 +103,9 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $year) {
+    public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $year)
+    {
         $query = $this->_em->createQueryBuilder();
-
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->where(

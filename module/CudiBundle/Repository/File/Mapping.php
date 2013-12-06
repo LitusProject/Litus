@@ -25,8 +25,8 @@ class Mapping extends EntityRepository
                     $query->expr()->eq('m.article', ':article')
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->setParameter('file', $file->getId())
+            ->setParameter('article', $article)
+            ->setParameter('file', $file)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
@@ -47,7 +47,7 @@ class Mapping extends EntityRepository
                     $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
                 )
             )
-            ->setParameter('article', $article->getId())
+            ->setParameter('article', $article)
             ->getQuery();
 
         return $resultSet;
@@ -65,7 +65,7 @@ class Mapping extends EntityRepository
                     $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
                 )
             )
-            ->setParameter('article', $article->getId())
+            ->setParameter('article', $article)
             ->getQuery();
 
         return $resultSet;

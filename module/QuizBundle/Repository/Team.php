@@ -41,7 +41,7 @@ class Team extends EntityRepository
     public function getNextTeamNumberForQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('t')
+        $resultSet = $query->select('MAX(t.number)')
             ->from('QuizBundle\Entity\Team', 't')
             ->where(
                 $query->expr()->eq('t.quiz', ':quiz')
@@ -49,12 +49,11 @@ class Team extends EntityRepository
             ->orderBy('t.number', 'DESC')
             ->setParameter('quiz', $quiz->getId())
             ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+            ->getSingleScalarResult();
 
         if($resultSet === null)
             return 1;
 
-        return $resultSet->getNumber() + 1;
+        return $resultSet + 1;
     }
 }

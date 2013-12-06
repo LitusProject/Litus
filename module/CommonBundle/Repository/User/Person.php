@@ -14,21 +14,6 @@ use CommonBundle\Entity\Acl\Role,
  */
 class Person extends EntityRepository
 {
-    public function findOneById($id)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('p')
-            ->from('CommonBundle\Entity\User\Person', 'p')
-            ->where(
-                $query->expr()->eq('p.id', ':id')
-            )
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        return $resultSet;
-    }
-
     public function findAllByNameQuery($name)
     {
         $query = $this->_em->createQueryBuilder();

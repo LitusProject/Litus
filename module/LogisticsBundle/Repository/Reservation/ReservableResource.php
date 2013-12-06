@@ -12,7 +12,8 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class ReservableResource extends EntityRepository
 {
-    public function findOneByName($name) {
+    public function findOneByName($name)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\ReservableResource', 'r')
@@ -27,7 +28,8 @@ class ReservableResource extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllQuery() {
+    public function findAllQuery()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\ReservableResource', 'r')
