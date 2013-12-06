@@ -109,7 +109,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_search($academicYear, $semester)
+        $articles = $this->_search($this->getAcademicYear(), $semester)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -174,7 +174,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->nbOrdered = $ordered;
             $item->nbVirtualOrdered = $virtualOrdered;
             $item->nbNotDeliveredVirtual = max(0, $ordered + $virtualOrdered - $delivered);
-            
+
             $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
             $result[] = $item;
         }
