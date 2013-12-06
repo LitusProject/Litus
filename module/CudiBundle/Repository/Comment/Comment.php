@@ -47,7 +47,7 @@ class Comment extends EntityRepository
             ->setParameter('article', $article)
             ->getQuery();
 
-        return $comments;
+        return $resultSet;
     }
 
     public function findAllSiteByArticleQuery(Article $article)
@@ -67,6 +67,6 @@ class Comment extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        return $comments;
+        return $resultSet;
     }
 }
