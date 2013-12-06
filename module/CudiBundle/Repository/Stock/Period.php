@@ -126,7 +126,7 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             for($i = 0 ; $i < count($resultSet) ; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
         }
