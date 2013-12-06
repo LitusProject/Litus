@@ -36,28 +36,25 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAcademicYearSortBarcode(AcademicYear $academicYear)
+    public function findAllByAcademicYearSortBarcodeQuery(AcademicYear $academicYear)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, b')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Artile\Barcode', 'b')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('b.article', 'a'),
+                    $query->expr()->eq('b.main', 'true'),
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->getQuery()
-            ->getResult();
-
-        $barcodes = array();
-        foreach($resultSet as $article)
-            $barcodes[] = $article->getBarcode();
-
-        array_multisort($barcodes, $resultSet);
+            ->orderBy('b.barcode')
+            ->getQuery();
 
         return $resultSet;
     }
@@ -211,29 +208,19 @@ class Article extends EntityRepository
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $barcodes = $query->select('a.id')
-            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
-            ->innerJoin('b.article', 'a')
-            ->where(
-                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
-            )
-            ->setParameter('barcode', '%'.$barcode.'%')
-            ->getQuery()
-            ->getResult();
-
-        foreach($barcodes as $barcode)
-            $articles[$barcode['id']] = $barcode['id'];
-
-        $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('b.article', 'a'),
+                    $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->in('a.id', $articles)
                 )
             )
+            ->setParameter('barcode', '%'.$barcode.'%')
             ->orderBy('m.title', 'ASC')
             ->getQuery();
 
@@ -248,11 +235,10 @@ class Article extends EntityRepository
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
-            ->innerJoin('a.supplier', 's', Join::WITH,
-                $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
-            )
+            ->innerJoin('a.supplier', 's')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':supplier'),
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
@@ -290,30 +276,17 @@ class Article extends EntityRepository
         $articles = $this->_getArticleIdsBySemester($academicYear);
 
         $query = $this->_em->createQueryBuilder();
-        $barcodes = $query->select('a.id')
-            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
-            ->innerJoin('b.article', 'a')
-            ->where(
-                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
-            )
-            ->setParameter('barcode', '%'.$title.'%')
-            ->getQuery()
-            ->getResult();
-
-        $barcodeIds = array(0);
-        foreach($barcodes as $barcode)
-            $barcodeIds[] = $barcode['id'];
-
-        $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
+            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('b.article', 'a'),
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->orX(
                         $query->expr()->like($query->expr()->lower('m.title'), ':title'),
-                        $query->expr()->in('a.id', $barcodeIds)
+                        $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':title')
                     ),
                     $query->expr()->in('m.id', $articles)
                 )

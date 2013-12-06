@@ -12,20 +12,18 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Item extends EntityRepository
 {
-    public function searchByName($name)
+    public function findAllByNameQuery($name)
     {
-        $query = $this->createQueryBuilder('i');
-
-        return $query->select()
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('LogisticsBundle\Entity\Lease\Item', 'i')
             ->where(
-                $query->expr()->like(
-                    $query->expr()->lower('i.name'),
-                    ':name'
-                )
+                $query->expr()->like($query->expr()->lower('i.name'), ':name')
             )
             ->setParameter('name', '%'.strtolower($name).'%')
             ->setMaxResults(20)
-            ->getQuery()
-            ->execute();
+            ->getQuery();
+
+        return $resultSet;
     }
 }

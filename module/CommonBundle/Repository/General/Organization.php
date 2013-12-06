@@ -12,14 +12,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Organization extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CommonBundle\Entity\General\Organization', 'o')
             ->orderBy('o.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

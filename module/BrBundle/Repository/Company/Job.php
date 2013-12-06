@@ -57,7 +57,7 @@ class Job extends EntityRepository
     public function findAllActiveByTypeQuery($type)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('v')
+        $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
             ->where(

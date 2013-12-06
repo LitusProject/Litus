@@ -12,5 +12,4 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Node extends EntityRepository
 {
-
 }

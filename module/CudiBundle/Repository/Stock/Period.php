@@ -125,12 +125,10 @@ class Period extends EntityRepository
             ->getResult();
 
         if ($notDelivered) {
-            $results = array();
             for($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
-                    $results[] = $resultSet[$i];
+                    unset($resultSet[$i]);
             }
-            return $results;
         }
 
         return $resultSet;
@@ -269,6 +267,7 @@ class Period extends EntityRepository
 
         if (null !== $resultSet)
             return $resultSet;
+
         return 0;
     }
 
@@ -295,6 +294,7 @@ class Period extends EntityRepository
 
         if (null !== $resultSet)
             return $resultSet;
+
         return 0;
     }
 
@@ -321,6 +321,7 @@ class Period extends EntityRepository
 
         if (null !== $resultSet)
             return $resultSet;
+
         return 0;
     }
 
@@ -348,6 +349,7 @@ class Period extends EntityRepository
 
         if (null !== $resultSet)
             return $resultSet;
+
         return 0;
     }
 
@@ -375,6 +377,7 @@ class Period extends EntityRepository
 
         if (null !== $resultSet)
             return $resultSet;
+
         return 0;
     }
 
@@ -396,6 +399,7 @@ class Period extends EntityRepository
 
         if (null !== $resultSet)
             return $resultSet;
+
         return 0;
     }
 

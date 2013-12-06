@@ -1,6 +1,6 @@
 <?php
 
-namespace CudiBundle\Repository\Sale\Articles;
+namespace CudiBundle\Repository\Sale\Article;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 

@@ -17,7 +17,7 @@ class Point extends EntityRepository
      * Gets all points belonging to a quiz
      * @param QuizBundle\Entity\Quiz $quiz The quiz the points must belong to
      */
-    public function findAllByQuiz(QuizEntity $quiz)
+    public function findAllByQuizQuery(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -29,8 +29,7 @@ class Point extends EntityRepository
             )
             ->orderBy('r.order', 'ASC')
             ->setParameter('quiz', $quiz)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

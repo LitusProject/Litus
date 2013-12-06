@@ -17,7 +17,7 @@ class Event extends EntityRepository
     public function findAllByCompanyQuery(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('e')
+        $resultSet = $query->select('e, c')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'c')
             ->where(
@@ -33,7 +33,7 @@ class Event extends EntityRepository
     public function findAllFutureByCompanyQuery(DateTime $date, CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('e')
+        $resultSet = $query->select('e, c')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'c')
             ->where(
@@ -56,7 +56,7 @@ class Event extends EntityRepository
     public function findAllFutureQuery(DateTime $date)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('e')
+        $resultSet = $query->select('e, ev')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'ev')
             ->innerJoin('e.company', 'c')
@@ -79,7 +79,7 @@ class Event extends EntityRepository
     public function findAllFutureBySearchQuery(DateTime $date, $string)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('e')
+        $resultSet = $query->select('e, ev')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'ev')
             ->innerJoin('e.company', 'c')
