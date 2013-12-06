@@ -13,67 +13,59 @@ use CudiBundle\Entity\Article,
  */
 class Comment extends EntityRepository
 {
-    public function findAllByArticle(Article $article)
+    public function findAllByArticleQuery(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('c')
             ->from('CudiBundle\Entity\Comment\Mapping', 'm')
+            ->from('CudiBundle\Entity\Comment\Comment', 'c')
             ->where(
-                $query->expr()->eq('m.article', ':article')
+                $query->expr()->andX(
+                    $query->expr()->eq('m.comment', 'c'),
+                    $query->expr()->eq('m.article', ':article')
+                )
             )
-            ->setParameter('article', $article->getId())
-            ->getQuery()
-            ->getResult();
+            ->setParameter('article', $article)
+            ->getQuery();
 
-        $comments = array();
-        foreach($resultSet as $mapping)
-            $comments[] = $mapping->getComment();
-
-        return $comments;
+        return $resultSet;
     }
 
-    public function findAllExternalByArticle(Article $article)
+    public function findAllExternalByArticleQuery(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('c')
             ->from('CudiBundle\Entity\Comment\Mapping', 'm')
-            ->innerJoin('m.comment', 'c')
+            ->from('CudiBundle\Entity\Comment\Comment', 'c')
             ->where(
                 $query->expr()->andx(
+                    $query->expr()->eq('m.comment', 'c'),
                     $query->expr()->eq('m.article', ':article'),
                     $query->expr()->eq('c.type', '\'external\'')
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->getQuery()
-            ->getResult();
-
-        $comments = array();
-        foreach($resultSet as $mapping)
-            $comments[] = $mapping->getComment();
+            ->setParameter('article', $article)
+            ->getQuery();
 
         return $comments;
     }
 
-    public function findAllSiteByArticle(Article $article)
+    public function findAllSiteByArticleQuery(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('c')
             ->from('CudiBundle\Entity\Comment\Mapping', 'm')
-            ->innerJoin('m.comment', 'c')
+            ->from('CudiBundle\Entity\Comment\Comment', 'c')
             ->where(
                 $query->expr()->andx(
+                    $query->expr()->eq('m.comment', 'c'),
                     $query->expr()->eq('m.article', ':article'),
                     $query->expr()->eq('c.type', '\'site\'')
                 )
             )
-            ->setParameter('article', $article->getId())
+            ->setParameter('article', $article)
             ->getQuery()
             ->getResult();
-
-        $comments = array();
-        foreach($resultSet as $mapping)
-            $comments[] = $mapping->getComment();
 
         return $comments;
     }

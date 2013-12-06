@@ -104,28 +104,35 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
+    private function _personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p.id')
+            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+            ->innerJoin('m.academic', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.academicYear', ':academicYear'),
+                    $query->expr()->eq('m.organization', ':organization')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('organization', $organization)
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($resultSet as $item) {
+            $ids[] = $item['id'];
+        }
+
+        return $ids;
+    }
+
     public function findNumberBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('p.id')
-                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-                ->innerJoin('m.academic', 'p')
-                ->where(
-                    $query->expr()->andX(
-                        $query->expr()->eq('m.academicYear', ':academicYear'),
-                        $query->expr()->eq('m.organization', ':organization')
-                    )
-                )
-                ->setParameter('academicYear', $academicYear)
-                ->setParameter('organization', $organization)
-                ->getQuery()
-                ->getResult();
-
-            $ids = array(0);
-            foreach($resultSet as $item) {
-                $ids[] = $item['id'];
-            }
+            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
@@ -175,25 +182,7 @@ class SaleItem extends EntityRepository
     public function findNumberByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('p.id')
-                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-                ->innerJoin('m.academic', 'p')
-                ->where(
-                    $query->expr()->andX(
-                        $query->expr()->eq('m.academicYear', ':academicYear'),
-                        $query->expr()->eq('m.organization', ':organization')
-                    )
-                )
-                ->setParameter('academicYear', $academicYear)
-                ->setParameter('organization', $organization)
-                ->getQuery()
-                ->getResult();
-
-            $ids = array(0);
-            foreach($resultSet as $item) {
-                $ids[] = $item['id'];
-            }
+            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
@@ -241,25 +230,7 @@ class SaleItem extends EntityRepository
     public function findTotalRevenueBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('p.id')
-                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-                ->innerJoin('m.academic', 'p')
-                ->where(
-                    $query->expr()->andX(
-                        $query->expr()->eq('m.academicYear', ':academicYear'),
-                        $query->expr()->eq('m.organization', ':organization')
-                    )
-                )
-                ->setParameter('academicYear', $academicYear)
-                ->setParameter('organization', $organization)
-                ->getQuery()
-                ->getResult();
-
-            $ids = array(0);
-            foreach($resultSet as $item) {
-                $ids[] = $item['id'];
-            }
+            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.price)')
@@ -309,25 +280,7 @@ class SaleItem extends EntityRepository
     public function findTotalPurchaseBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('p.id')
-                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-                ->innerJoin('m.academic', 'p')
-                ->where(
-                    $query->expr()->andX(
-                        $query->expr()->eq('m.academicYear', ':academicYear'),
-                        $query->expr()->eq('m.organization', ':organization')
-                    )
-                )
-                ->setParameter('academicYear', $academicYear)
-                ->setParameter('organization', $organization)
-                ->getQuery()
-                ->getResult();
-
-            $ids = array(0);
-            foreach($resultSet as $item) {
-                $ids[] = $item['id'];
-            }
+            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.purchasePrice)')
@@ -377,25 +330,7 @@ class SaleItem extends EntityRepository
     public function findTotalRevenueByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('p.id')
-                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-                ->innerJoin('m.academic', 'p')
-                ->where(
-                    $query->expr()->andX(
-                        $query->expr()->eq('m.academicYear', ':academicYear'),
-                        $query->expr()->eq('m.organization', ':organization')
-                    )
-                )
-                ->setParameter('academicYear', $academicYear)
-                ->setParameter('organization', $organization)
-                ->getQuery()
-                ->getResult();
-
-            $ids = array(0);
-            foreach($resultSet as $item) {
-                $ids[] = $item['id'];
-            }
+            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.price)')

@@ -1,6 +1,6 @@
 <?php
 
-namespace CudiBundle\Repository\Sale\Articles\Discounts;
+namespace CudiBundle\Repository\Sale\Article\Discount;
 
 use CudiBundle\Entity\Sale\Article,
     CommonBundle\Entity\General\Organization,
@@ -19,32 +19,17 @@ class Discount extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
+            ->leftJoin('d.template', 't')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('d.article', ':article'),
-                    $query->expr()->eq('d.type', ':type')
+                    $query->expr()->orX(
+                        $query->expr()->eq('d.type', ':type'),
+                        $query->expr()->eq('t.type', ':type')
+                    )
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->setParameter('type', $type)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        if ($resultSet)
-            return $resultSet;
-
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('d')
-            ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
-            ->innerJoin('d.template', 't')
-            ->where(
-                $query->expr()->andX(
-                   $query->expr()->eq('d.article', ':article'),
-                   $query->expr()->eq('t.type', ':type')
-                )
-            )
-            ->setParameter('article', $article->getId())
+            ->setParameter('article', $article)
             ->setParameter('type', $type)
             ->setMaxResults(1)
             ->getQuery()
@@ -58,35 +43,19 @@ class Discount extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
+            ->leftJoin('d.template', 't')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('d.article', ':article'),
-                    $query->expr()->eq('d.type', ':type'),
-                    $organization == null ? $query->expr()->isNull('d.organization') : $query->expr()->eq('d.organization', ':organization')
-                )
-            )
-            ->setParameter('article', $article->getId())
-            ->setParameter('type', $type);
-
-        if ($organization != null)
-            $query->setParameter('organization', $organization);
-
-        $resultSet = $query->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        if ($resultSet)
-            return $resultSet;
-
-        $query = $this->_em->createQueryBuilder();
-        $query->select('d')
-            ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
-            ->innerJoin('d.template', 't')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('t.type', ':type'),
-                    $organization == null ? $query->expr()->isNull('d.organization') : $query->expr()->eq('d.organization', ':organization'),
-                    $query->expr()->eq('d.article', ':article')
+                    $query->expr()->orX(
+                        $query->expr()->eq('d.type', ':type'),
+                        $query->expr()->eq('t.type', ':type')
+                    ),
+                    $query->expr()->orX(
+                        $organization == null ? $query->expr()->isNull('d.organization') : $query->expr()->eq('d.organization', ':organization'),
+                        $organization == null ? $query->expr()->isNull('t.organization') : $query->expr()->eq('t.organization', ':organization')
+                    )
+                    
                 )
             )
             ->setParameter('article', $article->getId())

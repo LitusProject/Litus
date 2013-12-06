@@ -25,8 +25,8 @@ class Mapping extends EntityRepository
                     $query->expr()->eq('m.comment', ':comment')
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->setParameter('comment', $comment->getId())
+            ->setParameter('article', $article)
+            ->setParameter('comment', $comment)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
@@ -42,7 +42,7 @@ class Mapping extends EntityRepository
             ->where(
                 $query->expr()->eq('m.article', ':article')
             )
-            ->setParameter('article', $article->getId())
+            ->setParameter('article', $article)
             ->getQuery();
 
         return $resultSet;
