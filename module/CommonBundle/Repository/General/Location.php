@@ -14,7 +14,15 @@ class Location extends EntityRepository
 {
     public function findAllActive()
     {
-        return $this->_em->getRepository('CommonBundle\Entity\General\Location')
-            ->findBy(array('active' => true), array('name' => 'ASC'));
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('CommonBundle\Entity\General\Location', 'l')
+            ->where(
+                $query->expr()->eq('l.active', 'true')
+            )
+            ->orderBy('l.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
     }
 }

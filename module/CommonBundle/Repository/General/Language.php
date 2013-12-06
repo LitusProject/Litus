@@ -12,14 +12,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Language extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('CommonBundle\Entity\General\Language', 'l')
             ->orderBy('l.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -17,7 +17,9 @@ class MoneyUnit extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('u')
             ->from('CommonBundle\Entity\General\Bank\MoneyUnit', 'u')
-            ->where($query->expr()->eq('u.unit', ':unit'))
+            ->where(
+                $query->expr()->eq('u.unit', ':unit')
+            )
             ->setParameter('unit', $unit * 100)
             ->setMaxResults(1)
             ->getQuery()

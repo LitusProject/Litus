@@ -14,35 +14,36 @@ class Contract extends EntityRepository
 {
     public function findAllContractIds()
     {
-        $result = $this->_em
-            ->createQuery('SELECT c.id FROM BrBundle\Entity\Contract c')
-            ->getResult();
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c.id')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->getQuery();
 
         $return = array();
-        foreach ($result as $entry)
-            $return[] = $entry['id'];
+        foreach ($resultSet as $result)
+            $return[] = $result['id'];
 
         return $return;
     }
 
     public function findNextInvoiceNb()
     {
-        $highestInvoiceNb = $this->_em
-            ->createQuery('SELECT MAX(c.invoiceNb) AS highest FROM BrBundle\Entity\Contract c')
-            ->getResult();
-
-        $highestInvoiceNb = $highestInvoiceNb[0]['highest'];
+        $query = $this->_em->createQueryBuilder();
+        $highestInvoiceNb = $query->select('MAX(c.invoiceNb)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->getQuery()
+            ->getSingleScalarResult();
 
         return ++$highestInvoiceNb;
     }
 
     public function findNextContractNb()
     {
-        $highestContractNb = $this->_em
-            ->createQuery('SELECT MAX(c.contractNb) AS highest FROM BrBundle\Entity\Contract c')
-            ->getResult();
-
-        $highestContractNb = $highestContractNb[0]['highest'];
+        $query = $this->_em->createQueryBuilder();
+        $highestInvoiceNb = $query->select('MAX(c.contractNb)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->getQuery()
+            ->getSingleScalarResult();
 
         return ++$highestContractNb;
     }
