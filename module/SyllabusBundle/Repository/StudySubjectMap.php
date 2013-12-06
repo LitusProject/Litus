@@ -74,7 +74,7 @@ class StudySubjectMap extends EntityRepository
             ->innerJoin('m.subject', 's')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->like($query->expr()->lower('s.code'), ':code')
+                    $query->expr()->like($query->expr()->lower('s.code'), ':code'),
                     $query->expr()->in('m.study', $parentIds),
                     $query->expr()->eq('m.academicYear', ':academicYear')
                 )
