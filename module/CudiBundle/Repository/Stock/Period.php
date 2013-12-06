@@ -125,10 +125,12 @@ class Period extends EntityRepository
             ->getResult();
 
         if ($notDelivered) {
+            $articles = array();
             for($i = 0 ; $i < count($resultSet) ; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
-                    unset($resultSet[$i]);
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
+                    $articles[] = $resultSet[$i];
             }
+            return $articles;
         }
 
         return $resultSet;
@@ -151,10 +153,12 @@ class Period extends EntityRepository
             ->getResult();
 
         if ($notDelivered) {
+            $articles = array();
             for($i = 0 ; $i < count($resultSet) ; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
-                    unset($resultSet[$i]);
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
+                    $articles[] = $resultSet[$i];
             }
+            return $articles;
         }
 
         return $resultSet;
@@ -207,10 +211,12 @@ class Period extends EntityRepository
             ->getResult();
 
         if ($notDelivered) {
+            $articles = array();
             for($i = 0 ; $i < count($resultSet) ; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
-                    unset($resultSet[$i]);
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
+                    $articles[] = $resultSet[$i];
             }
+            return $articles;
         }
 
         return $resultSet;
