@@ -12,15 +12,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class News extends EntityRepository
 {
-    public function findAll($nbResults = 3)
+    public function findAllQuery($nbResults = 3)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NewsBundle\Entity\Node\News', 'n')
             ->orderBy('n.creationTime', 'DESC')
             ->setMaxResults($nbResults)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -43,7 +42,7 @@ class News extends EntityRepository
         return $resultSet;
     }
 
-    public function findNbSite($nbResults = 3)
+    public function findNbSiteQuery($nbResults = 3)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
@@ -57,8 +56,7 @@ class News extends EntityRepository
             ->setParameter('now', new \DateTime())
             ->orderBy('n.creationTime', 'DESC')
             ->setMaxResults($nbResults)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
