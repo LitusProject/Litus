@@ -256,8 +256,7 @@ class Article extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if ($resultSet &&
-                (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial()))
+        if ($resultSet && (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial()))
             return $resultSet->getArticle();
 
         $actions = $this->getEntityManager()

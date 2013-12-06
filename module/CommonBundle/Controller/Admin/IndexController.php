@@ -28,22 +28,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById(963);
-        $result = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllBookedArticles();
-        $result2 = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllBookedArticles();
-echo sizeof($result) . '<br>';
-echo sizeof($result2);
-        for($i = 0 ; $i < sizeof($result) ; $i++)
-            if ($result[$i] != $result2[$i])
-                throw new \Exception("Error Processing Request", 1);
-            
-
         $piwikEnabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.piwik_enabled');
