@@ -30,7 +30,8 @@ class LeaseController extends AdminController
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'LogisticsBundle\Entity\Lease\Item', $this->getParam('page')
+            'LogisticsBundle\Entity\Lease\Item',
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -165,9 +166,6 @@ class LeaseController extends AdminController
         );
     }
 
-    /**
-     * @return null|\LogisticsBundle\Entity\Lease\Item
-     */
     private function _getItem()
     {
         if ($this->getParam('id') === null) {

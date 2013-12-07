@@ -37,7 +37,7 @@
                 <th width="100px">Actions</th>
             </tr>
 
-            {% for barcode in barcodes %}
+            {% for barcode in paginator %}
                 <tr class="item item-{{ barcode.getId() }}">
                     <td>{{ barcode.getBarcode() }}</td>
                     <td>{% if barcode.isMain() %}Yes{% else %}No{% endif %}</td>
@@ -49,6 +49,8 @@
                 </tr>
             {% endfor %}
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <div class="modal hide fade" id="removeBarcode">

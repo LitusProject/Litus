@@ -40,17 +40,23 @@
 <div class="modal hide fade" id="removeAllBooking">
     <div class="modal-header">
         <span>Litus Admin</span>
-        /Remove All Inactive Bookings
+        /Remove All Active Bookings
     </div>
     <div class="modal-body">
         <p>
-            You are about to remove all the inactive bookings!
+            You are about to remove all the active bookings!
         </p>
         <p>
             <select id="removeAllBookingRisks">
                 <option value="0">---</option>
                 <option value="1">I understand the risks</option>
             </select>
+        </p>
+        <p>
+            <label><input type="checkbox" id="keepRegistrationArticles" checked="checked"> Keep registration articles</label>
+        </p>
+        <p>
+            Other articles to exclude (ids, comma separated): <input type="text" id="excludedArticles">
         </p>
         <p>
             Are you sure you want to continue?
@@ -128,12 +134,16 @@
             var $this = $(this);
 
             e.preventDefault();
-            var assignAllBooking = $('#removeAllBooking');
-            assignAllBooking.find('.remove').unbind('click').click(function () {
-                if (assignAllBooking.find('#removeAllBookingRisks').val() == 1)
-                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "deleteAll"})}}';
+            var removeAllBooking = $('#removeAllBooking');
+            removeAllBooking.find('.remove').unbind('click').click(function () {
+                if (removeAllBooking.find('#removeAllBookingRisks').val() == 1) {
+                    if (removeAllBooking.find('#keepRegistrationArticles').is(':checked'))
+                        window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "deleteAll", "type": "keep_registration"})}}excluded/' + removeAllBooking.find('#excludedArticles').val();
+                    else
+                        window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "deleteAll", "type": "remove_registration"})}}excluded/' + removeAllBooking.find('#excludedArticles').val();
+                }
             });
-            assignAllBooking.modal();
+            removeAllBooking.modal();
         }
 
         function openAssignAllModal(e) {

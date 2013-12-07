@@ -18,7 +18,7 @@ use CudiBundle\Entity\Sale\Article as Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Articles\Discounts\Template")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Template")
  * @ORM\Table(name="cudi.sales_articles_discounts_templates")
  */
 class Template

@@ -69,7 +69,7 @@
                     </tr>
                 {% endif %}
 
-                {% for mapping in mappings %}
+                {% for mapping in paginator %}
                     <tr class="item item-{{ mapping.getId() }}">
                         <td>{{ mapping.getFile().getName() }}</td>
                         <td>{{ mapping.getFile().getDescription() }}</td>
@@ -89,6 +89,8 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <aside>

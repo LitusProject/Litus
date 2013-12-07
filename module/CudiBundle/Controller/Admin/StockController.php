@@ -52,10 +52,10 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
-                ->findAllByAcademicYear($academicYear, $semester);
+                ->findAllByAcademicYearQuery($academicYear, $semester);
         }
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $articles,
             $this->getParam('page')
         );
@@ -105,13 +105,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         $semester = $this->_getSemester();
 
-        $articles = $this->_search($this->getAcademicYear(), $semester);
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($articles, $numResults);
+        $articles = $this->_search($this->getAcademicYear(), $semester)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {
@@ -174,7 +174,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->nbOrdered = $ordered;
             $item->nbVirtualOrdered = $virtualOrdered;
             $item->nbNotDeliveredVirtual = max(0, $ordered + $virtualOrdered - $delivered);
-            
+
             $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
             $result[] = $item;
         }
@@ -353,14 +353,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\Period\Value\Delta',
-            $this->getParam('page'),
-            array(
-                'article' => $article,
-                'period' => $period,
-            ),
-            array('timestamp' => 'DESC')
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period\Value\Delta')
+                ->findAllByArticleAndPeriodQuery($article, $period),
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -521,15 +518,15 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'barcode':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'supplier':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllBySupplierStringAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllBySupplierStringAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
         }
     }
 

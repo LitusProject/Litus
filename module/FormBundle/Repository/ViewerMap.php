@@ -92,8 +92,9 @@ class ViewerMap extends EntityRepository
     public function findAllGroupsByPerson(Person $person)
     {
         $query = $this->_em->createQueryBuilder();
-        $forms = $query->select('n')
+        $forms = $query->select('f.id')
             ->from('FormBundle\Entity\ViewerMap', 'n')
+            ->innerJoin('n.form', 'f')
             ->where(
                 $query->expr()->eq('n.person', ':person')
             )
@@ -103,7 +104,7 @@ class ViewerMap extends EntityRepository
 
         $ids = array(0);
         foreach($forms as $form)
-            $ids[] = $form->getForm()->getId();
+            $ids[] = $form['id'];
 
         $query = $this->_em->createQueryBuilder();
         $mappings = $query->select('m')

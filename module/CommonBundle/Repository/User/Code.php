@@ -3,8 +3,7 @@
 namespace CommonBundle\Repository\User;
 
 use DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Code
@@ -19,7 +18,8 @@ class Code extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person', 'p')
-            ->innerJoin('p.code', 'c', Join::WITH,
+            ->innerJoin('p.code', 'c')
+            ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('c.code', ':code'),
                     $query->expr()->orX(

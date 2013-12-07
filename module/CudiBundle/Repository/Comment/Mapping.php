@@ -25,11 +25,25 @@ class Mapping extends EntityRepository
                     $query->expr()->eq('m.comment', ':comment')
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->setParameter('comment', $comment->getId())
+            ->setParameter('article', $article)
+            ->setParameter('comment', $comment)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByArticleQuery(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
+            ->where(
+                $query->expr()->eq('m.article', ':article')
+            )
+            ->setParameter('article', $article)
+            ->getQuery();
 
         return $resultSet;
     }

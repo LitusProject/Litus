@@ -12,5 +12,4 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class ReturnItem extends EntityRepository
 {
-
 }

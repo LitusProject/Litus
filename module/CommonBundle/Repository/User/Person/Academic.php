@@ -95,8 +95,9 @@ class Academic extends \CommonBundle\Repository\User\Person
     public function findAllByBarcodeQuery($barcode)
     {
         $query = $this->_em->createQueryBuilder();
-        $barcodes = $query->select('b')
+        $barcodes = $query->select('p.id')
             ->from('CommonBundle\Entity\User\Barcode', 'b')
+            ->innerJoin('b.person', 'p')
             ->where(
                 $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
             )
@@ -106,7 +107,7 @@ class Academic extends \CommonBundle\Repository\User\Person
 
         $ids = array(0);
         foreach($barcodes as $barcode)
-            $ids[] = $barcode->getPerson()->getId();
+            $ids[] = $barcode['id'];
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -188,27 +189,23 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
-    public function findAllMembers(AcademicYear $academicYear)
+    public function findAllMembersQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
+        $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Status\Organization', 's')
-            ->innerJoin('s.person', 'p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('s.person', 'p'),
                     $query->expr()->neq('s.status', '\'non_member\''),
                     $query->expr()->eq('s.academicYear', ':academicYear'),
                     $query->expr()->eq('p.canLogin', 'true')
                 )
             )
             ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
-        $persons = array();
-        foreach($resultSet as $result)
-            $persons[] = $result->getPerson();
-
-        return $persons;
+        return $resultSet;
     }
 }

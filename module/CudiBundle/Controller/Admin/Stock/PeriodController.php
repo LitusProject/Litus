@@ -28,13 +28,11 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\Period',
-            $this->getParam('page'),
-            array(),
-            array(
-                'startDate' => 'DESC'
-            )
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period')
+                ->findAllQuery(),
+            $this->getParam('page')
         );
 
         return new ViewModel(
