@@ -13,7 +13,6 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Page extends EntityRepository
 {
-
     public function findOneActiveBySlug($slug, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();

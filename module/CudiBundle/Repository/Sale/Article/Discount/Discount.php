@@ -55,7 +55,6 @@ class Discount extends EntityRepository
                         $organization == null ? $query->expr()->isNull('d.organization') : $query->expr()->eq('d.organization', ':organization'),
                         $organization == null ? $query->expr()->isNull('t.organization') : $query->expr()->eq('t.organization', ':organization')
                     )
-                    
                 )
             )
             ->setParameter('article', $article->getId())

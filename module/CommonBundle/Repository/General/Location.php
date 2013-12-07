@@ -12,7 +12,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Location extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
