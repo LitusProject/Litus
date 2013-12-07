@@ -71,7 +71,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     new FlashMessage(
                         FlashMessage::WARNING,
                         'WARNING',
-                        'You already have registered for this academic year.'
+                        'You have already registered for this academic year.'
                     )
                 );
 
