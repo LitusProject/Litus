@@ -39,7 +39,7 @@ class Volunteer extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByCountLimits(AcademicYear $academicYear, $minimum, $maximum)
+    public function findAllByCountLimitsQuery(AcademicYear $academicYear, $minimum, $maximum)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
@@ -63,8 +63,7 @@ class Volunteer extends EntityRepository
             ->setParameter('endAcademicYear', $academicYear->getEndDate())
             ->setParameter('min', $minimum)
             ->setParameter('max', $maximum)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
