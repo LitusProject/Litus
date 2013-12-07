@@ -53,6 +53,9 @@
             </select>
         </p>
         <p>
+            <label><input type="checkbox" id="keepRegistrationArticles" checked="checked"> Keep registration articles</label>
+        </p>
+        <p>
             Are you sure you want to continue?
         </p>
         <div class="footer">
@@ -128,12 +131,16 @@
             var $this = $(this);
 
             e.preventDefault();
-            var assignAllBooking = $('#removeAllBooking');
-            assignAllBooking.find('.remove').unbind('click').click(function () {
-                if (assignAllBooking.find('#removeAllBookingRisks').val() == 1)
-                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "deleteAll"})}}';
+            var removeAllBooking = $('#removeAllBooking');
+            removeAllBooking.find('.remove').unbind('click').click(function () {
+                if (removeAllBooking.find('#removeAllBookingRisks').val() == 1) {
+                    if (removeAllBooking.find('#keepRegistrationArticles').is(':checked'))
+                        window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "deleteAll", "type": "keep_registration"})}}';
+                    else
+                        window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "deleteAll", "type": "remove_registration"})}}';
+                }
             });
-            assignAllBooking.modal();
+            removeAllBooking.modal();
         }
 
         function openAssignAllModal(e) {
