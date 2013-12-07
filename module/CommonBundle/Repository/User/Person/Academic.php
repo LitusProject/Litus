@@ -189,7 +189,7 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
-    public function findAllMembers(AcademicYear $academicYear)
+    public function findAllMembersQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -204,8 +204,7 @@ class Academic extends \CommonBundle\Repository\User\Person
                 )
             )
             ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

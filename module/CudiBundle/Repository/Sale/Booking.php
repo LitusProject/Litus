@@ -695,8 +695,24 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
-    public function cancelAll(Person $person)
+    public function cancelAll(Person $person, $removeRegistrationArticles = false)
     {
+        $excluded = array();
+        if (!$removeRegistrationArticles) {
+            $excluded = array_merge(
+                unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('secretary.membership_article')
+                ),
+                unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.registration_articles')
+                )
+            );
+        }
+
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
@@ -711,6 +727,8 @@ class Booking extends EntityRepository
         $idsCancelled = array();
 
         foreach($bookings as $booking) {
+            if (in_array($booking->getArticle()->getId(), $excluded))
+                continue;
             $booking->setStatus('canceled', $this->getEntityManager());
             $idsCancelled[] = $booking->getId();
             $counter++;
@@ -721,6 +739,8 @@ class Booking extends EntityRepository
             ->findAllAssigned();
 
         foreach($bookings as $booking) {
+            if (in_array($booking->getArticle()->getId(), $excluded))
+                continue;
             $booking->setStatus('canceled', $this->getEntityManager());
             $idsCancelled[] = $booking->getId();
             $counter++;

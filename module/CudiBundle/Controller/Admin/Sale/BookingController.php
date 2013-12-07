@@ -433,7 +433,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $number = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->cancelAll($this->getAuthentication()->getPersonObject());
+            ->cancelAll($this->getAuthentication()->getPersonObject(), $this->getParam('type') == 'remove_registration');
 
         if (0 == $number)
             $message = 'No booking could be removed!';
