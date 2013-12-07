@@ -26,7 +26,7 @@ class Unit extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllActiveAndDisplayed()
+    public function findAllActiveAndDisplayedQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('u')
@@ -43,7 +43,7 @@ class Unit extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllActiveAndNotDisplayed()
+    public function findAllActiveAndNotDisplayedQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('u')
