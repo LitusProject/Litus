@@ -431,9 +431,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function deleteAllAction()
     {
+        $excluded = explode(',', $this->getParam('string'));
+
         $number = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->cancelAll($this->getAuthentication()->getPersonObject(), $this->getParam('type') == 'remove_registration');
+            ->cancelAll($this->getAuthentication()->getPersonObject(), $this->getParam('type') == 'remove_registration', $excluded);
 
         if (0 == $number)
             $message = 'No booking could be removed!';
