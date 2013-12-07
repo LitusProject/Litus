@@ -695,11 +695,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
-    public function cancelAll(Person $person, $removeRegistrationArticles = false)
+    public function cancelAll(Person $person, $removeRegistrationArticles = false, $excluded = array())
     {
-        $excluded = array();
         if (!$removeRegistrationArticles) {
             $excluded = array_merge(
+                $excluded,
                 unserialize(
                     $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
