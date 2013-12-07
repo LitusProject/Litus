@@ -125,7 +125,7 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByStatusAndArticleAndPeriod($status, ArticleEntity $article, Period $period)
+    public function findAllByStatusAndArticleAndPeriodQuery($status, ArticleEntity $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
@@ -326,7 +326,7 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllBooked(Period $period = null)
+    public function findAllBookedQuery(Period $period = null)
     {
         if (null == $period) {
             $period = $this->getEntityManager()
@@ -355,7 +355,7 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllAssigned(Period $period = null)
+    public function findAllAssignedQuery(Period $period = null)
     {
         if (null == $period) {
             $period = $this->getEntityManager()
