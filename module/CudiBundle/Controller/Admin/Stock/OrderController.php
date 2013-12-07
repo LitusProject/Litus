@@ -369,9 +369,15 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $document = new OrderPdfGenerator($this->getEntityManager(), $order, $this->getParam('order'), $file);
         $document->generate();
 
+        $suppliers = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Supplier')
+            ->findAll();
+
+        $filename = "order ".$order->getDateOrdered()->format('Y-m-d').".pdf";
+
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="order.pdf"',
+            'Content-Disposition' => 'attachment; filename='.$filename,
             'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
