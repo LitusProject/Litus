@@ -55,7 +55,7 @@ return array(
     'Become a Member' => 'Become a Member',
     'You haven\'t checked the option to become a member. Being a member has many advantages.' => 'You haven\'t checked the option to become a member. Being a member has many advantages.',
     'Are you sure you want to continue?' => 'Are you sure you want to continue?',
-    'You already have registered for this academic year.' => 'You already have registered for this academic year.',
+    'You have already registered for this academic year.' => 'You have already registered for this academic year.',
     'Your registration was succesfully updated!' => 'Your registration was succesfully updated!',
     'You are succesfully registered!' => 'You are succesfully registered!',
     'Terms and Conditions' => 'Terms and Conditions',
