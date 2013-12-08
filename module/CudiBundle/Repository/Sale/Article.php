@@ -43,7 +43,7 @@ class Article extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a, b')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
-            ->from('CudiBundle\Entity\Sale\Artile\Barcode', 'b')
+            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
