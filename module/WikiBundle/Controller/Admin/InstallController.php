@@ -19,6 +19,7 @@ namespace WikiBundle\Controller\Admin;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
@@ -28,8 +29,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'wiki.url',
-                    'value'       => 'https://wiki.vtk.be',
-                    'description' => 'The URL to the organization\'s wiki',
+                    'value'       => 'https://wiki.vtk.be/wiki/index.php?title=Special:Login&returnto=Main_Page',
+                    'description' => 'The URL to the organization\'s wiki\'s login page',
                 ),
             )
         );
