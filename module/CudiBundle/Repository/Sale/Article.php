@@ -41,7 +41,7 @@ class Article extends EntityRepository
         $articles = $this->_getArticleIdsBySemester($academicYear);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a, b')
+        $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('a.mainArticle', 'm')
