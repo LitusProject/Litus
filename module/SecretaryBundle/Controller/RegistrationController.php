@@ -75,6 +75,20 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     )
                 );
 
+                if ($this->_isValidCode()) {
+                    $authentication = new Authentication(
+                        new ShibbolethAdapter(
+                            $this->getEntityManager(),
+                            'CommonBundle\Entity\User\Person\Academic',
+                            'universityIdentification'
+                        ),
+                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                    );
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true
+                    );
+                }
+
                 $this->redirect()->toRoute(
                     'secretary_registration',
                     array(
