@@ -71,9 +71,23 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     new FlashMessage(
                         FlashMessage::WARNING,
                         'WARNING',
-                        'You already have registered for this academic year.'
+                        'You have already registered for this academic year.'
                     )
                 );
+
+                if ($this->_isValidCode()) {
+                    $authentication = new Authentication(
+                        new ShibbolethAdapter(
+                            $this->getEntityManager(),
+                            'CommonBundle\Entity\User\Person\Academic',
+                            'universityIdentification'
+                        ),
+                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                    );
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'secretary_registration',
