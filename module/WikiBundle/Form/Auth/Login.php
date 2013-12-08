@@ -33,4 +33,11 @@ class Login extends \CommonBundle\Form\Auth\Login
             ->setValue(true)
             ->setAttribute('disabled', 'disabled');
     }
+
+    public function setUsername($username)
+    {
+        $this->get('username')
+            ->setValue($username)
+            ->setAttribute('disabled', 'disabled');
+    }
 }

@@ -24,22 +24,33 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * AuthController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class AuthController extends \WikiBundle\Component\Controller\ActionController\WikiController
 {
     public function loginAction()
     {
+        $form = new LoginForm();
+
         if ($this->getAuthentication()->isAuthenticated()) {
-            $this->redirect()->toUrl(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('wiki.url')
+            if ($this->getAuthentication()->isExternallyAuthenticated()) {
+                $this->redirectAfterAuthentication();
+
+                return new ViewModel();
+            }
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::NOTICE,
+                    'Notice',
+                    'You have to login again to go the wiki.'
+                )
             );
 
-            return new ViewModel();
+            $form->setUsername(
+                $this->getAuthentication()->getPersonObject()->getUsername()
+            );
         }
-
-        $form = new LoginForm();
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -55,19 +66,19 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
+                    if (!$this->getAuthentication()->isExternallyAuthenticated()) {
+                        throw new \Exception('Impossible state: logged in but not externally visible');
+                    }
+
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
-                            'SUCCESS',
+                            'Success',
                             'You have been successfully logged in!'
                         )
                     );
 
-                    $this->redirect()->toUrl(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('wiki.url')
-                    );
+                    $this->redirectAfterAuthentication();
                 } else {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -121,11 +132,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
     public function shibbolethAction()
     {
         if ($this->getAuthentication()->isAuthenticated()) {
-            $this->redirect()->toUrl(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('wiki.url')
-            );
+            $this->redirectAfterAuthentication();
 
             return new ViewModel();
         }
@@ -177,12 +184,27 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             }
         }
 
-        $this->redirect()->toUrl(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('wiki.url')
-        );
+        $this->redirectAfterAuthentication();
 
         return new ViewModel();
+    }
+
+    protected function redirectAfterAuthentication()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()
+            || !$this->getAuthentication()->isExternallyAuthenticated())
+                return null;
+
+        if (null !== $this->getParam('redirect')) {
+            return $this->redirect()->toUrl(
+                urldecode($this->getParam('redirect'))
+            );
+        } else {
+            return $this->redirect()->toUrl(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('wiki.url')
+            );
+        }
     }
 }
