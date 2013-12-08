@@ -64,8 +64,7 @@ class Comment extends EntityRepository
                 )
             )
             ->setParameter('article', $article)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
