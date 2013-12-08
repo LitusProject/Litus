@@ -187,9 +187,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $universityEmail = $academic->getUniversityEmail();
 
-        if ($universityEmail) {
+        if ($universityEmail)
             $universityEmail = explode('@', $universityEmail)[0];
-        }
 
         $organization = $academic->getOrganization($academicYear);
 
