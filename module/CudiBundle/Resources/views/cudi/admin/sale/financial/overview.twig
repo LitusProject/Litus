@@ -47,5 +47,18 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('cudi_admin_sales_financial', 'export') %}
+            <div class="sidebox">
+                <div class="title">Export Global Overview</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to download a global overview of all the articles!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_sales_financial', {"action": "export"}) }}">&rarr; Export</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
