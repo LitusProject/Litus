@@ -35,7 +35,7 @@ class Academic extends \CommonBundle\Repository\User\Person
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person\Academic', 'p')
             ->where(
-                $query->expr()->like('p.username', ':username')
+                $query->expr()->like($query->expr()->lower('p.username'), ':username')
             )
             ->setParameter('username', '%' . strtolower($username) . '%')
             ->getQuery();
@@ -131,13 +131,13 @@ class Academic extends \CommonBundle\Repository\User\Person
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
-                        $query->expr()->eq('p.username', ':username'),
-                        $query->expr()->eq('p.universityIdentification', ':username')
+                        $query->expr()->eq($query->expr()->lower('p.username'), ':username'),
+                        $query->expr()->eq($query->expr()->lower('p.universityIdentification'), ':username')
                     ),
                     $query->expr()->eq('p.canLogin', 'true')
                 )
             )
-            ->setParameter('username', $username)
+            ->setParameter('username', strtolower($username))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
