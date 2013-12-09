@@ -189,23 +189,27 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
-    public function findAllMembersQuery(AcademicYear $academicYear)
+    public function findAllMembers(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('p')
+        $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\User\Status\Organization', 's')
-            ->from('CommonBundle\Entity\User\Person', 'p')
+            ->innerJoin('s.person', 'p')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('s.person', 'p'),
                     $query->expr()->neq('s.status', '\'non_member\''),
                     $query->expr()->eq('s.academicYear', ':academicYear'),
                     $query->expr()->eq('p.canLogin', 'true')
                 )
             )
             ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
 
-        return $resultSet;
+        $persons = array();
+        foreach($resultSet as $result)
+            $persons[] = $result->getPerson();
+
+        return $persons;
     }
 }
