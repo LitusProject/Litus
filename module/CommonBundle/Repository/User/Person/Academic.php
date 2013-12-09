@@ -132,7 +132,7 @@ class Academic extends \CommonBundle\Repository\User\Person
                 $query->expr()->andX(
                     $query->expr()->orX(
                         $query->expr()->eq($query->expr()->lower('p.username'), ':username'),
-                        $query->expr()->eq($query->expr()->lower('p.universityIdentification'), ':username')
+                        $query->expr()->eq('p.universityIdentification', ':username')
                     ),
                     $query->expr()->eq('p.canLogin', 'true')
                 )
