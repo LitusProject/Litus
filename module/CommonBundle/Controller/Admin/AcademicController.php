@@ -424,11 +424,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         $result = array();
         foreach($academics as $academic) {
+            $identification = $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : $academic->getUserName();
+
             $item = (object) array();
             $item->id = $academic->getId();
             $item->name = $academic->getFullName();
-            $item->universityIdentification = $academic->getUniversityIdentification();
-            $item->value = $academic->getFullName() . ' - ' . $academic->getUniversityIdentification();
+            $item->universityIdentification = $identification;
+            $item->value = $academic->getFullName() . ' - ' . $identification;
             $result[] = $item;
         }
 
