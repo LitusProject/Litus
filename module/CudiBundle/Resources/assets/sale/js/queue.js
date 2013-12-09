@@ -346,7 +346,7 @@
     function _updateQueueItem($this, data) {
         var settings = $this.data('queueSettings');
         if (settings.lightVersion) {
-            if (data.university_identification == $this.find('.filterText').val().toLowerCase()) {
+            if (data.university_identification.toLowerCase() == $this.find('.filterText').val().toLowerCase()) {
                 $this.find('.filterText').val('');
                 $this.find('.startSale').addClass('disabled').unbind('click');
                 settings.sendToSocket(
