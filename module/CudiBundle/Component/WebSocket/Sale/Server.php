@@ -277,7 +277,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->_addArticle($user, $command->id, $command->articleId);
                 break;
             case 'undoSale':
-                $this->_undoSale($command->id);
+                $this->_undoSale($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
         }
@@ -449,8 +449,15 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             $this->sendText($user, $result);
     }
 
-    private function _undoSale($id)
+    private function _undoSale(User $user, $id)
     {
         $this->_queue->undoSale($id);
+
+        $lightVersion = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.sale_light_version');
+
+        if ($lightVersion == '1')
+            $this->_startSale($user, $id);
     }
 }
