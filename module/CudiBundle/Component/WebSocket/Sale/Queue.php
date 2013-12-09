@@ -107,12 +107,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
+        $identification = $item->getPerson()->getUniversityIdentification() ? $item->getPerson()->getUniversityIdentification() : $item->getPerson()->getUserName();
+
         $result = (object) array();
         $result->id = $item->getId();
         $result->barcode = $prefix + $item->getId();
         $result->number = $item->getQueueNumber();
         $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
-        $result->university_identification = $item->getPerson()->getUniversityIdentification();
+        $result->university_identification = $identification;
         $result->status = $item->getStatus();
         $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() :*/ false;
         $result->collectPrinted = $item->getCollectPrinted();
