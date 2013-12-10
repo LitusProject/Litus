@@ -132,6 +132,7 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
+            '@common_download_file',
         ),
         'cudi_admin_sales_financial_sold' => array(
             '@common_jquery',
