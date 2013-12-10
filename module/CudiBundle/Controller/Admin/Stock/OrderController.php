@@ -373,7 +373,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename='.$filename,
+            'Content-Disposition' => "attachment; filename=$filename",
             'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
