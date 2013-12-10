@@ -18,6 +18,7 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CommonBundle\Entity\General\AcademicYear,
+    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -27,6 +28,12 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class Financial extends \CommonBundle\Component\Document\Generator\Pdf
 {
+
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear
+     */
+    private $_academicYear;
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $articles The kind of articles to export
@@ -46,6 +53,8 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
             $filePath . '/financial/articles.xsl',
             $file->getFilename()
         );
+
+        $this->_academicYear = $academicYear;
     }
 
     /**
@@ -55,6 +64,143 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
      */
     protected function generateXml(TmpFile $tmpFile)
     {
+        $configs = $this->getConfigRepository();
 
+        $now = new DateTime();
+        $organization_short_name = $configs->getConfigValue('organization_short_name');
+        $organization_name = $configs->getConfigValue('organization_name');
+        $organization_logo = $configs->getConfigValue('organization_logo');
+        $cudi_name = $configs->getConfigValue('cudi.name');
+        $cudi_mail = $configs->getConfigValue('cudi.mail');
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($configs->getConfigValue('cudi.person'));
+
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+        $period->setEntityManager($this->getEntityManager());
+
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findAllByAcademicYear($this->_academicYear);
+
+        $external = array();
+        $internal = array();
+
+        foreach($articles as $article) {
+            $virtualOrdered = $period->getNbVirtualOrdered($article);
+
+            $object = new Object(
+                'item',
+                null,
+                array(
+                    new Object(
+                        'barcode',
+                        null,
+                        (string) $article->getBarcode()
+                    ),
+                    new Object(
+                        'title',
+                        null,
+                        $article->getMainArticle()->getTitle()
+                    ),
+                    new Object(
+                        'author',
+                        null,
+                        $article->getMainArticle()->getAuthors()
+                    ),
+                    new Object(
+                        'publisher',
+                        null,
+                        $article->getMainArticle()->getPublishers()
+                    ),
+                    new Object(
+                        'ordered',
+                        null,
+                        (string) $period->getNbOrdered($article) . ($virtualOrdered > 0 ? '(+ ' . $virtualOrdered . ')' : '')
+                    ),
+                    new Object(
+                        'delivered',
+                        null,
+                        (string) $period->getNbDelivered($article)
+                    ),
+                    new Object(
+                        'sold',
+                        null,
+                        (string) $period->getNbSold($article)
+                    ),
+                    new Object(
+                        'stock',
+                        null,
+                        (string) $article->getStockValue()
+                    ),
+                )
+            );
+
+            if ($article->getMainArticle()->isInternal())
+                $internal[] = $object;
+            else
+                $external[] = $object;
+        }
+
+        $xml = new Generator($tmpFile);
+
+        $xml->append(
+            new Object(
+                'financial',
+                array(
+                    'date' => $now->format('d F Y')
+                ),
+                array(
+                    new Object(
+                        'our_union',
+                        array(
+                            'short_name' => $organization_short_name
+                        ),
+                        array(
+                            new Object(
+                                'name',
+                                null,
+                                $organization_name
+                            ),
+                            new Object(
+                                'logo',
+                                null,
+                                $organization_logo
+                            )
+                        )
+                    ),
+                    new Object(
+                        'cudi',
+                        array(
+                            'name' => $cudi_name
+                        ),
+                        array(
+                             new Object(
+                                 'mail',
+                                 null,
+                                 $cudi_mail
+                             ),
+                             new Object(
+                                 'phone',
+                                 null,
+                                 $person->getPhoneNumber()
+                             ),
+                        )
+                    ),
+                    new Object(
+                        'external_items',
+                        null,
+                        $external
+                    ),
+                    new Object(
+                        'internal_items',
+                        null,
+                        $internal
+                    ),
+                )
+            )
+        );
     }
 }
