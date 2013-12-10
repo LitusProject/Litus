@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Component\Document\Generator\Financial as FinancialGenerator,
     CudiBundle\Form\Admin\Sales\Financial\Period as PeriodForm,
     DateTime,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**

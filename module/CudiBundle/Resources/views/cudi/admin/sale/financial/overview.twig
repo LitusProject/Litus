@@ -55,10 +55,18 @@
                         <i>Please hit the link below to download a global overview of all the articles!</i>
                     </p>
                     <p>
-                        <a href="{{ url('cudi_admin_sales_financial', {"action": "export"}) }}">&rarr; Export</a>
+                        <a id="exportArticles" href="#">&rarr; Export</a>
                     </p>
                 </div>
             </div>
         {% endif %}
     </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#exportArticles').downloadFile('{{ url('cudi_admin_sales_financial', {"action": "export"}) }}');
+        });
+    </script>
 {% endblock %}
