@@ -202,9 +202,12 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         $document = new FinancialGenerator($this->getEntityManager(), $this->getAcademicYear(), $file);
         $document->generate();
 
+        $now = new DateTime();
+        $filename = 'financial_' . $now->format('Ymd') . '.pdf';
+
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="financial.pdf"',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
             'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
