@@ -369,7 +369,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $document = new OrderPdfGenerator($this->getEntityManager(), $order, $this->getParam('order'), $file);
         $document->generate();
 
-        $filename = 'order' . $order->getDateOrdered()->format('Ymd') . '.pdf';
+        $filename = 'order_' . $order->getDateOrdered()->format('Y_m_d') . '.pdf';
 
         $headers = new Headers();
         $headers->addHeaders(array(
