@@ -199,7 +199,7 @@ class Item extends EntityRepository
     public function findAllByOrderOnAlphaQuery(OrderEntity $order)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('i, m')
+        $resultSet = $query->select('i, a, m')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -216,7 +216,7 @@ class Item extends EntityRepository
     public function findAllByOrderOnBarcodeQuery(OrderEntity $order)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('i, b')
+        $resultSet = $query->select('i, a, b')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
             ->innerJoin('a.barcodes', 'b')

@@ -500,7 +500,7 @@ VTK Cudi
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'cudi_admin_sales_financial' => array(
-                        'overview', 'period'
+                        'export', 'overview', 'period'
                     ),
                     'cudi_admin_sales_financial_delivered' => array(
                         'article', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'supplierSearch', 'supplier', 'suppliers'
