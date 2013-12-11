@@ -139,10 +139,12 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
             );
 
             if ($article->getMainArticle()->isInternal())
-                $internal[] = $object;
+                $internal[$article->getBarcode()] = $object;
             else
                 $external[] = $object;
         }
+
+        ksort($internal);
 
         $xml = new Generator($tmpFile);
 
