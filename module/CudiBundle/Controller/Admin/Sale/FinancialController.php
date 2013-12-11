@@ -203,7 +203,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         $document->generate();
 
         $now = new DateTime();
-        $filename = 'financial_' . $now->format('Ymd') . '.pdf';
+        $filename = 'financial_' . $now->format('Y_m_d') . '.pdf';
 
         $headers = new Headers();
         $headers->addHeaders(array(

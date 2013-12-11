@@ -26,7 +26,10 @@ class QueueItem extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return $resultSet;
+        if ($resultSet)
+            return $resultSet + 1;
+
+        return 1;
     }
 
     public function findOneByPersonNotSold(SessionEntity $session, Person $person)
