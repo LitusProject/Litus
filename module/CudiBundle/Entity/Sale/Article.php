@@ -567,6 +567,18 @@ class Article
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getNumberReturned(AcademicYear $academicYear, Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
+            ->findNumberByArticleAndAcademicYear($this, $academicYear, $organization);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return integer
      */
     public function getNumberDelivered(AcademicYear $academicYear)

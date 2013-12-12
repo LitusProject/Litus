@@ -1,0 +1,47 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/returned/partials/years.twig' %}
+
+    {% include 'cudi/admin/sale/financial/returned/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th width="100px">Open</th>
+                <th width="50px">End</th>
+                <th>Person</th>
+                <th width="100px">Returned Items</th>
+                <th width="110px">Revenue (Theor.)</th>
+                <th width="110px">Revenue</th>
+                <th width="110px" class="wider">Delta</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for item in paginator %}
+                <tr class="item">
+                    <td>{{ item.getOpenDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ item.getCloseDate().format('H:i') }}</td>
+                    <td>{{ item.getManager().getFullName() }}</td>
+                    <td>{{ item.getNumberReturnItems() }}</td>
+                    {% set theoretical = item.getTheoreticalRevenue() %}
+                    {% set actual = item.getActualRevenue() %}
+                    <td>&euro; {{ (theoretical/100)|number_format(2) }}</td>
+                    <td>&euro; {{ (actual/100)|number_format(2) }}</td>
+                    <td class="wider">&euro; {{ ((actual-theoretical)/100)|number_format(2) }}</td>
+                    <td class="actions">
+                        {% if hasAccess('cudi_admin_sales_financial_returned', 'session') %}
+                            <a href="{{ url('cudi_admin_sales_financial_returned', {'action': 'session', 'id': item.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}
