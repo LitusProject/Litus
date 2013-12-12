@@ -139,6 +139,11 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'cudi_admin_sales_financial_returned' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
         'cudi_admin_sales_financial_ordered' => array(
             '@common_jquery',
             '@admin_css',

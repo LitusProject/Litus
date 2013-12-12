@@ -511,6 +511,9 @@ VTK Cudi
                     'cudi_admin_sales_financial_sold' => array(
                         'article', 'articleSearch', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'sessionSearch', 'session', 'sessions', 'supplierSearch', 'supplier', 'suppliers'
                     ),
+                    'cudi_admin_sales_financial_returned' => array(
+                        'article', 'articleSearch', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'sessionSearch', 'session', 'sessions'
+                    ),
                     'cudi_admin_sales_session' => array(
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
                     ),
