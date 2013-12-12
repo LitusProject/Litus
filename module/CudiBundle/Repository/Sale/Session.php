@@ -82,10 +82,34 @@ class Session extends EntityRepository
                 ->setParameter('session', $session->getId())
                 ->getQuery()
                 ->getSingleScalarResult();
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $resultSet - $query->select('SUM(s.price)')
+                ->from('CudiBundle\Entity\Sale\ReturnItem', 's')
+                ->innerJoin('s.queueItem', 'q')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->in('q.person', $ids),
+                        $query->expr()->eq('s.session', ':session')
+                    )
+                )
+                ->setParameter('session', $session->getId())
+                ->getQuery()
+                ->getSingleScalarResult();
         } else {
             $query = $this->_em->createQueryBuilder();
             $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
+                ->where(
+                    $query->expr()->eq('s.session', ':session')
+                )
+                ->setParameter('session', $session->getId())
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $resultSet - $query->select('SUM(s.price)')
+                ->from('CudiBundle\Entity\Sale\ReturnItem', 's')
                 ->where(
                     $query->expr()->eq('s.session', ':session')
                 )
@@ -130,10 +154,42 @@ class Session extends EntityRepository
                 ->setParameter('end', $endDate)
                 ->getQuery()
                 ->getSingleScalarResult();
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $resultSet - $query->select('SUM(s.price)')
+                ->from('CudiBundle\Entity\Sale\ReturnItem', 's')
+                ->innerJoin('s.session', 'e')
+                ->innerJoin('s.queueItem', 'q')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->in('q.person', $ids),
+                        $query->expr()->gt('e.openDate', ':start'),
+                        $query->expr()->lt('e.openDate', ':end')
+                    )
+                )
+                ->setParameter('start', $startDate)
+                ->setParameter('end', $endDate)
+                ->getQuery()
+                ->getSingleScalarResult();
         } else {
             $query = $this->_em->createQueryBuilder();
             $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
+                ->innerJoin('s.session', 'e')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->gt('e.openDate', ':start'),
+                        $query->expr()->lt('e.openDate', ':end')
+                    )
+                )
+                ->setParameter('start', $startDate)
+                ->setParameter('end', $endDate)
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $resultSet - $query->select('SUM(s.price)')
+                ->from('CudiBundle\Entity\Sale\ReturnItem', 's')
                 ->innerJoin('s.session', 'e')
                 ->where(
                     $query->expr()->andX(

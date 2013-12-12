@@ -264,6 +264,16 @@ class Session
     }
 
     /**
+     * @return integer
+     */
+    public function getNumberReturnItems()
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
+            ->findNumberBySession($this);
+    }
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \CommonBundle\Entity\User\Person $person
      *

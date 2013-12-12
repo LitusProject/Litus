@@ -9,6 +9,9 @@
             {% if hasAccess('cudi_admin_sales_financial_ordered', 'individual') %}
                 <li><a {% if 'cudi_admin_sales_financial_ordered' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_ordered', {"action": "individual", 'academicyear': activeAcademicYear.getCode()}) }}">Ordered Items</a></li>
             {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_returned', 'individual') %}
+                <li><a {% if 'cudi_admin_sales_financial_returned' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_returned', {"action": "individual", 'academicyear': activeAcademicYear.getCode()}) }}">Returned Items</a></li>
+            {% endif %}
             {% if hasAccess('cudi_admin_sales_financial_sold', 'individual') %}
                 <li><a {% if 'cudi_admin_sales_financial_sold' == getParam('controller') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_financial_sold', {"action": "individual", 'academicyear': activeAcademicYear.getCode()}) }}">Sold Items</a></li>
             {% endif %}
