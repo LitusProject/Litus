@@ -117,8 +117,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'cudi_admin_stock_retour',
                     array(
-                        'action' => 'supplier',
-                        'id'     => $article->getSupplier()->getId(),
+                        'action' => 'add',
                     )
                 );
 
