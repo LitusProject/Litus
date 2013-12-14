@@ -51,7 +51,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return new ViewModel();
 
         $form = new AddForm($this->getEntityManager());
@@ -158,7 +158,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addFromSubjectAction()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return new ViewModel();
 
         if (!($subject = $this->_getSubject()))
@@ -486,7 +486,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getSubject()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return;
 
         if (null === $this->getParam('id')) {

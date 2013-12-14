@@ -49,13 +49,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * Returns the current academic year.
+     * Get the current academic year.
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function getAcademicYear()
+    protected function getCurrentAcademicYear($organization = true)
     {
-        return AcademicYear::getOrganizationYear($this->getEntityManager());
+        return parent::getCurrentAcademicYear(true);
     }
 
     /**
