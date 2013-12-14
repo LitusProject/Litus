@@ -576,37 +576,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         if (null !== $this->_academicYear)
             return $this->_academicYear;
 
-        $start = new DateTime();
-        $start->add(
-            new DateInterval(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('secretary.registration_open_before_academic_year')
-            )
-        );
-
-        $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear($start);
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYear($organizationStart, $startAcademicYear);
-            $this->getEntityManager()->persist($academicYear);
-            $this->getEntityManager()->flush();
-        }
-
-        $this->_academicYear = $academicYear;
+        $this->_academicYear = AcademicYear::getUniversityYear($this->getEntityManager());
 
         return $academicYear;
     }

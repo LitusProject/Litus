@@ -206,6 +206,12 @@ class AcademicYear
     public static function getUniversityYear(EntityManager $entityManager, DateTime $date = null)
     {
         $date = $date ? $date : new DateTime();
+        $date->add(
+            new DateInterval(
+                $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.registration_open_before_academic_year')
+            )
+        );
         $startAcademicYear = AcademicYear::getStartOfAcademicYear($date);
         $startAcademicYear->setTime(0, 0);
 
