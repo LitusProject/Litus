@@ -14,8 +14,10 @@
 
 namespace CommonBundle\Component\Util;
 
-use DateTime,
-    DateInterval;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    DateTime,
+    DateInterval,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Utility class containing methods used to retrieve the academic year
@@ -29,6 +31,7 @@ use DateTime,
  *     $clone = new DateTime($date->format(DateTime::ISO8601))
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class AcademicYear
 {
@@ -193,5 +196,82 @@ class AcademicYear
             return $date->format('Y');
         else
             return $date->modify('+1 year')->format('Y');
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \DateTime $date
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public static function getUniversityYear(EntityManager $entityManager, DateTime $date = null)
+    {
+        $date = $date ? $date : new DateTime();
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        if (null === $academicYear) {
+            $organizationStart = str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
+            );
+            $organizationStart = new DateTime($organizationStart);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
+            $entityManager->persist($academicYear);
+            $entityManager->flush();
+        }
+
+        return $academicYear;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \DateTime $date
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public static function getOrganizationYear(EntityManager $entityManager, DateTime $date = null)
+    {
+        $date = $date ? $date : new DateTime();
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startAcademicYear->setTime(0, 0);
+
+        $start = new DateTime(
+            str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.prof_start_academic_year')
+            )
+        );
+        $start->add(new DateInterval('P1Y'));
+
+        if ($date > $start) {
+            $startAcademicYear->add(new DateInterval('P1Y2M'));
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
+        }
+
+        $academicYear = $entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        if (null === $academicYear) {
+            $organizationStart = str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
+            );
+            $organizationStart = new DateTime($organizationStart);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
+            $entityManager->persist($academicYear);
+            $entityManager->flush();
+        }
+
+        return $academicYear;
     }
 }
