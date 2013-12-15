@@ -251,7 +251,7 @@ class AcademicYear
                 '{{ year }}',
                 $startAcademicYear->format('Y'),
                 $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.prof_start_academic_year')
+                    ->getConfigValue('start_organization_year')
             )
         );
         $start->add(new DateInterval('P1Y'));
