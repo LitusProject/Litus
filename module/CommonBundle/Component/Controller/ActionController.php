@@ -230,13 +230,28 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * Redirects after a successful authentication.
+     *
+     * If this returns null, no redirection will take place.
+     *
+     * @return void
+     */
+    protected function redirectAfterAuthentication()
+    {
+        return $this->redirect()->toRoute(
+            $this->getAuthenticationHandler()['redirect_route']
+        );
+    }
+
+    /**
      * Initializes the authentication.
      *
      * @return void
      */
     protected function initAuthentication()
     {
-        if (null !== $this->getAuthenticationHandler()) {
+        $authenticationHandler = $this->getAuthenticationHandler();
+        if (null !== $authenticationHandler) {
             if (
                 $this->hasAccess()->resourceAction(
                     $this->getParam('controller'), $this->getParam('action')
@@ -244,22 +259,20 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ) {
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if (
-                        $this->getAuthenticationHandler()['controller'] == $this->getParam('controller')
-                            && $this->getAuthenticationHandler()['action'] == $this->getParam('action')
+                        $authenticationHandler['controller'] == $this->getParam('controller')
+                            && $authenticationHandler['action'] == $this->getParam('action')
                     ) {
-                        return $this->redirect()->toRoute(
-                            $this->getAuthenticationHandler()['redirect_route']
-                        );
+                        return $this->redirectAfterAuthentication();
                     }
                 }
             } else {
                 if (!$this->getAuthentication()->isAuthenticated()) {
                     if (
-                        $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
-                            && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
+                        $authenticationHandler['controller'] != $this->getParam('controller')
+                            && $authenticationHandler['action'] != $this->getParam('action')
                     ) {
                         return $this->redirect()->toRoute(
-                            $this->getAuthenticationHandler()['auth_route']
+                            $authenticationHandler['auth_route']
                         );
                     }
                 } else {

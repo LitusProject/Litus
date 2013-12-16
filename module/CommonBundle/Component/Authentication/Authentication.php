@@ -16,13 +16,14 @@ namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action\Doctrine,
     Zend\Authentication\Adapter\AdapterInterface,
-    Zend\Authentication\AuthenticationService;
+    CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService;
 
 /**
  * Authentication
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class Authentication
 {
@@ -32,7 +33,7 @@ class Authentication
     private $_adapter = null;
 
     /**
-     * @var \Zend\Authentication\AuthenticationService The authentication service
+     * @var \CommonBundle\Component\Authentication\AbstractAuthenticationService The authentication service
      */
     private $_service = null;
 
@@ -45,7 +46,7 @@ class Authentication
      * Construct a new Authentication object.
      *
      * @param \Zend\Authentication\Adapter $adapter The authentication adapter that should be used
-     * @param \Zend\Authentication\AuthenticationService $service The service that should be used
+     * @param \CommonBundle\Component\Authentication\AbstractAuthenticationService $service The service that should be used
      */
     public function __construct(AdapterInterface $adapter, AuthenticationService $service)
     {
@@ -105,6 +106,19 @@ class Authentication
             return false;
 
         return $this->_result->isValid();
+    }
+    
+    /**
+     * Checks whether external sites can access this authentication.
+     *
+     * @return bool
+     */
+    public function isExternallyAuthenticated()
+    {
+        if (!$this->isAuthenticated())
+            return false;
+
+        return $this->_service->isExternallyVisible();
     }
 
     /**
