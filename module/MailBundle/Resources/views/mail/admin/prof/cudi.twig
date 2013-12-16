@@ -12,15 +12,6 @@
 	    	    The following mail will be sent to all the professors who have a course in the <b>{% if 1 == semester %} first {% else %} second {% endif %}</b> semester.
 	    	</div>
 	    </div>
-	    <p>
-	        <b>Subject:</b>
-	        <pre style="border: 1px solid #ccc;margin: 5px;padding: 5px;background: #ddd;word-break: normal;">{{ subject }}</pre>
-	    </p>
-	    <br />
-	    <p>
-	        <b>Body:</b>
-	        <pre style="border: 1px solid #ccc;margin: 5px;padding: 5px;background: #ddd;word-break: normal;">{{ mail }}</pre>
-	    </p>
 	    {% if hasAccess('mail_admin_prof', 'send') %}
 	        {% import 'admin/partials/form.twig' as forms %}
 	        {{ forms.renderForm(form) }}
