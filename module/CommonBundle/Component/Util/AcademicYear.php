@@ -209,7 +209,7 @@ class AcademicYear
         $date->add(
             new DateInterval(
                 $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('secretary.registration_open_before_academic_year')
+                    ->getConfigValue('start_academic_year_offset')
             )
         );
         $startAcademicYear = AcademicYear::getStartOfAcademicYear($date);
