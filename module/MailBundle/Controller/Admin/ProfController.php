@@ -20,7 +20,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateInterval,
     DateTime,
     MailBundle\Form\Admin\Cudi\Mail as MailForm,
+    Markdown_Parser,
     Zend\Mail\Message,
+    Zend\Mime\Part,
+    Zend\Mime\Mime,
+    Zend\Mime\Message as MimeMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -108,28 +112,39 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
                     $body = str_replace('{{ subjects }}', $text, $formData['message']);
 
-                    $message = new Message();
-                    $message->setBody($body)
+                    $parser = new Markdown_Parser();
+                    $part = new Part($parser->transform($body));
+
+                    $part->type = Mime::TYPE_TEXT;
+                    if ($formData['html'])
+                        $part->type = Mime::TYPE_HTML;
+
+                    $part->charset = 'utf-8';
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    $mail = new Message();
+                    $mail->setBody($message)
                         ->setFrom($mailAddress, $mailName)
                         ->setSubject($formData['subject']);
 
-                    $message->addBcc($mailAddress);
+                    $mail->addBcc($mailAddress);
 
                     if ($formData['test_it']) {
-                        $message->addTo(
+                        $mail->addTo(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('system_administrator_mail'),
                             'System Administrator'
                         );
                     } else {
-                        $message->addTo(
+                        $mail->addTo(
                             $status->getPerson()->getEmail(), $status->getPerson()->getFullName()
                         );
                     }
 
                     if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($message);
+                        $this->getMailTransport()->send($mail);
 
                     if ($formData['test_it'])
                         break;

@@ -44,7 +44,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Textarea('message');
         $field->setLabel('Message')
-            ->setAttribute('style', 'width: 500px; height: 200px;')
             ->setValue($message)
             ->setRequired();
         $this->add($field);
