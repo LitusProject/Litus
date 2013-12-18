@@ -18,7 +18,6 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CudiBundle\Entity\Sale\Article,
     DateInterval,
     DateTime,
@@ -265,44 +264,6 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     private function _getCurrentAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $now = new DateTime();
-        $start = new DateTime(
-            str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.prof_start_academic_year')
-            )
-        );
-        $start->add(new DateInterval('P1Y'));
-
-        if ($now > $start) {
-            $startAcademicYear->add(new DateInterval('P1Y2M'));
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
-        }
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->getEntityManager()->persist($academicYear);
-            $this->getEntityManager()->flush();
-        }
-
-        return $academicYear;
+        return AcademicYear::getOrganizationYear($this->getEntityManager());
     }
 }

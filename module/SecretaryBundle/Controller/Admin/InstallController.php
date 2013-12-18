@@ -34,11 +34,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'Flag whether the registration module is enabled or not',
                 ),
                 array(
-                    'key'         => 'secretary.registration_open_before_academic_year',
-                    'value'       => 'P1W',
-                    'description' => 'The date interval the registrations for the new academic year will open before the start of it',
-                ),
-                array(
                     'key'         => 'secretary.mail',
                     'value'       => 'secretaris@vtk.be',
                     'description' => 'The mail address the secretary mails will be send from',

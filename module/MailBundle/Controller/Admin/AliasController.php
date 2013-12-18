@@ -19,7 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Form\Admin\Alias\Add as AddForm,
     Zend\View\Model\ViewModel;
 
-class AliasController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class AliasController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {

@@ -336,30 +336,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-
-        $start = new DateTime(
-            str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            )
-        );
-
-        $next = clone $start;
-        $next->add(new DateInterval('P1Y'));
-        if ($next <= new DateTime())
-            $start = $next;
-
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($start);
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->_entityManager);
     }
 
     private function _getOfficialResults()
