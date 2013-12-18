@@ -362,10 +362,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getCurrentAcademicYear($organization = false)
     {
-        if (!$organization)
-            return AcademicYear::getUniversityYear($this->getEntityManager());
-        else
+        if ($organization)
             return AcademicYear::getOrganizationYear($this->getEntityManager());
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 
     /**
