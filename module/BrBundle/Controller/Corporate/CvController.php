@@ -53,11 +53,22 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $academicYear = $this->getAcademicYear();
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            return new ViewModel(
-                array(
-                    'no_access' => true,
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to the CVs of this year.'
                 )
             );
+
+            $this->redirect()->toRoute(
+                'br_corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
         }
 
         $result = Util::getGrouped($this->getEntityManager(), $academicYear);
