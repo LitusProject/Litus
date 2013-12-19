@@ -22,7 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class PersonController extends \CudiBundle\Component\Controller\ProfController
+class PersonController extends \TicketBundle\Component\Controller\SaleController
 {
     public function typeaheadAction()
     {

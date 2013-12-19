@@ -15,9 +15,7 @@
 namespace BrBundle\Component\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
-    DateTime;
+    CommonBundle\Component\Util\AcademicYear;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -31,41 +29,10 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\A
      */
     protected function getAcademicYear()
     {
-        if (null === $this->getParam('academicyear')) {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-
-            $next = clone $start;
-            $next->add(new DateInterval('P1Y'));
-            if ($next <= new DateTime())
-                $start = $next;
-        } else {
-            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-        }
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($start);
+        $date = null;
+        if (null !== $this->getParam('academicyear'))
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(

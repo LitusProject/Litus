@@ -27,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @autor Kristof Mariën <kristof.marien@litus.cc>
  */
-class GroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class GroupController extends \MailBundle\Component\Controller\AdminController
 {
     public function groupsAction()
     {

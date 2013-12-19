@@ -146,6 +146,11 @@ VTK'
                     'description' => 'The start date of the organization year',
                 ),
                 array(
+                    'key'         => 'start_academic_year_offset',
+                    'value'       => 'P1W',
+                    'description' => 'The date interval the academic year will start before the official start',
+                ),
+                array(
                     'key'         => 'shibboleth_url',
                     'value'       => 'https://arianna.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%3A8443%2Fshibboleth%2F',
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
