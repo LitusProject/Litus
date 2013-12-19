@@ -67,9 +67,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_book_open');
 
-        if (!$open) {
+        if (!$open)
             $messages = array('The CV Book is currently not accepting entries.');
-        }
 
         if (!empty($messages)) {
             return new ViewModel(

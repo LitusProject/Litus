@@ -252,11 +252,6 @@ VTK Cudi
                     'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
-                    'key'         => 'cudi.prof_start_academic_year',
-                    'value'       => '{{ year }}-7-15 0:0:0',
-                    'description' => 'The start date of the academic year for a prof',
-                ),
-                array(
                     'key'         => 'cudi.purchase_prices',
                     'value'       => serialize(
                         array(

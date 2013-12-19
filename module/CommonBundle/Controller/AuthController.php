@@ -137,6 +137,24 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     if ($authentication->isAuthenticated()) {
+                        $registrationEnabled = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('secretary.registration_enabled');
+
+                        if ($registrationEnabled) {
+                            $academic = $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                                ->findOneByUniversityIdentification($this->getParam('identification'));
+
+                            if (null !== $academic && null === $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                                $this->redirect()->toRoute(
+                                    'secretary_registration'
+                                );
+
+                                return new ViewModel();
+                            }
+                        }
+
                         if (null !== $code->getRedirect()) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
