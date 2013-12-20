@@ -27,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @autor Niels Avonds <niels.avonds@litus.cc>>
  */
-class BakskeController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class BakskeController extends \MailBundle\Component\Controller\AdminController
 {
     public function sendAction()
     {

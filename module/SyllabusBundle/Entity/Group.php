@@ -64,7 +64,7 @@ class Group
     /**
      * @var string Comma separated string of excluded members
      *
-     * @ORM\Column(type="text", name="excluded_members")
+     * @ORM\Column(type="text", name="excluded_members", nullable=true)
      */
     private $excludedMembers;
 
