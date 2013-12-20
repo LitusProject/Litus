@@ -793,7 +793,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $fieldEntry->setValue($value);
                     } else {
                         $fieldEntry = new FieldEntry($entry, $field, $value);
-                        $formEntry->addFieldEntry($fieldEntry);
+                        $entry->addFieldEntry($fieldEntry);
                         $this->getEntityManager()->persist($fieldEntry);
                     }
                 }
