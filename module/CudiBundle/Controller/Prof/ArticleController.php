@@ -454,7 +454,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
 
-            return new ViewModel();
+            return;
         }
 
         $article = $this->getEntityManager()
@@ -478,7 +478,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
 
-            return new ViewModel();
+            return;
         }
 
         return $article;
