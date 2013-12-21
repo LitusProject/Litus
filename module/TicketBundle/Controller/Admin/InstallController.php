@@ -30,6 +30,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => 'P2D',
                     'description' => 'The date interval after which a person cannot remove a ticket reservation',
                 ),
+                array(
+                    'key'         => 'ticket.pdf_generator_path',
+                    'value'       => 'data/ticket/pdf_generator',
+                    'description' => 'The path to the PDF generator files',
+                ),
             )
         );
     }
@@ -43,7 +48,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage', 'old'
                     ),
                     'ticket_admin_ticket' => array(
-                        'export', 'manage'
+                        'export', 'manage', 'print'
                     ),
                     'ticket_sale_index' => array(
                         'sale', 'validate'

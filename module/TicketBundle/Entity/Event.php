@@ -464,4 +464,50 @@ class Event
 
         return true;
     }
+
+    /**
+     * @param \TicketBundle\Entity\Option $option
+     * @param boolean $member
+     * @return integer
+     */
+    public function getNumberSoldByOption(Option $option = null, $member)
+    {
+        $number = 0;
+        foreach($this->tickets as $ticket) {
+            if ($ticket->getStatusCode() !== 'sold')
+                continue;
+
+            if (null !== $option) {
+                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)))
+                    $number++;
+            } else {
+                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))
+                    $number++;
+            }
+        }
+        return $number;
+    }
+
+    /**
+     * @param \TicketBundle\Entity\Option $option
+     * @param boolean $member
+     * @return integer
+     */
+    public function getNumberBookedByOption(Option $option = null, $member)
+    {
+        $number = 0;
+        foreach($this->tickets as $ticket) {
+            if ($ticket->getStatusCode() !== 'booked')
+                continue;
+
+            if (null !== $option) {
+                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)))
+                    $number++;
+            } else {
+                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))
+                    $number++;
+            }
+        }
+        return $number;
+    }
 }
