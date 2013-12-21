@@ -78,7 +78,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $manager = ('' == $formData['manager_id'])
-                    ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
+                    ? $repository->findOneByUsername($formData['manager'])
+                    : $repository->findOneById($formData['manager_id']);
 
                 $editRoles = array();
                 if (isset($formData['edit_roles'])) {
