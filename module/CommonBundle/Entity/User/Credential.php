@@ -25,7 +25,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Credential
 {
     const DEFAULT_ALGORITHM = 'sha512';
-
     const DEFAULT_NB_ITERATIONS = 1000;
 
     /**
@@ -84,7 +83,7 @@ class Credential
 
         $this->hash = $this->_hash($credential);
     }
-    
+
     /**
      * Hashes a credential.
      *
@@ -96,7 +95,7 @@ class Credential
         $hash = hash_hmac($this->algorithm, $credential, $this->salt);
         for ($i = 0; $i < $this->iterations; $i++)
             $hash = hash_hmac($this->algorithm, $hash, $this->salt);
-        
+
         return $hash;
     }
 
@@ -110,7 +109,7 @@ class Credential
     {
         return $this->_hash($credential) == $this->hash;
     }
-    
+
     /**
      * Checks whether the credential should be updated.
      *
@@ -120,7 +119,7 @@ class Credential
     {
         return ($this->algorithm !== self::DEFAULT_ALGORITHM) || ($this->iterations !== self::DEFAULT_NB_ITERATIONS);
     }
-    
+
     /**
      * Updates the credential if needed.
      * If the given credential does not match, nothing happens.
@@ -131,7 +130,7 @@ class Credential
     {
         if (!$this->shouldUpdate() || !$this->validateCredential($credential))
             return;
-        
+
         $this->algorithm = self::DEFAULT_ALGORITHM;
         $this->iterations = self::DEFAULT_NB_ITERATIONS;
         $this->hash = $this->_hash($credential);
