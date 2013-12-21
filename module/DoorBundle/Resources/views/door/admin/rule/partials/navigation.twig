@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="rule">Rules</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('door_admin_rule', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("door_admin_rule", {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('door_admin_rules', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("door_admin_rule", {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
