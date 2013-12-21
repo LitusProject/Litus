@@ -350,7 +350,11 @@ class Article extends EntityRepository
         $resultSet = $query->select('a.id')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
-                $query->expr()->eq('a.type', '\'common\'')
+                $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false'),
+                    $query->expr()->eq('a.type', '\'common\'')
+                )
             )
             ->getQuery()
             ->getResult();
