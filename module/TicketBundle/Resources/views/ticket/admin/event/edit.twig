@@ -37,6 +37,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('ticket_admin_ticket', 'print') %}
+            <div class="sidebox">
+                <div class="title">Print Ticket List</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to print a list of the tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_ticket', {'action': 'print', 'id': event.getId()}) }}">&rarr; Print List</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
         {% if hasAccess('ticket_sale_index', 'sale') %}
             <div class="sidebox">
                 <div class="title">Sale Tickets</div>

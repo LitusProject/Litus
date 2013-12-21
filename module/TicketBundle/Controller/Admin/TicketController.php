@@ -15,7 +15,10 @@
 namespace TicketBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    DateTime,
+    TicketBundle\Component\Document\Generator\Event as EventGenerator,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -81,6 +84,32 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="tickets.csv"',
             'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function printAction()
+    {
+        if (!($event = $this->_getEvent()))
+            return new ViewModel();
+
+        $file = new TmpFile();
+        $document = new EventGenerator($this->getEntityManager(), $event, $file);
+        $document->generate();
+
+        $now = new DateTime();
+        $filename = 'tickets_' . $now->format('Y_m_d') . '.pdf';
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
 

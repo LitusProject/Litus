@@ -13,6 +13,24 @@
             <p>Bookings Close Date: <b>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}</b></p>
         {% endif %}
         <p>Number Sold: <b>{{ event.getNumberSold() }}</b></p>
+        <p>Number Booked: <b>{{ event.getNumberBooked() }}</b></p>
+        {% if event.getNumberOfTickets() > 0 %}
+            <p>Number Free: <b>{{ event.getNumberFree() }}</b></b>
+        {% endif %}
+        <br />
+        {% if event.getOptions()|length > 0 %}
+            {% for option in event.getOptions() %}
+                <p>{{ option.getName() }}: <b>{{ event.getNumberSoldByOption(option, true) }} / {{ event.getNumberBookedByOption(option, true) }}</b></p>
+                {% if not event.isOnlyMembers() %}
+                    <p>{{ option.getName() }} (Not Member): <b>{{ event.getNumberSoldByOption(option, false) }} / {{ event.getNumberBookedByOption(option, false) }}</b></p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Member: <b>{{ event.getNumberSoldByOption(null, true) }} / {{ event.getNumberBookedByOption(null, true) }}</b></p>
+            {% if not event.isOnlyMembers() %}
+                <p>Not Member: <b>{{ event.getNumberSoldByOption(null, false) }} / {{ event.getNumberBookedByOption(null, false) }}</b></p>
+            {% endif %}
+        {% endif %}
         <br />
 
         <table class="full_width manage">
