@@ -152,7 +152,12 @@ VTK'
                 ),
                 array(
                     'key'         => 'shibboleth_url',
-                    'value'       => 'https://arianna.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%3A8443%2Fshibboleth%2F',
+                    'value'       => serialize(
+                        array(
+                            'faye' => 'https://faye.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Ffaye.vtk.be%3A8443%2Fshibboleth%2F',
+                            'liv'  => 'https://liv.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Fliv.vtk.be%3A8443%2Fshibboleth%2F',
+                        )
+                    ),
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
                 ),
                 array(
@@ -174,13 +179,13 @@ VTK'
                     'key'         => 'shibboleth_code_handler_url',
                     'value'       => serialize(
                         array(
-                            'admin'     => 'https://dev.vtk.be/admin/auth/shibboleth/',
-                            'prof'      => 'https://dev.vtk.be/cudi/prof/auth/shibboleth/',
-                            'site'      => 'https://dev.vtk.be/auth/shibboleth/',
-                            'register'  => 'https://dev.vtk.be/secretary/registration/',
-                            'form'      => 'https://dev.vtk.be/form/manage/auth/shibboleth/',
-                            'logistics' => 'https://dev.vtk.be/logistics/auth/shibboleth/',
-                            'wiki'      => 'https://dev.vtk.be/wiki/auth/shibboleth/',
+                            'admin'     => 'https://vtk.be/admin/auth/shibboleth/',
+                            'prof'      => 'https://vtk.be/cudi/prof/auth/shibboleth/',
+                            'site'      => 'https://vtk.be/auth/shibboleth/',
+                            'register'  => 'https://vtk.be/secretary/registration/',
+                            'form'      => 'https://vtk.be/form/manage/auth/shibboleth/',
+                            'logistics' => 'https://vtk.be/logistics/auth/shibboleth/',
+                            'wiki'      => 'https://vtk.be/wiki/auth/shibboleth/',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
