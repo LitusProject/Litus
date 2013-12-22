@@ -161,12 +161,15 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
 
+        $organizationStatus = $this->getAuthentication()->getPersonObject()->getOrganizationStatus($this->getCurrentAcademicYear());
+
         return new ViewModel(
             array(
                 'event' => $event,
                 'tickets' => $tickets,
                 'form' => $form,
                 'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager(), $this->getAuthentication()->getPersonObject()),
+                'isPraesidium' => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
             )
         );
     }

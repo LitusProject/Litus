@@ -45,6 +45,13 @@ class Event
     private $activity;
 
     /**
+     * @var boolean Flag whether the tickets are bookable for praesidium
+     *
+     * @ORM\Column(name="bookable_praesidium", type="boolean")
+     */
+    private $bookablePraesidium;
+
+    /**
      * @var boolean Flag whether the tickets are bookable
      *
      * @ORM\Column(type="boolean")
@@ -130,6 +137,7 @@ class Event
 
     /**
      * @param \CalendarBundle\Entity\Node\Event $activity
+     * @param boolean $bookablePraesidium
      * @param boolean $bookable
      * @param \DateTime $bookingsCloseDate
      * @param boolean $active
@@ -141,9 +149,10 @@ class Event
      * @param integer $priceMembers
      * @param integer $priceNonMembers
      */
-    public function __construct(CalendarEvent $activity, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $allowRemove, $onlyMembers, $priceMembers, $priceNonMembers)
+    public function __construct(CalendarEvent $activity, $bookablePraesidium, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $allowRemove, $onlyMembers, $priceMembers, $priceNonMembers)
     {
         $this->activity = $activity;
+        $this->bookablePraesidium = $bookablePraesidium;
         $this->bookable = $bookable;
         $this->bookingsCloseDate = $bookingsCloseDate;
         $this->active = $active;
@@ -186,6 +195,32 @@ class Event
     /**
      * @return boolean
      */
+    public function isBookablePraesidium()
+    {
+        return $this->bookablePraesidium;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isStillBookablePraesidium()
+    {
+        return $this->bookablePraesidium && (new DateTime() < $this->getBookingsCloseDate() || $this->getBookingsCloseDate() === null);
+    }
+
+    /**
+     * @param boolean $bookablePraesidium
+     * @return \TicketBunlde\Entity\Event
+     */
+    public function setBookablePraesidium($bookablePraesidium)
+    {
+        $this->bookablePraesidium = $bookablePraesidium;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
     public function isBookable()
     {
         return $this->bookable;
@@ -196,7 +231,7 @@ class Event
      */
     public function isStillBookable()
     {
-        return $this->bookable && new DateTime() < $this->getBookingsCloseDate();
+        return $this->bookable && (new DateTime() < $this->getBookingsCloseDate() || $this->getBookingsCloseDate() === null);
     }
 
     /**
