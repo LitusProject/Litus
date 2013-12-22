@@ -79,6 +79,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $this->getEntityManager()
                         ->getRepository('CalendarBundle\Entity\Node\Event')
                         ->findOneById($formData['event']),
+                    $formData['bookable_praesidium'],
                     $formData['bookable'],
                     strlen($formData['bookings_close_date']) ? DateTime::createFromFormat('d#m#Y H#i', $formData['bookings_close_date']) : null,
                     $formData['active'],
@@ -208,6 +209,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $event->setActivity($this->getEntityManager()
                         ->getRepository('CalendarBundle\Entity\Node\Event')
                         ->findOneById($formData['event']))
+                    ->setBookablePraesidium($formData['bookable_praesidium'])
                     ->setBookable($formData['bookable'])
                     ->setBookingsCloseDate(strlen($formData['bookings_close_date']) ? DateTime::createFromFormat('d#m#Y H#i', $formData['bookings_close_date']) : null)
                     ->setActive($formData['active'])

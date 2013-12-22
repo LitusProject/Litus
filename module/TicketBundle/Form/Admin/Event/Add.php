@@ -66,6 +66,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
         $field->setLabel('Bookable');
         $this->add($field);
 
+        $field = new Checkbox('bookable_praesidium');
+        $field->setLabel('Bookable For Praesidium');
+        $this->add($field);
+
         $field = new Text('bookings_close_date');
         $field->setLabel('Booking Close Date')
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
@@ -142,6 +146,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
         $data = array(
             'event' => $event->getActivity()->getId(),
             'active' => $event->isActive(),
+            'bookable_praesidium' => $event->isBookablePraesidium(),
             'bookable' => $event->isBookable(),
             'bookings_close_date' => $event->getBookingsCloseDate() ? $event->getBookingsCloseDate()->format('d/m/Y H:i') : '',
             'generate_tickets' => $event->areTicketsGenerated(),
