@@ -81,12 +81,18 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                 array(
                     'code' => Result::FAILURE,
                     'messages' => array(
-                        'The given IDentity cannot login'
+                        'The given identity cannot login'
                     ),
                     'personObject' => $this->getPersonObject()
                 )
             );
         } else {
+            $credential = $this->getPersonObject()->getCredential();
+            if ($credential->shouldUpdate()) {
+                $credential->update($this->getCredential());
+                $this->getEntityManager()->flush();
+            }
+
             $this->setAuthenticationResult(
                 array(
                     'code' => Result::SUCCESS,

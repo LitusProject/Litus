@@ -470,7 +470,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $user->setCode(null)
                     ->setCredential(
                         new Credential(
-                            'sha512',
                             $formData['credential']
                         )
                     );

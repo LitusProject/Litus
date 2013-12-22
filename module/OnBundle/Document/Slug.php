@@ -36,7 +36,7 @@ class Slug
     private $id;
 
     /**
-     * @var string The ID of the person that created this slug
+     * @var integer The ID of the person that created this slug
      *
      * @ODM\Field(type="int")
      */
@@ -87,6 +87,7 @@ class Slug
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
      * @return \CommonBundle\Entity\User\Person
      */
     public function getCreationPerson(EntityManager $entityManager)
