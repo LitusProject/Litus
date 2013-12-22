@@ -14,7 +14,8 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Form\Auth\Login as LoginForm,
     DateInterval,
@@ -85,6 +86,17 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
+
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
 
         $shibbolethUrl .= '?source=prof';
 
