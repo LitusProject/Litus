@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Authentication\Adapter\Exception;
+namespace CommonBundle\Component\Controller\ActionController\Exception;
 
 /**
  * This exception is thrown when an error occured while executing the query.
@@ -20,6 +20,6 @@ namespace CommonBundle\Component\Authentication\Adapter\Exception;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class QueryFailedException extends \RuntimeException implements \Zend\Authentication\Exception\ExceptionInterface
+class ShibbolethUrlException extends \RuntimeException
 {
 }

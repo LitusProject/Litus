@@ -14,6 +14,8 @@
 
 namespace WikiBundle\Component\Controller\ActionController;
 
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
+
 /**
  * We extend the CommonBundle controller.
  *
@@ -46,11 +48,20 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
      */
     protected function _getShibbolethUrl()
     {
-        $shibbolethUrl = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shibboleth_url')
-        )[getenv('SERVED_BY')];
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!array_key_exists(getenv('SERVED_BY'), $shibbolethUrl))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
 
         $shibbolethUrl .= '?source=wiki';
 

@@ -14,7 +14,8 @@
 
 namespace FormBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\Exception\HasNoAccessException,
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
+    CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;
@@ -71,11 +72,20 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getShibbolethUrl()
     {
-        $shibbolethUrl = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shibboleth_url')
-        )[getenv('SERVED_BY')];
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
 
         $shibbolethUrl .= '?source=form';
 
