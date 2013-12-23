@@ -345,6 +345,22 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    public function viewAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return new ViewModel();
+
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+
+        return new ViewModel(
+            array(
+                'article' => $article,
+                'period' => $period,
+            )
+        );
+    }
+
     public function deltaAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
