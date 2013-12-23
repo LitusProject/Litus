@@ -232,7 +232,7 @@ VTK'
                     'description' => 'Show sport information on homepage',
                 ),
                 array(
-                    'key'         => 'common.piwik_enabled',
+                    'key'         => 'common.enable_piwik',
                     'value'       => '0',
                     'description' => 'Whether or not Piwik support should be enabled',
                 ),

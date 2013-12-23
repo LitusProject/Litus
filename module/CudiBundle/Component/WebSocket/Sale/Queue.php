@@ -261,7 +261,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.sale_light_version');
 
-        if ($enableCollectScanning == '1' && $lightVersion == '0' && !$bulk) {
+        if ($enableCollectScanning && !$lightVersion && !$bulk) {
             $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
             return $this->_queueItems[$id]->getCollectInfo();
@@ -287,7 +287,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if ($enableCollectScanning !== '1' || !isset($this->_queueItems[$id]) || null == $articles)
+        if (!$enableCollectScanning || !isset($this->_queueItems[$id]) || null == $articles)
             return;
 
         $this->_queueItems[$id]->setCollectedArticles($articles);

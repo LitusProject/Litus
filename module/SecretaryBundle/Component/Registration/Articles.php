@@ -114,7 +114,7 @@ class Articles
 
             $entityManager->persist($booking);
 
-            if ($enableAssignment == '1') {
+            if ($enableAssignment) {
                 $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
                 if ($available > 0) {
                     if ($available >= $booking->getNumber()) {
@@ -155,7 +155,7 @@ class Articles
             );
             $entityManager->persist($booking);
 
-            if ($enableAssignment == '1') {
+            if ($enableAssignment) {
                 $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
                 if ($available > 0) {
                     if ($available >= $booking->getNumber()) {

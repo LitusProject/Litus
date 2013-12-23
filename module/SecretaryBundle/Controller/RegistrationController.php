@@ -50,7 +50,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         $enabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled');
+            ->getConfigValue('secretary.enable_registration');
 
         if ('1' !== $enabled) {
             $this->getResponse()->setStatusCode(404);
@@ -344,9 +344,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        $registrationEnabled = $this->getEntityManager()
+        $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled') == '1';
+            ->getConfigValue('secretary.enable_registration');
 
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -472,7 +472,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
 
                 if (null !== $metaData) {
-                    if ($registrationEnabled) {
+                    if ($enableRegistration) {
                         if (null !== $metaData->getTshirtSize()) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -492,7 +492,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($becomeMember) {
-                        if ($registrationEnabled) {
+                        if ($enableRegistration) {
                             $metaData->setBecomeMember($becomeMember)
                                 ->setTshirtSize($formData['tshirt_size']);
                         }
@@ -500,7 +500,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $metaData->setReceiveIrReeelAtCudi($formData['irreeel']);
                     }
                     $metaData->setBakskeByMail($formData['bakske']);
-                } elseif ($registrationEnabled) {
+                } elseif ($enableRegistration) {
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -524,7 +524,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                if ($registrationEnabled) {
+                if ($enableRegistration) {
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()
