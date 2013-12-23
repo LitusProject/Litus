@@ -22,6 +22,9 @@ checkAndMakeExecutable "bin/CudiBundle/expireWarning.sh"
 checkAndMakeExecutable "bin/Doctrine/doctrine-module"
 checkAndMakeExecutable "bin/MailBundle/parser.sh"
 
+# Upgrade script
+./bin/upgrade.sh
+
 # Updating the database
 bin/Doctrine/doctrine-module orm:schema-tool:update --force
 bin/Doctrine/doctrine-module orm:generate-proxies data/proxies/
