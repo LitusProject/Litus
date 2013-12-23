@@ -48,11 +48,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $result = parent::onDispatch($e);
 
-        $enabled = $this->getEntityManager()
+        $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
-        if ('1' !== $enabled) {
+        if ($enableRegistration) {
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
