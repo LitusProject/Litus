@@ -34,8 +34,22 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'Flag whether the registration module is enabled or not',
                 ),
                 array(
+                    'key'         => 'secretary.mail',
+                    'value'       => 'secretaris@vtk.be',
+                    'description' => 'The mail address the secretary mails will be send from',
+                ),
+                array(
+                    'key'         => 'secretary.mail_name',
+                    'value'       => 'VTK',
+                    'description' => 'The mail address name',
+                ),
+                array(
                     'key'         => 'secretary.membership_article',
-                    'value'       => '427',
+                    'value'       => serialize(
+                        array(
+                            1 => 427,
+                        )
+                    ),
                     'description' => 'The article for the membership',
                 ),
                 array(
@@ -91,7 +105,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'secretary_admin_registration' => array(
-                        'barcode', 'edit', 'manage', 'search'
+                        'add', 'barcode', 'edit', 'manage', 'search'
+                    ),
+                    'secretary_admin_promotion' => array(
+                        'add', 'delete', 'mail', 'manage', 'search', 'update'
                     ),
                 ),
             )

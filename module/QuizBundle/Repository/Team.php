@@ -3,7 +3,7 @@
 namespace QuizBundle\Repository;
 
 use QuizBundle\Entity\Quiz as QuizEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Team
@@ -17,19 +17,20 @@ class Team extends EntityRepository
      * Gets all teams belonging to a quiz
      * @param QuizBundle\Entity\Quiz $quiz The team the rounds must belong to
      */
-    public function findByQuiz(QuizEntity $quiz)
+    public function findAllByQuizQuery(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
 
-        return $query->select('team')
-            ->from('QuizBundle\Entity\Team', 'team')
+        $resultSet = $query->select('t')
+            ->from('QuizBundle\Entity\Team', 't')
             ->where(
-                $query->expr()->eq('team.quiz', ':quiz')
+                $query->expr()->eq('t.quiz', ':quiz')
             )
-            ->orderBy('team.number', 'ASC')
+            ->orderBy('t.number', 'ASC')
             ->setParameter('quiz', $quiz->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
+
+        return $resultSet;
     }
 
     /**
@@ -40,19 +41,19 @@ class Team extends EntityRepository
     public function getNextTeamNumberForQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('team')
-            ->from('QuizBundle\Entity\Team', 'team')
+        $resultSet = $query->select('MAX(t.number)')
+            ->from('QuizBundle\Entity\Team', 't')
             ->where(
-                $query->expr()->eq('team.quiz', ':quiz')
+                $query->expr()->eq('t.quiz', ':quiz')
             )
-            ->orderBy('team.number', 'DESC')
+            ->orderBy('t.number', 'DESC')
             ->setParameter('quiz', $quiz->getId())
             ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+            ->getSingleScalarResult();
 
-        if($result === null)
+        if($resultSet === null)
             return 1;
-        return $result->getNumber() + 1;
+
+        return $resultSet + 1;
     }
 }

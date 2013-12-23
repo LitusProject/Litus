@@ -96,9 +96,12 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             }
         }
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
-            ->findAllByArticleAndAcademicYear($article, $academicYear);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                ->findAllByArticleAndAcademicYearQuery($article, $academicYear),
+            $this->getParam('page')
+        );
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -110,7 +113,8 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 'currentAcademicYear' => $academicYear,
                 'form' => $form,
                 'article' => $article,
-                'mappings' => $mappings,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }

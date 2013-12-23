@@ -16,11 +16,19 @@
             <p>The syllabus was successfully updated.</p>
         </div>
     </div>
+    {% if not allowUpdate %}
+        <div class="flashmessage error_message full_width">
+            <div class="title">Error</div>
+            <div class="content">
+                <p>The syllabus can not be updated.</p>
+            </div>
+        </div>
+    {% endif %}
 
     <div id="controller_action">
     </div>
 
-    {% if hasAccess('syllabus_admin_update', 'updateNow') %}
+    {% if hasAccess('syllabus_admin_update', 'updateNow') and allowUpdate %}
         <aside>
             <div class="sidebox">
                 <div class="title">Update Syllabus</div>

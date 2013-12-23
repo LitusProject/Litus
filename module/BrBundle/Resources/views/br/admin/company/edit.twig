@@ -27,7 +27,7 @@
                 <div class="title">Edit Logo's</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to edit the logo's of this company!</i>
+                        <i>Please hit the link below to edit the logo's of this company for Cudi and the homepage!</i>
                     </p>
                     <p>
                         <a href="{{ url('br_admin_company_logo', {"action": "manage", "id": company.getId()}) }}">&rarr; Edit Logo's</a>
@@ -69,9 +69,6 @@
 	    $(document).ready(function () {
             $('textarea#description').gollum({
                 uploadURL: '{{ url('br_admin_company', {'action': 'upload'}) }}',
-                progressURL: '/progress.php',
-                uploadProgressName: '{{ uploadProgressName }}',
-                progressId: '{{ uploadProgressId }}',
             });
             $('textarea#summary').gollum({
                 toolbar: {

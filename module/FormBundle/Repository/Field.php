@@ -2,8 +2,9 @@
 
 namespace FormBundle\Repository;
 
-use DateTime,
-    Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime,
+    FormBundle\Entity\Node\Form;
 
 /**
  * Field
@@ -13,45 +14,34 @@ use DateTime,
  */
 class Field extends EntityRepository
 {
-    public function findAll()
+    public function findAllByFormQuery(Form $form)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Field', 'n')
-            ->getQuery()
-            ->getResult();
+            ->where(
+                $query->expr()->eq('n.form', ':form')
+            )
+            ->setParameter('form', $form)
+            ->orderBy('n.order', 'ASC')
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findOneById($id) {
+    public function findLatestField(Form $form)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Field', 'n')
             ->where(
-                $query->expr()->eq('n.id', ':id')
+                $query->expr()->eq('n.form', ':form')
             )
-            ->setParameter('id', $id)
+            ->setParameter('form', $form)
+            ->orderBy('n.id','DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
-    }
-
-    public function findAllByForm($formId) {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\Field', 'n')
-            ->where(
-                $query->expr()->eq('n.form', ':id')
-            )
-            ->setParameter('id', $formId)
-            ->orderBy('n.order', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
         return $resultSet;
     }

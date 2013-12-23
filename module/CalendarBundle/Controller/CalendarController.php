@@ -47,10 +47,15 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByEvent($event)) > 0;
 
+        $ticketEvent = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event')
+            ->findOneByActivity($event);
+
         return new ViewModel(
             array(
                 'event' => $event,
                 'hasShifts' => $hasShifts,
+                'ticketEvent' => $ticketEvent,
             )
         );
     }
@@ -180,7 +185,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $result .= 'VERSION:2.0' . PHP_EOL;
         $result .= 'X-WR-CALNAME:' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_short_name') . ' Calendar' . PHP_EOL;
+            ->getConfigValue('organization_short_name') . ' Calendar' . PHP_EOL;
         $result .= 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
         $result .= 'CALSCALE:GREGORIAN' . PHP_EOL;
         $result .= 'METHOD:PUBLISH' . PHP_EOL;
@@ -216,7 +221,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
             $result .= 'TRANSP:OPAQUE' . PHP_EOL;
             $result .= 'LOCATION:' . $event->getLocation($this->getLanguage()) . PHP_EOL;
-            $result .= 'URL:' . $this->url()->fromRoute(
+            $result .= 'URL:' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $this->url()->fromRoute(
                     'calendar',
                     array(
                         'action' => 'view',

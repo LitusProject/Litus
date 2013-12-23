@@ -65,9 +65,13 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($units as $unit)
             $unitsArray[$unit->getId()] = $unit->getName();
 
+        $now = new DateTime();
         $result = array();
         foreach ($shifts as $shift) {
             if (!array_key_exists($shift->getUnit()->getId(), $unitsArray))
+                continue;
+
+            if ($shift->getStartDate() > $now)
                 continue;
 
             foreach ($shift->getResponsibles() as $responsible) {
@@ -120,7 +124,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($asVolunteer as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person)
-                    $payed[$shift->getId()] = $volunteer->getPayed();
+                    $payed[$shift->getId()] = $volunteer->isPayed();
             }
         }
 
@@ -258,15 +262,10 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear'))
-            return $this->getCurrentAcademicYear();
-
-        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $start->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($start);
+        $date = null;
+        if (null !== $this->getParam('academicyear'))
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
@@ -280,7 +279,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'shift_admin_shift_counter',
                 array(
-                    'action' => 'manage'
+                    'action' => 'index'
                 )
             );
 

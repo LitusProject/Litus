@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<financial date="10 December 2013">
+    <our_union short_name="VTK">
+        <name>Vlaamse Technische Kring</name>
+        <logo>data/images/logo/logo.svg</logo>
+    </our_union>
+    <cudi name="Cudi">
+        <mail>cursusdienst@vtk.be</mail>
+        <phone></phone>
+    </cudi>
+    <external_items>
+        <item>
+            <barcode>978121321041</barcode>
+            <title>Title</title>
+            <author>Author</author>
+            <publisher>Publisher</publisher>
+            <ordered>135</ordered>
+            <delivered>135</delivered>
+            <sold>118</sold>
+            <stock>7</stock>
+        </item>
+        <item>
+            <barcode>978121321042</barcode>
+            <title>Title</title>
+            <author>Author</author>
+            <publisher>Publisher</publisher>
+            <ordered>135</ordered>
+            <delivered>135</delivered>
+            <sold>115</sold>
+            <stock>10</stock>
+        </item>
+    </external_items>
+    <internal_items>
+        <item>
+            <barcode>978121324042</barcode>
+            <title>Title</title>
+            <author>Author</author>
+            <publisher>Publisher</publisher>
+            <ordered>135</ordered>
+            <delivered>135</delivered>
+            <sold>118</sold>
+            <stock>7</stock>
+        </item>
+        <item>
+            <barcode>978121321142</barcode>
+            <title>Title</title>
+            <author>Author</author>
+            <publisher>Publisher</publisher>
+            <ordered>135</ordered>
+            <delivered>135</delivered>
+            <sold>115</sold>
+            <stock>10</stock>
+        </item>
+    </internal_items>
+</financial>

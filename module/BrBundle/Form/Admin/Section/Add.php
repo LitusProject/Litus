@@ -14,23 +14,29 @@
 
 namespace BrBundle\Form\Admin\Section;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Validator\Price as PriceValidator,
     BrBundle\Entity\Contract\Section,
+    BrBundle\Component\Validator\SectionName as SectionNameValidator,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Form,
-    Zend\Form\Element\Select,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Form\Element\Textarea;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
- * Add a section.
+ * Add Section
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param mixed $opts The validator's options
@@ -39,45 +45,55 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($opts);
 
+        $this->_entityManager = $entityManager;
+
         $field = new Text('name');
         $field->setLabel('Name')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Text('price');
         $field->setLabel('Price')
             ->setRequired()
-            ->setValue('0')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setValue('0');
+        $this->add($field);
 
         $field = new Select('vat_type');
         $field->setLabel('VAT Type')
             ->setRequired()
-            ->setMultiOptions($this->_getVatTypes($entityManager))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('options', $this->_getVatTypes($entityManager));
+        $this->add($field);
 
         $field = new Text('invoice_description');
         $field->setLabel('Description on Invoice')
-            ->setRequired(false)
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired(false);
+        $this->add($field);
 
         $field = new Textarea('content');
         $field->setLabel('Content')
             ->setRequired()
-            ->setValue('<entry></entry>')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setValue('<entry></entry>');
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'contracts_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'contracts_add');
+        $this->add($field);
     }
+
+    public function populateFromSection(Section $section)
+    {
+        $formData = array(
+            'name'  => $section->getName(),
+            'price' => number_format($section->getPrice()/100, 2),
+            'vat_type' => $section->getVatType(),
+            'invoice_description' => $section->getInvoiceDescription(),
+            'content' => $section->getContent(),
+        );
+
+        $this->setData($formData);
+    }
+
 
     /**
      * Retrieve the different VAT types applicable.
@@ -87,12 +103,74 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getVatTypes(EntityManager $entityManager)
     {
         $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->findAllByPrefix(Section::VAT_CONFIG_PREFIX);
-
+            ->getConfigValue('br.vat_types');
+        $types = unserialize($types);
         $typesArray = array();
         foreach ($types as $type => $value)
             $typesArray[$type] = $value . '%';
 
         return $typesArray;
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new SectionNameValidator($this->_entityManager),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'price',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'invoice_description',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'content',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

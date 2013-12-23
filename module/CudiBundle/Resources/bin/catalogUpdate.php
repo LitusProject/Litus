@@ -16,12 +16,14 @@
  * Send mail for catalog updates
  *
  * Usage:
- * --article|-a     Article
- * --flush|-f       Flush
+ * --run|-r         Run
  * --mail|-m        Send Mail
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
+
+if (false === getenv('APPLICATION_ENV'))
+    putenv('APPLICATION_ENV=development');
 
 chdir(dirname(dirname(dirname(dirname(__DIR__)))));
 
@@ -30,6 +32,13 @@ include 'init_autoloader.php';
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 $mt = $application->getServiceManager()->get('mail_transport');
+
+$fallbackLanguage = $em->getRepository('CommonBundle\Entity\General\Language')
+    ->findOneByAbbrev(
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('fallback_language')
+    );
+\Locale::setDefault($fallbackLanguage->getAbbrev());
 
 $rules = array(
     'run|r-s' => 'Run',
@@ -161,11 +170,31 @@ if (isset($opts->r)) {
         $academicSubjects = $em->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
             ->findAllByAcademicAndAcademicYear($subscription->getPerson(), $academicYear);
 
-        $message = $em->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.catalog_update_mail');
+        if (!($language = $subscription->getPerson()->getLanguage())) {
+            $language = $em->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
 
-        $mailSubject = $em->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.catalog_update_mail_subject');
+        $mailData = unserialize(
+            $em
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.catalog_update_mail')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $mailSubject = $mailData[$language->getAbbrev()]['subject'];
+
+        preg_match('/#bookable#(.*)#bookable#/', $message, $bookableText);
+        $message = preg_replace('/#bookable#.*#bookable#/', '', $message);
+
+        preg_match('/#unbookable#(.*)#unbookable#/', $message, $unbookableText);
+        $message = preg_replace('/#unbookable#.*#unbookable#/', '', $message);
+
+        preg_match('/#added#(.*)#added#/', $message, $addedText);
+        $message = preg_replace('/#added#.*#added#/', '', $message);
+
+        preg_match('/#removed#(.*)#removed#/', $message, $removedText);
+        $message = preg_replace('/#removed#.*#removed#/', '', $message);
 
         $updates = '';
         foreach($academicSubjects as $subject) {
@@ -175,16 +204,16 @@ if (isset($opts->r)) {
             $updates .= '* ' . $subject->getSubject()->getName() . ' (' . $subject->getSubject()->getCode() . ')' . "\r\n";
 
             foreach($subjects[$subject->getSubject()->getId()]['updates']['bookable'] as $log)
-                $updates .= '  - ' . $log->getMainArticle()->getTitle() . ' is now bookable' . "\r\n";
+                $updates .= '  - ' . $log->getMainArticle()->getTitle() . ' ' . $bookableText[1] . "\r\n";
 
             foreach($subjects[$subject->getSubject()->getId()]['updates']['unbookable'] as $log)
-                $updates .= '  - ' . $log->getMainArticle()->getTitle() . ' is now unbookable' . "\r\n";
+                $updates .= '  - ' . $log->getMainArticle()->getTitle() . ' ' . $unbookableText[1] . "\r\n";
 
             foreach($subjects[$subject->getSubject()->getId()]['updates']['added'] as $log)
-                $updates .= '  - ' . $log->getTitle() . ' is added to the catalog' . "\r\n";
+                $updates .= '  - ' . $log->getTitle() . ' ' . $addedText[1] . "\r\n";
 
             foreach($subjects[$subject->getSubject()->getId()]['updates']['removed'] as $log)
-                $updates .= '  - ' . $log->getTitle() . ' is removed from the catalog' . "\r\n";
+                $updates .= '  - ' . $log->getTitle() . ' ' . $removedText[1] . "\r\n";
         }
 
         if ($updates != '') {
@@ -199,6 +228,7 @@ if (isset($opts->r)) {
                     'System Administrator'
                 )
                 ->setSubject($mailSubject);
+
             if (isset($opts->m) && 'development' != getenv('APPLICATION_ENV')) {
                 $mt->send($mail);
             }

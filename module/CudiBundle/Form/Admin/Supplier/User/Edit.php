@@ -14,8 +14,7 @@
 
 namespace CudiBundle\Form\Admin\Supplier\User;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 

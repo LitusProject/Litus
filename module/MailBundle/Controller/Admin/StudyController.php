@@ -31,7 +31,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @autor Niels Avonds <niels.avonds@litus.cc>>
  */
-class StudyController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class StudyController extends \MailBundle\Component\Controller\AdminController
 {
     public function sendAction()
     {
@@ -47,7 +47,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $storedMessages = $this->getDocumentManager()
             ->getRepository('MailBundle\Document\Message')
-            ->findAll();
+            ->findAll(array(), array('creationTime' => 'DESC'));
 
         $form = new MailForm($studies, $groups, $storedMessages);
 
@@ -89,6 +89,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $groupIds = $formData['groups'];
                     $extraMembers = array();
+                    $excludedMembers = array();
 
                     if ($groupIds) {
                         foreach ($groupIds as $groupId) {
@@ -97,10 +98,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                                 ->findOneById($groupId);
 
                             $groupExtraMembers = unserialize($group->getExtraMembers());
-                            if ($groupExtraMembers) {
-                                foreach($groupExtraMembers as $mail)
-                                    $extraMembers[$mail] = $mail;
-                            }
+                            if ($groupExtraMembers)
+                                $extraMembers = array_merge($extraMembers, $groupExtraMembers);
+
+                            $groupExcludedMembers = unserialize($group->getExcludedMembers());
+                            if ($groupExcludedMembers)
+                                $excludedMembers = array_merge($excludedMembers, $groupExcludedMembers);
 
                             $studies = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
@@ -112,14 +115,32 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                                 foreach ($children as $child) {
                                     $enrollments = array_merge($enrollments, $this->getEntityManager()
                                         ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                        ->findAllByStudyAndAcademicYear($child, $currentYear));
+                                        ->findAllByStudyAndAcademicYear($child, $currentYear)
+                                    );
                                 }
 
                                 $enrollments = array_merge($enrollments, $this->getEntityManager()
                                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                    ->findAllByStudyAndAcademicYear($study->getStudy(), $currentYear));
+                                    ->findAllByStudyAndAcademicYear($study->getStudy(), $currentYear)
+                                );
                             }
                         }
+                    }
+
+                    $addresses = array();
+                    $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
+                    foreach($bccs as $bcc)
+                        $addresses[$bcc] = $bcc;
+
+                    foreach($extraMembers as $extraMember)
+                        $addresses[$extraMember] = $extraMember;
+
+                    foreach($enrollments as $enrollment)
+                        $addresses[$enrollment->getAcademic()->getEmail()] = $enrollment->getAcademic()->getEmail();
+
+                    foreach($excludedMembers as $excludedMember) {
+                        if (isset($addresses[$excludedMember]))
+                            unset($addresses[$excludedMember]);
                     }
 
                     if ('' == $formData['stored_message']) {
@@ -135,18 +156,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $message = new MimeMessage();
                         $message->addPart($part);
 
-                        $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
-
                         if ($formData['test']) {
                             $body = '<br/>This email would have been sent to:<br/>';
-                            foreach($enrollments as $enrollment)
-                                $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
-
-                            foreach($extraMembers as $extraMember)
-                                $body = $body . $extraMember . '<br/>';
-
-                            foreach($bccs as $bcc)
-                                $body = $body . $bcc . '<br/>';
+                            foreach($addresses as $address)
+                                $body = $body . $address . '<br/>';
 
                             $part = new Part($body);
                             $part->type = Mime::TYPE_HTML;
@@ -194,18 +207,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $message = new MimeMessage();
                         $message->addPart($part);
 
-                        $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
-
                         if ($formData['test']) {
                             $body = '<br/>This email would have been sent to:<br/>';
-                            foreach($enrollments as $enrollment)
-                                $body = $body . $enrollment->getAcademic()->getEmail() . '<br/>';
-
-                            foreach($extraMembers as $extraMember)
-                                $body = $body . $extraMember . '<br/>';
-
-                            foreach($bccs as $bcc)
-                                $body = $body . $bcc . '<br/>';
+                            foreach($addresses as $address)
+                                $body = $body . $address . '<br/>';
 
                             $part = new Part($body);
                             $part->type = Mime::TYPE_HTML;
@@ -226,20 +231,26 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         $mail = new Message();
                         $mail->setBody($message)
                             ->setFrom($formData['from'])
-                            ->setSubject($formData['subject']);
+                            ->setSubject($storedMessage->getSubject());
 
                         $mail->addTo($formData['from']);
                     }
 
+                    $i = 0;
                     if (!$formData['test']) {
-                        foreach($enrollments as $enrollment)
-                            $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+                        foreach ($addresses as $address) {
+                            $i++;
+                            $mail->addBcc($address);
 
-                        foreach($extraMembers as $extraMember)
-                            $mail->addBcc($extraMember);
+                            if (500 == $i) {
+                                $i = 0;
 
-                        foreach($bccs as $bcc)
-                            $mail->addBcc($bcc);
+                                if ('development' != getenv('APPLICATION_ENV'))
+                                    $this->getMailTransport()->send($mail);
+
+                                $mail->setBcc(array());
+                            }
+                        }
                     }
 
                     if ('development' != getenv('APPLICATION_ENV'))

@@ -20,7 +20,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateInterval,
     DateTime,
     MailBundle\Form\Admin\Cudi\Mail as MailForm,
+    Markdown_Parser,
     Zend\Mail\Message,
+    Zend\Mime\Part,
+    Zend\Mime\Mime,
+    Zend\Mime\Message as MimeMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -36,25 +40,16 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         $semester = (new DateTime() < $academicYear->getUniversityStartDate()) ? 1 : 2;
 
-        $mailSubject = str_replace(
-            array(
-                '{{ semester }}',
-                '{{ academicYear }}'
-            ),
-            array(
-                (1 == $semester ? 'Eerste' : 'Tweede'),
-                $academicYear->getCode()
-            ),
+        $mailData = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('mail.start_cudi_mail_subject')
+                ->getConfigValue('mail.start_cudi_mail')
         );
 
-        $mail = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('mail.start_cudi_mail');
+        $mailSubject = $mailData['subject'];
+        $message = $mailData['message'];
 
-        $form = new MailForm();
+        $form = new MailForm($mailSubject, $message);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -74,6 +69,20 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $statuses = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Status\University')
                     ->findAllByStatus('professor', $academicYear);
+
+                $config = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->findOneByKey('mail.start_cudi_mail');
+
+                $config->setValue(
+                    serialize(
+                        array(
+                            'subject' => $formData['subject'],
+                            'message' => $formData['message'],
+                        )
+                    )
+                );
+                $this->getEntityManager()->flush();
 
                 foreach($statuses as $status) {
                     if ('' == $status->getPerson()->getEmail())
@@ -101,30 +110,41 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         $text .= '    [' . $subjects[$i]->getCode() . '] - ' . $subjects[$i]->getName();
                     }
 
-                    $body = str_replace('{{ subjects }}', $text, $mail);
+                    $body = str_replace('{{ subjects }}', $text, $formData['message']);
 
-                    $message = new Message();
-                    $message->setBody($body)
+                    $parser = new Markdown_Parser();
+                    $part = new Part($parser->transform($body));
+
+                    $part->type = Mime::TYPE_TEXT;
+                    if ($formData['html'])
+                        $part->type = Mime::TYPE_HTML;
+
+                    $part->charset = 'utf-8';
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    $mail = new Message();
+                    $mail->setBody($message)
                         ->setFrom($mailAddress, $mailName)
-                        ->setSubject($mailSubject);
+                        ->setSubject($formData['subject']);
 
-                    $message->addBcc($mailAddress);
+                    $mail->addBcc($mailAddress);
 
                     if ($formData['test_it']) {
-                        $message->addTo(
+                        $mail->addTo(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('system_administrator_mail'),
                             'System Administrator'
                         );
                     } else {
-                        $message->addTo(
+                        $mail->addTo(
                             $status->getPerson()->getEmail(), $status->getPerson()->getFullName()
                         );
                     }
 
                     if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($message);
+                        $this->getMailTransport()->send($mail);
 
                     if ($formData['test_it'])
                         break;
@@ -151,8 +171,6 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'subject' => $mailSubject,
-                'mail' => $mail,
                 'semester' => $semester,
                 'form' => $form,
             )

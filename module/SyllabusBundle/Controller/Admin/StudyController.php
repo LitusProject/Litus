@@ -17,8 +17,6 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime,
     SyllabusBundle\Entity\Study,
     Zend\View\Model\ViewModel;
 
@@ -171,8 +169,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
 
+        array_splice($studies, 20);
+
         $result = array();
-        foreach($studies as $study) {
+        foreach ($studies as $study) {
             $item = (object) array();
             $item->id = $study->getId();
             $item->value = 'Phase ' . $study->getPhase() . '&mdash;' . $study->getFullTitle();
@@ -259,41 +259,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear')) {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-
-            $next = clone $start;
-            $next->add(new DateInterval('P1Y'));
-            if ($next <= new DateTime())
-                $start = $next;
-        } else {
-            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-        }
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($start);
+        $date = null;
+        if (null !== $this->getParam('academicyear'))
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(

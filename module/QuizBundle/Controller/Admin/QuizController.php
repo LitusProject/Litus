@@ -13,17 +13,23 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * Controller for /admin/quiz[/:action[/:id]][/page/:page][/]
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class QuizController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
+        $quizes = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Quiz')
+            ->findAll();
+
+        foreach ($quizes as $key => $quiz) {
+            if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject()))
+                unset($quizes[$key]);
+        }
+
         $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Quiz')
-                ->findAll(),
-            $this->getParam('page')
+            $quizes, $this->getParam('page')
         );
 
         return new ViewModel(
@@ -37,6 +43,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -44,8 +51,16 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                // XXX: Edit role: In form or edit later?
-                $quiz = new Quiz($this->getAuthentication()->getPersonObject(), $formData['name'], array());
+                $editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($editRole);
+                    }
+                }
+
+                $quiz = new Quiz($this->getAuthentication()->getPersonObject(), $formData['name'], $editRoles);
                 $this->getEntityManager()->persist($quiz);
 
                 $this->getEntityManager()->flush();
@@ -79,8 +94,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if(!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+        if (!($quiz = $this->_getQuiz()))
+            return new ViewModel();
 
         $form  = new EditForm($this->getEntityManager(), $quiz);
 
@@ -124,7 +139,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
 
         if (!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+            return new ViewModel();
 
         $this->getEntityManager()->remove($quiz);
 
@@ -144,7 +159,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getQuiz()
     {
-        if($this->getParam('id') === null) {
+        if ($this->getParam('id') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -167,12 +182,31 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Quiz')
             ->findOneById($this->getParam('id'));
 
-        if($quiz === null) {
+        if ($quiz === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
                     'No quiz with the given id was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
                 )
             );
 

@@ -21,6 +21,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
     CudiBundle\Form\Admin\Stock\Orders\Comment as CommentForm,
+    CudiBundle\Form\Admin\Stock\Orders\Edit as EditForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -33,13 +34,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Supplier',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC'
-            )
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Supplier')
+                ->findAllQuery(),
+            $this->getParam('page')
         );
 
         $suppliers = $this->getEntityManager()
@@ -66,10 +65,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!isset($orders)) {
             $orders = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                ->findAllByPeriod($period);
+                ->findAllByPeriodQuery($period);
         }
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $orders,
             $this->getParam('page')
         );
@@ -93,13 +92,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
 
-        $orders = $this->_search($period);
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($orders, $numResults);
+        $orders = $this->_search($period)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($orders as $order) {
@@ -133,10 +132,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Order')
-                ->findAllBySupplierAndPeriod($supplier, $period),
+                ->findAllBySupplierAndPeriodQuery($supplier, $period),
             $this->getParam('page')
         );
 
@@ -263,6 +262,59 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    public function editItemAction()
+    {
+        if (!($item = $this->_getOrderItem()))
+            return new ViewModel();
+
+        $form = new EditForm($item);
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $item->setNumber($formData['number']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The order item was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'cudi_admin_stock_order',
+                    array(
+                        'action' => 'edit',
+                        'id' => $item->getOrder()->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $suppliers = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Supplier')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'order' => $item->getOrder(),
+                'item' => $item,
+                'form' => $form,
+                'suppliers' => $suppliers,
+                'supplier' => $item->getOrder()->getSupplier(),
+            )
+        );
+    }
+
     public function deleteAction()
     {
         $this->initAjax();
@@ -317,9 +369,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $document = new OrderPdfGenerator($this->getEntityManager(), $order, $this->getParam('order'), $file);
         $document->generate();
 
+        $filename = 'order_' . $order->getDateOrdered()->format('Y_m_d') . '.pdf';
+
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="order.pdf"',
+            'Content-Disposition' => 'attachment; filename=' . $filename,
             'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
@@ -346,19 +400,15 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition'        => 'attachment; filename="order.zip"',
-            'Content-Type'               => 'application/zip',
-            'Content-Length'             => filesize($archive->getFileName()),
+            'Content-Disposition' => 'attachment; filename="order.zip"',
+            'Content-Type'        => 'application/zip',
+            'Content-Length'      => filesize($archive->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($archive->getFileName(), 'r');
-        $data = fread($handle, filesize($archive->getFileName()));
-        fclose($handle);
-
         return new ViewModel(
             array(
-                'data' => $data,
+                'data' => $archive->getContent(),
             )
         );
     }
@@ -391,11 +441,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                    ->findAllByTitleAndPeriod($this->getParam('string'), $period);
+                    ->findAllByTitleAndPeriodQuery($this->getParam('string'), $period);
             case 'supplier':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                    ->findAllBySupplierStringAndPeriod($this->getParam('string'), $period);
+                    ->findAllBySupplierStringAndPeriodQuery($this->getParam('string'), $period);
         }
     }
 

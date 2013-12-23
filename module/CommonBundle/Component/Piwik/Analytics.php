@@ -14,8 +14,7 @@
 
 namespace CommonBundle\Component\Piwik;
 
-use CommonBundle\Component\Piwik\Api\Image,
-    Zend\Http\Client;
+use Zend\Http\Client;
 
 /**
  * This class represents part of the Piwik Analytics API.
@@ -54,21 +53,24 @@ class Analytics
     /**
      * Returns the number of unique visitors in the given period.
      *
-     * @param string $period The resolution of the date argument
      * @param string $date The period over which we want to query
+     * @param string $period The resolution of the date argument
      * @return integer
      */
-    public function getUniqueVisitors($period = 'week', $date = 'today')
+    public function getUniqueVisitors($date = 'today', $period = 'day')
     {
         $parameters = array(
             'method' => 'VisitsSummary.getUniqueVisitors',
-            'period' => $period,
-            'date'   => $date
+            'date'   => $date,
+            'period' => $period
         );
 
         $data = $this->_getData($parameters);
 
-        return $data->value;
+        if (count($data) == 1)
+            return $data['value'];
+
+        return $data;
     }
 
     /**
@@ -93,28 +95,6 @@ class Analytics
     }
 
     /**
-     * Returns a graph with a summary of the user evolution over a specified period.
-     *
-     * @param string $period The resolution of the date argument
-     * @param string $date The period over which we want to query
-     * @return \CommonBundle\Component\Piwik\Api\Image
-     */
-    public function getVisitsSummary($period = 'day', $date = 'previous7')
-    {
-        $parameters = array(
-            'method'    => 'ImageGraph.get',
-            'apiModule' => 'VisitsSummary',
-            'apiAction' => 'get',
-            'graphType' => 'evolution',
-
-            'period'    => $period,
-            'date'      => $date,
-        );
-
-        return $this->_getImage($parameters);
-    }
-
-    /**
      * Retrieves the data at the given URI.
      *
      * @param array $parameters The request's parameters
@@ -136,26 +116,6 @@ class Analytics
             )
         );
 
-        return json_decode($client->send()->getBody());
-    }
-
-    /**
-     * Retrieve an image at the given URI.
-     *
-     * @param array $parameters The request's parameters
-     * @return \CommonBundle\Component\Piwik\Api\Image
-     */
-    private function _getImage(array $parameters)
-    {
-        $parameters = array_merge(
-            array(
-                'module'     => 'API',
-                'token_auth' => $this->_tokenAuth,
-                'idSite'     => $this->_idSite
-            ),
-            $parameters
-        );
-
-        return new Image($this->_url, $parameters);
+        return (array) json_decode($client->send()->getBody());
     }
 }

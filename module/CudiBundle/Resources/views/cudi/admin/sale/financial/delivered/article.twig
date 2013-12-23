@@ -1,0 +1,45 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/delivered/partials/years.twig' %}
+
+    {% include 'cudi/admin/sale/financial/delivered/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Article</h1>
+        <p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+        <p>Author: <b>{{ article.getMainArticle().getAuthors() }}</b></p>
+        <p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
+        <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
+        <p>Supplier: <b>{{ article.getSupplier().getName() }}</b></p>
+        <p>Purchase Price: <b>&euro; {{ (article.getPurchasePrice()/100)|number_format(2) }}</b></p>
+        <p>Sell Price: <b>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</b></p>
+        <p>Number Delivered: <b>{{ article.getNumberDelivered(activeAcademicYear) }}</b></p>
+        <p>Total Purchase: <b>&euro; {{ (article.getNumberDelivered(activeAcademicYear) * article.getPurchasePrice()/100)|number_format(2) }}</b></p>
+
+        <br />
+        <table class="full_width manage">
+            <tr>
+                <th width="150px">Date</th>
+                <th>Person</th>
+                <th width="120px">Number</th>
+                <th width="120px">Price</th>
+            </tr>
+
+            {% for item in paginator %}
+                <tr class="item">
+                    <td>{{ item.getTimestamp().format('d/m/Y H:i') }}</td>
+                    <td>{{ item.getPerson().getFullName() }}</td>
+                    <td>{{ item.getNumber() }}</td>
+                    <td>&euro; {{ (item.getNumber() * item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

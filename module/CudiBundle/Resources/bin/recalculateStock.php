@@ -22,12 +22,22 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
+if (false === getenv('APPLICATION_ENV'))
+    putenv('APPLICATION_ENV=development');
+
 chdir(dirname(dirname(dirname(dirname(__DIR__)))));
 
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
-$entityManager = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
+$em = $application->getServiceManager()->get('doctrine.em.orm_default');
+
+$fallbackLanguage = $em->getRepository('CommonBundle\Entity\General\Language')
+    ->findOneByAbbrev(
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('fallback_language')
+    );
+\Locale::setDefault($fallbackLanguage->getAbbrev());
 
 $rules = array(
     'run|r'   => 'Recalculate Stock',
@@ -45,35 +55,32 @@ try {
 if (isset($opts->r)) {
     echo 'Updating stock...' . PHP_EOL;
 
-    $period = $entityManager
-        ->getRepository('CudiBundle\Entity\Stock\Period')
+    $period = $em->getRepository('CudiBundle\Entity\Stock\Period')
         ->findOneActive();
 
-    $period->setEntityManager($entityManager);
+    $period->setem($em);
 
-    $articles = $entityManager
-        ->getRepository('CudiBundle\Entity\Stock\Period')
+    $articles = $em->getRepository('CudiBundle\Entity\Stock\Period')
         ->findAllArticlesByPeriod($period);
 
-    $membership = $entityManager
-        ->getRepository('CommonBundle\Entity\General\Config')
-        ->getConfigValue('secretary.membership_article');
+    $membership = unserialize(
+        $this->getem()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.membership_article')
+    );
 
     foreach($articles as $article) {
-        if ($article->getId() == $membership) {
+        if (is_array($article->getId(), $membership)) {
             $article->setStockValue(0);
             continue;
         }
 
-        $number = $entityManager
-                ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
+        $number = $em->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
                 ->findValueByArticleAndPeriod($article, $period)
             + $period->getNbDelivered($article) - $period->getNbSold($article)
-            + $entityManager
-                ->getRepository('CudiBundle\Entity\Stock\Period\Value\Delta')
+            + $em->getRepository('CudiBundle\Entity\Stock\Period\Value\Delta')
                 ->findTotalByArticleAndPeriod($article, $period)
-            - $entityManager
-                ->getRepository('CudiBundle\Entity\Stock\Retour')
+            - $em->getRepository('CudiBundle\Entity\Stock\Retour')
                 ->findTotalByArticleAndPeriod($article, $period);
 
         if ($number < 0)
@@ -87,20 +94,19 @@ if (isset($opts->r)) {
         $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
         if ($nbToMuchAssigned > 0) {
             echo 'Unassign ' . $article->getMainArticle()->getTitle() . ' (' . $nbToMuchAssigned . ' times)' . PHP_EOL;
-            $bookings = $entityManager
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
+            $bookings = $em->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findLastAssignedByArticle($article);
 
             foreach($bookings as $booking) {
                 if ($nbToMuchAssigned <= 0)
                     break;
-                $booking->setStatus('booked', $entityManager);
+                $booking->setStatus('booked', $em);
                 $nbToMuchAssigned -= $booking->getNumber();
             }
         }
     }
 
     if (isset($opts->f)) {
-        $entityManager->flush();
+        $em->flush();
     }
 }

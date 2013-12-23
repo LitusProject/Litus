@@ -3,7 +3,7 @@
 # A very small wrapper around our garbage collector
 #
 
-scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "${scriptDirectory}/../../"
+SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "$SCRIPT_DIRECTORY/../../"
 
 php bin/CommonBundle/gc.php --all

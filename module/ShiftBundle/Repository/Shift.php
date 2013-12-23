@@ -7,7 +7,7 @@ use DateTime,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization\Unit as UnitEntity,
     CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Shift
@@ -20,96 +20,110 @@ use DateTime,
  */
 class Shift extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->gt('s.endDate', ':now')
+                $query->expr()->gt('s.endDate', ':now')
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllOld()
+    public function findAllActiveByNameQuery($name)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->lt('s.endDate', ':now')
+                $query->expr()->andX(
+                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name')
+                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveByEvent(Event $event)
+    public function findAllOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->andX(
-                        $query->expr()->gt('s.endDate', ':now'),
-                        $query->expr()->eq('s.event', ':event')
-                    )
+                $query->expr()->lt('s.endDate', ':now')
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByEventQuery(Event $event)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->eq('s.event', ':event')
+                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
             ->setParameter('event', $event)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveByUnit(UnitEntity $unit)
+    public function findAllActiveByUnitQuery(UnitEntity $unit)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->andX(
-                        $query->expr()->gt('s.endDate', ':now'),
-                        $query->expr()->eq('s.unit', ':unit')
-                    )
+                $query->expr()->andX(
+                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->eq('s.unit', ':unit')
+                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
             ->setParameter('unit', $unit)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveBetweenDates($startDate, $endDate)
+    public function findAllActiveBetweenDatesQuery($startDate, $endDate)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->andX(
-                        $query->expr()->gt('s.endDate', ':now'),
-                        $query->expr()->lt('s.startDate', ':end_date'),
-                        $query->expr()->gt('s.endDate', ':start_date')
-                    )
+                $query->expr()->andX(
+                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->lt('s.startDate', ':end_date'),
+                    $query->expr()->gt('s.endDate', ':start_date')
+                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
             ->setParameter('start_date', $startDate)
             ->setParameter('end_date', $endDate)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -171,7 +185,7 @@ class Shift extends EntityRepository
         );
     }
 
-    public function findAllByPersonAsReponsible(Person $person, AcademicYear $academicYear = null)
+    public function findAllByPersonAsReponsibleQuery(Person $person, AcademicYear $academicYear = null)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder->select('s')
@@ -200,11 +214,10 @@ class Shift extends EntityRepository
         if (null !== $academicYear)
             $query->setParameter('academicYear', $academicYear);
 
-        return $query->getQuery()
-            ->getResult();
+        return $query->getQuery();
     }
 
-    public function findAllByPersonAsVolunteer(Person $person, AcademicYear $academicYear = null)
+    public function findAllByPersonAsVolunteerQuery(Person $person, AcademicYear $academicYear = null)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder->select('s')
@@ -234,8 +247,7 @@ class Shift extends EntityRepository
         if (null !== $academicYear)
             $query->setParameter('academicYear', $academicYear);
 
-        return $query->getQuery()
-            ->getResult();
+        return $query->getQuery();
     }
 
     public function findOneByVolunteer($id)
@@ -248,12 +260,11 @@ class Shift extends EntityRepository
                 $query->expr()->eq('v.id', ':id')
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
     public function findOneByResponsible($id)
@@ -266,12 +277,11 @@ class Shift extends EntityRepository
                 $query->expr()->eq('r.id', ':id')
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
     public function findOneActiveByVolunteer($id)
@@ -288,12 +298,11 @@ class Shift extends EntityRepository
             )
             ->setParameter('now', new DateTime())
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
     public function findOneActiveByResponsible($id)
@@ -310,11 +319,10 @@ class Shift extends EntityRepository
             )
             ->setParameter('now', new DateTime())
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 }

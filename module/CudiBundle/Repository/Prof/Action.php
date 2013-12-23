@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Prof;
 
 use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Action
@@ -13,7 +13,7 @@ use CommonBundle\Entity\User\Person,
  */
 class Action extends EntityRepository
 {
-    public function findAllUncompleted($nbResults = null)
+    public function findAllUncompletedQuery($nbResults = null)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -26,13 +26,12 @@ class Action extends EntityRepository
             )
             ->orderBy('a.timestamp', 'ASC')
             ->setMaxResults($nbResults)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllCompleted()
+    public function findAllCompletedQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -41,13 +40,12 @@ class Action extends EntityRepository
                    $query->expr()->isNotNull('a.confirmDate')
             )
             ->orderBy('a.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllRefused()
+    public function findAllRefusedQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -56,13 +54,12 @@ class Action extends EntityRepository
                    $query->expr()->isNotNull('a.refuseDate')
             )
             ->orderBy('a.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByPerson(Person $person)
+    public function findAllByPersonQuery(Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -72,13 +69,12 @@ class Action extends EntityRepository
             )
             ->setParameter('person', $person->getId())
             ->orderBy('a.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByEntityAndActionAndPerson($entity, $action, Person $person)
+    public function findAllByEntityAndActionAndPersonQuery($entity, $action, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -94,13 +90,12 @@ class Action extends EntityRepository
             ->setParameter('entity', $entity)
             ->setParameter('action', $action)
             ->orderBy('a.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByEntityAndEntityIdAndActionAndPerson($entity, $entityId, $action, Person $person)
+    public function findAllByEntityAndEntityIdAndActionAndPersonQuery($entity, $entityId, $action, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -118,13 +113,12 @@ class Action extends EntityRepository
             ->setParameter('entityId', $entityId)
             ->setParameter('action', $action)
             ->orderBy('a.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByEntityAndEntityIdAndPerson($entity, $entityId, Person $person)
+    public function findAllByEntityAndEntityIdAndPersonQuery($entity, $entityId, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -140,13 +134,12 @@ class Action extends EntityRepository
             ->setParameter('entity', $entity)
             ->setParameter('entityId', $entityId)
             ->orderBy('a.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByEntityAndPreviousIdAndAction($entity, $previousId, $action)
+    public function findAllByEntityAndPreviousIdAndActionQuery($entity, $previousId, $action)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -162,13 +155,12 @@ class Action extends EntityRepository
             ->setParameter('previousId', $previousId)
             ->setParameter('action', $action)
             ->orderBy('a.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByEntityAndEntityIdAndAction($entity, $entityId, $action)
+    public function findAllByEntityAndEntityIdAndActionQuery($entity, $entityId, $action)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -184,8 +176,7 @@ class Action extends EntityRepository
             ->setParameter('entityId', $entityId)
             ->setParameter('action', $action)
             ->orderBy('a.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

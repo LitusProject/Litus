@@ -14,8 +14,7 @@
 
 namespace NewsBundle\Form\Admin\News;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     NewsBundle\Entity\Node\News,
     Zend\Form\Element\Submit;
 

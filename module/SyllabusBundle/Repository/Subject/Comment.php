@@ -3,7 +3,8 @@
 namespace SyllabusBundle\Repository\Subject;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Entity\User\Person,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Comment
@@ -18,6 +19,9 @@ class Comment extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
+            ->where(
+                $query->expr()->isNull('c.readBy')
+            )
             ->orderBy('c.date', 'DESC')
             ->setMaxResults($nb)
             ->getQuery()
@@ -26,7 +30,7 @@ class Comment extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s.id')
@@ -50,9 +54,36 @@ class Comment extends EntityRepository
                 $query->expr()->in('c.subject', $ids)
             )
             ->orderBy('c.date', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
+    }
+
+    public function findRecentConversationsByPersonAndAcademicYear(Person $person, AcademicYear $academicYear)
+    {
+        $subjects = $this->_em
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findAllByProfAndAcademicYear($person, $academicYear);
+
+        $comments = array();
+        foreach($subjects as $subject) {
+            $commentsOfSubject = $this->_em
+                ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+                ->findBySubject($subject->getSubject());
+
+            foreach($commentsOfSubject as $comment) {
+                $reply = $this->_em
+                    ->getRepository('SyllabusBundle\Entity\Subject\Reply')
+                    ->findLastByComment($comment);
+
+                if (null !== $reply)
+                    $comments[$reply->getDate()->getTimestamp()] = array('type' => 'reply', 'content' => $reply);
+                else
+                    $comments[$comment->getDate()->getTimestamp()] = array('type' => 'comment', 'content' => $comment);
+            }
+        }
+
+        ksort($comments);
+        return array_slice($comments, 0, 5);
     }
 }

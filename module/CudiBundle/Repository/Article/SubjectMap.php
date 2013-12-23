@@ -5,8 +5,7 @@ namespace CudiBundle\Repository\Article;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Article,
-    Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
@@ -36,24 +35,20 @@ class SubjectMap extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
-    public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
+    public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
-            ->innerJoin('m.article', 'a', Join::WITH,
-                $query->expr()->eq('a.isHistory', 'false')
-            )
+            ->innerJoin('m.article', 'a')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('m.removed', 'false'),
                     $query->expr()->eq('m.subject', ':subject'),
                     $query->expr()->eq('m.academicYear', ':academicYear'),
@@ -62,13 +57,12 @@ class SubjectMap extends EntityRepository
             )
             ->setParameter('subject', $subject->getId())
             ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByArticleAndAcademicYear(Article $article, AcademicYear $academicYear, $isProf = false)
+    public function findAllByArticleAndAcademicYearQuery(Article $article, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -83,13 +77,12 @@ class SubjectMap extends EntityRepository
             )
             ->setParameter('article', $article->getId())
             ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByArticle(Article $article, $isProf = false)
+    public function findAllByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -102,8 +95,7 @@ class SubjectMap extends EntityRepository
                 )
             )
             ->setParameter('article', $article->getId())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

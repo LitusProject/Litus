@@ -27,10 +27,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findAllActive(),
+                ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+                ->findAllActiveQuery(),
             $this->getParam('page')
         );
 
@@ -56,10 +56,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findAllOld(),
+                ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+                ->findAllOldQuery(),
             $this->getParam('page')
         );
 
@@ -107,11 +107,6 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $van = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                     ->findOneByName(VanReservation::VAN_RESOURCE_NAME);
-
-                if (null === $van) {
-                    $van = new ReservableResource(VanReservation::VAN_RESOURCE_NAME);
-                    $this->getEntityManager()->persist($van);
-                }
 
                 $reservation = new VanReservation(
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
@@ -301,8 +296,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         }
 
         $reservation = $this->getEntityManager()
-        ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-        ->findOneById($this->getParam('id'));
+            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->findOneById($this->getParam('id'));
 
         if (null === $reservation) {
             $this->flashMessenger()->addMessage(

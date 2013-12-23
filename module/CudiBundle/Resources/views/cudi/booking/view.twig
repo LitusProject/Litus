@@ -77,16 +77,16 @@
 
     <div class="modal hide fade" id="cancelBooking">
         <div class="modal-header">
-            <span>Cursusdienst</span>
+            <h3>Cursusdienst</h3>
         </div>
         <div class="modal-body">
             <p>
                 {{ translate('Are you sure you want to cancel the following article:') }} <b class="articleTitle"></b>?
             </p>
-            <div class="footer">
-                <input type="button" class="btn btn-danger continue" value="Yes">
-                <input type="button" class="btn cancel" data-dismiss="modal" value="No">
-            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="btn btn-danger continue" value="Yes">
+            <input type="button" class="btn cancel" data-dismiss="modal" value="No">
         </div>
     </div>
 {% endblock %}
@@ -94,7 +94,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover'});
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
             $('.item .cancel').click(openModal);
         });
 

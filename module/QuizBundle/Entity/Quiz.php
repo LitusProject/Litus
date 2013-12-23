@@ -159,6 +159,25 @@ class Quiz
         return $this->editRoles->toArray();
     }
 
+    /**
+     * Checks whether or not the given user can edit the quiz.
+     *
+     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @return boolean
+     */
+    public function canBeEditedBy(Person $person = null)
+    {
+        if (null === $person)
+            return false;
+
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($this->editRoles->contains($role) || $role->getName() == 'editor')
+                return true;
+        }
+
+        return false;
+    }
+
     public function getRounds()
     {
         return $this->rounds->toArray();

@@ -11,7 +11,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CalendarBundle\Form\Admin\Event\Poster as PosterForm,
     DateTime,
     Imagick,
-    ShiftBundle\Component\Document\Generator\EventPdf as EventPdfGenerator,
+    ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\Validator\File\Size as SizeValidator,
@@ -27,10 +27,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CalendarBundle\Entity\Node\Event')
-                ->findAllActive(0),
+                ->findAllActiveQuery(0),
             $this->getParam('page')
         );
 
@@ -44,10 +44,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CalendarBundle\Entity\Node\Event')
-                ->findAllOld(),
+                ->findAllOldQuery(),
             $this->getParam('page')
         );
 
@@ -344,7 +344,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->findBy(array('event' => $event), array('startDate' => 'ASC'));
 
         $file = new TmpFile();
-        $document = new EventPdfGenerator($this->getEntityManager(), $event, $shifts, $file);
+        $document = new PdfGenerator($this->getEntityManager(), $event, $shifts, $file);
         $document->generate();
 
         $headers = new Headers();

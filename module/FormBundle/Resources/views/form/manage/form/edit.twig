@@ -2,7 +2,35 @@
 
 {% block content %}
     {% if authenticatedPerson is not null %}
-	    <h2>{{ formSpecification.getTitle(language) }}</h2>
+        <h2>{{ formSpecification.getTitle(language) }}</h2>
+
+        <dl class='dl-horizontal'>
+            <dt>{{ translate('ID') }}</dt>
+            <dd>{{ entry.getId() }}</dd>
+            <dt>{{ translate('Name') }}</dt>
+            <dd>{{ entry.getPersonInfo().getFullName() }}</dd>
+            <dt>{{ translate('Guest') }}</dt>
+            <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+            {% if not entry.isGuestEntry() %}
+                <dt>{{ translate('Phone Number') }}</dt>
+                <dd>{{ entry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
+                {% if entry.getPersonInfo().getAddress() %}
+                <dt>{{ translate('Address') }}</dt>
+                    <dd>
+                        <address>
+                          {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
+                          {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}<br>
+                        </address>
+                    </dd>
+                {% endif %}
+            {% endif %}
+            <dt>{{ translate('Submitted') }}</dt>
+            <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
+            {% if viewer.isMail() %}
+                <dt>{{ translate('Email') }}</dt>
+                <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
+            {% endif %}
+        </dl>
 
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
@@ -13,4 +41,70 @@
             <h3>{{ translate('Please login to get access to these pages.') }}</h3>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=file]').each(function () {
+                if ($(this).data('file')) {
+                    $(this).closest('.fileupload').append(
+                        $('<button>', {'class': 'btn btn-mini'}).html('{{ translate('Download') }}').downloadFile(
+                            '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
+                        )
+                    );
+                }
+            });
+
+            var form = $('#content_controller form');
+            form.find('input, select').each(function () {
+                var $this = $(this);
+                if ($this.data('visible_if_element') !== undefined) {
+                    $this.closest('.control-group').hide();
+                    form.find('#field-' + $this.data('visible_if_element')).bind('change keyup', function () {
+                        if ($(this).attr('type') == 'text') {
+                            if ($(this).val() !== '') {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                                resetElement($this);
+                            }
+                            $this.trigger('change');
+                        } else if ($(this).attr('type') == 'checkbox') {
+                            if (
+                                ($(this).is(':checked') && $this.data('visible_if_value') == '1')
+                                    || (!$(this).is(':checked') && $this.data('visible_if_value') == '0')
+                                && $(this).is(':visible')
+                            ) {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                                resetElement($this);
+                            }
+                            $this.trigger('change');
+                        } else if ($(this).is('select')) {
+                            if ($(this).find('option:selected').html() == $this.data('visible_if_value') && $(this).is(':visible')) {
+                                $this.closest('.control-group').show();
+                            } else {
+                                $this.closest('.control-group').hide();
+                                resetElement($this);
+                            }
+                            $this.trigger('change');
+                        }
+                    }).trigger('change');
+                }
+            });
+        });
+
+        function resetElement(element) {
+            if (element.attr('type') == 'text') {
+                element.val('');
+            } else if (element.attr('type') == 'checkbox') {
+                element.prop('checked', false);
+            } else if (element.is('select')) {
+                element.find('option').removeAttr('selected');
+                element.find('option:first').attr('selected','selected');
+            }
+        }
+    </script>
 {% endblock %}

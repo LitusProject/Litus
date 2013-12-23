@@ -52,8 +52,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new Submit('submit');
+        $field = new Submit('send');
         $field->setValue('Send')
+            ->setAttribute('id', 'send_mail')
             ->setAttribute('class', 'mail');
         $this->add($field);
     }

@@ -5,7 +5,7 @@
         tQueue: 'Queue',
         tConclude: 'Conclude',
         tCancel: 'Cancel',
-        tConfirmSelling: 'Confirm Selling',
+        tConfirmSale: 'Confirm Sale',
         tSell: 'Sell',
         tClose: 'Close',
         tConfirmText: 'Do you want to confirm the sale? Please note this cannot be undone.',
@@ -17,19 +17,23 @@
         tBank: 'Bank',
 
         discounts: [],
-        membershipArticle: 0,
+        articleTypeahead: '',
+        membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
         lightVersion: false,
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
         finish: function (id, articles, discounts, payMethod) {},
         cancel: function (id) {},
-        translateStatus: function (status) {return status},
-        addArticle: function (id, barcode) {},
+        translateStatus: function (status) {return status;},
+        addArticle: function (id, articleId) {},
     };
 
     var methods = {
         init : function (options) {
+
+            membershipArticles = [{'id': 5, 'barcode': 10}, {'id': 7, 'barcode': 90}];
+
             var settings = $.extend(defaults, options);
             settings.isSell = true;
             settings.conclude = function (id, articles) {
@@ -81,7 +85,7 @@
                             $(this).remove();
                         });
                     }),
-                    $('<h3>').html(settings.tConfirmSelling)
+                    $('<h3>').html(settings.tConfirmSale)
                 ),
                 $('<div>', {'class': 'modal-body'}).append(
                     $('<p>').html(settings.tConfirmText),
@@ -109,8 +113,12 @@
                             $('<label>', {'class': 'control-label'}).html(settings.tPayMethod),
                             $('<div>', {'class': 'controls'}).append(
                                 method = $('<div>', {'class': 'btn-group', 'data-toggle': 'buttons-radio'}).append(
-                                    $('<button>', {'class': 'btn active', 'type': 'button', 'data-key': '114', 'data-method': 'cash'}).html(settings.tCash + ' - F3'),
-                                    $('<button>', {'class': 'btn', 'type': 'button', 'data-key': '115', 'data-method': 'bank'}).html(settings.tBank + ' - F4')
+                                    $('<button>', {'class': 'btn active', 'type': 'button', 'data-key': '114', 'data-method': 'cash'}).html(settings.tCash + ' - F3').click(function () {
+                                        payed.focus();
+                                    }),
+                                    $('<button>', {'class': 'btn', 'type': 'button', 'data-key': '115', 'data-method': 'bank'}).html(settings.tBank + ' - F4').click(function () {
+                                        payed.focus();
+                                    })
                                 )
                             )
                         )

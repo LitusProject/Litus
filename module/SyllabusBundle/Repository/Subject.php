@@ -5,8 +5,7 @@ namespace SyllabusBundle\Repository;
 use CommonBundle\Component\Util\AcademicYear as UtilAcademicYear,
     CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Subject
@@ -21,19 +20,19 @@ class Subject extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->innerJoin('m.subject', 's', Join::WITH,
+            ->innerJoin('m.subject', 's')
+            ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
                         $query->expr()->like($query->expr()->lower('s.name'), ':name'),
                         $query->expr()->like($query->expr()->lower('s.code'), ':name')
-                    )
+                    ),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
                 )
-            )
-            ->where(
-                $query->expr()->eq('m.academicYear', ':academicYear')
             )
             ->setParameter('academicYear', $academicYear->getId())
             ->setParameter('name', strtolower(trim($name)) . '%')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 

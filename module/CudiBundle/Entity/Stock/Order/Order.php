@@ -114,6 +114,19 @@ class Order
     }
 
     /**
+     * Get the number of this order
+     *
+     * @return integer
+     */
+    public function getTotalNumber()
+    {
+        $number = 0;
+        foreach($this->items as $item)
+            $number += $item->getNumber();
+        return $number;
+    }
+
+    /**
      * Get the price of this order
      *
      * @return integer

@@ -2,37 +2,43 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+    QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Round,
+    QuizBundle\Entity\Quiz,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
  * Add a new round
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    protected $_entityManager = null;
+
+    /**
+     * @var \QuizBundle\Entity\Quiz The quiz the round will belong to
+     */
+    protected $_quiz = null;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \QuizBundle\Entity\Quiz $quiz
      * @var null|string|int $name Optional name for the form
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+        $this->_quiz = $quiz;
 
 
         $field = new Text('name');
@@ -41,26 +47,41 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Text('max_points');
-        $field->setLabel('Maximum points')
+        $field->setLabel('Maximum Points')
             ->setRequired();
         $this->add($field);
 
         $field = new Text('order');
-        $field->setLabel('Round number')
+        $field->setLabel('Round Number')
             ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'quiz_round_add');
+            ->setAttribute('class', 'add');
         $this->add($field);
+    }
+
+    /**
+     * Populates the form with values from the entity
+     *
+     * @param \QuizBundle\Entity\Round $round
+     */
+    public function populateFromRound(Round $round)
+    {
+        $this->setData(
+            array(
+                'name' => $round->getName(),
+                'max_points' => $round->getMaxPoints(),
+                'order' => $round->getOrder(),
+            )
+        );
     }
 
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
-
 
         $inputFilter->add(
             $factory->createInput(
@@ -84,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator,
+                        new PositiveNumberValidator(),
                     )
                 )
             )
@@ -100,28 +121,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator,
+                        new PositiveNumberValidator(),
+                        new UniqueRoundValidator($this->_entityManager, $this->_quiz),
                     )
                 )
             )
         );
 
         return $inputFilter;
-    }
-
-    /**
-     * Populates the form with values from the entity
-     *
-     * @param \QuizBundle\Entity\Round $round
-     */
-    public function populateFromRound(Round $round)
-    {
-        $data = array(
-            'name' => $round->getName(),
-            'max_points' => $round->getMaxPoints(),
-            'order' => $round->getOrder(),
-        );
-
-        $this->setData($data);
     }
 }

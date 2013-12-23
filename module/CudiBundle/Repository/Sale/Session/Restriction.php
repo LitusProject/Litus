@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Sale\Session;
 
 use CudiBundle\Entity\Sale\Session,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Restriction
@@ -28,11 +28,8 @@ class Restriction extends EntityRepository
             ->setParameter('session', $session)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-       if (isset($resultSet[0]))
-           return $resultSet[0];
-
-       return null;
+        return $resultSet;
     }
 }

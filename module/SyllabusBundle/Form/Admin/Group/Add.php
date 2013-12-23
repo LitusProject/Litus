@@ -62,6 +62,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Textarea('excluded_members');
+        $field->setLabel('Excluded Members')
+            ->setRequired();
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'add');
@@ -71,12 +76,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected function populateFromGroup(Group $group)
     {
         $extraMembers = unserialize($group->getExtraMembers());
+        $excludedMembers = unserialize($group->getExcludedMembers());
 
         $this->setData(
             array(
                 'name' => $group->getName(),
                 'cvbook' => $group->getCvBook(),
                 'extra_members' => $extraMembers ? implode(',', $extraMembers) : '',
+                'excluded_members' => $excludedMembers ? implode(',', $excludedMembers) : '',
             )
         );
     }
@@ -105,6 +112,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'extra_members',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new MultiMailValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'excluded_members',
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

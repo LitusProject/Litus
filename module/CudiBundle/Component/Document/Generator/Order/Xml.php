@@ -36,9 +36,7 @@ class Xml
     private $_order;
 
     /**
-     * Create a Order XML Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Stock\Order $order The order
      */
     public function __construct(EntityManager $entityManager, Order $order)
@@ -246,7 +244,7 @@ class Xml
                     new Object(
                         'LastUsedValue',
                         null,
-                        (string) 'cursus vtk'
+                        (string) 'eigen cursus'
                     )
                 )
             ),
@@ -265,6 +263,10 @@ class Xml
             )
         );
 
+        $jobId = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.order_job_id');
+
         $xml->append(
             new Object(
                 'Document',
@@ -273,7 +275,7 @@ class Xml
                     new Object(
                         'Job',
                         array(
-                            'JobID' => 'vtk-' . $this->_order->getDateOrdered()->format('YmdHi')
+                            'JobID' => str_replace('{{ date }}', $this->_order->getDateOrdered()->format('YmdHi'), $jobId)
                         ),
                         array(
                             new Object(

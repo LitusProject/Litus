@@ -47,7 +47,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'syllabus.queue_socket_key',
-                    'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
+                    'value'       => md5(uniqid(rand(), true)),
                     'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
@@ -75,6 +75,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => 'http://onderwijsaanbod.kuleuven.be/opleidingen/{{ language }}/xml/SC_{{ id }}.xml',
                     'description' => 'The department url',
                 ),
+                array(
+                    'key'         => 'syllabus.enable_update',
+                    'value'       => '0',
+                    'description' => 'Enable Syllabus update',
+                ),
             )
         );
 
@@ -93,7 +98,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'addStudy', 'addSubject', 'deleteStudy', 'deleteSubject', 'edit', 'manage', 'search'
                     ),
                     'syllabus_admin_group' => array(
-                        'add', 'delete', 'deleteStudy', 'edit', 'manage', 'studies'
+                        'add', 'delete', 'deleteStudy', 'edit', 'export', 'manage', 'studies'
                     ),
                     'syllabus_admin_study' => array(
                         'edit', 'manage', 'search', 'searchSubject', 'typeahead'
@@ -102,7 +107,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'edit', 'manage', 'search', 'typeahead'
                     ),
                     'syllabus_admin_subject_comment' => array(
-                        'delete', 'manage', 'subject'
+                        'delete', 'manage', 'subject', 'reply'
                     ),
                     'syllabus_admin_update' => array(
                         'index', 'updateNow'
@@ -122,6 +127,14 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'guest',
                     ),
                     'actions' => array(
+                    ),
+                ),
+                'guest' => array(
+                    'system' => true,
+                    'actions' => array(
+                        'syllabus_subject' => array(
+                            'typeahead'
+                        ),
                     ),
                 ),
             )

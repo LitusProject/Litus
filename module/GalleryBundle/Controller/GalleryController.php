@@ -3,6 +3,7 @@
 namespace GalleryBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear,
+    DateInterval,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -21,7 +22,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $sorted = array();
         foreach($albums as $album) {
-            $year = AcademicYear::getAcademicYear($album->getDate());
+            $date = $album->getDate();
+            $date->add(new DateInterval('P1W'));
+            $year = AcademicYear::getAcademicYear($date);
             if (!isset($sorted[$year])) {
                 $sorted[$year] = (object) array(
                     'year' => $year,
@@ -54,6 +57,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $start = AcademicYear::getDateTime($this->getParam('name'));
         $end = clone $start;
         $end = AcademicYear::getStartOfAcademicYear($end->modify('+1year +2months'));
+
+        $start->sub(new DateInterval('P1W'));
+        $end->sub(new DateInterval('P1W'));
 
         $albums = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')

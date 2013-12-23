@@ -37,14 +37,6 @@ class Runner
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
-     */
-    private $academicYear;
-
-    /**
      * @var \CommonBundle\Entity\User\Person\Academic The academic linked to this runner
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
@@ -82,25 +74,36 @@ class Runner
     private $group;
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @var \SportBundle\Entity\Department The runner's department
+     *
+     * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Department", inversedBy="members")
+     * @ORM\JoinColumn(name="department", referencedColumnName="id")
+     */
+    private $department;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param string $firstName
      * @param string $lastName
      * @param \SportBundle\Entity\Group $group
+     * @param \SportBundle\Entity\Department $department
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      */
-    public function __construct(AcademicYear $academicYear, $firstName, $lastName, Group $group = null, Academic $academic = null)
+    public function __construct($firstName, $lastName, Academic $academic = null, Group $group = null, Department $department = null)
     {
-        $this->academicYear = $academicYear;
-        $this->academic = $academic;
-
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-
+        $this->academic = $academic;
         $this->group = $group;
+        $this->department = $department;
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -171,7 +174,6 @@ class Runner
         return $this;
     }
 
-
     /**
      * @return \SportBundle\Entity\Group
      */
@@ -191,6 +193,34 @@ class Runner
     }
 
     /**
+     * @return \SportBundle\Entity\Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param \SportBundle\Entity\Department $department
+     * @return \SportBundle\Entity\Runner
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
+        return $this;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \SportBundle\Entity\Group
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFullName()
@@ -199,11 +229,14 @@ class Runner
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager Instance
+     * Returns the user's laps.
+     *
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return array
      */
-    public function getLaps(EntityManager $entityManager, AcademicYear $academicYear) {
-        return $entityManager->getRepository('SportBundle\Entity\Lap')
+    public function getLaps(AcademicYear $academicYear) {
+        return $this->_entityManager
+            ->getRepository('SportBundle\Entity\Lap')
             ->findBy(
                 array(
                     'runner' => $this->id,
@@ -213,5 +246,22 @@ class Runner
                     'registrationTime' => 'ASC'
                 )
             );
+    }
+
+    /**
+     * Returns the current point total of the runner.
+     *
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @return integer
+     */
+    public function getPoints(AcademicYear $academicYear)
+    {
+        $points = 0;
+        foreach ($this->getLaps($academicYear) as $lap) {
+            $lap->setEntityManager($this->_entityManager);
+            $points += $lap->getPoints();
+        }
+
+        return $points;
     }
 }

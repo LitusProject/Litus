@@ -3,7 +3,7 @@
 namespace LogisticsBundle\Repository\Reservation;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * VanReservation
@@ -13,86 +13,57 @@ use DateTime,
  */
 class VanReservation extends EntityRepository
 {
-
-    public function findOneById($id) {
+    public function findAllActiveQuery()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
             ->where(
-                $query->expr()->eq('r.id', ':id')
+                $query->expr()->gte('r.endDate', ':start')
             )
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
-    }
-
-    public function findAllActive() {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
-        ->where(
-            $query->expr()->gte('r.endDate', ':start')
-        )
-        ->setParameter('start', new DateTime())
-        ->orderBy('r.startDate')
-        ->getQuery()
-        ->getResult();
+            ->setParameter('start', new DateTime())
+            ->orderBy('r.startDate')
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllOld() {
+    public function findAllOldQuery()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
-        ->where(
-            $query->expr()->lt('r.endDate', ':end')
-        )
-        ->setParameter('end', new DateTime())
-        ->orderBy('r.startDate')
-        ->getQuery()
-        ->getResult();
+            ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
+            ->where(
+                $query->expr()->lt('r.endDate', ':end')
+            )
+            ->setParameter('end', new DateTime())
+            ->orderBy('r.startDate')
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByDates($start, $end) {
+    public function findAllByDatesQuery(DateTime $start, DateTime $end)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
-        ->where(
-            $query->expr()->orx(
-                $query->expr()->andx(
-                    $query->expr()->gte('r.startDate', ':start'),
-                    $query->expr()->lte('r.startDate', ':end')
-                ),
-                $query->expr()->andx(
-                    $query->expr()->gte('r.endDate', ':start'),
-                    $query->expr()->lte('r.endDate', ':end')
+            ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
+            ->where(
+                $query->expr()->orx(
+                    $query->expr()->andx(
+                        $query->expr()->gte('r.startDate', ':start'),
+                        $query->expr()->lte('r.startDate', ':end')
+                    ),
+                    $query->expr()->andx(
+                        $query->expr()->gte('r.endDate', ':start'),
+                        $query->expr()->lte('r.endDate', ':end')
+                    )
                 )
             )
-        )
-        ->setParameter('start', $start)
-        ->setParameter('end', $end)
-        ->getQuery()
-        ->getResult();
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery();
 
         return $resultSet;
     }
-
-    public function findAll() {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
-        ->getQuery()
-        ->getResult();
-
-        return $resultSet;
-    }
-
 }

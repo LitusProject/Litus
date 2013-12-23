@@ -23,13 +23,17 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class MessageController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class MessageController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromDocument(
             'MailBundle\Document\Message',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array(
+                'creationTime' => 'DESC'
+            )
         );
 
         return new ViewModel(
@@ -52,8 +56,6 @@ class MessageController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
-                var_dump("Hello");
-
                 $formData = $form->getFormData($formData);
 
                 $message->setSubject($formData['subject'])

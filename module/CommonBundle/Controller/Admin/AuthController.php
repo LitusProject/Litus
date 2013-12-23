@@ -16,6 +16,8 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -125,13 +127,29 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        $this->redirect()->toRoute(
-                            'common_admin_index'
-                        );
+                        if (null !== $code->getRedirect()) {
+                            $this->redirect()->toUrl(
+                                $code->getRedirect()
+                            );
+
+                            return new ViewModel();
+                        }
                     }
                 }
             }
         }
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'common_admin_index'
+        );
 
         return new ViewModel();
     }
@@ -142,9 +160,22 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
 
-        return $shibbolethUrl . '?source=admin';
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
+
+        $shibbolethUrl .= '?source=admin';
+
+        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+        return $shibbolethUrl;
     }
 }

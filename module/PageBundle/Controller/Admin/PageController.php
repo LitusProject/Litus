@@ -222,6 +222,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     $orphanedCategory->setParent($newPage);
                 }
 
+                $orphanedLinks = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Link')
+                        ->findByParent($page->getId());
+
+                foreach ($orphanedLinks as $orphanedLink) {
+                    $orphanedLink->setParent($newPage);
+                }
+
                 $this->getEntityManager()->persist($newPage);
 
                 $languages = $this->getEntityManager()

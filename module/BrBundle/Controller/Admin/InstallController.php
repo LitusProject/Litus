@@ -49,20 +49,33 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'br.account_activated_mail',
-                    'value'       => 'Dear {{ name }},
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'VTK Corporate Account',
+                                'content' => 'Dear {{ name }},
 
 A corporate account for you was created on VTK with username {{ username }}.
 Click here to activate it: http://litus/account/activate/code/{{ code }}
 You can use this account to view the CV Book at http://litus/corporate
 
 With best regards,
-The VTK Corporate Team',
+The VTK Corporate Team'
+                            ),
+                            'nl' => array(
+                                'subject' => 'VTK Bedrijven Account',
+                                'content' => 'Beste {{ name }},
+
+Een bedrijven account was voor u aangemaakt op VTK met gebruikersnaam{{ username }}.
+Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
+U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
+
+Met vriendelijke groeten,
+Het VTK Bedrijvenrelaties Team'
+                            ),
+                        )
+                    ),
                     'description' => 'The email sent when an account is activated',
-                ),
-                array(
-                    'key'         => 'br.account_activated_subject',
-                    'value'       => 'VTK Corporate Account',
-                    'description' => 'The mail subject when an account is activated',
                 ),
                 array(
                     'key'         => 'br.cv_book_language',
@@ -78,6 +91,17 @@ The VTK Corporate Team',
 </section>',
                     'description' => 'The foreword of the CV Book',
                 ),
+                array(
+                    'key'         => 'br.vat_types',
+                    'value'       => serialize(
+                        array(
+                            6,
+                            11,
+                            21
+                        )
+                    ),
+                    'description' => 'The possible amounts of VAT'
+                )
             )
         );
     }
@@ -105,7 +129,9 @@ The VTK Corporate Team',
                     'br_admin_cv_entry' => array(
                         'manage', 'delete', 'export', 'exportAcademics'
                     ),
-
+                    'br_admin_section' => array(
+                        'manage', 'add', 'edit', 'delete',
+                    ),
                     'br_career_index' => array(
                         'index'
                     ),

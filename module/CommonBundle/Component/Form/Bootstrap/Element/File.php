@@ -14,15 +14,18 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
-use CommonBundle\Component\Form\Bootstrap\Decorator\Errors;
-
 /**
  * File form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class File extends \Zend\Form\Element\File
+class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\Admin\Element
 {
+    /**
+     * @var boolean
+     */
+    private $_required = false;
+
     /**
      * @param  null|int|string  $name    Optional name for the element
      * @param  array            $options Optional options for the element
@@ -52,5 +55,13 @@ class File extends \Zend\Form\Element\File
         $this->setAttribute('required', $flag);
         $this->_required = $flag;
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return $this->_required;
     }
 }

@@ -13,37 +13,42 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * Controller for /admin/quiz/:quizid/round[/:action[/:id]][/page/:page][/]
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class RoundController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        if(!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+        if (!($quiz = $this->_getQuiz()))
+            return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Round')
-                ->findByQuiz($quiz),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'QuizBundle\Entity\Round',
+            $this->getParam('page'),
+            array(
+                'quiz' => $quiz
+            ),
+            array(
+                'order' => 'ASC'
+            )
         );
 
         return new ViewModel(
             array(
                 'quiz' => $quiz,
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
 
     public function addAction()
     {
-        if(!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+        if (!($quiz = $this->_getQuiz()))
+            return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager(), $quiz);
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -93,8 +98,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if(!($round = $this->_getRound()))
-            return new ViewModel;
+        if (!($round = $this->_getRound()))
+            return new ViewModel();
 
         $form  = new EditForm($this->getEntityManager(), $round);
 
@@ -105,9 +110,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $round->setName($formData['name']);
-                $round->setMaxPoints($formData['max_points']);
-                $round->setOrder($formData['order']);
+                $round->setName($formData['name'])
+                    ->setMaxPoints($formData['max_points'])
+                    ->setOrder($formData['order']);
 
                 $this->getEntityManager()->flush();
 
@@ -141,7 +146,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         $this->initAjax();
 
         if (!($round = $this->_getRound()))
-            return new ViewModel;
+            return new ViewModel();
 
         $this->getEntityManager()->remove($round);
 
@@ -156,12 +161,41 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function sortAction()
+    {
+        $this->initAjax();
+        if(!($quiz = $this->_getQuiz()))
+            return new ViewModel();
+
+        if(!$this->getRequest()->isPost())
+            return new ViewModel();
+
+        $data = $this->getRequest()->getPost();
+
+        if(!$data['items'])
+            return new ViewModel();
+
+        foreach($data['items'] as $order=>$id)
+        {
+            $round = $this->getEntityManager()->find('QuizBundle\Entity\Round', $id);
+            $round->setOrder($order+1);
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(array(
+            'result' => array(
+                'status' => 'success',
+            )
+        ));
+    }
+
     /**
      * @return null|\QuizBundle\Entity\Quiz
      */
     private function _getQuiz()
     {
-        if($this->getParam('quizid') === null) {
+        if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -184,12 +218,31 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('QuizBundle\Entity\Quiz')
             ->findOneById($this->getParam('quizid'));
 
-        if($quiz === null) {
+        if ($quiz === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
                     'No quiz with the given id was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
                 )
             );
 
@@ -211,7 +264,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function _getRound()
     {
-        if($this->getParam('id') === null) {
+        if ($this->getParam('id') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -235,7 +288,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('QuizBundle\Entity\Round')
             ->findOneById($this->getParam('id'));
 
-        if($round === null) {
+        if ($round === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -255,7 +308,25 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
+        if (!$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
         return $round;
     }
-
 }

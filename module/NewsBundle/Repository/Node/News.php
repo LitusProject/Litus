@@ -2,7 +2,7 @@
 
 namespace NewsBundle\Repository\Node;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * News
@@ -12,20 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class News extends EntityRepository
 {
-    public function findAll($nbResults = 3)
+    public function findAllQuery($nbResults = 3)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NewsBundle\Entity\Node\News', 'n')
             ->orderBy('n.creationTime', 'DESC')
             ->setMaxResults($nbResults)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActive()
+    public function findAllSiteQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
@@ -38,13 +37,12 @@ class News extends EntityRepository
             )
             ->setParameter('now', new \DateTime())
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findNbActive($nbResults = 3)
+    public function findNbSiteQuery($nbResults = 3)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
@@ -58,8 +56,7 @@ class News extends EntityRepository
             ->setParameter('now', new \DateTime())
             ->orderBy('n.creationTime', 'DESC')
             ->setMaxResults($nbResults)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

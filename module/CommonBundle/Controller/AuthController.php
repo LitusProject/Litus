@@ -14,9 +14,9 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\Authentication\Authentication,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -137,23 +137,53 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null === $code->getRedirect()) {
-                            $this->redirect()->toRoute(
-                                'common_index'
-                            );
-                        } else {
+                        $registrationEnabled = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('secretary.registration_enabled');
+
+                        if ($registrationEnabled) {
+                            $academic = $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                                ->findOneByUniversityIdentification($this->getParam('identification'));
+
+                            if (null !== $academic && null === $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                                $this->redirect()->toRoute(
+                                    'secretary_registration'
+                                );
+
+                                return new ViewModel();
+                            }
+                        }
+
+                        if (null !== $code->getRedirect()) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
+
+                            return new ViewModel();
                         }
                     } else {
                         $this->redirect()->toRoute(
                             'secretary_registration'
                         );
+
+                        return new ViewModel();
                     }
                 }
             }
         }
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'common_index'
+        );
 
         return new ViewModel();
     }

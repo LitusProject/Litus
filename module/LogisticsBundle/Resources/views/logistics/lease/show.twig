@@ -1,0 +1,55 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+<dl>
+    <dt>{{ translate('Item Name') }}</dt>
+    <dd>{{ lease.getItem().getName() }}</dd>
+    <dt>{{ translate('Barcode') }}</dt>
+    <dd>{{ lease.getItem().getBarcode() }}</dd>
+    <dt>{{ translate('Additional Info') }}</dt>
+    <dd>{{ lease.getItem().getAdditionalInfo() }}</dd>
+    <dt>{{ translate('Leased') }}</dt>
+    <dd>
+        <dl class="dl-horizontal">
+            <dt>{{ translate('From') }}</dt>
+            <dd>{{ lease.getLeasedBy().getFullName() }}</dd>
+            <dt>{{ translate('To') }}</dt>
+            <dd>{{ lease.getLeasedTo() }}</dd>
+            <dt>{{ translate('Amount') }}</dt>
+            <dd>{{ lease.getLeasedAmount() }}</dd>
+            <dt>{{ translate('Date') }}</dt>
+            <dd>{{ lease.getLeasedDate()|date }}</td>
+            <dt>{{ translate('Pawn') }}</dt>
+            <dd>{{ lease.getLeasedPawn()|number_format(2) }}</dd>
+            {% if lease.getLeasedComment() %}
+                <dt>{{ translate('Comment') }}</dt>
+                <dd>{{ lease.getLeasedComment()|nl2br }}</dd>
+            {% endif %}
+        </dl>
+    </dd>
+    <dt>{{ translate('Returned') }}</dt>
+    <dd>
+        {% if lease.isReturned() %}
+            <dl class="dl-horizontal">
+                <dt>{{ translate('From') }}</dt>
+                <dd>{{ lease.getReturnedBy() }}</dd>
+                <dt>{{ translate('To') }}</dt>
+                <dd>{{ lease.getReturnedTo().getFullName() }}</dd>
+                <dt>{{ translate('Amount') }}</dt>
+                <dd>{{ lease.getReturnedAmount() }}</dd>
+                <dt>{{ translate('Date') }}</dt>
+                <dd>{{ lease.getReturnedDate()|date }}</td>
+                <dt>{{ translate('Pawn') }}</dt>
+                <dd>{{ lease.getReturnedPawn()|number_format(2) }}</dd>
+                {% if lease.getReturnedComment() %}
+                    <dt>{{ translate('Comment') }}</dt>
+                    <dd>{{ lease.getReturnedComment()|nl2br }}</dd>
+                {% endif %}
+            </dl>
+        {% else %}
+            {{ translate('Not Yet Returned') }}
+        {% endif %}
+    </dd>
+
+</dl>
+{% endblock %}

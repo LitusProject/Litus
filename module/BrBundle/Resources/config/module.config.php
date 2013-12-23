@@ -73,7 +73,7 @@ return array(
             'br_admin_company_user' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/company/user[/:action[/:id]][/page/:page][/]',
+                    'route' => '/admin/company/user[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
@@ -111,6 +111,21 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'br_admin_cv_entry',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'br_admin_contract' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/contract[/:action[/:id[/:confirm]]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'confirm' => '[01]',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'br_admin_contract',
                         'action'     => 'manage',
                     ),
                 ),
@@ -178,7 +193,7 @@ return array(
             'br_career_event' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/event[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/event[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
@@ -194,7 +209,7 @@ return array(
             'br_career_vacancy' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/vacancy[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/vacancy[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
@@ -210,7 +225,7 @@ return array(
             'br_career_internship' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/internship[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/internship[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
@@ -368,6 +383,7 @@ return array(
             'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
             'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
             'br_admin_section'         => 'BrBundle\Controller\Admin\SectionController',
+            'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
 
             'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
             'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',

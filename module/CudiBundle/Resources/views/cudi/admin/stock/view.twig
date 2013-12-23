@@ -1,0 +1,90 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/stock/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>General</h1>
+        <p>Article: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+        <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
+        <p>Supplier: <b>{{ article.getSupplier().getName() }}</b></p>
+        <br style="clear:both" />
+        
+        <h1>Orders</h1>
+        <table class="half_width">
+            {% set ordered = period.getNbOrdered(article) %}
+            {% set virtualOrdered = period.getNbVirtualOrdered(article) %}
+            {% set delivered = period.getNbDelivered(article) %}
+            <tr>
+                <td>Total</td>
+                <td style="width:30%">{{ ordered }}</td>
+            </tr>
+            <tr>
+                <td>Virtual</td>
+                <td style="width:30%">{{ virtualOrdered }}</td>
+            </tr>
+            <tr>
+                <td>Not delivered</td>
+                <td style="width:30%">
+                    {% if ordered - delivered < 0 %}0{% else %}{{ ordered - delivered }}{% endif %}
+                    {% if ordered + virtualOrdered - delivered > 0 and virtualOrdered != 0 %}<i class="virtualNotDelivered" data-content="There were <b>{{ ordered }}</b> items ordered. But a few times, more items were delivered (<b>{{ virtualOrdered }}</b>). Taking this into account, we are still waiting for <b>{{ ordered + virtualOrdered - delivered }}</b> items.">({{ ordered + virtualOrdered - delivered }})</i>{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Queue</td>
+                <td style="width:30%">{{ period.getNbQueueOrder(article) }}</td>
+            </tr>
+        </table>
+        <br style="clear:both" />
+
+        <h1>Deliveries</h1>
+        <table class="half_width">
+            <tr>
+                <td>Total</td>
+                <td style="width:30%">{{ delivered }}</td>
+            </tr>
+        </table>
+        <br style="clear:both" />
+
+        <h1>Retours</h1>
+        <table class="half_width">
+            <tr>
+                <td>Total</td>
+                <td style="width:30%">{{ period.getNbRetoured(article) }}</td>
+            </tr>
+        </table>
+        <br style="clear:both" />
+
+        <h1>Bookings</h1>
+        <table class="half_width">
+            <tr>
+                <td>Number assigned</td>
+                <td style="width:30%">{{ period.getNbAssigned(article) }}</td>
+            </tr>
+            <tr>
+                <td>Number not assigned</td>
+                <td style="width:30%">{{ period.getNbBooked(article) }}</td>
+            </tr>
+        </table>
+        <br style="clear:both" />
+
+        <h1>Sales</h1>
+        <table class="half_width">
+            <tr>
+                <td>Total</td>
+                <td style="width:30%">{{ period.getNbSold(article) }}</td>
+            </tr>
+        </table>
+        <br style="clear:both" />
+
+        <h1>Stock</h1>
+        <table class="half_width">
+            <tr>
+                <td>Total</td>
+                <td style="width:30%">{{ article.getStockValue() }}</td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

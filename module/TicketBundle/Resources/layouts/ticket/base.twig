@@ -1,0 +1,103 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+
+    {{ headMeta() }}
+    {{ headTitle('Ticket Sale', 'PREPEND') }}
+
+    {{ headLink() }}
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a href="{{ organizationUrl }}" class="brand"><img src="/_ticket/img/logo.png" /></a>
+            <ul class="nav">
+                {% if hasAccess('ticket_sale_index', 'sale') %}
+                    <li {% if 'sale' == getParam('action') and 'ticket_sale_index' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("ticket_sale_index", {"action": "sale", "id": event.getId()}) }}">Event</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('ticket_sale_ticket', 'overview') %}
+                    <li {% if 'overview' == getParam('action') and 'ticket_sale_ticket' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("ticket_sale_ticket", {"action": "overview", "id": event.getId()}) }}">Tickets</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header>
+    <div class="inner">
+        <div class="container">
+            <h1>{{ translate('Ticket Sale') }}</h1>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    {% include 'run/partials/flashMessenger.twig' %}
+
+    <div id="content_controller">
+        <div class="page-header">
+            <h1>{{ event.getActivity().getTitle(language) }}</h1>
+        </div>
+
+        <div class="row">
+            <div class="span6">
+                <dl class="dl-horizontal">
+                    <dt>Bookable</dt>
+                    <dd>{% if event.isBookable() %}yes{% else %}no{% endif %}</dd>
+                    <dt>Bookings Close Date</dt>
+                    <dd>{% if event.getBookingsCloseDate() %}{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}{% else %}<i>No End Date</i>{% endif %}</dd>
+                    <dt>Number Sold</dt>
+                    <dd>{{ event.getNumberSold() }}</dd>
+                    <dt>Number Booked</dt>
+                    <dd>{{ event.getNumberBooked() }}</dd>
+                    {% if event.getNumberOfTickets() > 0 %}
+                        <dt>Number Free</dt>
+                        <dd>{{ event.getNumberFree() }}</dd>
+                    {% endif %}
+                </dl>
+            </div>
+            <div class="span6">
+                <dl class="dl-horizontal">
+                    {% if event.getOptions()|length > 0 %}
+                        {% for option in event.getOptions() %}
+                            <dt>{{ option.getName() }}</dt>
+                            <dd>{{ event.getNumberSoldByOption(option, true) }} / {{ event.getNumberBookedByOption(option, true) }}</dd>
+                            {% if not event.isOnlyMembers() %}
+                                <dt>{{ option.getName() }} (Not Member)</dt>
+                                <dd>{{ event.getNumberSoldByOption(option, false) }} / {{ event.getNumberBookedByOption(option, false) }}</dd>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <dt>Member</dt>
+                        <dd>{{ event.getNumberSoldByOption(null, true) }} / {{ event.getNumberBookedByOption(null, true) }}</dd>
+                        {% if not event.isOnlyMembers() %}
+                            <dt>Not Member</dt>
+                            <dd>{{ event.getNumberSoldByOption(null, false) }} / {{ event.getNumberBookedByOption(null, false) }}</dd>
+                        {% endif %}
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+
+        {% block content %} {% endblock %}
+    </div>
+
+    <footer>
+        Litus Ticket | Code by <a href="http://litus.cc">Litus</a>
+    </footer>
+</div>
+
+{{ inlineScript() }}
+
+{% block content_script %}{% endblock %}
+
+</body>
+</html>

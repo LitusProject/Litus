@@ -22,6 +22,11 @@
 
         <p>Name: <b>{{ supplier.getName() }}</b></p>
         <p>Phone Number: <b>{{ supplier.getPhoneNumber() }}</b></p>
+        <p>Contactperson: <b>
+            {% if supplier.isContact %}
+                Yes
+            {% else %} No
+            {% endif %}</b></p>
         <p>Street: <b>{{ supplier.getAddress().getStreet() }} {{ supplier.getAddress().getNumber() }}
             {% if supplier.getAddress().getMailbox() %}
                 / {{ supplier.getAddress().getMailbox() }}

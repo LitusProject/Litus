@@ -31,10 +31,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActive(),
+                ->findAllActiveQuery(),
             $this->getParam('page')
         );
 
@@ -48,10 +48,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllOld(),
+                ->findAllOldQuery(),
             $this->getParam('page')
         );
 
@@ -78,35 +78,56 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
                 $manager = ('' == $formData['manager_id'])
-                    ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
+                    ? $repository->findOneByUsername($formData['manager'])
+                    : $repository->findOneById($formData['manager_id']);
 
-                $shift = new Shift(
-                    $this->getAuthentication()->getPersonObject(),
-                    $this->getCurrentAcademicYear(),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
-                    $manager,
-                    $formData['nb_responsibles'],
-                    $formData['nb_volunteers'],
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                        ->findOneById($formData['unit']),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Location')
-                        ->findOneById($formData['location']),
-                    $formData['name'],
-                    $formData['description']
-                );
-
-                if ('' != $formData['event']) {
-                    $shift->setEvent(
-                        $this->getEntityManager()
-                            ->getRepository('CalendarBundle\Entity\Node\Event')
-                            ->findOneById($formData['event'])
-                    );
+                $editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($editRole);
+                    }
                 }
+                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
 
-                $this->getEntityManager()->persist($shift);
+                $interval = $startDate->diff($endDate);
+
+                for ($i = 0; $i < $formData['duplicate_days']; $i++) {
+                    for ($j = 0; $j < $formData['duplicate_hours']; $j++) {
+                        $shift = new Shift(
+                            $this->getAuthentication()->getPersonObject(),
+                            $this->getCurrentAcademicYear(),
+                            $this->addInterval(clone $startDate, $interval, $j),
+                            $this->addInterval(clone $startDate, $interval, $j+1),
+                            $manager,
+                            $formData['nb_responsibles'],
+                            $formData['nb_volunteers'],
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                                ->findOneById($formData['unit']),
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Location')
+                                ->findOneById($formData['location']),
+                            $formData['name'],
+                            $formData['description'],
+                            $editRoles
+                        );
+
+                        if ('' != $formData['event']) {
+                            $shift->setEvent(
+                                $this->getEntityManager()
+                                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                                    ->findOneById($formData['event'])
+                            );
+                        }
+
+                        $this->getEntityManager()->persist($shift);
+                    }
+
+                    $startDate = $startDate->modify('+1 day');
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -136,6 +157,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    private function addInterval(DateTime $time, $interval, $duplicate){
+        for ($i = 0; $i < $duplicate; $i++)
+            $time = $time->add($interval);
+        return clone $time;
+    }
+
     public function editAction()
     {
         if (!($shift = $this->_getShift()))
@@ -161,6 +188,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
 
+                $editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($editRole);
+                    }
+                }
+
                 $shift->setManager($manager)
                     ->setNbResponsibles($formData['nb_responsibles'])
                     ->setNbVolunteers($formData['nb_volunteers'])
@@ -175,7 +211,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneById($formData['location'])
                     )
                     ->setName($formData['name'])
-                    ->setDescription($formData['description']);
+                    ->setDescription($formData['description'])
+                    ->setEditRoles($editRoles);
 
                 if ('' != $formData['event']) {
                     $shift->setEvent(
@@ -230,13 +267,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.mail_name');
 
-        $message = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.shift_deleted_mail');
+        $language = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
 
-        $subject = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.shift_deleted_mail_subject');
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.shift_deleted_mail')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = $mailData[$language->getAbbrev()]['subject'];
 
         $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
 
@@ -269,6 +310,51 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 ),
             )
         );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $shifts = $this->_search()
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach($shifts as $shift) {
+            $item = (object) array();
+            $item->id = $shift->getId();
+            $item->name = $shift->getName();
+            $item->event = $shift->getEvent()->getTitle($this->getLanguage());
+            $item->startDate = $shift->getStartDate()->format('d/m/Y H:i');
+            $item->endDate = $shift->getEndDate()->format('d/m/Y H:i');
+
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+
+    /**
+    *   @return \Doctrine\ORM\Query
+    */
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('ShiftBundle\Entity\Shift')
+                    ->findAllActiveByNameQuery($this->getParam('string'));
+        }
     }
 
     private function _getShift()

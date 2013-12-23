@@ -24,13 +24,4 @@ use CommonBundle\Component\Util\File\TmpFile;
  */
 class TmpFileClosedException extends \Exception
 {
-    /**
-     * @param \CommonBundle\Component\Util\File\TmpFile $tmpFile The file that caused the exception
-     */
-    public function __construct(TmpFile $tmpFile)
-    {
-        parent::__construct(
-            $tmpFile->getFilename() . ' has already been closed'
-        );
-    }
 }

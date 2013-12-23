@@ -10,9 +10,6 @@
 
 {% macro renderFieldset(fieldset) %}
     {% autoescape false %}
-        {% if fieldset.getAttribute('data-upload') == 'progress' %}
-            {{ formFileSessionProgress() }}
-        {% endif %}
         {% set buttons = [] %}
         {% for element in fieldset.getElements() %}
             {% if element.getAttribute('type') == 'submit'or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
@@ -61,6 +58,9 @@
                     <legend>{{ translate(child.getLabel()) }}</legend>
                     {{ _self.renderFieldset(child) }}
                 </fieldset>
+                {% if child.shouldCreateTemplate() %}
+                    <span id="data-template" data-template="{{ _self.renderFieldset(child.getTemplateElement())|escape }}"></span>
+                {% endif %}
             {% else %}
                 <div class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
                     {{ _self.renderFieldset(child) }}

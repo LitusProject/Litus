@@ -14,9 +14,6 @@
 
 namespace CommonBundle\Component\Form\Admin;
 
-use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
-    Zend\Form\Decorator;
-
 /**
  * Extending Zend's form element component, so that our forms look the way we want
  * them to.

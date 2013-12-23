@@ -7,11 +7,12 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     QuizBundle\Entity\Quiz,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
+    CommonBundle\Component\Form\Admin\Element\Select,
     Zend\Form\Element\Submit;
 
 /**
  * Add a new quiz
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -35,11 +36,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        // XXX: Edit role: In form?
+
+        $field = new Select('edit_roles');
+        $field->setLabel('Edit Roles')
+            ->setRequired()
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_createEditRolesArray());
+        $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'quiz_add');
+            ->setAttribute('class', 'add');
         $this->add($field);
     }
 
@@ -60,6 +67,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'edit_roles',
+                    'required' => true,
+                )
+            )
+        );
+
         return $inputFilter;
     }
 
@@ -75,5 +91,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         $this->setData($data);
+    }
+
+
+    private function _createEditRolesArray()
+    {
+        $roles = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findBy(array(), array('name' => 'ASC'));
+
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if (!$role->getSystem())
+                $rolesArray[$role->getName()] = $role->getName();
+        }
+
+        if (empty($rolesArray))
+            throw new \RuntimeException('There needs to be at least one role before you can add a quiz');
+
+        return $rolesArray;
     }
 }

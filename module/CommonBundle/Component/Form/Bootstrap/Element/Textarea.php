@@ -14,16 +14,18 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
-use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
-    Zend\Form\Decorator;
-
 /**
  * Textarea form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Textarea extends \Zend\Form\Element\Textarea
+class Textarea extends \Zend\Form\Element\Textarea implements \CommonBundle\Component\Form\Admin\Element
 {
+    /**
+     * @var boolean
+     */
+    private $_required = false;
+
     /**
      * @param  null|int|string  $name    Optional name for the element
      * @param  array            $options Optional options for the element
@@ -53,6 +55,15 @@ class Textarea extends \Zend\Form\Element\Textarea
     public function setRequired($flag = true)
     {
         $this->setAttribute('required', $flag);
+        $this->_required = $flag;
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return $this->_required;
     }
 }

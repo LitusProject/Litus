@@ -2,13 +2,14 @@
 
 namespace CudiBundle\Repository\Stock\Order;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Order\Item as ItemEntity,
     CudiBundle\Entity\Stock\Order\Order as OrderEntity,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Supplier,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Order
@@ -18,7 +19,7 @@ use CommonBundle\Entity\User\Person,
  */
 class Order extends EntityRepository
 {
-    public function findAllBySupplierAndPeriod(Supplier $supplier, Period $period)
+    public function findAllBySupplierAndPeriodQuery(Supplier $supplier, Period $period)
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('o')
@@ -37,8 +38,7 @@ class Order extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
 
-        $resultSet = $query->getQuery()
-            ->getResult();
+        $resultSet = $query->getQuery();
 
         return $resultSet;
     }
@@ -57,12 +57,9 @@ class Order extends EntityRepository
             ->setParameter('supplier', $supplier->getId())
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function addNumberByArticle(Article $article, $number, Person $person)
@@ -85,5 +82,48 @@ class Order extends EntityRepository
         }
 
         return $item;
+    }
+
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('CudiBundle\Entity\Stock\Order\Order', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNotNull('o.dateOrdered'),
+                    $query->expr()->gt('o.dateOrdered', ':start'),
+                    $query->expr()->lt('o.dateOrdered', ':end')
+                )
+            )
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
+            ->orderBy('o.dateOrdered', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllBySupplierAndAcademicYearQuery($supplier, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('CudiBundle\Entity\Stock\Order\Order', 'o')
+            ->innerJoin('o.supplier', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':supplier'),
+                    $query->expr()->isNotNull('o.dateOrdered'),
+                    $query->expr()->gt('o.dateOrdered', ':start'),
+                    $query->expr()->lt('o.dateOrdered', ':end')
+                )
+            )
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
+            ->setParameter('supplier', '%'.strtolower($supplier).'%')
+            ->orderBy('o.dateOrdered', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
     }
 }

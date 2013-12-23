@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Document\Pdf;
+namespace BrBundle\Component\Document\Generator\Pdf;
 
 use BrBundle\Entity\Contract,
     CommonBundle\Component\Util\TmpFile,

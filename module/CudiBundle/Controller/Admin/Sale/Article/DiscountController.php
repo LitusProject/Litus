@@ -42,13 +42,22 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 
                 $discount = new Discount($article);
 
+                if ($formData['organization'] != '0') {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization']);
+                } else {
+                    $organization = null;
+                }
+
                 if ($formData['template'] == 0) {
                     $discount->setDiscount(
                         $formData['value'],
                         $formData['method'],
                         $formData['type'],
                         $formData['rounding'],
-                        $formData['apply_once']
+                        $formData['apply_once'],
+                        $organization
                     );
                 } else {
                     $template = $this->getEntityManager()
@@ -82,14 +91,18 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             }
         }
 
-        $discounts = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
-            ->findByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
                 'article' => $article,
-                'discounts' => $discounts,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
                 'form' => $form,
             )
         );

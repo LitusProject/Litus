@@ -10,19 +10,19 @@
         tHold: 'Hold',
         tUnhold: 'Unhold',
         tHideHold: 'Hide Hold',
-        tUndoLastSelling: 'Undo Last Selling',
+        tUndoLastSale: 'Undo Last Sale',
         tPrintNext: 'Print Next',
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
         tAddToQueue: 'Add to queue',
         tErrorAddPerson: 'The person could not be added to the queue',
         tErrorAddPersonType: {'person': 'The person was not found', 'noBookings': 'There were no bookings for this person'},
 
-        translateStatus: function (status) {return status},
+        translateStatus: function (status) {return status;},
         sendToSocket: function (text) {},
         lightVersion: false,
+        personTypeahead: '',
     };
 
-    var lastPrinted = 0;
     var lastSold = 0;
 
     var methods = {
@@ -42,7 +42,12 @@
             currentView = permanent ? 'queue' : currentView;
             $(this).permanentModal({closable: !permanent});
 
-            if (!$(this).data('queueSettings').lightVersion) {
+            if ($(this).data('queueSettings').lightVersion) {
+                $(this).find('.filterText').val('');
+                $(this).on('shown', function () {
+                    $(this).find('.filterText').focus();
+                });
+            } else {
                 var $this = $(this);
                 $(this).find('tbody tr').each(function () {
                     _showActions($this, $(this), $(this).data('info'));
@@ -64,7 +69,7 @@
         },
         setLastSold : function (data) {
             lastSold = data;
-            $(this).find('.undoLastSelling').toggle(lastSold > 0);
+            $(this).find('.undoLastSale').toggle(lastSold > 0);
             return this;
         },
         gotBarcode : function (barcode) {
@@ -89,14 +94,14 @@
 
     $.queue = function (options) {
         return $('<div>').queue(options);
-    }
+    };
 
     function _init($this) {
         var settings = $this.data('queueSettings');
 
         $this.addClass('modal fade queueModal').html('').append(
             $('<div>', {'class': 'modal-header'}).append(
-                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide')}),
+                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
                 $('<div>', {'class': 'form-search'}).append(
                     $('<div>', {'class': 'input-append pull-right'}).append(
                         filterText = $('<input>', {'type': 'text', 'class': 'input-medium search-query filterText', 'placeholder': settings.tUniversityIdentification}),
@@ -125,9 +130,9 @@
                     hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
                     settings.tHideHold
                 ),
-                undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling', 'data-key': '117'}).append(
+                undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
                     $('<i>', {'class': 'icon-arrow-left icon-white'}),
-                    settings.tUndoLastSelling + ' - F6'
+                    settings.tUndoLastSale + ' - F6'
                 ),
                 printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
                     $('<i>', {'class': 'icon-print icon-white'}),
@@ -194,19 +199,25 @@
 
         printNext.click(function () {
             $this.find('tbody tr').each(function () {
-                if ($(this).data('info').status == 'signed_in' && $(this).data('info').id > lastPrinted) {
-                    lastPrinted = $(this).data('info').id;
-                    $(this).find('.startCollecting').click();
+                if ($(this).data('info').status == 'signed_in' && !$(this).data('info').collectPrinted) {
+                    settings.sendToSocket(
+                        JSON.stringify({
+                            'command': 'action',
+                            'action': 'startCollectingBulk',
+                            'id': $(this).data('info').id,
+                        })
+                    );
+                    return false;
                 }
             });
         });
 
-        undoLastSelling.click(function () {
+        undoLastSale.click(function () {
             if (lastSold > 0) {
                 settings.sendToSocket(
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'undoSelling',
+                        'action': 'undoSale',
                         'id': lastSold,
                     })
                 );
@@ -220,7 +231,7 @@
 
         $this.addClass('modal fade').html('').append(
             $('<div>', {'class': 'modal-header'}).append(
-                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide')}),
+                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
                 $('<h3>').html(settings.tQueueTitleLightVersion)
             ),
             $('<div>', {'class': 'modal-body'}).append(
@@ -234,11 +245,11 @@
                 )
             ),
             $('<div>', {'class': 'modal-footer'}).append(
-                undoLastSelling = $('<button>', {'class': 'btn btn-danger hide undoLastSelling', 'data-key': '117'}).append(
+                undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
                     $('<i>', {'class': 'icon-arrow-left icon-white'}),
-                    settings.tUndoLastSelling + ' - F6'
+                    settings.tUndoLastSale + ' - F6'
                 ),
-                startSelling = $('<button>', {'class': 'btn btn-success disabled startSelling', 'data-key': '118'}).append(
+                startSale = $('<button>', {'class': 'btn btn-success disabled startSale', 'data-key': '118'}).append(
                     $('<i>', {'class': 'icon-print icon-white'}),
                     settings.tSell + ' - F7'
                 )
@@ -248,11 +259,12 @@
         filterText.css('width', '250px');
 
         filterText.keyup(function (e) {
+            $(this).removeData('value');
             var filter = $(this).val().toLowerCase();
             var pattern = new RegExp(/[a-z][0-9]{7}/);
 
             if (pattern.test(filter)) {
-                $this.find('.startSelling').removeClass('disabled').unbind('click').click(function () {
+                $this.find('.startSale').removeClass('disabled').unbind('click').click(function () {
                     settings.sendToSocket(
                         JSON.stringify({
                             'command': 'action',
@@ -262,18 +274,33 @@
                     );
                 });
                 if (e.keyCode == 13)
-                    $this.find('.startSelling').click();
+                    $this.find('.startSale').click();
             } else {
-                $this.find('.startSelling').addClass('disabled').unbind('click');
+                $this.find('.startSale').addClass('disabled').unbind('click');
+            }
+        }).typeaheadRemote(
+            {
+                source: settings.personTypeahead,
+            }
+        ).change(function (e) {
+            if ($(this).data('value')) {
+                filterText.val($(this).data('value').universityIdentification);
+                settings.sendToSocket(
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'addToQueue',
+                        'universityIdentification': $(this).data('value').universityIdentification,
+                    })
+                );
             }
         });
 
-        undoLastSelling.click(function () {
+        undoLastSale.click(function () {
             if (lastSold > 0) {
                 settings.sendToSocket(
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'undoSelling',
+                        'action': 'undoSale',
                         'id': lastSold,
                     })
                 );
@@ -300,14 +327,14 @@
                 item = _createItem($this, settings, this);
                 tbody.append(item);
             } else {
-                _updateItem($this, settings, item, this)
+                _updateItem($this, settings, item, this);
             }
 
             _toggleVisibility($this, item, this);
         });
 
         tbody.find('tr').each(function () {
-            var pos = $.inArray($(this).data('info').id, inQueue)
+            var pos = $.inArray($(this).data('info').id, inQueue);
             if (pos < 0) {
                 $(this).remove();
             } else {
@@ -319,20 +346,16 @@
     function _updateQueueItem($this, data) {
         var settings = $this.data('queueSettings');
         if (settings.lightVersion) {
-            if (data.university_identification == $this.find('.filterText').val().toLowerCase()) {
-                if (data.status == 'selling') {
-                    _addPersonError($this);
-                } else {
-                    $this.find('.filterText').val('');
-                    $this.find('.startSelling').addClass('disabled').unbind('click');
-                    settings.sendToSocket(
-                        JSON.stringify({
-                            'command': 'action',
-                            'action': 'startSelling',
-                            'id': data.id,
-                        })
-                    );
-                }
+            if (data.university_identification.toLowerCase() == $this.find('.filterText').val().toLowerCase()) {
+                $this.find('.filterText').val('');
+                $this.find('.startSale').addClass('disabled').unbind('click');
+                settings.sendToSocket(
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'startSale',
+                        'id': data.id,
+                    })
+                );
             }
         } else {
             var item = $this.find('tbody #item-' + data.id);
@@ -346,7 +369,7 @@
                 item = _createItem($this, settings, data);
                 $this.find('tbody').append(item);
             } else {
-                _updateItem($this, settings, item, data)
+                _updateItem($this, settings, item, data);
             }
 
             _toggleVisibility($this, item, data);
@@ -358,32 +381,32 @@
             case 'signed_in':
                 if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
+                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
                     row.find('.startCollecting, .hold').show();
-                    row.find('.stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
+                    row.find('.stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 }
                 break;
             case 'collecting':
                 row.find('.stopCollecting, .cancelCollecting, .hold').show();
-                row.find('.startCollecting, .startSelling, .cancelSelling, .unhold').hide();
+                row.find('.startCollecting, .startSale, .cancelSale, .unhold').hide();
                 break;
             case 'collected':
                 if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .unhold').hide();
+                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
-                    row.find('.startSelling, .hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .cancelSelling, .unhold').hide();
+                    row.find('.startSale, .hold').show();
+                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .cancelSale, .unhold').hide();
                 }
                 break;
             case 'selling':
-                row.find('.cancelSelling, .hold').show();
-                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .unhold').hide();
+                row.find('.cancelSale, .hold').show();
+                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .unhold').hide();
                 break;
             case 'hold':
                 row.find('.unhold').show();
-                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSelling, .cancelSelling, .hold').hide();
+                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .hold').hide();
                 break;
         }
 
@@ -420,8 +443,8 @@
                 startCollecting = $('<button>', {'class': 'btn btn-success startCollecting'}).html(settings.tPrint).hide(),
                 stopCollecting = $('<button>', {'class': 'btn btn-success stopCollecting'}).html(settings.tDone).hide(),
                 cancelCollecting = $('<button>', {'class': 'btn btn-danger cancelCollecting'}).html(settings.tCancel).hide(),
-                startSelling = $('<button>', {'class': 'btn btn-success startSelling'}).html(settings.tSell).hide(),
-                cancelSelling = $('<button>', {'class': 'btn btn-danger cancelSelling'}).html(settings.tCancel).hide(),
+                startSale = $('<button>', {'class': 'btn btn-success startSale'}).html(settings.tSell).hide(),
+                cancelSale = $('<button>', {'class': 'btn btn-danger cancelSale'}).html(settings.tCancel).hide(),
                 hold = $('<button>', {'class': 'btn btn-warning hold'}).html(settings.tHold).hide(),
                 unhold = $('<button>', {'class': 'btn btn-warning unhold'}).html(settings.tUnhold).hide()
             )
@@ -465,25 +488,25 @@
             );
         });
 
-        startSelling.click(function () {
+        startSale.click(function () {
             if ($(this).is('.disabled'))
                 return;
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
-                    'action': 'startSelling',
+                    'action': 'startSale',
                     'id': $(this).closest('tr').data('info').id,
                 })
             );
         });
 
-        cancelSelling.click(function () {
+        cancelSale.click(function () {
             if ($(this).is('.disabled'))
                 return;
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
-                    'action': 'cancelSelling',
+                    'action': 'cancelSale',
                     'id': $(this).closest('tr').data('info').id,
                 })
             );
@@ -550,7 +573,7 @@
                         $(this).find('.stopCollecting').click();
                         break;
                     case 'collected':
-                        $(this).find('.startSelling').click();
+                        $(this).find('.startSale').click();
                         break;
                 }
             }
@@ -563,7 +586,7 @@
         $this.find('.modal-body').prepend(
             $('<div>', {'class': 'flashmessage alert alert-error fade in'}).append(
                 $('<div>', {'class': 'content'}).append('<p>').html(
-                    settings.tErrorAddPerson + (error == undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
+                    settings.tErrorAddPerson + (error === undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
                 )
             )
         );

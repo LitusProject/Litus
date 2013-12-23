@@ -15,9 +15,9 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Returned as ReturnedLog,
     CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
+    CudiBundle\Entity\Sale\ReturnItem,
+    CudiBundle\Form\Sale\Sale\ReturnArticle as ReturnForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,12 +33,18 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
 
-        $membershipArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getEntityManager()
+        $membershipArticles = array();
+        $ids = unserialize(
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
-            );
+        );
+
+        foreach($ids as $organizationId => $articleId) {
+            $membershipArticles[$organizationId] = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($articleId);
+        }
 
         return new ViewModel(
             array(
@@ -49,7 +55,8 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
                 'paydesks' => $paydesks,
-                'membershipArticle' => $membershipArticle,
+                'membershipArticles' => $membershipArticles,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -60,7 +67,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
-        $form = new ReturnSaleForm($this->getEntityManager());
+        $form = new ReturnForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -75,53 +82,35 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneByBarcode($formData['article']);
+                    ->findOneById($formData['article_id']);
 
-                $booking = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findOneSoldByPersonAndArticle($person, $article);
+                $queueItem = new QueueItem($this->getEntityManager(), $person, $session);
+                $queueItem->setStatus('sold');
+                $this->getEntityManager()->persist($queueItem);
 
-                if ($booking) {
-                    $saleItem = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                        ->findOneByPersonAndArticle($person, $article);
+                $saleItem = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findOneByPersonAndArticle($person, $article);
 
-                    if ($saleItem) {
-                        if ($saleItem->getNumber() == 1) {
-                            $this->getEntityManager()->remove($saleItem);
-                        } else {
-                            $saleItem->setNumber($saleItem->getNumber() - 1);
-                        }
-                    }
-
-                    if ($booking->getNumber() == 1) {
-                        $this->getEntityManager()->remove($booking);
-                    } else {
-                        $booking->setNumber($booking->getNumber() - 1);
-                    }
-
-                    $article->setStockValue($article->getStockValue() + 1);
-
-                    $this->getEntityManager()->persist(new ReturnedLog($this->getAuthentication()->getPersonObject(), $article));
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The sale was successfully returned!'
-                        )
-                    );
+                if ($saleItem) {
+                    $price = $saleItem->getPrice() / $saleItem->getNumber();
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The sale could not be returned!'
-                        )
-                    );
+                    $price = $article->getSellPrice();
                 }
+
+                $this->getEntityManager()->persist(new ReturnItem($article, $price/100, $queueItem));
+
+                $article->setStockValue($article->getStockValue() + 1);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The sale was successfully returned!'
+                    )
+                );
 
                 $this->redirect()->toRoute(
                     'cudi_sale_sale',
@@ -138,7 +127,48 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         return new ViewModel(
             array(
                 'form' => $form,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
             )
         );
+    }
+
+    public function returnPriceAction()
+    {
+        $this->initAjax();
+
+        if($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+
+            if (!isset($data['person']) || !isset($data['article']))
+                return new ViewModel();
+
+            $person = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person')
+                ->findOneById($data['person']);
+
+            $article = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($data['article']);
+
+            $saleItem = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findOneByPersonAndArticle($person, $article);
+
+            if ($saleItem) {
+                $price = $saleItem->getPrice() / $saleItem->getNumber();
+            } else {
+                $price = $article->getSellPrice();
+            }
+
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'price' => $price,
+                    ),
+                )
+            );
+        }
+
+        return new ViewModel();
     }
 }

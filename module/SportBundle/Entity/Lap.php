@@ -15,7 +15,9 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+    DateInterval,
     DateTime,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -73,6 +75,11 @@ class Lap
     private $endTime;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \SportBundle\Entity\Runner $runner
      */
@@ -85,7 +92,7 @@ class Lap
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -146,6 +153,16 @@ class Lap
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \SportBundle\Entity\Lap
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
      * Ends this lap.
      *
      * @return \SportBundle\Entity\Lap
@@ -157,10 +174,15 @@ class Lap
     }
 
     /**
+     * Returns the duration of the lap.
+     *
      * @return \DateInterval
      */
     public function getLapTime()
     {
+        if (null === $this->startTime)
+            return new DateInterval('PT0S');
+
         if (null !== $this->endTime) {
             $lapTime = $this->endTime->diff($this->startTime);
         } else {
@@ -169,5 +191,45 @@ class Lap
         }
 
         return $lapTime;
+    }
+
+    /**
+     * Determines the number of points this lap is worth.
+     *
+     * @return integer
+     */
+    public function getPoints()
+    {
+        $pointsCriteria = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.points_criteria')
+        );
+
+        $seconds = $this->_convertDateIntervalToSeconds($this->getLapTime());
+
+        $points = 0;
+        foreach ($pointsCriteria as $i => $pointsCriterium) {
+            if (isset($pointsCriteria[$i+1])) {
+                if ($seconds > $pointsCriteria[$i+1]['limit'] && $seconds <= $pointsCriterium['limit'])
+                    return $pointsCriterium['points'];
+            } else {
+                if ($seconds <= $pointsCriterium['limit'])
+                    return $pointsCriterium['points'];
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Converts a DateInterval to seconds.
+     *
+     * @param \DateInterval $interval The interval that should be converted
+     * @return integer
+     */
+    private function _convertDateIntervalToSeconds(DateInterval $interval)
+    {
+        return $interval->h*3600 + $interval->i*60 + $interval->s;
     }
 }

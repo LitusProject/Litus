@@ -30,16 +30,35 @@ return array(
             'secretary_admin_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/secretary/registration[/:action[/:id]][/:academicyear][/:field/:string][/]',
+                    'route' => '/admin/secretary/registration[/:action[/:id][/organization/:organization]][/:academicyear][/:field/:string][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
+                        'organization' => '[0-9]*',
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'secretary_admin_registration',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'secretary_admin_promotion' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/secretary/promotion[/:action[/:id][/page/:page]][/:academicyear][/:field/:string][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                        'page'         => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'secretary_admin_promotion',
                         'action'     => 'manage',
                     ),
                 ),
@@ -99,6 +118,7 @@ return array(
         'invokables' => array(
             'secretary_install'              => 'SecretaryBundle\Controller\Admin\InstallController',
             'secretary_admin_registration'   => 'SecretaryBundle\Controller\Admin\RegistrationController',
+            'secretary_admin_promotion'      => 'SecretaryBundle\Controller\Admin\PromotionController',
 
             'secretary_registration'         => 'SecretaryBundle\Controller\RegistrationController',
         ),

@@ -10,44 +10,51 @@
  */
 
 .tabs {
-	#gradient > .vertical(@cTabsGradientStart, @cTabsGradientStop);
-	.border-radius(@defaultSpacing);
+    border-bottom: 1px solid @cBorder;
 
-	margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
-	padding: 0 @defaultSpacing;
+    margin: 0 @defaultSpacing 2 * @defaultSpacing @fieldsetLegendPosition;
+    padding: 0 @defaultSpacing 0 0;
 
-	width: @layoutWidth - (@leftSidebarWidth + 5 * @defaultSpacing) !important;
-	height: @tabsHeight;
-	line-height: @tabsHeight;
+    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - @fieldsetLegendPosition;
+    height: @tabsHeight;
+    line-height: @tabsHeight;
 
-	font-weight: bold;
+    font-weight: bold;
 
-	li {
-		display: inline;
+    li {
+        display: inline;
 
-		a{
-			color: @cWhite;
-			padding: 0 @defaultSpacing;
+        a {
+            display: block;
+            float: left;
+            color: @cText;
+            padding: 0 @defaultSpacing * 2;
 
-			text-decoration: none;
-		}
+            text-decoration: none;
+        }
 
-		a:hover{
-			color: @cTabsAccent;
-		}
-	}
+        a:hover {
+            color: @cTabsAccent;
+        }
+    }
 
-	.active {
-		a{
-			color: @cTabsAccent;
-		}
-	}
+    .active {
+        a {
+            background: @cTabsAccent;
+            border-bottom: 1px solid @cSideboxBackground;
+            color: @cWhite;
+
+            &:hover {
+                color: @cWhite;
+            }
+        }
+    }
 }
 
 .tab_pane {
-	display: none;
+    display: none;
 
-	&.active {
-		display: block;
-	}
+    &.active {
+        display: block;
+    }
 }

@@ -44,10 +44,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article')
-                ->findAll();
+                ->findAllQuery();
         }
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $articles,
             $this->getParam('page')
         );
@@ -102,7 +102,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['rectoverso'],
                         $frontColor,
                         $formData['perforated'],
-                        $formData['colored']
+                        $formData['colored'],
+                        $formData['hardcovered']
                     );
                 } else {
                     $article = new External(
@@ -218,7 +219,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->setIsRectoVerso($formData['rectoverso'])
                         ->setFrontColor($frontPageColor)
                         ->setIsPerforated($formData['perforated'])
-                        ->setIsColored($formData['colored']);
+                        ->setIsColored($formData['colored'])
+                        ->setIsHardCovered($formData['hardcovered']);
                 }
 
                 $this->getEntityManager()->flush();
@@ -234,7 +236,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'cudi_admin_article',
                     array(
-                        'action' => 'manage'
+                        'action' => 'edit',
+                        'id' => $article->getId(),
                     )
                 );
 
@@ -300,13 +303,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->initAjax();
 
-        $articles = $this->_search($academicYear);
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($articles, $numResults);
+        $articles = $this->_search($academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {
@@ -316,6 +319,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->id = $article->getId();
             $item->title = $article->getTitle();
             $item->author = $article->getAuthors();
+            $item->isbn = $article->getISBN() ? $article->getISBN() : '';
             $item->publisher = $article->getPublishers();
             $item->yearPublished = $article->getYearPublished() ? $article->getYearPublished() : '';
             $item->isInternal = $article->isInternal();
@@ -372,7 +376,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['rectoverso'],
                         $frontColor,
                         $formData['perforated'],
-                        $formData['colored']
+                        $formData['colored'],
+                        $formData['hardcovered']
                     );
                 } else {
                     $new = new External(
@@ -549,6 +554,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             true,
             $frontColor,
             false,
+            false,
             false
         );
         $article->setVersionNumber($previous->getVersionNumber());
@@ -608,19 +614,23 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllByTitle($this->getParam('string'));
+                    ->findAllByTitleQuery($this->getParam('string'));
             case 'author':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllByAuthor($this->getParam('string'));
+                    ->findAllByAuthorQuery($this->getParam('string'));
+            case 'isbn':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article')
+                    ->findAllByISBNQuery($this->getParam('string'));
             case 'publisher':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllByPublisher($this->getParam('string'));
+                    ->findAllByPublisherQuery($this->getParam('string'));
             case 'subject':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllBySubject($this->getParam('string'), $this->getCurrentAcademicYear());
+                    ->findAllBySubjectQuery($this->getParam('string'), $this->getCurrentAcademicYear());
         }
     }
 

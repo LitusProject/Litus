@@ -35,17 +35,19 @@ return array(
         ),
         'quiz_admin_round' => array(
             '@common_jquery',
+            '@common_jqueryui',
+            '@common_jquery_table_sort',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'quiz_admin_moderate' => array(
+        'quiz_quiz' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
-            '@moderate_css',
+            '@quiz_css',
         )
     ),
     'routes' => array(),

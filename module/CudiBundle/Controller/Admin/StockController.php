@@ -52,10 +52,10 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
-                ->findAllByAcademicYear($academicYear, $semester);
+                ->findAllByAcademicYearQuery($academicYear, $semester);
         }
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $articles,
             $this->getParam('page')
         );
@@ -105,13 +105,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         $semester = $this->_getSemester();
 
-        $articles = $this->_search($this->getAcademicYear(), $semester);
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($articles, $numResults);
+        $articles = $this->_search($this->getAcademicYear(), $semester)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {
@@ -122,8 +122,16 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->nbAssigned = $period->getNbAssigned($article);
             $item->nbNotAssigned = $period->getNbBooked($article);
             $item->nbInStock = $article->getStockValue();
-            $item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
-            $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+
+            $ordered = $period->getNbOrdered($article);
+            $virtualOrdered = $period->getNbVirtualOrdered($article);
+            $delivered = $period->getNbDelivered($article);
+
+            $item->nbNotDelivered = max(0, $ordered - $delivered);
+            $item->nbOrdered = $ordered;
+            $item->nbVirtualOrdered = $virtualOrdered;
+            $item->nbNotDeliveredVirtual = max(0, $ordered + $virtualOrdered - $delivered);
+
             $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
             $result[] = $item;
         }
@@ -157,8 +165,16 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->nbAssigned = $period->getNbAssigned($article);
             $item->nbNotAssigned = $period->getNbBooked($article);
             $item->nbInStock = $article->getStockValue();
-            $item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
-            $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+
+            $ordered = $period->getNbOrdered($article);
+            $virtualOrdered = $period->getNbVirtualOrdered($article);
+            $delivered = $period->getNbDelivered($article);
+
+            $item->nbNotDelivered = max(0, $ordered - $delivered);
+            $item->nbOrdered = $ordered;
+            $item->nbVirtualOrdered = $virtualOrdered;
+            $item->nbNotDeliveredVirtual = max(0, $ordered + $virtualOrdered - $delivered);
+
             $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
             $result[] = $item;
         }
@@ -285,6 +301,17 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($delivery);
                     $this->getEntityManager()->flush();
 
+                    $enableAssignment = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_automatic_assignment');
+
+                    if ($enableAssignment == '1') {
+                        $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Booking')
+                            ->assignAllByArticle($article, $this->getMailTransport());
+                        $this->getEntityManager()->flush();
+                    }
+
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
@@ -318,6 +345,22 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    public function viewAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return new ViewModel();
+
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+
+        return new ViewModel(
+            array(
+                'article' => $article,
+                'period' => $period,
+            )
+        );
+    }
+
     public function deltaAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
@@ -326,14 +369,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\Period\Value\Delta',
-            $this->getParam('page'),
-            array(
-                'article' => $article,
-                'period' => $period,
-            ),
-            array('timestamp' => 'DESC')
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period\Value\Delta')
+                ->findAllByArticleAndPeriodQuery($article, $period),
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -373,7 +413,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $file = new TmpFile();
-                $document = new StockGenerator($this->getEntityManager(), $formData['articles'], $formData['order'], isset($formData['in_stock']), $this->getAcademicYear(), $file);
+                $document = new StockGenerator($this->getEntityManager(), $formData['articles'], $formData['order'], isset($formData['in_stock']) && $formData['in)stock'], $this->getAcademicYear(), $file);
                 $document->generate();
 
                 $headers = new Headers();
@@ -425,7 +465,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 if ($formData['articles'] == 'internal' && !$item->getMainArticle()->isInternal())
                     continue;
 
-                if ($item->getStockValue() <= 0 && isset($formData['in_stock']))
+                if ($item->getStockValue() <= 0 && isset($formData['in_stock']) && $formData['in_stock'])
                     continue;
 
                 $articles[] = $item;
@@ -494,15 +534,15 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'barcode':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'supplier':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllBySupplierStringAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllBySupplierStringAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
         }
     }
 

@@ -91,37 +91,39 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     return;
                 }
 
-                if (!isset($command->authSession)) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-                    return;
-                }
+                if ('development' != getenv('APPLICATION_ENV')) {
+                    if (!isset($command->authSession)) {
+                        $this->removeUser($user);
+                        $now = new DateTime();
+                        echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                        return;
+                    }
 
-                $authSession = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\User\Session')
-                    ->findOneById($command->authSession);
+                    $authSession = $this->_entityManager
+                        ->getRepository('CommonBundle\Entity\User\Session')
+                        ->findOneById($command->authSession);
 
-                if ($authSession) {
-                    $acl = new Acl($this->_entityManager);
+                    if ($authSession) {
+                        $acl = new Acl($this->_entityManager);
 
-                    $allowed = false;
-                    foreach ($authSession->getPerson()->getRoles() as $role) {
-                        if (
-                            $role->isAllowed(
-                                $acl, 'cudi_sale_sale', 'sale'
-                            )
-                        ) {
-                            $allowed = true;
+                        $allowed = false;
+                        foreach ($authSession->getPerson()->getRoles() as $role) {
+                            if (
+                                $role->isAllowed(
+                                    $acl, 'cudi_sale_sale', 'sale'
+                                )
+                            ) {
+                                $allowed = true;
+                            }
                         }
                     }
-                }
 
-                if (null == $authSession || !$allowed) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-                    return;
+                    if (null == $authSession || !$allowed) {
+                        $this->removeUser($user);
+                        $now = new DateTime();
+                        echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+                        return;
+                    }
                 }
 
                 if (isset($command->session) && is_numeric($command->session))
@@ -236,6 +238,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->_startCollecting($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
+            case 'startCollectingBulk':
+                $this->_startCollecting($user, $command->id, true);
+                $this->sendQueueItemToAll($command->id);
+                break;
             case 'cancelCollecting':
                 $this->_cancelCollecting($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
@@ -244,16 +250,16 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->_stopCollecting($user, $command->id, isset($command->articles) ? $command->articles : null);
                 $this->sendQueueItemToAll($command->id);
                 break;
-            case 'startSelling':
-                $this->_startSelling($user, $command->id);
+            case 'startSale':
+                $this->_startSale($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
-            case 'cancelSelling':
-                $this->_cancelSelling($user, $command->id);
+            case 'cancelSale':
+                $this->_cancelSale($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
-            case 'concludeSelling':
-                $this->_concludeSelling($user, $command->id, $command->articles, $command->discounts, $command->payMethod);
+            case 'concludeSale':
+                $this->_concludeSale($user, $command->id, $command->articles, $command->discounts, $command->payMethod);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'hold':
@@ -268,10 +274,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->_saveComment($command->id, $command->comment);
                 break;
             case 'addArticle':
-                $this->_addArticle($user, $command->id, $command->barcode);
+                $this->_addArticle($user, $command->id, $command->articleId);
                 break;
-            case 'undoSelling':
-                $this->_undoSelling($command->id);
+            case 'undoSale':
+                $this->_undoSale($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
         }
@@ -282,28 +288,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     private function _getCurrentAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->_entityManager->persist($academicYear);
-            $this->_entityManager->flush();
-        }
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->_entityManager);
     }
 
     private function _signIn(User $user, $universityIdentification)
@@ -357,9 +342,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         }
     }
 
-    private function _startCollecting(User $user, $id)
+    private function _startCollecting(User $user, $id, $bulk = false)
     {
-        $result = $this->_queue->startCollecting($user, $id);
+        $result = $this->_queue->startCollecting($user, $id, $bulk);
         if ($result)
             $this->sendText($user, $result);
 
@@ -387,19 +372,19 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         $this->_queue->cancelCollecting($id);
     }
 
-    private function _startSelling(User $user, $id)
+    private function _startSale(User $user, $id)
     {
-        $this->sendText($user, $this->_queue->startSelling($user, $id));
+        $this->sendText($user, $this->_queue->startSale($user, $id));
     }
 
-    private function _cancelSelling(User $user, $id)
+    private function _cancelSale(User $user, $id)
     {
-        $this->_queue->cancelSelling($id);
+        $this->_queue->cancelSale($id);
     }
 
-    private function _concludeSelling(User $user, $id, $articles, $discounts, $payMethod)
+    private function _concludeSale(User $user, $id, $articles, $discounts, $payMethod)
     {
-        $saleItems = $this->_queue->concludeSelling($id, $articles, $discounts, $payMethod);
+        $saleItems = $this->_queue->concludeSale($id, $articles, $discounts, $payMethod);
 
         if (null == $saleItems)
             return;
@@ -436,15 +421,22 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         $this->_entityManager->flush();
     }
 
-    private function _addArticle(User $user, $id, $barcode)
+    private function _addArticle(User $user, $id, $articleId)
     {
-        $result = $this->_queue->addArticle($id, $barcode);
+        $result = $this->_queue->addArticle($id, $articleId);
         if ($result)
             $this->sendText($user, $result);
     }
 
-    private function _undoSelling($id)
+    private function _undoSale(User $user, $id)
     {
-        $this->_queue->undoSelling($id);
+        $this->_queue->undoSale($id);
+
+        $lightVersion = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.sale_light_version');
+
+        if ($lightVersion == '1')
+            $this->_startSale($user, $id);
     }
 }

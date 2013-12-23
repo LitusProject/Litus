@@ -158,7 +158,7 @@
                                     $('.flashmessage').removeClass('in');
                                     $('#responsible_volunteer').addClass('in');
 
-                                    updateButton(button, parseInt(data.ratio), count);
+                                    updateButton(button, parseInt(data.ratio, 10), count);
                                 } else {
                                     errorSave();
                                 }
@@ -214,7 +214,7 @@
                 button.addClass('btn-danger');
             }
 
-            button.find('.count').text(ratio == 1 ? count : ++count);
+            button.find('.count').text(ratio == 1 ? button.data('max') : ++count);
         }
 
         function errorSave() {
@@ -225,8 +225,15 @@
 {% endblock %}
 
 {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
+    {% set previousShift = null %}
     <div class="accordion" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
+            {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
+                <h3>{{translate('Shifts on')}} {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
+            {% endif %}
+
+            {% set previousShift = shift %}
+
             <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
@@ -347,12 +354,12 @@
         {% endif %}
 
         {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
-            <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" type="button">
+            <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}" type="button">
                 {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
             </button>
         {% endif %}
         {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
-            <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" type="button">
+            <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" type="button">
                 {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
             </button>
         {% endif %}

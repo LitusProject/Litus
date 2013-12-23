@@ -18,7 +18,7 @@ use CudiBundle\Entity\Sale\Article as Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Articles\Discounts\Template")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Template")
  * @ORM\Table(name="cudi.sales_articles_discounts_templates")
  */
 class Template
@@ -75,14 +75,23 @@ class Template
     private $applyOnce;
 
     /**
+     * @var \CommonBundle\Entity\General\Organization The organization for the discount
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
+     * @ORM\JoinColumn(name="organization", referencedColumnName="id")
+     */
+    private $organization;
+
+    /**
      * @param string $name The name of the discount
      * @param integer $value The value of the discount
      * @param string $method The method of the discount
      * @param string $type The type of the discount
      * @param string $rounding The type of the rounding
      * @param boolean $applyOnce Apply the discount only once
+     * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
      */
-    public function __construct($name, $value, $method, $type, $rounding, $applyOnce)
+    public function __construct($name, $value, $method, $type, $rounding, $applyOnce = false, $organization = null)
     {
         $this->name = $name;
         $this->value = $value * 100;
@@ -90,6 +99,7 @@ class Template
         $this->type = $type;
         $this->rounding = $rounding;
         $this->applyOnce = $applyOnce;
+        $this->organization = $organization;
     }
 
     /**
@@ -109,11 +119,29 @@ class Template
     }
 
     /**
+     * @param name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
      * @return integer
      */
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @param value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+        return $this;
     }
 
     /**
@@ -125,11 +153,46 @@ class Template
     }
 
     /**
+     * @param method
+     */
+    public function setMethod($method)
+    {
+        $this->method = $method;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getType()
     {
         return Discount::$POSSIBLE_TYPES[$this->type];
+    }
+
+    /**
+     * @param type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Organization
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+        return $this;
     }
 
     /**
@@ -149,10 +212,28 @@ class Template
     }
 
     /**
+     * @param rounding
+     */
+    public function setRounding($rounding)
+    {
+        $this->rounding = $rounding;
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function applyOnce()
     {
         return $this->applyOnce;
+    }
+
+    /**
+     * @param apply_once
+     */
+    public function setApplyOnce($applyOnce)
+    {
+        $this->applyOnce = $applyOnce;
+        return $this;
     }
 }

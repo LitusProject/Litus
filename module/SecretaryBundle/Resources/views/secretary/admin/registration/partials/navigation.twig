@@ -3,9 +3,12 @@
 
     <nav id="controller_nav">
         <ul>
-            {% for academicYear in academicYears %}
-                <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("secretary_admin_registration", {"action": "manage", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
-            {% endfor %}
+            {% if hasAccess('secretary_admin_registration', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('secretary_admin_registration', {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('secretary_admin_registration', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('secretary_admin_registration', {"action": "manage", "academicyear": academicYear.getCode()}) }}">Manage</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>

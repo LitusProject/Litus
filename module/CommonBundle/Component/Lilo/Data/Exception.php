@@ -25,11 +25,6 @@ use CommonBundle\Component\Authentication\Authentication;
 class Exception extends \CommonBundle\Component\Lilo\Data
 {
     /**
-     * @var \CommonBundle\Component\Authentication\Authentication $_authentication The authentication instance
-     */
-    private $_authentication;
-
-    /**
      * @var array The correctly formatted data object
      */
     private $_data = array();
@@ -40,10 +35,23 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      * @param \Exception $exception The exception that should be formatted
      * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication instance
      */
-    public function __construct(\Exception $exception, Authentication $authentication = null)
+    public function __construct(\Exception $exception, Authentication $authentication)
     {
-        $this->_authentication = $authentication;
-        $this->_data = $this->_formatException($exception);
+        $this->_data = array(
+            'class' => get_class($exception),
+            'message' => $exception->getMessage(),
+            'trace' => $this->_formatBacktrace($exception),
+            'environment' => array(
+                'person' => $authentication->isAuthenticated()
+                    ? $authentication->getPersonObject()->getFullName() . ' ('. $authentication->getPersonObject()->getUsername() . ')'
+                    : 'Guest',
+                'session' => $authentication->isAuthenticated()
+                    ? $authentication->getSessionObject()->getId()
+                    : '',
+                'url' => $this->_formatUrl(),
+                'userAgent' => $_SERVER['HTTP_USER_AGENT'],
+            ),
+        );
     }
 
     /**
@@ -57,34 +65,28 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     }
 
     /**
-     * Turns the exception object into a correctly formatted array.
+     * Formats the exception's backtrace nicely.
      *
-     * @param \Exception $exception The exception that should be formatted
-     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication instance
+     * @param \Exception $exception The exception which trace should be formatted
      * @return array
      */
-    private function _formatException(\Exception $exception, Authentication $authentication = null)
+    private function _formatBacktrace(\Exception $exception)
     {
-        $data = array(
-            'class' => get_class($exception),
-            'message' => $exception->getMessage(),
-            'code' => $exception->getCode(),
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine(),
-            'trace' => $exception->getTrace(),
+        $backtrace = array();
+        foreach ($exception->getTrace() as $t) {
+            if (!isset($t['file']))
+                continue;
 
-            'environment' => array(
-                'person' => $this->_getAuthenticationPerson(),
-                'session' => $this->_getAuthenticationSession(),
-                'url' => $this->_formatUrl(),
-                'userAgent' => $_SERVER['HTTP_USER_AGENT']
-            )
-        );
+            $backtrace[] = array(
+                'file' => basename($t['file']),
+                'line' => $t['line'],
+                'class' => isset($t['class']) ? $t['class'] : '',
+                'function' => $t['function'],
+                'args' => '',
+            );
+        }
 
-        if (null !== $exception->getPrevious())
-            $data['previous'] = $this->_formatData($exception->getPrevious());
-
-        return $data;
+        return $backtrace;
     }
 
     /**
@@ -97,31 +99,5 @@ class Exception extends \CommonBundle\Component\Lilo\Data
         return '' != $_SERVER['HTTP_HOST']
             ? ((isset($_SERVER['HTTPS']) && 'off' != $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
             : '';
-    }
-
-    /**
-     * Returns the username of the authenticated person.
-     *
-     * @return string
-     */
-    private function _getAuthenticationPerson()
-    {
-        if (null !== $this->_authentication && null !== $this->_authentication->getPersonObject())
-            return $this->_authentication->getPersonObject()->getUsername();
-
-        return '';
-    }
-
-    /**
-     * Returns the authentication session ID.
-     *
-     * @return string
-     */
-    private function _getAuthenticationSession()
-    {
-        if (null !== $this->_authentication && null !== $this->_authentication->getSessionObject())
-            return $this->_authentication->getSessionObject()->getId();
-
-        return '';
     }
 }

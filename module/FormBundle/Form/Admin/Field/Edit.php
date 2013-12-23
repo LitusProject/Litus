@@ -14,11 +14,12 @@
 
 namespace FormBundle\Form\Admin\Field;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Fields\Checkbox as CheckboxField,
-    FormBundle\Entity\Fields\String as StringField,
-    FormBundle\Entity\Fields\Dropdown as DropdownField,
+use Doctrine\ORM\EntityManager,
+    FormBundle\Entity\Field\Checkbox as CheckboxField,
+    FormBundle\Entity\Field\String as StringField,
+    FormBundle\Entity\Field\Dropdown as DropdownField,
+    FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 
@@ -50,20 +51,21 @@ class Edit extends Add
         $this->get('visibility')->get('visible_if')->setAttribute('options', $this->_getVisibilityOptions());
 
         $this->remove('submit');
+        $this->remove('submit_repeat');
 
         $field = new Submit('submit');
         $field->setValue('Save')
             ->setAttribute('class', 'field_edit');
         $this->add($field);
 
-        $this->_populateFromField($fieldSpecification);
+        $this->populateFromField($fieldSpecification);
     }
 
     private function _getVisibilityOptions()
     {
         $options = array(0 => 'Always');
         foreach($this->_form->getFields() as $field) {
-            if ($field == $this->_field)
+            if ($field->getId() == $this->_field->getId())
                 continue;
 
             if ($field instanceof StringField) {
@@ -91,39 +93,21 @@ class Edit extends Add
                         'data-type' => 'checkbox',
                     )
                 );
+            } elseif ($field instanceof FileField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'file',
+                    )
+                );
             }
         }
         return $options;
     }
 
-    private function _populateFromField(Field $field)
+    protected function _isTimeSlot()
     {
-        $data = array(
-            'order'    => $field->getOrder(),
-            'required' => $field->isRequired(),
-        );
-
-        if ($field instanceof StringField) {
-            $data['charsperline'] = $field->getLineLength();
-            $data['multiline'] = $field->isMultiLine();
-            if ($field->isMultiLine())
-                $data['lines'] = $field->getLines();
-        }
-
-        foreach($this->getLanguages() as $language) {
-            $data['label_' . $language->getAbbrev()] = $field->getLabel($language, false);
-
-            if($field instanceof DropdownField) {
-                $data['options_' . $language->getAbbrev()] = $field->getOptions($language, false);
-            }
-        }
-
-        if (null !== $field->getVisibilityDecissionField()) {
-            $data['visible_if'] = $field->getVisibilityDecissionField()->getId();
-            $data['visible_value'] = $field->getVisibilityValue();
-            $this->get('visibility')->get('visible_value')->setAttribute('data-current_value', $field->getVisibilityValue());
-        }
-
-        $this->setData($data);
+        return $this->_field->getType() == 'timeslot';
     }
 }

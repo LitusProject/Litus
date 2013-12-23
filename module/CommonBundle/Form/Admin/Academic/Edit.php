@@ -61,11 +61,11 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             ->setAttribute('placeholder', 'dd/mm/yyyy');
         $this->add($field);
 
-        $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
+        $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address', false);
         $field->setLabel('Primary Address&mdash;Student Room or Home');
         $this->add($field);
 
-        $field = new AddressForm('secondary_address', 'secondary_address');
+        $field = new AddressForm('secondary_address', 'secondary_address', false);
         $field->setLabel('Secondary Address&mdash;Home');
         $this->add($field);
 

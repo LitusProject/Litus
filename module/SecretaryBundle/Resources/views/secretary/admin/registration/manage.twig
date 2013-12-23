@@ -5,6 +5,10 @@
 
     {% include 'secretary/admin/registration/partials/navigation.twig' %}
 
+    {% include 'secretary/admin/registration/partials/years.twig' %}
+
+    {% include 'secretary/admin/registration/partials/organizations.twig' %}
+
     <div id="controller_action">
         <div id="registration_search">
             <div style="padding: 4px; text-align: right;">
@@ -25,6 +29,7 @@
                     <th width="120px">Date</th>
                     <th width="120px">Payed</th>
                     <th width="120px">Barcode</th>
+                    <th width="120px">Organization</th>
                     <th width="70px">Action</th>
                 </tr>
             </table>
@@ -40,7 +45,7 @@
             $.searchDatabase({
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                url: '{{ url('secretary_admin_registration', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('secretary_admin_registration', {'action': 'search', 'academicyear': activeAcademicYear.getCode(), 'organization': currentOrganization.getId()}) }}',
                 display: function (data) {
                     $('#registration_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -50,13 +55,14 @@
                             .append('<td>' + this.date + '</td>')
                             .append('<td>' + (this.payed ? '&times;' : '') + '</td>')
                             .append('<td>' + this.barcode + '</td>')
+                            .append('<td>' + this.organization + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
 
                         {% if hasAccess('secretary_admin_registration', 'barcode') %}
-                            actions.append('<a href="{{ url('secretary_admin_registration', {"action": "barcode"}) }}' + this.id +'" class="edit">Barcode</a>');
+                            actions.append('<a href="{{ url('secretary_admin_registration', {"action": "barcode"}) }}' + this.id +'/organization/{{ currentOrganization.getId() }}" class="edit">Barcode</a>');
                         {% endif %}
                         {% if hasAccess('secretary_admin_registration', 'edit') %}
-                            actions.append('<a href="{{ url('secretary_admin_registration', {"action": "edit"}) }}' + this.id +'" class="edit">Edit</a>');
+                            actions.append('<a href="{{ url('secretary_admin_registration', {"action": "edit"}) }}' + this.id +'/organization/{{ currentOrganization.getId() }}" class="edit">Edit</a>');
                         {% endif %}
                     });
                     $('#registration_search table').change();

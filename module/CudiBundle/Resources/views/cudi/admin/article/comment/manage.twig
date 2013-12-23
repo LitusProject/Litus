@@ -29,7 +29,7 @@
         {{ forms.renderForm(form) }}
         <br style="clear:both"/>
 
-        <table class="full_width manage" id="articleComments">
+        <table class="manage" id="articleComments">
             <tr>
                 <th width="100px">Date</th>
                 <th width="140px">Person</th>
@@ -38,7 +38,7 @@
                 <th width="70px">Action</th>
             </tr>
 
-            {% for mapping in mappings %}
+            {% for mapping in paginator %}
                 <tr class="item item-{{ mapping.getId() }}">
                     <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
                     <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
@@ -53,7 +53,25 @@
                 </tr>
             {% endfor %}
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
+
+    <aside>
+        {% if hasAccess('cudi_admin_article', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Back To Article</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to go back to the article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_article', {"action": "edit", "id": article.getId()}) }}">&rarr; Back To Article</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 
     <div class="modal hide fade" id="viewComment">
         <div class="modal-header">

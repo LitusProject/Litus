@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Supplier
@@ -12,4 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class Supplier extends EntityRepository
 {
+    public function findAllQuery()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('CudiBundle\Entity\Supplier', 's')
+            ->orderBy('s.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

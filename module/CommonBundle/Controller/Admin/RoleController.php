@@ -269,7 +269,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             new FlashMessage(
                 FlashMessage::SUCCESS,
                 'Succes',
-                'The tree was succesfully pruned!'
+                'The tree was successfully pruned!'
             )
         );
 

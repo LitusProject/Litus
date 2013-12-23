@@ -16,10 +16,11 @@ namespace SyllabusBundle\Controller\Admin\Subject;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
-    DateTime,
     SyllabusBundle\Entity\Subject\Comment,
-    SyllabusBundle\Form\Admin\Subject\Comment\Add as AddForm,
+    SyllabusBundle\Entity\Subject\Reply,
+    SyllabusBundle\Form\Admin\Subject\Comment\Add as AddCommentForm,
+    SyllabusBundle\Form\Admin\Subject\Comment\MarkAsRead as MarkAsReadForm,
+    SyllabusBundle\Form\Admin\Subject\Reply\Add as AddReplyForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -34,10 +35,10 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Subject\Comment')
-                ->findAllByAcademicYear($academicYear),
+                ->findAllByAcademicYearQuery($academicYear),
             $this->getParam('page')
         );
 
@@ -64,7 +65,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findBySubject($subject);
 
-        $form = new AddForm();
+        $form = new AddCommentForm();
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -109,6 +110,98 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 'subject' => $subject,
                 'form' => $form,
                 'comments' => $comments,
+            )
+        );
+    }
+
+    public function replyAction()
+    {
+        if (!($comment = $this->_getComment()))
+            return new ViewModel();
+
+        $replies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject\Reply')
+            ->findAllByComment($comment);
+
+        $form = new AddReplyForm();
+        $markAsReadForm = new MarkAsReadForm($comment);
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            if (isset($formData['mark_as_read'])) {
+                $markAsReadForm->setData($formData);
+
+                if($markAsReadForm->isValid()) {
+                    $formData = $markAsReadForm->getFormData($formData);
+
+                    if ($comment->isRead())
+                        $comment->setReadBy(null);
+                    else
+                        $comment->setReadBy($this->getAuthentication()->getPersonObject());
+
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The comment status was successfully updated!'
+                        )
+                    );
+
+                    $this->redirect()->toRoute(
+                        'syllabus_admin_subject_comment',
+                        array(
+                            'action' => 'reply',
+                            'id' => $comment->getId(),
+                        )
+                    );
+
+                    return new ViewModel();
+                }
+            } else {
+                $form->setData($formData);
+
+                if($form->isValid()) {
+                    $formData = $form->getFormData($formData);
+
+                    $reply = new Reply(
+                        $this->getEntityManager(),
+                        $this->getAuthentication()->getPersonObject(),
+                        $comment,
+                        $formData['text']
+                    );
+
+                    $this->getEntityManager()->persist($reply);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The reply was successfully created!'
+                        )
+                    );
+
+                    $this->redirect()->toRoute(
+                        'syllabus_admin_subject_comment',
+                        array(
+                            'action' => 'reply',
+                            'id' => $comment->getId(),
+                        )
+                    );
+
+                    return new ViewModel();
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'comment' => $comment,
+                'replies' => $replies,
+                'form' => $form,
+                'markAsReadForm' => $markAsReadForm,
             )
         );
     }
@@ -228,41 +321,10 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear')) {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-
-            $next = clone $start;
-            $next->add(new DateInterval('P1Y'));
-            if ($next <= new DateTime())
-                $start = $next;
-        } else {
-            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-        }
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($start);
+        $date = null;
+        if (null !== $this->getParam('academicyear'))
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(

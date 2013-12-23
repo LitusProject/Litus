@@ -5,7 +5,7 @@ namespace CommonBundle\Repository\User\Person\Organization;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * UnitMap
@@ -15,4 +15,24 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class UnitMap extends EntityRepository
 {
+    public function findAllByUnitAndAcademicYearQuery(Unit $unit, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('u, a')
+            ->from('CommonBundle\Entity\User\Person\Organization\UnitMap', 'u')
+            ->innerJoin('u.academic', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('u.unit', ':unit'),
+                    $query->expr()->eq('u.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('unit', $unit)
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('a.lastName', 'ASC')
+            ->addOrderBy('a.firstName', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

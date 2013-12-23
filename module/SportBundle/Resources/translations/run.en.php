@@ -13,12 +13,12 @@
  */
 
 return array(
-    '24h-Run' => '24h-Run',
+    '24h Run' => '24h Run',
 
     'Home' => 'Home',
     'Group of Friends' => 'Group of Friends',
 
-    'A group of friends is a small team of runners. Each team must choose two slots of two hours during the 24h-Run. During these happy hours, you get two points for each lap under 1\'30\'\'. When you run outside of these hours, each lap under 1\'30\'\' earns you one point. Off course, the group who has collected the most points at the end of the 24h-Run wins!' => 'A group of friends is a small team of runners. Each team must choose two slots of two hours during the 24h-Run. During these happy hours, you get two points for each lap under 1\'30\'\'. When you run outside of these hours, each lap under 1\'30\'\' earns you one point. Off course, the group who has collected the most points at the end of the 24h-Run wins!',
+    'A group of friends consists of a few runners. Each group has to pick two time slots with a duration of 2 hours. You will receive points for every lap beneath 1\'30". The faster you run,  the more points you get per lap. You pick "happy hours" where your points will count double. If VTK does not have enough runners and you decide to come run for us, your points will also count double. The group with the most points wins!' => 'A group of friends consists of a few runners. Each group has to pick two time slots with a duration of 2 hours. You will receive points for every lap beneath 1\'30". The faster you run,  the more points you get per lap. You pick "happy hours" where your points will count double. If VTK does not have enough runners and you decide to come run for us, your points will also count double. The group with the most points wins!',
 
     'Group Information' => 'Group Information',
     'Runner One' => 'Runner One',

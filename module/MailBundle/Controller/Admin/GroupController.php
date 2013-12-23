@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     MailBundle\Form\Admin\Mail\Mail as MailForm,
     Zend\Mail\Message,
+    Zend\Validator\EmailAddress as EmailAddressValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -26,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @autor Kristof Mariën <kristof.marien@litus.cc>
  */
-class GroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class GroupController extends \MailBundle\Component\Controller\AdminController
 {
     public function groupsAction()
     {
@@ -90,9 +91,29 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $mail->addTo($mailAddress, $mailName);
 
+                $emailValidator = new EmailAddressValidator();
+
+                $addresses = array();
                 foreach($people as $person) {
-                    if (null !== $person->getPerson()->getEmail())
-                        $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
+                    if (null === $person->getPerson()->getEmail() || !$emailValidator->isValid($person->getPerson()->getEmail()))
+                        continue;
+
+                    $addresses[$person->getPerson()->getEmail()] = $person->getPerson()->getEmail();
+                }
+
+                $i = 0;
+                foreach($addresses as $address) {
+                    $mail->addBcc($address);
+                    $i++;
+
+                    if (500 == $i) {
+                        $i = 0;
+
+                        if ('development' != getenv('APPLICATION_ENV'))
+                            $this->getMailTransport()->send($mail);
+
+                        $mail->setBcc(array());
+                    }
                 }
 
                 if ('development' != getenv('APPLICATION_ENV'))

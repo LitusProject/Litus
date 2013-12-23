@@ -14,7 +14,8 @@
 
 namespace FormBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\Exception\HasNoAccessException,
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
+    CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;
@@ -38,9 +39,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $result = parent::onDispatch($e);
 
         $result->loginForm = new LoginForm($this->url()->fromRoute('form_manage_auth', array('action' => 'login')));
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
         $result->shibbolethUrl = $this->_getShibbolethUrl();
 
         $e->setResult($result);
@@ -75,9 +76,22 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
 
-        return $shibbolethUrl . '?source=form';
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
+
+        $shibbolethUrl .= '?source=form';
+
+        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+        return $shibbolethUrl;
     }
 }

@@ -3,7 +3,7 @@
 namespace FormBundle\Repository\Node;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Form
@@ -13,36 +13,18 @@ use DateTime,
  */
 class Form extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Node\Form', 'n')
-            ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('n.startDate', 'DESC')
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findOneById($id) {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\Node\Form', 'n')
-            ->where(
-                $query->expr()->eq('n.id', ':id')
-            )
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
-    }
-
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
@@ -50,15 +32,14 @@ class Form extends EntityRepository
             ->where(
                 $query->expr()->gt('f.endDate', ':now')
             )
-            ->orderBy('f.creationTime', 'DESC')
+            ->orderBy('f.startDate', 'DESC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllOld()
+    public function findAllOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
@@ -66,10 +47,9 @@ class Form extends EntityRepository
             ->where(
                 $query->expr()->lt('f.endDate', ':now')
             )
-            ->orderBy('f.creationTime', 'DESC')
+            ->orderBy('f.startDate', 'DESC')
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

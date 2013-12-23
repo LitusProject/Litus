@@ -24,19 +24,20 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'doctrine.cache.orm_default' => function ($serviceManager) {
-                if ('development' == getenv('APPLICATION_ENV')) {
-                    $cache = new \Doctrine\Common\Cache\ArrayCache();
-                } else {
+                if ('production' == getenv('APPLICATION_ENV')) {
                     if (!extension_loaded('memcached'))
                         throw new \RuntimeException('Litus requires the memcached extension to be loaded');
 
                     $cache = new \Doctrine\Common\Cache\MemcachedCache();
+                    $cache->setNamespace('Litus');
                     $memcached = new \Memcached();
 
                     if(!$memcached->addServer('localhost', 11211))
                         throw now \RuntimeException('Failed to connect to the memcached server');
 
                     $cache->setMemcached($memcached);
+                } else {
+                    $cache = new \Doctrine\Common\Cache\ArrayCache();
                 }
 
                 return $cache;
@@ -45,7 +46,7 @@ return array(
     ),
     'doctrine' => array(
         'cache' => array(
-            'apc' => array(
+            'memcached' => array(
                 'namespace' => 'Litus',
             ),
             'array' => array(

@@ -26,9 +26,22 @@ class CacheController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $paginator = $this->paginator()->createFromArray(
+                $this->getCache()->getOptions()->getResourceManager()->getResource($this->getCache()->getOptions()->getResourceId())->getAllKeys(),
+                $this->getParam('page')
+            );
+        } else {
+            $paginator = $this->paginator()->createFromArray(
+                array(),
+                $this->getParam('page')
+            );
+        }
+
         return new ViewModel(
             array(
-                'cache' => $this->getCache(),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }

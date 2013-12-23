@@ -1,18 +1,73 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'common/admin/config/partials/navigation.twig' %}
+    {% include 'common/admin/config/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-		<h1>Description</h1>
-		<p>
-			{{ entry.getDescription() }}
-		</p>
+    <div id="controller_action">
+        <h1>Description</h1>
+        <p>
+            {{ entry.getDescription() }}
+        </p>
 
-		<br />
+        <br />
 
-		{% import 'admin/partials/form.twig' as forms %}
-    	{{ forms.renderForm(form) }}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var textfield = $('#config_value');
+            var object = unserialize(textfield.val());
+
+            var div = $('<div>')
+            textfield.after(div);
+            if($.isPlainObject(object)) {
+                textfield.hide();
+                displayObject(object, div);
+            }
+
+            div.find('input, textarea').keyup(function() {
+                var object = createObject(div);
+                textfield.val(serialize(object));
+            });
+        });
+
+        function displayObject(object, div) {
+            $.each(object, function (key, value) {
+                div.append(
+                    $('<div>', {'class': 'entry'}).append(
+                        $('<input>', {'type': 'text', 'class': 'object_key'}).val(key),
+                        subdiv = $('<div>', {'style': 'margin: 5px 5px 5px 20px; padding-left: 5px;', 'class': 'sub_object'})
+                    )
+                );
+
+                if ($.isPlainObject(value)) {
+                    subdiv.css({'border-left': ' 1px solid #ccc'})
+                    displayObject(value, subdiv);
+                } else {
+                    subdiv.append(
+                        $('<textarea>').val(value)
+                    );
+                }
+            });
+        }
+
+        function createObject(div) {
+            var object = {};
+            div.find('> .entry').each(function() {
+                var subdiv = $(this).find('> .sub_object');
+
+                if (subdiv.find('> textarea').length > 0) {
+                    object[$(this).find('> .object_key').val()] = subdiv.find('> textarea').val();
+                } else {
+                    object[$(this).find('> .object_key').val()] = createObject(subdiv);
+                }
+            });
+            return object;
+        }
+    </script>
 {% endblock %}

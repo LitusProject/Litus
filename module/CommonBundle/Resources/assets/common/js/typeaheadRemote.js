@@ -59,8 +59,11 @@
 
       if (this.$element.data('timeout'))
           clearTimeout(this.$element.data('timeout'));
+
       this.$element.data('timeout', setTimeout(function () {
-          $.getJSON(that.source + that.query, function(items) {
+          if (that.jsonRequest)
+            that.jsonRequest.abort();
+          that.jsonRequest = $.getJSON(that.source + that.query, function(items) {
               if (!items.length)
                 return that.shown ? that.hide() : that
 

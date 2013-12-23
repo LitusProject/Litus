@@ -20,12 +20,22 @@
  * --sessions|s    Sessions Only
  */
 
+if (false === getenv('APPLICATION_ENV'))
+    putenv('APPLICATION_ENV=development');
+
 chdir(dirname(dirname(dirname(dirname(__DIR__)))));
 
 include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
+
+$fallbackLanguage = $em->getRepository('CommonBundle\Entity\General\Language')
+    ->findOneByAbbrev(
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('fallback_language')
+    );
+\Locale::setDefault($fallbackLanguage->getAbbrev());
 
 $rules = array(
     'all|a'         => 'Run Garbage Collection',

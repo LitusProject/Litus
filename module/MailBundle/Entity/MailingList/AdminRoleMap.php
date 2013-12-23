@@ -20,7 +20,7 @@ use CommonBundle\Entity\Acl\Role,
     MailBundle\Entity\MailingList;
 
 /**
- * This entity maps admins to mailinglists.
+ * This entity maps admin roles to mailing lists.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\AdminRoleMap")
  * @ORM\Table(name="mail.lists_admin_roles")

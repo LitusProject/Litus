@@ -38,9 +38,9 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
         $result = parent::onDispatch($e);
 
         $result->loginForm = new LoginForm($this->url()->fromRoute('logistics_auth', array('action' => 'login')));
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
         $result->shibbolethUrl = $this->_getShibbolethUrl();
 
         $e->setResult($result);
@@ -75,9 +75,11 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
+        $shibbolethUrl .= '?source=logistics';
 
-        return $shibbolethUrl . '?source=logistics';
+        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+        return $shibbolethUrl;
     }
 }

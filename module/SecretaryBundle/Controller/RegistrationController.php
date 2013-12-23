@@ -16,6 +16,7 @@ namespace SecretaryBundle\Controller;
 
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
@@ -65,6 +66,39 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $academic = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('identification'));
+
+            if (null !== $academic && null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'WARNING',
+                        'You have already registered for this academic year.'
+                    )
+                );
+
+                if ($this->_isValidCode()) {
+                    $authentication = new Authentication(
+                        new ShibbolethAdapter(
+                            $this->getEntityManager(),
+                            'CommonBundle\Entity\User\Person\Academic',
+                            'universityIdentification'
+                        ),
+                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                    );
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true
+                    );
+                }
+
+                $this->redirect()->toRoute(
+                    'secretary_registration',
+                    array(
+                        'action' => 'studies',
+                    )
+                );
+
+                return new ViewModel();
+            }
         } else {
             $academic = null;
         }
@@ -92,6 +126,19 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
+        $ids = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        $membershipArticles = array();
+        foreach($ids as $organization => $id) {
+            $membershipArticles[$organization] = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($id);
+        }
+
         if ($this->getRequest()->isPost()) {
             if ($this->_isValidCode()) {
                 $code = $this->getEntityManager()
@@ -103,6 +150,18 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $formData = $this->getRequest()->getPost();
                 $formData['university_identification'] = $this->getParam('identification');
                 $form->setData($formData);
+
+                if (isset($formData['organization'])) {
+                    $selectedOrganization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization']);
+                } else {
+                    $selectedOrganization = current(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Organization')
+                            ->findAll()
+                    );
+                }
 
                 if ($form->isValid()) {
                     $formData = $form->getFormData($formData);
@@ -129,6 +188,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getParam('identification')
                     );
 
+                    $this->getEntityManager()->persist($academic);
+
                     $academic->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
                         ->addUniversityStatus(
                             new UniversityStatus(
@@ -153,14 +214,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             )
                         );
 
-                    $this->_uploadProfileImage($academic);
                     if (isset($formData['organization'])) {
                         $this->_setOrganization(
                             $academic,
                             $this->getCurrentAcademicYear(),
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Organization')
-                                ->findOneById($formData['organization'])
+                            $selectedOrganization
                         );
                     }
 
@@ -174,7 +232,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['tshirt_size']
                         );
 
-                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
+                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         $metaData = new MetaData(
                             $academic,
@@ -192,8 +250,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getEntityManager(),
                         $this->getMailTransport()
                     );
-
-                    $this->getEntityManager()->persist($academic);
 
                     $registration = new Registration(
                         $academic,
@@ -242,6 +298,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'form' => $form,
                         'termsAndConditions' => $termsAndConditions,
                         'studentDomain' => $studentDomain,
+                        'organizations' => $organizations,
+                        'membershipArticles' => $membershipArticles,
+                        'selectedOrganization' => $selectedOrganization,
                     )
                 );
             }
@@ -259,6 +318,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'termsAndConditions' => $termsAndConditions,
                         'studentDomain' => $studentDomain,
                         'organizations' => $organizations,
+                        'membershipArticles' => $membershipArticles,
                     )
                 );
             }
@@ -284,6 +344,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
+        $registrationEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled') == '1';
+
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
@@ -302,6 +366,19 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $this->getEntityManager(),
             $this->getParam('identification')
         );
+
+        $ids = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        $membershipArticles = array();
+        foreach($ids as $organization => $id) {
+            $membershipArticles[$organization] = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($id);
+        }
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -370,14 +447,21 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $academic->addUniversityStatus($status);
                 }
 
-                $this->_uploadProfileImage($academic);
                 if (isset($formData['organization'])) {
+                    $organization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization']);
+
                     $this->_setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
+                        $organization
+                    );
+                } else {
+                    $organization = current(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findOneById($formData['organization'])
+                            ->findAll()
                     );
                 }
 
@@ -388,31 +472,35 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
 
                 if (null !== $metaData) {
-                    if (null !== $metaData->getTshirtSize()) {
-                        $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Booking')
-                            ->findOneAssignedByArticleAndPerson(
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                                    ->findOneById($tshirts[$metaData->getTshirtSize()]),
-                                $academic
-                            );
+                    if ($registrationEnabled) {
+                        if (null !== $metaData->getTshirtSize()) {
+                            $booking = $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                ->findOneAssignedByArticleAndPerson(
+                                    $this->getEntityManager()
+                                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                                        ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                                    $academic
+                                );
 
-                        if (null !== $booking)
-                            $this->getEntityManager()->remove($booking);
+                            if (null !== $booking)
+                                $this->getEntityManager()->remove($booking);
+                        }
+                        $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
+                    } else {
+                        $becomeMember = $metaData->becomeMember();
                     }
-
-                    $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
 
                     if ($becomeMember) {
-                        $metaData->setBecomeMember($becomeMember)
-                            ->setReceiveIrReeelAtCudi($formData['irreeel'])
-                            ->setBakskeByMail($formData['bakske'])
-                            ->setTshirtSize($formData['tshirt_size']);
-                    } else {
-                        $metaData->setBakskeByMail($formData['bakske']);
+                        if ($registrationEnabled) {
+                            $metaData->setBecomeMember($becomeMember)
+                                ->setTshirtSize($formData['tshirt_size']);
+                        }
+
+                        $metaData->setReceiveIrReeelAtCudi($formData['irreeel']);
                     }
-                } else {
+                    $metaData->setBakskeByMail($formData['bakske']);
+                } elseif ($registrationEnabled) {
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -436,25 +524,35 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                $membershipArticle = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('secretary.membership_article')
+                if ($registrationEnabled) {
+                    $membershipArticles = array();
+                    $ids = unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('secretary.membership_article')
                     );
 
-                if ($metaData->becomeMember()) {
-                    $this->_bookRegistrationArticles($academic, $formData['tshirt_size']);
-                } else {
-                    $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                            $membershipArticle,
-                            $academic
-                        );
+                    foreach($ids as $organizationId => $articleId) {
+                        $membershipArticles[$organizationId] = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Article')
+                            ->findOneById($articleId);
+                    }
 
-                    if (null === $booking)
-                        $this->getEntityManager()->remove($booking);
+                    if ($metaData->becomeMember()) {
+                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $organization, $this->getCurrentAcademicYear());
+                    } else {
+                        foreach($membershipArticles as $membershipArticle) {
+                            $booking = $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                                    $membershipArticle,
+                                    $academic
+                                );
+
+                            if (null !== $booking)
+                                $this->getEntityManager()->remove($booking);
+                        }
+                    }
                 }
 
                 $academic->activate(
@@ -499,6 +597,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'form' => $form,
                 'termsAndConditions' => $termsAndConditions,
                 'studentDomain' => $studentDomain,
+                'membershipArticles' => $membershipArticles,
             )
         );
     }
@@ -653,6 +752,17 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
+
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
 
@@ -674,11 +784,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        $this->getEntityManager()->remove($code);
-        $this->getEntityManager()->flush();
+        if (null !== $code) {
+            $this->getEntityManager()->remove($code);
+            $this->getEntityManager()->flush();
 
-        $authentication->authenticate(
-            $this->getParam('identification'), '', true
-        );
+            $authentication->authenticate(
+                $this->getParam('identification'), '', true
+            );
+        }
     }
 }

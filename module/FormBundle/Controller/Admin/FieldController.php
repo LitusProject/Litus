@@ -15,10 +15,14 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Entity\Field\Checkbox,
+    DateTime,
+    FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
-    FormBundle\Entity\Field\Dropdown,
-    FormBundle\Entity\Field\OptionTranslation,
+    FormBundle\Entity\Field\Dropdown as DropdownField,
+    FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
+    FormBundle\Entity\Field\Translation\Option as OptionTranslationField,
+    FormBundle\Entity\Field\Translation\TimeSlot as TimeSlotTranslationField,
     FormBundle\Entity\Translation,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
@@ -37,7 +41,6 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -90,7 +93,11 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new AddForm($formSpecification, $this->getEntityManager());
+        $latestField = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Field')
+            ->findLatestField($formSpecification);
+
+        $form = new AddForm($formSpecification, $this->getEntityManager(), $this->getParam('repeat') ? $latestField : null);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -121,7 +128,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         );
                         break;
                     case 'dropdown':
-                        $field = new Dropdown(
+                        $field = new DropdownField(
                             $formSpecification,
                             $formData['order'],
                             $formData['required'],
@@ -131,7 +138,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                         foreach($languages as $language) {
                             if ('' != $formData['options_' . $language->getAbbrev()]) {
-                                $translation = new OptionTranslation(
+                                $translation = new OptionTranslationField(
                                     $field,
                                     $language,
                                     $formData['options_' . $language->getAbbrev()]
@@ -143,13 +150,47 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                         break;
                     case 'checkbox':
-                        $field = new Checkbox(
+                        $field = new CheckboxField(
                             $formSpecification,
                             $formData['order'],
                             $formData['required'],
                             $visibilityDecissionField,
                             isset($visibilityDecissionField) ? $formData['visible_value'] : null
                         );
+                        break;
+                     case 'file':
+                        $field = new FileField(
+                            $formSpecification,
+                            $formData['order'],
+                            $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null,
+                            $formData['max_size'] === '' ? 4 : $formData['max_size']
+                        );
+                        break;
+                    case 'timeslot':
+                        $field = new TimeSlotField(
+                            $formSpecification,
+                            0,
+                            $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null,
+                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']),
+                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date'])
+                        );
+
+                        foreach($languages as $language) {
+                            if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()])
+                                continue;
+                            $translation = new TimeSlotTranslationField(
+                                $field,
+                                $language,
+                                $formData['timeslot_location_' . $language->getAbbrev()],
+                                $formData['timeslot_extra_info_' . $language->getAbbrev()]
+                            );
+
+                            $this->getEntityManager()->persist($translation);
+                        }
                         break;
                     default:
                         throw new UnsupportedTypeException('This field type is unknown!');
@@ -181,13 +222,24 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'form_admin_form_field',
-                    array(
-                        'action' => 'manage',
-                        'id' => $formSpecification->getId(),
-                    )
-                );
+                if (isset($formData['submit_repeat'])) {
+                    $this->redirect()->toRoute(
+                        'form_admin_form_field',
+                        array(
+                            'action' => 'add',
+                            'id' => $formSpecification->getId(),
+                            'repeat' => 1,
+                        )
+                    );
+                } else {
+                    $this->redirect()->toRoute(
+                        'form_admin_form_field',
+                        array(
+                            'action' => 'manage',
+                            'id' => $formSpecification->getId(),
+                        )
+                    );
+                }
 
                 return new ViewModel();
             }
@@ -251,7 +303,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     $field->setLineLength($formData['charsperline'] === '' ? 0 : $formData['charsperline'])
                         ->setLines($formData['lines'] === '' ? 0 : $formData['lines'])
                         ->setMultiLine($formData['multiline']);
-                } elseif ($field instanceof Dropdown) {
+                } elseif ($field instanceof DropdownField) {
                     foreach($languages as $language) {
                         if ('' != $formData['options_' . $language->getAbbrev()]) {
                             $translation = $field->getOptionTranslation($language, false);
@@ -259,7 +311,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             if (null !== $translation) {
                                 $translation->setOptions($formData['options_' . $language->getAbbrev()]);
                             } else {
-                                $translation = new OptionTranslation(
+                                $translation = new OptionTranslationField(
                                     $field,
                                     $language,
                                     $formData['options_' . $language->getAbbrev()]
@@ -267,6 +319,35 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                                 $this->getEntityManager()->persist($translation);
                             }
+                        }
+                    }
+                } elseif ($field instanceof FileField) {
+                    $field->setMaxSize($formData['max_size'] === '' ? 4 : $formData['max_size']);
+                } elseif ($field instanceof TimeSlotField) {
+                    $field->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']))
+                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date']));
+
+                    foreach($languages as $language) {
+                        $translation = $field->getTimeSlotTranslation($language, false);
+
+                        if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()]) {
+                            if (null !== $translation)
+                                $this->getEntityManager()->remove($translation);
+                            continue;
+                        }
+
+                        if (null !== $translation) {
+                            $translation->setLocation($formData['timeslot_location_' . $language->getAbbrev()])
+                                ->setExtraInformation($formData['timeslot_extra_info_' . $language->getAbbrev()]);
+                        } else {
+                            $translation = new TimeSlotTranslationField(
+                                $field,
+                                $language,
+                                $formData['timeslot_location_' . $language->getAbbrev()],
+                                $formData['timeslot_extra_info_' . $language->getAbbrev()]
+                            );
+
+                            $this->getEntityManager()->persist($translation);
                         }
                     }
                 }
@@ -346,7 +427,6 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        // Delete all entered values
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($field);
@@ -360,6 +440,40 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function sortAction()
+    {
+        $this->initAjax();
+
+        if(!($formSpecification = $this->_getForm()))
+            return new ViewModel();
+
+        if(!$this->getRequest()->isPost())
+            return new ViewModel();
+
+        $data = $this->getRequest()->getPost();
+
+        if(!$data['items'])
+            return new ViewModel();
+
+        foreach($data['items'] as $order => $id)
+        {
+            $field = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Field')
+                ->findOneById($id);
+            $field->setOrder($order+1);
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                )
             )
         );
     }

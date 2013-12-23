@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager;
 
 /**
- * The form used to edit an existing cv
+ * Edit Cv
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */

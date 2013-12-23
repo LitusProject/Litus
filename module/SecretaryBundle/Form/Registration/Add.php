@@ -17,7 +17,6 @@ namespace SecretaryBundle\Form\Registration;
 use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
@@ -103,11 +102,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             );
         $personal->add($field);
 
-        $field = new File('profile');
-        $field->setLabel('Profile Image')
-            ->setAttribute('data-type', 'image');
-        $personal->add($field);
-
         $field = new Text('phone_number');
         $field->setLabel('Phone Number')
             ->setAttribute('placeholder', '+CCAAANNNNNN');
@@ -124,7 +118,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Primary Address&mdash;Student Room or Home');
         $this->add($field);
 
-        $field = new AddressForm('secondary_address', 'secondary_address');
+        $field = new AddressForm('secondary_address', 'secondary_address', false);
         $field->setLabel('Secondary Address&mdash;Home');
         $this->add($field);
 
@@ -151,27 +145,32 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $internet->add($field);
 
         $field = new Checkbox('primary_email');
-        $field->setLabel('I want to receive VTK e-mail at my personal e-mail address')
+        $field->setLabel('I want to receive e-mail at my personal e-mail address')
             ->setValue(true);
         $internet->add($field);
 
         $organization = new Collection('organization');
-        $organization->setLabel('Organization')
+        $organization->setLabel('Student Association')
             ->setAttribute('id', 'organization_info');
         $this->add($organization);
 
         $organizations = $this->_getOrganizations();
-        if (sizeof($organizations) > 1) {
-            $field = new Select('organization');
-            $field->setLabel('Organization')
-                ->setAttribute('options', $organizations);
-            $organization->add($field);
-        }
+        $field = new Select('organization');
+        $field->setLabel('Student Association')
+            ->setAttribute('options', $organizations);
+        $organization->add($field);
+
+        $registrationEnabled = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled');
 
         $field = new Checkbox('become_member');
-        $field->setLabel('I want to become a member of the organization (&euro;10)')
+        $field->setLabel('I want to become a member of the student association (&euro; { price })')
             ->setValue(true);
         $organization->add($field);
+
+        if ('1' != $registrationEnabled)
+            $field->setAttribute('disabled', 'disabled');
 
         $field = new Checkbox('conditions');
         $field->setLabel('I have read and agree with the terms and conditions');
@@ -207,9 +206,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $universityEmail = $academic->getUniversityEmail();
 
-        if ($universityEmail) {
+        if ($universityEmail)
             $universityEmail = explode('@', $universityEmail)[0];
-        }
 
         $organization = $academic->getOrganization($academicYear);
 
@@ -258,6 +256,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($metaData && $metaData->becomeMember()) {
+            if ($this->get('organization')->has('organization')) {
+                $this->get('organization')->get('organization')
+                    ->setAttribute('disabled', true);
+            }
             $this->get('organization')->get('become_member')
                 ->setAttribute('disabled', true);
             $this->get('organization')->get('conditions')
@@ -353,29 +355,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'name'     => 'sex',
                     'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'profile',
-                    'required' => false,
-                    'validators' => array(
-                        array(
-                            'name' => 'fileextension',
-                            'options' => array(
-                                'extension' => 'jpg,png',
-                            ),
-                        ),
-                        array(
-                            'name' => 'filefilessize',
-                            'options' => array(
-                                'extension' => '2MB',
-                            ),
-                        ),
-                    ),
                 )
             )
         );

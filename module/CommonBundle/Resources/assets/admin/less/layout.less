@@ -21,9 +21,15 @@ body {
 }
 
 h1 {
-	margin-top: 2*@defaultSpacing;
-	margin-bottom: @defaultSpacing;
-	font-size: @tSizeHeadingOne;
+    margin-top: 2*@defaultSpacing;
+    margin-bottom: @defaultSpacing;
+    font-size: @tSizeHeadingOne;
+}
+
+h2 {
+    margin-top: 2*@defaultSpacing;
+    margin-bottom: @defaultSpacing;
+    font-size: @tSizeHeadingTwo;
 }
 
 #layout {
@@ -108,8 +114,8 @@ h1 {
             line-height: @menuTitleHeight;
             text-indent: @tIndent;
             font-weight: bold;
-            color: @cTopmenuTitle;
-            background: url(@iMenuBackground);
+            color: @cWhite;
+            background: @cAccent;
         }
 
         ul {
@@ -153,7 +159,7 @@ h1 {
             text-indent: @tIndent;
             font-weight: bold;
             color: @cAccent;
-            background: @cSubmenuBackground;
+            background: @cSubmenuTitleBackground;
         }
 
         .subtitle {
@@ -161,7 +167,7 @@ h1 {
             height: @menuSubtitleHeight - @defaultSpacing;
             padding-left: @tIndent;
             padding-top: @defaultSpacing;
-            background: url(@iMenuBackground) 0 -@menuTitleHeight;
+            #gradient > .vertical(@cSubmenuGradientStart, @cSubmenuGradientStop);
             cursor: pointer;
 
             b {
@@ -170,39 +176,39 @@ h1 {
         }
 
         .subsubmenu {
-        	padding: 0;
-        	list-style: none;
+            padding: 0;
+            list-style: none;
 
-        	li {
-        		padding: 0;
-        	}
+            li {
+                padding: 0;
+            }
 
-        	ul {
-        		display: none;
-        		padding: @defaultSpacing 0;
+            ul {
+                display: none;
+                padding: @defaultSpacing 0;
 
-	            li {
-	                display: block;
-	                padding-left: @tIndent;
-	                line-height: @menuItemHeight;
+                li {
+                    display: block;
+                    padding-left: @tIndent;
+                    line-height: @menuItemHeight;
 
-	                a {
-	                    display: block;
-	                    line-height: @menuItemHeight;
-	                    text-decoration: none;
-	                    color: inherit;
-	                }
+                    a {
+                        display: block;
+                        line-height: @menuItemHeight;
+                        text-decoration: none;
+                        color: inherit;
+                    }
 
-	                a:hover {
-	                    color: @cBlack;
-	                }
+                    a:hover {
+                        color: @cBlack;
+                    }
 
-	                a:hover:before {
-	                    color: @cAccent;
-	                }
-	            }
+                    a:hover:before {
+                        color: @cAccent;
+                    }
+                }
 
-        	}
+            }
         }
     }
 }
@@ -294,74 +300,80 @@ h1 {
             }
         }
 
-	    .form {
-	        padding: 0;
+        .chart {
+            &.full_width {
+                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10 !important;
+            }
+        }
 
-	        .row {
-	            clear: both;
-	            padding-top: 2 * @defaultSpacing;
-	            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+        .form {
+            padding: 0;
 
-	            .label {
-	                float: left;
-	                width: @formLabelWidth;
-	                margin-top: @formSpacing;
-	                height: 0px;
-	                text-align: right;
-	            }
+            .row {
+                clear: both;
+                padding-top: 2 * @defaultSpacing;
+                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
 
-	            .field {
-	                float: right;
-	                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing);
-	                text-align: left;
-	            }
-	        }
+                .label {
+                    float: left;
+                    width: @formLabelWidth;
+                    margin-top: @formSpacing;
+                    height: 0px;
+                    text-align: right;
+                }
 
-	        .errors {
-	            clear: both;
-	            margin-left: @formLabelWidth + 4 * @defaultSpacing;
-	            padding-top: @formSpacing;
+                .field {
+                    float: right;
+                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing);
+                    text-align: left;
+                }
+            }
 
-	            li {
-	                color: @cError;
-	            }
-	        }
+            .errors {
+                clear: both;
+                margin-left: @formLabelWidth + 4 * @defaultSpacing;
+                padding-top: @formSpacing;
 
-			.required {
-				font-weight: bold;
-			}
+                li {
+                    color: @cError;
+                }
+            }
 
-	        .required:after {
-	            content: @formRequired;
-	        }
-	    }
+            .required {
+                font-weight: bold;
+            }
 
-	    .pagination {
-	        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            .required:after {
+                content: @formRequired;
+            }
+        }
 
-	        tr {
-	            td {
-	                height: @paginationHeight;
-	                text-align: center;
-	                background: none;
-	            }
+        .pagination {
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
 
-	            td:first-child, td:last-child {
-	                width: @paginationSideWidth;
-	            }
+            tr {
+                td {
+                    height: @paginationHeight;
+                    text-align: center;
+                    background: none;
+                }
 
-	            td:first-child {
-	                padding-left: @defaultSpacing;
-	                text-indent: 0;
-	                text-align: left;
-	            }
+                td:first-child, td:last-child {
+                    width: @paginationSideWidth;
+                }
 
-	            td:last-child {
-	                padding-right: @defaultSpacing;
-	                text-align: right;
-	            }
-	        }
-	    }
+                td:first-child {
+                    padding-left: @defaultSpacing;
+                    text-indent: 0;
+                    text-align: left;
+                }
+
+                td:last-child {
+                    padding-right: @defaultSpacing;
+                    text-align: right;
+                }
+            }
+        }
 
         .moreResults {
             a {
@@ -370,26 +382,26 @@ h1 {
             }
         }
 
-	    .sortable {
-	        ul {
-	            margin: 2 * @defaultSpacing;
+        .sortable {
+            ul {
+                margin: 2 * @defaultSpacing;
 
-	            li {
-	                margin: @defaultSpacing / 2 0;
-	                padding-left: @iconWidth + 4;
+                li {
+                    margin: @defaultSpacing / 2 0;
+                    padding-left: @iconWidth + 4;
 
-	                .disableSelect;
-	            }
+                    .disableSelect;
+                }
 
-	            li:hover {
-	                cursor: move;
-	            }
-	        }
-	    }
+                li:hover {
+                    cursor: move;
+                }
+            }
+        }
     }
 
     .flashmessage {
-		width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
         margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
 
         .title {
@@ -410,7 +422,7 @@ h1 {
             p {
                 margin-top: 2 * @defaultSpacing;
 
-				a {
+                a {
                     text-decoration: none;
                     font-weight: bold;
                     color: inherit;
@@ -425,9 +437,9 @@ h1 {
                 margin-top: 0;
             }
         }
-	}
+    }
 
-	.success_message {
+    .success_message {
         .title {
             background: @cSuccessTitleBackground;
         }
@@ -447,7 +459,7 @@ h1 {
         }
     }
 
-	.warning_message {
+    .warning_message {
         .title {
             background: @cWarningTitleBackground;
         }
@@ -457,7 +469,7 @@ h1 {
         }
     }
 
-	.info_message {
+    .info_message {
         .title {
             background: @cNoticeTitleBackground;
         }
@@ -479,10 +491,10 @@ h1 {
         width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 5 * @defaultSpacing) !important;
     }
 
-	.half_width {
+    .half_width {
         width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 !important;
-		float: left;
-		margin-right: @defaultSpacing;
+        float: left;
+        margin-right: @defaultSpacing;
     }
 
     aside {
@@ -502,13 +514,14 @@ h1 {
                 font-size: @tSizeSmall;
                 font-weight: bold;
                 color: @cWhite;
-                background: url(@iSideboxBackground) repeat-x 0 0;
+                background: @cSideboxTitleBackground;
             }
 
             .content {
                 padding: @defaultSpacing;
                 color: @cWhite;
-                background: @cSideboxBackground url(@iSideboxBackground) repeat-x 0 -@sideboxTitleHeight;
+                font-weight: 200;
+                background: @cSideboxBackground;
 
                 p {
                     margin-top: 2 * @defaultSpacing;
@@ -579,10 +592,10 @@ footer {
 }
 
 .hide {
-	display: none;
+    display: none;
 }
 .show {
-	display: block;
+    display: block;
 }
 
 pre {
@@ -599,4 +612,13 @@ dl {
     dd {
         margin-left: 20px;
     }
+}
+
+.search-button {
+    float: right;
+    width: @iconWidth;
+    height: @iconHeight;
+    margin-right: 10px;
+    cursor: pointer;
+    background: url(@iIcons) no-repeat 0 -31 * @iconHeight;
 }

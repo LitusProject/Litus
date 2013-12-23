@@ -1,0 +1,72 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/partials/years.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Sale</h1>
+        {% if organizationsList|length > 1 %}<h2>Total</h2>{% endif %}
+        <p>Total Theoretical Revenue: <b>&euro; {{ (data['totalTheoreticalRevenue']/100)|number_format(2) }}</b></p>
+        <p>Total Actual Revenue: <b>&euro; {{ (data['totalActualRevenue']/100)|number_format(2) }}</b></p>
+        <p>Total Purchased: <b>&euro; {{ (data['totalPurchasedAmount']/100)|number_format(2) }}</b></p>
+        <p>Total Articles Sold: <b>{{ data['totalNumberSold'] }}</b></p>
+        <p>Number Unique Clients: <b>{{ data['uniqueClients'] }}</b></p>
+
+        {% if organizationsList|length > 1 %}
+            {% for organization in organizationsList %}
+                <h2>{{ organization['entity'].getName() }}</h2>
+                <p>Total Theoretical Revenue: <b>&euro; {{ (organization['data']['totalTheoreticalRevenue']/100)|number_format(2) }}</b></p>
+                <p>Total Purchased: <b>&euro; {{ (organization['data']['totalPurchasedAmount']/100)|number_format(2) }}</b></p>
+            {% endfor %}
+        {% endif %}
+
+        <h1>Orders</h1>
+        <p>Total Ordered: <b>&euro; {{ (data['totalOrderedPrice']/100)|number_format(2) }}</b></p>
+        <p>Total Articles Ordered: <b>{{ data['totalNumberOrdered'] }}</b></p>
+
+        <h1>Deliveries</h1>
+        <p>Total Delivered: <b>&euro; {{ (data['totalDeliveredPrice']/100)|number_format(2) }}</b></p>
+        <p>Total Articles Delivered: <b>{{ data['totalNumberDelivered'] }}</b></p>
+    </div>
+
+    <aside>
+        {% if hasAccess('cudi_admin_sales_financial', 'period') %}
+            <div class="sidebox">
+                <div class="title">View Period</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the results of a period!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_sales_financial', {"action": "period"}) }}">&rarr; View Period</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('cudi_admin_sales_financial', 'export') %}
+            <div class="sidebox">
+                <div class="title">Export Global Overview</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to download a global overview of all the articles!</i>
+                    </p>
+                    <p>
+                        <a id="exportArticles" href="#">&rarr; Export</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#exportArticles').downloadFile('{{ url('cudi_admin_sales_financial', {"action": "export"}) }}');
+        });
+    </script>
+{% endblock %}

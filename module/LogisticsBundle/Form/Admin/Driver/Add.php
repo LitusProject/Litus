@@ -17,7 +17,7 @@ namespace LogisticsBundle\Form\Admin\Driver;
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    LogisticsBundle\Component\Validator\DriverValidator,
+    LogisticsBundle\Component\Validator\Driver as DriverValidator,
     LogisticsBundle\Entity\Driver,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,

@@ -37,19 +37,24 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field'))
-            $companies = $this->_search();
 
-        if (!isset($companies)) {
-            $companies = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company')
-                ->findAll();
+        if (null === $this->getParam('field')) {
+            $paginator = $this->paginator()->createFromEntity(
+                'BrBundle\Entity\Company',
+                $this->getParam('page'),
+                array(
+                    'active' => true,
+                ),
+                array(
+                    'name'=> 'ASC',
+                )
+            );
+        } else {
+            $paginator = $this->paginator()->createFromQuery(
+                $this->_search(),
+                $this->getParam('page')
+            );
         }
-
-        $paginator = $this->paginator()->createFromArray(
-            $companies,
-            $this->getParam('page')
-        );
 
         return new ViewModel(
             array(
@@ -361,13 +366,13 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $companies = $this->_search();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($companies, $numResults);
+        $companies = $this->_search()
+                ->setMaxResults($numResults)
+                ->getResult();
 
         $result = array();
         foreach($companies as $company) {
@@ -385,13 +390,17 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    /**
+     *
+     * @return \Doctrine\ORM\Query
+     */
     private function _search()
     {
         switch($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
-                    ->findAllByName($this->getParam('string'));
+                    ->findAllByNameQuery($this->getParam('string'));
         }
     }
 

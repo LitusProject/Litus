@@ -22,7 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator,
+    LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -91,9 +91,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('passenger');
         $field->setLabel('Passenger')
-        ->setAttribute('id', 'passengerSearch')
-        ->setAttribute('autocomplete', 'off')
-        ->setAttribute('data-provide', 'typeahead');
+            ->setAttribute('id', 'passengerSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead');
         $this->add($field);
 
         $field = new Submit('submit');
@@ -202,11 +202,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         if (isset($this->data['passenger_id'])) {
-            if ($this->data['passenger_id'] == '' && $this->get('passenger_name')) {
+            if ($this->data['passenger_id'] == '' && $this->get('passenger')) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
-                            'name' => 'passenger_name',
+                            'name' => 'passenger',
                             'required' => false,
                             'filters' => array(
                                 array('name' => 'StringTrim'),

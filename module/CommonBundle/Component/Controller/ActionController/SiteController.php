@@ -15,6 +15,7 @@
 namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Form\Auth\Login as LoginForm,
+    PageBundle\Entity\Node\Page,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -49,13 +50,13 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $result->currentAcademicYear = $this->getCurrentAcademicYear();
 
-        /*$result->logos = $this->getEntityManager()
+        $result->logos = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Logo')
             ->findAllByType('homepage');
 
         $result->logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');*/
+            ->getConfigValue('br.public_logo_path');
 
         $e->setResult($result);
 
@@ -154,6 +155,94 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
+     * Build a pages submenu.
+     *
+     * @param \PageBundle\Entity\Node\Page $page The page
+     * @return array
+     */
+    protected function _buildSubmenu(Page $page)
+    {
+        $pages = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Node\Page')
+            ->findByParent($page->getId());
+
+        $links = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Link')
+            ->findByParent($page->getId());
+
+        $categories = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Category')
+            ->findByParent($page->getId());
+
+        $submenu = array();
+        foreach ($pages as $page) {
+            $submenu[] = array(
+                'type'     => 'page',
+                'name'     => $page->getName(),
+                'parent'   => $page->getParent()->getName(),
+                'title'    => $page->getTitle($this->getLanguage())
+            );
+        }
+
+        foreach ($links as $link) {
+            $submenu[] = array(
+                'type' => 'link',
+                'id'   => $link->getId(),
+                'name' => $link->getName($this->getLanguage())
+            );
+        }
+
+        $i = count($submenu);
+        foreach ($categories as $category) {
+            $submenu[$i] = array(
+                'type'  => 'category',
+                'name'  => $category->getName(),
+                'items' => array()
+            );
+
+            $pages = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Node\Page')
+                ->findByCategory($category);
+
+            $links = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Link')
+                ->findByCategory($category);
+
+            foreach ($pages as $page) {
+                $submenu[$i]['items'][] = array(
+                    'type'  => 'page',
+                    'name'  => $page->getName(),
+                    'title' => $page->getTitle($this->getLanguage())
+                );
+            }
+
+            foreach ($links as $link) {
+                $submenu[$i]['items'][] = array(
+                    'type' => 'link',
+                    'id'   => $link->getId(),
+                    'name' => $link->getName($this->getLanguage())
+                );
+            }
+
+            $sort = array();
+            foreach ($submenu[$i]['items'] as $key => $value)
+                $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+
+            array_multisort($sort, $submenu[$i]['items']);
+
+            $i++;
+        }
+
+        $sort = array();
+        foreach ($submenu as $key => $value)
+            $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+
+        array_multisort($sort, $submenu);
+
+        return $submenu;
+    }
+
+    /**
      * Create the full Shibboleth URL.
      *
      * @return string
@@ -164,12 +253,20 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new Exception\ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new Exception\ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
 
         $shibbolethUrl .= '%3Fsource=site';
 
-        if (isset($_SERVER['REQUEST_URI']) && isset($_SERVER['HTTP_HOST']))
+        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
             $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         return $shibbolethUrl;

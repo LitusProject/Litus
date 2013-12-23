@@ -2,13 +2,12 @@
 
 <html lang="en">
 <head>
-    {% do headLink({'rel': 'favicon', 'type': 'image/svg+xml', 'href': '/img/favicon.svg'}) %}
-    {% do headLink({'rel': 'alternate icon', 'type': 'image/ico', 'href': '/img/favicon.ico'}) %}
+    {% do headLink({'rel': 'shortcut icon', 'href': '/img/favicon.ico'}) %}
 
     {{ headMeta() }}
-	{{ headTitle(translate('Vlaamse Technische Kring Leuven'), 'PREPEND') }}
+    {{ headTitle(translate('Vlaamse Technische Kring Leuven'), 'PREPEND') }}
 
-	{{ headLink() }}
+    {{ headLink() }}
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -18,16 +17,16 @@
 
 <body>
     <nav class="navbar navbar-fixed-top main-navbar main-navbar-fixed-top">
-    	<div class="navbar-inner main-navbar-inner">
-    		<div class="container">
-    		    <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".main-nav">
+        <div class="navbar-inner main-navbar-inner">
+            <div class="container">
+                <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".main-nav">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <a class="title hidden-desktop" href="{{ url('common_index') }}">{{ translate('VTK Leuven vzw') }}</a>
                 <div class="main-nav nav-collapse collapse">
-        			<ul class="nav">
+                    <ul class="nav">
                         {% for item in menu %}
                             {% if 'category' == item.type %}
                                 <li class="dropdown">
@@ -107,22 +106,33 @@
                                 <a href="{{ shibbolethUrl }}">{{ translate('Login') }}</a>
                             </li>
                         {% endif %}
-        			</ul>
-        		</div>
-        		<ul class="nav pull-right lang-nav visible-desktop">
-        		    <li class="dropdown" id="langDropdown">
-        			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        			        Language <span class="caret"></span>
-        		        </a>
-        		        <ul class="dropdown-menu">
-        		            {% for language in languages %}
-        			            <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></li>
-        		            {% endfor %}
-        		        </ul>
-        			</li>
-        		</ul>
-        		<ul class="nav pull-right auth-nav visible-desktop">
-        		    {% if authenticatedPerson is not null %}
+
+                        <li class="dropdown hidden-desktop" id="langDropdown">
+                            <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
+                                Language <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for language in languages %}
+                                    <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="nav pull-right lang-nav visible-desktop">
+                    <li class="dropdown" id="langDropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Language <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for language in languages %}
+                                <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav pull-right auth-nav visible-desktop">
+                    {% if authenticatedPerson is not null %}
                         <li class="dropdown" id="accountDropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                 <span class="profile-wrapper">
@@ -175,22 +185,22 @@
                             <a href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
                         </li>
                     {% endif %}
-        		</ul>
-    		</div>
-    	</div>
+                </ul>
+            </div>
+        </div>
     </nav>
 
     <div id="page">
         <header>
-        	<div class="inner">
-        		<div class="container">
+            <div class="inner">
+                <div class="container">
                     <a class="site-link" href="{{ url('common_index') }}">
-        			    <img class="site-logo" src="/_site/img/logo.png" />
-        			    <h1 class="site-name">{{ translate('Vlaamse Technische Kring Leuven') }}</h1>
+                        <img class="site-logo" src="/_site/img/logo.png" />
+                        <h1 class="site-name">{{ translate('Vlaamse Technische Kring Leuven') }}</h1>
                     </a>
 
                     {% if banners|length > 0 %}
-            			<div id="carouselHeader" class="carousel slide visible-desktop">
+                        <div id="carouselHeader" class="carousel slide visible-desktop">
                             <div class="carousel-inner">
                                 {% for key, banner in banners %}
                                     <div class="item item-{{ key }}">
@@ -209,26 +219,26 @@
                                 <a class="carousel-control left" href="#carouselHeader" data-slide="prev">&lsaquo;</a>
                                 <a class="carousel-control right" href="#carouselHeader" data-slide="next">&rsaquo;</a>
                             {% endif %}
-            			</div>
+                        </div>
                     {% endif %}
-        		</div>
-        	</div>
+                </div>
+            </div>
         </header>
 
         <div id="content">
             <div class="container">
                 {% include 'site/partials/flashMessenger.twig' %}
 
-            	{% block content %} {% endblock %}
+                {% block content %} {% endblock %}
             </div>
         </div>
     </div>
 
     <footer>
-	    <div class="row-fluid light">
+        <div class="row-fluid light">
             <div class="container">
-	        	<div class="span3">
-	        		<h3>{{ translate('Links') }}</h3>
+                <div class="span3">
+                    <h3>{{ translate('Links') }}</h3>
 
                     <ul class="nav-list">
                         <li><a href="http://eng.kuleuven.be">FIrW</a></li>
@@ -246,35 +256,28 @@
                     <ul class="nav-list">
                         <li><a href="http://www.loko.be">LOKO</a></li>
                     </ul>
-	        	</div>
-	        	<div class="span9">
-	        		<h3>{{ translate('Partners') }}</h3>
+                </div>
+                <div class="span9">
+                    <h3>{{ translate('Partners') }}</h3>
 
                     <p class="companies">
-                        <a id="nmbs" href="http://www.nmbs.be"></a>
-                        <a id="deloitte" href="http://www.deloitte.com/be"></a>
-                        <a id="kbc" href="http://www.kbc.be"></a>
-                        <a id="exxon" href="http://www.exxonmobil.com"></a>
-                        <a id="basf" href="http://www.basf.be/ecp2/Jobs_Career_belgium_nl/index"></a>
-                        <a id="gdfsuez" href="http://www.gdfsuez.com/"></a>
-
-                        {#% for logo in logos %}
+                        {% for logo in logos %}
                             <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
-                        {% endfor %#}
+                        {% endfor %}
                     </p>
-	        	</div>
-	        </div>
-	    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row-fluid copyright">
             <div class="container">
                 <div class="span10">
-                	<h3>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</h3>
+                    <h3>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</h3>
                 </div>
 
                 <div class="span2 icons">
-                	<a href="http://facebook.com/VTKLeuven"><img src="/_site/img/facebook.png" /></a>
-                	<a href="http://twitter.com/VTKLeuven"><img src="/_site/img/twitter.png" /></a>
+                    <a href="http://facebook.com/VTKLeuven"><img src="/_site/img/facebook.png" /></a>
+                    <a href="http://twitter.com/VTKLeuven"><img src="/_site/img/twitter.png" /></a>
                 </div>
             </div>
         </div>

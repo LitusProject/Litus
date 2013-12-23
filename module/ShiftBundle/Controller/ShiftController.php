@@ -181,14 +181,19 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $end_date = clone $start_date;
             $end_date->add(new DateInterval('P1W'));
 
-            $searchResults = $searchResults = $this->getEntityManager()
-                            ->getRepository('ShiftBundle\Entity\Shift')
-                            ->findAllActiveBetweenDates($start_date, $end_date);
+            $searchResults = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActiveBetweenDates($start_date, $end_date);
 
             $resultString = $this->getTranslator()->translate('Shifts from %start% to %end%');
             $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
             $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
         }
+
+        $academicYear = $this->getCurrentAcademicYear();
+        $now = new DateTime();
+        if ($now < $academicYear->getUniversityStartDate() && $now > $academicYear->getStartDate())
+            $searchResults = array();
 
         if (!isset($resultString))
             $resultString = 'Results';
@@ -287,13 +292,19 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('shift.mail_name');
 
-                    $message = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('shift.praesidium_removed_mail');
+                    if (!($language = $volunteer->getPerson()->getLanguage())) {
+                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                            ->findOneByAbbrev('en');
+                    }
 
-                    $subject = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('shift.praesidium_removed_mail_subject');
+                    $mailData = unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('shift.praesidium_removed_mail')
+                    );
+
+                    $message = $mailData[$language->getAbbrev()]['content'];
+                    $subject = $mailData[$language->getAbbrev()]['subject'];
 
                     $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
 
@@ -325,7 +336,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
+                    'ratio' => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers()
                 )
             )
         );
@@ -366,7 +377,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
+                    'ratio' => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers()
                 )
             )
         );
@@ -389,7 +400,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $result .= 'VERSION:2.0' . PHP_EOL;
         $result .= 'X-WR-CALNAME:' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_short_name') . ' My Shift Calendar' . PHP_EOL;
+            ->getConfigValue('organization_short_name') . ' My Shift Calendar' . PHP_EOL;
         $result .= 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
         $result .= 'CALSCALE:GREGORIAN' . PHP_EOL;
         $result .= 'METHOD:PUBLISH' . PHP_EOL;
@@ -414,6 +425,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $result .= 'END:VTIMEZONE' . PHP_EOL;
 
         if (null !== $this->getParam('token')) {
+
             $token = $this->getDocumentManager()
                 ->getRepository('ShiftBundle\Document\Token')
                 ->findOneByHash($this->getParam('token'));

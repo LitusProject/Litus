@@ -48,8 +48,10 @@
 
                         {% if study.getChildren()|length == 0 %}
                             <span class="pull-right">
-                                <button class="btn btn-mini btn-info study_enroll{% if study.getId() in enrollments %} active{% endif %}" id="study-{{ study.getId() }}" data-id="{{ study.getId() }}" type="button">{{ translate('Enroll') }}</button>
+                                <button class="btn btn-mini btn-info study_enroll {% if study.getId() in enrollments %}active{% endif %}" id="study-{{ study.getId() }}" data-id="{{ study.getId() }}" type="button">{% if study.getId() in enrollments %}{{ translate('Unsubscribe') }}{% else %}{{ translate('Enroll') }}{% endif %}</button>
                             </span>
+                        {% else %}
+                            <span class="pull-right icon-arrow-down collapse-icon" style="margin-top: 6px;"></span>
                         {% endif %}
                     </a>
                 </div>
@@ -69,6 +71,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $('.study_enroll').click(function () {
+                console.log($(this));
+                if ( $(this).html() === '{{ translate('Enroll') }}')
+                    $(this).text('{{ translate('Unsubscribe') }}');
+                else
+                    $(this).text('{{ translate('Enroll') }}');
+            });
+
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
@@ -81,6 +92,14 @@
                 saveChanges();
             });
             updateHeadings();
+
+            $('.accordion-toggle').click(function () {
+                if ($(this).find('.collapse-icon').has('.icon-arrow-down')) {
+                    $(this).find('.collapse-icon').removeClass('icon-arrow-down').addClass('icon-arrow-up');
+                } else {
+                    $(this).find('.collapse-icon').removeClass('icon-arrow-up').addClass('icon-arrow-down');
+                }
+            });
         });
 
         function updateHeadings() {

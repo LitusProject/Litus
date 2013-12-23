@@ -19,7 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Form\Admin\Alias\Add as AddForm,
     Zend\View\Model\ViewModel;
 
-class AliasController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class AliasController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {
@@ -108,6 +108,48 @@ class AliasController extends \CommonBundle\Component\Controller\ActionControlle
                 'result' => (object) array('status' => 'success'),
             )
         );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $aliases = $this->_search()
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach($aliases as $alias) {
+            $item = (object) array();
+            $item->id = $alias->getId();
+            $item->alias = $alias->getName();
+            $item->email = $alias->getEmailAddress();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    /**
+    *
+    * @return \Doctrine\ORM\Query
+    */
+    private function _search()
+    {
+        switch($this->getParam('field')) {
+            case 'alias':
+                return $this->getEntityManager()
+                    ->getRepository('MailBundle\Entity\Alias')
+                    ->findAllByNameQuery($this->getParam('string'));
+        }
     }
 
     private function _getAlias()

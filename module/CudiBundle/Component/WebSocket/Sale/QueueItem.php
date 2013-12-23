@@ -21,7 +21,10 @@ use CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\SaleItem,
     CudiBundle\Entity\User\Person\Sale\Acco as AccoCard,
-    Doctrine\ORM\EntityManager;
+    DateInterval,
+    DateTime,
+    Doctrine\ORM\EntityManager,
+    SecretaryBundle\Entity\Registration;
 
 /**
  * QueueItem Object
@@ -194,9 +197,11 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($item->getPerson());
 
-        $memberShipArticle = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.membership_article');
+        $memberShipArticles = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
 
         $soldArticles = array();
 
@@ -229,7 +234,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
             }
 
-            if ($booking->getArticle()->getId() == $memberShipArticle) {
+            if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 try {
                     $booking->getPerson()
                         ->addOrganizationStatus(
@@ -243,6 +248,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     $registration = $this->_entityManager
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+
+                    if (null === $registration) {
+                        $registration = new Registration(
+                            $booking->getPerson(),
+                            $this->_getCurrentAcademicYear()
+                        );
+                        $this->_entityManager->persist($registration);
+                    }
                     $registration->setPayed();
                 } catch(\Exception $e) {}
             }
@@ -264,7 +277,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $item->getPerson(),
                 $article,
                 'sold',
-                $number
+                $number,
+                true
             );
             $this->_entityManager->persist($booking);
 
@@ -276,6 +290,24 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'number' => $booking->getNumber(),
                 );
             }
+
+            if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
+                try {
+                    $booking->getPerson()
+                        ->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $booking->getPerson(),
+                                'member',
+                                $this->_getCurrentAcademicYear()
+                            )
+                        );
+
+                    $registration = $this->_entityManager
+                        ->getRepository('SecretaryBundle\Entity\Registration')
+                        ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+                    $registration->setPayed();
+                } catch(\Exception $e) {}
+            }
         }
 
         $saleItems = array();
@@ -285,7 +317,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $bestDiscount = null;
                 foreach($soldArticle['article']->getDiscounts() as $discount) {
                     if (in_array($discount->getRawType(), $discounts)) {
-                        if ($discount->getType() == 'member' && !$item->getPerson()->isMember($this->_getCurrentAcademicYear()))
+                        if (!$discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager))
                             continue;
                         if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager))
                             continue;
@@ -330,7 +362,7 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->persist(new AccoCard($item->getPerson(), $hasAccoCard));
         }
 
-        //$this->_entityManager->flush();
+        $this->_entityManager->flush();
 
         return $saleItems;
     }
@@ -373,12 +405,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
 
                 foreach($booking->getArticle()->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager))
+                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager) &&
+                            $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($booking->getArticle()->getSellPrice()),
                             'applyOnce' => $discount->applyOnce(),
                         );
+                    }
                 }
 
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()] = $result;
@@ -411,12 +445,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 );
 
                 foreach($article->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager))
+                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager) &&
+                            $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($article->getSellPrice()),
                             'applyOnce' => $discount->applyOnce(),
                         );
+                    }
                 }
                 $results['assigned_' . $article->getId()] = $result;
             }
@@ -430,27 +466,6 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
      */
     private function _getCurrentAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->_entityManager->persist($academicYear);
-            $this->_entityManager->flush();
-        }
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->_entityManager);
     }
 }

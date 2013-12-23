@@ -15,6 +15,7 @@
 namespace CommonBundle\Entity\General;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    DateInterval,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,14 +36,14 @@ class AcademicYear
     private $id;
 
     /**
-     * @var \DateTime The start date of this academic year
+     * @var \DateTime The start date of this academic year for the organization
      *
      * @ORM\Column(type="datetime", unique=true)
      */
     private $start;
 
     /**
-     * @var \DateTime The end date of this academic year
+     * @var \DateTime The start date of this academic year
      *
      * @ORM\Column(name="university_start", type="datetime")
      */
@@ -82,10 +83,7 @@ class AcademicYear
      */
     public function getEndDate()
     {
-        $date = clone $this->universityStart;
-        return $date->add(
-            new DateInterval('P1Y')
-        );
+        return $this->getUniversityEndDate();
     }
 
     /**

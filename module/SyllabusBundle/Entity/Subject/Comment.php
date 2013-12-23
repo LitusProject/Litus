@@ -73,6 +73,22 @@ class Comment
     private $type;
 
     /**
+     * @var boolean Flag whether this comment was read
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="read_by", referencedColumnName="id")
+     */
+    private $readBy;
+
+    /**
+     * @var \Doctrine\Common\Collection\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Subject\Reply", mappedBy="comment")
+     * @ORM\OrderBy({"date" = "ASC"})
+     */
+    private $replies;
+
+    /**
      * @var array The possible types of a comment
      */
     private static $POSSIBLE_TYPES = array(
@@ -161,5 +177,39 @@ class Comment
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRead()
+    {
+        return null !== $this->readBy;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\User\Person|null $readBy
+     * @return \SyllabusBundle\Entity\Subject\Comment
+     */
+    public function setReadBy(Person $readBy = null)
+    {
+        $this->readBy = $readBy;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person
+     */
+    public function getReadBy()
+    {
+        return $this->readBy;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collection\ArrayCollection
+     */
+    public function getReplies()
+    {
+        return $this->replies;
     }
 }

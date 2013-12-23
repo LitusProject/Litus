@@ -24,27 +24,105 @@ use CommonBundle\Entity\General\Language;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
+    protected function initConfig() {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'form.file_upload_path',
+                    'value'       => 'data/form/files',
+                    'description' => 'The path to the uploaded form files',
+                ),
+                array(
+                    'key'         => 'form.mail_confirmation',
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'content' => 'Dear %first_name% %last_name%,
+
+Your subscription was successful. Your unique subscription id is %id%. Below is a summary of the values you entered in this form:
+
+%entry_summary%
+
+With best regards,
+VTK',
+                            ),
+                            'nl' => array(
+                                'content' => 'Beste %first_name% %last_name%,
+
+Uw inschrijving was succesvol. Uw unieke inschrijving id is %id%. Hieronder is een overzicht van de ingevulde waarden:
+
+%entry_summary%
+
+Met vriendelijke groeten,
+VTK',
+                            ),
+                        )
+                    ),
+                    'description' => 'The mail template for confirmation mails',
+                ),
+                array(
+                    'key'         => 'form.mail_reminder',
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'content' => 'Dear %first_name% %last_name%,
+
+Your subscription was successful. Your unique subscription id is %id%. Below is a summary of the values you entered in this form:
+
+%entry_summary%
+
+With best regards,
+VTK',
+                            ),
+                            'nl' => array(
+                                'content' => 'Beste %first_name% %last_name%,
+
+Uw inschrijving was succesvol. Uw unieke inschrijving id is %id%. Hieronder is een overzicht van de ingevulde waarden:
+
+%entry_summary%
+
+Met vriendelijke groeten,
+VTK',
+                            ),
+                        )
+                    ),
+                    'description' => 'The mail template for confirmation mails',
+                ),
+            )
+        );
+    }
 
     protected function initAcl()
     {
         $this->installAcl(
             array(
-                'formBundle' => array(
+                'formbundle' => array(
                     'form_admin_form' => array(
                         'add', 'delete', 'edit', 'manage', 'old'
                     ),
+                    'form_admin_group' => array(
+                        'add', 'delete', 'deleteForm', 'edit', 'forms', 'manage', 'old', 'sort'
+                    ),
                     'form_admin_form_field' => array(
-                        'add', 'delete', 'edit', 'manage'
+                        'add', 'delete', 'edit', 'manage', 'sort'
                     ),
                     'form_admin_form_viewer' => array(
                         'add', 'delete', 'manage'
                     ),
+                    'form_admin_group_viewer' => array(
+                        'add', 'delete', 'manage'
+                    ),
                     'form_view' => array(
-                        'edit', 'view',
+                        'doodle', 'downloadFile', 'edit', 'view', 'saveDoodle'
+                    ),
+                    'form_group' => array(
+                        'view',
                     ),
                     'form_manage' => array(
-                        'download', 'index', 'view', 'edit', 'delete',
+                        'delete', 'doodle', 'download', 'downloadFile', 'edit', 'index', 'view',
+                    ),
+                    'form_manage_group' => array(
+                        'index', 'view',
                     ),
                     'form_manage_mail' => array(
                         'send'

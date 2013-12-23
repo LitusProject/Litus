@@ -106,4 +106,14 @@ class AcademicYearMap
     {
         return $this->organization;
     }
+
+    /**
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return \CommonBundle\Entity\User\Person\Organization\AcademicYearMap
+     */
+    public function setOrganization(Organization $organization)
+    {
+        $this->organization = $organization;
+        return $this;
+    }
 }

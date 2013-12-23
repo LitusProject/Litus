@@ -109,69 +109,122 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The time a reservation can be extended',
                 ),
                 array(
-                    'key'         => 'cudi.booking_assigned_mail_subject',
-                    'value'       => 'New Assignments',
-                    'description' => 'The subject of the mail sent by new assignments',
-                ),
-                array(
                     'key'         => 'cudi.booking_assigned_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'New Assignments',
+                                'content' => 'Dear,
 
 The following bookings are assigned to you:
-{{ bookings }}
+{{ bookings }}#expires#expires on#expires#
 
 These reservations will expire after the first sale session after its expiration date.
 
 Please cancel a reservation if you don\'t need the article, this way we can help other students.
 
 The opening hours of Cudi are:
-{{ openingHours }}
+{{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Nieuwe Toewijzingen',
+                                'content' => 'Beste,
+
+De volgende reservaties zijn aan u toegewezen:
+{{ bookings }}#expires#vervalt op#expires#
+
+Deze reservaties zullen vervallen op het einde van de eerste verkoop sessie na de vervaldatum.
+
+Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op deze manier kunnen we andere studenten helpen.
+
+De openingsuren van cudi zijn:
+{{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
+
+VTK Cudi
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The mail sent when a booking is assigned'
                 ),
                 array(
-                    'key'         => 'cudi.booking_expire_warning_mail_subject',
-                    'value'       => 'Assignment Expiration Warning',
-                    'description' => 'The subject of the mail sent by warning for expirations',
-                ),
-                array(
                     'key'         => 'cudi.booking_expire_warning_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Assignment Expiration Warning',
+                                'content' => 'Dear,
 
 The following bookings are going to expire soon:
-{{ bookings }}
+{{ bookings }}#expires#expires on#expires#
 
 These reservations will expire after the first sale session after its expiration date.
 
 Please cancel a reservation if you don\'t need the article, this way we can help other students.
 
 The opening hours of Cudi are:
-{{ openingHours }}
+{{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Waarschuwing Vervallen Toewijzingen',
+                                'content' => 'Beste,
+
+De volgende reservaties gaan binnekort vervallen:
+{{ bookings }}#expires#vervalt op#expires#
+
+Deze reservaties zullen vervallen op het einde van de eerste verkoop sessie na de vervaldatum.
+
+Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op deze manier kunnen we andere studenten helpen.
+
+De openingsuren van cudi zijn:
+{{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
+
+VTK Cudi
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The mail sent when a booking is about to expire'
-                ),
-                array(
-                    'key'         => 'cudi.booking_expire_mail_subject',
-                    'value'       => 'Assignment Expiration',
-                    'description' => 'The subject of the mail sent by warning for expirations',
                 ),
                 array(
                     'key'         => 'cudi.booking_expire_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Assignment Expiration',
+                                'content' => 'Dear,
 
-The following bookings are expired:
-{{ bookings }}
+The following bookings have expired:
+{{ bookings }}#expires#expired on#expires#
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --',
-                    'description' => 'The mail sent when a booking is about to expire'
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Vervallen Toewijzingen',
+                                'content' => 'Beste,
+
+De volgende reservaties zijn vervallen:
+{{ bookings }}#expires#verviel op#expires#
+
+VTK Cudi
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
+                    'description' => 'The mail sent when a booking is expired'
                 ),
                 array(
                     'key'         => 'cudi.queue_item_barcode_prefix',
@@ -195,13 +248,8 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.queue_socket_key',
-                    'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
+                    'value'       => md5(uniqid(rand(), true)),
                     'description' => 'The key used for the websocket of the queue',
-                ),
-                array(
-                    'key'         => 'cudi.prof_start_academic_year',
-                    'value'       => '2012-7-15 0:0:0',
-                    'description' => 'The start date of the academic year for a prof',
                 ),
                 array(
                     'key'         => 'cudi.purchase_prices',
@@ -214,6 +262,7 @@ VTK Cudi
                             'recto_verso_bw'    => 2862,
                             'recto_color'       => 6360,
                             'recto_verso_color' => 10600,
+                            'hardcover'         => 0,
                         )
                     ),
                     'description' => 'The purchase prices of an internal article (multiplied by 100 000)',
@@ -229,6 +278,7 @@ VTK Cudi
                             'recto_verso_bw'    => 2,
                             'recto_color'       => 7,
                             'recto_verso_color' => 7,
+                            'hardcover'         => 0,
                         )
                     ),
                     'description' => 'The purchase prices of an internal article (multiplied by 100)',
@@ -274,19 +324,34 @@ VTK Cudi
                     'description' => 'The port of the print socket',
                 ),
                 array(
+                    'key'         => 'cudi.printers_enable',
+                    'value'       => '1',
+                    'description' => 'Flag whether the printers are enabled',
+                ),
+                array(
+                    'key'         => 'cudi.printer_socket_key',
+                    'value'       => md5(uniqid(rand(), true)),
+                    'description' => 'The key used for printing',
+                ),
+                array(
+                    'key'         => 'cudi.ticket_title',
+                    'value'       => 'Litus Cursusdienst',
+                    'description' => 'The title printed on a ticket',
+                ),
+                array(
                     'key'         => 'cudi.printers',
                     'value'       => serialize(
                         array(
-                            'signin'    => 'SignIn_Printer',
-                            'collect_1' => 'Collect_Printer',
-                            'collect_2' => 'Collect_Printer',
-                            'collect_3' => 'Collect_Printer',
-                            'paydesk_1' => 'SaleOne_Printer',
-                            'paydesk_2' => 'SaleTwo_Printer',
-                            'paydesk_3' => 'SaleThree_Printer',
+                            'signin'    => 'LITUS-SignIn',
+                            'collect_1' => 'LITUS-Collect',
+                            'collect_2' => 'LITUS-Collect',
+                            'collect_3' => 'LITUS-Collect',
+                            'paydesk_1' => 'LITUS-SaleOne',
+                            'paydesk_2' => 'LITUS-SaleTwo',
+                            'paydesk_3' => 'LITUS-SaleThree',
                         )
                     ),
-                    'description' => 'The port of the print socket',
+                    'description' => 'The names of the printers',
                 ),
                 array(
                     'key'         => 'cudi.tshirt_article',
@@ -308,9 +373,7 @@ VTK Cudi
                 array(
                     'key'         => 'cudi.registration_articles',
                     'value'       => serialize(
-                        array(
-                            11,
-                        )
+                        array()
                     ),
                     'description' => 'The articles assigned at registration',
                 ),
@@ -338,25 +401,48 @@ VTK Cudi
                 ),
                 array(
                     'key'         => 'cudi.catalog_update_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Catalog Updates',
+                                'content' => 'Dear,
 
 The catalog of our cudi has been updated:
-{{ updates }}
+{{ updates }}#bookable#is now bookable#bookable# #unbookable#is not bookable anymore#unbookable# #added#is added to the catalog#added# #removed#is removed from the catalog#removed#
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Catalogus Aanpassingen',
+                                'content' => 'Beste,
+
+De catalogus van onze cudi is aangepast:
+{{ updates }}#bookable#is nu reserveerbaar#bookable# #unbookable#is niet meer reserveerbaar#unbookable# #added#is toegevoegd aan de catalogus#added# #removed#is verwijderd van de catalogus#removed#
+
+VTK Cudi
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The content of the mail send for catalog updates',
-                ),
-                array(
-                    'key'         => 'cudi.catalog_update_mail_subject',
-                    'value'       => 'Catalog Updates',
-                    'description' => 'The subject for the mail send for catalog updates',
                 ),
                 array(
                     'key'         => 'cudi.sale_light_version',
                     'value'       => '0',
                     'description' => 'Flag whether to show the light version of the sale app (no queue)',
+                ),
+                array(
+                    'key'         => 'cudi.order_job_id',
+                    'value'       => 'vtk-{{ date }}',
+                    'description' => 'The job id for a XML exported order',
+                ),
+                array(
+                    'key'         => 'cudi.booking_mails_to_cudi',
+                    'value'       => '1',
+                    'description' => 'Send the cudi booking mails (assigned, expired, warning) to the cudi address',
                 ),
             )
         );
@@ -394,7 +480,7 @@ VTK Cudi
                         'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
                     ),
                     'cudi_admin_sales_article' => array(
-                        'activate', 'add', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead'
+                        'activate', 'add', 'assignAll', 'cancelBookings', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead', 'view'
                     ),
                     'cudi_admin_sales_article_barcode' => array(
                         'delete', 'manage'
@@ -405,8 +491,23 @@ VTK Cudi
                     'cudi_admin_sales_article_discount' => array(
                         'delete', 'manage'
                     ),
+                    'cudi_admin_sales_article_discount_template' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
                     'cudi_admin_sales_financial' => array(
-                        'deliveries', 'retours', 'sales', 'stock', 'suppliers'
+                        'export', 'overview', 'period'
+                    ),
+                    'cudi_admin_sales_financial_delivered' => array(
+                        'article', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'supplierSearch', 'supplier', 'suppliers'
+                    ),
+                    'cudi_admin_sales_financial_ordered' => array(
+                        'individualSearch', 'individual', 'orderSearch', 'order', 'orders', 'ordersSearch', 'supplierSearch', 'supplier', 'suppliers'
+                    ),
+                    'cudi_admin_sales_financial_sold' => array(
+                        'article', 'articleSearch', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'sessionSearch', 'session', 'sessions', 'supplierSearch', 'supplier', 'suppliers'
+                    ),
+                    'cudi_admin_sales_financial_returned' => array(
+                        'article', 'articleSearch', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'sessionSearch', 'session', 'sessions'
                     ),
                     'cudi_admin_sales_session' => array(
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
@@ -418,13 +519,13 @@ VTK Cudi
                         'add', 'edit', 'delete', 'manage', 'old'
                     ),
                     'cudi_admin_stock' => array(
-                        'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
+                        'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered', 'view'
                     ),
                     'cudi_admin_stock_delivery' => array(
                         'add', 'delete', 'manage', 'supplier', 'typeahead'
                     ),
                     'cudi_admin_stock_order' => array(
-                        'add', 'cancel', 'delete', 'edit', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier'
+                        'add', 'cancel', 'delete', 'edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier'
                     ),
                     'cudi_admin_stock_period' => array(
                         'manage', 'new', 'search', 'view'
@@ -472,7 +573,7 @@ VTK Cudi
                         'overview', 'screen', 'signin'
                     ),
                     'cudi_sale_sale' => array(
-                        'return', 'sale'
+                        'return', 'returnPrice', 'sale'
                     ),
                     'cudi_supplier_article' => array(
                         'manage'

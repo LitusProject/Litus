@@ -19,15 +19,14 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    DateTime,
     Locale,
     Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
-    Zend\Paginator\Adapter\ArrayAdapter;
+    Zend\Paginator\Adapter\ArrayAdapter,
+    Zend\View\Model\ViewModel;
 
 /**
  * We extend the basic Zend controller to simplify database access, authentication
@@ -61,9 +60,15 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->_initViewHelpers();
 
         if (null !== $this->initAuthentication())
-            return;
+            return new ViewModel();
 
         $this->initLocalization();
+
+        if (false !== getenv('SERVED_BY')) {
+            $this->getResponse()
+                ->getHeaders()
+                ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
+        }
 
         $authenticatedPerson = null;
         if ($this->getAuthentication()->isAuthenticated())
@@ -73,7 +78,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
         $result->unionShortName = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_short_name');
+            ->getConfigValue('organization_short_name');
         $result->language = $this->getLanguage();
         $result->languages = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -222,13 +227,28 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * Redirects after a successful authentication.
+     *
+     * If this returns null, no redirection will take place.
+     *
+     * @return void
+     */
+    protected function redirectAfterAuthentication()
+    {
+        return $this->redirect()->toRoute(
+            $this->getAuthenticationHandler()['redirect_route']
+        );
+    }
+
+    /**
      * Initializes the authentication.
      *
      * @return void
      */
     protected function initAuthentication()
     {
-        if (null !== $this->getAuthenticationHandler()) {
+        $authenticationHandler = $this->getAuthenticationHandler();
+        if (null !== $authenticationHandler) {
             if (
                 $this->hasAccess()->resourceAction(
                     $this->getParam('controller'), $this->getParam('action')
@@ -236,22 +256,20 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ) {
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if (
-                        $this->getAuthenticationHandler()['controller'] == $this->getParam('controller')
-                            && $this->getAuthenticationHandler()['action'] == $this->getParam('action')
+                        $authenticationHandler['controller'] == $this->getParam('controller')
+                            && $authenticationHandler['action'] == $this->getParam('action')
                     ) {
-                        return $this->redirect()->toRoute(
-                            $this->getAuthenticationHandler()['redirect_route']
-                        );
+                        return $this->redirectAfterAuthentication();
                     }
                 }
             } else {
                 if (!$this->getAuthentication()->isAuthenticated()) {
                     if (
-                        $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
-                            && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
+                        $authenticationHandler['controller'] != $this->getParam('controller')
+                            && $authenticationHandler['action'] != $this->getParam('action')
                     ) {
                         return $this->redirect()->toRoute(
-                            $this->getAuthenticationHandler()['auth_route']
+                            $authenticationHandler['auth_route']
                         );
                     }
                 } else {
@@ -355,30 +373,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = false)
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
+        if ($organization)
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
 
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->getEntityManager()->persist($academicYear);
-            $this->getEntityManager()->flush();
-        }
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 
     /**
@@ -419,26 +419,14 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 ->findOneByAbbrev($this->getParam('language'));
         }
 
-        if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-            if (strpos($locale, '_') > 0)
-                $locale = substr($locale, 0, strpos($locale, '_'));
-
-            if ($locale) {
-                $language = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev($locale);
-            }
-        }
-
         if (!isset($language)) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev('en');
+                ->findOneByAbbrev('nl');
 
             if (null === $language) {
                 $language = new Language(
-                    'en', 'English'
+                    'nl', 'Nederlands'
                 );
 
                 $this->getEntityManager()->persist($language);

@@ -3,7 +3,7 @@
 {% block content %}
     {% if sportInfo is not null %}
         <div class="alert alert-info">
-            <h4>{{ translate('24h-Run') }}</h4>
+            <h4>{{ translate('24h Run') }}</h4>
             {% if sportInfo.behind == 0 %}
                 {{ translate('We have run already %laps% laps and we are the first team.')|replace({'%laps%': sportInfo.nbLaps}) }}
             {% else %}
@@ -33,14 +33,13 @@
 
     {% for notification in notifications %}
         <div class="alert alert-info notification">
-            {{ markdown(notification.getContent()) }}
+            {{ markdown(notification.getContent(language)) }}
         </div>
     {% endfor %}
 
     <div class="row-fluid">
         <div class="span4">
             <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-calendar.png" /></a>
-
             <h2>{{ translate('Calendar') }}</h2>
 
             {% for day in calendarItems %}
@@ -64,7 +63,6 @@
 
         <div class="span3">
             <a href="{{ url('cudi_booking') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
-
             <h2>{{ translate('Bookstore') }}</h2>
 
             {% if hasAccess('cudi_booking', 'view') %}
@@ -100,18 +98,57 @@
 
                 {% set previousDay = '' %}
                 {% for openingHour in cudi.openingHours %}
-                    {% if previousDay != openingHour.getStart().format('d/M') %}
-                        <span class="label label-info" style="display: block; width: 70px; text-align: center; float: left; margin-right: 3px;">
-                            {{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}
-                        </span>
-                    {% else %}
-                        <span style="display: block; width: 78px; float: left; margin-right: 3px;">&nbsp;</span>
-                    {% endif %} {{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}
-                    {% set previousDay = openingHour.getStart().format('d/M') %}
-                    {% if openingHour.getComment(language)|length > 0 %}
-                        <br><small style="margin-left: 20px;">{{ openingHour.getComment(language) }}</small>
-                    {% endif %}
-                    <br>
+                    <div>
+                        {% if previousDay != openingHour.getStart().format('d/M') %}
+                            <div class="label label-info" style="display: block; width: 110px; text-align: center;">
+                                {{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}
+                            </div>
+                        {% endif %}
+                        <div style="margin-left: 20px;">
+                            <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
+                            {% if openingHour.getComment(language)|length > 0 %}
+                                <b>:</b><small>{{ openingHour.getComment(language) }}</small>
+                            {% endif %}
+                        </div>
+                        {% set previousDay = openingHour.getStart().format('d/M') %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if myShifts is not null and myShifts|length > 0 %}
+                <a href="{{ url('shift') }}"><img class="heading-icon" src="/_site/img/glyphicons-tasks.png" /></a>
+                <h2>{{ translate('Shifts') }}</h2>
+
+                {% for shift in myShifts %}
+                    <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
+                                {{ shift.getName() }}
+                            </a>
+                        </div>
+                        <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                                <div>
+                                    <dl>
+                                        <dt>{{ translate('Name') }}</dt>
+                                        <dd>{{ shift.getName() }}</dd>
+                                        <dt>{{ translate('Start') }}</dt>
+                                        <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
+                                        <dt>{{ translate('End') }}</dt>
+                                        <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
+                                    </dl>
+                                </div>
+                                <div>
+                                    <dl>
+                                        <dt>{{ translate('Description') }}</dt>
+                                        <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+                                        <dt>{{ translate('Location') }}</dt>
+                                        <dd>{{ shift.getLocation().getName() }}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>

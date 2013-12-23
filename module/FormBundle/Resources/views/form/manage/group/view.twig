@@ -1,0 +1,189 @@
+{% extends 'manage/base.twig' %}
+
+{% block content %}
+    {% if authenticatedPerson is not null %}
+        <h2>{{ group.getTitle(language) }}</h2>
+
+        <h3>{{ translate('Forms') }}</h3>
+        <ul class="nav nav-tabs" id="formTabs">
+            <li class="active">
+                <a href="#forms">{{ translate('Forms') }}</a>
+            </li>
+            <li>
+                <a href="#completed">{{ translate('Completed Entries') }}</a>
+            </li>
+            <li>
+                <a href="#notCompleted">{{ translate('Not Completed Entries') }}</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="forms">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{{ translate("Title") }}</th>
+                            <th width="150px">{{ translate("Start Date") }}</th>
+                            <th width="150px">{{ translate("End Date") }}</th>
+                            <th width="150px">{{ translate("Active") }}</th>
+                            <th width="150px">{{ translate("Actions") }}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for mapping in group.getForms() %}
+                        {% set form = mapping.getForm() %}
+                        <tr class="item item-{{ form.getId() }}">
+                            <td>{{ form.getTitle(language) }}</td>
+                            <td>{{ dateLocalized(form.getStartDate(), 'dd/MM/y HH:mm') }}</td>
+                            <td>{{ dateLocalized(form.getEndDate(), 'dd/MM/y HH:mm') }}</td>
+                            <td>{% if form.isActive() %}&times;{% endif %}</td>
+                            <td>
+                                {% if hasAccess('form_manage', 'view') %}
+                                  <a href="{{ url("form_manage", {"action" : "view", "id" : form.getId()}) }}" class="btn btn-info btn-mini">{{ translate("View") }}</a>
+                                {% endif %}
+                                {% if hasAccess('form_manage', 'download') %}
+                                    <a href="#" data-file="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="download btn btn-primary btn-mini">{{ translate("Download") }}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane" id="completed">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{{ translate("Name") }}</th>
+                            <th width="100px">{{ translate("Guest") }}</th>
+                            <th width="200px">{{ translate("Completed") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in completedEntries %}
+                            <tr>
+                                <td>
+                                    <a href="#" data-id="{{ entry.getId() }}" data-toggle="popover" title="" data-content="<dl class='dl-horizontal'>
+                                        <dt>{{ translate('ID') }}</dt>
+                                        <dd>{{ entry.getId() }}</dd>
+                                        <dt>{{ translate('Name') }}</dt>
+                                        <dd>{{ entry.getPersonInfo().getFullName() }}</dd>
+                                        <dt>{{ translate('Guest') }}</dt>
+                                        <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+                                        {% if not entry.isGuestEntry() %}
+                                            <dt>{{ translate('Phone Number') }}</dt>
+                                            <dd>{{ entry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
+                                            {% if entry.getPersonInfo().getAddress() %}
+                                            <dt>{{ translate('Address') }}</dt>
+                                                <dd>
+                                                    <address>
+                                                      {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
+                                                      {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}<br>
+                                                    </address>
+                                                </dd>
+                                            {% endif %}
+                                        {% endif %}
+                                        <dt>{{ translate('Submitted') }}</dt>
+                                        <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
+                                        {% if viewer.isMail() %}
+                                            <dt>{{ translate('Email') }}</dt>
+                                            <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
+                                        {% endif %}
+                                    </dl>">
+                                        {{ entry.getPersonInfo().getFullName() }}
+                                    </a>
+                                </td>
+                                <td>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</td>
+                                <td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
+                            {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane" id="notCompleted">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{{ translate("Name") }}</th>
+                            <th width="100px">{{ translate("Guest") }}</th>
+                            <th width="200px">{{ translate("Started") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in notCompletedEntries %}
+                            <tr>
+                                <td>
+                                    <a href="#" data-id="{{ entry.getId() }}" data-toggle="popover" title="" data-content="<dl class='dl-horizontal'>
+                                        <dt>{{ translate('ID') }}</dt>
+                                        <dd>{{ entry.getId() }}</dd>
+                                        <dt>{{ translate('Name') }}</dt>
+                                        <dd>{{ entry.getPersonInfo().getFullName() }}</dd>
+                                        <dt>{{ translate('Guest') }}</dt>
+                                        <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+                                        {% if not entry.isGuestEntry() %}
+                                            <dt>{{ translate('Phone Number') }}</dt>
+                                            <dd>{{ entry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
+                                            {% if entry.getPersonInfo().getAddress() %}
+                                            <dt>{{ translate('Address') }}</dt>
+                                                <dd>
+                                                    <address>
+                                                      {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
+                                                      {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}<br>
+                                                    </address>
+                                                </dd>
+                                            {% endif %}
+                                        {% endif %}
+                                        <dt>{{ translate('Submitted') }}</dt>
+                                        <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
+                                        {% if viewer.isMail() %}
+                                            <dt>{{ translate('Email') }}</dt>
+                                            <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
+                                        {% endif %}
+                                    </dl>">
+                                        {{ entry.getPersonInfo().getFullName() }}
+                                    </a>
+                                </td>
+                                <td>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</td>
+                                <td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</td>
+                            {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.download').each(function () {
+                $(this).downloadFile($(this).data('file'));
+            });
+
+            $('#formTabs a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+
+            $('[data-toggle="popover"]').popover(
+                {
+                    html: true,
+                }
+            ).click(function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                $('[data-toggle="popover"]').each(function() {
+                    if ($(this).data('id') != id)
+                        $(this).popover('hide');
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -2,7 +2,8 @@
 
 namespace SportBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Runner
@@ -24,15 +25,12 @@ class Runner extends EntityRepository
             ->setParameter('universityIdentification', $universityIdentification)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
-    public function findAllWithoutIdentification()
+    public function findAllWithoutIdentificationQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -43,8 +41,7 @@ class Runner extends EntityRepository
                     $query->expr()->isNull('r.academic')
                 )
             )
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

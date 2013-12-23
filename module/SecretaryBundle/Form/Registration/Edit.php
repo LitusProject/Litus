@@ -15,6 +15,7 @@
 namespace SecretaryBundle\Form\Registration;
 
 use Doctrine\ORM\EntityManager,
+    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
@@ -45,6 +46,16 @@ class Edit extends Add
     public function __construct(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null, CacheStorage $cache, EntityManager $entityManager, $identification, $name = null)
     {
         parent::__construct($cache, $entityManager, $identification, $name);
+
+        if (
+            null !== $academic->getOrganizationStatus($academicYear)
+            && 'praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()
+        ) {
+            $this->get('organization')
+                ->get('become_member')
+                ->setValue(false)
+                ->setAttribute('disabled', 'disabled');
+        }
 
         $this->remove('register');
 

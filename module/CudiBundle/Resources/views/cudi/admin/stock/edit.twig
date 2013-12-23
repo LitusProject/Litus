@@ -11,15 +11,26 @@
         <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
         <p>Supplier: <b>{{ article.getSupplier().getName() }}</b></p>
         <br style="clear:both" />
+
         <h1>Orders</h1>
         <table class="half_width">
+            {% set ordered = period.getNbOrdered(article) %}
+            {% set virtualOrdered = period.getNbVirtualOrdered(article) %}
+            {% set delivered = period.getNbDelivered(article) %}
             <tr>
                 <td>Total</td>
-                <td style="width:30%">{{ period.getNbOrdered(article) }}</td>
+                <td style="width:30%">{{ ordered }}</td>
+            </tr>
+            <tr>
+                <td>Virtual</td>
+                <td style="width:30%">{{ virtualOrdered }}</td>
             </tr>
             <tr>
                 <td>Not delivered</td>
-                <td style="width:30%">{% if period.getNbOrdered(article) - period.getNbDelivered(article) < 0 %}0{% else %}{{ period.getNbOrdered(article) - period.getNbDelivered(article) }}{% endif %}</td>
+                <td style="width:30%">
+                    {% if ordered - delivered < 0 %}0{% else %}{{ ordered - delivered }}{% endif %}
+                    {% if ordered + virtualOrdered - delivered > 0 and virtualOrdered != 0 %}<i class="virtualNotDelivered" data-content="There were <b>{{ ordered }}</b> items ordered. But a few times, more items were delivered (<b>{{ virtualOrdered }}</b>). Taking this into account, we are still waiting for <b>{{ ordered + virtualOrdered - delivered }}</b> items.">({{ ordered + virtualOrdered - delivered }})</i>{% endif %}
+                </td>
             </tr>
             <tr>
                 <td>Queue</td>
@@ -30,17 +41,19 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(orderForm) }}
         <br style="clear:both" />
+
         <h1>Deliveries</h1>
         <table class="half_width">
             <tr>
                 <td>Total</td>
-                <td style="width:30%">{{ period.getNbDelivered(article) }}</td>
+                <td style="width:30%">{{ delivered }}</td>
             </tr>
         </table>
         <br style="clear:both" />
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(deliveryForm) }}
         <br style="clear:both" />
+
         <h1>Retours</h1>
         <table class="half_width">
             <tr>
@@ -49,6 +62,7 @@
             </tr>
         </table>
         <br style="clear:both" />
+
         <h1>Bookings</h1>
         <table class="half_width">
             <tr>
@@ -61,6 +75,7 @@
             </tr>
         </table>
         <br style="clear:both" />
+
         <h1>Sales</h1>
         <table class="half_width">
             <tr>
@@ -69,6 +84,7 @@
             </tr>
         </table>
         <br style="clear:both" />
+        
         <h1>Stock</h1>
         <table class="half_width">
             <tr>
@@ -124,6 +140,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.virtualNotDelivered').tooltip({placement: 'bottom'});
             $('#add_delivery').click(function (e) {
                 if ($('#delivery_number').val() > {{ maxDelivery }}) {
                     e.preventDefault();

@@ -14,8 +14,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
+use CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -53,6 +52,16 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
         $this->add($field);
 
         $this->populateFromArticle($article);
+
+        $membershipArticles = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        if (in_array($article->getId(), $membershipArticles)) {
+            $this->get('bookable')->setAttribute('disabled', 'disabled');
+            $this->get('unbookable')->setAttribute('disabled', 'disabled');
+        }
     }
 
     public function getInputFilter()

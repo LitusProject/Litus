@@ -16,6 +16,7 @@ namespace FormBundle\Form\Admin\Form;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
@@ -52,7 +53,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->_entityManager = $entityManager;
 
+        $field = new Select('type');
+        $field->setLabel('Type')
+            ->setAttribute('options', array('form' => 'Form', 'doodle' => 'Doodle'))
+            ->setAttribute('class', 'form doodle')
+            ->setRequired();
+        $this->add($field);
+
         $tabs = new Tabs('languages');
+        $tabs->setAttribute('class', 'form doodle');
         $this->add($tabs);
 
         $tabContent = new TabContent('tab_content');
@@ -64,23 +73,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             $field = new Text('title_' . $language->getAbbrev());
             $field->setLabel('Title')
+                ->setAttribute('class', 'form doodle')
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
             $field = new Textarea('introduction_' . $language->getAbbrev());
             $field->setLabel('Introduction')
-                ->setAttribute('class', 'md')
+                ->setAttribute('class', 'md form doodle')
                 ->setAttribute('rows', 20)
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
             $field = new Text('submittext_' . $language->getAbbrev());
             $field->setLabel('Submit Button Text')
+                ->setAttribute('class', 'form doodle')
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
             $field = new Text('updatetext_' . $language->getAbbrev());
             $field->setLabel('Update Button Text')
+                ->setAttribute('class', 'form doodle')
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
@@ -91,6 +103,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Text('start_date');
         $field->setLabel('Start Date')
+            ->setAttribute('class', 'form doodle')
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
             ->setAttribute('data-datepicker', true)
             ->setAttribute('data-timepicker', true)
@@ -99,6 +112,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Text('end_date');
         $field->setLabel('End Date')
+            ->setAttribute('class', 'form doodle')
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
             ->setAttribute('data-datepicker', true)
             ->setAttribute('data-timepicker', true)
@@ -106,64 +120,148 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add($field);
 
         $field = new Checkbox('active');
-        $field->setLabel('Active');
+        $field->setLabel('Active')
+            ->setAttribute('class', 'form doodle');
         $this->add($field);
 
         $field = new Text('max');
-        $field->setLabel('Total Max Entries');
+        $field->setLabel('Total Max Entries')
+            ->setAttribute('class', 'form');
         $this->add($field);
 
         $field = new Checkbox('non_members');
-        $field->setLabel('Allow Entry Without Login');
+        $field->setLabel('Allow Entry Without Login')
+            ->setAttribute('class', 'form doodle');
         $this->add($field);
 
         $field = new Checkbox('editable_by_user');
-        $field->setLabel('Allow Users To Edit Their Info');
+        $field->setLabel('Allow Users To Edit Their Info')
+            ->setAttribute('class', 'form doodle');
+        $this->add($field);
+
+        $field = new Checkbox('names_visible_for_others');
+        $field->setLabel('Names Are Visible For Others')
+            ->setAttribute('class', 'doodle');
         $this->add($field);
 
         $field = new Checkbox('multiple');
-        $field->setLabel('Multiple Entries per Person');
+        $field->setLabel('Multiple Entries Per Person')
+            ->setAttribute('class', 'form doodle');
         $this->add($field);
 
         $field = new Checkbox('mail');
-        $field->setLabel('Send Confirmation Mail');
+        $field->setLabel('Send Confirmation Mail')
+            ->setAttribute('class', 'form doodle');
         $this->add($field);
 
         $mail = new Collection('mail_form');
         $mail->setLabel('Mail')
-            ->setAttribute('id', 'mail_form');
+            ->setAttribute('id', 'mail_form')
+            ->setAttribute('class', 'form doodle');
         $this->add($mail);
 
         $field = new Text('mail_from');
         $field->setLabel('Mail Sender Address')
+            ->setAttribute('class', 'form doodle')
             ->setRequired();
         $mail->add($field);
 
         $field = new Checkbox('mail_bcc');
         $field->setLabel('Send BCC to sender for every entry')
+            ->setAttribute('class', 'form doodle')
             ->setValue(true);
         $mail->add($field);
 
-        $field = new Text('mail_subject');
-        $field->setLabel('Subject')
+        $mailTabs = new Tabs('mail_languages');
+        $mail->add($mailTabs);
+
+        $mailTabContent = new TabContent('mail_tab_content');
+
+        $mailTemplate = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('form.mail_confirmation')
+        );
+
+        foreach($this->getLanguages() as $language) {
+            $mailTabs->addTab(array($language->getName() => '#mail_tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('mail_tab_' . $language->getAbbrev());
+
+            $field = new Text('mail_subject_' . $language->getAbbrev());
+            $field->setLabel('Subject')
+                ->setAttribute('class', 'form doodle')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
+            $field = new Textarea('mail_body_' . $language->getAbbrev());
+            $field->setLabel('Body')
+                ->setAttribute('class', 'form doodle')
+                ->setAttribute('rows', 20)
+                ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
+            $mailTabContent->add($pane);
+        }
+
+        $mail->add($mailTabContent);
+
+        $field = new Checkbox('reminder_mail');
+        $field->setLabel('Send Reminder Mail')
+            ->setAttribute('class', 'doodle');
+        $this->add($field);
+
+        $reminder = new Collection('reminder_mail_form');
+        $reminder->setLabel('Reminder Mail')
+            ->setAttribute('id', 'reminder_mail_form')
+            ->setAttribute('class', 'doodle');
+        $this->add($reminder);
+
+        $field = new Text('reminder_mail_from');
+        $field->setLabel('Mail Sender Address')
+            ->setAttribute('class', 'doodle')
             ->setRequired();
-        $mail->add($field);
+        $reminder->add($field);
 
-        $field = new Textarea('mail_body');
-        $field->setLabel('Body')
-            ->setAttribute('rows', 20)
-            ->setValue('Exameple mail:
+        $field = new Checkbox('reminder_mail_bcc');
+        $field->setLabel('Send BCC to sender for every entry')
+            ->setAttribute('class', 'doodle')
+            ->setValue(true);
+        $reminder->add($field);
 
-Dear %first_name% %last_name%,
+        $reminderMailTabs = new Tabs('reminder_mail_languages');
+        $reminder->add($reminderMailTabs);
 
-Your subscription was successful. Your unique subscription id is %id%. Below is a summary of the values you entered in this form:
+        $reminderMailTabContent = new TabContent('reminder_mail_tab_content');
 
-%entry_summary%
+        $reminderMailTemplate = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('form.mail_reminder')
+        );
 
-With best regards,
-The Form Creator')
-            ->setRequired();
-        $mail->add($field);
+        foreach($this->getLanguages() as $language) {
+            $reminderMailTabs->addTab(array($language->getName() => '#reminder_mail_tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('reminder_mail_tab_' . $language->getAbbrev());
+
+            $field = new Text('reminder_mail_subject_' . $language->getAbbrev());
+            $field->setLabel('Subject')
+                ->setAttribute('class', 'doodle')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
+            $field = new Textarea('reminder_mail_body_' . $language->getAbbrev());
+            $field->setLabel('Body')
+                ->setAttribute('class', 'doodle')
+                ->setAttribute('rows', 20)
+                ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
+            $reminderMailTabContent->add($pane);
+        }
+
+        $reminder->add($reminderMailTabContent);
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -258,6 +356,77 @@ The Form Creator')
                     )
                 )
             );
+
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'mail_subject_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'mail_body_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+            }
+        }
+
+        if (isset($this->data['reminder_mail']) && $this->data['reminder_mail']) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'reminder_mail_from',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'reminder_mail_subject_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'reminder_mail_body_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+            }
         }
 
         foreach($this->getLanguages() as $language) {

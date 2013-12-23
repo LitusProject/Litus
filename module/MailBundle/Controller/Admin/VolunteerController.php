@@ -31,7 +31,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @autor Niels Avonds <niels.avonds@litus.cc>>
  */
-class VolunteerController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class VolunteerController extends \MailBundle\Component\Controller\AdminController
 {
 
     public function sendAction()

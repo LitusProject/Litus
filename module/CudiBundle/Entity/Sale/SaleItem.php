@@ -67,6 +67,13 @@ class SaleItem
     private $number;
 
     /**
+     * @var integer The price of the purchase
+     *
+     * @ORM\Column(name="purchase_price", type="integer")
+     */
+    private $purchasePrice;
+
+    /**
      * @var integer The price of the selling
      *
      * @ORM\Column(type="integer")
@@ -113,6 +120,7 @@ class SaleItem
         $this->price = $price * 100;
         $this->timestamp = new DateTime();
         $this->discountType = $discountType;
+        $this->purchasePrice = $article->getPurchasePrice() * $number;
     }
 
     /**
@@ -165,6 +173,7 @@ class SaleItem
      */
     public function setNumber($number)
     {
+        $this->purchasePrice = round($this->purchasePrice * $number / $this->number);
         $this->price = round($this->price * $number / $this->number);
         $this->number = $number;
         return $this;
@@ -176,6 +185,22 @@ class SaleItem
     public function getNumber()
     {
         return $this->number;
+    }
+
+    /**
+     * @return integer
+     */
+    public function setPurchasePrice($price)
+    {
+        $this->purchasePrice = $price;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPurchasePrice()
+    {
+        return $this->purchasePrice;
     }
 
     /**

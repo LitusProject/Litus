@@ -24,6 +24,17 @@ use Zend\Form\FormInterface;
 class Collection extends \Zend\Form\Element\Collection
 {
     /**
+     * @param  null|int|string  $name    Optional name for the element
+     * @param  array            $options Optional options for the element
+     * @throws Exception\InvalidArgumentException
+     */
+    public function __construct($name, $options = array())
+    {
+        parent::__construct($name, $options);
+        $this->setAttribute('id', $name);
+    }
+
+    /**
      * @return boolean
      */
     public function isCollection()
@@ -46,6 +57,9 @@ class Collection extends \Zend\Form\Element\Collection
                 $elementOrFieldset->prepareElement($form);
             }
         }
+
+        if ($this->shouldCreateTemplate())
+            parent::prepareElement($form);
     }
 
     /**
@@ -58,14 +72,47 @@ class Collection extends \Zend\Form\Element\Collection
      */
     public function populateValues($data)
     {
+        foreach($this->getFieldsets() as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
         foreach($data as $key => $value) {
-            if (!$this->has($key))
+            if (!$this->has($key) && !is_numeric($key))
                 unset($data[$key]);
         }
-        foreach ($this->byName as $name => $element) {
-            if (!isset($data[$name]))
-                $data[$name] = '';
+
+        if ($this->shouldCreateTemplate()) {
+            foreach($data as $value) {
+                foreach ($this->byName as $name => $element) {
+                    if (!isset($value[$name]))
+                        $value[$name] = '';
+                }
+            }
+        } else {
+            foreach ($this->byName as $name => $element) {
+                if (!isset($data[$name]))
+                    $data[$name] = '';
+            }
         }
         parent::populateValues($data);
+    }
+
+    /**
+     * Set a hash of element names/messages to use when validation fails
+     *
+     * @param  array|Traversable $messages
+     * @return Element|ElementInterface|FieldsetInterface
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setMessages($messages)
+    {
+        parent::setMessages($messages);
+
+        $fieldsets = $this->getFieldsets();
+        foreach($fieldsets as $fieldset) {
+            $fieldset->setMessages($messages);
+        }
+
+        return $this;
     }
 }

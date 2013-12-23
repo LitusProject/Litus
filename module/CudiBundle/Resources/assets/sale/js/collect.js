@@ -6,15 +6,16 @@
         tConclude: 'Finish',
         tCancel: 'Cancel',
 
-        membershipArticle: 0,
+        articleTypeahead: '',
+        membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
         lightVersion: false,
 
         saveComment: function (id, comment) {},
         showQueue: function () {},
         finish: function (id, articles) {},
         cancel: function (id) {},
-        translateStatus: function (status) {return status},
-        addArticle: function (id, barcode) {},
+        translateStatus: function (status) {return status;},
+        addArticle: function (id, articleId) {},
     };
 
     var methods = {

@@ -1,126 +1,223 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'form/admin/form/partials/navigation.twig' %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width field_removed_success hide">
-    	<div class="title">Success</div>
-    	<div class="content">
-    		<p>The field was successfully removed!</p>
-    	</div>
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The field was successfully removed!</p>
+        </div>
     </div>
     <div class="flashmessage error_message full_width field_removed_error hide">
-    	<div class="title">Error</div>
-    	<div class="content">
-    		<p>An error occurred while trying to delete a field.</p>
-    	</div>
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a field.</p>
+        </div>
     </div>
 
-	<div id="controller_action">
-	    <h1>Form</h1>
+    <div class="flashmessage info_message full_width field_sort_saving hide">
+        <div class="title">Saving</div>
+        <div class="content">
+            <p>Saving the ordering of the fields.</p>
+        </div>
+    </div>
 
-	    <p>Title: <b>{{ formSpecification.getTitle(language) }}</b></p>
-	    <br/>
+    <div class="flashmessage success_message full_width field_sort_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The fields were successfully reordered.</p>
+        </div>
+    </div>
 
-	    <table class="manage">
-            <tr>
-                <th>Label</th>
-                <th width="70px">Order</th>
-                <th width="70px">Required</th>
-                <th width="70px">Action</th>
-            </tr>
+    <div class="flashmessage error_message full_width field_sort_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to reorder the fields.</p>
+        </div>
+    </div>
 
-            {% for field in fields %}
-                <tr class="item item-{{ field.getId() }}">
-                    <td>{{ field.getLabel(language) }}</td>
-                    <td>{{ field.getOrder() }}</td>
-                    <td>{% if field.isRequired() %}&times;{% endif %}</td>
-                    <td class="actions">
-                        {% if hasAccess('form_admin_form_field', 'edit') %}
-                            <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
-                        {% endif %}
-                        {% if hasAccess('form_admin_form_field', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-	    </table>
+    <div id="controller_action">
+        <h1>Form</h1>
 
-		{% include 'admin/partials/paginationControl.twig' %}
-	</div>
+        <p>Title: <b>{{ formSpecification.getTitle(language) }}</b></p>
+        <br/>
 
-	<aside>
-	    {% if hasAccess('form_admin_form_field', 'add') %}
-    		<div class="sidebox">
-    	        <div class="title">Add Field</div>
-    	       	<div class="content">
-    		    	<p>
-    		        	<i>Please hit the link below to add a field!</i>
-    		        </p>
-    		        <p>
-    		           	<a href="{{ url('form_admin_form_field', {"action": "add", "id": formSpecification.getId() }) }}">&rarr; Add Field</a>
-    		        </p>
-    		    </div>
-    		</div>
-    	{% endif %}
-	</aside>
+        {% if formSpecification.getType() == 'doodle' %}
+            <table class="manage">
+                <thead>
+                    <tr>
+                        <th width="120px">Start</th>
+                        <th width="120px">End</th>
+                        <th>Location</th>
+                        <th width="70px">Action</th>
+                    </tr>
+                </thead>
 
-	<div class="modal hide fade" id="removeField">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Delete Field
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following field: <b class="label"></b> of <b class="formSpecification"></b> This will also delete all previously entered values for this field!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+                <tbody>
+                    {% for field in fields %}
+                        <tr class="item item-{{ field.getId() }}">
+                            <td>{{ field.getStartDate().format('d/m/Y H:i') }}</td>
+                            <td>{{ field.getEndDate().format('d/m/Y H:i') }}</td>
+                            <td>{{ field.getLocation(language) }}</td>
+                            <td class="actions">
+                                {% if hasAccess('form_admin_form_field', 'edit') %}
+                                    <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('form_admin_form_field', 'delete') %}
+                                    <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getStartDate().format('d/m/Y H:i') }} - {{ field.getEndDate().format('d/m/Y H:i') }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <table class="manage">
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th width="70px">Order</th>
+                        <th width="70px">Required</th>
+                        <th width="70px">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for field in fields %}
+                        <tr class="item item-{{ field.getId() }}" data-id="{{ field.getId() }}">
+                            <td>{{ field.getLabel(language) }}</td>
+                            <td>{{ field.getOrder() }}</td>
+                            <td>{% if field.isRequired() %}&times;{% endif %}</td>
+                            <td class="actions">
+                                {% if hasAccess('form_admin_form_field', 'edit') %}
+                                    <a href="{{ url('form_admin_form_field', {'action': 'edit', 'id': field.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('form_admin_form_field', 'delete') %}
+                                    <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div style="text-align: right; font-size: 7pt">(Drag and drop to change the order)</div>
+            <button class="js-sortable-save edit hide">Save</button>
+            <button class="js-sortable-cancel delete hide">Cancel</button>
+        {% endif %}
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <aside>
+        {% if hasAccess('form_admin_form', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Form</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the form!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_form', {"action": "edit", "id": formSpecification.getId() }) }}">&rarr; Edit Form</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('form_admin_form_field', 'add') %}
+            <div class="sidebox">
+                <div class="title">Add Field</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a field!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_form_field', {"action": "add", "id": formSpecification.getId() }) }}">&rarr; Add Field</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
+    <div class="modal hide fade" id="removeField">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Field
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following field: <b class="label"></b> of <b class="formSpecification"></b> This will also delete all previously entered values for this field!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-		    $('.item .delete').click(openModal);
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
 
-		function openModal(e) {
-			var $this = $(this);
+            {% if formSpecification.getType() != 'doodle' %}
+                $('.manage').sortableTable({
+                    buttons: {
+                        save: $('.js-sortable-save'),
+                        cancel: $('.js-sortable-cancel')
+                    },
+                    submitUrl: "{{ url('form_admin_form_field', {"action": "sort", "id": formSpecification.getId()}) }}",
+                    callbacks: {
+                        saveSuccess: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.field_sort_success').removeClass('hide');
+                        },
+                        saveError: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.field_sort_error').removeClass('hide');
+                        },
+                        beforeSave: function() {
+                            $('.flashmessage').addClass('hide');
+                            $('.field_sort_saving').removeClass('hide');
+                        }
+                    }
+                });
+            {% endif %}
+        });
 
-			e.preventDefault();
-			var removeField = $('#removeField');
-			removeField.find('.label').html($(this).data('label'));
-			removeField.find('.formSpecification').html($(this).data('form'));
-			var id = $this.data('id');
-			removeField.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('form_admin_form_field', {"action": "delete"})}}' + id, function (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').hide();
-    					$('.field_removed_success').show();
-						$('.item-' + id).remove();
-    					removeField.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
-				}, 'json').error(errorRemove);
-			});
-			removeField.modal();
-		}
+        function openModal(e) {
+            var $this = $(this);
 
-		function errorRemove() {
-		    $('.flashmessage').hide();
-		    $('.field_removed_error').show();
-		    $('#removeField').modal('hide');
-		}
-	</script>
+            e.preventDefault();
+            var removeField = $('#removeField');
+            removeField.find('.label').html($(this).data('label'));
+            removeField.find('.formSpecification').html($(this).data('form'));
+            var id = $this.data('id');
+            removeField.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('form_admin_form_field', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').hide();
+                        $('.field_removed_success').show();
+                        $('.item-' + id).remove();
+                        removeField.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeField.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').hide();
+            $('.field_removed_error').show();
+            $('#removeField').modal('hide');
+        }
+    </script>
 {% endblock %}

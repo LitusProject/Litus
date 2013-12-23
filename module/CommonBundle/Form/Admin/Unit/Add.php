@@ -49,6 +49,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Text('mail');
+        $field->setLabel('Mail')
+            ->setRequired();
+        $this->add($field);
+
         if (count($this->_createOrganizationsArray()) > 1) {
             $field = new Select('organization');
             $field->setLabel('Organization')
@@ -165,6 +170,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'mail',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'emailaddress'),
+                    )
                 )
             )
         );

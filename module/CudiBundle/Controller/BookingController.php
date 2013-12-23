@@ -14,12 +14,16 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Article\Notification\Subscription,
     CudiBundle\Form\Booking\Booking as BookingForm,
     CudiBundle\Form\Booking\Search as SearchForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateInterval,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -29,6 +33,11 @@ use CommonBundle\Entity\User\Person\Academic,
  */
 class BookingController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear
+     */
+    private $_academicYear;
+
     public function viewAction()
     {
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
@@ -44,7 +53,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $total = 0;
         foreach ($bookings as $booking) {
-            $total += $booking->getArticle()->getSellPrice();
+            $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
         }
 
         return new ViewModel(
@@ -220,13 +229,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $total = 0;
                 foreach ($formData as $formKey => $formValue) {
                     $saleArticleId = substr($formKey, 8, strlen($formKey));
 
                     if (!$enableBookings && !in_array($saleArticleId, $bookingsClosedExceptions))
                         continue;
 
-                    if (substr($formKey, 0, 8) === 'article-' && $formValue != '' && $formValue != '0') {
+                    if ('article-' == substr($formKey, 0, 8) && '' != $formValue && '0' != $formValue) {
+                        $total += $formValue;
+
                         $saleArticle = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($saleArticleId);
@@ -288,13 +300,23 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The textbooks have been booked!'
-                    )
-                );
+                if (0 == $total) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::WARNING,
+                            'Warning',
+                            'You have not booked any textbooks!'
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'The textbooks have been booked!'
+                        )
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'cudi_booking',
@@ -367,6 +389,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $result = array();
         foreach($articles as $article) {
+            if (!$article->isBookable() && $article->getMainArticle()->getType() == 'common')
+                continue;
+
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
@@ -539,5 +564,20 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             return;
 
         return $booking;
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    protected function getCurrentAcademicYear($organization = false)
+    {
+        if (null !== $this->_academicYear)
+            return $this->_academicYear;
+
+        $this->_academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
+
+        return $academicYear;
     }
 }

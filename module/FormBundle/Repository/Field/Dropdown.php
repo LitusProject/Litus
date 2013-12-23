@@ -2,7 +2,7 @@
 
 namespace FormBundle\Repository\Field;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Dropdown

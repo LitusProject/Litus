@@ -79,7 +79,7 @@
         function toggleInternal() {
             if ($('#internal').is(':checked')) {
                 $('#internal_form').show();
-                $('#article_form #publisher').val('VTK').closest('.control-group').hide();
+                $('#article_form #publisher').val('{{ unionShortName }}').closest('.control-group').hide();
             } else {
                 $('#internal_form').hide();
                 $('#article_form #publisher').val('').closest('.control-group').show();

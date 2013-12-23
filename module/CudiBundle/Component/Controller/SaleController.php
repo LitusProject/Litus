@@ -33,6 +33,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      */
     public function onDispatch(MvcEvent $e)
     {
+        if (isset($_SERVER['HTTPS']) && '' != $_SERVER['HTTPS'])
+            $this->redirect()->toUrl('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
         $session = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
@@ -53,10 +56,10 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        if (null == $session || !$session->isOpen())
-            throw new Exception('No valid session is given');
-
         $result = parent::onDispatch($e);
+
+        if (null == $session || !$session->isOpen())
+            $result->invalidSession = true;
 
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -66,9 +69,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
         $result->session = $session;
 
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
 
         $result->lightVersion = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -76,23 +79,6 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
         $e->setResult($result);
         return $result;
-    }
-
-    /**
-     * Initializes the localization
-     *
-     * @return void
-     */
-    protected function initLocalization()
-    {
-        $language = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
-        $this->getTranslator()->setCache($this->getCache());
-        $this->getTranslator()->setLocale($language->getAbbrev());
-
-        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
     }
 
     /**

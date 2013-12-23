@@ -2,7 +2,7 @@
 
 namespace MailBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * MailingList
@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class MailingList extends EntityRepository
 {
+    public function findAllByNameQuery($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('MailBundle\Entity\MailingList\Named','l')
+            ->where(
+                $query->expr()->like($query->expr()->lower('l.name'), ':name')
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

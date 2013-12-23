@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\User\Shibboleth;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Code
@@ -25,15 +25,12 @@ class Code extends EntityRepository
             ->setParameter('universityIdentification', $universityIdentification)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
-    public function findAllExpired()
+    public function findAllExpiredQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
@@ -42,8 +39,7 @@ class Code extends EntityRepository
                 $query->expr()->lt('c.expirationTime', ':expirationTime')
             )
             ->setParameter('expirationTime', new DateTime('now'))
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

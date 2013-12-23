@@ -34,16 +34,18 @@
             <tr>
                 <th width="70px">Template</th>
                 <th>Type</th>
+                <th width="100px">Organization</th>
                 <th width="200px">Value</th>
                 <th width="150px">Rounding</th>
                 <th width="100px">Apply Once</th>
                 <th width="100px">Actions</th>
             </tr>
 
-            {% for discount in discounts %}
+            {% for discount in paginator %}
                 <tr class="item item-{{ discount.getId() }}">
                     <td style="text-align:center;">{% if discount.getTemplate() is not null %}&times;{% endif %}</td>
                     <td>{{ discount.getType() }}</td>
+                    <td>{% if discount.getOrganization() %}{{ discount.getOrganization().getName() }}{% else%}All{% endif %}</td>
                     <td>{% if discount.getMethod() == 'percentage' %}-{{ (discount.getValue()/100)|number_format(2) }}%{% elseif discount.getMethod() == 'fixed' %}- &euro; {{ (discount.getValue()/100)|number_format(2) }}{% else %}&euro; {{ (discount.getValue()/100)|number_format(2) }}{% endif %}</td>
                     <td>{{ discount.getRounding() }}</td>
                     <td>{% if discount.applyOnce() %}Yes{% else %}No{% endif %}</td>
@@ -55,6 +57,8 @@
                 </tr>
             {% endfor %}
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <div class="modal hide fade" id="removeDiscount">
@@ -83,17 +87,28 @@
         $(document).ready(function () {
             $('.item .delete').click(openRemoveModal);
 
+            $('#discount_template_type').change(function () {
+                if ($(this).val() == 'member') {
+                    $('#discount_template_organization').closest('.row').show();
+                } else {
+                    $('#discount_template_organization').closest('.row').hide();
+                    $('#discount_template_organization').val('0');
+                }
+            }).trigger('change');
+
             $('#discount_template').change(function () {
                 var template = $(this).find('option:selected').attr('value');
                 if (template == 0) {
                     $('#discount_template_value').val('').prop('disabled', false);
                     $('#discount_template_type').val('member').prop('disabled', false);
+                    $('#discount_template_organization').val('0').prop('disabled', false);
                     $('#discount_template_method').val('percentage').prop('disabled', false);
                     $('#discount_template_rounding').val('none').prop('disabled', false);
                     $('#discount_template_apply_once').prop('checked', false).prop('disabled', false)
                 } else {
                     $('#discount_template_value').val($('#template_' + template + '_value').val()).prop('disabled', true);
                     $('#discount_template_type').val($('#template_' + template + '_type').val()).prop('disabled', true);
+                    $('#discount_template_organization').val($('#template_' + template + '_organization').val()).prop('disabled', true);
                     $('#discount_template_method').val($('#template_' + template + '_method').val()).prop('disabled', true);
                     $('#discount_template_rounding').val($('#template_' + template + '_rounding').val()).prop('disabled', true);
                     $('#discount_template_apply_once').prop('checked', $('#template_' + template + '_apply_once').val() == 1).prop('disabled', true);

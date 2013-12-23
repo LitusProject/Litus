@@ -72,14 +72,18 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             }
         }
 
-        $restrictions = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
-            ->findAllByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
                 'article' => $article,
-                'restrictions' => $restrictions,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
                 'form' => $form,
             )
         );

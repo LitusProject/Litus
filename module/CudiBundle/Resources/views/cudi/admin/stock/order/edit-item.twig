@@ -1,0 +1,24 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/stock/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'cudi/admin/stock/order/partials/suppliers.twig' %}
+
+    <div id="controller_action">
+        <h1>Order</h1>
+        <p>Supplier: <b>{{ order.getSupplier().getName() }}</b></p>
+        <p>Person: <b>{{ order.getPerson().getFullName() }}</b></p>
+        <p>Date: <b>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i:s') }}{% else %}(new){% endif %}</b></p>
+        <p>Price: <b>&euro; {{ (order.getPrice()/100)|number_format(2) }}</b></p>
+        <br />
+
+        <h2>Order Item</h2>
+        <p>Article: <b>{{ item.getArticle().getMainArticle().getTitle() }}</b></p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}

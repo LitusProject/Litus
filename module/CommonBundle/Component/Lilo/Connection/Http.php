@@ -71,8 +71,8 @@ class Http extends \CommonBundle\Component\Lilo\Connection
         $client->setMethod(Request::METHOD_POST)
             ->setParameterPost(
                 array(
+                    'data' => (string) $data,
                     'key' => $this->_secretKey,
-                    'data' => (string) $data
                 )
             );
 
@@ -88,9 +88,8 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     private function _getRequestUrl(Data $data)
     {
         return (true === $this->_secure ? 'https://' : 'http://')
-            . rtrim($this->_host, '/')
+            . $this->_host
             . '/api/'
-            . ($data instanceof ExceptionData ? 'exception' : 'log')
-            . '/add';
+            . ($data instanceof ExceptionData ? 'exception' : 'log') . '/add';
     }
 }

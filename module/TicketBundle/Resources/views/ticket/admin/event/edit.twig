@@ -1,0 +1,123 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'ticket/admin/event/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <aside>
+        {% if hasAccess('ticket_admin_ticket', 'manage') %}
+            <div class="sidebox">
+                <div class="title">View Tickets</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_ticket', {'action': 'manage', 'id': event.getId()}) }}">&rarr; View Tickets</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('ticket_admin_ticket', 'export') %}
+            <div class="sidebox">
+                <div class="title">Export Tickets</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export the tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_ticket', {'action': 'export', 'id': event.getId()}) }}">&rarr; Export Tickets</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('ticket_admin_ticket', 'print') %}
+            <div class="sidebox">
+                <div class="title">Print Ticket List</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to print a list of the tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_ticket', {'action': 'print', 'id': event.getId()}) }}">&rarr; Print List</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('ticket_sale_index', 'sale') %}
+            <div class="sidebox">
+                <div class="title">Sale Tickets</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to sale tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_sale_index', {'action': 'sale', 'id': event.getId()}) }}">&rarr; Sale Tickets</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        var currentCount = 0;
+        $(document).ready(function () {
+            while ($('input[name="options[' + (currentCount) + '][option]"]').length) {
+                currentCount++;
+            }
+
+            if ($('#enable_options_hidden').val() && !$('#enable_options').is(':checked'))
+                $('#enable_options').prop('checked', true);
+
+            $('#only_members').change(function () {
+                if ($(this).is(':checked')) {
+                    $('form .price_non_members').closest('.row').hide();
+                } else {
+                    $('form .price_non_members').closest('.row').show();
+                }
+            }).trigger('change');
+
+            $('#enable_options').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#prices').hide();
+                    $('#options').show();
+
+                    addOption();
+                } else {
+                    $('#prices').show();
+                    $('#options').hide();
+                }
+            }).trigger('change');
+        });
+
+        function triggerKeyUp() {
+            if ($(this).val().length > 0) {
+                $(this).unbind('keyup');
+                addOption();
+            }
+        }
+
+        function addOption() {
+            var template = $('#data-template').data('template');
+            template = template.replace(/__index__/g, currentCount);
+            currentCount++;
+
+            $('form > fieldset#options').append(template);
+            $('input[name="options[' + (currentCount - 1) + '][option]"]').keyup(triggerKeyUp);
+
+            if ($('#only_members').is(':checked')) {
+                $('form .price_non_members').closest('.row').hide();
+            } else {
+                $('form .price_non_members').show();
+            }
+        }
+    </script>
+{% endblock %}

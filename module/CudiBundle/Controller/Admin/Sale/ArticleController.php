@@ -18,7 +18,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
+    CudiBundle\Form\Admin\Sales\Article\View as ViewForm,
     CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
+    CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
     CudiBundle\Entity\Log\Sale\ProfVersion as ProfVersionLog,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Article\History,
@@ -47,10 +49,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
-                ->findAllByAcademicYear($academicYear, $semester);
+                ->findAllByAcademicYearQuery($academicYear, $semester);
         }
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $articles,
             $this->getParam('page')
         );
@@ -196,8 +198,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $saleArticle->setBarcode($formData['barcode'])
                     ->setPurchasePrice($formData['purchase_price'])
                     ->setSellPrice($formData['sell_price'])
-                    ->setIsBookable($formData['bookable'])
-                    ->setIsUnbookable($formData['unbookable'])
+                    ->setIsBookable(isset($formData['bookable']) && $formData['bookable'])
+                    ->setIsUnbookable(isset($formData['unbookable']) && $formData['unbookable'])
                     ->setIsSellable($formData['sellable'])
                     ->setSupplier($supplier)
                     ->setCanExpire($formData['can_expire']);
@@ -213,9 +215,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     }
                 }
 
-                if ($formData['bookable'] && !$history->getPrecursor()->isBookable())
+                if (isset($formData['bookable']) && $formData['bookable'] && !$history->getPrecursor()->isBookable())
                     $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
-                elseif (!$formData['bookable'] && $history->getPrecursor()->isBookable())
+                elseif (!(isset($formData['bookable']) && $formData['bookable']) && $history->getPrecursor()->isBookable())
                     $this->getEntityManager()->persist(new UnbookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
 
                 $this->getEntityManager()->flush();
@@ -231,7 +233,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'cudi_admin_sales_article',
                     array(
-                        'action' => 'manage'
+                        'action' => 'edit',
+                        'id' => $saleArticle->getId(),
                     )
                 );
 
@@ -245,6 +248,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'article' => $saleArticle,
                 'precalculatedSellPrice' => $precalculatedSellPrice,
                 'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
+            )
+        );
+    }
+
+    public function viewAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
+
+        $form = new ViewForm($this->getEntityManager(), $saleArticle);
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'article' => $saleArticle,
             )
         );
     }
@@ -266,18 +284,42 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function assignAllAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
+
+        $counter = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->assignAllByArticle($saleArticle, $this->getMailTransport());
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The article is successfully assigned to ' . $counter . ' persons'
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
+    }
+
     public function searchAction()
     {
         $this->initAjax();
-
-        $semester = $this->_getSemester();
-        $articles = $this->_search($this->getAcademicYear(), $semester);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($articles, $numResults);
+        $semester = $this->_getSemester();
+        $articles = $this->_search($this->getAcademicYear(), $semester)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {
@@ -326,6 +368,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             1,
             0,
             null,
+            null,
             $this->getEntityManager()
         );
         $this->getEntityManager()->persist($saleItem);
@@ -355,9 +398,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $academicYear = $this->getAcademicYear();
 
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+            ->findAllByTitleOrBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($articles as $article) {
@@ -446,25 +495,57 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function cancelBookingsAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
+
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriod());
+
+        $idsCancelled = array();
+        foreach($bookings as $booking) {
+            $booking->setStatus('canceled', $this->getEntityManager());
+            $idsCancelled[] = $booking->getId();
+        }
+
+        $this->getEntityManager()->persist(new LogCancellations($this->getAuthentication()->getPersonObject(), $idsCancelled));
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The bookings were successfully cancelled'
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
+    }
+
     private function _search(AcademicYear $academicYear, $semester)
     {
         switch($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'author':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByAuthorAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByAuthorAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'publisher':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByPublisherAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByPublisherAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
             case 'barcode':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $academicYear, $semester);
+                    ->findAllByBarcodeAndAcademicYearQuery($this->getParam('string'), $academicYear, $semester);
         }
     }
 

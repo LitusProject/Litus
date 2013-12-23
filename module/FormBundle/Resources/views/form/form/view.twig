@@ -2,8 +2,12 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>{{ specification.getTitle(language) }}</h1>
+        <h1>{% if group %}{{ group.getTitle(language) }}: {% endif %}{{ specification.getTitle(language) }}</h1>
     </div>
+
+    {% if group %}
+        {% include 'form/form/partials/group-progress.twig' %}
+    {% endif %}
 
     {% autoescape false %}
         {{ markdown(specification.getIntroduction(language)) }}
@@ -16,10 +20,8 @@
             {{ translate(message) }}
         </div>
     {% else %}
-        {% if form %}
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-        {% endif %}
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     {% endif %}
 
     {% if entries|length > 0 %}
@@ -47,6 +49,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
             var form = $('#content form');
             form.find('input, select').each(function () {
                 var $this = $(this);

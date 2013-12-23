@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Comment;
 
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\Comment\Comment as CommentEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Mapping
@@ -25,15 +25,26 @@ class Mapping extends EntityRepository
                     $query->expr()->eq('m.comment', ':comment')
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->setParameter('comment', $comment->getId())
+            ->setParameter('article', $article)
+            ->setParameter('comment', $comment)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
+        return $resultSet;
+    }
 
-        return null;
+    public function findAllByArticleQuery(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
+            ->where(
+                $query->expr()->eq('m.article', ':article')
+            )
+            ->setParameter('article', $article)
+            ->getQuery();
+
+        return $resultSet;
     }
 }

@@ -247,7 +247,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $session->setEntityManager($this->getEntityManager());
-        
+
         $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 
         if($this->getRequest()->isPost()) {
@@ -258,6 +258,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $cashRegister = new CashRegister();
+                $this->getEntityManager()->persist($cashRegister);
 
                 $devices = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
@@ -287,7 +288,6 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $session->close($cashRegister);
 
-                $this->getEntityManager()->persist($cashRegister);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -339,7 +339,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        system("kill $(ps aux | grep -i \"php bin/CudiBundle/queue.php --run\" | grep -v grep | awk '{print $2}')");
+        $baseDirectory = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
+        system('kill $(ps aux | grep -i "php ' . $baseDirectory . '/bin/CudiBundle/queue.php --run" | grep -v grep | awk \'{print $2}\')');
 
         return new ViewModel(
             array(

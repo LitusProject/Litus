@@ -15,8 +15,6 @@
 namespace ShiftBundle\Form\Admin\Shift;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Doctrine\ORM\EntityManager,
     Shiftbundle\Entity\Shift,
     Zend\Form\Element\Text,

@@ -23,6 +23,9 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
+if (false === getenv('APPLICATION_ENV'))
+    putenv('APPLICATION_ENV=development');
+
 chdir(dirname(dirname(dirname(dirname(__DIR__)))));
 
 include 'init_autoloader.php';
@@ -30,6 +33,13 @@ include 'init_autoloader.php';
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 $mt = $application->getServiceManager()->get('mail_transport');
+
+$fallbackLanguage = $em->getRepository('CommonBundle\Entity\General\Language')
+    ->findOneByAbbrev(
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('fallback_language')
+    );
+\Locale::setDefault($fallbackLanguage->getAbbrev());
 
 $rules = array(
     'article|a-s' => 'Article',
@@ -54,7 +64,7 @@ if (isset($opts->a)) {
     echo 'Article to be assigned: ' . $article->getMainArticle()->getTitle() . PHP_EOL;
 
     $people = $em->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-        ->findBy(array('irreeelAtCudi' => 'true'));
+        ->findBy(array('irreeelAtCudi' => 'true', 'academicYear' => $academicYear->getId()));
 
     $number = 0;
     foreach($people as $person) {

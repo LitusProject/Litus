@@ -98,9 +98,10 @@ return array(
             'common_admin_cache' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/cache[/:action][/]',
+                    'route' => '/admin/cache[/:action[/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'common_admin_cache',
@@ -254,6 +255,32 @@ return array(
                     ),
                 ),
             ),
+            'common_robots' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/robots.txt',
+                    'constraints' => array(
+                    ),
+                    'defaults' => array(
+                        'controller' => 'common_robots',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'common_praesidium' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/praesidium[/:action[/:academicyear]][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'common_praesidium',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -356,6 +383,8 @@ return array(
             'common_account'        => 'CommonBundle\Controller\AccountController',
             'common_session'        => 'CommonBundle\Controller\SessionController',
             'common_auth'           => 'CommonBundle\Controller\AuthController',
+            'common_robots'         => 'CommonBundle\Controller\RobotsController',
+            'common_praesidium'     => 'CommonBundle\Controller\PraesidiumController',
         ),
     ),
     'view_manager' => array(
@@ -433,6 +462,11 @@ return array(
                             'common/css/jquery-ui-timepicker-addon.css',
                         ),
                     ),
+                    'common_jquery_table_sort' => array(
+                        'assets' => array(
+                            'common/js/jquery.sortable-table.js'
+                        ),
+                    ),
                     'common_jquery_form' => array(
                         'assets'  => array(
                             'common/js/jquery.form.js',
@@ -476,6 +510,17 @@ return array(
                     'common_holder_js' => array(
                         'assets'  => array(
                             'common/js/holder.js',
+                        ),
+                    ),
+                    'common_chart_js' => array(
+                        'assets'  => array(
+                            'common/js/chart.min.js',
+                        ),
+                    ),
+                    'common_serialize_js' => array(
+                        'assets'  => array(
+                            'common/js/serialize.js',
+                            'common/js/unserialize.js',
                         ),
                     ),
 

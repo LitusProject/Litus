@@ -15,12 +15,13 @@
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
 use CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article as Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Articles\Discounts\Discount")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Discount")
  * @ORM\Table(name="cudi.sales_articles_discounts_discounts")
  */
 class Discount
@@ -84,6 +85,14 @@ class Discount
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
+
+    /**
+     * @var \CommonBundle\Entity\General\Organization The organization for the discount
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
+     * @ORM\JoinColumn(name="organization", referencedColumnName="id")
+     */
+    private $organization;
 
     /**
      * @var array The possible types of a discount
@@ -173,10 +182,11 @@ class Discount
      * @param string $type The type of the discount
      * @param string $rounding The type of the rounding
      * @param boolean $applyOnce Apply the discount only once
+     * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
      *
      * @return \CudiBundle\Entity\Sale\Article\Discount\Discount
      */
-    public function setDiscount($value, $method, $type, $rounding, $applyOnce)
+    public function setDiscount($value, $method, $type, $rounding, $applyOnce, $organization = null)
     {
         if (!self::isValidDiscountType($type))
             throw new \InvalidArgumentException('The discount type is not valid.');
@@ -193,6 +203,7 @@ class Discount
         $this->type = $type;
         $this->rounding = $rounding;
         $this->applyOnce = $applyOnce;
+        $this->organization = $organization;
         return $this;
     }
 
@@ -277,11 +288,21 @@ class Discount
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Articl
+     * @return \CudiBundle\Entity\Sale\Article
      */
     public function getArticle()
     {
         return $this->article;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Organization
+     */
+    public function getOrganization()
+    {
+        if (!isset($this->organization) && isset($this->template))
+            return $this->template->getOrganization();
+        return $this->organization;
     }
 
     /**
@@ -349,5 +370,30 @@ class Discount
     {
         return $entityManager->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findOneByArticleAndPersonAndDiscountType($article, $person, $this->getRawType()) != null;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\User\Person $person
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return boolean
+     */
+    public function canBeApplied(Person $person, AcademicYear $academicYear, EntityManager $entityManager)
+    {
+        if ($this->getType() == 'member') {
+            if (!$person->isMember($academicYear))
+                return false;
+
+            if ($this->getOrganization() !== null) {
+                $organization = $entityManager->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
+                    ->findOneByAcademicAndAcademicYear($person, $academicYear);
+                if (null == $organization)
+                    return false;
+                if ($organization != $this->getOrganization())
+                    return false;
+            }
+        }
+        return true;
     }
 }

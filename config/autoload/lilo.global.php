@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-if ('production' == getenv('APPLICATION_ENV')) {
+if ('development' != getenv('APPLICATION_ENV')) {
     if (!file_exists(__DIR__ . '/../lilo.config.php')) {
         throw new RuntimeException(
             'The Lilo configuration file (' . (__DIR__ . '/../lilo.config.php') . ') was not found'
