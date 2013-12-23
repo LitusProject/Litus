@@ -14,9 +14,7 @@
 
 namespace ApiBundle\Form\Admin\Key;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    ApiBundle\Entity\Key,
+use ApiBundle\Entity\Key,
     Zend\Form\Element\Text,
     Zend\Form\Element\Submit;
 

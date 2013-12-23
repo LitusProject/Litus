@@ -12,32 +12,30 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Supplier\User;
+namespace CudiBundle\Form\Admin\Sales\Article;
 
-use Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
+use CudiBundle\Entity\Sale\Article,
+    Doctrine\ORM\EntityManager;
 /**
- * Add a user to the database.
+ * View Sale Article
  *
- * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Form\Admin\Person\Add
+class View extends \CudiBundle\Form\Admin\Sales\Article\Edit
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CudiBundle\Entity\Sale\Article $article
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, Article $article, $name = null)
     {
-        parent::__construct($entityManager, $name);
+        parent::__construct($entityManager, $article, $name);
 
-        $this->remove('roles');
+        foreach($this->getElements() as $element) {
+            $element->setAttribute('disabled', 'disabled');
+        }
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'user_add');
-        $this->add($field);
+        $this->remove('submit');
     }
 }

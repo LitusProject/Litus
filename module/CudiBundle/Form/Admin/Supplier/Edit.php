@@ -14,8 +14,7 @@
 
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CudiBundle\Entity\Supplier,
+use CudiBundle\Entity\Supplier,
     Zend\Form\Element\Submit;
 
 /**

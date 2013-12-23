@@ -14,8 +14,7 @@
 
 namespace BannerBundle\Form\Admin\Banner;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     BannerBundle\Entity\Node\Banner,
     Zend\Form\Element\Submit;
 
