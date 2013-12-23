@@ -50,7 +50,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         $enabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled');
+            ->getConfigValue('secretary.enable_registration');
 
         if ('1' !== $enabled) {
             $this->getResponse()->setStatusCode(404);
@@ -338,9 +338,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        $registrationEnabled = $this->getEntityManager()
+        $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled') == '1';
+            ->getConfigValue('secretary.enable_registration');
 
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -460,18 +460,18 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
 
                 if (null !== $metaData) {
-                    if ($registrationEnabled) {
+                    if ($enableRegistration) {
                         $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
                     } else {
                         $becomeMember = $metaData->becomeMember();
                     }
 
                     if ($becomeMember) {
-                        if ($registrationEnabled) {
+                        if ($enableRegistration) {
                             $metaData->setBecomeMember($becomeMember);
                         }
                     }
-                } elseif ($registrationEnabled) {
+                } elseif ($enableRegistration) {
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -489,7 +489,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                if ($registrationEnabled) {
+                if ($enableRegistration) {
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()

@@ -115,9 +115,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        $registrationEnabled = $this->getEntityManager()
+        $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled') == '1';
+            ->getConfigValue('secretary.enable_registration');
 
         $academic = $this->getAuthentication()->getPersonObject();
 
@@ -245,18 +245,18 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
 
                 if (null !== $metaData) {
-                    if ($registrationEnabled) {
+                    if ($enableRegistration) {
                         $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
                     } else {
                         $becomeMember = $metaData->becomeMember();
                     }
 
                     if ($becomeMember) {
-                        if ($registrationEnabled) {
+                        if ($enableRegistration) {
                             $metaData->setBecomeMember($becomeMember);
                         }
                     }
-                } elseif ($registrationEnabled) {
+                } elseif ($enableRegistration) {
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -274,7 +274,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                if ($registrationEnabled) {
+                if ($enableRegistration) {
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()

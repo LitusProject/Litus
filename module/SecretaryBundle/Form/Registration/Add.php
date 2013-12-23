@@ -162,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $registrationEnabled = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled');
+            ->getConfigValue('secretary.enable_registration');
 
         $field = new Checkbox('become_member');
         $field->setLabel('I want to become a member of the student association (&euro; { price })')
