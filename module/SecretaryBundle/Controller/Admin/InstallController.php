@@ -29,7 +29,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installConfig(
             array(
                 array(
-                    'key'         => 'secretary.registration_enabled',
+                    'key'         => 'secretary.enable_registration',
                     'value'       => '1',
                     'description' => 'Flag whether the registration module is enabled or not',
                 ),

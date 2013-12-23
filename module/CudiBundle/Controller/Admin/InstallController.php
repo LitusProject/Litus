@@ -324,7 +324,7 @@ VTK Cudi
                     'description' => 'The port of the print socket',
                 ),
                 array(
-                    'key'         => 'cudi.printers_enable',
+                    'key'         => 'cudi.enable_printers',
                     'value'       => '1',
                     'description' => 'Flag whether the printers are enabled',
                 ),

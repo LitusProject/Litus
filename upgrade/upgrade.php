@@ -22,16 +22,16 @@ $connection = pg_connect(
     . ' password=' . $database['relational']['password']
 );
 
-$result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'upgrade_date\'');
+$result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
 
-if (pg_num_rows($result) == 0)
-    pg_query($connection, 'INSERT INTO general.config VALUES(\'upgrade_date\', \'0\', \'The date the last upgrade was done\')');
+if (0 == pg_num_rows($result))
+    pg_query($connection, 'INSERT INTO general.config VALUES(\'last_upgrade\', \'0\', \'The last upgrade that was applied\')');
 
-$result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'upgrade_date\'');
-$config = pg_fetch_row($result)[0];
+$result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
+$lastUpgrade = pg_fetch_row($result)[0];
 
-foreach (new DirectoryIterator(__DIR__) as $fileInfo) {
-    if($fileInfo->isDot() || 'upgrade.php' == $fileInfo->getFilename())
+foreach (new DirectoryIterator(__DIR__ . '/scripts') as $fileInfo) {
+    if($fileInfo->isDot())
         continue;
 
     $files[] = $fileInfo->getFilename();
@@ -39,12 +39,15 @@ foreach (new DirectoryIterator(__DIR__) as $fileInfo) {
 
 sort($files);
 
+// Run
+include 'util.php';
+
 foreach($files as $file) {
-    if ($file <= $config . '.php')
+    if ($file <= $lastUpgrade . '.php')
         continue;
 
     echo 'Upgrade ' . substr($file, 0, strrpos($file, '.')) . PHP_EOL;
-    include __DIR__ . '/' . $file;
+    include __DIR__ . '/scripts/' . $file;
 }
 
-pg_query($connection, 'UPDATE general.config SET value = \'' . substr($file, 0, strrpos($file, '.')) . '\' WHERE key = \'upgrade_date\'');
+pg_query($connection, 'UPDATE general.config SET value = \'' . substr($file, 0, strrpos($file, '.')) . '\' WHERE key = \'last_upgrade\'');
