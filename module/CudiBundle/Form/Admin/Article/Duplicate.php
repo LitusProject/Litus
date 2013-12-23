@@ -14,8 +14,7 @@
 
 namespace CudiBundle\Form\Admin\Article;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CudiBundle\Entity\Article,
+use CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,

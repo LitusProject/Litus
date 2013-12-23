@@ -56,6 +56,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'ticket_sale_form');
 
+        $field = new Checkbox('force');
+        $field->setLabel('Force (Ignore limits)');
+        $this->add($field);
+
         $field = new Checkbox('is_guest');
         $field->setLabel('Is Guest');
         $this->add($field);
@@ -169,6 +173,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'force',
+                    'required' => false,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'is_guest',
                     'required' => false,
                 )
@@ -176,6 +189,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         );
 
         $isGuest = isset($this->data['is_guest']) && $this->data['is_guest'];
+        $force = isset($this->data['force']) && $this->data['force'];
 
         $inputFilter->add(
             $factory->createInput(
@@ -245,38 +259,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        if (count($this->_event->getOptions()) == 0) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'number_member',
-                        'required' => true,
-                        'validators' => array(
-                            new NumberTicketsValidator($this->_entityManager, $this->_event),
-                        )
-                    )
-                )
-            );
-
-            if (!$this->_event->isOnlyMembers()) {
+        if (!$force) {
+            if (count($this->_event->getOptions()) == 0) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
-                            'name'     => 'number_non_member',
-                            'required' => true,
-                            'validators' => array(
-                                new NumberTicketsValidator($this->_entityManager, $this->_event),
-                            )
-                        )
-                    )
-                );
-            }
-        } else {
-            foreach($this->_event->getOptions() as $option) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'option_' . $option->getId() . '_number_member',
+                            'name'     => 'number_member',
                             'required' => true,
                             'validators' => array(
                                 new NumberTicketsValidator($this->_entityManager, $this->_event),
@@ -289,7 +277,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $inputFilter->add(
                         $factory->createInput(
                             array(
-                                'name'     => 'option_' . $option->getId() . '_number_non_member',
+                                'name'     => 'number_non_member',
                                 'required' => true,
                                 'validators' => array(
                                     new NumberTicketsValidator($this->_entityManager, $this->_event),
@@ -297,6 +285,34 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             )
                         )
                     );
+                }
+            } else {
+                foreach($this->_event->getOptions() as $option) {
+                    $inputFilter->add(
+                        $factory->createInput(
+                            array(
+                                'name'     => 'option_' . $option->getId() . '_number_member',
+                                'required' => true,
+                                'validators' => array(
+                                    new NumberTicketsValidator($this->_entityManager, $this->_event),
+                                )
+                            )
+                        )
+                    );
+
+                    if (!$this->_event->isOnlyMembers()) {
+                        $inputFilter->add(
+                            $factory->createInput(
+                                array(
+                                    'name'     => 'option_' . $option->getId() . '_number_non_member',
+                                    'required' => true,
+                                    'validators' => array(
+                                        new NumberTicketsValidator($this->_entityManager, $this->_event),
+                                    )
+                                )
+                            )
+                        );
+                    }
                 }
             }
         }

@@ -576,7 +576,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         if (null !== $this->_academicYear)
             return $this->_academicYear;
 
-        $this->_academicYear = AcademicYear::getUniversityYear($this->getEntityManager());
+        $this->_academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
 
         return $academicYear;
     }

@@ -14,8 +14,7 @@
 
 namespace FormBundle\Form\Admin\Field;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,

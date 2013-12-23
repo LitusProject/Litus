@@ -14,8 +14,7 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     Doctrine\ORM\QueryBuilder,
     CalendarBundle\Component\Validator\Name as EventNameValidator,
     CalendarBundle\Entity\Node\Event,

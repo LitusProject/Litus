@@ -14,8 +14,6 @@
 
 namespace Admin\Form\Contract;
 
-use \Litus\Form\Admin\Decorator\ButtonDecorator;
-use \Litus\Form\Admin\Decorator\FieldDecorator;
 use \Litus\Entity\Br\Contract;
 
 use \Zend\Form\Element\Submit;
@@ -41,8 +39,7 @@ class Edit extends Add {
 
         $field = new Text('contract_nb');
         $field->setLabel('Contract number')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
+            ->setRequired();
         $this->addElement($field);
 
         if($contract->isSigned()) {
@@ -50,15 +47,13 @@ class Edit extends Add {
             $field->setLabel('Invoice number')
                 ->setRequired()
                 ->setValue($contract->getInvoiceNb())
-                ->setDecorators(array(new FieldDecorator()))
                 ->setAttrib('disabled', 'disabled');
             $this->addElement($field);
         }
 
         $field = new Submit('Save');
         $field->setValue('Save')
-            ->setAttrib('class', 'contracts_edit')
-            ->setDecorators(array(new ButtonDecorator()));
+            ->setAttrib('class', 'contracts_edit');
         $this->addElement($field);
 
         $this->populate(

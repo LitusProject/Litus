@@ -14,8 +14,7 @@
 
 namespace BrBundle\Form\Admin\Company\User;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
 /**

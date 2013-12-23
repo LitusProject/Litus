@@ -18,6 +18,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
+    CudiBundle\Form\Admin\Sales\Article\View as ViewForm,
     CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
     CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
     CudiBundle\Entity\Log\Sale\ProfVersion as ProfVersionLog,
@@ -247,6 +248,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'article' => $saleArticle,
                 'precalculatedSellPrice' => $precalculatedSellPrice,
                 'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
+            )
+        );
+    }
+
+    public function viewAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
+
+        $form = new ViewForm($this->getEntityManager(), $saleArticle);
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'article' => $saleArticle,
             )
         );
     }

@@ -480,7 +480,7 @@ VTK Cudi
                         'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
                     ),
                     'cudi_admin_sales_article' => array(
-                        'activate', 'add', 'assignAll', 'cancelBookings', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead'
+                        'activate', 'add', 'assignAll', 'cancelBookings', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead', 'view'
                     ),
                     'cudi_admin_sales_article_barcode' => array(
                         'delete', 'manage'
@@ -519,7 +519,7 @@ VTK Cudi
                         'add', 'edit', 'delete', 'manage', 'old'
                     ),
                     'cudi_admin_stock' => array(
-                        'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
+                        'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered', 'view'
                     ),
                     'cudi_admin_stock_delivery' => array(
                         'add', 'delete', 'manage', 'supplier', 'typeahead'

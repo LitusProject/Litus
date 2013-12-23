@@ -15,8 +15,6 @@
 namespace BrBundle\Form\Admin\Company\Job;
 
 use BrBundle\Entity\Company\Job,
-    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
